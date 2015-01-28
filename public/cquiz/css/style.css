@@ -586,7 +586,38 @@ section#intro {
 	font-size: 48px;
 	text-shadow: 0 0 20px black;
 }
+.cta1-container {
+    margin-top: 100px;
+    width: 100%;
+    text-align: center;
+}
 
+.cta1 {
+    padding: 20px 60px;
+    background: #808080;
+    border-radius: 20px;
+    box-shadow: 4px 4px 20px #000;
+    color: white;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.cta1-title {
+    margin-bottom: 100px;
+    color: white;
+    font-weight: 300;
+    font-size: 24px;
+    text-shadow: 0 0 10px black;
+}
+.cta2 {
+    padding: 20px 60px;
+    background: #FA5858;
+    border-radius: 20px;
+    box-shadow: 4px 4px 20px #000;
+    color: white;
+    font-size: 20px;
+    font-weight: 300;
+}
 .item-inner__hero {
 	height: 600px;
 }

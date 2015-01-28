@@ -49,6 +49,7 @@ Endpoints for students: actually we are making this client side
  */
 
 app.get('/', quiz.landingpage);
+app.get('/2', quiz.landingpage2);
 app.get('/tool/', quiz.landingpage);
 app.get('/quiz/', quiz.create);
 app.get('/app/', quiz.index);

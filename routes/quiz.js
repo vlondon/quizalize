@@ -19,6 +19,11 @@ exports.landingpage =  function(req, res) {
     res.sendFile('cquiz/index.html',{ root: 'public' });
 };
 
+exports.landingpage2 =  function(req, res) {
+    res.sendFile('cquiz/index2.html',{ root: 'public' });
+};
+
+
 exports.service =  function(req, res) {
     res.render('service');
 };
