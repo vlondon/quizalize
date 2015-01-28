@@ -1,0 +1,42 @@
+.container
+    .row(style="padding-top:10px")
+        .col-xs-12
+            h1.inverse-text.text-center Your Quizzes
+
+    .row
+        .col-sm-6.col-sm-push-3(ng-show="quizzes.quizzes.length")
+            .well
+                .row(ng-repeat="quiz in quizzes.quizzes track by $index", style="padding-bottom: 10px")
+                    .visible-sm.visible-md.visible-lg
+                        .col-sm-8
+                            h4 {{quiz.name}} ({{quiz.questions.length}}
+                                ng-pluralize(count="quiz.questions.length", when="{1: ' question', other: ' questions'}")
+                                |)
+                        .col-sm-4
+                            button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz($index);")
+                                span.glyphicon.glyphicon-play
+                    .visible-xs
+                        .col-xs-12
+                            button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz($index);") {{quiz.name}} ({{quiz.questions.length}})
+
+
+        .col-sm-6.col-sm-offset-3(ng-hide="quizzes.quizzes.length && !quizzes.loading")
+            .well
+                h3 No quizzes available. 
+                p Your Teacher has not assigned/re-published any quizzes.
+
+                br
+                button.btn.btn-info.btn-block(ng-click="quizzes.reloadQuizzes();")
+                    span.glyphicon.glyphicon-refresh
+                    |&nbsp;Check for new quizzes
+
+        .col-sm-6.col-sm-offset-3(ng-hide="quizzes.loading")
+            .well
+                h3 Finished?
+                br
+                a.btn.btn-default.btn-block(ng-href="#/")
+                    span.glyphicon.glyphicon-user
+                    | &nbsp;Logout
+
+        .col-sm-6.col-sm-offset-3(ng-show="quizzes.loading")
+            h3.text-center.inverse-text Fetching Quizzes

@@ -1,0 +1,58 @@
+doctype html
+html(ng-app='createQuizApp')
+    head
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='')
+        meta(charset='UTF-8')
+        script(src='/js/jquery-1.11.0.js')
+        script(src='/js/uuid.js')
+        script(src='/js/bootstrap.js')
+        link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
+        style.
+            body{
+                padding-top: 75px;
+            }
+            .container.ng-enter {
+                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
+                -moz-transition: .3s ease-out all; /* Firefox */
+                -o-transition: .3s ease-out all; /* Opera */
+                transition: .3s ease-out all; /* IE10+ and Future Browsers */
+            }
+
+            .container.ng-enter {
+                opacity: 0;
+            }
+
+            .container.ng-enter.ng-enter-active {
+                opacity: 1;
+            }
+
+            .container.ng-leave {
+                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
+                -moz-transition: .3s ease-out all; /* Firefox */
+                -o-transition: .3s ease-out all; /* Opera */
+                transition: .3s ease-out all; /* IE10+ and Future Browsers */
+            }
+
+            .container.ng-leave {
+                opacity: 1;
+            }
+
+            .container.ng-leave.ng-leave-active {
+                opacity: 0;
+            }
+
+            h1:hover,h2:hover{
+                color: #444;
+            }
+            .quizQuestion, h2.quizQuestion, h3.quizQuestion {
+                font-weight: 700;
+            }
+body
+    .navbar.navbar-default.navbar-fixed-top
+        .container
+            .navbar-header
+                a(href="/#")
+                    img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+
+    block body

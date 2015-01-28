@@ -1,0 +1,176 @@
+doctype html
+html(ng-app='createQuizApp')
+    head
+        title Create Quizalize Quiz
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"')
+        meta(name='description', content='')
+        meta(charset='UTF-8')
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        script(src='/js/jquery-1.11.0.js')
+        script(src='/js/fastclick.js')
+        script(src='/js/uuid.js')
+        script(src='/js/bootstrap.js')
+        script(src='/js/angular.min.js')
+        script(src='/js/angular-route.min.js')
+        script(src='/js/angular-animate.min.js')
+        script(src='#{session.zzishurl}/zzish.js')        
+        script(src='/js/createQuizApp.js')        
+        script(src='/js/quiz.js')        
+        link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
+        style.
+            body{
+                padding-top: 75px;
+            }
+            .container.ng-enter {
+                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
+                -moz-transition: .3s ease-out all; /* Firefox */
+                -o-transition: .3s ease-out all; /* Opera */
+                transition: .3s ease-out all; /* IE10+ and Future Browsers */
+            }
+
+            .container.ng-enter {
+                opacity: 0;
+            }
+
+            .container.ng-enter.ng-enter-active {
+                opacity: 1;
+            }
+
+            .container.ng-leave {
+                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
+                -moz-transition: .3s ease-out all; /* Firefox */
+                -o-transition: .3s ease-out all; /* Opera */
+                transition: .3s ease-out all; /* IE10+ and Future Browsers */
+            }
+
+            .container.ng-leave {
+                opacity: 1;
+            }
+
+            .container.ng-leave.ng-leave-active {
+                opacity: 0;
+            }
+
+            h1:hover,h2:hover{
+                color: #444;
+            }
+
+            #questionsAnd{
+
+            }
+
+            @media(min-height:740px) and (min-width:768px){
+                #questionsAnd{
+                    height: 260px;
+                    overflow: scroll;
+                }
+            }
+
+            @media(min-height:820px) and (min-width: 768px){
+                #questionsAnd{
+                    height: 370px;
+                    overflow: scroll;
+                }
+            }
+
+            @media(min-height:900px) and (min-width: 768px){
+                #questionsAnd{
+                    height: 480px;
+                    overflow: scroll;
+                }
+            }
+
+            .validAnswer {
+                color: #009900;
+            }
+
+            .invalidAnswer{
+                color: #990000;
+            }
+
+            .bordered{
+                border: 2px solid black;
+            }
+
+            #intro{
+                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
+                -moz-transition: .3s ease-out all; /* Firefox */
+                -o-transition: .3s ease-out all; /* Opera */
+                transition: .3s ease-out all; /* IE10+ and Future Browsers */
+            }
+            #intro.ng-hide-remove{
+                opacity: 0.0;
+            }
+            #intro.ng-hide-remove-active {
+                opacity: 1;
+            }
+            #intro.ng-hide-add{
+                opacity: 1;
+            }
+            #intro.ng-hide-add-active {
+                opacity: 0.0;
+            }
+        script. 
+            $(document).ready(function() {
+                var link = localStorage.getItem("link");
+                if (link==undefined) {
+                    $("#liveDashboardDiv").hide();
+                }         
+                else {
+                    var base = '#{session.zzishweburl}';
+                    $("#liveDashboardLink").attr("href",base+'/learning-hub/tclassroom/' + link + '/live');
+                }            
+            });
+
+body(ng-controller="NavBarController as ctrl")
+    .navbar.navbar-default.navbar-fixed-top
+        .container
+            .navbar-header
+                a(href="/")
+                    img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+
+            ul.nav.navbar-nav.navbar-right.visible-sm.visible-md.visible-lg
+                li(style="margin-right:5px;")#liveDashboardDiv
+                    a.btn.btn-default.btn-info(target="_blank", style="margin-top:9px; padding: 8px;",href="")#liveDashboardLink Open Live Dashboard
+                li(style="margin-right:5px;")
+                    button.btn.btn-default.btn-info(style="margin-top:9px; padding: 8px;",onclick="window.location.href='/quiz'") Your Quizzes
+                li(style="margin-right:5px;")
+                    button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
+                li
+                    button.btn.btn-info.navbar-btn(onclick="javascript:login()", style="padding: 8px;font-family: sans-serif;font-size: 16px;color: #efefef;background: #8d3b8e;border: 1px solid #b04ab2;border-radius: 4px;text-decoration: none;")#LoginButton Login With Zzish
+                
+    div(ng-view)
+
+
+    #intro(ng-show="ctrl.showHelp", style="position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
+            .container-fluid
+                .row
+                    .col-xs-12.text-center
+                        h1 Welcome to Quizalize
+                .row
+                    .col-sm-4
+                        img.img-responsive.bordered(src="/img/helpScreens/create.png")
+                        h4.text-primary 1. Choose a name for your quiz
+                        p The only thing you need to do to get started.
+                        p You can also choose an existing quiz to edit or publish from you quiz list.
+
+                    .col-sm-4
+                        img.img-responsive.bordered(src="/img/helpScreens/add.png")
+                        h4.text-primary 2. Add questions and answers
+                        p Quickly add questions and answers using our streamlined interface.
+                        p You can (optionally) add incorrect answers for use in multiple choice format.
+
+                    .col-sm-4
+                        img.img-responsive.bordered(src="/img/helpScreens/publish.png")
+                        h4.text-primary 3. Publish your quiz to your students
+                        p Your students can attempt each quiz once. You can re-publish a quiz if you want them to attempt it again.
+
+                .row
+                    .col-sm-4.col-sm-offset-4
+                        br
+                        br
+                        button.btn.btn-info.btn-block(ng-click="ctrl.dismiss();") Get Started
+

@@ -1,0 +1,29 @@
+.container
+    .row(style="padding-top:10px")
+        .col-sm-8.col-sm-offset-2.col-lg-6.col-lg-offset-3.inverse-text.text-center
+            .row
+                .col-xs-6
+                    h2 {{quiz.score}} Pts
+                .col-xs-6
+                    h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
+
+    .row
+        .col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4
+            .well
+                .text-center
+                    h2(ng-show="quiz.question.length < 20").quizQuestion {{quiz.question}}
+                    h3(ng-show="quiz.question.length >= 20").quizQuestion {{quiz.question}}
+                    br
+
+                    .btn-group.btn-default
+                        button.btn.btn-info.letterTile(ng-repeat="letter in quiz.userAnswerLetters track by $index", ng-click="quiz.removeLetter($index)") {{letter}}
+                    button.btn.btn-primary.letterTile(ng-click="quiz.submit()", style="margin-left:5px;")
+                        span.glyphicon.glyphicon-ok
+                    br
+
+            br
+            .well(style="background: #2E60FF; border: #2E60FF;")
+                .text-center
+                    br
+                    button.btn.btn-sm.btn-primary.letterTile(ng-repeat="letter in quiz.letters track by $index", ng-click="quiz.addLetter($index)", style="margin-right:3px; margin-left:3px; margin-bottom: 3px;") {{letter}}
+                    br

@@ -1,0 +1,39 @@
+.container
+    .row(style="padding-top:10px")
+        .col-xs-8.col-xs-offset-2
+            a.btn.btn-block.btn-info(href="#/list") Home
+
+
+    .row(style="padding-top:10px")
+        .col-sm-12
+            .row.inverse-text
+                .col-xs-12.text-center
+                    h2(ng-show="quiz.data.correct/quiz.data.questionCount > 0.5", style="font-size: 3em;") Congratulations!
+                    h3 You scored
+                    h1(style="font-size: 4em;") {{quiz.totals.score}}
+                .col-sm-4.col-sm-offset-2
+                    h4 Getting {{quiz.data.correct}}/{{quiz.data.questionCount}} correct
+                .col-sm-4.text-right
+                    h4 You took {{quiz.totals.seconds}} seconds
+
+            .row(ng-repeat="item in quiz.data.report")
+                .col-xs-8.col-xs-offset-2
+                    .well
+                        .row
+                            .col-md-4
+                                h4 
+                                    strong {{item.question}}
+                            .col-md-3
+                                h4 Your answer
+                                strong(ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
+                            .col-md-3
+                                h4 Correct answer&nbsp;
+                                strong {{item.answer}}
+                            .col-md-2
+                                h4 Score: {{item.roundedScore}}
+                                p(ng-show="item.correct") (You took {{item.seconds}}
+                                    ng-pluralize(count="item.seconds", when="{1: ' second', other: ' seconds'}")
+                                    |)
+
+
+
