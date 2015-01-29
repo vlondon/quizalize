@@ -264,14 +264,14 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         self.sampleName = $location.search().sample;
         self.didRequestSample = true;
     }
-    else if(typeof ($location.search()).zzishtoken != 'undefined'){
+    else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
-        self.token = $location.search().zzishtoken;
-        localStorage.setItem("zzishtoken",self.token);
+        self.token = $location.search().token;
+        localStorage.setItem("token",self.token);
     }
-    else if (localStorage.getItem("zzishtoken")!=undefined) {
+    else if (localStorage.getItem("token")!=undefined) {
         //
-        self.token = localStorage.getItem("zzishtoken");
+        self.token = localStorage.getItem("token");
     }
     else if (localStorage.getItem("userId")!=undefined) {
         //we have a userId, check to see if we have some 
@@ -283,6 +283,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             .success(function(result){
                 if (result=="Invalid Request") {
                     //bad token
+                    localStorage.removeItem("token");
                     localStorage.removeItem("zzishtoken");
                     location.href="/quiz#";
                 }
