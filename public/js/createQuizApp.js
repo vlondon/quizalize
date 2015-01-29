@@ -283,7 +283,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             .success(function(result){
                 if (result=="Invalid Request") {
                     //bad token
-                    localStorage.removeItem("token");
+                    localStorage.removeItem("zzishtoken");
                     location.href="/quiz#";
                 }
                 else {
@@ -575,9 +575,10 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
 angular.module('createQuizApp').controller('DeleteController', ['QuizData', '$log', '$location', '$routeParams', function(QuizData, $log, $location, $routeParams){
     self.id = parseInt($routeParams.id);
-    if(isNaN(self.id)) $location.path("/");
-    QuizData.deleteQuiz(self.id, function() {                    
-        $log.debug("going to /");
-        $location.path("/");        
-    });            
+    if (self.id) {
+        QuizData.deleteQuiz(self.id, function() {                    
+            $log.debug("going to /");
+            $location.path("/");        
+        });                    
+    }
 }]);
