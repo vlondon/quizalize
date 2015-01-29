@@ -18,6 +18,6 @@ config.aws_config = {
 config.quizAppToken = process.env.QATOKEN;
 
 config.wso2 = process.env.WSO2_ENABLED;
-config.local = true;
+config.local = process.env.LOCAL_ENABLED;
 
 module.exports = config;
