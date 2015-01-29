@@ -116,11 +116,7 @@ exports.deleteQuiz = function(req,res){
     var id= req.params.id;
 
     zzish.deleteContent(profileId, id, function(err, resp){
-        if(!err){
-            res.status = 200
-        }else{
-            res.status = 400
-        }
+        res.send(err==undefined);
     });
 };
 

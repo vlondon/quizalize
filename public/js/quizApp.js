@@ -246,16 +246,23 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         logout: function(){
             userProfileId = "";
             //TODO other logout things?
-
+            localStorage.clear();
             $location.path("/");
         },        
         validate: function(newClassCode) {
             return ZzishContent.validate(newClassCode);
         },
-        register: function(studentName, newClassCode, callback) {
+        register: function(studentName, newClassCode, callback) {            
             classCode = newClassCode.toLowerCase();
             ZzishContent.init(initToken);
-            userProfileId = uuid.v4();
+            var beforeName = localStorage.getItem("username");
+            if (beforeName==undefined || studentName!=beforeName) {
+                //we have a new name
+                userProfileId = uuid.v4();
+                localStorage.setItem("username",studentName);
+                localStorage.setItem("userId",userProfileId);
+            }
+            userProfileId = localStorage.getItem("userId");            
             ZzishContent.user(userProfileId, studentName, classCode, function(err, message){                
                 if(!err) {
                     userProfileId = message.uuid;
@@ -373,7 +380,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
 }]);
 
 
-angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$location', function(QuizData, $log, $location){
+angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$location','$rootScope', function(QuizData, $log, $location,$rootScope){
     var self = this;
     self.loading = false;
     self.errorMessage = "";
@@ -383,29 +390,34 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
 
     var reportError = function(issue){
         self.loading = false;
-        self.errorMessage = "Unable to load questions. Please check your " + issue;
+        self.errorMessage = issue;
     };
 
     self.startQuiz = function(){
         if(self.studentCode.length == 0){
             //Student name/class code login
             if(self.studentName.length == 0){
-            self.errorMessage = "You must enter your name to start a quiz";
-            }else if(self.classCode.length == 0){
+                self.errorMessage = "You must enter your name to start a quiz";
+            } else if(self.classCode.length == 0){
                 self.errorMessage = "You must enter a class code to start a quiz";
-            }else {
+            } else {
                 self.loading = true;
                 if (QuizData.validate(self.classCode)) {
                     QuizData.register(self.studentName.trim(), self.classCode, function(err, res){
                         if(!err){
                             $location.path("/list");
-                        }else{
-                            reportError("class code")
+                        }else if (err==409){
+                            reportError("Error. Chooose a different name as it seems someone else has recenlty used this name.");
+                            $rootScope.$apply();
+                        }
+                        else {
+                            reportError("Error. Please try entering your class code again")
+                            $rootScope.$apply();
                         }
                     });                    
                 }
                 else {
-                    reportError("class code")
+                    reportError("Error. Please try entering your class code again");
                 }
             }
         }else{
