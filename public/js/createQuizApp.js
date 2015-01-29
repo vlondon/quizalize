@@ -266,12 +266,12 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     }
     else if(typeof ($location.search()).zzishtoken != 'undefined'){
         //Have quiz name
-        self.token = $location.search().token;
-        localStorage.setItem("token",self.token);
+        self.token = $location.search().zzishtoken;
+        localStorage.setItem("zzishtoken",self.token);
     }
-    else if (localStorage.getItem("token")!=undefined) {
+    else if (localStorage.getItem("zzishtoken")!=undefined) {
         //
-        self.token = localStorage.getItem("token");
+        self.token = localStorage.getItem("zzishtoken");
     }
     else if (localStorage.getItem("userId")!=undefined) {
         //we have a userId, check to see if we have some 

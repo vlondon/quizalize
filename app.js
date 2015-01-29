@@ -15,8 +15,7 @@ app.use(favicon(__dirname + '/public/favcq.png'));
 app.use(session({ secret: 'zzishdvsheep', cookie:{maxAge:1000*60*60}}));			// Session support
 app.use(function(req,res,next){
 	    res.locals.session = req.session;
-	    res.locals.session.zzishurl = "http://zzish.github.io/zzishsdk-js/";
-	    res.locals.session.zzishurl = "http://localhost:3000/dist/";
+	    res.locals.session.zzishsdkurl = config.zzishsdkurl;
 	    next();
 	});
 app.use(bodyParser.raw());
