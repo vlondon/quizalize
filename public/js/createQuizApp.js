@@ -577,7 +577,7 @@ angular.module('createQuizApp').controller('DeleteController', ['QuizData', '$lo
     self.id = parseInt($routeParams.id);
     if(isNaN(self.id)) $location.path("/");
     QuizData.deleteQuiz(self.id, function() {                    
-        $location.path("/");
         $log.debug("going to /");
+        $location.path("/");        
     });            
 }]);
