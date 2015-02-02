@@ -21,16 +21,16 @@
                 .col-sm-6.col-xs-12
                     h4 {{quiz.name}}
                 .col-sm-2.col-xs-6
-                    button.btn.btn-danger.btn-block(ng-click="quizzes.deleteQuiz($index);")
-                        span.glyphicon.glyphicon-remove
-                    br
-                .col-sm-2.col-xs-6
                     button.btn.btn-info.btn-block(ng-click="quizzes.previewQuiz($index);")
                         span.glyphicon.glyphicon-play
                     br
                 .col-sm-2.col-xs-6
                     button.btn.btn-info.btn-block(ng-click="quizzes.editQuiz($index);")
                         span.glyphicon.glyphicon-pencil
+                    br
+                .col-sm-2.col-xs-6
+                    button.btn.btn-danger.btn-block(ng-click="quizzes.deleteQuiz($index);")
+                        span.glyphicon.glyphicon-remove
                     br
             p        
             p.text-info(ng-hide="quizzes.pastQuizzes.length") When you have created quizzes they will appear here
