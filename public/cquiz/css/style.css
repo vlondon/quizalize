@@ -580,7 +580,7 @@ section#intro {
 }
 
 .cta-title {
-	margin-bottom: 200px;
+	margin-bottom: 100px;
 	color: white;
 	font-weight: 300;
 	font-size: 48px;
@@ -594,7 +594,7 @@ section#intro {
 
 .cta1 {
     padding: 20px 60px;
-    background: #808080;
+    background: #FA5858;
     border-radius: 20px;
     box-shadow: 4px 4px 20px #000;
     color: white;
