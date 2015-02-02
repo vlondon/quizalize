@@ -4,7 +4,8 @@ var config = {};
 //Logging on
 config.log = true;
 
-config.webUrl = process.env.WEB_URL,
+config.webUrl = process.env.WEB_URL;
+config.zzishsdkurl = process.env.ZZISH_SDK_URL;
 
 config.aws_enabled = true;
 config.aws_config = {
@@ -16,7 +17,7 @@ config.aws_config = {
 //App Token
 config.quizAppToken = process.env.QATOKEN;
 
-config.wso2 = false;
-config.local = true;
+config.wso2 = process.env.WSO2_ENABLED=="true";
+config.local = process.env.LOCAL_ENABLED=="true";
 
 module.exports = config;

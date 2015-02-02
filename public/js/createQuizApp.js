@@ -264,7 +264,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         self.sampleName = $location.search().sample;
         self.didRequestSample = true;
     }
-    else if(typeof ($location.search()).zzishtoken != 'undefined'){
+    else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
         self.token = $location.search().token;
         localStorage.setItem("token",self.token);
@@ -284,6 +284,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 if (result=="Invalid Request") {
                     //bad token
                     localStorage.removeItem("token");
+                    localStorage.removeItem("zzishtoken");
                     location.href="/quiz#";
                 }
                 else {
@@ -576,8 +577,9 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 angular.module('createQuizApp').controller('DeleteController', ['QuizData', '$log', '$location', '$routeParams', function(QuizData, $log, $location, $routeParams){
     self.id = parseInt($routeParams.id);
     if(isNaN(self.id)) $location.path("/");
-    QuizData.deleteQuiz(self.id, function() {                    
+    QuizData.deleteQuiz(self.id, function() {
         $log.debug("going to /");
-        $location.path("/");        
-    });            
+        $location.path("/");
+    });
 }]);
+
