@@ -35,17 +35,6 @@ html(ng-app='quizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
-        script.
-            /* <![CDATA[ */
-            var google_conversion_id = 1034680765;
-            var google_custom_params = window.google_tag_params;
-            var google_remarketing_only = true;
-            /* ]]> */
-        script(src='//www.googleadservices.com/pagead/conversion.js')
-        noscript.
-            div(style="display:inline;")
-                img(height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0")          
-
         link(href='/css/cq-bootstrap.min.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Source+Code+Pro:500', rel='stylesheet', type='text/css')
 
@@ -167,6 +156,16 @@ html(ng-app='quizApp')
 
 
     body
+        script.
+            /* <![CDATA[ */
+            var google_conversion_id = 1034680765;
+            var google_custom_params = window.google_tag_params;
+            var google_remarketing_only = true;
+            /* ]]> */
+        script(src='//www.googleadservices.com/pagead/conversion.js')
+        noscript.
+            div(style="display:inline;")
+                img(height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0")       
         .navbar.navbar-default.navbar-fixed-top
             .container
                 .navbar-header
