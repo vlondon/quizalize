@@ -547,8 +547,8 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
             QuizData.publishQuiz(self.quiz, details).success(function(result){
                 $log.debug("Response from publishing: ", result);
                 self.classCode = result.code;
-                self.link = result.link;
-                localStorage.setItem("link",self.link);
+                self.fullLink = result.link;
+                localStorage.setItem("link",self.fullLink);
                 QuizData.saveClassCode(self.classCode);
                 self.published = true;
                 self.publishing = false;

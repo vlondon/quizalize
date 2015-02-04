@@ -159,7 +159,7 @@ exports.publishQuiz = function(req, res){
              console.log("Got publish result", resp);
              res.status = 200;
              resp.link = querystring.escape(resp.link);
-            resp.link = replaceAll("/","-----",resp.link);
+            resp.link = config.webUrl + "learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
              res.send(resp);
         }else{
              console.log("Got publish error", err);

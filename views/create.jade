@@ -128,8 +128,7 @@ html(ng-app='createQuizApp')
                     $("#liveDashboardDiv").hide();
                 }         
                 else {
-                    var base = '#{session.zzishweburl}';
-                    $("#liveDashboardLink").attr("href",base+'/learning-hub/tclassroom/' + link + '/live');
+                    $("#liveDashboardLink").attr("href",link);
                 }            
             });
 
