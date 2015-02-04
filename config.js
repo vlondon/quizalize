@@ -20,4 +20,6 @@ config.quizAppToken = process.env.QATOKEN;
 config.wso2 = process.env.WSO2_ENABLED=="true";
 config.local = process.env.LOCAL_ENABLED=="true";
 
+config.apiUrl = process.env.API_URL;
+
 module.exports = config;

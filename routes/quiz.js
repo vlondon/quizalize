@@ -4,7 +4,7 @@ var email = require("../email");
 var querystring = require('querystring');
 var zzish = require("zzishsdk");
 zzish.debugState(config.local,config.wso2);
-zzish.init(config.quizAppToken); //TODO broken
+zzish.init( config.quizAppToken, config.apiUrl); //TODO broken
 
 exports.index =  function(req, res) {    
     res.render('index', {zzishapi : config.quizAppToken, isLocal:  config.local, wso2Enabled: config.wso2});
@@ -92,6 +92,7 @@ exports.getProfileById = function(req,res) {
 
 exports.getMyQuizzes = function(req, res){
     var profileId = req.params.profileId;
+    console.log('Profile is', profileId, 'from', req);
     //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
     zzish.listContent(profileId, function(err, resp){
