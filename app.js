@@ -89,10 +89,10 @@ function checkForMobile(req, res, next) {
   if (isMobile) {
     console.log("Going mobile");
     res.redirect('/mobile');
-  } else if (ieIE(req)) {
+  } else if (isIE(req)) {
     console.log("Going IE");
     res.redirect('/ie');
-  }
+  } else {
     // if we didn't detect mobile, call the next method, which will eventually call the desktop route
     return next();
   }
