@@ -38,7 +38,7 @@ exports.privacy =  function(req, res) {
 
 exports.createProfile = function(req, res){
     var id = req.body.uuid;
-    var name = "Samir";
+    var name = "";
 
     zzish.createUser(id, name, function(err, resp){
        if(!err){

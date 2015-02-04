@@ -141,9 +141,6 @@ body(ng-controller="NavBarController as ctrl")
         var google_remarketing_only = true;
         /* ]]> */
     script(src='//www.googleadservices.com/pagead/conversion.js')
-    noscript.
-        div(style="display:inline;")
-            img(height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0")          
 
 
     .navbar.navbar-default.navbar-fixed-top
@@ -152,7 +149,7 @@ body(ng-controller="NavBarController as ctrl")
                 a(href="/")
                     img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
 
-            ul.nav.navbar-nav.navbar-right.visible-sm.visible-md.visible-lg
+            ul.nav.navbar-nav.navbar-right.visible-sm.visible-md.visible-lg.visible-xs
                 li(style="margin-right:5px;")#liveDashboardDiv
                     a.btn.btn-default.btn-info(target="_blank", style="margin-top:9px; padding: 8px;",href="")#liveDashboardLink Open Live Dashboard
                 li(style="margin-right:5px;")
