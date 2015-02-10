@@ -113,6 +113,13 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                 $rootScope.$apply();
             });
         },
+        logout: function(userProfileId,callback){
+            zzish.unauthUser(userProfileId, function (err, message) {
+                self.userId = "";
+                callback(err, message);
+                $rootScope.$apply();
+            });
+        },        
         startActivity: function(type, activityName,quiz, callback){
             var definition = {
                 type: type,
@@ -209,7 +216,12 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         quizzes = [];
         for (i in result.contents) {
             quiz = result.contents[i];
-            quiz.code = quiz.profileId+":"+quiz.name;
+            if (quiz.profileId!=undefined && quiz.profileId!='undefined') {
+                quiz.code = quiz.profileId+":"+quiz.name;    
+            }
+            else {
+                quiz.code = quiz.name;
+            }            
             quizzes.push(quiz);
         }
         $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
@@ -244,10 +256,12 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             });
         },
         logout: function(){
-            userProfileId = "";
-            //TODO other logout things?
-            localStorage.clear();
-            $location.path("/");
+            ZzishContent.logout(userProfileId,function (err,message) {
+                userProfileId = "";
+                //TODO other logout things?
+                localStorage.clear();
+                $location.path("/");
+            });
         },        
         validate: function(newClassCode) {
             return ZzishContent.validate(newClassCode);
@@ -255,14 +269,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         register: function(studentName, newClassCode, callback) {            
             classCode = newClassCode.toLowerCase();
             ZzishContent.init(initToken);
-            var beforeName = localStorage.getItem("username");
-            if (beforeName==undefined || studentName!=beforeName) {
-                //we have a new name
-                userProfileId = uuid.v4();
-                localStorage.setItem("username",studentName);
-                localStorage.setItem("userId",userProfileId);
-            }
-            userProfileId = localStorage.getItem("userId");            
+            userProfileId = uuid.v4();
             ZzishContent.user(userProfileId, studentName, classCode, function(err, message){                
                 if(!err) {
                     userProfileId = message.uuid;
@@ -407,7 +414,7 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
                         if(!err){
                             $location.path("/list");
                         }else if (err==409){
-                            reportError("Error. Chooose a different name as it seems someone else has recenlty used this name.");
+                            reportError("Error. Chooose a different name as it seems someone else has recently used this name.");
                             $rootScope.$apply();
                         }
                         else {
