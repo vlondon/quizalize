@@ -292,7 +292,7 @@ var google_remarketing_only = true;
         <div class="container" id="helpForm">
           <div class="row marginbot-80">
             <div class="col-md-8 col-md-offset-2">
-              <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s"">
+              <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s">
                 <div class="row marginbot-20">
                   <div class="col-md-6 xs-marginbot-20">
                     <input type="text" class="form-control input-lg" id="ename" placeholder="Enter name" required/>
@@ -338,62 +338,64 @@ var google_remarketing_only = true;
           </div>
         </div>
       </footer>
-      <div id="outdated"></div>
-      <!-- Core JavaScript Files -->
-      <script>
-      function newQuiz() {
-        if ($("#name").val()!="") {
-          window.location.href="/quiz#/?name="+$("#name").val();  
-        }
-        else {
-          window.location.href="/quiz#"; 
-        }        
-        return false;
-      }
-      </script>
-      <script src="/cquiz/js/jquery.min.js"></script>
-      <script src="/cquiz/js/bootstrap.min.js"></script>
-      <script src="/cquiz/js/jquery.sticky.js"></script>
-      <script src="/cquiz/js/jquery.flexslider-min.js"></script>
-      <script src="/cquiz/js/jquery.easing.min.js"></script>
-      <script src="/cquiz/js/jquery.scrollTo.js"></script>
-      <script src="/cquiz/js/jquery.appear.js"></script>
-      <script src="/cquiz/js/stellar.js"></script>
-      <script src="/cquiz/js/wow.min.js"></script>
-      <script src="/cquiz/js/owl.carousel.min.js"></script>
-      <script src="/cquiz/js/nivo-lightbox.min.js"></script>
-      <script src="/cquiz/js/custom.js"></script>
-      <script src="/js/quiz.js"></script>
-      <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
-      <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
-      <script>
-      $( document ).ready(function() {
-          outdatedBrowser({
-              bgColor: '#f25648',
-              color: '#ffffff',
-              lowerThan: 'transform',
-              languagePath: '/outdatedbrowser/lang/en.html'
-          })
-      })      
-      $("#btnContactUs").click(function(event){
-      $.ajax({
-      url: "/quiz/help",
-      method: "post",
-      success: function(data,textstatus,jqXHR){
-      $('#helpForm').slideUp();
-      $("#helpSent").slideDown();
-      },
-      error: function(){
-      console.log("Error Posting Form details");
-      },
-      data: {
-      name: $('#ename').val(),
-      subject: $('#subject').val(),
-      email: $('#email').val(),
-      message: $('#message').val()
-      }
-      });
-      });
-      </script>
-    </body>
-  </html>
+    </div>
+  </section>
+  <div id="outdated"></div>
+  <!-- Core JavaScript Files -->
+  <script>
+  function newQuiz() {
+    if ($("#name").val()!="") {
+      window.location.href="/quiz#/?name="+$("#name").val();  
+    }
+    else {
+      window.location.href="/quiz#"; 
+    }        
+    return false;
+  }
+  </script>
+  <script src="/cquiz/js/jquery.min.js"></script>
+  <script src="/cquiz/js/bootstrap.min.js"></script>
+  <script src="/cquiz/js/jquery.sticky.js"></script>
+  <script src="/cquiz/js/jquery.flexslider-min.js"></script>
+  <script src="/cquiz/js/jquery.easing.min.js"></script>
+  <script src="/cquiz/js/jquery.scrollTo.js"></script>
+  <script src="/cquiz/js/jquery.appear.js"></script>
+  <script src="/cquiz/js/stellar.js"></script>
+  <script src="/cquiz/js/wow.min.js"></script>
+  <script src="/cquiz/js/owl.carousel.min.js"></script>
+  <script src="/cquiz/js/nivo-lightbox.min.js"></script>
+  <script src="/cquiz/js/custom.js"></script>
+  <script src="/js/quiz.js"></script>
+  <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
+  <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
+  <script>
+  $( document ).ready(function() {
+      outdatedBrowser({
+          bgColor: '#f25648',
+          color: '#ffffff',
+          lowerThan: 'transform',
+          languagePath: '/outdatedbrowser/lang/en.html'
+      })
+  })      
+  $("#btnContactUs").click(function(event){
+  $.ajax({
+  url: "/quiz/help",
+  method: "post",
+  success: function(data,textstatus,jqXHR){
+  $('#helpForm').slideUp();
+  $("#helpSent").slideDown();
+  },
+  error: function(){
+  console.log("Error Posting Form details");
+  },
+  data: {
+  name: $('#ename').val(),
+  subject: $('#subject').val(),
+  email: $('#email').val(),
+  message: $('#message').val()
+  }
+  });
+  });
+  </script>
+</body>
+</html>
