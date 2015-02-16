@@ -76,7 +76,7 @@ block header
                     
 
 
-            .col-sm-8.col-sm-offset-2(ng-hide="preview.classCode || preview.userVerified")
+            .col-sm-8.col-sm-offset-2(ng-show="!preview.classCode && !preview.userVerified)
                 h1.text-center Save Quiz
                     .form-horizontal(role="form")
                 p In order to complete your registration and proceed to the Zzish dashboard, please enter your email address.
