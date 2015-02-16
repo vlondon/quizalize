@@ -125,7 +125,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                 type: type,
                 score: maxScore,
                 count: quiz.questions.length,
-                duration: quiz.questions.length*maxTime,
+                duration: ""+ quiz.questions.length*maxTime,
             }
             zzish.startActivityWithOptions(self.userId, activityName, self.code, {contentId:quiz.uuid, definition: definition}, function(err, message){
                 $log.debug("Start Activity response... saving id", message);
@@ -410,7 +410,7 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
             } else {
                 self.loading = true;
                 if (QuizData.validate(self.classCode)) {
-                    QuizData.register(self.studentName.trim(), self.classCode, function(err, res){
+                    QuizData.register(self.studentName, self.classCode, function(err, res){
                         if(!err){
                             $location.path("/list");
                         }else if (err==409){
