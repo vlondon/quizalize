@@ -44,8 +44,8 @@
 //                    h4 {{quiz.name}}
 //                .col-sm-4
 //                    button.btn.btn-info.btn-block(ng-click="quizzes.editSampleQuiz($index);") Edit
-
-
-
-.col-sm-8.col-sm-offset-2.text-center(ng-show="quizzes.didRequestSample")
-    h2 Retrieving Quiz Data
+.container(ng-show="quizzes.didRequestSample")
+    .row
+        .row.well
+            .col-sm-8.col-sm-offset-2.text-center(ng-show="quizzes.didRequestSample")
+                h2 Retrieving Quiz Data...

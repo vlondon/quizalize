@@ -147,19 +147,25 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 );                
             }
         },
-        getQuiz: function(id, callback){
+        getQuiz: function(id, loadFromServer, callback){
             if(typeof data[id] != 'undefined'){
                 if(typeof data[id].questions != 'undefined'){
                     $log.debug("Questions local");
                     callback(data[id]);
-                }else{
-                    $log.debug("No questions, so fetching from server");
-                    getQuiz(data[id].uuid).success(function(resp){
-                        $log.debug("Response from server for getting a quiz", resp);
-                        callback(resp);
-                    }).error(function(er){
-                        $log.debug("Error from server when getting quiz", er);
-                    });
+                }else{                    
+                    if (loadFromServer) {
+                        $log.debug("No questions, so fetching from server");
+                        getQuiz(data[id].uuid).success(function(resp){
+                            $log.debug("Response from server for getting a quiz", resp);
+                            callback(resp);
+                        }).error(function(er){
+                            $log.debug("Error from server when getting quiz", er);
+                        });                        
+                    }
+                    else {
+                        $log.debug("No questions, not loading from server");
+                        callback({uuid: data[id].uuid});
+                    }
                 }
             }
         },
@@ -405,7 +411,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.id = parseInt($routeParams.id);
     if(isNaN(self.id)) $location.path("/");
 
-    QuizData.getQuiz(self.id, function(quiz){
+    QuizData.getQuiz(self.id, true, function(quiz){
         self.quiz = quiz;
     });
 
@@ -561,7 +567,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
         }
     };
 
-    QuizData.getQuiz(self.id, function(qz){
+    QuizData.getQuiz(self.id, false, function(qz){
         self.quiz = qz;
 
         self.classCode = QuizData.getClassCode();
