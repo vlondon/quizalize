@@ -11,6 +11,7 @@ html(ng-app='quizApp')
         <link rel="apple-touch-icon" sizes="114x114" href="/img/icons/touch-icon-iphone-retina-precomposed.png" />
         <link rel="apple-touch-icon" sizes="144x144" href="/img/icons/touch-icon-ipad-retina-precomposed.png" />
         <link rel="icon" sizes="192x192" href="/img/icons/ic_launcher.png">
+        <link rel="stylesheet" href="/outdatedbrowser/outdatedbrowser.min.css">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
         script.
@@ -27,6 +28,7 @@ html(ng-app='quizApp')
         script(src='/js/angular-route.min.js')
         script(src='/js/angular-animate.min.js')
         script(src='/js/quizApp.js')
+        script(src="/outdatedbrowser/outdatedbrowser.min.js")
         script.
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -35,6 +37,14 @@ html(ng-app='quizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
+            $( document ).ready(function() {
+                outdatedBrowser({
+                    bgColor: '#f25648',
+                    color: '#ffffff',
+                    lowerThan: 'transform',
+                    languagePath: '/outdatedbrowser/lang/en.html'
+                })
+            })              
         link(href='/css/cq-bootstrap.min.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Source+Code+Pro:500', rel='stylesheet', type='text/css')
 
