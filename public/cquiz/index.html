@@ -60,7 +60,7 @@ var google_remarketing_only = true;
         <div class="row">
           <div class="col-md-2 site-logo-container">
             <div class="site-logo">
-              <a href="#" class="brand"><img src="/cquiz/img/logo.png" alt="logo"/></a>
+              <a href="#" class="brand"><img src="/cquiz/img/logo.png"></a>
             </div>
           </div>
           <div class="col-md-10">
@@ -74,7 +74,7 @@ var google_remarketing_only = true;
             <div class="collapse navbar-collapse" id="menu">
               <ul class="nav navbar-nav navbar-right">
                 <li><a href="/app">Play a Game!</a></li>
-		            <li id="myquizzes"><a href="/quiz">Your Quizzes</a></li>
+                <li id="myquizzes"><a href="/quiz">Your Quizzes</a></li>
                 <li><a href="#works">Guide</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a id="LoginButton" href="javascript:login()" class="login-with-zzish">Login with Zzish</a></li>
@@ -125,29 +125,29 @@ var google_remarketing_only = true;
                   </div>
                 </div>
               </div>
-            </div>
-            <section id="about1" class="home-section color-dark bg-white">
+            </section>
+            <section id="about" class="home-section color-dark bg-white">
               <div class="container marginbot-50">
                 <div class="row">
                   <div class="col-md-12">
                     <h3>Features</h3>
                     <div class="row">
-                      <div class="col-md-6"><img src="../img/icon1.jpg" alt="Simple and Fast!"/><strong>&nbsp;&nbsp;Simple and fast:</strong>
+                      <div class="col-md-6"><img src="../img/icon1.jpg" ><strong>&nbsp;&nbsp;Simple and fast:</strong>
                           <p>Our quiz creation UI is incredibly easy to use making it simple and fast to create custom quizzes that match your teaching.</p></div>
 
-                      <div class="col-md-6"><img src="../img/icon2.jpg" alt="Mulitplatform"/><strong>&nbsp;&nbsp;Multiplatform:</strong>
+                      <div class="col-md-6"><img src="../img/icon2.jpg"><strong>&nbsp;&nbsp;Multiplatform:</strong>
                       <p>Students can play on tablets, smartphones, laptops or desktop computers, indeed any device with a browser.</p></div>
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <p>And Quizalize is integrated with the
-                        <a href="https://learninghub.zzish.com/">Zzish Learning Hub</a> to bring you:</p>
+                        <h>And Quizalize is integrated with the
+                        <a href="https://learninghub.zzish.com/">Zzish Learning Hub</a> to bring you:</h>
                         <div class="row">
-                          <div class="col-md-4"><img src="../img/icon3.jpg" alt="Live Leaderboard"/><strong>&nbsp;&nbsp;Live Leaderboard:</strong>
+                          <div class="col-md-4"><img src="../img/icon3.jpg"><strong>&nbsp;&nbsp;Live Leaderboard:</strong>
                           <p>Show the live leaderboard on your electronic whiteboard to engage the whole class!</p></div>
-                          <div class="col-md-4"><img src="../img/icon4.jpg" alt="Live Dashboard"/><strong>&nbsp;&nbsp;Live Dashboard:</strong>
-                          <p>See how every student in the class is doing and identify students that need help in real-time. Show it in leaderboard view on your whiteboard for a classroom game!</p></div>
-                          <div class="col-md-4"><img src="../img/icon5.jpg" alt="Progress Dashboard"/><strong>&nbsp;&nbsp;Progress Dashboard:</strong>
+                          <div class="col-md-4"><img src="../img/icon4.jpg"><strong>&nbsp;&nbsp;Live Dashboard:</strong>
+                          <p>See how every student in the class is doing and identify students that need help in real-time. Show it in leaderboard view on your whiteboard for a classroom game!</P></div>
+                          <div class="col-md-4"><img src="../img/icon5.jpg"><strong>&nbsp;&nbsp;Progress Dashboard:</strong>
                           <p>Record student performance over time. See detailed analytics on individual students in individual quizzes to identify students that are struggling with specific areas.</p></div>
                         </div>
                       </div>
@@ -155,8 +155,8 @@ var google_remarketing_only = true;
                   </div>
                 </div>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
           <!-- /Section: about -->
           <!-- Section: services -->
           <section id="service" class="home-section color-dark bg-gray">
@@ -240,9 +240,9 @@ var google_remarketing_only = true;
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         </div>
-      </div>      
+      </section>
       <!-- /Section: services -->
       <!-- Section: works -->
       <section id="works" class="home-section color-dark text-center bg-white">
@@ -292,7 +292,7 @@ var google_remarketing_only = true;
         <div class="container" id="helpForm">
           <div class="row marginbot-80">
             <div class="col-md-8 col-md-offset-2">
-              <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s">
+              <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s"">
                 <div class="row marginbot-20">
                   <div class="col-md-6 xs-marginbot-20">
                     <input type="text" class="form-control input-lg" id="ename" placeholder="Enter name" required/>
@@ -338,64 +338,62 @@ var google_remarketing_only = true;
           </div>
         </div>
       </footer>
-    </div>
-  </section>
-  <div id="outdated"></div>
-  <!-- Core JavaScript Files -->
-  <script>
-  function newQuiz() {
-    if ($("#name").val()!="") {
-      window.location.href="/quiz#/?name="+$("#name").val();  
-    }
-    else {
-      window.location.href="/quiz#"; 
-    }        
-    return false;
-  }
-  </script>
-  <script src="/cquiz/js/jquery.min.js"></script>
-  <script src="/cquiz/js/bootstrap.min.js"></script>
-  <script src="/cquiz/js/jquery.sticky.js"></script>
-  <script src="/cquiz/js/jquery.flexslider-min.js"></script>
-  <script src="/cquiz/js/jquery.easing.min.js"></script>
-  <script src="/cquiz/js/jquery.scrollTo.js"></script>
-  <script src="/cquiz/js/jquery.appear.js"></script>
-  <script src="/cquiz/js/stellar.js"></script>
-  <script src="/cquiz/js/wow.min.js"></script>
-  <script src="/cquiz/js/owl.carousel.min.js"></script>
-  <script src="/cquiz/js/nivo-lightbox.min.js"></script>
-  <script src="/cquiz/js/custom.js"></script>
-  <script src="/js/quiz.js"></script>
-  <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
-  <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
-  <script>
-  $( document ).ready(function() {
-      outdatedBrowser({
-          bgColor: '#f25648',
-          color: '#ffffff',
-          lowerThan: 'transform',
-          languagePath: '/outdatedbrowser/lang/en.html'
-      })
-  })      
-  $("#btnContactUs").click(function(event){
-  $.ajax({
-  url: "/quiz/help",
-  method: "post",
-  success: function(data,textstatus,jqXHR){
-  $('#helpForm').slideUp();
-  $("#helpSent").slideDown();
-  },
-  error: function(){
-  console.log("Error Posting Form details");
-  },
-  data: {
-  name: $('#ename').val(),
-  subject: $('#subject').val(),
-  email: $('#email').val(),
-  message: $('#message').val()
-  }
-  });
-  });
-  </script>
-</body>
-</html>
+      <div id="outdated"></div>
+      <!-- Core JavaScript Files -->
+      <script>
+      function newQuiz() {
+        if ($("#name").val()!="") {
+          window.location.href="/quiz#/?name="+$("#name").val();  
+        }
+        else {
+          window.location.href="/quiz#"; 
+        }        
+        return false;
+      }
+      </script>
+      <script src="/cquiz/js/jquery.min.js"></script>
+      <script src="/cquiz/js/bootstrap.min.js"></script>
+      <script src="/cquiz/js/jquery.sticky.js"></script>
+      <script src="/cquiz/js/jquery.flexslider-min.js"></script>
+      <script src="/cquiz/js/jquery.easing.min.js"></script>
+      <script src="/cquiz/js/jquery.scrollTo.js"></script>
+      <script src="/cquiz/js/jquery.appear.js"></script>
+      <script src="/cquiz/js/stellar.js"></script>
+      <script src="/cquiz/js/wow.min.js"></script>
+      <script src="/cquiz/js/owl.carousel.min.js"></script>
+      <script src="/cquiz/js/nivo-lightbox.min.js"></script>
+      <script src="/cquiz/js/custom.js"></script>
+      <script src="/js/quiz.js"></script>
+      <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
+      <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
+      <script>
+      $( document ).ready(function() {
+          outdatedBrowser({
+              bgColor: '#f25648',
+              color: '#ffffff',
+              lowerThan: 'transform',
+              languagePath: '/outdatedbrowser/lang/en.html'
+          })
+      })      
+      $("#btnContactUs").click(function(event){
+      $.ajax({
+      url: "/quiz/help",
+      method: "post",
+      success: function(data,textstatus,jqXHR){
+      $('#helpForm').slideUp();
+      $("#helpSent").slideDown();
+      },
+      error: function(){
+      console.log("Error Posting Form details");
+      },
+      data: {
+      name: $('#ename').val(),
+      subject: $('#subject').val(),
+      email: $('#email').val(),
+      message: $('#message').val()
+      }
+      });
+      });
+      </script>
+    </body>
+  </html>
