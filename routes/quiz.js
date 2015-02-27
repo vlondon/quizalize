@@ -27,6 +27,10 @@ exports.landingpage3 =  function(req, res) {
     res.sendFile('cquiz/index3.html',{ root: 'public' });
 };
 
+exports.voucher =  function(req, res) {
+    res.sendFile('cquiz/index4.html',{ root: 'public' });
+};
+
 
 exports.service =  function(req, res) {
     res.render('service');
