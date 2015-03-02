@@ -645,6 +645,9 @@ section#intro {
 .item-4 {
 	background-image: url("../img/1.jpg");
 }
+.item-5 {
+    background-image: url("../img/amazon.jpg");
+}
 
 .navbar-custom ul.nav li a.login-with-zzish {
   background: rgb(68, 14, 98);
