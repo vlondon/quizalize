@@ -120,18 +120,25 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                 $rootScope.$apply();
             });
         },        
-        startActivity: function(type, activityName,quiz, callback){
-            var definition = {
-                type: type,
-                score: maxScore,
-                count: quiz.questions.length,
-                duration: ""+ quiz.questions.length*maxTime,
+        startActivity: function(quiz, callback){
+            var parameters = {
+                activityDefinition: {
+                    type: quiz.code,
+                    name: quiz.name,
+                    score: maxScore*quiz.questions.length,
+                    count: quiz.questions.length,
+                    duration: ""+ quiz.questions.length*maxTime,
+                },       
+                extensions: {
+                    contentId: quiz.uuid,
+                    groupCode: self.code
+                }   
             }
-            zzish.startActivityWithOptions(self.userId, activityName, self.code, {contentId:quiz.uuid, definition: definition}, function(err, message){
+            zzish.startActivityWithObjects(self.userId,parameters, function(err, message){
                 $log.debug("Start Activity response... saving id", message);
                 currentActivityId = message.id;
                 callback(err, message);
-            });
+            });            
         },
         stopActivity: function(callback){
             zzish.stopActivity(currentActivityId, {}, function(err, message){
@@ -139,9 +146,29 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                     callback(err, message);
             });
         },
-        saveAction: function(actionName, options){
-             zzish.logAction(currentActivityId, actionName, options.response, options.score, options.correct,
-                                options.duration, options.attempts, options.attributes);
+        saveAction: function(question, options){
+            var uuid = question.uuid==undefined?question.question:question.uuid;
+            var parameters = {
+                definition: {
+                    type: question.uuid,
+                    name: question.question,
+                    score: maxScore,
+                    duration: maxTime,
+                    response: question.answer
+                },
+                result: {
+                    score: options.score,
+                    count: options.attempts,
+                    duration: options.duration,
+                    response: options.response,
+                    correct: options.correct
+                },
+                extensions: {}
+            }
+            if (question.topicId) {
+                parameters.extensions["categoryId"] = question.topicId;
+            }
+            zzish.logActionWithObjects(currentActivityId, parameters);
         }
     };
 }]);
@@ -296,7 +323,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                 currentQuizData.report = [];
                 $log.debug("Selected quiz", currentQuiz, quizzes);
 
-                ZzishContent.startActivity(quizzes[currentQuiz].code,quizzes[currentQuiz].name, quizzes[currentQuiz], function(err, resp){
+                ZzishContent.startActivity(quizzes[currentQuiz], function(err, resp){
                     $log.debug("Got response from start activity:", resp);
                 });
             }else{
@@ -354,11 +381,18 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         currentQuizData: currentQuizData,
         answerQuestion: function(idx, response, answer, questionName, duration){
             $log.debug("Answer question", response, answer, duration);
+
+            var question = quizzes[currentQuiz].questions[idx];
+
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
             var score = calculateScore(correct, duration);
 
-            ZzishContent.saveAction(questionName, {
-                score: score, correct: correct, attempts: 1, response: response, duration: duration
+            ZzishContent.saveAction(question, {
+                score: score, 
+                correct: correct, 
+                attempts: 1, 
+                response: response, 
+                duration: duration
             });
 
             if(correct) {
