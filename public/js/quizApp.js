@@ -121,18 +121,25 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
             });
         },        
         startActivity: function(type, activityName,quiz, callback){
-            var definition = {
-                type: type,
-                score: maxScore,
-                count: quiz.questions.length,
-                duration: ""+ quiz.questions.length*maxTime,
+        	var parameters = {
+                activityDefinition: {
+                    type: quiz.code,
+                    name: quiz.name,
+                    score: maxScore*quiz.questions.length,
+                    count: quiz.questions.length,
+                    duration: ""+ quiz.questions.length*maxTime,
+                },       
+                extensions: {
+                    contentId: quiz.uuid,
+                    groupCode: self.code
+                }   
             }
-            zzish.startActivityWithOptions(self.userId, activityName, self.code, {contentId:quiz.uuid, definition: definition}, function(err, message){
+            zzish.startActivityWithObjects(self.userId,parameters, function(err, message){
                 $log.debug("Start Activity response... saving id", message);
                 currentActivityId = message.id;
                 callback(err, message);
             });
-        },
+	},
         stopActivity: function(callback){
             zzish.stopActivity(currentActivityId, {}, function(err, message){
                 if(typeof callback != 'undefined')
