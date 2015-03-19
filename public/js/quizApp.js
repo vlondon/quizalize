@@ -108,6 +108,13 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
 
         },
         login: function(studentCode, callback){
+            if (self.userId==undefined) {
+                studentCode = localStorage.getItem("zname");
+                self.userId = localStorage.getItem("zprofileId"+studentCode);
+            }
+            if (self.code==undefined) {
+                self.code = localStorage.getItem("zcode");
+            }
             zzish.registerWithClass(self.userId, self.code, function (err, message) {
                 callback(err, message);
                 $rootScope.$apply();
@@ -115,13 +122,14 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
         },
         logout: function(userProfileId,callback){
             zzish.unauthUser(userProfileId, function (err, message) {
+                localStorage.clear();
                 self.userId = "";
                 callback(err, message);
                 $rootScope.$apply();
             });
         },        
-        startActivity: function(type, activityName,quiz, callback){
-        	var parameters = {
+        startActivity: function(quiz, callback){
+            var parameters = {
                 activityDefinition: {
                     type: quiz.code,
                     name: quiz.name,
@@ -146,9 +154,29 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                     callback(err, message);
             });
         },
-        saveAction: function(actionName, options){
-             zzish.logAction(currentActivityId, actionName, options.response, options.score, options.correct,
-                                options.duration, options.attempts, options.attributes);
+        saveAction: function(question, options){
+            var uuid = question.uuid==undefined?question.question:question.uuid;
+            var parameters = {
+                definition: {
+                    type: question.uuid,
+                    name: question.question,
+                    score: maxScore,
+                    duration: maxTime,
+                    response: question.answer
+                },
+                result: {
+                    score: options.score,
+                    count: options.attempts,
+                    duration: options.duration,
+                    response: options.response,
+                    correct: options.correct
+                },
+                extensions: {}
+            }
+            if (question.topicId) {
+                parameters.extensions["categoryId"] = question.topicId;
+            }
+            zzish.logActionWithObjects(currentActivityId, parameters);
         }
     };
 }]);
@@ -263,6 +291,10 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             });
         },
         logout: function(){
+            if (userProfileId=="") {
+                studentName = localStorage.getItem("zname");
+                userProfileId = localStorage.getItem("zprofileId"+studentName); 
+            }
             ZzishContent.logout(userProfileId,function (err,message) {
                 userProfileId = "";
                 //TODO other logout things?
@@ -276,7 +308,11 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         register: function(studentName, newClassCode, callback) {            
             classCode = newClassCode.toLowerCase();
             ZzishContent.init(initToken);
-            userProfileId = uuid.v4();
+            var userProfileId = localStorage.getItem("zprofileId"+studentName);
+            if (userProfileId==undefined || userProfileId=="") {
+                userProfileId = uuid.v4();
+                localStorage.setItem("zprofileId"+studentName,userProfileId);
+            }
             ZzishContent.user(userProfileId, studentName, classCode, function(err, message){                
                 if(!err) {
                     userProfileId = message.uuid;
@@ -303,7 +339,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                 currentQuizData.report = [];
                 $log.debug("Selected quiz", currentQuiz, quizzes);
 
-                ZzishContent.startActivity(quizzes[currentQuiz].code,quizzes[currentQuiz].name, quizzes[currentQuiz], function(err, resp){
+                ZzishContent.startActivity(quizzes[currentQuiz], function(err, resp){
                     $log.debug("Got response from start activity:", resp);
                 });
             }else{
@@ -356,16 +392,29 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             }
         },
         getStudentData: function(){
+            if (classCode==undefined) {
+                classCode = localStorage.getItem("zcode");
+            }
+            if (studentCode ==undefined) {
+                studentCode =    localStorage.getItem("zname");
+            }
             return {classCode: classCode, studentCode: studentCode};
         },
         currentQuizData: currentQuizData,
         answerQuestion: function(idx, response, answer, questionName, duration){
             $log.debug("Answer question", response, answer, duration);
+
+            var question = quizzes[currentQuiz].questions[idx];
+
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
             var score = calculateScore(correct, duration);
 
-            ZzishContent.saveAction(questionName, {
-                score: score, correct: correct, attempts: 1, response: response, duration: duration
+            ZzishContent.saveAction(question, {
+                score: score, 
+                correct: correct, 
+                attempts: 1, 
+                response: response, 
+                duration: duration
             });
 
             if(correct) {
@@ -419,6 +468,8 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
                 if (QuizData.validate(self.classCode)) {
                     QuizData.register(self.studentName, self.classCode, function(err, res){
                         if(!err){
+                            localStorage.setItem("zname",self.studentName);
+                            localStorage.setItem("zcode",self.classCode);                            
                             $location.path("/list");
                         }else if (err==409){
                             reportError("Error. Chooose a different name as it seems someone else has recently used this name.");
@@ -445,6 +496,24 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
            });
         }
     };
+
+    if (localStorage.getItem("zname")!=undefined  && localStorage.getItem("zname")!=""
+    && localStorage.getItem("zcode")!=undefined  && localStorage.getItem("zcode")!="") {
+        self.classCode = localStorage.getItem("zcode");
+        self.studentName = localStorage.getItem("zname");
+        if (QuizData.validate(self.classCode)) {
+            QuizData.register(self.studentName, self.classCode, function(err, res){
+                if(!err){
+                    $location.path("/list");
+                }else {
+                    localStorage.clear();
+                }
+            });                    
+        }
+        else {
+            localStorage.clear();
+        }        
+    }
 }]);
 
 

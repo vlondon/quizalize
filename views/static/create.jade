@@ -7,6 +7,11 @@
                 p#enterHint.text-info(style="display: none;") You can just use the enter key both to enter a question and then, having entered an answer, to save the entire quiz question.
 
                 form.form-horizontal(role="form")
+                    input.form-control#questionId(type="hidden",value="")
+                    .form-group
+                        label.col-sm-3.control-label Topic
+                        .col-sm-9
+                            input.form-control#topic(type="text", on-enter="create.focusQuestion();", placeholder="e.g. Capital Cities", autofocus="true", tabindex="1" )
                     .form-group
                         label.col-sm-3.control-label Question
                         .col-sm-9

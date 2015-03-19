@@ -104,6 +104,44 @@ exports.getMyQuizzes = function(req, res){
     });
 };
 
+exports.getMyTopics = function(req, res){
+    var profileId = req.params.profileId;
+    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
+
+    zzish.listCategories(profileId, function(err, resp){
+        console.log("My Topics", resp);
+        res.send(resp);
+    });
+};
+
+exports.postTopic = function(req,res){
+    var profileId = req.params.profileId;
+    var data = req.body;
+
+    console.log("postQuiz", "Body: ", req.body, "Params: ", req.params);
+
+    zzish.postCategory(profileId, data.uuid, data.name, function(err, resp){
+        if(!err){
+            res.status = 200
+        }else{
+            res.status = 400
+        }
+    });
+};
+
+exports.deleteTopic = function(req,res){
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+
+    zzish.deleteCategory(profileId, id, function(err, resp){
+        if(!err){
+            res.status = 200
+        }else{
+            res.status = 400
+        }
+    });
+};
+
 exports.getQuiz = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;
@@ -163,7 +201,7 @@ exports.publishQuiz = function(req, res){
              console.log("Got publish result", resp);
              res.status = 200;
              resp.link = querystring.escape(resp.link);
-            resp.link = config.webUrl + "learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
+            resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
              res.send(resp);
         }else{
              console.log("Got publish error", err);
