@@ -108,6 +108,13 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
 
         },
         login: function(studentCode, callback){
+            if (self.userId==undefined) {
+                studentCode = localStorage.getItem("zname");
+                self.userId = localStorage.getItem("zprofileId"+studentCode);
+            }
+            if (self.code==undefined) {
+                self.code = localStorage.getItem("zcode");
+            }
             zzish.registerWithClass(self.userId, self.code, function (err, message) {
                 callback(err, message);
                 $rootScope.$apply();
@@ -115,6 +122,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
         },
         logout: function(userProfileId,callback){
             zzish.unauthUser(userProfileId, function (err, message) {
+                localStorage.clear();
                 self.userId = "";
                 callback(err, message);
                 $rootScope.$apply();
@@ -283,6 +291,10 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             });
         },
         logout: function(){
+            if (userProfileId=="") {
+                studentName = localStorage.getItem("zname");
+                userProfileId = localStorage.getItem("zprofileId"+studentName); 
+            }
             ZzishContent.logout(userProfileId,function (err,message) {
                 userProfileId = "";
                 //TODO other logout things?
@@ -296,7 +308,11 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         register: function(studentName, newClassCode, callback) {            
             classCode = newClassCode.toLowerCase();
             ZzishContent.init(initToken);
-            userProfileId = uuid.v4();
+            var userProfileId = localStorage.getItem("zprofileId"+studentName);
+            if (userProfileId==undefined || userProfileId=="") {
+                userProfileId = uuid.v4();
+                localStorage.setItem("zprofileId"+studentName,userProfileId);
+            }
             ZzishContent.user(userProfileId, studentName, classCode, function(err, message){                
                 if(!err) {
                     userProfileId = message.uuid;
@@ -376,6 +392,12 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             }
         },
         getStudentData: function(){
+            if (classCode==undefined) {
+                classCode = localStorage.getItem("zcode");
+            }
+            if (studentCode ==undefined) {
+                studentCode =    localStorage.getItem("zname");
+            }
             return {classCode: classCode, studentCode: studentCode};
         },
         currentQuizData: currentQuizData,
@@ -446,6 +468,8 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
                 if (QuizData.validate(self.classCode)) {
                     QuizData.register(self.studentName, self.classCode, function(err, res){
                         if(!err){
+                            localStorage.setItem("zname",self.studentName);
+                            localStorage.setItem("zcode",self.classCode);                            
                             $location.path("/list");
                         }else if (err==409){
                             reportError("Error. Chooose a different name as it seems someone else has recently used this name.");
@@ -472,6 +496,24 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
            });
         }
     };
+
+    if (localStorage.getItem("zname")!=undefined  && localStorage.getItem("zname")!=""
+    && localStorage.getItem("zcode")!=undefined  && localStorage.getItem("zcode")!="") {
+        self.classCode = localStorage.getItem("zcode");
+        self.studentName = localStorage.getItem("zname");
+        if (QuizData.validate(self.classCode)) {
+            QuizData.register(self.studentName, self.classCode, function(err, res){
+                if(!err){
+                    $location.path("/list");
+                }else {
+                    localStorage.clear();
+                }
+            });                    
+        }
+        else {
+            localStorage.clear();
+        }        
+    }
 }]);
 
 
