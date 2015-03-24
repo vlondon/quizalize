@@ -146,8 +146,8 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                 $log.debug("Start Activity response... saving id", message);
                 currentActivityId = message.id;
                 callback(err, message);
-            });            
-        },
+            });
+	},
         stopActivity: function(callback){
             zzish.stopActivity(currentActivityId, {}, function(err, message){
                 if(typeof callback != 'undefined')
