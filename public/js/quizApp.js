@@ -158,7 +158,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
             var uuid = question.uuid==undefined?question.question:question.uuid;
             var parameters = {
                 definition: {
-                    type: question.uuid,
+                    type: uuid,
                     name: question.question,
                     score: maxScore,
                     duration: maxTime,
