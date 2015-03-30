@@ -182,6 +182,7 @@ exports.postQuiz = function(req,res){
         }else{
             res.status = 400
         }
+        res.send();
     });
 };
 
