@@ -126,6 +126,7 @@ exports.postTopic = function(req,res){
         }else{
             res.status = 400
         }
+        res.send();
     });
 };
 
@@ -139,6 +140,7 @@ exports.deleteTopic = function(req,res){
         }else{
             res.status = 400
         }
+        res.send();
     });
 };
 
@@ -197,16 +199,19 @@ exports.publishQuiz = function(req, res){
     console.log("Will publish", profileId, id, email, code);
 
     zzish.publishContentToGroup(profileId, email, id, code, function(err, resp){
-         if(!err){
-             console.log("Got publish result", resp);
-             res.status = 200;
-             resp.link = querystring.escape(resp.link);
-            resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
-             res.send(resp);
-        }else{
-             console.log("Got publish error", err);
-            res.status = 400
+        var response = {};
+        if(!err){
+            console.log("Got publish result", resp);
+            res.status = 200;
+            response.status = 200;
+            response.code = resp.code;
+            response.link = querystring.escape(resp.link);
+            response.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
+        } else {
+            response.status = err;
+            response.message = resp
         }
+        res.send(response);
     });
 };
 
