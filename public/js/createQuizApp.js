@@ -66,6 +66,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
 
     var userUuid = localStorage.getItem("userId");
     var userVerified = localStorage.getItem("userVerified")=="true";
+    var savingQuiz = false;
 
     //Initialise User
     var data = localStorage.getItem("quizData");
@@ -200,13 +201,27 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             data[id] = quiz;
             $log.debug("Saving Quiz: ", data);
             localStorage.setItem("quizData", JSON.stringify(data));
-            localStorage.setItem("topics", JSON.stringify(topics));
+            
             for (i in topics) {
-                if (topics[i].newObject!=undefined && topics[i].newObject) {
-                    postTopic(topics[i]);
+                if (topics[i].newObject!=undefined && topics[i].newObject) {                    
+                    topics[i].newObject = null;
+                    postTopic(topics[i]).success(function(resp){                        
+                        $log.debug("Returning from post topic");
+                    });
                 }
             }            
-            postQuiz(quiz);
+            localStorage.setItem("topics", JSON.stringify(topics));
+            if (!savingQuiz) {
+                $log.debug("About to post");
+                savingQuiz = true;
+                postQuiz(quiz).success(function(resp){
+                    $log.debug("Returning from post");
+                    savingQuiz = false;
+                }).error(function(er){
+                    $log.debug("Returning from post");
+                    savingQuiz = false;
+                });                   
+            }
         },
         addQuiz: function(quiz, callback){
             //hide loginButton as you can no longer login if you haven't already done so
@@ -574,6 +589,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             self.quiz.questions.push(question_obj);    
         }
         self.clearQuestions();
+        QuizData.saveQuiz(self.id, self.quiz, self.topics);
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
@@ -629,7 +645,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
     self.publish = function(){
         $log.debug("Publish with email address:", self.emailAddress, "Quiz:", self.quiz);
-
+        self.statusText = "";
 
         if(self.userVerified || self.classCode || self.emailAddress){
             if(self.emailAddress && self.emailAddress.length > 0){
@@ -645,14 +661,20 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
             QuizData.publishQuiz(self.quiz, details).success(function(result){
                 $log.debug("Response from publishing: ", result);
-                self.classCode = result.code;
-                self.fullLink = result.link;
-                localStorage.setItem("link",self.fullLink);
-                QuizData.saveClassCode(self.classCode);
-                self.published = true;
-                self.publishing = false;
+                if (result.status==200) {
+                    self.classCode = result.code;
+                    self.fullLink = result.link;
+                    localStorage.setItem("link",self.fullLink);
+                    QuizData.saveClassCode(self.classCode);                
+                    self.published = true;                    
+                }
+                else {
+                    self.statusText = "Error when publishing: " + result.message + ". Please Try again";
+                }   
+                self.publishing = false;             
             }).error(function(err){
                 $log.debug("Error from publishing: ", err);
+                self.statusText = err;
             });
 
         }else{
