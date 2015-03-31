@@ -603,8 +603,13 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         else {
             $('#questionId').val(uuid.v4());
         }
-        if (q.topic) {
-            $('#topic').val(q.topic);
+        if (q.topicId) {
+            for (i in self.topics) {
+                if (self.topics[i].uuid==q.topicId) {
+                    $('#topic').val(self.topics[i].name);
+                }
+            }            
+            
         }
         if(q.alternatives){
             for(var i=1; i<4; i++)
