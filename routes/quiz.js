@@ -200,19 +200,16 @@ exports.publishQuiz = function(req, res){
     console.log("Will publish", profileId, id, email, code);
 
     zzish.publishContentToGroup(profileId, email, id, code, function(err, resp){
-        var response = {};
         if(!err){
             console.log("Got publish result", resp);
-            res.status = 200;
-            response.status = 200;
-            response.code = resp.code;
-            response.link = querystring.escape(resp.link);
-            response.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
+            resp.status = 200;
+            resp.link = querystring.escape(resp.link);
+            resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
         } else {
-            response.status = err;
-            response.message = resp
+            resp.status = err;
+            resp.message = resp
         }
-        res.send(response);
+        res.send(resp);
     });
 };
 
