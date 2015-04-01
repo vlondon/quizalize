@@ -31,13 +31,16 @@ exports.voucher =  function(req, res) {
     res.sendFile('cquiz/index4.html',{ root: 'public' });
 };
 
-
 exports.service =  function(req, res) {
     res.render('service');
 };
-
+    
 exports.privacy =  function(req, res) {
     res.render('privacy');
+};
+
+exports.quizFinder =  function(req, res) {
+    res.render('quizFinder');
 };
 
 exports.createProfile = function(req, res){
