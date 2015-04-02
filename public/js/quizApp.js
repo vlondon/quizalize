@@ -99,11 +99,11 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
             return zzish.validateClassCode(classCode);
         },
         getPublicQuizzes: function(callback){
-            if (self.userId==undefined) {
+            if (self.userId==undefined || self.userId=="") {
                 studentCode = localStorage.getItem("zname");
                 self.userId = localStorage.getItem("zprofileId"+studentCode);
             }            
-            if (self.userId==undefined) {
+            if (self.userId==undefined|| self.userId=="") {
                 //not a registered user so just create a new account
                 self.userId = uuid.v4();   
             }
@@ -143,6 +143,12 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                 $rootScope.$apply();
             });
         },        
+        getConsumerContent: function(contentId, callback){
+            zzish.getConsumerContent(self.userId, contentId, function (err, message) {
+                callback(err, message);
+                $rootScope.$apply();
+            });            
+        },
         startActivity: function(quiz, callback){
             var parameters = {
                 activityDefinition: {
@@ -162,7 +168,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                 currentActivityId = message.id;
                 callback(err, message);
             });
-	},
+	   },
         stopActivity: function(callback){
             zzish.stopActivity(currentActivityId, {}, function(err, message){
                 if(typeof callback != 'undefined')
@@ -223,7 +229,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         };
 
         if(typeof qId != 'undefined') {
-            var question = quizzes[currentQuiz].questions[qId];
+            var question = currentQuiz.questions[qId];
 	    if (!question) return randomKind();
 	    var indexOfSpace = question.answer.indexOf(" ");
             //Always do multiple choice if alternatives
@@ -239,7 +245,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
 
 
             //If length 1 (and not alternatives) should always do scrambled... (as won't have alternatives)
-            if(quizzes[currentQuiz].questions.length == 1)
+            if(currentQuiz.questions.length == 1)
                 return 'scrambled';
 
             //If the answer length is long then do multiple choice (shouldn't have to type/input)
@@ -279,6 +285,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                         }
                     }                    
                 }
+            }
+            if (category.name=="") {
+                category.name="Your Quizzes";
             }
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: []} ;
@@ -367,29 +376,43 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         getQuizzes: function(){
             return quizzes;
         },
-        selectQuiz: function(id){
-            if(id < quizzes.length) {
-                currentQuiz = id;
-                currentQuizData.totalScore = 0;
-                currentQuizData.questionCount = quizzes[currentQuiz].questions.length;
-                currentQuizData.correct = 0;
-                currentQuizData.name = quizzes[currentQuiz].name;
-                currentQuizData.report = [];
-                $log.debug("Selected quiz", currentQuiz, quizzes);
-
-                ZzishContent.startActivity(quizzes[currentQuiz], function(err, resp){
-                    $log.debug("Got response from start activity:", resp);
-                });
-            }else{
-                $log.error("Selecting an invalid quiz", "Have quizzes", quizzes);
+        getCategories: function(){
+            return categories;
+        },
+        selectQuiz: function(categoryId,quizId){
+            var found = false;
+            if (categories[categoryId]!=null) {
+                var category = categories[categoryId];
+                for (i in category.quizzes) {
+                    var quiz = category.quizzes[i];
+                    if (category.quizzes[i].uuid==quizId) {
+                        ZzishContent.getConsumerContent(quizId,function(err,message) {
+                            found = true;
+                            $log.debug("Selected quiz", quiz,message);
+                            currentQuiz = quiz;
+                            currentQuiz.questions = message.questions;
+                            currentQuizData.totalScore = 0;
+                            currentQuizData.questionCount = currentQuiz.questions.length;
+                            currentQuizData.correct = 0;
+                            currentQuizData.name = quiz.name;
+                            currentQuizData.report = [];
+                            ZzishContent.startActivity(quiz, function(err, resp){
+                                $log.debug("Got response from start activity:", resp);
+                            });                                                    
+                        })
+                    }
+                }
+            }
+            if (!found) {
+                $log.error("Selecting an invalid quiz", "Have quizzes", categories);
             }
         },
         getQuestion: function(id, questionCallback){
             if(typeof currentQuiz != 'undefined') {
-                if(id < quizzes[currentQuiz].questions.length) {
-                    questionCallback(quizzes[currentQuiz].questions[id]);
+                if(id < currentQuiz.questions.length) {
+                    questionCallback(currentQuiz.questions[id]);
                 }else{
-                    $log.debug("Quiz complete", "Getting question", id, "from", quizzes[currentQuiz]);
+                    $log.debug("Quiz complete", "Getting question", id, "from", currentQuiz);
                     $location.path("/quiz/complete");
                     ZzishContent.stopActivity();
                 }
@@ -402,13 +425,13 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             return chooseKind(qId);
         },
         getAlternatives: function(id){
-            $log.debug("Generating Alternatives for ", id, "from", quizzes[currentQuiz]);
+            $log.debug("Generating Alternatives for ", id, "from", currentQuiz);
 
-            if(quizzes[currentQuiz].questions[id].alternatives){
+            if(currentQuiz.questions[id].alternatives){
                 var options = [];
-                options.push(quizzes[currentQuiz].questions[id].answer);
-                for(var i in quizzes[currentQuiz].questions[id].alternatives){
-                    var alt = quizzes[currentQuiz].questions[id].alternatives[i];
+                options.push(currentQuiz.questions[id].answer);
+                for(var i in currentQuiz.questions[id].alternatives){
+                    var alt = currentQuiz.questions[id].alternatives[i];
 		    if (alt!=undefined && alt.length>0)
                     	options.push(alt);
                 }
@@ -416,10 +439,10 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
 
             }else{
                 var answers = [];
-                var correct = quizzes[currentQuiz].questions[id].answer;
+                var correct = currentQuiz.questions[id].answer;
 
-                for(var i in quizzes[currentQuiz].questions){
-                    var q = quizzes[currentQuiz].questions[i];
+                for(var i in currentQuiz.questions){
+                    var q = currentQuiz.questions[i];
                     if(q.answer != correct){
                         answers.push(q.answer);
                     }
@@ -442,7 +465,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         answerQuestion: function(idx, response, answer, questionName, duration){
             $log.debug("Answer question", response, answer, duration);
 
-            var question = quizzes[currentQuiz].questions[idx];
+            var question = currentQuiz.questions[idx];
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
             var score = calculateScore(correct, duration);
@@ -567,9 +590,9 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
 
     self.loading = true;
 
-    self.startQuiz = function(idx){
-        $log.debug("Selected Quiz: ", idx);
-        QuizData.selectQuiz(idx);
+    self.startQuiz = function(categoryId,quizId){
+        $log.debug("Selected Quiz: ", categoryId,quizId);
+        QuizData.selectQuiz(categoryId,quizId);
         $location.path("/quiz/intro")
     };
 
@@ -596,14 +619,20 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     };
 
     self.studentData = QuizData.getStudentData();
-    QuizData.login(null,function(err, res){
-        if(!err){
-            self.quizzes = QuizData.getQuizzes();
-            self.loading = false;
-        }else{
-            $log.error("Unable to refresh quizzes", err);
-        }
-   });
+    if (self.studentData.classCode==undefined) {
+        self.categories = QuizData.getCategories();
+    }
+    else {
+        QuizData.login(null,function(err, res){
+            if(!err){
+                self.quizzes = QuizData.getQuizzes();
+                self.categories = QuizData.getCategories();
+                self.loading = false;
+            }else{
+                $log.error("Unable to refresh quizzes", err);
+            }
+       });        
+    }
 }]);
 
 angular.module('quizApp').controller('QuizController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParmas, $location){
