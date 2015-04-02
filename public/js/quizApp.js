@@ -925,3 +925,4 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         QuizData.logout();
     }
 }]);
+

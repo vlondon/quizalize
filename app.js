@@ -86,6 +86,7 @@ function isIE(req) {
   isIE = /MSIE 8.0/i.test(ua) || /MSIE 9.0/i.test(ua)
   return isIE;
 }
+
  
 // note: the next method param is passed as well
 function checkForMobile(req, res, next) {
