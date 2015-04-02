@@ -121,9 +121,9 @@ exports.postTopic = function(req,res){
     var profileId = req.params.profileId;
     var data = req.body;
 
-    console.log("postQuiz", "Body: ", req.body, "Params: ", req.params);
+    console.log("postTopic", "Body: ", req.body, "Params: ", req.params);
 
-    zzish.postCategory(profileId, data.uuid, data.name, function(err, resp){
+    zzish.postCategory(profileId, data, function(err, resp){
         if(!err){
             res.status = 200
         }else{
@@ -179,7 +179,7 @@ exports.postQuiz = function(req,res){
 
     console.log("postQuiz", "Body: ", req.body, "Params: ", req.params);
 
-    zzish.postContent(profileId, id, req.body.name, data, function(err, resp){
+    zzish.postContent(profileId, data, function(err, resp){
         if(!err){
             res.status = 200
         }else{

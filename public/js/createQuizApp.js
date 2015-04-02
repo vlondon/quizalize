@@ -235,6 +235,14 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             if(!data) data = []; //yes it will replace [] with [].
             //get UserId (creates on if it doesn't already exist);
             createUserId(function(err,message) {
+                if (quiz.categoryId=="-1") {
+                    //we don't have the root category, so we need to create
+                    //need to add the category
+                    rootTopicId = uuid.v4();
+                    postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
+                    localStorage.setItem("rootTopicId",rootTopicId);
+                    quiz.categoryId = rootTopicId;
+                }
                 if (quiz.uuid==undefined) {
                     quiz.uuid = uuid.v4();    
                 }
@@ -297,6 +305,9 @@ angular.module('createQuizApp').controller('NavBarController', ['$log', '$timeou
 angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$log', '$http', '$location', function(QuizData, $log, $http, $location){
     var self = this;
     self.newQuizName = "";
+    self.newQuizCategory = "";
+    self.rootTopicList = [];
+    self.rootTopics = [];
 
     if(typeof ($location.search()).name != 'undefined'){
         //Have quiz name
@@ -350,6 +361,19 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             })                    
     }
     else if (self.userId!=undefined) {
+        QuizData.getTopics(function(topics){
+            if (topics) {
+                for (i in topics) {
+                    if (topics[i].parentCategoryId=="-1") {
+                        self.rootTopics.push(topics[i]);
+                        self.rootTopicList.push(topics[i].name);
+                    }
+                }         
+                $( "#category" ).autocomplete({
+                    source: self.rootTopicList
+                });                                                     
+            }
+        });        
         $http.get("/quiz/profile/"+self.userId)
             .success(function(result){
                 //to get user uuid and name
@@ -402,11 +426,31 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     }
 
 
+
+
     self.createQuiz = function(){
         if(self.newQuizName.length == 0)
             self.newQuizName = "Quiz";
+        if (self.newQuizCategory.length ==0) {
+            self.newQuizCategory = "Root";
+        }
 
-        QuizData.addQuiz({name: self.newQuizName, questions: []},function(idx) {
+        var found = false;
+        var rootTopicId = "-1";
+        self.newQuizCategory = $("#category").val();
+        for (i in self.rootTopics) {
+            if (self.rootTopics[i].name==self.newQuizCategory) {
+                //we already have this category
+                rootTopicId = self.rootTopics[i].uuid;
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            localStorage.setItem("rootTopicId",rootTopicId);    
+        }
+
+        QuizData.addQuiz({name: self.newQuizName, categoryId: rootTopicId, category: self.newQuizCategory, questions: []},function(idx) {
             $location.path("/create/" + idx);
             $log.debug("going to /create/" + idx);
         });
@@ -446,7 +490,10 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.topics = [];
     self.topicList = [];
     self.hint = "";
+    self.rootTopicId;
     self.distractorsActive = false;
+
+    self.rootTopicId = localStorage.getItem("rootTopicId");
 
     self.id = parseInt($routeParams.id);
     if(isNaN(self.id)) $location.path("/");
@@ -456,12 +503,14 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         QuizData.getTopics(function(topics){
             if (topics) {
                 for (i in topics) {
-                    self.topics.push(topics[i]);
-                    self.topicList.push(topics[i].name);
-                    if (self.topicList.length>0) {
-                        $( "#topic" ).autocomplete({
-                            source: self.topicList
-                        });                                         
+                    if (topics[i].parentCategoryId==self.rootTopicId) {
+                        self.topics.push(topics[i]);
+                        self.topicList.push(topics[i].name);
+                        if (self.topicList.length>0) {
+                            $( "#topic" ).autocomplete({
+                                source: self.topicList
+                            });                                         
+                        }                        
                     }
                 }                
             }
@@ -547,7 +596,9 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
                 var topic_object = {
                     uuid: uuid.v4(),
                     name: topic,
-                    newObject: true
+                    newObject: true,
+                    subContent: true,
+                    parentCategoryId: self.rootTopicId
                 }
                 topicId = topic_object.uuid;
                 self.topics.push(topic_object);

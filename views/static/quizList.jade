@@ -3,14 +3,25 @@
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
                 h1 Create your Quiz
-                h4 Give your quiz a title
 
                 .form-horizontal(role="form")
                     .form-group
-                        .col-sm-8
-                            input.form-control#question(type="text", ng-model="quizzes.newQuizName", placeholder="e.g. Capital Cities", on-enter="quizzes.createQuiz();", autofocus="true")
-                            br
-                        .col-sm-4
+                        .row
+                            .col-sm-4
+                                p Name:
+                                    a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="Give your quiz name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                            .col-sm-8
+                                input.form-control#question(type="text", ng-model="quizzes.newQuizName", placeholder="e.g. Capital Cities", autofocus="true")
+                                br
+                        .row
+                            .col-sm-4
+                                p Topic (Optional):    
+                                    a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="You can provide an optional topic to help organize your quizzes into different topic areas" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                            .col-sm-8
+                                input.form-control#category(type="text", ng-model="quizzes.newQuizCategory", placeholder="e.g. Geography Level 1")
+                                br
+                        .row
+                        .col-sm-12
                             button.btn.btn-primary.btn-block(ng-click="quizzes.createQuiz();", ng-hide="quizzes.newQuizName==''") Create Quiz
 
     .row

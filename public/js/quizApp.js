@@ -30,7 +30,7 @@ config(['$routeProvider', function($routeProvider) {
             controllerAs: "start"
             })
             .when('/list', {
-                templateUrl: "/quiz/view/studentQuizList",
+                templateUrl: "/quiz/view/studentCategoryList",
                 controller: "QuizzesController",
                 controllerAs: "quizzes"
             })
@@ -98,6 +98,21 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
             self.code = classCode.toLowerCase();
             return zzish.validateClassCode(classCode);
         },
+        getPublicQuizzes: function(callback){
+            if (self.userId==undefined) {
+                studentCode = localStorage.getItem("zname");
+                self.userId = localStorage.getItem("zprofileId"+studentCode);
+            }            
+            if (self.userId==undefined) {
+                //not a registered user so just create a new account
+                self.userId = uuid.v4();   
+            }
+            zzish.listPublicContent(self.userId, function (err, message) {
+                callback(err, message);
+                $rootScope.$apply();
+            });
+
+        },
         register: function(profileId, classCode, callback){
             self.code = classCode.toLowerCase();
             self.userId = profileId;
@@ -131,7 +146,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
         startActivity: function(quiz, callback){
             var parameters = {
                 activityDefinition: {
-                    type: quiz.code,
+                    type: quiz.uuid,
                     name: quiz.name,
                     score: maxScore*quiz.questions.length,
                     count: quiz.questions.length,
@@ -185,6 +200,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
 angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
     // setup/add helper methods...
     var quizzes = [];
+    var categories = {};
     var classCode, studentCode, currentQuiz;
     var currentQuizData = {correct: 0,
             questionCount: 0, totalScore: 0, name: "", report: []};
@@ -249,14 +265,25 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             studentCode = result.code;
         }
         quizzes = [];
+        categories = {};
         for (i in result.contents) {
             quiz = result.contents[i];
-            if (quiz.profileId!=undefined && quiz.profileId!='undefined') {
-                quiz.code = quiz.profileId+":"+quiz.name;    
+            var cuuid = "undefined";
+            var category = { name: "Other" };
+            if (quiz.categoryId!=undefined) {
+                cuuid = quiz.categoryId;
+                if (result.categories!=undefined) {
+                    for (i in result.categories) {
+                        if (result.categories[i].uuid==quiz.categoryId) {
+                            category = result.categories[i];
+                        }
+                    }                    
+                }
             }
-            else {
-                quiz.code = quiz.name;
-            }            
+            if (categories[cuuid]==undefined) {
+                categories[cuuid] = { category: category, quizzes: []} ;
+            }
+            categories[cuuid].quizzes.push(quiz);        
             quizzes.push(quiz);
         }
         $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
@@ -282,6 +309,17 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         login: function(newStudentCode, callback){
             ZzishContent.init(initToken);
             ZzishContent.login(newStudentCode, function(err, message){
+                if(!err) {
+                    processQuizList(message, true);
+                }else{
+                    $log.debug("Error with user login:", err);
+                }
+                callback(err, message);
+            });
+        },
+        getPublicQuizzes: function(callback){
+            ZzishContent.init(initToken);
+            ZzishContent.getPublicQuizzes(function(err, message){
                 if(!err) {
                     processQuizList(message, true);
                 }else{
@@ -456,6 +494,13 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
         self.errorMessage = issue;
     };
 
+    self.startPublicQuiz = function(){
+        console.log("Public Quiz");
+        QuizData.getPublicQuizzes(function(err, res){
+            $location.path("/list");
+        });
+    }
+
     self.startQuiz = function(){
         if(self.studentCode.length == 0){
             //Student name/class code login
@@ -560,7 +605,6 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         }
    });
 }]);
-
 
 angular.module('quizApp').controller('QuizController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParmas, $location){
 
