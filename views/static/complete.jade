@@ -4,23 +4,23 @@ style.
         font-weight: 300;
         letter-spacing: 2px;
         text-transform: uppercase;
-        font-size: 22px;
+        font-size: 32px;
         color: white    ;
         text-shadow: 1px 1px black, 2px 2px black, 3px 3px black, 4px 4px black;
-        margin-bottom: 20px;
+        margin: 40px auto;
     }
     .score-title {
         font-size: 16px;
         font-weight: 700;
     }
     .score-value {
-        font-size: 24px;
+        font-size: 32px;
         font-weight: 700;
-        height: 80px;
-        width: 80px;
+        height: 120px;
+        width: 120px;
         border: 1px solid rgba(255,255,255,.5);
         border-radius: 100px;
-        padding-top: 12px;
+        padding-top: 36px;
         margin: 0 auto;
     }
     .score-points {
@@ -47,7 +47,6 @@ style.
         color: white;;
         text-align: center;
         border-radius: 4px;
-        height: 120px;
     }
 
     .complete-info {
@@ -86,11 +85,35 @@ style.
         background: #222;
         border: 1px solid black;
         padding: 20px;
-        overflow: hidden;
         border-radius: 20px;
     }
     .score-time {
+        padding-top: 18px;
         font-size: 18px;
+    }
+    .bar-item-container {
+      text-align: left;
+      margin-bottom: 20px;
+      width: 100%;
+      float: left;
+    }
+
+    .bar-topic-title {
+      font-size: 18px;
+    }
+
+    .bar-block {
+      height: 40px;
+      border-radius: 4px;
+    }
+    .bar-block-g {
+      background: linear-gradient(90deg, lime, green);
+    }
+    .bar-block-a {
+      background: linear-gradient(90deg, orange, brown);
+    }
+    .bar-block-r {
+      background: linear-gradient(90deg, red, crimson);
     }
 
 .container
@@ -98,17 +121,15 @@ style.
         .row
             .col-xs-8.col-xs-offset-2
                 a.btn.btn-block.btn-info.btn-sm(href="#/list") Home
-
         .row.inverse-text
             .col-xs-12.text-center
                 h2(ng-show="quiz.data.correct/quiz.data.questionCount > 0.5", style="font-size: 3em;") Congratulations!
-                
                 h2.congratulations-text 
                     |Congratulations 
                     br
                     |John F.
         .row.inverse-text.complete-info-wrap
-            .col-xs-6
+            .col-sm-6
                 .complete-info
                     .score-value.rag2
                         {{quiz.totals.score}} 
@@ -121,8 +142,16 @@ style.
                     .score-time
                         span.glyphicon.glyphicon-time 
                         {{quiz.totals.seconds}} Seconds
-            .col-xs-6
-                img.graph(src="http://placehold.it/800x400")
+            .col-sm-6
+                .bar-item-container
+                  .bar-topic-title GCSE Maths
+                  .bar-block.bar-block-a(style="width: 64%")
+                .bar-item-container
+                  .bar-topic-title History Stage 3
+                  .bar-block.bar-block-g(style="width: 80%")
+                .bar-item-container
+                  .bar-topic-title Science Stage 5
+                  .bar-block.bar-block-r(style="width: 35%")
                 .complte-main-text
                 
 
