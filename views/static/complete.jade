@@ -87,13 +87,28 @@ style.
         padding: 20px;
         border-radius: 20px;
     }
+
+    .complete-main-text {
+      font-size: 28px;
+      text-align: left;
+    }
+    .complete-main-text span {
+      font-weight: 700;
+    }
+
+    .span-g {
+      color: lime;
+    }
+    .span-r {
+      color: orange;
+    }
     .score-time {
         padding-top: 18px;
         font-size: 18px;
     }
     .bar-item-container {
       text-align: left;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       width: 100%;
       float: left;
     }
@@ -105,6 +120,10 @@ style.
     .bar-block {
       height: 40px;
       border-radius: 4px;
+      text-align: right;
+      line-height: 20px;
+      padding: 10px;
+      margin-bottom: 5px;
     }
     .bar-block-g {
       background: linear-gradient(90deg, lime, green);
@@ -114,6 +133,14 @@ style.
     }
     .bar-block-r {
       background: linear-gradient(90deg, red, crimson);
+    }
+    .bar-block-b {
+      background: linear-gradient(90deg, blue, navy);
+    }
+    .bar-block-c {
+      height: 10px;
+      padding: 0;
+      background: grey;
     }
 
 .container
@@ -145,16 +172,29 @@ style.
             .col-sm-6
                 .bar-item-container
                   .bar-topic-title GCSE Maths
-                  .bar-block.bar-block-a(style="width: 64%")
+                  .bar-block.bar-block-a(style="width: 64%") 64%
+                  .bar-block.bar-block-c(style="width: 65%")
                 .bar-item-container
                   .bar-topic-title History Stage 3
-                  .bar-block.bar-block-g(style="width: 80%")
+                  .bar-block.bar-block-g(style="width: 80%") 80%
+                  .bar-block.bar-block-c(style="width: 50%")
                 .bar-item-container
                   .bar-topic-title Science Stage 5
-                  .bar-block.bar-block-r(style="width: 35%")
-                .complte-main-text
-                
-
+                  .bar-block.bar-block-r(style="width: 35%") 35%
+                  .bar-block.bar-block-c(style="width: 65%")
+                .bar-item-container
+                  .bar-topic-title GCSE Maths
+                  .bar-block.bar-block-a(style="width: 64%") 64%
+                  .bar-block.bar-block-c(style="width: 65%")
+                .bar-item-container
+                  .bar-topic-title History Stage 3
+                  .bar-block.bar-block-b(style="width: 90%") 90%
+                  .bar-block.bar-block-c(style="width: 50%")
+                .bar-item-container
+                  .bar-topic-title Science Stage 5
+                  .bar-block.bar-block-r(style="width: 35%") 35%
+                  .bar-block.bar-block-c(style="width: 65%")
+                .complete-main-text Youre really good at <span class="span-g">GCSE Maths</span>. Focus on <span class="span-r">History</span>.  
         .row(ng-repeat="item in quiz.data.report")
             .col-xs-8.col-xs-offset-2
                 .well
