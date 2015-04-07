@@ -345,6 +345,19 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 else {
                     //to get user uuid and name
                     QuizData.setUser(result);
+                    QuizData.getTopics(function(topics){
+                        if (topics) {
+                            for (i in topics) {
+                                if (topics[i].parentCategoryId=="-1") {
+                                    self.rootTopics.push(topics[i]);
+                                    self.rootTopicList.push(topics[i].name);
+                                }
+                            }         
+                            $( "#category" ).autocomplete({
+                                source: self.rootTopicList
+                            });                                                     
+                        }
+                    });                     
                     QuizData.getQuizzes(function(data){
                         self.pastQuizzes = data;
 
@@ -392,6 +405,19 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             }) 
     }
     else {
+        QuizData.getTopics(function(topics){
+            if (topics) {
+                for (i in topics) {
+                    if (topics[i].parentCategoryId=="-1") {
+                        self.rootTopics.push(topics[i]);
+                        self.rootTopicList.push(topics[i].name);
+                    }
+                }         
+                $( "#category" ).autocomplete({
+                    source: self.rootTopicList
+                });                                                     
+            }
+        });         
         QuizData.getQuizzes(function(data){
             self.pastQuizzes = data;
 
@@ -648,12 +674,10 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         var q = self.quiz.questions[idx];
         $('#question').val(q.question);
         $('#answer').val(q.answer);
-        if (q.uuid) {
-            $('#questionId').val(q.uuid);    
+        if (q.uuid==undefined) {
+            q.uuid = uuid.v4();
         }        
-        else {
-            $('#questionId').val(uuid.v4());
-        }
+        $('#questionId').val(q.uuid);
         if (q.topicId) {
             for (i in self.topics) {
                 if (self.topics[i].uuid==q.topicId) {
