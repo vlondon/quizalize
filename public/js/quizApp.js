@@ -392,33 +392,36 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         getTopics: function(){
             return topics;
         },
-        selectQuiz: function(categoryId,quizId){
+        selectQuiz: function(categoryId,quizId,callback) {
             var found = false;
             if (categories[categoryId]!=null) {
                 var category = categories[categoryId];
                 for (i in category.quizzes) {
                     var quiz = category.quizzes[i];
-                    if (category.quizzes[i].uuid==quizId) {
+                    if (quiz.uuid==quizId) {
+                        $log.debug("Found quiz", quiz);
                         found = true;
                         ZzishContent.getConsumerContent(quizId,function(err,message) {
-                            $log.debug("Selected quiz", quiz,message);
-                            currentQuiz = quiz;
+                            currentQuiz = message;
                             currentQuiz.questions = message.questions;
                             currentQuizData.totalScore = 0;
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
-                            currentQuizData.name = quiz.name;
+                            currentQuizData.name = currentQuiz.name;
+                            console.log("Current quiz",currentQuizData);
                             currentQuizData.report = [];
-                            ZzishContent.startActivity(quiz, function(err, resp){
-                                $log.debug("Got response from start activity:", resp);
+                            ZzishContent.startActivity(currentQuiz, function(err, resp){
+                                $log.debug("Got response from start activity:", resp);                                
                             });                                                    
-                        })
+                            callback();                                        
+                        })                        
                     }
                 }
             }
             if (!found) {
                 $log.error("Selecting an invalid quiz", "Have quizzes", categories);
             }
+
         },
         getQuestion: function(id, questionCallback){
             if(typeof currentQuiz != 'undefined') {
@@ -606,8 +609,9 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
 
     self.startQuiz = function(categoryId,quizId){
         $log.debug("Selected Quiz: ", categoryId,quizId);
-        QuizData.selectQuiz(categoryId,quizId);
-        $location.path("/quiz/intro")
+        QuizData.selectQuiz(categoryId,quizId,function() {
+            $location.path("/quiz/intro")    
+        });        
     };
 
     self.reloadQuizzes = function(){
