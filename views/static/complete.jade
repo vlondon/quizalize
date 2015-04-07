@@ -101,12 +101,10 @@ style.
 
         .row.inverse-text
             .col-xs-12.text-center
-                h2(ng-show="quiz.data.correct/quiz.data.questionCount > 0.5", style="font-size: 3em;") Congratulations!
-                
                 h2.congratulations-text 
                     |Congratulations 
                     br
-                    |John F.
+                    p(ng-show="quiz.studentData") {{quiz.studentData.studentCode}}
         .row.inverse-text.complete-info-wrap
             .col-xs-6
                 .complete-info
