@@ -1,39 +1,149 @@
+style.
+    .congratulations-text {
+        line-height: 1.5;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 22px;
+        color: white    ;
+        text-shadow: 1px 1px black, 2px 2px black, 3px 3px black, 4px 4px black;
+        margin-bottom: 20px;
+    }
+    .score-title {
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .score-value {
+        font-size: 24px;
+        font-weight: 700;
+        height: 80px;
+        width: 80px;
+        border: 1px solid rgba(255,255,255,.5);
+        border-radius: 100px;
+        padding-top: 12px;
+        margin: 0 auto;
+    }
+    .score-points {
+        text-transform: uppercase;
+        font-size: 8px;
+        font-weight: 300;
+        display: block;
+    }
+    .rag1 {
+        border-color: red;
+    }
+    .rag2 {
+        border-color: orange;
+    }
+    .rag3 {
+        border-color: green;
+
+    }
+    .rag4 {
+        border-color: blue;
+    }
+
+    .complete-info-wrap {
+        color: white;;
+        text-align: center;
+        border-radius: 4px;
+        height: 120px;
+    }
+
+    .complete-info {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .complete-info span {
+        color: rgba(255,255,255,.5);
+        margin-right: 10px;
+    }
+
+    .score-fraction {
+        font-size: 18px;
+        font-weight: 700;
+        display: inline-block;
+        line-height: 120px;
+        width: 100%;
+    }
+    .score-fraction div {
+        line-height: 1.5;
+        display: block;
+    }
+    .fraction-bottom {
+        border-top: 2px solid white;
+        width: 50%;
+        max-width: 60px;
+        margin: 0 auto;
+    }
+    .graph {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        display: block;
+    }
+    .wrapper-complete {
+        background: #222;
+        border: 1px solid black;
+        padding: 20px;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+    .score-time {
+        font-size: 18px;
+    }
+
 .container
-    .row(style="padding-top:10px")
-        .col-xs-8.col-xs-offset-2
-            a.btn.btn-block.btn-info(href="#/list") Home
+    .wrapper-complete
+        .row
+            .col-xs-8.col-xs-offset-2
+                a.btn.btn-block.btn-info.btn-sm(href="#/list") Home
 
+        .row.inverse-text
+            .col-xs-12.text-center
+                h2(ng-show="quiz.data.correct/quiz.data.questionCount > 0.5", style="font-size: 3em;") Congratulations!
+                
+                h2.congratulations-text 
+                    |Congratulations 
+                    br
+                    |John F.
+        .row.inverse-text.complete-info-wrap
+            .col-xs-6
+                .complete-info
+                    .score-value.rag2
+                        {{quiz.totals.score}} 
+                        .score-points Points
+                .complete-info
+                    .score-fraction
+                        .fraction-top {{quiz.data.correct}}
+                        .fraction-bottom {{quiz.data.questionCount}} 
+                .complete-info
+                    .score-time
+                        span.glyphicon.glyphicon-time 
+                        {{quiz.totals.seconds}} Seconds
+            .col-xs-6
+                img.graph(src="http://placehold.it/800x400")
+                .complte-main-text
+                
 
-    .row(style="padding-top:10px")
-        .col-sm-12
-            .row.inverse-text
-                .col-xs-12.text-center
-                    h2(ng-show="quiz.data.correct/quiz.data.questionCount > 0.5", style="font-size: 3em;") Congratulations!
-                    h3 You scored
-                    h1(style="font-size: 4em;") {{quiz.totals.score}}
-                .col-sm-4.col-sm-offset-2
-                    h4 Getting {{quiz.data.correct}}/{{quiz.data.questionCount}} correct
-                .col-sm-4.text-right
-                    h4 You took {{quiz.totals.seconds}} seconds
-
-            .row(ng-repeat="item in quiz.data.report")
-                .col-xs-8.col-xs-offset-2
-                    .well
-                        .row
-                            .col-md-4
-                                h4 
-                                    strong {{item.question}}
-                            .col-md-3
-                                h4 Your answer
-                                strong(ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
-                            .col-md-3
-                                h4 Correct answer&nbsp;
-                                strong {{item.answer}}
-                            .col-md-2
-                                h4 Score: {{item.roundedScore}}
-                                p(ng-show="item.correct") (You took {{item.seconds}}
-                                    ng-pluralize(count="item.seconds", when="{1: ' second', other: ' seconds'}")
-                                    |)
+        .row(ng-repeat="item in quiz.data.report")
+            .col-xs-8.col-xs-offset-2
+                .well
+                    .row
+                        .col-md-4
+                            h4 
+                                strong {{item.question}}
+                        .col-md-3
+                            h4 Your answer
+                            strong(ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
+                        .col-md-3
+                            h4 Correct answer&nbsp;
+                            strong {{item.answer}}
+                        .col-md-2
+                            h4 Score: {{item.roundedScore}}
+                            p(ng-show="item.correct") (You took {{item.seconds}}
+                                ng-pluralize(count="item.seconds", when="{1: ' second', other: ' seconds'}")
+                                |)
 
 
 
