@@ -2,7 +2,10 @@ var token;
 function login() {
   var type = "redirect";
   var url = "http://www.quizalize.com/quiz#/";
-  Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
+  url = "http://localhost:3001/quiz#/";
+  Zzish.debugState(true,false);
+  Zzish.init("aede7a95-44cf-4e81-a71c-01fcdb5e39ce");
+  //Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
 
   token = localStorage.getItem("zzishtoken");
   email = localStorage.getItem("emailAddress");

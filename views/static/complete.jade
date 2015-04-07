@@ -20,8 +20,8 @@ style.
         width: 120px;
         border: 1px solid rgba(255,255,255,.5);
         border-radius: 100px;
-        padding-top: 36px;
-        margin: 0 auto;
+        padding-top: 30px;
+        text-align: center;
     }
     .score-points {
         text-transform: uppercase;
@@ -45,13 +45,12 @@ style.
 
     .complete-info-wrap {
         color: white;;
-        text-align: center;
         border-radius: 4px;
     }
 
     .complete-info {
-        text-align: center;
         margin-bottom: 40px;
+        color: white;
     }
     .complete-info span {
         color: rgba(255,255,255,.5);
@@ -63,7 +62,8 @@ style.
         font-weight: 700;
         display: inline-block;
         line-height: 120px;
-        width: 100%;
+        width: 120px;
+        text-align: center;
     }
     .score-fraction div {
         line-height: 1.5;
@@ -75,19 +75,6 @@ style.
         max-width: 60px;
         margin: 0 auto;
     }
-    .graph {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        display: block;
-    }
-    .wrapper-complete {
-        background: #222;
-        border: 1px solid black;
-        padding: 20px;
-        border-radius: 20px;
-    }
-
     .complete-main-text {
       font-size: 28px;
       text-align: left;
@@ -138,9 +125,19 @@ style.
       background: linear-gradient(90deg, blue, navy);
     }
     .bar-block-c {
+      line-height: 0;
       height: 10px;
-      padding: 0;
       background: grey;
+      font-size: 8px;
+    }
+    .bar-wrapper {
+      background: #2D2833;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 8px;
+      padding: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      color: white;
     }
 
 .container
@@ -150,51 +147,30 @@ style.
                 a.btn.btn-block.btn-info.btn-sm(href="#/list") Home
         .row.inverse-text
             .col-xs-12.text-center
-                h2(ng-show="quiz.data.correct/quiz.data.questionCount > 0.5", style="font-size: 3em;") Congratulations!
                 h2.congratulations-text 
                     |Congratulations 
                     br
-                    |John F.
-        .row.inverse-text.complete-info-wrap
-            .col-sm-6
-                .complete-info
-                    .score-value.rag2
-                        {{quiz.totals.score}} 
-                        .score-points Points
-                .complete-info
-                    .score-fraction
-                        .fraction-top {{quiz.data.correct}}
-                        .fraction-bottom {{quiz.data.questionCount}} 
-                .complete-info
-                    .score-time
-                        span.glyphicon.glyphicon-time 
-                        {{quiz.totals.seconds}} Seconds
-            .col-sm-6
-                .bar-item-container
-                  .bar-topic-title GCSE Maths
-                  .bar-block.bar-block-a(style="width: 64%") 64%
-                  .bar-block.bar-block-c(style="width: 65%")
-                .bar-item-container
-                  .bar-topic-title History Stage 3
-                  .bar-block.bar-block-g(style="width: 80%") 80%
-                  .bar-block.bar-block-c(style="width: 50%")
-                .bar-item-container
-                  .bar-topic-title Science Stage 5
-                  .bar-block.bar-block-r(style="width: 35%") 35%
-                  .bar-block.bar-block-c(style="width: 65%")
-                .bar-item-container
-                  .bar-topic-title GCSE Maths
-                  .bar-block.bar-block-a(style="width: 64%") 64%
-                  .bar-block.bar-block-c(style="width: 65%")
-                .bar-item-container
-                  .bar-topic-title History Stage 3
-                  .bar-block.bar-block-b(style="width: 90%") 90%
-                  .bar-block.bar-block-c(style="width: 50%")
-                .bar-item-container
-                  .bar-topic-title Science Stage 5
-                  .bar-block.bar-block-r(style="width: 35%") 35%
-                  .bar-block.bar-block-c(style="width: 65%")
-                .complete-main-text Youre really good at <span class="span-g">GCSE Maths</span>. Focus on <span class="span-r">History</span>.  
+                    p(ng-show="quiz.studentData") {{quiz.studentData.studentCode}}
+          .col-sm-4.col-sm-offset-2
+              .complete-info
+                  .score-value.rag2
+                      {{quiz.totals.score}} 
+                      .score-points Points
+              .complete-info
+                  .score-fraction
+                      .fraction-top {{quiz.data.correct}}
+                      .fraction-bottom {{quiz.data.questionCount}} 
+              .complete-info
+                  .score-time
+                      span.glyphicon.glyphicon-time 
+                      {{quiz.totals.seconds}} Seconds
+          .col-sm-4
+              .bar-wrapper
+                .bar-item-container(ng-repeat="topic in quiz.topics")
+                  .bar-topic-title {{topic.name}}
+                  .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage}}%
+                  .bar-block.bar-block-c(style="width: {{topic.attainment.class}}%") 65% Average
+              .complte-main-text
         .row(ng-repeat="item in quiz.data.report")
             .col-xs-8.col-xs-offset-2
                 .well

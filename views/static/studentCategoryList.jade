@@ -52,9 +52,9 @@
     .row(ng-repeat="category in quizzes.categories track by $index", style="padding-bottom: 10px")    
         .col-md-12
             .quiz-topic-block                
-                a.quiz-link(onclick="return false;" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse1")
+                a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
-                .quiz-list.collapse#collapse1
+                .quiz-list.collapse(id="collapse{{category.category.uuid}}")
                     a.quiz-item(ng-repeat="quiz in category.quizzes track by $index", style="padding-bottom: 10px")
                         .quiz-title {{quiz.name}}
                         .row.quiz-info-row
