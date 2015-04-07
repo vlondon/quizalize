@@ -19,17 +19,33 @@ exports.landingpage =  function(req, res) {
     res.sendFile('cquiz/index.html',{ root: 'public' });
 };
 
+exports.landingpage2 =  function(req, res) {
+    res.sendFile('cquiz/index2.html',{ root: 'public' });
+};
+
+exports.landingpage3 =  function(req, res) {
+    res.sendFile('cquiz/index3.html',{ root: 'public' });
+};
+
+exports.voucher =  function(req, res) {
+    res.sendFile('cquiz/index4.html',{ root: 'public' });
+};
+
 exports.service =  function(req, res) {
     res.render('service');
 };
-
+    
 exports.privacy =  function(req, res) {
     res.render('privacy');
 };
 
+exports.quizFinder =  function(req, res) {
+    res.render('quizFinder');
+};
+
 exports.createProfile = function(req, res){
     var id = req.body.uuid;
-    var name = "Samir";
+    var name = "";
 
     zzish.createUser(id, name, function(err, resp){
        if(!err){
@@ -91,6 +107,46 @@ exports.getMyQuizzes = function(req, res){
     });
 };
 
+exports.getMyTopics = function(req, res){
+    var profileId = req.params.profileId;
+    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
+
+    zzish.listCategories(profileId, function(err, resp){
+        console.log("My Topics", resp);
+        res.send(resp);
+    });
+};
+
+exports.postTopic = function(req,res){
+    var profileId = req.params.profileId;
+    var data = req.body;
+
+    console.log("postTopic", "Body: ", req.body, "Params: ", req.params);
+
+    zzish.postCategory(profileId, data, function(err, resp){
+        if(!err){
+            res.status = 200
+        }else{
+            res.status = 400
+        }
+        res.send();
+    });
+};
+
+exports.deleteTopic = function(req,res){
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+
+    zzish.deleteCategory(profileId, id, function(err, resp){
+        if(!err){
+            res.status = 200
+        }else{
+            res.status = 400
+        }
+        res.send();
+    });
+};
+
 exports.getQuiz = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;
@@ -123,12 +179,13 @@ exports.postQuiz = function(req,res){
 
     console.log("postQuiz", "Body: ", req.body, "Params: ", req.params);
 
-    zzish.postContent(profileId, id, req.body.name, data, function(err, resp){
+    zzish.postContent(profileId, data, function(err, resp){
         if(!err){
             res.status = 200
         }else{
             res.status = 400
         }
+        res.send();
     });
 };
 
@@ -146,16 +203,16 @@ exports.publishQuiz = function(req, res){
     console.log("Will publish", profileId, id, email, code);
 
     zzish.publishContentToGroup(profileId, email, id, code, function(err, resp){
-         if(!err){
-             console.log("Got publish result", resp);
-             res.status = 200;
-             resp.link = querystring.escape(resp.link);
-            resp.link = replaceAll("/","-----",resp.link);
-             res.send(resp);
-        }else{
-             console.log("Got publish error", err);
-            res.status = 400
+        if(!err){
+            console.log("Got publish result", resp);
+            resp.status = 200;
+            resp.link = querystring.escape(resp.link);
+            resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
+        } else {
+            resp.status = err;
+            resp.message = resp
         }
+        res.send(resp);
     });
 };
 

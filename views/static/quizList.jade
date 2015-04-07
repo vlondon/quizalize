@@ -1,16 +1,27 @@
-.container(ng-hide="quizzes.didSupplyQuizName")
+.container(ng-hide="quizzes.didSupplyQuizName || quizzes.didRequestSample")
     .row
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
                 h1 Create your Quiz
-                h4 Give your quiz a title
 
                 .form-horizontal(role="form")
                     .form-group
-                        .col-sm-8
-                            input.form-control#question(type="text", ng-model="quizzes.newQuizName", placeholder="e.g. Capital Cities", on-enter="quizzes.createQuiz();", autofocus="true")
-                            br
-                        .col-sm-4
+                        .row
+                            .col-sm-4
+                                p Name:
+                                    a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="Give your quiz name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                            .col-sm-8
+                                input.form-control#question(type="text", ng-model="quizzes.newQuizName", placeholder="e.g. Capital Cities", autofocus="true")
+                                br
+                        .row
+                            .col-sm-4
+                                p Topic (Optional):    
+                                    a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="You can provide an optional topic to help organize your quizzes into different topic areas" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                            .col-sm-8
+                                input.form-control#category(type="text", ng-model="quizzes.newQuizCategory", placeholder="e.g. Geography Level 1")
+                                br
+                        .row
+                        .col-sm-12
                             button.btn.btn-primary.btn-block(ng-click="quizzes.createQuiz();", ng-hide="quizzes.newQuizName==''") Create Quiz
 
     .row
@@ -21,16 +32,16 @@
                 .col-sm-6.col-xs-12
                     h4 {{quiz.name}}
                 .col-sm-2.col-xs-6
-                    button.btn.btn-danger.btn-block(ng-click="quizzes.deleteQuiz($index);")
-                        span.glyphicon.glyphicon-remove
-                    br
-                .col-sm-2.col-xs-6
                     button.btn.btn-info.btn-block(ng-click="quizzes.previewQuiz($index);")
                         span.glyphicon.glyphicon-play
                     br
                 .col-sm-2.col-xs-6
                     button.btn.btn-info.btn-block(ng-click="quizzes.editQuiz($index);")
                         span.glyphicon.glyphicon-pencil
+                    br
+                .col-sm-2.col-xs-6
+                    button.btn.btn-danger.btn-block(ng-click="quizzes.deleteQuiz($index);")
+                        span.glyphicon.glyphicon-remove
                     br
             p        
             p.text-info(ng-hide="quizzes.pastQuizzes.length") When you have created quizzes they will appear here
@@ -44,6 +55,8 @@
 //                    h4 {{quiz.name}}
 //                .col-sm-4
 //                    button.btn.btn-info.btn-block(ng-click="quizzes.editSampleQuiz($index);") Edit
-
-
-
+.container(ng-show="quizzes.didRequestSample")
+    .row
+        .row.well
+            .col-sm-8.col-sm-offset-2.text-center(ng-show="quizzes.didRequestSample")
+                h2 Retrieving Quiz Data...

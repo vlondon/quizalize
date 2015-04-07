@@ -1,3 +1,21 @@
+style. 
+  label .glyphicon {
+    color: rgba(0,0,0,.5);
+    font-size: 12px;
+    padding: 6px;
+    cursor: pointer;
+  }
+  label .glyphicon:hover {
+    color: black;
+  }
+
+  a.glyphicon:hover, a.glyphicon:focus {
+    border: none;
+    text-decoration: none; 
+  }
+  .popover {
+  }
+
 .container
     .row
         .col-xs-12.col-lg-8.col-lg-offset-2
@@ -7,12 +25,23 @@
                 p#enterHint.text-info(style="display: none;") You can just use the enter key both to enter a question and then, having entered an answer, to save the entire quiz question.
 
                 form.form-horizontal(role="form")
+                    input.form-control#questionId(type="hidden",value="")
                     .form-group
-                        label.col-sm-3.control-label Question
+                        label.col-sm-3.control-label
+                          | Sub-Topic 
+                          a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="A sub-topic is used to group similar questions together. E.g. “History” or “KS2 Maths”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                        .col-sm-9
+                            input.form-control#topic(type="text", on-enter="create.focusQuestion();", placeholder="e.g. Capital Cities", autofocus="true", tabindex="1" )
+                    .form-group
+                        label.col-sm-3.control-label 
+                          | Question 
+                          a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
                         .col-sm-9
                             input.form-control#question(type="text", on-enter="create.focusAnswer();", placeholder="e.g. What is the capital of France", autofocus="true", tabindex="1" )
                     .form-group
-                        label.col-sm-3.control-label Answer
+                        label.col-sm-3.control-label 
+                          | Answer 
+                          a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Help" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
                         .col-sm-4
                             input.form-control#answer(type="text", on-enter="create.nextFromAnswer();", placeholder="e.g. Paris", ng-model="create.answerText", ng-class="{invalidAnswer: (create.answerText.length > 16)}", tabindex="1" )
                         .col-sm-1
@@ -69,4 +98,10 @@
 
 
 
+script. 
+  $(document).ready(function() {
+    $(".glyphicon").hover(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+  });
 

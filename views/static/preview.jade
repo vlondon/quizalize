@@ -48,7 +48,7 @@ block header
                                 .class-code-text Your <strong>Zzish Class Code</strong> is:
                                 .class-code 
                                     {{preview.classCode}}
-                            .class-link Send your students to <a href="http://quizal.me"><strong>quizal.me</strong></a>.
+                            .class-link Send your students to <strong>quizal.me</strong>.
                             p Your students will be able to attempt the quiz once.
 
                             br
@@ -57,7 +57,7 @@ block header
                             h1 For you
                             p You can see what they are doing in realtime via the Zzish Live Dashboard.
                             br
-                            a.btn.btn-primary.btn-lg(ng-href="#{session.zzishweburl}/learning-hub/tclassroom/{{preview.link}}/live", target="zzishld") Go to the Zzish Live Dashboard
+                            a.btn.btn-primary.btn-lg(ng-href="{{preview.fullLink}}", target="zzishld") Go to the Zzish Live Dashboard
                             br
                             br
                             p If you register (free) you can also view their past progress.
@@ -76,7 +76,7 @@ block header
                     
 
 
-            .col-sm-8.col-sm-offset-2(ng-hide="preview.classCode || preview.userVerified")
+            .col-sm-8.col-sm-offset-2(ng-show="!preview.classCode && !preview.userVerified")
                 h1.text-center Save Quiz
                     .form-horizontal(role="form")
                 p In order to complete your registration and proceed to the Zzish dashboard, please enter your email address.
@@ -93,5 +93,5 @@ block header
                         br
 
             .col-sm-8.col-sm-offset-2(ng-show="preview.statusText")
-                p.text-center.text-info {{preview.statusText}}
+                p.text-center.text-danger {{preview.statusText}}
 

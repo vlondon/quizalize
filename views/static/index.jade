@@ -1,34 +1,50 @@
-.bg-art
+style.
+    .login-action-container {
+        max-width: 400px;
+        margin: 0 auto 20px;
+        padding: 40px;
+        background: rgba(0,0,0, .2);
+        border-radius: 20px;
+    }
 
 .container
+    div#outdated
     .row
-        .col-xs-12
+        .row
             .text-center
-                h1.inverse-text Log in
-       .col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4(ng-hide="start.loading")
+                h1.inverse-text Log in to Quizalize
+                br
+        .row(ng-hide="start.loading")
 
             .well.well-sm(ng-show="start.errorMessage")
                 h3.text-center {{start.errorMessage}}
                 br
+            form(role='form')
+                .col-md-6
+                    .login-action-container.inverse-text
+                        h2 Play a Free Quiz
+                        br
+                        p Choose from a range of pre-existing quizzes. No account needed.
+                        br
+                        button.btn.btn-primary.btn-block.btn-info(ng-click="start.startPublicQuiz()")  Play a Quiz Now
+                    br
+                .col-md-6
+                    .login-action-container.inverse-text
+                        h2 Sign in with Zzish
+                        br
+                        p.inverse-text Get your 
+                            strong Zzish Class Code 
+                            | from your teacher
+                        .form-group
+                            input.form-control#classCode(type="text",autocorrect="off", autocapitalize="off" , placeholder="Your Zzish Class Code", ng-model="start.classCode", autofocus="true")
+                        p.inverse-text Enter your
+                            strong unique name 
+                            | to be shown on the Zzish class dashboard
+                        .form-group
+                            input.form-control#userName(type="text", autocorrect="off", autocapitalize="off", placeholder="Your unique name", ng-model="start.studentName")
+                        br
+                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Start
+                    br
+                    div(ng-show="start.loading")
+                        h3.text-center.inverse-text Fetching Quizzes
 
-
-            form(role='form', ng-submit="start.startQuiz()")
-                p.inverse-text Get your 
-                    strong Zzish Class Code 
-                    | from your teacher
-                .form-group
-                    input.form-control#classCode(type="text",autocorrect="off", autocapitalize="off" , placeholder="Your Zzish Class Code", ng-model="start.classCode", autofocus="true")
-                p.inverse-text Enter your
-                    strong unique name 
-                    | to be shown on the Zzish class dashboard
-                .form-group
-                    input.form-control#userName(type="text", autocorrect="off", autocapitalize="off", placeholder="Your unique name", ng-model="start.studentName")
-                br
-                button.btn.btn-primary.btn-block.btn-info(type="submit")
-                    span.glyphicon.glyphicon-ok
-                    |&nbsp;&nbsp;Start
-
-            br
-
-        .col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4(ng-show="start.loading")
-            h3.text-center.inverse-text Fetching Quizzes

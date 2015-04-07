@@ -66,6 +66,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
 
     var userUuid = localStorage.getItem("userId");
     var userVerified = localStorage.getItem("userVerified")=="true";
+    var savingQuiz = false;
 
     //Initialise User
     var data = localStorage.getItem("quizData");
@@ -132,6 +133,15 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         return $http.get("/create/" + userUuid + "/quizzes/" + uuid);
     };
 
+    var getTopics = function(){
+        return $http.get("/create/" + userUuid + "/topics/");
+    };
+
+    var postTopic = function(topic){    
+        return $http.post("/create/" + userUuid + "/topics/", topic);        
+    };
+
+    
     return{
         getSampleQuizzes: function(callback){
             callback(sampleData);
@@ -147,19 +157,33 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 );                
             }
         },
-        getQuiz: function(id, callback){
+        getTopics: function( callback){
+            getTopics().success(function(resp){
+                $log.debug("Response from server for getting topics", resp);
+                callback(resp);
+            }).error(function(er){
+                $log.debug("Error from server when getting topics`", er);
+            });
+        },
+        getQuiz: function(id, loadFromServer, callback){
             if(typeof data[id] != 'undefined'){
                 if(typeof data[id].questions != 'undefined'){
                     $log.debug("Questions local");
                     callback(data[id]);
-                }else{
-                    $log.debug("No questions, so fetching from server");
-                    getQuiz(data[id].uuid).success(function(resp){
-                        $log.debug("Response from server for getting a quiz", resp);
-                        callback(resp);
-                    }).error(function(er){
-                        $log.debug("Error from server when getting quiz", er);
-                    });
+                }else{                    
+                    if (loadFromServer) {
+                        $log.debug("No questions, so fetching from server");
+                        getQuiz(data[id].uuid).success(function(resp){
+                            $log.debug("Response from server for getting a quiz", resp);
+                            callback(resp);
+                        }).error(function(er){
+                            $log.debug("Error from server when getting quiz", er);
+                        });                        
+                    }
+                    else {
+                        $log.debug("No questions, not loading from server");
+                        callback({uuid: data[id].uuid});
+                    }
                 }
             }
         },
@@ -173,11 +197,31 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             });         
             
         },
-        saveQuiz: function(id, quiz){
+        saveQuiz: function(id, quiz,topics){
             data[id] = quiz;
             $log.debug("Saving Quiz: ", data);
             localStorage.setItem("quizData", JSON.stringify(data));
-            postQuiz(quiz);
+            
+            for (i in topics) {
+                if (topics[i].newObject!=undefined && topics[i].newObject) {                    
+                    topics[i].newObject = null;
+                    postTopic(topics[i]).success(function(resp){                        
+                        $log.debug("Returning from post topic");
+                    });
+                }
+            }            
+            localStorage.setItem("topics", JSON.stringify(topics));
+            if (!savingQuiz) {
+                $log.debug("About to post");
+                savingQuiz = true;
+                postQuiz(quiz).success(function(resp){
+                    $log.debug("Returning from post");
+                    savingQuiz = false;
+                }).error(function(er){
+                    $log.debug("Returning from post");
+                    savingQuiz = false;
+                });                   
+            }
         },
         addQuiz: function(quiz, callback){
             //hide loginButton as you can no longer login if you haven't already done so
@@ -191,6 +235,14 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             if(!data) data = []; //yes it will replace [] with [].
             //get UserId (creates on if it doesn't already exist);
             createUserId(function(err,message) {
+                if (quiz.categoryId=="-1") {
+                    //we don't have the root category, so we need to create
+                    //need to add the category
+                    rootTopicId = uuid.v4();
+                    postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
+                    localStorage.setItem("rootTopicId",rootTopicId);
+                    quiz.categoryId = rootTopicId;
+                }
                 if (quiz.uuid==undefined) {
                     quiz.uuid = uuid.v4();    
                 }
@@ -253,6 +305,9 @@ angular.module('createQuizApp').controller('NavBarController', ['$log', '$timeou
 angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$log', '$http', '$location', function(QuizData, $log, $http, $location){
     var self = this;
     self.newQuizName = "";
+    self.newQuizCategory = "";
+    self.rootTopicList = [];
+    self.rootTopics = [];
 
     if(typeof ($location.search()).name != 'undefined'){
         //Have quiz name
@@ -264,7 +319,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         self.sampleName = $location.search().sample;
         self.didRequestSample = true;
     }
-    else if(typeof ($location.search()).zzishtoken != 'undefined'){
+    else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
         self.token = $location.search().token;
         localStorage.setItem("token",self.token);
@@ -284,11 +339,25 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 if (result=="Invalid Request") {
                     //bad token
                     localStorage.removeItem("token");
+                    localStorage.removeItem("zzishtoken");
                     location.href="/quiz#";
                 }
                 else {
                     //to get user uuid and name
                     QuizData.setUser(result);
+                    QuizData.getTopics(function(topics){
+                        if (topics) {
+                            for (i in topics) {
+                                if (topics[i].parentCategoryId=="-1") {
+                                    self.rootTopics.push(topics[i]);
+                                    self.rootTopicList.push(topics[i].name);
+                                }
+                            }         
+                            $( "#category" ).autocomplete({
+                                source: self.rootTopicList
+                            });                                                     
+                        }
+                    });                     
                     QuizData.getQuizzes(function(data){
                         self.pastQuizzes = data;
 
@@ -305,6 +374,19 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             })                    
     }
     else if (self.userId!=undefined) {
+        QuizData.getTopics(function(topics){
+            if (topics) {
+                for (i in topics) {
+                    if (topics[i].parentCategoryId=="-1") {
+                        self.rootTopics.push(topics[i]);
+                        self.rootTopicList.push(topics[i].name);
+                    }
+                }         
+                $( "#category" ).autocomplete({
+                    source: self.rootTopicList
+                });                                                     
+            }
+        });        
         $http.get("/quiz/profile/"+self.userId)
             .success(function(result){
                 //to get user uuid and name
@@ -323,6 +405,19 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             }) 
     }
     else {
+        QuizData.getTopics(function(topics){
+            if (topics) {
+                for (i in topics) {
+                    if (topics[i].parentCategoryId=="-1") {
+                        self.rootTopics.push(topics[i]);
+                        self.rootTopicList.push(topics[i].name);
+                    }
+                }         
+                $( "#category" ).autocomplete({
+                    source: self.rootTopicList
+                });                                                     
+            }
+        });         
         QuizData.getQuizzes(function(data){
             self.pastQuizzes = data;
 
@@ -357,11 +452,31 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     }
 
 
+
+
     self.createQuiz = function(){
         if(self.newQuizName.length == 0)
             self.newQuizName = "Quiz";
+        if (self.newQuizCategory.length ==0) {
+            self.newQuizCategory = "Root";
+        }
 
-        QuizData.addQuiz({name: self.newQuizName, questions: []},function(idx) {
+        var found = false;
+        var rootTopicId = "-1";
+        self.newQuizCategory = $("#category").val();
+        for (i in self.rootTopics) {
+            if (self.rootTopics[i].name==self.newQuizCategory) {
+                //we already have this category
+                rootTopicId = self.rootTopics[i].uuid;
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            localStorage.setItem("rootTopicId",rootTopicId);    
+        }
+
+        QuizData.addQuiz({name: self.newQuizName, categoryId: rootTopicId, category: self.newQuizCategory, questions: []},function(idx) {
             $location.path("/create/" + idx);
             $log.debug("going to /create/" + idx);
         });
@@ -398,14 +513,34 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
 angular.module('createQuizApp').controller('CreateController', ['QuizData', '$log', '$location', '$routeParams', '$timeout', function(QuizData, $log, $location, $routeParams, $timeout){
     var self = this;
 
+    self.topics = [];
+    self.topicList = [];
     self.hint = "";
+    self.rootTopicId;
     self.distractorsActive = false;
+
+    self.rootTopicId = localStorage.getItem("rootTopicId");
 
     self.id = parseInt($routeParams.id);
     if(isNaN(self.id)) $location.path("/");
 
-    QuizData.getQuiz(self.id, function(quiz){
+    QuizData.getQuiz(self.id, true, function(quiz){
         self.quiz = quiz;
+        QuizData.getTopics(function(topics){
+            if (topics) {
+                for (i in topics) {
+                    if (topics[i].parentCategoryId==self.rootTopicId) {
+                        self.topics.push(topics[i]);
+                        self.topicList.push(topics[i].name);
+                        if (self.topicList.length>0) {
+                            $( "#topic" ).autocomplete({
+                                source: self.topicList
+                            });                                         
+                        }                        
+                    }
+                }                
+            }
+        });
     });
 
     self.clearQuestions = function(){
@@ -425,6 +560,14 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             self['alt' + i] = "";
 
         self.answerText = "";
+    };
+
+    self.nextFromAnswer = function(){
+        if(self.distractorsActive){
+            self.focusAlt(1);
+        }else{
+            self.addQuestion();
+        }
     };
 
     self.nextFromAnswer = function(){
@@ -463,7 +606,33 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.addQuestion = function() {
         var question = $('#question').val();
         var answer = $('#answer').val();
-
+        var topic = $('#topic').val();        
+        var topicId="";
+        var questionId = $("#questionId").val();        
+        if (topic!="") {
+            var found = false;
+            for (i in self.topics) {
+                if (self.topics[i].name==topic) {
+                    topicId = self.topics[i].uuid;
+                    found = true;
+                }
+            }
+            if (!found) {
+                self.topicList.push(topic);
+                var topic_object = {
+                    uuid: uuid.v4(),
+                    name: topic,
+                    newObject: true,
+                    subContent: true,
+                    parentCategoryId: self.rootTopicId
+                }
+                topicId = topic_object.uuid;
+                self.topics.push(topic_object);
+                $( "#topic" ).autocomplete({
+                    source: self.topicList
+                });            
+            }
+        }
         if(question.length == 0) {
             self.focusQuestion();
             return;
@@ -473,16 +642,31 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             self.focusAnswer();
             return;
         }
-
+        var newAnswer = false;
+        if (questionId=="") {
+            questionId = uuid.v4();
+            newAnswer = true;
+        }
+        var question_obj = {uuid: questionId , question: question, answer: answer};
+        if (topicId!="") {
+            question_obj['topicId'] = topicId;
+        }
         if(self.distractorsActive){
             var alternatives = [$('#alt1').val(), $('#alt2').val(), $('#alt3').val()];
-            self.quiz.questions.push({question: question, answer: answer, alternatives: alternatives});
-        }else{
-            self.quiz.questions.push({question: question, answer: answer});
+            question_obj['alternatives'] = alternatives;
+        } 
+        if (!newAnswer) {
+            for (i in self.quiz.questions) {
+                if (self.quiz.questions[i].uuid!=undefined && self.quiz.questions[i].uuid==questionId) {
+                    self.quiz.questions[i] = question_obj;
+                }
+            }
         }
-
+        else {
+            self.quiz.questions.push(question_obj);    
+        }
         self.clearQuestions();
-
+        QuizData.saveQuiz(self.id, self.quiz, self.topics);
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
@@ -490,12 +674,24 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         var q = self.quiz.questions[idx];
         $('#question').val(q.question);
         $('#answer').val(q.answer);
+        if (q.uuid==undefined) {
+            q.uuid = uuid.v4();
+        }        
+        $('#questionId').val(q.uuid);
+        if (q.topicId) {
+            for (i in self.topics) {
+                if (self.topics[i].uuid==q.topicId) {
+                    $('#topic').val(self.topics[i].name);
+                }
+            }            
+            
+        }
         if(q.alternatives){
             for(var i=1; i<4; i++)
                 $('#alt' + i).val(q.alternatives[i-1]);
         }
         $('#question').focus();
-        self.quiz.questions.splice(idx,1);
+        //self.quiz.questions.splice(idx,1);
     };
 
     self.remove = function(idx){
@@ -509,7 +705,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             self.addQuestion();
         }
 
-        QuizData.saveQuiz(self.id, self.quiz);
+        QuizData.saveQuiz(self.id, self.quiz, self.topics);
         $location.path("/preview/" + self.id);
     };
 
@@ -529,7 +725,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
     self.publish = function(){
         $log.debug("Publish with email address:", self.emailAddress, "Quiz:", self.quiz);
-
+        self.statusText = "";
 
         if(self.userVerified || self.classCode || self.emailAddress){
             if(self.emailAddress && self.emailAddress.length > 0){
@@ -545,14 +741,20 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
             QuizData.publishQuiz(self.quiz, details).success(function(result){
                 $log.debug("Response from publishing: ", result);
-                self.classCode = result.code;
-                self.link = result.link;
-                localStorage.setItem("link",self.link);
-                QuizData.saveClassCode(self.classCode);
-                self.published = true;
-                self.publishing = false;
+                if (result.status==200) {
+                    self.classCode = result.code;
+                    self.fullLink = result.link;
+                    localStorage.setItem("link",self.fullLink);
+                    QuizData.saveClassCode(self.classCode);                
+                    self.published = true;                    
+                }
+                else {
+                    self.statusText = "Error when publishing: " + result.message + ". Please Try again";
+                }   
+                self.publishing = false;             
             }).error(function(err){
                 $log.debug("Error from publishing: ", err);
+                self.statusText = err;
             });
 
         }else{
@@ -560,7 +762,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
         }
     };
 
-    QuizData.getQuiz(self.id, function(qz){
+    QuizData.getQuiz(self.id, false, function(qz){
         self.quiz = qz;
 
         self.classCode = QuizData.getClassCode();
@@ -576,8 +778,9 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 angular.module('createQuizApp').controller('DeleteController', ['QuizData', '$log', '$location', '$routeParams', function(QuizData, $log, $location, $routeParams){
     self.id = parseInt($routeParams.id);
     if(isNaN(self.id)) $location.path("/");
-    QuizData.deleteQuiz(self.id, function() {                    
+    QuizData.deleteQuiz(self.id, function() {
         $log.debug("going to /");
-        $location.path("/");        
-    });            
+        $location.path("/");
+    });
 }]);
+

@@ -1,0 +1,77 @@
+.container
+    style.
+        .quiz-find-title {
+            margin-bottom: 40px;
+        }
+        .quiz-topic-block {
+            background: #ed3041;
+            padding: 0 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .quiz-topic-title {
+            padding: 20px;
+            margin: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+        }
+        .quiz-topic-title:hover {
+            color: white;
+        }
+        a.quiz-item {
+            display: block;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,.1);
+            margin-bottom: 20px;
+        }
+        .quiz-item:hover {
+            cursor: pointer;
+            background: #efefef;
+        }
+        .quiz-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .quiz-question-count {
+            font-size: 12px;
+            font-weight: 300;
+            color: rgba(0,0,0,.5);
+        }
+        .quiz-difficulty {
+            font-size: 12px;
+            font-weight: 300;
+            text-align: right;
+            color: rgba(0,0,0,.5);
+        }
+
+    .row(ng-repeat="category in quizzes.categories track by $index", style="padding-bottom: 10px")    
+        .col-md-12
+            .quiz-topic-block                
+                a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
+                    h2.quiz-topic-title.text-center {{category.category.name}}
+                .quiz-list.collapse(id="collapse{{category.category.uuid}}")
+                    a.quiz-item(ng-repeat="quiz in category.quizzes track by $index", style="padding-bottom: 10px")
+                        .quiz-title {{quiz.name}}
+                        .row.quiz-info-row
+                            .col-md-12
+                                button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
+                                
+
+    .col-sm-6.col-sm-offset-3(ng-hide="quizzes.categories.length==0 && !quizzes.loading")
+        .well
+            br
+            button.btn.btn-info.btn-block(ng-click="quizzes.reloadQuizzes();")
+                span.glyphicon.glyphicon-refresh
+                |&nbsp;Check for new quizzes
+            br
+            a.btn.btn-default.btn-block(ng-click="quizzes.logout();")
+                span.glyphicon.glyphicon-user
+                | &nbsp;Logout
+
+    .col-sm-6.col-sm-offset-3(ng-show="quizzes.loading")
+        h3.text-center.inverse-text Fetching Quizzes
