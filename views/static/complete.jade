@@ -151,7 +151,7 @@ style.
                     |Congratulations 
                     br
                     p(ng-show="quiz.studentData") {{quiz.studentData.studentCode}}
-          .col-sm-4.col-sm-offset-2
+          .col-sm-2.col-sm-offset-2.col-xs-offset-3
               .complete-info
                   .score-value.rag2
                       {{quiz.totals.score}} 
@@ -164,7 +164,7 @@ style.
                   .score-time
                       span.glyphicon.glyphicon-time 
                       {{quiz.totals.seconds}} Seconds
-          .col-sm-4
+          .col-sm-6
               .bar-wrapper
                 .bar-item-container(ng-repeat="topic in quiz.topics")
                   .bar-topic-title {{topic.name}}
