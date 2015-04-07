@@ -207,6 +207,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
     // setup/add helper methods...
     var quizzes = [];
     var categories = {};
+    var topics = {};
     var classCode, studentCode, currentQuiz;
     var currentQuizData = {correct: 0,
             questionCount: 0, totalScore: 0, name: "", report: []};
@@ -272,6 +273,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         }
         quizzes = [];
         categories = {};
+        topics = {};
         for (i in result.contents) {
             quiz = result.contents[i];
             var cuuid = "undefined";
@@ -286,14 +288,20 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                     }                    
                 }
             }
-            if (category.name=="") {
-                category.name="Your Quizzes";
-            }
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: []} ;
             }
             categories[cuuid].quizzes.push(quiz);        
+            if (category.name=="") {
+                category.homework = true;
+            }
+            if (category.homework) {
+                category.name="Quizzes (" + categories[cuuid].quizzes.length + ")";
+            }            
             quizzes.push(quiz);
+        }
+        for (i in result.categories) {
+            topics[result.categories[i].uuid] = result.categories[i];
         }
         $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
     };
@@ -338,6 +346,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             });
         },
         logout: function(){
+            classCode = undefined;
+            studentCode = undefined;
             if (userProfileId=="") {
                 studentName = localStorage.getItem("zname");
                 userProfileId = localStorage.getItem("zprofileId"+studentName); 
@@ -379,6 +389,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         getCategories: function(){
             return categories;
         },
+        getTopics: function(){
+            return topics;
+        },
         selectQuiz: function(categoryId,quizId){
             var found = false;
             if (categories[categoryId]!=null) {
@@ -386,8 +399,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                 for (i in category.quizzes) {
                     var quiz = category.quizzes[i];
                     if (category.quizzes[i].uuid==quizId) {
+                        found = true;
                         ZzishContent.getConsumerContent(quizId,function(err,message) {
-                            found = true;
                             $log.debug("Selected quiz", quiz,message);
                             currentQuiz = quiz;
                             currentQuiz.questions = message.questions;
@@ -492,6 +505,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                 score: score,
                 roundedScore: Math.round(score),
                 seconds: Math.ceil(duration/1000),
+                topicId: question.topicId,
                 duration: duration
             };
 
@@ -936,8 +950,55 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     var calculateTotals = function(items){
         var t = {seconds: 0, score: 0};
         for(var j in items){
-            t.score += items[j].score;
-            t.seconds += items[j].seconds;
+            var item = items[j];
+            t.score += item.score;
+            t.seconds += item.seconds;
+            if (item.topicId!=undefined) {
+                if (self.alltopics[item.topicId]!=undefined) {
+                    if (self.alltopics[item.topicId].stats==undefined) {
+                        if (self.alltopics[item.topicId].attainment==undefined) {
+                            self.alltopics[item.topicId].attainment = {
+                                'red': 0.1,
+                                'amber': 0.4,
+                                'green': 0.7,
+                                'blue': 0.9
+                            };
+                        }
+                        self.alltopics[item.topicId].stats = {
+                            score: 0,
+                            correct: 0,
+                            answered: 0,
+                            seconds: 0,
+                            percentage: 0
+                        }
+                    }
+                    self.alltopics[item.topicId].stats.score+=item.score;
+                    self.alltopics[item.topicId].stats.seconds+=item.seconds;
+                    if (item.correct!=undefined) {
+                        self.alltopics[item.topicId].stats.correct+=(item.correct==true?1:0);    
+                        self.alltopics[item.topicId].stats.answered++;
+                        self.alltopics[item.topicId].stats.percentage = (self.alltopics[item.topicId].stats.correct/self.alltopics[item.topicId].stats.answered)*100;
+                        if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['blue']*100) {
+                            self.alltopics[item.topicId].stats.state = 'b';
+                        }
+                        else if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['green']*100) {
+                            self.alltopics[item.topicId].stats.state = 'g';
+                        }
+                        else if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['amber']*100) {
+                            self.alltopics[item.topicId].stats.state = 'a';
+                        }
+                        else if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['red']*100) {
+                            self.alltopics[item.topicId].stats.state = 'r';
+                        }
+                    }
+                }
+            }
+        }
+        //only show topics for which we have data
+        for (i in self.alltopics) {
+            if (self.alltopics[i].stats!=undefined) {
+                self.topics[i]=self.alltopics[i];
+            }
         }
         t.score = Math.round(t.score);
         return t;
@@ -945,6 +1006,8 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
 
     self.data = QuizData.currentQuizData;
     self.studentData = QuizData.getStudentData();
+    self.topics = {};
+    self.alltopics = QuizData.getTopics();
 
     self.totals = calculateTotals(QuizData.currentQuizData.report);
 
