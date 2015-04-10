@@ -166,9 +166,8 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
             if (quiz.categoryId) {
                 parameters.extensions.categoryId = quiz.categoryId;
             }
-            zzish.startActivityWithObjects(self.userId,parameters, function(err, message){
+            currentActivityId = zzish.startActivityWithObjects(self.userId,parameters, function(err, message){
                 $log.debug("Start Activity response... saving id", message);
-                currentActivityId = message.id;
                 callback(err, message);
             });
 	   },
