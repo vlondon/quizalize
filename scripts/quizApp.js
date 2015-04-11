@@ -6,22 +6,22 @@ var attachFastClick = require('fastclick');
 angular.module('quizApp', ['ngRoute', 'ngAnimate']);
 
 
-require('config/routing');
-require('config/logProvider');
+require('quizApp/config/routing');
+require('quizApp/config/logProvider');
 
-require('factories/ZzishContent');
-require('factories/QuizData');
+require('quizApp/factories/ZzishContent');
+require('quizApp/factories/QuizData');
 
-require('controllers/StartController');
-require('controllers/QuizzesController');
-require('controllers/QuizController');
-require('controllers/MultipleController');
-require('controllers/ScrambledController');
-require('controllers/ManualController');
-require('controllers/IntroController');
-require('controllers/AnswerController');
-require('controllers/CompleteController');
+require('quizApp/controllers/StartController');
+require('quizApp/controllers/QuizzesController');
+require('quizApp/controllers/QuizController');
+require('quizApp/controllers/MultipleController');
+require('quizApp/controllers/ScrambledController');
+require('quizApp/controllers/ManualController');
+require('quizApp/controllers/IntroController');
+require('quizApp/controllers/AnswerController');
+require('quizApp/controllers/CompleteController');
 
 angular.module('quizApp').run(function() {
-    attachFastClick.attach(document.body);
+    attachFastClick(document.body);
 });
