@@ -1,0 +1,21 @@
+{
+    "ecmaFeatures": {
+        "objectLiteralShorthandProperties": true
+    },
+    "rules": {
+        "semi": 2,
+        "quotes": [1, "single"],
+        "no-multi-spaces": 0,
+        "no-unused-vars": 1,
+        "strict": [2, "never"],
+        "no-underscore-dangle": false
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "globals": {
+        "super": true
+    }
+}
