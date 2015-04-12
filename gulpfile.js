@@ -36,49 +36,25 @@ gulp.task('webpack-dev', function() {
 
 
 // Scripts
-gulp.task('eslint', function () {
-    return gulp.src(['src/main/scripts/**/*.{js, jsx}'])
-        .pipe($.plumber(plumberConfig))
-        .pipe($.eslint('./.eslintrc'))
-        .pipe($.eslint.format());
-
-});
-
+// gulp.task('eslint', function () {
+//     return gulp.src(['src/main/scripts/**/*.{js, jsx}'])
+//         .pipe($.plumber(plumberConfig))
+//         .pipe($.eslint('./.eslintrc'))
+//         .pipe($.eslint.format());
+//
+// });
 
 
 
 // Clean
 gulp.task('clean', function (cb) {
     del([
-        'public/js/**',
+        'public/js/**'
     ], cb);
 });
 
 
 // Watch
-gulp.task('watch', ['clean', 'webpack'], function () {
-    isWatch = true;
-    // Watch for changes in `app` folder
-    // gulp.watch([
-    //     'src/main/webapp/*.html',
-    //     'src/main/webapp/styles/**/*.css',
-    //     'src/main/scripts/**/*.js',
-    //     'src/main/webapp/images/**/*'
-    // ], function(event) {
-    //     return gulp.src(event.path);
-    // });
-    //
-    // // Watch .scss files
-    // gulp.watch('src/main/scss/**/*.scss', ['styles']);
-    //
-    // // Watch .js files
-    // gulp.watch('src/main/scripts/**/*.js', ['eslint']); //, 'karma'
-
-    // gulp.watch('src/main/scripts/**/*.jsx', ['eslint']);
-
-
-    // Watch image files
-    //gulp.watch('src/main/webapp/images/**/*', ['images']);
-
-
-});
+gulp.task('watch', ['clean', 'webpack']);
+gulp.task('dev', ['clean', 'webpack-dev']);
+gulp.task('default', ['clean', 'webpack-prod']);

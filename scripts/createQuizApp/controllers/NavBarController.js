@@ -1,4 +1,3 @@
-
 angular.module('createQuizApp').controller('NavBarController', ['$log', '$timeout', function($log, $timeout){
     var self = this;
     self.showHelp = false;

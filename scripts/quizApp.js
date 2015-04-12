@@ -1,6 +1,6 @@
 //TODO Put this somewhere sensible
 
-var attachFastClick = require('fastclick');
+var FastClick = require('fastclick');
 
 // Angular is global and already defined in vendor.js
 angular.module('quizApp', ['ngRoute', 'ngAnimate']);
@@ -23,5 +23,5 @@ require('quizApp/controllers/AnswerController');
 require('quizApp/controllers/CompleteController');
 
 angular.module('quizApp').run(function() {
-    attachFastClick(document.body);
+    FastClick.attach(document.body);
 });

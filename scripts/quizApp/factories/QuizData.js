@@ -1,4 +1,13 @@
 angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
+
+    var uuid = require('node-uuid');
+    var settings = require('quizApp/utils/settings');
+
+    var maxTime = settings.maxTime;
+    var maxScore = settings.maxScore;
+    var minScore = settings.minScore;
+    var gracePeriod = settings.gracePeriod;
+
     // setup/add helper methods...
     var quizzes = [];
     var categories = {};
@@ -69,14 +78,14 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         quizzes = [];
         categories = {};
         topics = {};
-        for (i in result.contents) {
-            quiz = result.contents[i];
+        for (var i in result.contents) {
+            var quiz = result.contents[i];
             var cuuid = "undefined";
             var category = { name: "Other" };
             if (quiz.categoryId!=undefined) {
                 cuuid = quiz.categoryId;
-                if (result.categories!=undefined) {
-                    for (i in result.categories) {
+                if (result.categories !== undefined) {
+                    for (var i in result.categories) {
                         if (result.categories[i].uuid==quiz.categoryId) {
                             category = result.categories[i];
                         }
@@ -95,7 +104,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             }
             quizzes.push(quiz);
         }
-        for (i in result.categories) {
+        for (var i in result.categories) {
             topics[result.categories[i].uuid] = result.categories[i];
         }
         $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
@@ -191,7 +200,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             var found = false;
             if (categories[categoryId]!=null) {
                 var category = categories[categoryId];
-                for (i in category.quizzes) {
+                for (var i in category.quizzes) {
                     var quiz = category.quizzes[i];
                     if (quiz.uuid==quizId) {
                         $log.debug("Found quiz", quiz);

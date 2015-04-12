@@ -1,23 +1,23 @@
-var attachFastClick = require('fastclick');
+var FastClick = require('fastclick');
 
 angular.module('createQuizApp', ['ngRoute', 'ngAnimate']);
 
 require('createQuizApp/config/routing');
 require('createQuizApp/config/logProvider');
 
-require('factories/QuizData');
+require('createQuizApp/factories/QuizData');
 
-require('directives/onEnter');
-require('directives/onTab');
+require('createQuizApp/directives/onEnter');
+require('createQuizApp/directives/onTab');
 
-require('controllers/CreateController');
-require('controllers/DeleteController');
-require('controllers/NavBarController');
-require('controllers/PreviewController');
-require('controllers/QuizzesController');
+require('createQuizApp/controllers/CreateController');
+require('createQuizApp/controllers/DeleteController');
+require('createQuizApp/controllers/NavBarController');
+require('createQuizApp/controllers/PreviewController');
+require('createQuizApp/controllers/QuizzesController');
 
 
 angular.module('createQuizApp').run(["$rootScope", "$anchorScroll", function ($rootScope, $anchorScroll) {
     $rootScope.$on("$locationChangeSuccess", $anchorScroll);
-    attachFastClick(document.body);
+    FastClick.attach(document.body);
 }]);

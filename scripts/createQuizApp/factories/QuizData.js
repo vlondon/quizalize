@@ -1,5 +1,7 @@
 
 angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($http, $log){
+
+    var uuid = require('node-uuid');
     // setup/add helper methods, variables...
 
     var userUuid = localStorage.getItem("userId");
@@ -176,9 +178,9 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 if (quiz.categoryId=="-1") {
                     //we don't have the root category, so we need to create
                     //need to add the category
-                    rootTopicId = uuid.v4();
+                    var rootTopicId = uuid.v4();
                     postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
-                    localStorage.setItem("rootTopicId",rootTopicId);
+                    localStorage.setItem("rootTopicId", rootTopicId);
                     quiz.categoryId = rootTopicId;
                 }
                 if (quiz.uuid==undefined) {
