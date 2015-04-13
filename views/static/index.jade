@@ -9,11 +9,8 @@ style.
 
 .container
     div#outdated
+    br
     .row
-        .row
-            .text-center
-                h1.inverse-text Log in to Quizalize
-                br
         .row(ng-hide="start.loading")
 
             .well.well-sm(ng-show="start.errorMessage")
@@ -22,11 +19,11 @@ style.
             form(role='form')
                 .col-md-6
                     .login-action-container.inverse-text
-                        h2 Sign in with Zzish
+                        h2 Play a Class Quiz
                         br
-                        p.inverse-text Get your 
+                        p.inverse-text Login with your 
                             strong Zzish Class Code 
-                            | from your teacher
+                            | to see quizzes for your class.
                         .form-group
                             input.form-control#classCode(type="text",autocorrect="off", autocapitalize="off" , placeholder="Your Zzish Class Code", ng-model="start.classCode", autofocus="true")
                         p.inverse-text Enter your
@@ -35,8 +32,10 @@ style.
                         .form-group
                             input.form-control#userName(type="text", autocorrect="off", autocapitalize="off", placeholder="Your unique name", ng-model="start.studentName")
                         br
-                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Start
-                    br
+                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Start                        
+                        br
+                        div(ng-show="start.loading")
+                            h3.text-center.inverse-text Fetching Quizzes
                 .col-md-6
                     .login-action-container.inverse-text
                         h2 Play a Free Quiz
@@ -44,7 +43,6 @@ style.
                         p Choose from a range of pre-existing quizzes. No account needed.
                         br
                         button.btn.btn-primary.btn-block.btn-info(ng-click="start.startPublicQuiz()")  Play a Quiz Now
-                    br                    
-                    div(ng-show="start.loading")
-                        h3.text-center.inverse-text Fetching Quizzes
+                    br
+                            
 
