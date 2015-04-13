@@ -546,6 +546,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.clearQuestions = function(){
         $('#question').val("");
         $('#question').val("");
+        $("#questionId").val("");
         $('#answer').val("");
         $('#alt1').val("");
         $('#alt2').val("");
@@ -655,16 +656,22 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             var alternatives = [$('#alt1').val(), $('#alt2').val(), $('#alt3').val()];
             question_obj['alternatives'] = alternatives;
         } 
+        var found = false;
         if (!newAnswer) {
             for (i in self.quiz.questions) {
                 if (self.quiz.questions[i].uuid!=undefined && self.quiz.questions[i].uuid==questionId) {
+                    found = true;
                     self.quiz.questions[i] = question_obj;
                 }
+            }
+            if (!found) {
+                self.quiz.questions.push(question_obj);        
             }
         }
         else {
             self.quiz.questions.push(question_obj);    
         }
+
         self.clearQuestions();
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");

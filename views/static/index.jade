@@ -22,14 +22,6 @@ style.
             form(role='form')
                 .col-md-6
                     .login-action-container.inverse-text
-                        h2 Play a Free Quiz
-                        br
-                        p Choose from a range of pre-existing quizzes. No account needed.
-                        br
-                        button.btn.btn-primary.btn-block.btn-info(ng-click="start.startPublicQuiz()")  Play a Quiz Now
-                    br
-                .col-md-6
-                    .login-action-container.inverse-text
                         h2 Sign in with Zzish
                         br
                         p.inverse-text Get your 
@@ -45,6 +37,14 @@ style.
                         br
                         button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Start
                     br
+                .col-md-6
+                    .login-action-container.inverse-text
+                        h2 Play a Free Quiz
+                        br
+                        p Choose from a range of pre-existing quizzes. No account needed.
+                        br
+                        button.btn.btn-primary.btn-block.btn-info(ng-click="start.startPublicQuiz()")  Play a Quiz Now
+                    br                    
                     div(ng-show="start.loading")
                         h3.text-center.inverse-text Fetching Quizzes
 
