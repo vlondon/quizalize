@@ -163,9 +163,11 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
                     groupCode: self.code
                 }   
             }
-            zzish.startActivityWithObjects(self.userId,parameters, function(err, message){
+            if (quiz.categoryId) {
+                parameters.extensions.categoryId = quiz.categoryId;
+            }
+            currentActivityId = zzish.startActivityWithObjects(self.userId,parameters, function(err, message){
                 $log.debug("Start Activity response... saving id", message);
-                currentActivityId = message.id;
                 callback(err, message);
             });
 	   },
@@ -625,6 +627,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         QuizData.login(null,function(err, res){
             if(!err){
                 self.quizzes = QuizData.getQuizzes();
+                self.categories = QuizData.getCategories();
                 self.loading = false;
             }else{
                 $log.error("Unable to refresh quizzes", err);
