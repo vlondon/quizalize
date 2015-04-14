@@ -79,7 +79,7 @@ style.
     .row
         .col-xs-12.col-lg-8.col-lg-offset-2
             .well#questionsAnd(ng-show="create.quiz.questions.length")
-                .row(ng-repeat="item in create.quiz.questions", style="padding: 10px;")
+                .row(ng-repeat="item in create.quiz.questions track by $index", style="padding: 10px;")
                     .col-sm-5
                         h4 {{$index + 1}}. {{item.question}}
                     .col-sm-3
