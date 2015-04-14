@@ -347,26 +347,28 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                     QuizData.setUser(result);
                     QuizData.getTopics(function(topics){
                         if (topics) {
+                            var topicsArray = {};
                             for (i in topics) {
                                 if (topics[i].parentCategoryId=="-1") {
                                     self.rootTopics.push(topics[i]);
                                     self.rootTopicList.push(topics[i].name);
                                 }
-                            }         
+                                topicsArray[topics[i].uuid]=topics;
+                            }                                     
+                            localStorage.setItem("topics", JSON.stringify(topicsArray));                            
                             $( "#category" ).autocomplete({
                                 source: self.rootTopicList
                             });                                                     
                         }
+                        QuizData.getQuizzes(function(data){
+                            self.pastQuizzes = data;
+                            localStorage.setItem("quizData", JSON.stringify(data));
+                            if(self.didSupplyQuizName){
+                                $log.debug("Should create Quiz, with name", self.newQuizName);
+                               self.createQuiz();
+                            }
+                        });                        
                     });                     
-                    QuizData.getQuizzes(function(data){
-                        self.pastQuizzes = data;
-
-                        if(self.didSupplyQuizName){
-                            $log.debug("Should create Quiz, with name", self.newQuizName);
-                           self.createQuiz();
-                        }
-                    });
-
                 }
             })
             .error(function(err){
@@ -526,6 +528,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
 
     QuizData.getQuiz(self.id, true, function(quiz){
         self.quiz = quiz;
+        self.rootTopicId = quiz.categoryId;
         QuizData.getTopics(function(topics){
             if (topics) {
                 for (i in topics) {

@@ -209,8 +209,10 @@ exports.publishQuiz = function(req, res){
             resp.link = querystring.escape(resp.link);
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
         } else {
+            var errorMessage = resp;
+            resp = {};
             resp.status = err;
-            resp.message = resp
+            resp.message = errorMessage
         }
         res.send(resp);
     });
