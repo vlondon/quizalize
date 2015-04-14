@@ -51,13 +51,13 @@
     .row
         h1(ng-show="quizzes.studentData.studentCode",style="color: white") Hi {{quizzes.studentData.studentCode}}!
 
-    .row(ng-repeat="category in quizzes.categories track by $index | orderBy:quizzes.orderIndex", style="padding-bottom: 10px")    
+    .row(ng-repeat="category in quizzes.categories | orderBy:quizzes.orderIndex track by $index", style="padding-bottom: 10px")    
         .col-md-12
             .quiz-topic-block                
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
                 .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
-                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes track by $index")
+                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderBy:'index' track by $index")
                         .col-xs-9
                             a.quiz-item
                                 .quiz-title {{quiz.name}}
@@ -66,7 +66,7 @@
                                 button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
                                 
 
-    .col-sm-6.col-sm-offset-3(ng-hide="quizzes.categories.length==0 && !quizzes.loading")
+    .col-sm-6.col-sm-offset-3(ng-hide="(quizzes.categories.length==0 && !quizzes.loading) || quizzes.studentData.studentCode==undefined")
         .well
             br
             button.btn.btn-info.btn-block(ng-click="quizzes.reloadQuizzes();")
@@ -78,3 +78,5 @@
                 | &nbsp;Logout
 
             h3.text-center(ng-show="quizzes.loading") Fetching Quizzes
+
+    .col-sm-6.col-sm-offset-3(ng-hide="(quizzes.categories.length==0 && !quizzes.loading) || quizzes.studentData.studentCode==undefined")

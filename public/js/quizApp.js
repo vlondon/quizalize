@@ -208,7 +208,7 @@ angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope'
 angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
     // setup/add helper methods...
     var quizzes = [];
-    var categories = {};
+    var categories = [];
     var topics = {};
     var classCode, studentCode, currentQuiz;
     var currentQuizData = {correct: 0,
@@ -274,7 +274,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
             self.studentCode = result.code;
         }
         quizzes = [];
-        categories = {};
+        categories = [];
         topics = {};
         for (i in result.contents) {
             quiz = result.contents[i];
@@ -290,8 +290,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                     }                    
                 }
             }
+            $log.debug("Order",quiz.order);
             if (categories[cuuid]==undefined) {
-                categories[cuuid] = { category: category, quizzes: [], index: category.index} ;
+                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
             categories[cuuid].quizzes.push(quiz);        
             if (category.name=="") {
@@ -304,6 +305,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         }
         for (i in result.categories) {
             topics[result.categories[i].uuid] = result.categories[i];
+        }
+        for (i in categories) {
+            categories.push(categories[i]);    
         }
         $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
     };
@@ -607,7 +611,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     var self = this;
 
     self.loading = true;
-    self.orderIndex = "index";
+    self.orderIndex = "category.name";
 
     self.startQuiz = function(categoryId,quizId){
         $log.debug("Selected Quiz: ", categoryId,quizId);
