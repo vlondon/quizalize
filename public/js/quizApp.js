@@ -291,7 +291,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                 }
             }
             if (categories[cuuid]==undefined) {
-                categories[cuuid] = { category: category, quizzes: []} ;
+                categories[cuuid] = { category: category, quizzes: [], index: category.index} ;
             }
             categories[cuuid].quizzes.push(quiz);        
             if (category.name=="") {
@@ -607,6 +607,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     var self = this;
 
     self.loading = true;
+    self.orderIndex = "index";
 
     self.startQuiz = function(categoryId,quizId){
         $log.debug("Selected Quiz: ", categoryId,quizId);
