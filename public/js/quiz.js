@@ -7,18 +7,9 @@ function login() {
   token = localStorage.getItem("zzishtoken");
   email = localStorage.getItem("emailAddress");
   if (token==null && email==null) {
-      Zzish.login(type,url,function(err,message) {          
-          $("#LoginButton").html("Logout");
-          console.log("Logged in with status and message",err,message);
-          if (!err) {
-              loginUser(message);
-          }
-          else {
-              console.log("Error",err);
-          }
-      });            
-   }
-   else if (email!=null) {
+      Zzish.login(type,url);            
+  }
+  else if (email!=null) {
           localStorage.clear();
           $("#LoginButton").html("Login with Zzish");
           location.href="/quiz/";
