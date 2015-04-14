@@ -156,7 +156,7 @@ style.
                     br
                     p(ng-show="quiz.studentData") {{quiz.studentData.studentCode}}
           .well.well--complete.col-xs-8.col-xs-offset-2
-            div(ng-hide="quiz.topics.length > 0")
+            div(ng-hide="quiz.hasTopics")
               .col-sm-4
                   .complete-info
                       .score-value.rag2
@@ -177,7 +177,7 @@ style.
                           span.glyphicon.glyphicon-time 
                           {{quiz.totals.seconds}} Seconds
 
-            div(ng-show="quiz.topics.length > 0")
+            div(ng-show="quiz.hasTopics")
               .col-sm-4
                   .complete-info
                       .score-value.rag2
@@ -196,7 +196,6 @@ style.
                     .bar-item-container(ng-repeat="topic in quiz.topics")
                       .bar-topic-title {{topic.name}}
                       .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage}}%
-                      .bar-block.bar-block-c(style="width: {{topic.attainment.class}}%") 65% Average
                   .complte-main-text
         .row(ng-repeat="item in quiz.data.report")
             .col-xs-8.col-xs-offset-2
