@@ -66,7 +66,7 @@
                                 button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
                                 
 
-    .col-sm-6.col-sm-offset-3(ng-hide="(quizzes.categories.length==0 && !quizzes.loading) || quizzes.studentData.studentCode==undefined")
+    .col-sm-6.col-sm-offset-3(ng-hide="quizzes.studentData.studentCode==undefined")
         .well
             br
             button.btn.btn-info.btn-block(ng-click="quizzes.reloadQuizzes();")
@@ -78,5 +78,3 @@
                 | &nbsp;Logout
 
             h3.text-center(ng-show="quizzes.loading") Fetching Quizzes
-
-    .col-sm-6.col-sm-offset-3(ng-hide="(quizzes.categories.length==0 && !quizzes.loading) || quizzes.studentData.studentCode==undefined")
