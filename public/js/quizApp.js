@@ -290,7 +290,6 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                     }                    
                 }
             }
-            $log.debug("Order",quiz.order);
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
@@ -1032,4 +1031,24 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         QuizData.logout();
     }
 }]);
+
+angular.module('quizApp').directive('clickOnce', function () {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var replacementText = attrs.clickOnce;
+
+            element.bind('click', function() {
+                $timeout(function() {
+                    if (replacementText) {
+                        element.html(replacementText);
+                    }
+                    element.attr('disabled', true);
+                }, 0);
+            });
+        }
+    };
+});
+
+
 
