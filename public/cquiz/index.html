@@ -48,7 +48,8 @@ var google_remarketing_only = true;
       <div class="item-inner item-inner__hero item-1">
         <div class="cta-container">
           <h1 class="cta-title">Instant classroom quiz games</h1>
-          <a class="cta" href="#service">Create a quiz for free</a>
+          <a class="cta1" href="http://www.quizalize.com/app#/">Play a Quiz</a><br/><br/><br/>
+          <a class="cta2" href="#service">Create a quiz for free</a>
         </div>
       </div>
   </section>
@@ -204,7 +205,18 @@ var google_remarketing_only = true;
                     <br/>
                     <br/>
                     <h2> Or try one of these</h2>
-                    <div class="col-md-4">
+                     <div class="col-md-3">
+                      <ul class="example-list">
+                        <li><h3>KS2 SATS</h3></li>
+                        <li><a href="/quiz#/?sample=44c72853-8a1b-40f4-83ed-7e0a16372c96">KS2 - Y3 - Numbers 1</a></li>
+                        <li><a href="/quiz#/?sample=91dff584-0e16-45e8-b220-cecaeafd0dfa">KS2 - Y3 -  Numbers 2</a></li>
+                        <li><a href="/quiz#/?sample=dbe1a63d-d559-4604-9e96-6de241555443">KS2 - Y3 -  Other</a></li>
+                        <li><a href="/quiz#/?sample=6d5c1aab-0601-40ef-aa6e-b9205c5ecd34">KS2 - Y6 -  Numbers 1</a></li>
+                        <li><a href="/quiz#/?sample=f936b163-8756-4654-aa62-56cd19c6e9f2">KS2 - Y6 -  Numbers 2</a></li>
+                        <li><a href="/quiz#/?sample=d1bfa0ad-76e1-4af7-9186-6ad170f4d436">KS2 - Y6 -  Other</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-md-3">
                       <ul class="example-list">
                         <li><h3>Primary School</h3></li>
                         <li><a href="/quiz#/?sample=9302f1b5-cde8-4d0b-b3cb-a0f8ca3736fa">Times Table (1 to 6)</a></li>
@@ -214,7 +226,7 @@ var google_remarketing_only = true;
                         <li><a href="/quiz#/?sample=61c31276-ed30-4bfc-9f8d-732bbf7e2fd7">Verbs 5 (Year 5)</a></li>
                       </ul>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <ul class="example-list">
                         <li><h3>Secondary School</h3></li>
                         <li><a href="/quiz#/?sample=19006666-a6a6-4278-9bc7-1ff598f67f67">Simple Algebra</a></li>
@@ -224,15 +236,15 @@ var google_remarketing_only = true;
                         <li><a href="/quiz#/?sample=bf2b1480-665b-40d3-b280-382a532ebcdc">Spanish (Animals)</a></li>
                       </ul>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
 
                       <ul class="example-list">
                         <li><h3>General Knowledge</h3></li>
-                        <li><a href="/quiz#/?sample=589bc487-da38-45ca-ad25-72b3644c08d0">US Geography (State Capitals)</a></li>
+                        <li><a href="/quiz#/?sample=589bc487-da38-45ca-ad25-72b3644c08d0">US Capital Cities </a></li>
                         <li><a href="/quiz#/?sample=887c9a73-4b2b-495a-af6b-cbb4513a552b">Inventors and Inventions</a></li>
                         <li><a href="/quiz#/?sample=db17ab69-fef3-48e0-b5a9-dbfee40f2e45">Artists and Paintings</a></li>
-                        <li><a href="/quiz#/?sample=4ad6ac9d-b6ce-4c31-a875-c71c4eaddc5e">British History (The Tudors)</a></li>
-                        <li><a href="/quiz#/?sample=e162dd73-df7d-4a2a-91ab-bf688cd70ea1">European Geography (Capital Cities)</a></li>
+                        <li><a href="/quiz#/?sample=4ad6ac9d-b6ce-4c31-a875-c71c4eaddc5e">The Tudors</a></li>
+                        <li><a href="/quiz#/?sample=e162dd73-df7d-4a2a-91ab-bf688cd70ea1">European Capital Cities</a></li>
                       </ul>
                     </div>
 
@@ -387,7 +399,7 @@ var google_remarketing_only = true;
       })
       $("#btnContactUs").click(function(event){
       $.ajax({
-      url: "/quiz/help",
+      url: "/quizHelp",
       method: "post",
       success: function(data,textstatus,jqXHR){
       $('#helpForm').slideUp();

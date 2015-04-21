@@ -35,7 +35,6 @@
         .quiz-title {
             font-size: 18px;
             font-weight: 700;
-            margin-bottom: 20px;
         }
         .quiz-question-count {
             font-size: 12px;
@@ -48,21 +47,26 @@
             text-align: right;
             color: rgba(0,0,0,.5);
         }
+    
+    .row
+        h1(ng-show="quizzes.studentData.studentCode",style="color: white") Hi {{quizzes.studentData.studentCode}}!
 
-    .row(ng-repeat="category in quizzes.categories track by $index", style="padding-bottom: 10px")    
+    .row(ng-repeat="category in quizzes.categories | orderBy:quizzes.orderIndex track by $index", style="padding-bottom: 10px")    
         .col-md-12
             .quiz-topic-block                
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
-                .quiz-list.collapse(id="collapse{{category.category.uuid}}")
-                    a.quiz-item(ng-repeat="quiz in category.quizzes track by $index", style="padding-bottom: 10px")
-                        .quiz-title {{quiz.name}}
-                        .row.quiz-info-row
-                            .col-md-12
+                .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
+                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderBy:'index' track by $index")
+                        .col-xs-9
+                            a.quiz-item
+                                .quiz-title {{quiz.name}}
+                        .col-xs-3
+                            .row.quiz-info-row                        
                                 button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
                                 
 
-    .col-sm-6.col-sm-offset-3(ng-hide="quizzes.categories.length==0 && !quizzes.loading")
+    .col-sm-6.col-sm-offset-3(ng-hide="quizzes.studentData.studentCode==undefined")
         .well
             br
             button.btn.btn-info.btn-block(ng-click="quizzes.reloadQuizzes();")
@@ -73,5 +77,4 @@
                 span.glyphicon.glyphicon-user
                 | &nbsp;Logout
 
-    .col-sm-6.col-sm-offset-3(ng-show="quizzes.loading")
-        h3.text-center.inverse-text Fetching Quizzes
+            h3.text-center(ng-show="quizzes.loading") Fetching Quizzes
