@@ -43,7 +43,7 @@ var google_remarketing_only = true;
 <div style="display:inline;">
 <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0"/>
 </div>
-</noscript>  
+</noscript>
     <section id="intro" class="home-slide text-light">
       <div class="item-inner item-inner__hero item-1">
         <div class="cta-container">
@@ -51,7 +51,7 @@ var google_remarketing_only = true;
           <a class="cta1" href="http://www.quizalize.com/app#/">Play a Quiz</a><br/><br/><br/>
           <a class="cta2" href="#service">Create a quiz for free</a>
         </div>
-      </div>    
+      </div>
   </section>
   <!-- /Section: intro -->
   <!-- Navigation -->
@@ -237,7 +237,7 @@ var google_remarketing_only = true;
                       </ul>
                     </div>
                     <div class="col-md-3">
-                      
+
                       <ul class="example-list">
                         <li><h3>General Knowledge</h3></li>
                         <li><a href="/quiz#/?sample=589bc487-da38-45ca-ad25-72b3644c08d0">US Capital Cities </a></li>
@@ -247,7 +247,7 @@ var google_remarketing_only = true;
                         <li><a href="/quiz#/?sample=e162dd73-df7d-4a2a-91ab-bf688cd70ea1">European Capital Cities</a></li>
                       </ul>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
@@ -364,11 +364,11 @@ var google_remarketing_only = true;
       <script>
       function newQuiz() {
         if ($("#name").val()!="") {
-          window.location.href="/quiz#/?name="+$("#name").val();  
+          window.location.href="/quiz#/?name="+$("#name").val();
         }
         else {
-          window.location.href="/quiz#"; 
-        }        
+          window.location.href="/quiz#";
+        }
         return false;
       }
       </script>
@@ -384,6 +384,7 @@ var google_remarketing_only = true;
       <script src="/cquiz/js/owl.carousel.min.js"></script>
       <script src="/cquiz/js/nivo-lightbox.min.js"></script>
       <script src="/cquiz/js/custom.js"></script>
+      <script src="/js/vendor.js"></script>
       <script src="/js/quiz.js"></script>
       <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
       <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
@@ -395,7 +396,7 @@ var google_remarketing_only = true;
               lowerThan: 'transform',
               languagePath: '/outdatedbrowser/lang/en.html'
           })
-      })      
+      })
       $("#btnContactUs").click(function(event){
       $.ajax({
       url: "/quizHelp",
