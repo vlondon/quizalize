@@ -180,7 +180,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                     //need to add the category
                     var rootTopicId = uuid.v4();
                     postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
-                    localStorage.setItem("rootTopicId", rootTopicId);
+                    localStorage.setItem("rootTopicId",rootTopicId);
                     quiz.categoryId = rootTopicId;
                 }
                 if (quiz.uuid==undefined) {

@@ -1,5 +1,3 @@
-
-
 angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$log', '$routeParams', function(QuizData, $log, $routeParams){
 
     var self = this;

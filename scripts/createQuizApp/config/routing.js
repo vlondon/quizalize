@@ -21,4 +21,4 @@ angular.module('createQuizApp')
             controllerAs: "delete"
         })
         .otherwise({redirectTo: '/'})
-}])
+}]);

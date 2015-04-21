@@ -1,4 +1,5 @@
-angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
+angular.module('quizApp')
+.factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
 
     var uuid = require('node-uuid');
     var settings = require('quizApp/utils/settings');
@@ -10,7 +11,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
 
     // setup/add helper methods...
     var quizzes = [];
-    var categories = {};
+    var categories = [];
     var topics = {};
     var classCode, studentCode, currentQuiz;
     var currentQuizData = {correct: 0,
@@ -71,29 +72,30 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
      */
     var processQuizList = function(result, isClassCode){
         if(isClassCode){
-            classCode = result.code;
+            self.classCode = result.code;
         }else{
-            studentCode = result.code;
+            self.studentCode = result.code;
         }
         quizzes = [];
-        categories = {};
+        categories = [];
         topics = {};
         for (var i in result.contents) {
-            var quiz = result.contents[i];
+            quiz = result.contents[i];
             var cuuid = "undefined";
             var category = { name: "Other" };
             if (quiz.categoryId!=undefined) {
                 cuuid = quiz.categoryId;
-                if (result.categories !== undefined) {
-                    for (var i in result.categories) {
+                if (result.categories!=undefined) {
+                    for (i in result.categories) {
                         if (result.categories[i].uuid==quiz.categoryId) {
                             category = result.categories[i];
                         }
                     }
                 }
             }
+            $log.debug("Order",quiz.order);
             if (categories[cuuid]==undefined) {
-                categories[cuuid] = { category: category, quizzes: []} ;
+                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
             categories[cuuid].quizzes.push(quiz);
             if (category.name=="") {
@@ -106,6 +108,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
         }
         for (var i in result.categories) {
             topics[result.categories[i].uuid] = result.categories[i];
+        }
+        for (var i in categories) {
+            categories.push(categories[i]);
         }
         $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
     };
@@ -212,7 +217,6 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', 'Zz
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
                             currentQuizData.name = currentQuiz.name;
-                            console.log("Current quiz",currentQuizData);
                             currentQuizData.report = [];
                             ZzishContent.startActivity(currentQuiz, function(err, resp){
                                 $log.debug("Got response from start activity:", resp);

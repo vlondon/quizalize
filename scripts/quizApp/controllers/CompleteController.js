@@ -1,8 +1,9 @@
-
 angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', function(QuizData, $log){
     var self = this;
+    var hasTopics = false;
 
     var calculateTotals = function(items){
+        self.hasTopics = false;
         var t = {seconds: 0, score: 0};
         for(var j in items){
             var item = items[j];
@@ -34,16 +35,16 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
                         self.alltopics[item.topicId].stats.correct+=(item.correct==true?1:0);
                         self.alltopics[item.topicId].stats.answered++;
                         self.alltopics[item.topicId].stats.percentage = (self.alltopics[item.topicId].stats.correct/self.alltopics[item.topicId].stats.answered)*100;
-                        if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['blue']*100) {
+                        if (self.alltopics[item.topicId].stats.score>=self.alltopics[item.topicId].stats.answered*maxScore*0.9) {
                             self.alltopics[item.topicId].stats.state = 'b';
                         }
-                        else if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['green']*100) {
+                        else if (self.alltopics[item.topicId].stats.score>=self.alltopics[item.topicId].stats.answered*maxScore*0.7) {
                             self.alltopics[item.topicId].stats.state = 'g';
                         }
-                        else if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['amber']*100) {
+                        else if (self.alltopics[item.topicId].stats.score>=self.alltopics[item.topicId].stats.answered*maxScore*0.4) {
                             self.alltopics[item.topicId].stats.state = 'a';
                         }
-                        else if (self.alltopics[item.topicId].stats.percentage>=self.alltopics[item.topicId].attainment['red']*100) {
+                        else if (self.alltopics[item.topicId].stats.score>=0) {
                             self.alltopics[item.topicId].stats.state = 'r';
                         }
                     }
@@ -53,6 +54,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         //only show topics for which we have data
         for (i in self.alltopics) {
             if (self.alltopics[i].stats!=undefined) {
+                self.hasTopics = true;
                 self.topics[i]=self.alltopics[i];
             }
         }

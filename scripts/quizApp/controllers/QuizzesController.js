@@ -1,8 +1,8 @@
-angular.module('quizApp')
-    .controller('QuizzesController', ['QuizData', '$log', '$location', '$timeout', function(QuizData, $log, $location, $timeout){
+angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '$location', '$timeout', function(QuizData, $log, $location, $timeout){
     var self = this;
 
     self.loading = true;
+    self.orderIndex = "category.name";
 
     self.startQuiz = function(categoryId,quizId){
         $log.debug("Selected Quiz: ", categoryId,quizId);

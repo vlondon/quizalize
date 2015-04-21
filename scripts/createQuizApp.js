@@ -17,7 +17,9 @@ require('createQuizApp/controllers/PreviewController');
 require('createQuizApp/controllers/QuizzesController');
 
 
-angular.module('createQuizApp').run(["$rootScope", "$anchorScroll", function ($rootScope, $anchorScroll) {
-    $rootScope.$on("$locationChangeSuccess", $anchorScroll);
+angular.module('createQuizApp').run(["$rootScope", "$anchorScroll" , function ($rootScope, $anchorScroll) {
+    $rootScope.$on("$locationChangeSuccess", function() {
+        $anchorScroll();
+    });
     FastClick.attach(document.body);
 }]);
