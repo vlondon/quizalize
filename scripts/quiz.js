@@ -52,7 +52,7 @@ $( document ).ready(function() {
 	var quizData = localStorage.getItem("quizData");
 	var emailAddress = localStorage.getItem("emailAddress");
 	if (quizData!=undefined) {
-		qj = $.parseJSON(quizData);
+		var qj = $.parseJSON(quizData);
 		if (qj!=undefined && qj.length>0) {
 			$("#myquizzes").show();
 		}

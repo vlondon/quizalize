@@ -1,3 +1,10 @@
+var settings = require('quizApp/config/settings');
+
+var maxScore = settings.maxScore;
+var maxTime = settings.maxTime;
+var minScore = settings.minScore;
+var gracePeriod = settings.gracePeriod;
+
 angular.module('quizApp')
 .factory('ZzishContent', ['$http', '$log', '$rootScope', function($http, $log, $rootScope){
     //Requires zzish.js to have been included
@@ -74,9 +81,9 @@ angular.module('quizApp')
                 activityDefinition: {
                     type: quiz.uuid,
                     name: quiz.name,
-                    score: maxScore*quiz.questions.length,
+                    score: settings.maxScore * quiz.questions.length,
                     count: quiz.questions.length,
-                    duration: ""+ quiz.questions.length*maxTime,
+                    duration: ""+ quiz.questions.length * settings.maxTime,
                 },
                 extensions: {
                     contentId: quiz.uuid,

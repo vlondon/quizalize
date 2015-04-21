@@ -43,7 +43,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                     QuizData.setUser(result);
                     QuizData.getTopics(function(topics){
                         if (topics) {
-                            for (i in topics) {
+                            for (var i in topics) {
                                 if (topics[i].parentCategoryId=="-1") {
                                     self.rootTopics.push(topics[i]);
                                     self.rootTopicList.push(topics[i].name);
@@ -72,7 +72,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     else if (self.userId!=undefined) {
         QuizData.getTopics(function(topics){
             if (topics) {
-                for (i in topics) {
+                for (var i in topics) {
                     if (topics[i].parentCategoryId=="-1") {
                         self.rootTopics.push(topics[i]);
                         self.rootTopicList.push(topics[i].name);
@@ -103,7 +103,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     else {
         QuizData.getTopics(function(topics){
             if (topics) {
-                for (i in topics) {
+                for (var i in topics) {
                     if (topics[i].parentCategoryId=="-1") {
                         self.rootTopics.push(topics[i]);
                         self.rootTopicList.push(topics[i].name);
@@ -160,7 +160,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         var found = false;
         var rootTopicId = "-1";
         self.newQuizCategory = $("#category").val();
-        for (i in self.rootTopics) {
+        for (var i in self.rootTopics) {
             if (self.rootTopics[i].name==self.newQuizCategory) {
                 //we already have this category
                 rootTopicId = self.rootTopics[i].uuid;

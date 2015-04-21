@@ -1,8 +1,10 @@
+var randomise = require('quizApp/utils/randomise');
+
 angular.module('quizApp')
 .factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
 
     var uuid = require('node-uuid');
-    var settings = require('quizApp/utils/settings');
+    var settings = require('quizApp/config/settings');
 
     var maxTime = settings.maxTime;
     var maxScore = settings.maxScore;
@@ -80,7 +82,7 @@ angular.module('quizApp')
         categories = [];
         topics = {};
         for (var i in result.contents) {
-            quiz = result.contents[i];
+            var quiz = result.contents[i];
             var cuuid = "undefined";
             var category = { name: "Other" };
             if (quiz.categoryId!=undefined) {

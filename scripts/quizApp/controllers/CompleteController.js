@@ -1,3 +1,10 @@
+var settings = require('quizApp/config/settings');
+
+var maxScore = settings.maxScore;
+var maxTime = settings.maxTime;
+var minScore = settings.minScore;
+var gracePeriod = settings.gracePeriod;
+
 angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', function(QuizData, $log){
     var self = this;
     var hasTopics = false;

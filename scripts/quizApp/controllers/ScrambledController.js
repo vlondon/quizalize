@@ -1,3 +1,5 @@
+var randomise = require('quizApp/utils/randomise');
+
 angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParmas, $location){
     var getLetters = function(answer){
 
