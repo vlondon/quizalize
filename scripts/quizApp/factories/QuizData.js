@@ -88,7 +88,7 @@ angular.module('quizApp')
             if (quiz.categoryId!=undefined) {
                 cuuid = quiz.categoryId;
                 if (result.categories!=undefined) {
-                    for (i in result.categories) {
+                    for (var i in result.categories) {
                         if (result.categories[i].uuid==quiz.categoryId) {
                             category = result.categories[i];
                         }
@@ -160,8 +160,8 @@ angular.module('quizApp')
             classCode = undefined;
             studentCode = undefined;
             if (userProfileId=="") {
-                studentName = localStorage.getItem("zname");
-                userProfileId = localStorage.getItem("zprofileId"+studentName);
+                var studentName = localStorage.getItem("zname");
+                var userProfileId = localStorage.getItem("zprofileId"+studentName);
             }
             ZzishContent.logout(userProfileId,function (err,message) {
                 userProfileId = "";

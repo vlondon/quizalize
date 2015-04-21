@@ -142,7 +142,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             $log.debug("Saving Quiz: ", data);
             localStorage.setItem("quizData", JSON.stringify(data));
 
-            for (i in topics) {
+            for (var i in topics) {
                 if (topics[i].newObject!=undefined && topics[i].newObject) {
                     topics[i].newObject = null;
                     postTopic(topics[i]).success(function(resp){

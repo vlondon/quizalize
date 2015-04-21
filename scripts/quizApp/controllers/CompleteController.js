@@ -59,7 +59,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             }
         }
         //only show topics for which we have data
-        for (i in self.alltopics) {
+        for (var i in self.alltopics) {
             if (self.alltopics[i].stats!=undefined) {
                 self.hasTopics = true;
                 self.topics[i]=self.alltopics[i];

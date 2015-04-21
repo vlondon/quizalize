@@ -17,7 +17,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         self.rootTopicId = quiz.categoryId;
         QuizData.getTopics(function(topics){
             if (topics) {
-                for (i in topics) {
+                for (var i in topics) {
                     if (topics[i].parentCategoryId==self.rootTopicId) {
                         self.topics.push(topics[i]);
                         self.topicList.push(topics[i].name);
@@ -101,7 +101,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         var questionId = $("#questionId").val();
         if (topic!="") {
             var found = false;
-            for (i in self.topics) {
+            for (var i in self.topics) {
                 if (self.topics[i].name==topic) {
                     topicId = self.topics[i].uuid;
                     found = true;
@@ -147,7 +147,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         }
         var found = false;
         if (!newAnswer) {
-            for (i in self.quiz.questions) {
+            for (var i in self.quiz.questions) {
                 if (self.quiz.questions[i].uuid!=undefined && self.quiz.questions[i].uuid==questionId) {
                     found = true;
                     self.quiz.questions[i] = question_obj;
@@ -175,7 +175,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         }
         $('#questionId').val(q.uuid);
         if (q.topicId) {
-            for (i in self.topics) {
+            for (var i in self.topics) {
                 if (self.topics[i].uuid==q.topicId) {
                     $('#topic').val(self.topics[i].name);
                 }
