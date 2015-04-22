@@ -10,7 +10,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         createQuizApp: 'createQuizApp.js',
-        vendor: ['angular', 'angular-route', 'angular-animate', 'fastclick']
+        vendor: []
     },
     output: {
         path: __dirname,
@@ -29,10 +29,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
-        new webpack.optimize.UglifyJsPlugin({compress: {
-            'drop_console': true
-        }})
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+        // new webpack.optimize.UglifyJsPlugin({compress: {
+        //     'drop_console': true
+        // }})
     ],
     module: {
         loaders: [

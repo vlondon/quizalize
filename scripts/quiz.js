@@ -7,7 +7,7 @@ function login(toggleLogin) {
 
 
   token = localStorage.getItem("zzishtoken");
-  email = localStorage.getItem("emailAddress");
+  var email = localStorage.getItem("emailAddress");
   if (token==null && email==null) {
       Zzish.login(type,url);
   }
@@ -47,6 +47,9 @@ function logout() {
     location.href="/quiz/";
   }
 }
+
+window.login = login;
+window.logout = logout;
 
 $( document ).ready(function() {
 	var quizData = localStorage.getItem("quizData");

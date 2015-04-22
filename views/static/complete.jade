@@ -195,7 +195,7 @@ style.
                   .bar-wrapper
                     .bar-item-container(ng-repeat="topic in quiz.topics")
                       .bar-topic-title {{topic.name}}
-                      .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage}}%
+                      .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage | number: 0}}%
                   .complte-main-text
         .row(ng-repeat="item in quiz.data.report")
             .col-xs-8.col-xs-offset-2
