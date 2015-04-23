@@ -3,16 +3,30 @@ var config = require('../config.js');
 var email = require("../email");
 var querystring = require('querystring');
 var zzish = require("zzishsdk");
-zzish.debugState(config.local,config.wso2);
-zzish.init(config.quizAppToken); //TODO broken
 
-exports.index =  function(req, res) {    
-    res.render('index', {zzishapi : config.quizAppToken, isLocal:  config.local, wso2Enabled: config.wso2});
+
+function getZzishParam(parse) {
+    try {
+        var x  = JSON.parse(config.zzishInit);
+        if (!!parse) {
+            return x;
+        }
+        else {
+            return config.zzishInit;    
+        }        
+    }
+    catch (err) {
+        return "'"+config.zzishInit+"'";    
+    }
+}
+zzish.init(getZzishParam(true)); //TODO broken
+
+exports.index =  function(req, res) {
+    res.render('index', {zzishapi : getZzishParam()});
 };
 
 exports.create =  function(req, res) {
-    req.session.zzishweburl = config.webUrl;
-    res.render('create',{zzishapi : config.quizAppToken, isLocal:  config.local, wso2Enabled: config.wso2});
+    res.render('create',{zzishapi : getZzishParam()});
 };
 
 exports.landingpage =  function(req, res) {
@@ -197,17 +211,21 @@ exports.publishQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
-    var email = req.body.emailAddress;
+    var emailAddress = req.body.emailAddress;
     var code = req.body.code;
 
-    console.log("Will publish", profileId, id, email, code);
+    console.log("Will publish", profileId, id, emailAddress, code);
 
-    zzish.publishContentToGroup(profileId, email, id, code, function(err, resp){
+    zzish.publishContentToGroup(profileId, emailAddress, id, code, function(err, resp){
         if(!err){
             console.log("Got publish result", resp);
             resp.status = 200;
             resp.link = querystring.escape(resp.link);
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
+            if (resp.complete!=undefined) {
+                var registerEmail = "Hi there\n\nYou were recently on Quizalize where you requested to save some information. Quizalize plugs into the Zzish Learning Hub, which provides one dashboard for multiple apps, including Quizalize.Our Zzish App Login allows you to access all the apps no the Zzish Learning Hub and we securely save your data on our servers for you.You just need to complete your registration by clicking on the link below:\n\n" + resp.complete + "\n\nThe Zzish Team\nwww.zzish.com";
+                email.sendEmail('team@zzish.com',[emailAddress],'Register with Quizalize Powered By Zzish',registerEmail);
+            }
         } else {
             var errorMessage = resp;
             resp = {};

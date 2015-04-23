@@ -6,6 +6,7 @@ var express = require('express'),
 	session = require('express-session'),
 	bodyParser = require('body-parser'),
 	config = require('./config'),
+  email = require('./email'),
 	quiz = require("./routes//quiz");
 
 app.set('views', path.join(__dirname, 'views'));
@@ -69,8 +70,9 @@ app.get('/quiz/find-a-quiz', quiz.quizFinder);
 app.use(express.static('public'));
 
 // Set server port
-app.listen(3001);
+app.listen(process.env.port || 3001);
 console.log('Server is running, with configuration:', config);
+email.pingDevelopers();
 
 // returns true if the caller is a mobile phone (not tablet)
 // compares the user agent of the caller against a regex

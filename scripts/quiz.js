@@ -7,9 +7,9 @@ function login(toggleLogin) {
 
 
   token = localStorage.getItem("zzishtoken");
-  email = localStorage.getItem("emailAddress");
+  var email = localStorage.getItem("emailAddress");
   if (token==null && email==null) {
-      Zzish.login(type,url);            
+      Zzish.login(type,url);
   }
   else if (email!=null) {
           localStorage.clear();
@@ -18,7 +18,7 @@ function login(toggleLogin) {
   }
   else {
     if (!!toggleLogin) {
-      Zzish.logout(token,function(err,message) {        
+      Zzish.logout(token,function(err,message) {
           localStorage.clear();
           $("#LoginButton").html("Login with Zzish");
           location.href="/quiz/";
@@ -26,9 +26,9 @@ function login(toggleLogin) {
     }
     else {
       location.href=url;
-    }    
-  }                
-} 
+    }
+  }
+}
 
 function logout() {
   var url = "http://www.quizalize.com/quiz#/";
@@ -36,23 +36,26 @@ function logout() {
 
   token = localStorage.getItem("zzishtoken");
   if (token!=null) {
-      Zzish.logout(token,function(err,message) {        
+      Zzish.logout(token,function(err,message) {
           localStorage.clear();
           $("#LoginButton").html("Login with Zzish");
           location.href="/quiz/";
-      });    
+      });
   }
   else {
     localStorage.clear();
     location.href="/quiz/";
   }
-} 
+}
+
+window.login = login;
+window.logout = logout;
 
 $( document ).ready(function() {
-	quizData = localStorage.getItem("quizData");
-	emailAddress = localStorage.getItem("emailAddress");
+	var quizData = localStorage.getItem("quizData");
+	var emailAddress = localStorage.getItem("emailAddress");
 	if (quizData!=undefined) {
-		qj = $.parseJSON(quizData);
+		var qj = $.parseJSON(quizData);
 		if (qj!=undefined && qj.length>0) {
 			$("#myquizzes").show();
 		}

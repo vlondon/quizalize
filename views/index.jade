@@ -2,7 +2,7 @@ doctype html
 html(ng-app='quizApp')
     head
         title Quizalize
-        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
         meta(name='description', content='')
         meta(charset='UTF-8')
 
@@ -15,18 +15,16 @@ html(ng-app='quizApp')
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
         script.
-            var initToken = '#{zzishapi}';
-            var localStateSet = #{isLocal};
-            var wso2 = "#{wso2Enabled}";
+            var initToken = JSON.parse(!{JSON.stringify(zzishapi)});
 
-        script(src='/js/jquery-1.11.0.js')
-        script(src='/js/uuid.js')
-        script(src='/js/fastclick.js')
+        script(src='/js/vendor.js')
+        script(src='/lib/angular.min.js')  
+        script(src='/lib/angular-animate.min.js')  
+        script(src='/lib/angular-route.min.js')        
+        script(src='/lib/jquery-1.11.0.js')
+        script(src='/lib/uuid.js')
         script(src='#{session.zzishsdkurl}/zzish.js')
-        script(src='/js/bootstrap.js')
-        script(src='/js/angular.min.js')
-        script(src='/js/angular-route.min.js')
-        script(src='/js/angular-animate.min.js')
+        script(src='/lib/bootstrap.js')
         script(src='/js/quizApp.js')
         script(src="/outdatedbrowser/outdatedbrowser.min.js")
         script.

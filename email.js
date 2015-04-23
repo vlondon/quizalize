@@ -3,6 +3,12 @@ var awssdk = require('./awssdk');
 //general zzish config
 var config = require('./config.js');
 
+exports.pingDevelopers = function(){
+	if (config.webUrl=="https://www.zzish.com/") {
+		exports.sendEmail("team@zzish.com",["developers@zzish.com"],"QUizalize Restarted","Please test me");
+	}
+}
+
 /* * * * * * * Generic Send Email * * * * * * */
 exports.sendEmail = function(from,toArray,subject,body){
 	if (config.log) console.log("Sending" + from + " to =>" + toArray + "with subject" + subject + " and message" + body);

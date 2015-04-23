@@ -63,7 +63,7 @@
                                 .quiz-title {{quiz.name}}
                         .col-xs-3
                             .row.quiz-info-row                        
-                                button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
+                                button.btn.btn-info.btn-block(clickOnce ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
                                 
 
     .col-sm-6.col-sm-offset-3(ng-hide="quizzes.studentData.studentCode==undefined")
