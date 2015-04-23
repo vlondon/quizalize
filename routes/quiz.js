@@ -3,16 +3,30 @@ var config = require('../config.js');
 var email = require("../email");
 var querystring = require('querystring');
 var zzish = require("zzishsdk");
-zzish.debugState(config.local,config.wso2);
-zzish.init(config.quizAppToken); //TODO broken
 
-exports.index =  function(req, res) {    
-    res.render('index', {zzishapi : config.quizAppToken, isLocal:  config.local, wso2Enabled: config.wso2});
+
+function getZzishParam(parse) {
+    try {
+        var x  = JSON.parse(config.zzishInit);
+        if (!!parse) {
+            return x;
+        }
+        else {
+            return config.zzishInit;    
+        }        
+    }
+    catch (err) {
+        return "'"+config.zzishInit+"'";    
+    }
+}
+zzish.init(getZzishParam(true)); //TODO broken
+
+exports.index =  function(req, res) {
+    res.render('index', {zzishapi : getZzishParam()});
 };
 
 exports.create =  function(req, res) {
-    req.session.zzishweburl = config.webUrl;
-    res.render('create',{zzishapi : config.quizAppToken, isLocal:  config.local, wso2Enabled: config.wso2});
+    res.render('create',{zzishapi : getZzishParam()});
 };
 
 exports.landingpage =  function(req, res) {

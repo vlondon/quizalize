@@ -10,7 +10,7 @@ angular.module('quizApp')
     //Requires zzish.js to have been included
     if(typeof zzish == 'undefined') $log.error("Require zzish.js to use ZzishContent");
 
-    var userId, code, currentActivityId;
+    var userId, code, currentActivityId,studentCode;
 
     return {
         init: function(appId){
@@ -27,7 +27,7 @@ angular.module('quizApp')
         },
         getPublicQuizzes: function(callback){
             if (self.userId==undefined || self.userId=="") {
-                studentCode = localStorage.getItem("zname");
+                self.studentCode = localStorage.getItem("zname");
                 self.userId = localStorage.getItem("zprofileId"+studentCode);
             }
             if (self.userId==undefined|| self.userId=="") {

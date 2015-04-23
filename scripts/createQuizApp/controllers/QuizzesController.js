@@ -147,7 +147,9 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         });
     }
 
-
+    self.focusTopic = function(){
+        $('#category').focus();
+    }
 
 
     self.createQuiz = function(){

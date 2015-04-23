@@ -14,10 +14,7 @@ config.aws_config = {
 	"region": process.env.AWS_REGION
 };
 
-//App Token
-config.quizAppToken = process.env.QATOKEN;
-
-config.wso2 = process.env.WSO2_ENABLED=="true";
-config.local = process.env.LOCAL_ENABLED=="true";
+//Zzish INit (Either QATOKEN OR an object with lots of params)
+config.zzishInit = process.env.ZZISHINIT;
 
 module.exports = config;
