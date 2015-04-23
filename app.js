@@ -70,7 +70,7 @@ app.get('/quiz/find-a-quiz', quiz.quizFinder);
 app.use(express.static('public'));
 
 // Set server port
-app.listen(3001);
+app.listen(process.env.port || 3001);
 console.log('Server is running, with configuration:', config);
 email.pingDevelopers();
 
