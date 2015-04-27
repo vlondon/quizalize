@@ -1,85 +1,57 @@
-block header
-    style.
-        .class-info-block {
-            margin-bottom: 10px;
-        }
-        .class-code {
-            display: inline-block;
-            padding: 0 10px;
-            border: 4px solid #2a7ed0;
-            border-radius: 0;
-            color: #2a7ed0;
-            text-align: center;
-            font-weight: 700;
-            font-size: 32px;
-        }
-        .class-code-text {
-            margin-top: 4px;
-            margin-right: 10px;
-            display: inline-block;
-            font-size: 32px;
-            float: left;
-        }
-        .class-link {
-            margin-bottom: 20px;
-            font-size: 32px;
-        }
-        .border-block {
-            border: 1px solid rgba(0,0,0,.1);
-            background: #efefef;
-            border-radius: 10px;
-            padding: 40px;
-            min-height: 380px;
-        }
 .container(style="padding-top: 10px")
     .row
         .row.well
             .col-sm-8.col-sm-offset-2.text-center(ng-show="!preview.published && (preview.classCode || preview.userVerified)")
                 h2 Publishing...
             .quiz-preview(ng-show="preview.published")
-                h1.text-center What's Next?
+
+                h2 Congratulations! You have successfully published the quiz: {{preview.quiz.name}}
                 br
                 .row
                     .col-sm-6
                         .border-block
-                            h1 For your students
-                            p Give your students the code:
-                            .class-info-block
-                                .class-code-text Your <strong>Zzish Class Code</strong> is:
+                            h1 OK, Let's play!
+                            p You can play quizalize on mobile, tablet or computer. Ask your players to go to http://quizal.me and enter the following code.
+                            center
                                 .class-code 
                                     {{preview.classCode}}
-                            .class-link Send your students to <strong>quizal.me</strong>.
-                            p Your students will be able to attempt the quiz once.
-
-                            br
                     .col-sm-6
                         .border-block
-                            h1 For you
-                            p You can see what they are doing in realtime via the Zzish Live Dashboard.
+                            h1 Next: Launch Dashboard
+                            p View Live progress of what's going on as your students play a Quizalize quiz
                             br
-                            a.btn.btn-primary.btn-lg(ng-href="{{preview.fullLink}}", target="zzishld") Go to the Zzish Live Dashboard
-                            br
-                            br
-                            p If you register (free) you can also view their past progress.
-                            
+                            center
+                                a.btn.btn-primary.btn-lg(ng-href="{{preview.fullLink}}", target="zzishld") Open Zzish Teacher Dashboard
+                //.row
+                //    .col-xs-12
+                //        &nbsp;
+                //.row
+                //    .col-sm-6
+                //        .border-block
+                //            h1 Edit Your Previous Quizzes
+                //            p Ask your students to go to http://quizal.me and where they will be asked to enter a Zzish class code. 
+                //            br
+                //            center
+                //                a.btn.btn-primary.btn-lg.btn-info(ng-href="/quiz/") Manage your Quizzes                                
+                //            br
+                //    .col-sm-6
+                //        .border-block
+                //            h1 Assign a public Quiz
+                //            p Browse through our public quiz database that can be played by your class.
+                //            br
+                //            center
+                //                btn.btn-primary.btn-lg.btn-info(ng-click="") Browse through our public quizzes
+                        
 
-                            br
-                br
-                h1.text-center What else?
-                .row
-                    .col-sm-6
-                        h1 Create more quizzes
-                        p You can create more quizzes or re-publish (and edit) your existing quizzes
-                        a.btn.btn-info(ng-href="#/") Your Quizzes
+                    
 
-                        br
                     
 
 
             .col-sm-8.col-sm-offset-2(ng-show="!preview.classCode && !preview.userVerified")
-                h1.text-center Save Quiz
+                h1.text-center Register with Quizalize
                     .form-horizontal(role="form")
-                p In order to complete your registration and proceed to the Zzish dashboard, please enter your email address.
+                p In order to proceed, you will need to register with Quizalize. All you need to do is enter your email and we will send you instructions on how to register.
                 .form-group
                     .col-sm-3(ng-hide="preview.classCode || preview.publishing")
                         label.control-label Email

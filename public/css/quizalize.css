@@ -1,0 +1,44 @@
+.quiz-topic-block {
+    background: #ed3041;
+    padding: 0 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    display: block;
+    margin-bottom: 20px;
+}
+.quiz-topic-title {
+    padding: 20px;
+    margin: 20px;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+}
+.quiz-topic-title:hover {
+    color: white;
+}
+a.quiz-item {
+    display: block;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,.1);
+    margin-bottom: 20px;
+}
+.quiz-item:hover {
+    cursor: pointer;
+    background: #efefef;
+}
+.quiz-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+.quiz-question-count {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(0,0,0,.5);
+}
+.quiz-difficulty {
+    font-size: 12px;
+    font-weight: 300;
+    text-align: right;
+    color: rgba(0,0,0,.5);
+}

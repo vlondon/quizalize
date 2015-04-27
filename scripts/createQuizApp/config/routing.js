@@ -5,6 +5,11 @@ angular.module('createQuizApp')
             controller: "QuizzesController",
             controllerAs: "quizzes"
         })
+        .when('/public', {
+            templateUrl: "/quiz/view/public",
+            controller: "PublicController",
+            controllerAs: "public"
+        })        
         .when('/create/:id', {
             templateUrl: "/quiz/view/create",
             controller: "CreateController",

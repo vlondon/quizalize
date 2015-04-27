@@ -53,6 +53,11 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
         self.answerLetters = self.answer.toUpperCase().split('');
         self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
 
+        if (QuizData.currentQuizData.report[self.questionId]!=undefined) {
+            //we already have this question
+            $location.path("/quiz/answer/"+self.questionId);
+        }
+
         lastEmpty = 0;
     });
 
@@ -73,7 +78,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             updateLastEmpty();
         }
 
-        if(lastEmpty == self.userAnswerLetters.length){
+        if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizData.report[self.questionId]==undefined){
             QuizData.answerQuestion(self.questionId,
                                 self.userAnswerLetters.join("").toUpperCase(),
                                 self.answer.toUpperCase(),

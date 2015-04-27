@@ -2,13 +2,17 @@ var token;
 
 function login(toggleLogin) {
   var type = "redirect";
-  var url = "http://www.quizalize.com/quiz#/";
-  Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
+  // var url = "http://www.quizalize.com/quiz#/";
+  // Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
 
+  var initParams = {"api": "98e820e8-77de-4964-8fa9-70434baf2e8b", "protocol": "http://","baseUrl": "localhost:8080/zzishapi/api/", "webUrl": "http://localhost:3000/","header": "X-ApplicationId","headerprefix": "","logEnabled": true};
+  var url = "http://localhost:3001/quiz#/";
+  var type = "redirect";
 
   token = localStorage.getItem("zzishtoken");
   var email = localStorage.getItem("emailAddress");
-  if (token==null && email==null) {
+  Zzish.init(initParams);
+  if (email==null) {
       Zzish.login(type,url);
   }
   else if (email!=null) {
@@ -32,7 +36,7 @@ function login(toggleLogin) {
 
 function logout() {
   var url = "http://www.quizalize.com/quiz#/";
-  Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
+  Zzish.init(initParams);
 
   token = localStorage.getItem("zzishtoken");
   if (token!=null) {

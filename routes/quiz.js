@@ -111,12 +111,42 @@ exports.getProfileById = function(req,res) {
 //NB As necessary these functions map between this App's data model and the general purpose Zzish content models.
 
 
+exports.getPublicQuizzes = function(req, res){
+    var profileId = req.params.profileId;
+    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
+
+    zzish.listPublicContent(profileId, function(err, resp){
+        res.send(resp);
+    });
+};
+
+exports.deletePublicQuiz = function(req, res){
+    var profileId = req.params.profileId;
+    var groupCode = req.params.groupCode;
+    var uuid = req.params.uuid;            
+
+    zzish.unassignPublicContent(profileId,groupCode,uuid, function (err,resp) {
+        res.send(resp);
+    })
+};
+
+exports.getAssignedPublicQuizzes = function(req, res){
+    var profileId = req.params.profileId;
+    var groupCode = req.params.groupCode;
+
+    zzish.getAssignedPublicContents(profileId,groupCode, function (err,resp) {
+        res.send(resp);
+    })
+};
+
+
+
+
 exports.getMyQuizzes = function(req, res){
     var profileId = req.params.profileId;
     //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
     zzish.listContent(profileId, function(err, resp){
-        console.log("My Quizzes", resp);
         res.send(resp);
     });
 };
@@ -126,7 +156,6 @@ exports.getMyTopics = function(req, res){
     //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
     zzish.listCategories(profileId, function(err, resp){
-        console.log("My Topics", resp);
         res.send(resp);
     });
 };
@@ -134,8 +163,6 @@ exports.getMyTopics = function(req, res){
 exports.postTopic = function(req,res){
     var profileId = req.params.profileId;
     var data = req.body;
-
-    console.log("postTopic", "Body: ", req.body, "Params: ", req.params);
 
     zzish.postCategory(profileId, data, function(err, resp){
         if(!err){
@@ -204,19 +231,56 @@ exports.postQuiz = function(req,res){
 };
 
 function replaceAll(find, replace, str) {
-        return str.replace(new RegExp(find, 'g'), replace);
-    }
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+exports.unpublishQuiz = function(req, res){
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    var groupId = req.params.group;
+
+    console.log("Will unpublish", profileId, id, groupId);
+
+    zzish.unpublishContent(profileId, id, groupId, function(err, resp){
+        if(!err){
+            res.send({status: 200});
+        } else {
+            res.send({status: err, message: resp});
+        }
+    });
+};
+
+exports.republishQuiz = function(req, res){
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    var groupId = req.params.group;
+
+    console.log("Will republish", profileId, id, groupId);
+
+    zzish.republishContent(profileId, id, groupId, function(err, resp){
+        if(!err){
+            res.send({status: 200});
+        } else {
+            res.send({status: err, message: resp});
+        }
+
+    });
+};
 
 exports.publishQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
-    var emailAddress = req.body.emailAddress;
-    var code = req.body.code;
+    var data = {};
+    if (req.body.code!=undefined && req.body.code!='') {
+        data['code'] = req.body.code;
+    }
+    data['email'] = req.body.emailAddress;
+    data['access'] = -1;
 
-    console.log("Will publish", profileId, id, emailAddress, code);
+    console.log("Will publish", profileId, id, data);
 
-    zzish.publishContentToGroup(profileId, emailAddress, id, code, function(err, resp){
+    zzish.publishContentToGroup(profileId, id, data, function(err, resp){
         if(!err){
             console.log("Got publish result", resp);
             resp.status = 200;
@@ -224,7 +288,7 @@ exports.publishQuiz = function(req, res){
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
             if (resp.complete!=undefined) {
                 var registerEmail = "Hi there\n\nYou were recently on Quizalize where you requested to save some information. Quizalize plugs into the Zzish Learning Hub, which provides one dashboard for multiple apps, including Quizalize.Our Zzish App Login allows you to access all the apps no the Zzish Learning Hub and we securely save your data on our servers for you.You just need to complete your registration by clicking on the link below:\n\n" + resp.complete + "\n\nThe Zzish Team\nwww.zzish.com";
-                email.sendEmail('team@zzish.com',[emailAddress],'Register with Quizalize Powered By Zzish',registerEmail);
+                email.sendEmail('team@zzish.com',[req.body.emailAddress],'Register with Quizalize Powered By Zzish',registerEmail);
             }
         } else {
             var errorMessage = resp;

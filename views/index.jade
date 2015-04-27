@@ -43,7 +43,11 @@ html(ng-app='quizApp')
                     languagePath: '/outdatedbrowser/lang/en.html'
                 })
             })              
+                    .quiz-find-title {
+            margin-bottom: 40px;
+        } 
         link(href='/css/cq-bootstrap.min.css', rel='stylesheet')
+        link(href='/css/quizalize.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Source+Code+Pro:500', rel='stylesheet', type='text/css')
 
         style.
@@ -174,10 +178,5 @@ html(ng-app='quizApp')
         noscript.
             div(style="display:inline;")
                 img(height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0")       
-        .navbar.navbar-default.navbar-fixed-top
-            .container
-                .navbar-header
-                    a(href="/app")
-                        img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
 
         div(ng-view)

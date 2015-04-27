@@ -6,8 +6,15 @@ style.
         background: rgba(0,0,0, .2);
         border-radius: 20px;
     }
+.navbar.navbar-default.navbar-fixed-top
+    .container
+        .navbar-header
+            a(href="/app")
+                img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+        a.pull-right.btn.btn-info(href="/quiz",style="margin-top:9px") Create a quiz in 60 seconds!                        
 
 .container
+
     div#outdated
     br
     .row
@@ -19,30 +26,26 @@ style.
             form(role='form')
                 .col-md-6
                     .login-action-container.inverse-text
-                        h2 Play a Class Quiz
+                        h2 Play with your class
                         br
-                        p.inverse-text Login with your 
-                            strong Zzish Class Code 
-                            | to see quizzes for your class.
+                        p.inverse-text Do you have a class code from your teacher?
                         .form-group
                             input.form-control#classCode(type="text",autocorrect="off", autocapitalize="off" , placeholder="Your Zzish Class Code", ng-model="start.classCode", autofocus="true")
-                        p.inverse-text Enter your
-                            strong unique name 
-                            | to be shown on the Zzish class dashboard
+                        p.inverse-text Your name - see it on the live dashboard
                         .form-group
                             input.form-control#userName(type="text", autocorrect="off", autocapitalize="off", placeholder="Your unique name", ng-model="start.studentName")
                         br
-                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Start                        
+                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Join the games                        
                         br
                         div(ng-show="start.loading")
                             h3.text-center.inverse-text Fetching Quizzes
                 .col-md-6
                     .login-action-container.inverse-text
-                        h2 Play a Free Quiz
+                        h2 Try any quiz
                         br
-                        p Choose from a range of pre-existing quizzes. No account needed.
+                        p All 100% free and you don't need an account to try one
                         br
-                        button.btn.btn-primary.btn-block.btn-info(ng-click="start.startPublicQuiz()")  Play a Quiz Now
+                        button.btn.btn-primary.btn-block.btn-info(ng-click="start.startPublicQuiz()") Pick a quiz
                     br
                             
 

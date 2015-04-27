@@ -34,13 +34,14 @@ html(ng-app='createQuizApp')
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');            
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
         link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.structure.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.theme.min.css', rel='stylesheet')
+        link(href='/css/quizalize.css', rel='stylesheet')
 
         style.
             body{
@@ -78,6 +79,15 @@ html(ng-app='createQuizApp')
 
             h1:hover,h2:hover{
                 color: #444;
+            }
+
+
+            .border-block {
+                border: 1px solid rgba(0,0,0,.1);
+                background: #efefef;
+                border-radius: 10px;
+                padding: 10px;
+                min-height: 250px;
             }
 
             #questionsAnd{
@@ -135,16 +145,31 @@ html(ng-app='createQuizApp')
             #intro.ng-hide-add-active {
                 opacity: 0.0;
             }
-        script. 
-            $(document).ready(function() {
-                var link = localStorage.getItem("link");
-                if (link==undefined) {
-                    $("#liveDashboardDiv").hide();
-                }         
-                else {
-                    $("#liveDashboardLink").attr("href",link);
-                }            
-            });
+
+            .class-info-block {
+                margin-bottom: 10px;
+            }
+            .class-code {
+                display: inline-block;
+                padding: 0 10px;
+                border: 4px solid #2a7ed0;
+                border-radius: 0;
+                color: #2a7ed0;
+                text-align: center;
+                font-weight: 700;
+                font-size: 32px;
+            }
+            .class-code-text {
+                margin-top: 4px;
+                margin-right: 10px;
+                display: inline-block;
+                font-size: 32px;
+                float: left;
+            }
+            .class-link {
+                margin-bottom: 20px;
+                font-size: 32px;
+            }            
 
 body(ng-controller="NavBarController as ctrl")
     script.
@@ -159,14 +184,12 @@ body(ng-controller="NavBarController as ctrl")
     .navbar.navbar-default.navbar-fixed-top
         .container
             .navbar-header
-                a(href="/")
+                a(href="/quiz/")#homeButton
                     img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
 
             ul.nav.navbar-nav.navbar-right.visible-sm.visible-md.visible-lg.visible-xs
-                li(style="margin-right:5px;")#liveDashboardDiv
-                    a.btn.btn-default.btn-info(target="_blank", style="margin-top:9px; padding: 8px;",href="")#liveDashboardLink Open Live Dashboard
                 li(style="margin-right:5px;")
-                    button.btn.btn-default.btn-info(style="margin-top:9px; padding: 8px;",onclick="window.location.href='/quiz'") Your Quizzes
+                    a.btn.btn-info.navbar-btn(href="/quiz/",ng-show="ctrl.hasQuiz()",style="margin-top:9px; padding: 8px;") Your Quizzes                        
                 li(style="margin-right:5px;")
                     button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
                 li
@@ -174,8 +197,23 @@ body(ng-controller="NavBarController as ctrl")
                 
     div(ng-view)
 
+    button.btn.btn-primary.btn-lg(data-toggle="modal",data-target="#myModal",style="display:none")#messageButton
 
-    #intro(ng-show="ctrl.showHelp", style="position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
+    div.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")#myModal
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    input(type="hidden",value="")#modalUuid
+                    button.close(data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                    h4.modal-title#modalTitle
+                div.modal-body
+                    p#modalMessage
+                div.modal-footer
+                    button.btn.btn-default(data-dismiss="modal")#closeButton Close
+                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="ctrl.confirmed()") OK
+
+    #intro(ng-show="ctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
             .container-fluid
                 .row
                     .col-xs-12.text-center
@@ -203,3 +241,13 @@ body(ng-controller="NavBarController as ctrl")
                         br
                         br
                         button.btn.btn-info.btn-block(ng-click="ctrl.dismiss();") Get Started
+
+    script.
+        var token = localStorage.getItem("zzishtoken");
+        if (token == null) {
+            $("#homeButton").attr("href");
+            $("#homeButton").attr("href","/");
+        }   
+        else {
+            $("#homeButton").attr("href","/quiz/");
+        }    
