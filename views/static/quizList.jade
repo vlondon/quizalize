@@ -17,7 +17,10 @@ style.
   }
 
 .container
-    h1(ng-hide="quizzes.creating") Hi There! Welcome to Quizalize
+    h1(ng-hide="quizzes.creating") Hi There! Welcome to Quizalize 
+        .class-code.pull-right
+            Your Class Code: {{ctrl.classCode}}                                    
+
     .row(ng-hide="quizzes.creating")
         .row.well
             .quiz-preview(ng-show="true")
@@ -29,17 +32,7 @@ style.
                             p Make your own classroom quiz in 60 seconds
                             br
                             center
-                                a.btn.btn-primary.btn-lg(ng-click="quizzes.createQuiz()") Create a New Quiz
-                    .col-sm-4(ng-hide="ctrl.classCode==undefined || ctrl.classCode==''")
-                        .border-block
-                            center
-                                h1 Play a Quiz
-                            p Ask your class to go to http://quizal.me and enter this code:
-                            center
-                                .class-code 
-                                    {{ctrl.classCode}}
-                            br
-                            p No Downloads needed - use any device/computer.
+                                a.btn.btn-primary.btn-lg(ng-click="quizzes.create()") Create a New Quiz
                     span(ng-class="{'col-sm-4': ctrl.classCode!=undefined && ctrl.classCode.length>0, 'col-sm-6': ctrl.classCode==undefined || ctrl.classCode=='' }")
                         .border-block
                             center
@@ -48,6 +41,13 @@ style.
                             br
                             center
                                 a.btn.btn-primary.btn-lg.btn-info(ng-href="/quiz/#/public") Browse our Quizzes
+                    .col-sm-4(ng-hide="ctrl.classCode==undefined || ctrl.classCode==''")
+                        .border-block
+                            center
+                                h1 View Progress
+                            p Open the Live Dashboard to View Progress
+                            br
+                            a.btn.btn-primary.btn-lg(ng-href="{{ctrl.link}}", target="zzishld") Open Zzish Teacher Dashboard
 
     .row(ng-show="quizzes.creating")
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
@@ -88,7 +88,7 @@ style.
                 .col-sm-2.col-xs-6
                     center
                         button.btn.btn-info(ng-click="quizzes.unpublishQuiz(quiz);", ng-show="quiz.enabled",style="padding: 10px") Unpublish
-                        button.btn.btn-info(ng-click="quizzes.republishQuiz(quiz);", ng-hide="quiz.enabled",style="padding: 10px") Republish
+                        button.btn.btn-info(ng-click="quizzes.republishQuiz(quiz);", ng-hide="quiz.enabled",style="padding: 10px") Publish
                         br
             p        
             p.text-info(ng-hide="quizzes.pastQuizzes.length") When you have created quizzes they will appear here
@@ -97,11 +97,12 @@ style.
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.hasPublicAssignedQuizzes")
             h2 Your Public Quizzes
             .row(ng-repeat="quiz in quizzes.pastQuizzes | filter:{publicAssigned:true} track by $index", style="padding-bottom: 10px")
-                .col-sm-10.col-xs-12(ng-class="{'.col-sm-6.col-xs-12': !quiz.publicAssigned, '.col-sm-10.col-xs-12': quiz.publicAssigned}")
+                .col-sm-6.col-xs-12
                     h4 {{quiz.name}}
                         span(ng-show="quiz.publicAssigned")
-                .col-sm-2.col-xs-12
-                    button.btn.btn-info(ng-click="quizzes.unassignPublicQuiz(quiz);", style="padding: 10px") Remove
+                .col-sm-6.col-xs-12                
+                    button.btn.btn-danger.btn-block(ng-click="quizzes.unassignPublicQuiz(quiz);", style="padding: 10px")
+                        span.glyphicon.glyphicon-remove
             p        
             p.text-info(ng-hide="quizzes.pastQuizzes.length") When you have created quizzes they will appear here            
 

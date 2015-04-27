@@ -598,12 +598,13 @@ section#intro {
     border-radius: 20px;
     box-shadow: 4px 4px 20px #000;
     color: white;
-    font-size: 20px;
+    font-size: 50px;
     font-weight: 300;
+    margin-bottom: 30px;
 }
 
 .cta1-title {
-    margin-bottom: 100px;
+    margin-bottom: 150px;
     color: white;
     font-weight: 300;
     font-size: 24px;
@@ -615,7 +616,7 @@ section#intro {
     border-radius: 20px;
     box-shadow: 4px 4px 20px #000;
     color: white;
-    font-size: 20px;
+    font-size: 50px;
     font-weight: 300;
 }
 .item-inner__hero {

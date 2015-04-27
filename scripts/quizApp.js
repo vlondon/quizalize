@@ -13,6 +13,9 @@ require('quizApp/factories/ZzishContent');
 require('quizApp/factories/QuizData');
 
 require('quizApp/controllers/StartController');
+require('quizApp/controllers/PublicController');
+require('quizApp/controllers/GameController');
+
 require('quizApp/controllers/QuizzesController');
 require('quizApp/controllers/QuizController');
 require('quizApp/controllers/MultipleController');

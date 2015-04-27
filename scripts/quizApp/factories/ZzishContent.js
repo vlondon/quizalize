@@ -71,6 +71,14 @@ angular.module('quizApp')
             });
         },
         getConsumerContent: function(contentId, callback){
+            if (self.userId==undefined || self.userId=="") {
+                self.studentCode = localStorage.getItem("zname");
+                self.userId = localStorage.getItem("zprofileId"+studentCode);
+            }
+            if (self.userId==undefined|| self.userId=="") {
+                //not a registered user so just create a new account
+                self.userId = uuid.v4();
+            }
             zzish.getConsumerContent(self.userId, contentId, function (err, message) {
                 callback(err, message);
                 $rootScope.$apply();

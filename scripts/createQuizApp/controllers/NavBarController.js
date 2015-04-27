@@ -2,6 +2,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
     var self = this;
     self.showHelp = false;
     self.classCode = localStorage.getItem("classCode");
+    self.link = localStorage.getItem("link");
 
     self.dismiss = function(){
         self.showHelp = !self.showHelp;

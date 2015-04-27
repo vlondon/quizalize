@@ -12,10 +12,7 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
     };
 
     self.startPublicQuiz = function(){
-        console.log("Public Quiz");
-        QuizData.getPublicQuizzes(function(err, res){
-            $location.path("/list");
-        });
+        $location.path("/public");
     }
 
     self.startQuiz = function(){

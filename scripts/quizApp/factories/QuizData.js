@@ -204,6 +204,7 @@ angular.module('quizApp')
             return topics;
         },
         selectQuiz: function(categoryId,quizId,callback) {
+            ZzishContent.init(initToken);
             var found = false;
             if (categories[categoryId]!=null) {
                 var category = categories[categoryId];
@@ -229,7 +230,20 @@ angular.module('quizApp')
                 }
             }
             if (!found) {
-                $log.error("Selecting an invalid quiz", "Have quizzes", categories);
+                //$log.error("Selecting an invalid quiz", "Have quizzes", categories);
+                ZzishContent.getConsumerContent(quizId,function(err,message) {
+                    currentQuiz = message;
+                    currentQuiz.questions = message.questions;
+                    currentQuizData.totalScore = 0;
+                    currentQuizData.questionCount = currentQuiz.questions.length;
+                    currentQuizData.correct = 0;
+                    currentQuizData.name = currentQuiz.name;
+                    currentQuizData.report = [];
+                    ZzishContent.startActivity(currentQuiz, function(err, resp){
+                        $log.debug("Got response from start activity:", resp);
+                    });
+                    callback();
+                });
             }
 
         },
