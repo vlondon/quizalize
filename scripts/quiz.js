@@ -8,17 +8,26 @@ function login(toggleLogin) {
   var host = pathArray[2];
   var url = protocol + '//' + host + "/quiz#/";
 
-  var initParams = {"api": "98e820e8-77de-4964-8fa9-70434baf2e8b", "protocol": "http://","baseUrl": "localhost:8080/zzishapi/api/", "webUrl": "http://localhost:3000/","header": "X-ApplicationId","headerprefix": "","logEnabled": true};  
-  //var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
+  //var initParams = {"api": "98e820e8-77de-4964-8fa9-70434baf2e8b", "protocol": "http://","baseUrl": "localhost:8080/zzishapi/api/", "webUrl": "http://localhost:3000/","header": "X-ApplicationId","headerprefix": "","logEnabled": true};  
+  var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
   // var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";  
 
   var type = "redirect";
 
   token = localStorage.getItem("zzishtoken");
   var email = localStorage.getItem("emailAddress");
+  var classCode = localStorage.getItem("classCode");
   Zzish.init(initParams);
   if (email==null) {
-      Zzish.login(type,url);
+      if (classCode!=null) {
+        //unregistered user
+        localStorage.clear();
+        $("#LoginButton").html("Login with Zzish");
+        location.href="/quiz/";        
+      }
+      else{
+        Zzish.login(type,url);  
+      }      
   }
   else if (email!=null) {
           localStorage.clear();

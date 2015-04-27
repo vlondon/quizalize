@@ -18,7 +18,7 @@ style.
 
 .container
     h1(ng-hide="quizzes.creating") Hi There! Welcome to Quizalize 
-        .class-code.pull-right
+        .class-code.pull-right(ng-show="ctrl.classCode")
             Your Class Code: {{ctrl.classCode}}                                    
 
     .row(ng-hide="quizzes.creating")
