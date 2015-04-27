@@ -72,12 +72,11 @@ style.
                             button.btn.btn-primary.btn-block(ng-click="quizzes.createQuiz();", ng-hide="quizzes.newQuizName==''") Create Quiz
 
     .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample")
-        .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.pastQuizzes.length")
+        .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.hasOwnQuizzes")
             h2 Manage Your Existing quizzes
             .row(ng-repeat="quiz in quizzes.pastQuizzes | filter:{publicAssigned:false} track by $index", style="padding-bottom: 10px")
                 .col-sm-6.col-xs-12(ng-class="{'.col-sm-6.col-xs-12': !quiz.publicAssigned, '.col-sm-10.col-xs-12': quiz.publicAssigned}")
                     h4 {{quiz.name}}
-                        span(ng-show="quiz.publicAssigned") &nbsp;(public)
                 .col-sm-2.col-xs-3
                     button.btn.btn-info.btn-block(ng-click="quizzes.editQuiz(quiz);",ng-hide="quiz.publicAssigned")
                         span.glyphicon.glyphicon-pencil
@@ -95,7 +94,7 @@ style.
             p.text-info(ng-hide="quizzes.pastQuizzes.length") When you have created quizzes they will appear here
 
     .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample")
-        .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.pastQuizzes.length")
+        .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.hasPublicAssignedQuizzes")
             h2 Your Public Quizzes
             .row(ng-repeat="quiz in quizzes.pastQuizzes | filter:{publicAssigned:true} track by $index", style="padding-bottom: 10px")
                 .col-sm-10.col-xs-12(ng-class="{'.col-sm-6.col-xs-12': !quiz.publicAssigned, '.col-sm-10.col-xs-12': quiz.publicAssigned}")

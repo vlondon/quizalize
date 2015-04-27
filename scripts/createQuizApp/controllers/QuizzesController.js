@@ -5,6 +5,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     self.rootTopicList = [];
     self.rootTopics = [];
     self.hasPublicAssignedQuizzes = false;
+    self.hasOwnQuizzes = false;
 
     if(typeof ($location.search()).name != 'undefined'){
         //Have quiz name
@@ -59,6 +60,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                         self.pastQuizzes = data;
                         for (var i in self.pastQuizzes) {
                             if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                            else self.hasOwnQuizzes = true;
                         }                        
                         localStorage.setItem("quizData",JSON.stringify(data));
                         if(self.didSupplyQuizName){
@@ -95,8 +97,8 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                     self.pastQuizzes = data;
                     for (var i in self.pastQuizzes) {
                         if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                        else self.hasOwnQuizzes = true;
                     }                    
-                    console.log("I GOT",self.hasPublicAssignedQuizzes);
                     localStorage.setItem("quizData",JSON.stringify(data));
 
                     if(self.didSupplyQuizName){
@@ -127,6 +129,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             self.pastQuizzes = data;
             for (var i in self.pastQuizzes) {
                 if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                else self.hasOwnQuizzes = true;
             }            
             console.log("I GOT",self.hasPublicAssignedQuizzes);
             localStorage.setItem("quizData",JSON.stringify(data));
