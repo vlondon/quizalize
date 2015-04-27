@@ -3,10 +3,11 @@ var token;
 function login(toggleLogin) {
   var type = "redirect";
   var url = "http://www.quizalize.com/quiz#/";
-  var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";  
+  // var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";  
   // var initParams = {"api": "98e820e8-77de-4964-8fa9-70434baf2e8b", "protocol": "http://","baseUrl": "localhost:8080/zzishapi/api/", "webUrl": "http://localhost:3000/","header": "X-ApplicationId","headerprefix": "","logEnabled": true};
+  var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
   // var url = "http://localhost:3001/quiz#/";
-  
+
   var type = "redirect";
 
   token = localStorage.getItem("zzishtoken");
