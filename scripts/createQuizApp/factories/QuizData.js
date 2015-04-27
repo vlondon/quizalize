@@ -281,11 +281,11 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/publish", details);
         },
         republishQuiz: function(quiz, details){
-            $log.debug("Publish Quiz", quiz, details);
+            $log.debug("RePublish Quiz", quiz, details);
             return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/" + localStorage.getItem("classCode") +"/republish", details);
         },
         unpublishQuiz: function(quiz, details){
-            $log.debug("Publish Quiz", quiz, details);
+            $log.debug("UnPublish Quiz", quiz, details);
             return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/" + localStorage.getItem("classCode") + "/unpublish", details);
         },        
         getClassCode: function(){
