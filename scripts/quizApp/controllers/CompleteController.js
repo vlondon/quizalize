@@ -8,6 +8,8 @@ var gracePeriod = settings.gracePeriod;
 angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', function(QuizData, $log){
     var self = this;
     var hasTopics = false;
+    self.teacherMode = !!sessionStorage.getItem("teacher");
+    sessionStorage.removeItem("teacher");
 
     var calculateTotals = function(items){
         self.hasTopics = false;

@@ -25,5 +25,10 @@ angular.module('createQuizApp')
             controller: "DeleteController",
             controllerAs: "delete"
         })
+        .when('/assign/:id', {
+            templateUrl: "/quiz/view/quizList",
+            controller: "AssignController",
+            controllerAs: "delete"
+        })
         .otherwise({redirectTo: '/'})
 }]);

@@ -16,6 +16,7 @@ require('createQuizApp/controllers/NavBarController');
 require('createQuizApp/controllers/PreviewController');
 require('createQuizApp/controllers/QuizzesController');
 require('createQuizApp/controllers/PublicController');
+require('createQuizApp/controllers/AssignController');
 
 require('createQuizApp/filters/OrderByObject');
 

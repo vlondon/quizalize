@@ -26,6 +26,8 @@ require('quizApp/controllers/IntroController');
 require('quizApp/controllers/AnswerController');
 require('quizApp/controllers/CompleteController');
 
+require('quizApp/filters/OrderByObject');
+
 angular.module('quizApp').run(function() {
     FastClick.attach(document.body);
 });

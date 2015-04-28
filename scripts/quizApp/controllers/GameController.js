@@ -6,7 +6,11 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     if(self.catId==undefined) $location.path("/public");
     if(self.id==undefined) $location.path("/public");
 
-    QuizData.selectQuiz(self.catId,self.id,function() {
+    if (self.catId=="A") {
+    	sessionStorage.setItem("teacher",true);
+    }
+
+    QuizData.selectQuiz(self.catId,self.id,function() {    	
         $location.path("/quiz/intro")
     });        
 }]);
