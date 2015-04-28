@@ -2,7 +2,7 @@
     h1 Choose a quiz for your class
     p Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
     
-    .row(ng-repeat="category in public.categories | orderObjectBy:['orderIndex'] track by $index", style="padding-bottom: 10px")    
+    .row(ng-repeat="category in public.categories | orderObjectBy:['order_index'] track by $index", style="padding-bottom: 10px")    
         .col-md-12
             .quiz-topic-block                
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
