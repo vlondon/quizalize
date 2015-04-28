@@ -598,9 +598,14 @@ section#intro {
     border-radius: 20px;
     box-shadow: 4px 4px 20px #000;
     color: white;
-    font-size: 50px;
+    font-size: 35px;
     font-weight: 300;
     margin-bottom: 30px;
+}
+
+.cta1:hover {
+    background: #D71324;
+    color: white;
 }
 
 .cta1-title {
@@ -616,9 +621,32 @@ section#intro {
     border-radius: 20px;
     box-shadow: 4px 4px 20px #000;
     color: white;
-    font-size: 50px;
+    font-size: 35px;
     font-weight: 300;
 }
+
+.cta2:hover {
+    background: #D71324;
+    color: white;
+}
+
+
+.cta3 {
+    padding: 20px 60px;
+    background: #2a7ed0;
+    border-radius: 20px;
+    color: white;
+    font-size: 35px;
+    font-weight: 300;
+    margin-bottom: 30px;	
+}
+
+.cta3:hover {
+    background: #2164a6;
+    color: white;
+}
+
+
 .item-inner__hero {
 	height: 600px;
 }

@@ -17,10 +17,10 @@ style.
   }
 
 .container
-    h1(ng-hide="quizzes.creating") Hi There! Welcome to Quizalize 
+    h1(ng-hide="quizzes.creating") Hi there! What would you like to do?
         .class-code.pull-right(ng-show="ctrl.classCode")
             Your Class Code: {{ctrl.classCode}}                                    
-
+    br
     .row(ng-hide="quizzes.creating")
         .row.well
             .quiz-preview(ng-show="true")
@@ -28,19 +28,17 @@ style.
                     span(ng-class="{'col-sm-4': ctrl.classCode!=undefined && ctrl.classCode.length>0, 'col-sm-6': ctrl.classCode==undefined || ctrl.classCode==''}")
                         .border-block
                             center
-                                h1 Create a quiz
-                            p Make your own classroom quiz in 60 seconds
+                                h3 Make your own classroom quiz in 60 seconds
                             br
                             center
-                                a.btn.btn-primary.btn-lg(ng-click="quizzes.create()") Create a New Quiz
+                                a.btn.btn-primary.btn-lg(ng-click="quizzes.create()") Create a new quiz
                     span(ng-class="{'col-sm-4': ctrl.classCode!=undefined && ctrl.classCode.length>0, 'col-sm-6': ctrl.classCode==undefined || ctrl.classCode=='' }")
                         .border-block
                             center
-                                h1 Play a Public Quiz
-                            p Choose a pre-made quiz for your class to play
+                                h3 Choose a pre-made quiz for your class to play
                             br
                             center
-                                a.btn.btn-primary.btn-lg.btn-info(ng-href="/quiz/#/public") Browse our Quizzes
+                                a.btn.btn-primary.btn-lg.btn-info(ng-href="/quiz/#/public") Choose a quiz
                     .col-sm-4(ng-hide="ctrl.classCode==undefined || ctrl.classCode==''")
                         .border-block
                             center

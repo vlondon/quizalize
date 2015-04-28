@@ -6,4 +6,12 @@ angular.module('quizApp').controller('IntroController', ['QuizData', '$log', '$r
     self.start = function(){
         $location.path("/quiz/" +  QuizData.chooseKind(0) + "/0");
     };
+
+    self.cancel = function() {
+    	QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel this quiz?",function() {
+            QuizData.cancelQuiz(QuizData.currentQuizData,function() {
+                $location.path("/app#/");
+            });
+        });
+    }
 }]);

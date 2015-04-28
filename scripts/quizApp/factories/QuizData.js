@@ -220,6 +220,7 @@ angular.module('quizApp')
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
                             currentQuizData.name = currentQuiz.name;
+                            currentQuizData.uuid = currentQuiz.uuid;
                             currentQuizData.report = [];
                             ZzishContent.startActivity(currentQuiz, function(err, resp){
                                 $log.debug("Got response from start activity:", resp);
@@ -238,6 +239,7 @@ angular.module('quizApp')
                     currentQuizData.questionCount = currentQuiz.questions.length;
                     currentQuizData.correct = 0;
                     currentQuizData.name = currentQuiz.name;
+                    currentQuizData.uuid = currentQuiz.uuid;
                     currentQuizData.report = [];
                     ZzishContent.startActivity(currentQuiz, function(err, resp){
                         $log.debug("Got response from start activity:", resp);
@@ -340,6 +342,13 @@ angular.module('quizApp')
             $log.debug("Adding report item:", reportItem);
 
             $location.path("/quiz/answer/" + idx);
+        },
+        cancelQuiz: function(callback) {
+            if (currentQuizData.uuid!=undefined) {
+                ZzishContent.cancelActivity(currentQuizData.uuid, function(err, resp){                
+                    callback();
+                });
+            }
         }
     };
 }]);

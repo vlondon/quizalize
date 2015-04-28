@@ -26,16 +26,16 @@ style.
             form(role='form')
                 .col-md-6
                     .login-action-container.inverse-text
-                        h2 Play with your class
+                        h2 Join a class quiz
                         br
                         p.inverse-text Do you have a class code from your teacher?
                         .form-group
-                            input.form-control#classCode(type="text",autocorrect="off", autocapitalize="off" , placeholder="Your Zzish Class Code", ng-model="start.classCode", autofocus="true")
+                            input.form-control#classCode(type="text",autocorrect="off", autocapitalize="off" , placeholder="Your Class Code", ng-model="start.classCode", autofocus="true")
                         p.inverse-text Your name - see it on the live dashboard
                         .form-group
                             input.form-control#userName(type="text", autocorrect="off", autocapitalize="off", placeholder="Your unique name", ng-model="start.studentName")
                         br
-                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Join the games                        
+                        button.btn.btn-primary.btn-block.btn-info(type="submit", ng-click="start.startQuiz()") Show my class quizzes
                         br
                         div(ng-show="start.loading")
                             h3.text-center.inverse-text Fetching Quizzes

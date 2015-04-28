@@ -12,7 +12,7 @@ function login(toggleLogin) {
   var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
   // var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";  
   if (initParams.webUrl.indexOf("http://test")==0) {
-    url = "http://test.quizalize.com";
+    url = "http://test.quizalize.com/quiz#/";
   }
 
   var type = "redirect";

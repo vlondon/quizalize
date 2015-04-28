@@ -1,5 +1,5 @@
 .quiz-topic-block {
-    background: #302A2B;
+    background: #BAB5B6;
     padding: 0 20px;
     border-radius: 20px;
     overflow: hidden;
@@ -41,4 +41,8 @@ a.quiz-item {
     font-weight: 300;
     text-align: right;
     color: rgba(0,0,0,.5);
+}
+
+.quiz-info-row {
+    margin: 0px;
 }

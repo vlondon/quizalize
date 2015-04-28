@@ -1,6 +1,6 @@
 .container
-    h1 Quizalize Public Quiz Database
-    p Check out our public quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
+    h1 Choose a quiz for your class
+    p Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
     
     .row(ng-repeat="category in public.categories | orderBy:public.orderIndex track by $index", style="padding-bottom: 10px")    
         .col-md-12
@@ -14,5 +14,5 @@
                                 .quiz-title {{quiz.name}}
                         .col-xs-3
                             .row.quiz-info-row                        
-                                button.btn.btn-info.btn-block(clickOnce ng-click="public.assignQuiz(quiz);") Assign this Quiz to your Class                            
+                                button.btn.btn-info.btn-block(clickOnce ng-click="public.assignQuiz(quiz);") Let's play!
                                 
