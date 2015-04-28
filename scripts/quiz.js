@@ -74,6 +74,14 @@ window.logout = logout;
 
 $( document ).ready(function() {
 	var quizData = localStorage.getItem("quizData");
+  var link = localStorage.getItem("link");
+  if (link==undefined) {
+    $("#myquizzes").hide();
+  }
+  else {
+    $("#myquizzes").show();
+    $("#myquizzesa").attr("href",link);
+  }
 	var emailAddress = localStorage.getItem("emailAddress");
 	if (quizData!=undefined) {
 		var qj = $.parseJSON(quizData);
