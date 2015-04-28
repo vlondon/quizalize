@@ -2,17 +2,20 @@
     h1 Choose a quiz for your class
     p Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
     
-    .row(ng-repeat="category in public.categories | orderBy:public.orderIndex track by $index", style="padding-bottom: 10px")    
+    .row(ng-repeat="category in public.categories | orderObjectBy:['orderIndex'] track by $index", style="padding-bottom: 10px")    
         .col-md-12
             .quiz-topic-block                
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
                 .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
-                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderBy:'index' track by $index")
-                        .col-xs-9
+                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderObjectBy:['index'] track by $index")
+                        .col-xs-8
                             a.quiz-item
                                 .quiz-title {{quiz.name}}
-                        .col-xs-3
+                        .col-xs-2
                             .row.quiz-info-row                        
-                                button.btn.btn-info.btn-block(clickOnce ng-click="public.assignQuiz(quiz);") Let's play!
+                                button.btn.btn-info.btn-block(clickOnce ng-click="public.assignQuiz(quiz);") Set this quiz
+                        .col-xs-2                            
+                            .row.quiz-info-row                        
+                                a.btn.btn-info.btn-block(ng-href="/app#/play/A/{{quiz.uuid}}") Preview
                                 

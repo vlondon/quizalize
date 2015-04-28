@@ -5,29 +5,30 @@
                 h2 Publishing...
             .quiz-preview(ng-show="preview.published")
 
-                h2 Congratulations! You have successfully published the quiz: {{preview.quiz.name}}
-                br
                 .row
                     .col-sm-6
                         .border-block
-                            h1 OK, Let's play!
-                            h3 Ask your players to go to 
-                                strong http://quizal.me
-                                | &nbsp;and enter this code:                                   
                             center
-                                .class-code 
-                                    {{preview.classCode}}
-                            br
-                            p They can play on any mobile, tablet or desktop devices.
+                                h1 Players get ready!
+                                h3 Browse to 
+                                    strong http://quizal.me
+                                    br
+                                    | and enter this class code.
+                                center
+                                    .class-code 
+                                        {{preview.classCode}}
+                                br
+                                p You can play on any mobile, tablet or desktop devices.
                     .col-sm-6
                         .border-block
-                            h1 Next: Launch Dashboard
-                            p Track Live progress of what's going on as your students play a Quizalize quiz and get a complete analysis of their result.
-                            br
-                            br
-                            br
                             center
-                                a.btn.btn-primary.btn-lg(ng-href="{{preview.fullLink}}", target="zzishld") Open Zzish Teacher Dashboard
+                                h1 Teacher get ready!
+                                p Open your learning dashboard here:
+                                br
+                                br
+                                br
+                                center
+                                    a.btn.btn-primary.btn-lg(ng-href="{{preview.fullLink}}", target="zzishld") Open Zzish Teacher Dashboard
                 //.row
                 //    .col-xs-12
                 //        &nbsp;
@@ -55,9 +56,9 @@
 
 
             .col-sm-8.col-sm-offset-2(ng-show="!preview.classCode && !preview.userVerified")
-                h1.text-center Register with Quizalize
+                h1.text-center One click class setup
                     .form-horizontal(role="form")
-                p In order to proceed, you will need to register with Quizalize. All you need to do is enter your email and we will send you instructions on how to register.
+                p No need to fill in full registration just yet, but please do enter a real email address so we can send you secure access to your class progress dashboard. 
                 .form-group
                     .col-sm-3(ng-hide="preview.classCode || preview.publishing")
                         label.control-label Email

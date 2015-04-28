@@ -13,13 +13,13 @@
     .row
         h1(ng-show="quizzes.studentData.studentCode",style="color: white") Hi {{quizzes.studentData.studentCode}}!
 
-    .row(ng-repeat="category in quizzes.categories | orderBy:quizzes.orderIndex track by $index", style="padding-bottom: 10px; ")    
+    .row(ng-repeat="category in quizzes.categories | orderObjectBy:['orderIndex'] track by $index", style="padding-bottom: 10px; ")    
         .col-md-12
             .quiz-topic-block                
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
                 .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
-                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderBy:'index' track by $index",style="padding-right: 15px;")
+                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderObjectBy:['index'] track by $index",style="padding-right: 15px;")
                         .col-xs-9
                             a.quiz-item
                                 .quiz-title {{quiz.name}}

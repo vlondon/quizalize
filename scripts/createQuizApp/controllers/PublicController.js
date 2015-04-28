@@ -3,14 +3,7 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
 
 	self.assignQuiz = function(quiz) {
         QuizData.addQuiz(quiz, function(idx) {
-        	var message = "You Quiz has been added.";
-        	if (localStorage.getItem('classCode')==null) {
-        		message = "You will now be asked to register so we can store your progress data";
-        	}
-			QuizData.showMessage("Quiz Added",message,function() {
-				$location.path("/preview/" + idx);
-				//$location.path("/quiz#/");
-			});
+            $location.path("/preview/" + idx);
         });
 	}   
 
