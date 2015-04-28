@@ -22,4 +22,4 @@
                     br
                 .row
                     div(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px;", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
-                        button.btn.btn-block.btn-info(ng-click="quiz.select($index);") {{alternative}}
+                        button.btn.btn-block.btn-info(ng-click="quiz.select($index);",style="white-space: normal;") {{alternative}}
