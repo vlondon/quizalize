@@ -5,10 +5,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     self.orderIndex = "category.name";
 
     self.startQuiz = function(categoryId,quizId){
-        $log.debug("Selected Quiz: ", categoryId,quizId);
-        QuizData.selectQuiz(categoryId,quizId,function() {
-            $location.path("/quiz/intro")
-        });
+        $location.path("/quiz/"+categoryId+"/"+quizId);
     };
 
     self.reloadQuizzes = function(){

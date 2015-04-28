@@ -1,4 +1,4 @@
-angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$log', '$routeParams', function(QuizData, $log, $routeParams){
+angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log, $routeParams,$location){
 
     var self = this;
     self.emailAddress = localStorage.getItem("emailAddress");
@@ -18,9 +18,9 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 		      $("#LoginButton").html("Logout");
 		      $("#LoginButton").show();
             }
-	    self.publishing = true;
+	       self.publishing = true;
 
-            var details = { emailAddress: self.emailAddress };
+            var details = { emailAddress: self.emailAddress, access: -1 };
             if(self.classCode) details.code = self.classCode;
             $log.debug("Publishing with details", details, "Quiz", self.quiz);
 

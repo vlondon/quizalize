@@ -15,7 +15,10 @@ require('createQuizApp/controllers/DeleteController');
 require('createQuizApp/controllers/NavBarController');
 require('createQuizApp/controllers/PreviewController');
 require('createQuizApp/controllers/QuizzesController');
+require('createQuizApp/controllers/PublicController');
+require('createQuizApp/controllers/AssignController');
 
+require('createQuizApp/filters/OrderByObject');
 
 angular.module('createQuizApp').run(["$rootScope", "$anchorScroll" , function ($rootScope, $anchorScroll) {
     $rootScope.$on("$locationChangeSuccess", function() {

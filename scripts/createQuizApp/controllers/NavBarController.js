@@ -1,11 +1,22 @@
-angular.module('createQuizApp').controller('NavBarController', ['$log', '$timeout', function($log, $timeout){
+angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log', '$timeout', function(QuizData,$log, $timeout){
     var self = this;
     self.showHelp = false;
-    self.previewLink = "2345";
+    self.classCode = localStorage.getItem("classCode");
+    self.link = localStorage.getItem("link");
 
     self.dismiss = function(){
         self.showHelp = !self.showHelp;
-        localStorage.setItem("showHelp", true);
+        if (self.showHelp) {
+        	$("#intro").show();
+        }
+        localStorage.setItem("showHelp", self.showHelp);
     }
 
+    self.hasQuiz = function() {
+    	return localStorage.getItem("quizData")!=null;
+    }
+
+    self.confirmed = function() {
+        QuizData.confirmed($("#modalUuid").val());
+    }
 }]);

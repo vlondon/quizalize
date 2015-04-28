@@ -146,9 +146,16 @@ style.
 
 .container
     .wrapper-complete
-        .row
+        .row(ng-hide="quiz.teacherMode")
             .col-xs-8.col-xs-offset-2
-                a.btn.btn-block.btn-info.btn-sm(href="#/list") Home
+                a.btn.btn-block.btn-info.btn-sm(href="#/list") Home 
+        .row(ng-show="quiz.teacherMode")
+            .col-xs-8.col-xs-offset-2
+                a.btn.btn-block.btn-info.btn-sm(href="/quiz#/assign/{{quiz.data.uuid}}") Set this Quiz for your class
+                br
+                a.btn.btn-block.btn-info.btn-sm(href="#/public") Choose Another
+                
+
         .row.inverse-text
             .col-xs-12.text-center
                 h2.congratulations-text 

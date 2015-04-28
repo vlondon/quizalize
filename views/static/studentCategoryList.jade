@@ -1,69 +1,31 @@
+.navbar.navbar-default.navbar-fixed-top
+    .container
+        .navbar-header
+            a(href="/app")
+                img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+        a.pull-right.btn.btn-info(href="/quiz",style="margin-top:9px") Create a quiz in 60 seconds!                        
+
 .container
-    style.
-        .quiz-find-title {
-            margin-bottom: 40px;
-        }
-        .quiz-topic-block {
-            background: #ed3041;
-            padding: 0 20px;
-            border-radius: 20px;
-            overflow: hidden;
-            display: block;
-            margin-bottom: 20px;
-        }
-        .quiz-topic-title {
-            padding: 20px;
-            margin: 20px;
-            font-size: 32px;
-            font-weight: 700;
-            color: white;
-        }
-        .quiz-topic-title:hover {
-            color: white;
-        }
-        a.quiz-item {
-            display: block;
-            background: white;
-            padding: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,.1);
-            margin-bottom: 20px;
-        }
-        .quiz-item:hover {
-            cursor: pointer;
-            background: #efefef;
-        }
-        .quiz-title {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .quiz-question-count {
-            font-size: 12px;
-            font-weight: 300;
-            color: rgba(0,0,0,.5);
-        }
-        .quiz-difficulty {
-            font-size: 12px;
-            font-weight: 300;
-            text-align: right;
-            color: rgba(0,0,0,.5);
-        }
-    
+    br
+    h3(ng-hide="quizzes.studentData.studentCode",style="color: white") Here's some quizzes to get you started - lots more quizzes on the way - or create your own!
+    br
+
     .row
         h1(ng-show="quizzes.studentData.studentCode",style="color: white") Hi {{quizzes.studentData.studentCode}}!
 
-    .row(ng-repeat="category in quizzes.categories | orderBy:quizzes.orderIndex track by $index", style="padding-bottom: 10px")    
+    .row(ng-repeat="category in quizzes.categories | orderObjectBy:['orderIndex'] track by $index", style="padding-bottom: 10px; ")    
         .col-md-12
             .quiz-topic-block                
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
                 .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
-                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderBy:'index' track by $index")
+                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderObjectBy:['index'] track by $index",style="padding-right: 15px;")
                         .col-xs-9
                             a.quiz-item
                                 .quiz-title {{quiz.name}}
                         .col-xs-3
                             .row.quiz-info-row                        
-                                button.btn.btn-info.btn-block(clickOnce ng-click="quizzes.startQuiz(category.category.uuid,quiz.uuid);") Play                            
+                                a.btn.btn-info.btn-block(clickOnce ng-href="app#/play/{{category.category.uuid}}/{{quiz.uuid}}") Play                            
                                 
 
     .col-sm-6.col-sm-offset-3(ng-hide="quizzes.studentData.studentCode==undefined")

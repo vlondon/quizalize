@@ -4,6 +4,8 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     self.newQuizCategory = "";
     self.rootTopicList = [];
     self.rootTopics = [];
+    self.hasPublicAssignedQuizzes = false;
+    self.hasOwnQuizzes = false;
 
     if(typeof ($location.search()).name != 'undefined'){
         //Have quiz name
@@ -56,7 +58,11 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                     });
                     QuizData.getQuizzes(function(data){
                         self.pastQuizzes = data;
-
+                        for (var i in self.pastQuizzes) {
+                            if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                            else self.hasOwnQuizzes = true;
+                        }                        
+                        localStorage.setItem("quizData",JSON.stringify(data));
                         if(self.didSupplyQuizName){
                             $log.debug("Should create Quiz, with name", self.newQuizName);
                            self.createQuiz();
@@ -89,6 +95,11 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 QuizData.setUser(result);
                 QuizData.getQuizzes(function(data){
                     self.pastQuizzes = data;
+                    for (var i in self.pastQuizzes) {
+                        if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                        else self.hasOwnQuizzes = true;
+                    }                    
+                    localStorage.setItem("quizData",JSON.stringify(data));
 
                     if(self.didSupplyQuizName){
                         $log.debug("Should create Quiz, with name", self.newQuizName);
@@ -116,7 +127,12 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         });
         QuizData.getQuizzes(function(data){
             self.pastQuizzes = data;
-
+            for (var i in self.pastQuizzes) {
+                if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                else self.hasOwnQuizzes = true;
+            }            
+            console.log("I GOT",self.hasPublicAssignedQuizzes);
+            localStorage.setItem("quizData",JSON.stringify(data));
             if(self.didSupplyQuizName){
                 $log.debug("Should create Quiz, with name", self.newQuizName);
                self.createQuiz();
@@ -151,6 +167,9 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         $('#category').focus();
     }
 
+    self.create = function(){
+        self.creating = true;
+    }
 
     self.createQuiz = function(){
         if(self.newQuizName.length == 0)
@@ -180,23 +199,77 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         });
     };
 
-    self.editQuiz = function(idx){
+    self.editQuiz = function(quiz){
+        var idx = 0;
+        for (var i in self.pastQuizzes) {
+            if (self.pastQuizzes[i].uuid==quiz.uuid) {
+                break;
+            }
+            idx++;
+        }
         $location.path("/create/" + idx);
         $log.debug("Editing quiz " + idx);
     };
 
     self.previewQuiz = function(idx){
+
         $location.path("/preview/" + idx);
         $log.debug("Viewing quiz " + idx);
     };
 
-    self.deleteQuiz = function(idx){
-        if (confirm("Are you sure you want to permanently delete this quiz?")) {
+    self.deleteQuiz = function(quiz){
+        var idx = 0;
+        for (var i in self.pastQuizzes) {
+            if (self.pastQuizzes[i].uuid==quiz.uuid) {
+                break;
+            }
+            idx++;
+        }
+        QuizData.confirmWithUser("Confirm Delete","Are you sure you want to permanently delete this quiz?",function() {
             $location.path("/delete/" + idx);
             $log.debug("Viewing quiz " + idx);
-        }
-
+        });
     };
+
+    self.unpublishQuiz = function(idx){
+        QuizData.unpublishQuiz(quiz).success(function(result){
+            $log.debug("Response from unpublishing: ", result);
+            self.pastQuizzes[idx].enabled = false;
+        }).error(function(err){
+            $log.debug("Error from unpublishing: ", err);
+            self.statusText = err;
+        });
+    };
+
+    self.republishQuiz = function(quiz){
+        QuizData.republishQuiz(quiz).success(function(result){
+            $log.debug("Response from republishing: ", result);
+            self.pastQuizzes[idx].enabled = true;
+        }).error(function(err){
+            $log.debug("Error from republishing: ", err);
+            self.statusText = err;
+        });
+    };
+
+    self.unassignPublicQuiz = function(quiz) {
+        var idx = 0;
+        for (var i in self.pastQuizzes) {
+            if (self.pastQuizzes[i].uuid==quiz.uuid) {
+                break;
+            }
+            idx++;
+        }
+        QuizData.confirmWithUser("Remove Public Quiz","Are you sure you want to remove this public quiz from your list",function() {
+            QuizData.unassignAssignQuiz(quiz.uuid).success(function(result){
+                $log.debug("Response from unassignging: ", result);
+                self.pastQuizzes.splice(idx,1);
+            }).error(function(err){
+                $log.debug("Error from republishing: ", err);
+                self.statusText = err;
+            });        
+        });
+    }
+
     //self.editSampleQuiz = function(idx){
     //    var idx = QuizData.addQuiz( self.sampleQuizzes[idx]);
     //    $location.path("/create/" + idx);

@@ -10,6 +10,7 @@ angular.module('quizApp')
     var maxScore = settings.maxScore;
     var minScore = settings.minScore;
     var gracePeriod = settings.gracePeriod;
+    var callbacks = {};
 
     // setup/add helper methods...
     var quizzes = [];
@@ -204,6 +205,7 @@ angular.module('quizApp')
             return topics;
         },
         selectQuiz: function(categoryId,quizId,callback) {
+            ZzishContent.init(initToken);
             var found = false;
             if (categories[categoryId]!=null) {
                 var category = categories[categoryId];
@@ -219,6 +221,7 @@ angular.module('quizApp')
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
                             currentQuizData.name = currentQuiz.name;
+                            currentQuizData.uuid = currentQuiz.uuid;
                             currentQuizData.report = [];
                             ZzishContent.startActivity(currentQuiz, function(err, resp){
                                 $log.debug("Got response from start activity:", resp);
@@ -229,7 +232,21 @@ angular.module('quizApp')
                 }
             }
             if (!found) {
-                $log.error("Selecting an invalid quiz", "Have quizzes", categories);
+                //$log.error("Selecting an invalid quiz", "Have quizzes", categories);
+                ZzishContent.getConsumerContent(quizId,function(err,message) {
+                    currentQuiz = message;
+                    currentQuiz.questions = message.questions;
+                    currentQuizData.totalScore = 0;
+                    currentQuizData.questionCount = currentQuiz.questions.length;
+                    currentQuizData.correct = 0;
+                    currentQuizData.name = currentQuiz.name;
+                    currentQuizData.uuid = currentQuiz.uuid;
+                    currentQuizData.report = [];
+                    ZzishContent.startActivity(currentQuiz, function(err, resp){
+                        $log.debug("Got response from start activity:", resp);
+                    });
+                    callback();
+                });
             }
 
         },
@@ -326,6 +343,50 @@ angular.module('quizApp')
             $log.debug("Adding report item:", reportItem);
 
             $location.path("/quiz/answer/" + idx);
-        }
+        },
+        cancelQuiz: function(id,callback) {
+            if (id!=undefined) {
+                ZzishContent.cancelActivity(id, function(err, resp){                
+                    callback();
+                });
+            }
+            else {
+                callback();
+            }
+        },
+        showMessage : function(title,message,callBack) {
+            
+            if (callBack!=null) {
+                var uuidGen = uuid.v4();    
+                $("#modalUuid").val(uuidGen);
+                callbacks[uuidGen]=callBack;
+            }
+            else {
+                $("#modalUuid").val("");
+            }
+            $("#modalTitle").html(title);
+            $("#closeButton").hide();
+            $("#modalMessage").html(message);
+            $("#closeButton").html("OK");
+            $("#messageButton").click();                
+        },
+        confirmWithUser : function(title,message,callBack) {
+            var uuidGen = uuid.v4();
+            $("#modalUuid").val(uuidGen);
+            callbacks[uuidGen]=callBack;
+            $("#modalTitle").html(title);
+            $("#closeButton").show();
+            $("#modalMessage").html(message);
+            $("#closeButton").html("No");
+            $("#confirmButton").html("Yes");            
+            $("#messageButton").click();                
+        },
+        confirmed: function(uuid) {
+            if (uuid!=undefined && uuid!="" && callbacks[uuid]!=undefined) {
+                var x = callbacks[uuid];
+                delete callbacks[uuid];
+                x();
+            }
+        }        
     };
 }]);

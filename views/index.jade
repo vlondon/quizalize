@@ -44,9 +44,13 @@ html(ng-app='quizApp')
                 })
             })              
         link(href='/css/cq-bootstrap.min.css', rel='stylesheet')
+        link(href='/css/quizalize.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Source+Code+Pro:500', rel='stylesheet', type='text/css')
 
         style.
+            .quiz-find-title {
+                margin-bottom: 40px;
+            } 
             .container.ng-enter {
                 -webkit-transition: .3s ease-out all; /* Safari/Chrome */
                 -moz-transition: .3s ease-out all; /* Firefox */
@@ -161,8 +165,6 @@ html(ng-app='quizApp')
 
                 }
             }
-
-
     body
         script.
             /* <![CDATA[ */
@@ -174,10 +176,21 @@ html(ng-app='quizApp')
         noscript.
             div(style="display:inline;")
                 img(height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0")       
-        .navbar.navbar-default.navbar-fixed-top
-            .container
-                .navbar-header
-                    a(href="/app")
-                        img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+
+        button.btn.btn-primary.btn-lg(data-toggle="modal",data-target="#myModal",style="display:none")#messageButton
+
+        div.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true",ng-controller="NavBarController as ctrl")#myModal
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        input(type="hidden",value="")#modalUuid
+                        button.close(data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true") &times;
+                        h4.modal-title#modalTitle
+                    div.modal-body
+                        p#modalMessage
+                    div.modal-footer
+                        button.btn.btn-default(data-dismiss="modal")#closeButton Close
+                        button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="ctrl.confirmed()") OK
 
         div(ng-view)

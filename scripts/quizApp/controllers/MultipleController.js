@@ -14,6 +14,11 @@ angular.module('quizApp')
             self.answer = data.answer;
             self.alternatives = QuizData.getAlternatives(self.questionId);
 
+            if (QuizData.currentQuizData.report[self.questionId]!=undefined) {
+                //we already have this question
+                $location.path("/quiz/answer/"+self.questionId);
+            }
+
             self.longMode = false;
             for(var i in self.alternatives){
                 if(self.alternatives[i].length > 10){

@@ -48,8 +48,16 @@ app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
 app.post('/create/:profileId/quizzes/:id/delete', quiz.deleteQuiz);
 app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
+app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
+app.post('/create/:profileId/quizzes/:id/:group/republish', quiz.republishQuiz);
+
+app.get('/quizzes/:profileId/public', quiz.getPublicQuizzes);
+app.post('/quizzes/:profileId/public/:groupCode/:uuid/delete', quiz.deletePublicQuiz);
+app.get('/quizzes/:profileId/public/:groupCode/assigned', quiz.getAssignedPublicQuizzes);
 
 /*
+
+
 Endpoints for students: actually we are making this client side
  */
 

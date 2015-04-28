@@ -11,6 +11,16 @@ angular.module('quizApp')
             controller: "QuizzesController",
             controllerAs: "quizzes"
         })
+        .when('/public', {
+            templateUrl: "/quiz/view/studentCategoryList",
+            controller: "PublicController",
+            controllerAs: "quizzes"
+        })
+        .when('/play/:catId/:id', {
+            templateUrl: "/quiz/view/studentCategoryList",
+            controller: "GameController",
+            controllerAs: "quizzes"
+        })
         .when('/quiz/fixed/:questionId', {
             templateUrl: "/quiz/view/quiz",
             controller: "QuizController",
