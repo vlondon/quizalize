@@ -10,6 +10,7 @@ angular.module('quizApp')
     var maxScore = settings.maxScore;
     var minScore = settings.minScore;
     var gracePeriod = settings.gracePeriod;
+    var callbacks = {};
 
     // setup/add helper methods...
     var quizzes = [];
@@ -343,12 +344,49 @@ angular.module('quizApp')
 
             $location.path("/quiz/answer/" + idx);
         },
-        cancelQuiz: function(callback) {
-            if (currentQuizData.uuid!=undefined) {
-                ZzishContent.cancelActivity(currentQuizData.uuid, function(err, resp){                
+        cancelQuiz: function(id,callback) {
+            if (id!=undefined) {
+                ZzishContent.cancelActivity(id, function(err, resp){                
                     callback();
                 });
             }
-        }
+            else {
+                callback();
+            }
+        },
+        showMessage : function(title,message,callBack) {
+            
+            if (callBack!=null) {
+                var uuidGen = uuid.v4();    
+                $("#modalUuid").val(uuidGen);
+                callbacks[uuidGen]=callBack;
+            }
+            else {
+                $("#modalUuid").val("");
+            }
+            $("#modalTitle").html(title);
+            $("#closeButton").hide();
+            $("#modalMessage").html(message);
+            $("#closeButton").html("OK");
+            $("#messageButton").click();                
+        },
+        confirmWithUser : function(title,message,callBack) {
+            var uuidGen = uuid.v4();
+            $("#modalUuid").val(uuidGen);
+            callbacks[uuidGen]=callBack;
+            $("#modalTitle").html(title);
+            $("#closeButton").show();
+            $("#modalMessage").html(message);
+            $("#closeButton").html("No");
+            $("#confirmButton").html("Yes");            
+            $("#messageButton").click();                
+        },
+        confirmed: function(uuid) {
+            if (uuid!=undefined && uuid!="" && callbacks[uuid]!=undefined) {
+                var x = callbacks[uuid];
+                delete callbacks[uuid];
+                x();
+            }
+        }        
     };
 }]);

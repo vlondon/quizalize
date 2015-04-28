@@ -77,7 +77,7 @@ $( document ).ready(function() {
 	var emailAddress = localStorage.getItem("emailAddress");
 	if (quizData!=undefined) {
 		var qj = $.parseJSON(quizData);
-		if (qj!=undefined && qj.length>0) {
+		if (qj!=undefined && qj.length>0 && emailAddress!=null) {
 			$("#myquizzes").show();
 		}
 		else {

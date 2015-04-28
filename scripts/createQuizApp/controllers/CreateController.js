@@ -139,7 +139,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         if (topicId!="") {
             question_obj['topicId'] = topicId;
         }
-        if(self.distractorsActive){
+        if ($('#alt1').val()!="") {
             var alternatives = [$('#alt1').val(), $('#alt2').val(), $('#alt3').val()];
             question_obj['alternatives'] = alternatives;
         }

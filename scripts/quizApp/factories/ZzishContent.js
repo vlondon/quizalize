@@ -84,15 +84,14 @@ angular.module('quizApp')
                 $rootScope.$apply();
             });
         },
-        startActivity: function(quizId, callback){
-            zzish.cancelActivity(quizId,function(err,message) {
-                callback();
-            })
-	   },
-        cancelActivity: function(quizId, callback){
+        startActivity: function(quiz, callback){
             var parameters = {
                 activityDefinition: {
                     type: quiz.uuid,
+                    name: quiz.name,
+                    score: settings.maxScore * quiz.questions.length,
+                    count: quiz.questions.length,
+                    duration: ""+ quiz.questions.length * settings.maxTime,
                 },
                 extensions: {
                     contentId: quiz.uuid,
@@ -106,6 +105,11 @@ angular.module('quizApp')
                 $log.debug("Start Activity response... saving id", message);
                 callback(err, message);
             });
+	   },
+        cancelActivity: function(quizId, callback){
+            zzish.cancelActivity(quizId,function(err,message) {
+                callback();
+            })
        },       
         stopActivity: function(callback){
             zzish.stopActivity(currentActivityId, {}, function(err, message){
