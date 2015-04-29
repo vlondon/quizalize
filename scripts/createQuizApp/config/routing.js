@@ -20,6 +20,11 @@ angular.module('createQuizApp')
             controller: "PreviewController",
             controllerAs: "preview"
         })
+        .when('/published/:id', {
+            templateUrl: "/quiz/view/published",
+            controller: "PublishedController",
+            controllerAs: "publish"
+        })
         .when('/delete/:id', {
             templateUrl: "/quiz/view/quizList",
             controller: "DeleteController",

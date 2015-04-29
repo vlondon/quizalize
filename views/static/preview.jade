@@ -1,61 +1,10 @@
 .container(style="padding-top: 10px")
     .row
         .row.well
-            .col-sm-8.col-sm-offset-2.text-center(ng-show="!preview.published && (preview.classCode || preview.userVerified)")
+            .col-sm-8.col-sm-offset-2.text-center(ng-show="preview.publishing")
                 h2 Publishing...
-            .quiz-preview(ng-show="preview.published")
 
-                .row
-                    .col-sm-6
-                        .border-block
-                            center
-                                h1 Players get ready!
-                                h3 Browse to 
-                                    strong http://quizal.me
-                                    br
-                                    | and enter this class code.
-                                center
-                                    .class-code 
-                                        {{preview.classCode}}
-                                br
-                                p You can play on any mobile, tablet or desktop devices.
-                    .col-sm-6
-                        .border-block
-                            center
-                                h1 Teacher get ready!
-                                p Open your learning dashboard here:
-                                br
-                                br
-                                br
-                                center
-                                    a.btn.btn-primary.btn-lg(ng-href="{{preview.fullLink}}", target="zzishld") Open Teacher Dashboard
-                //.row
-                //    .col-xs-12
-                //        &nbsp;
-                //.row
-                //    .col-sm-6
-                //        .border-block
-                //            h1 Edit Your Previous Quizzes
-                //            p Ask your students to go to http://quizal.me and where they will be asked to enter a class code. 
-                //            br
-                //            center
-                //                a.btn.btn-primary.btn-lg.btn-info(ng-href="/quiz/") Manage your Quizzes                                
-                //            br
-                //    .col-sm-6
-                //        .border-block
-                //            h1 Assign a public Quiz
-                //            p Browse through our public quiz database that can be played by your class.
-                //            br
-                //            center
-                //                btn.btn-primary.btn-lg.btn-info(ng-click="") Browse through our public quizzes
-                        
-
-                    
-
-                    
-
-
-            .col-sm-8.col-sm-offset-2(ng-show="!preview.classCode && !preview.userVerified")
+            .col-sm-8.col-sm-offset-2(ng-show="!preview.publishing")
                 h1.text-center One click class setup
                     .form-horizontal(role="form")
                 p No need to fill in full registration just yet, but please do enter a real email address so we can send you secure access to your class progress dashboard. 
@@ -72,5 +21,4 @@
                         br
 
             .col-sm-8.col-sm-offset-2(ng-show="preview.statusText")
-                p.text-center.text-danger {{preview.statusText}}
-
+                p.text-center.text-danger {{preview.statusText}}            

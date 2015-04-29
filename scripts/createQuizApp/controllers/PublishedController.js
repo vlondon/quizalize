@@ -1,4 +1,4 @@
-angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log, $routeParams,$location){
+angular.module('createQuizApp').controller('PublishedController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log, $routeParams,$location){
 
     var self = this;
     self.emailAddress = localStorage.getItem("emailAddress");
@@ -14,11 +14,11 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
         if(self.userVerified || self.classCode || self.emailAddress){
             if(self.emailAddress && self.emailAddress.length > 0){
-		      localStorage.setItem("emailAddress",self.emailAddress);
-		      $("#LoginButton").html("Logout");
-		      $("#LoginButton").show();
+              localStorage.setItem("emailAddress",self.emailAddress);
+              $("#LoginButton").html("Logout");
+              $("#LoginButton").show();
             }
-	       self.publishing = true;
+           self.publishing = true;
 
             var details = { emailAddress: self.emailAddress, access: -1 };
             if(self.classCode) details.code = self.classCode;
@@ -31,7 +31,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
                     self.fullLink = result.link;
                     localStorage.setItem("link",self.fullLink);
                     QuizData.saveClassCode(self.classCode);
-                    $location.path("/published/"+self.id);
+                    self.published=true;
                 }
                 else {
                     self.statusText = "Error when publishing: " + result.message + ". Please Try again";
@@ -53,7 +53,10 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
         self.classCode = QuizData.getClassCode();
 
         if(self.classCode || self.userVerified){
-           $location.path("/published/"+self.id);
+            self.publish();
+        }
+        else {
+            $location.path("/preview/"+self.id);
         }
 
         $log.debug(self);
