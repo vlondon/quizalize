@@ -22,3 +22,10 @@ exports.register =  function(req, res) {
         res.send(err,data);
     })
 }
+
+exports.forget =  function(req, res) {
+    var email = req.body.email;
+    zzish.authenticate(email,null,function(err,data) {
+        res.send(err,data);
+    })
+}

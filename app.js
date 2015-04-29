@@ -34,8 +34,9 @@ app.get('/quiz/create', quiz.create);
 app.get('/amazon-twitter-voucher', quiz.voucher);
 
 //Endpoints for teachers TODO rename appropriately
-app.post('/user/authentciate', user.authenticate);
-
+app.post('/user/authenticate', user.authenticate);
+app.post('/user/register', user.register);
+app.post('/user/forget', user.forget);
 
 app.post('/create/profile', quiz.createProfile);
 

@@ -2,7 +2,7 @@
     .row
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
-                h1 Login with Quizalize
+                h1#title Sign in with Quizalize
 
                 form.form-horizontal(role="form")
                     .form-group
@@ -10,12 +10,20 @@
                         .col-sm-9
                             input.form-control#email(type="text", on-enter="login.focusPassword();", ng-model="login.email", placeholder="e.g. abc@zzish.com", autofocus="true")
                             br
-                        label.control-label.col-sm-3 Password                              
-                        .col-sm-9
-                            input.form-control#password(type="password", on-enter="login.login();",ng-model="login.password")
-                            br
-                        .col-sm-9
-                            | Don't have an account? 
-                            a(ng-href='' ng-click="login.showRegister()") Sign Up
-                        .col-sm-3
-                            button.btn.btn-primary.btn-block(ng-click="login.login();", ng-disabled="login.email=='' || login.password==''") Login
+                        span#passwordSpan
+                            label.control-label.col-sm-3 Password                              
+                            .col-sm-9
+                                input.form-control#password(type="password", on-enter="login.login();",ng-model="login.password")
+                                br
+                        .col-sm-8
+                            span(ng-hide="login.mode=='register'") Don't have an account?&nbsp;
+                                a(ng-href='' ng-click="login.showRegister()") Sign Up
+                                br
+                            span(ng-show="login.mode=='login'") Forget Password?&nbsp; 
+                                a(ng-href='' ng-click="login.showForget()") Click here
+                                br
+                            span(ng-hide="login.mode=='login'") Already registered?&nbsp;
+                                a(ng-href='' ng-click="login.showLogin()") Click here
+                        .col-sm-4
+                            button.btn.btn-primary.btn-block(ng-click="login.login();", ng-disabled="login.checkCanSubmit()")#LoginButton
+                                span Sign In
