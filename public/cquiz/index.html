@@ -77,9 +77,9 @@ var google_remarketing_only = true;
                 <li><a href="/app">Play Now!</a></li>
                 <li><a href="/quiz">Set a Quiz</a></li>
                 <li><a href="#works">Tutorial</a></li>
-                <li><a id="LoginButton" href="javascript:login()">Teacher Login</a></li>
                 <li id="myquizzes"><a id="myquizzesa" href="/quiz">Teacher Dashboard</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a id="LoginButton" href="javascript:login()">Teacher Login</a></li>
               </ul>
             </div>
             <!-- /.Navbar-collapse -->
@@ -414,13 +414,7 @@ var google_remarketing_only = true;
       <!-- Core JavaScript Files -->
       <script>
       function newQuiz() {
-        if ($("#name").val()!="") {
-          window.location.href="/quiz#/?name="+$("#name").val();
-        }
-        else {
           window.location.href="/quiz#";
-        }
-        return false;
       }
       </script>
       <script src="/cquiz/js/jquery.min.js"></script>

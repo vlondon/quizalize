@@ -69,6 +69,21 @@ function logout() {
   }
 }
 
+function goToQuiz() {
+  window.location.href="/quiz#/"
+}
+
+function goToService() {
+  location.hash ="#service";
+}
+
+function goToApp() {
+  window.location.href="/app#/"
+}
+
+window.goToService = goToService;
+window.goToApp = goToApp;
+window.goToQuiz = goToQuiz;
 window.login = login;
 window.logout = logout;
 
