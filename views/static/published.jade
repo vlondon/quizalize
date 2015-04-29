@@ -1,0 +1,33 @@
+img(height='1', width='1', style='display:none;', alt='', src='https://analytics.twitter.com/i/adsct?txn_id=l5zii&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0')
+img(height='1', width='1', style='display:none;', alt='', src='//t.co/i/adsct?txn_id=l5zii&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0')
+
+.container(style="padding-top: 10px")
+    .row
+        .row.well
+            .col-sm-8.col-sm-offset-2.text-center(ng-show="publish.publishing")
+                 h2 Publishing...
+            .quiz-preview(ng-show="publish.published")
+                .row
+                    .col-sm-6
+                        .border-block
+                            center
+                                h1 Players get ready!
+                                h3 Browse to 
+                                    strong http://quizal.me
+                                    br
+                                    | and enter this class code.
+                                center
+                                    .class-code 
+                                        {{publish.classCode}}
+                                br
+                                p You can play on any mobile, tablet or desktop devices.
+                    .col-sm-6
+                        .border-block
+                            center
+                                h1 Teacher get ready!
+                                p Open your learning dashboard here:
+                                br
+                                br
+                                br
+                                center
+                                    a.btn.btn-primary.btn-lg(ng-href="{{publish.fullLink}}", target="zzishld") Open Teacher Dashboard
