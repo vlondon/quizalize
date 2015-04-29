@@ -47,29 +47,13 @@ var google_remarketing_only = true;
     <div class="item-inner item-inner__hero item-1">
         <div class="cta1-container">
             <h1 class="cta-title">Instant classroom quiz games</h1>
-            <a class="cta1" href="/app#/">Play a Quiz</a><br/><br/><br/><br/>
-            <a class="cta2" href="#service">Preview or set a quiz for your class</a>
+            <button class="cta1" onclick="goToApp()">Play a Quiz</button>
+            <button class="cta2" onclick="goToService()">Set a Quiz</button>
         </div>
     </div>
 </section>
 <!-- /Section: intro -->
 <!-- Navigation -->
-<div id="navigation">
-    <nav class="navbar navbar-custom" role="navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2 site-logo-container">
-                    <div class="site-logo">
-                        <a href="#" class="brand"><img src="/cquiz/img/logo.png"></a>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <!-- /.container -->
-    </nav>
-</div>
 <!-- /Navigation -->
 <!-- Section: about -->
 <section id="about" class="home-section color-light bg-dark">
@@ -142,7 +126,7 @@ var google_remarketing_only = true;
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <a class="cta3" href="/quiz#/">Click here to get started</a><br/><br/><br/><br/>
+                                                    <button class="cta3" onclick="goToQuiz()">Click here to get started</button><br/><br/><br/><br/>
                                                 </div>
                                             </div>
                                         </div>
@@ -339,12 +323,7 @@ var google_remarketing_only = true;
 <!-- Core JavaScript Files -->
 <script>
       function newQuiz() {
-        if ($("#name").val()!="") {
-          window.location.href="/quiz#/?name="+$("#name").val();
-        }
-        else {
           window.location.href="/quiz#";
-        }
         return false;
       }
       </script>
@@ -360,6 +339,7 @@ var google_remarketing_only = true;
 <script src="/cquiz/js/owl.carousel.min.js"></script>
 <script src="/cquiz/js/nivo-lightbox.min.js"></script>
 <script src="/cquiz/js/custom.js"></script>
+<script src="/js/vendor.js"></script>
 <script src="/js/quiz.js"></script>
 <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
 <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
