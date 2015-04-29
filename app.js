@@ -7,7 +7,8 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	config = require('./config'),
   email = require('./email'),
-	quiz = require("./routes//quiz");
+	quiz = require("./routes/quiz"),
+  user = require("./routes/user");
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -33,6 +34,8 @@ app.get('/quiz/create', quiz.create);
 app.get('/amazon-twitter-voucher', quiz.voucher);
 
 //Endpoints for teachers TODO rename appropriately
+app.post('/user/authentciate', user.authenticate);
+
 
 app.post('/create/profile', quiz.createProfile);
 
