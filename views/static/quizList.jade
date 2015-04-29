@@ -67,7 +67,7 @@ style.
                             input.form-control#category(type="text", on-enter="quizzes.createQuiz();",ng-model="quizzes.newQuizCategory", placeholder="e.g. Geography Level 1")
                             br
                         .col-sm-12
-                            button.btn.btn-primary.btn-block(ng-click="quizzes.createQuiz();", ng-hide="quizzes.newQuizName==''") Create Quiz
+                            button.btn.btn-primary.btn-block(ng-click="quizzes.createQuiz();", ng-disabled="quizzes.newQuizName==''") Create Quiz
 
     .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample")
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.hasOwnQuizzes")
