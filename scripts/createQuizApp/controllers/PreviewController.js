@@ -31,7 +31,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
                     self.fullLink = result.link;
                     localStorage.setItem("link",self.fullLink);
                     QuizData.saveClassCode(self.classCode);
-                    $location.path("/published/"+self.id);
+                    $location.path("/published/"+self.id+"/b");
                 }
                 else {
                     self.statusText = "Error when publishing: " + result.message + ". Please Try again";
@@ -53,7 +53,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
         self.classCode = QuizData.getClassCode();
 
         if(self.classCode || self.userVerified){
-           $location.path("/published/"+self.id);
+           $location.path("/published/"+self.id+"/p");
         }
 
         $log.debug(self);
