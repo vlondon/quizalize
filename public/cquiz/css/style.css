@@ -648,7 +648,7 @@ section#intro {
 
 
 .item-inner__hero {
-	height: 600px;
+	height: 750px;
 }
 
 .item-inner {
@@ -663,10 +663,10 @@ section#intro {
 	height: 400px;
 }
 .item-1 {
-	background-image: url("../img/4.jpg");
+	background-image: url("../img/5.jpg");
 }
 .item-2 {
-	background-image: url("../img/3.jpg");
+	background-image: url("../img/4.jpg");
 }
 .item-3 {
 	background-image: url("../img/2.jpg");
