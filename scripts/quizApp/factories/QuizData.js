@@ -22,6 +22,24 @@ angular.module('quizApp')
 
     var userProfileId = "";
 
+    var clearQuizData() {
+        for (i in currentQuizData) {
+            if (typeof currentQuizData[i] === 'Array') {
+                currentQuizData[i].splice(0,currentQuizData[i].length-1);
+            }
+            else if (typeof currentQuizData[i]==='object') {
+                delete currentQuizData[i];
+                currentQuizData[i] = {};
+            }
+            else if (typeof currentQuizData[i]==='String') {
+                currentQuizData[i]="";
+            }
+            else {
+                currentQuizData[i]=0;
+            }
+        }
+    }
+
     var chooseKind = function(qId){
         var randomKind = function(){
             var kinds = ['scrambled'];
@@ -217,7 +235,7 @@ angular.module('quizApp')
                         ZzishContent.getConsumerContent(quizId,function(err,message) {
                             currentQuiz = message;
                             currentQuiz.questions = message.questions;
-                            currentQuizData = {correct: 0,questionCount: 0, totalScore: 0, name: "", report: []};
+                            clearQuizData();
                             currentQuizData.totalScore = 0;
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
@@ -237,7 +255,7 @@ angular.module('quizApp')
                 ZzishContent.getConsumerContent(quizId,function(err,message) {
                     currentQuiz = message;
                     currentQuiz.questions = message.questions;
-                    currentQuizData = {correct: 0,questionCount: 0, totalScore: 0, name: "", report: []};
+                    clearQuizData();
                     currentQuizData.totalScore = 0;
                     currentQuizData.questionCount = currentQuiz.questions.length;
                     currentQuizData.correct = 0;
