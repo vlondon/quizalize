@@ -11,6 +11,10 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     }
 
     QuizData.selectQuiz(self.catId,self.id,function() {    	
-        $location.path("/quiz/intro")
-    });        
+        self.name = QuizData.currentQuizData.name;
+    });   
+
+    self.start = function(){
+        $location.path("/quiz/" +  QuizData.chooseKind(0) + "/0");
+    };         
 }]);

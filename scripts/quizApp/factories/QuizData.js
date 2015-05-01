@@ -217,6 +217,7 @@ angular.module('quizApp')
                         ZzishContent.getConsumerContent(quizId,function(err,message) {
                             currentQuiz = message;
                             currentQuiz.questions = message.questions;
+                            currentQuizData = {correct: 0,questionCount: 0, totalScore: 0, name: "", report: []};
                             currentQuizData.totalScore = 0;
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
@@ -236,6 +237,7 @@ angular.module('quizApp')
                 ZzishContent.getConsumerContent(quizId,function(err,message) {
                     currentQuiz = message;
                     currentQuiz.questions = message.questions;
+                    currentQuizData = {correct: 0,questionCount: 0, totalScore: 0, name: "", report: []};
                     currentQuizData.totalScore = 0;
                     currentQuizData.questionCount = currentQuiz.questions.length;
                     currentQuizData.correct = 0;
