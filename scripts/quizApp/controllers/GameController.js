@@ -14,23 +14,22 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
         }
         if (!hasTopics) {
             QuizData.getPublicQuizzes(function(result) {
-                self.selectQuiz();
+                QuizData.selectQuiz(self.catId,self.id,function() {     
+                    self.name = QuizData.currentQuizData.name;
+                });                   
             });            
         }
         else {
-            self.selectQuiz();
+        QuizData.selectQuiz(self.catId,self.id,function() {     
+            self.name = QuizData.currentQuizData.name;
+        });                   
         }
     }
     else {
-        self.selectQuiz();
-    }
-
-    self.selectQuiz = function() {
         QuizData.selectQuiz(self.catId,self.id,function() {     
             self.name = QuizData.currentQuizData.name;
         });                   
     }
-
 
     self.start = function(){
         $location.path("/quiz/" +  QuizData.chooseKind(0) + "/0");
