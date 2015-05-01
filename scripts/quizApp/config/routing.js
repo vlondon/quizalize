@@ -17,9 +17,9 @@ angular.module('quizApp')
             controllerAs: "quizzes"
         })
         .when('/play/:catId/:id', {
-            templateUrl: "/quiz/view/studentCategoryList",
+            templateUrl: "/quiz/view/intro",
             controller: "GameController",
-            controllerAs: "quizzes"
+            controllerAs: "quiz"
         })
         .when('/quiz/fixed/:questionId', {
             templateUrl: "/quiz/view/quiz",

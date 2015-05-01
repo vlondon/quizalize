@@ -42,10 +42,10 @@ style.
                     .col-sm-4(ng-hide="ctrl.classCode==undefined || ctrl.classCode==''")
                         .border-block
                             center
-                                h1 View Progress
-                            p Open the Live Dashboard to View Progress
+                                h3 Track your student's progress as they play
                             br
-                            a.btn.btn-primary.btn-lg(ng-href="{{ctrl.link}}", target="zzishld") Open Zzish Teacher Dashboard
+                            center
+                                a.btn.btn-primary.btn-lg(ng-href="{{ctrl.link}}", target="zzishld") Open Teacher Dashboard
 
     .row(ng-show="quizzes.creating")
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3

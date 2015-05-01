@@ -12,6 +12,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     sessionStorage.removeItem("teacher");
 
     var calculateTotals = function(items){
+        self.topics = {};
         self.hasTopics = false;
         var t = {seconds: 0, score: 0};
         for(var j in items){
