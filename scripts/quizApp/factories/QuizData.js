@@ -23,7 +23,7 @@ angular.module('quizApp')
     var userProfileId = "";
 
     var clearQuizData = function() {
-        for (i in currentQuizData) {
+        for (var i in currentQuizData) {
             if (typeof currentQuizData[i] === 'Array') {
                 currentQuizData[i].splice(0,currentQuizData[i].length-1);
             }

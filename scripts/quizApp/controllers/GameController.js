@@ -8,11 +8,29 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
 
     if (self.catId=="A") {
     	sessionStorage.setItem("teacher",true);
+        var hasTopics = false;
+        for (i in QuizData.getTopics()) {
+            hasTopics = true;
+        }
+        if (!hasTopics) {
+            QuizData.getPublicQuizzes(function(result) {
+                self.selectQuiz();
+            });            
+        }
+        else {
+            self.selectQuiz();
+        }
+    }
+    else {
+        self.selectQuiz();
     }
 
-    QuizData.selectQuiz(self.catId,self.id,function() {    	
-        self.name = QuizData.currentQuizData.name;
-    });   
+    self.selectQuiz = function() {
+        QuizData.selectQuiz(self.catId,self.id,function() {     
+            self.name = QuizData.currentQuizData.name;
+        });                   
+    }
+
 
     self.start = function(){
         $location.path("/quiz/" +  QuizData.chooseKind(0) + "/0");
