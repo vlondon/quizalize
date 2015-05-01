@@ -6,6 +6,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
     self.userVerified = localStorage.getItem("userVerified")=="true";
 
     self.id = parseInt($routeParams.id);
+    self.action = $routeParams.action;
     if(isNaN(self.id)) $location.path("/");
 
     self.publish = function(){
@@ -52,8 +53,16 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
 
         self.classCode = QuizData.getClassCode();
 
+
         if(self.classCode || self.userVerified){
-            //self.publish();
+            if (self.action=="p") {
+                self.publish();
+            }
+            else {
+                self.published = true;
+                self.classCode = localStorage.getItem("classCode");
+                self.fullLink = localStorage.getItem("link");
+            }
         }
         else {
             $location.path("/preview/"+self.id);
