@@ -53,7 +53,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
         self.classCode = QuizData.getClassCode();
 
         if(self.classCode || self.userVerified){
-            self.publish();
+            //self.publish();
         }
         else {
             $location.path("/preview/"+self.id);
