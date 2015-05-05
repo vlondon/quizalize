@@ -105,6 +105,7 @@ angular.module('quizApp')
                 $log.debug("Start Activity response... saving id", message);
                 callback(err, message);
             });
+            return currentActivityId;
 	   },
         cancelActivity: function(quizId, callback){
             zzish.cancelActivity(quizId,function(err,message) {

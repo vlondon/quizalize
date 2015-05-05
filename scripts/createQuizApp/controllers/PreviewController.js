@@ -15,8 +15,6 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
         if(self.userVerified || self.classCode || self.emailAddress){
             if(self.emailAddress && self.emailAddress.length > 0){
 		      localStorage.setItem("emailAddress",self.emailAddress);
-		      $("#LoginButton").html("Logout");
-		      $("#LoginButton").show();
             }
 	       self.publishing = true;
 
@@ -31,10 +29,12 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
                     self.fullLink = result.link;
                     localStorage.setItem("link",self.fullLink);
                     QuizData.saveClassCode(self.classCode);
-                    $location.path("/published/"+self.id+"/b");
+                    $("#LoginButton").html("Logout");
+                    $("#LoginButton").show();                    
+                    $location.path("/published/"+self.id+"/b");                    
                 }
                 else {
-                    self.statusText = "Error when publishing: " + result.message + ". Please Try again";
+                    QuizData.showMessage("Error Publishing","It seems this email has been used with Quizalize/Zzish. Please login using the button at the top menu to continue or use a different email.");
                 }
                 self.publishing = false;
             }).error(function(err){
