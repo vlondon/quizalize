@@ -187,7 +187,7 @@ blockquote strong {
 
 
 .navbar-custom ul.nav li a {
-	font-size: 12px;
+	font-size: 13px;
 	letter-spacing: 1px;
     color: #444;
 	text-transform: uppercase;
@@ -648,7 +648,7 @@ section#intro {
 
 
 .item-inner__hero {
-	height: 600px;
+	height: 750px;
 }
 
 .item-inner {
@@ -663,10 +663,10 @@ section#intro {
 	height: 400px;
 }
 .item-1 {
-	background-image: url("../img/4.jpg");
+	background-image: url("../img/5.jpg");
 }
 .item-2 {
-	background-image: url("../img/3.jpg");
+	background-image: url("../img/4.jpg");
 }
 .item-3 {
 	background-image: url("../img/2.jpg");
@@ -714,6 +714,10 @@ section#intro {
 }
 
 .example-list li a {
+	color: white;
+}
+
+.white {
 	color: white;
 }
 

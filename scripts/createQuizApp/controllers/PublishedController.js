@@ -6,6 +6,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
     self.userVerified = localStorage.getItem("userVerified")=="true";
 
     self.id = parseInt($routeParams.id);
+    self.action = $routeParams.action;
     if(isNaN(self.id)) $location.path("/");
 
     self.publish = function(){
@@ -14,9 +15,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
 
         if(self.userVerified || self.classCode || self.emailAddress){
             if(self.emailAddress && self.emailAddress.length > 0){
-              localStorage.setItem("emailAddress",self.emailAddress);
-              $("#LoginButton").html("Logout");
-              $("#LoginButton").show();
+              localStorage.setItem("emailAddress",self.emailAddress);              
             }
            self.publishing = true;
 
@@ -29,12 +28,14 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
                 if (result.status==200) {
                     self.classCode = result.code;
                     self.fullLink = result.link;
+                    $("#LoginButton").html("Logout");
+                    $("#LoginButton").show();
                     localStorage.setItem("link",self.fullLink);
                     QuizData.saveClassCode(self.classCode);
                     self.published=true;
                 }
                 else {
-                    self.statusText = "Error when publishing: " + result.message + ". Please Try again";
+                    QuizData.showMessage("Error Publishing","It seems this email has been used with Quizalize/Zzish. Please login using the button at the top menu to continue or use a different email.");
                 }
                 self.publishing = false;
             }).error(function(err){
@@ -52,8 +53,16 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
 
         self.classCode = QuizData.getClassCode();
 
+
         if(self.classCode || self.userVerified){
-            self.publish();
+            if (self.action=="p") {
+                self.publish();
+            }
+            else {
+                self.published = true;
+                self.classCode = localStorage.getItem("classCode");
+                self.fullLink = localStorage.getItem("link");
+            }
         }
         else {
             $location.path("/preview/"+self.id);

@@ -267,15 +267,31 @@ exports.republishQuiz = function(req, res){
     });
 };
 
+//
+exports.registerEmail = function(req, res){
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    
+    console.log("Will register",  data);
+
+    zzish.registerUser( req.body.emailAddress,'', function(err, resp){        
+        if (!err) {
+            res.sendStatus(200);
+        }
+        else {
+            res.sendStatus(err);
+        }
+        res.send(resp);
+    });
+};
+
+//we need to have a class code now
 exports.publishQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
     var data = {};
-    if (req.body.code!=undefined && req.body.code!='') {
-        data['code'] = req.body.code;
-    }
-    data['email'] = req.body.emailAddress;
+    data['code'] = req.body.code;
     data['access'] = -1;
 
     console.log("Will publish", profileId, id, data);
@@ -301,10 +317,15 @@ exports.publishQuiz = function(req, res){
 };
 
 
+
 exports.help = function(req, res){
     //TODO update for class quiz...!
     //should have req.body.email, req.body.subject, req.body.message and req.body.name
-    email.sendEmail('team@zzish.com',[req.body.email],'Quizalize Help','Thanks very much for getting in touch with us.  This is an automatically generated email to let you know we have received your message and will be in touch with you soon.\n\nBest wishes,\n\nThe Quizalize team.');
-	email.sendEmail('admin@zzish.com',['developers@zzish.com'],'Help From Classroom Quiz',"Name: " + req.body.name + "\n\nSubject: " + req.body.subject +"\n\nBody" + req.body.message);
+    var name = "Hi There,\n\n";
+    if (req.body.name!=undefined && req.body.name!="") {
+        name = "Hi " + req.body.name + "\n\n"; 
+    }
+    email.sendEmail('team@zzish.com',[req.body.email],'Quizalize Help',name + 'Thanks very much for getting in touch with us.  This is an automatically generated email to let you know we have received your message and will be in touch with you soon.\n\nBest wishes,\n\nThe Quizalize team.');
+	email.sendEmail('admin@zzish.com',['developers@zzish.com'],'Help From Classroom Quiz',"Name: " + req.body.name + "\n\nBody" + req.body.message+"\n\nEmail\n\n" + req.body.email);
     res.send(true);
 };

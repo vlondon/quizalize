@@ -4,20 +4,42 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     self.newQuizCategory = "";
     self.rootTopicList = [];
     self.rootTopics = [];
+    self.topics = {};
     self.hasPublicAssignedQuizzes = false;
     self.hasOwnQuizzes = false;
+    self.emailAddress="";
+    self.registeringNow = false;
 
-    if(typeof ($location.search()).name != 'undefined'){
-        //Have quiz name
-        self.newQuizName = $location.search().name;
-        self.didSupplyQuizName = true;
-        //$location.search({});
-    }else if(typeof ($location.search()).sample != 'undefined') {
-        //Have sample quiz
-        self.sampleName = $location.search().sample;
-        self.didRequestSample = true;
-    }
-    else if(typeof ($location.search()).token != 'undefined'){
+    var loadQuizData = function() {
+        QuizData.getTopics(function(topics){
+            if (topics) {
+                for (var i in topics) {
+                    if (topics[i].parentCategoryId=="-1") {
+                        self.rootTopics.push(topics[i]);
+                        self.rootTopicList.push(topics[i].name);
+                        self.topics[topics[i].uuid]=topics[i];
+                    }
+                }
+                $( "#category" ).autocomplete({
+                    source: self.rootTopicList
+                });
+            }
+        });
+        QuizData.getQuizzes(function(data){
+            self.pastQuizzes = data;
+            for (var i in self.pastQuizzes) {
+                if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
+                else self.hasOwnQuizzes = true;
+            }                        
+            localStorage.setItem("quizData",JSON.stringify(data));
+            if(self.didSupplyQuizName){
+                $log.debug("Should create Quiz, with name", self.newQuizName);
+               self.createQuiz();
+            }
+        });
+    }    
+
+    if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
         self.token = $location.search().token;
         localStorage.setItem("token",self.token);
@@ -43,32 +65,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 else {
                     //to get user uuid and name
                     QuizData.setUser(result);
-                    QuizData.getTopics(function(topics){
-                        if (topics) {
-                            for (var i in topics) {
-                                if (topics[i].parentCategoryId=="-1") {
-                                    self.rootTopics.push(topics[i]);
-                                    self.rootTopicList.push(topics[i].name);
-                                }
-                            }
-                            $( "#category" ).autocomplete({
-                                source: self.rootTopicList
-                            });
-                        }
-                    });
-                    QuizData.getQuizzes(function(data){
-                        self.pastQuizzes = data;
-                        for (var i in self.pastQuizzes) {
-                            if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
-                            else self.hasOwnQuizzes = true;
-                        }                        
-                        localStorage.setItem("quizData",JSON.stringify(data));
-                        if(self.didSupplyQuizName){
-                            $log.debug("Should create Quiz, with name", self.newQuizName);
-                           self.createQuiz();
-                        }
-                    });
-
+                    loadQuizData();
                 }
             })
             .error(function(err){
@@ -76,99 +73,51 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             })
     }
     else if (self.userId!=undefined) {
-        QuizData.getTopics(function(topics){
-            if (topics) {
-                for (var i in topics) {
-                    if (topics[i].parentCategoryId=="-1") {
-                        self.rootTopics.push(topics[i]);
-                        self.rootTopicList.push(topics[i].name);
-                    }
-                }
-                $( "#category" ).autocomplete({
-                    source: self.rootTopicList
-                });
-            }
-        });
         $http.get("/quiz/profile/"+self.userId)
             .success(function(result){
                 //to get user uuid and name
                 QuizData.setUser(result);
-                QuizData.getQuizzes(function(data){
-                    self.pastQuizzes = data;
-                    for (var i in self.pastQuizzes) {
-                        if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
-                        else self.hasOwnQuizzes = true;
-                    }                    
-                    localStorage.setItem("quizData",JSON.stringify(data));
-
-                    if(self.didSupplyQuizName){
-                        $log.debug("Should create Quiz, with name", self.newQuizName);
-                       self.createQuiz();
-                    }
-                });
+                loadQuizData();
             })
             .error(function(err){
 
-            })
+            })                
     }
     else {
-        QuizData.getTopics(function(topics){
-            if (topics) {
-                for (var i in topics) {
-                    if (topics[i].parentCategoryId=="-1") {
-                        self.rootTopics.push(topics[i]);
-                        self.rootTopicList.push(topics[i].name);
-                    }
-                }
-                $( "#category" ).autocomplete({
-                    source: self.rootTopicList
-                });
-            }
-        });
-        QuizData.getQuizzes(function(data){
-            self.pastQuizzes = data;
-            for (var i in self.pastQuizzes) {
-                if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
-                else self.hasOwnQuizzes = true;
-            }            
-            console.log("I GOT",self.hasPublicAssignedQuizzes);
-            localStorage.setItem("quizData",JSON.stringify(data));
-            if(self.didSupplyQuizName){
-                $log.debug("Should create Quiz, with name", self.newQuizName);
-               self.createQuiz();
-            }
-
-            if(self.didRequestSample){
-                $log.debug("Should create sample Quiz", self.sampleName);
-                // QuizData.getSampleQuizzes(function(data){
-                //     var sampleQuizzes = data;
-
-                //     if(typeof sampleQuizzes[self.sampleName] != 'undefined'){
-                //         QuizData.addQuiz(sampleQuizzes[self.sampleName], function(idx) {
-                //             QuizData.saveQuiz(idx, sampleQuizzes[self.sampleName]);
-                //             $location.path("/preview/" + idx);
-                //             // $location.path("/create/" + idx);
-                //             $log.debug("going to /preview/" + idx);
-                //         });
-                //     }else{
-                //         $log.error("Tried to create sample quiz which didn't exist");
-                //     }
-                // });
-                QuizData.addQuiz({uuid:self.sampleName}, function(idx) {
-                    $location.path("/preview/" + idx);
-                    // $location.path("/create/" + idx);
-                    $log.debug("going to /preview/" + idx);
-                });
-            }
-        });
+        loadQuizData();
     }
+
+
 
     self.focusTopic = function(){
         $('#category').focus();
     }
 
     self.create = function(){
-        self.creating = true;
+        if (QuizData.getUser()!=null && QuizData.getUser()!="") {
+            self.creating = true;    
+        }
+        else {
+            self.registering = true;
+        }        
+    }
+
+    self.registerEmail = function() {
+        localStorage.setItem("emailAddress",self.emailAddress);
+        self.registeringNow = true;
+        QuizData.registerEmailAddress(self.emailAddress).success(function(result){
+            $log.debug("Response from registering: ", result);
+            QuizData.showMessage("Registration Successful","Thanks for registering. You will receive an email on how to register. Click OK and let's start creating a quiz",function() {
+                self.registering = false;
+                self.creating = true;            
+                self.registeringNow = false;                    
+            })
+
+        }).error(function(err){
+            QuizData.showMessage("Registration Error","There seems to be an error with your email address. This is the error we got: "+err,function() {
+
+            });
+        });
     }
 
     self.createQuiz = function(){
