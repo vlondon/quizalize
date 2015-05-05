@@ -350,19 +350,19 @@
               <p class="white">Arrange for us to deliver an information pack including a staffroom poster, Quizalize cards and a free promo product</p>
             </div>          
         </div>
+        <a name="sendForm" id="sendForm">
         <div class="container" id="helpForm">
           <div class="row marginbot-80">
             <div class="col-md-8 col-md-offset-2">
               <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s" onsubmit="return submitForm()">
                 <div class="row marginbot-20">
                   <div class="col-md-6 xs-marginbot-20">
-                    <input type="text" class="form-control input-lg" id="name" placeholder="Enter name"/>
+                    <input type="text" class="form-control input-lg" id="ename" placeholder="Enter name"/>
                   </div>
                   <div class="col-md-6">
                     <input type="email" class="form-control input-lg" id="email" placeholder="Enter email" required />
                   </div>
-                </div>
-                <a name="sendForm" id="sendForm">
+                </div>                
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
@@ -442,7 +442,6 @@
         },
         data: {
         name: $('#ename').val(),
-        subject: $('#subject').val(),
         email: $('#email').val(),
         message: $('#message').val()
         }
