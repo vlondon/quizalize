@@ -717,6 +717,10 @@ section#intro {
 	color: white;
 }
 
+.white {
+	color: white;
+}
+
 .example-list li a:hover {
 	text-decoration: underline;
 }

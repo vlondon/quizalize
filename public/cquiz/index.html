@@ -328,39 +328,48 @@
       <!-- Section: contact -->
       <section id="contact" class="home-section nopadd-bot color-dark bg-dark text-center">
         <div class="container marginbot-50">
-          <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
               <div class="wow flipInY" data-wow-offset="0" data-wow-delay="0.4s">
                 <div class="section-heading text-center">
-                  <h2>How can we make Quizalize better?</h2>
+                  <h2>What would you like to do?</h2>
                 </div>
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-3 col-md-offset-1">
+              <button class="cta3" onclick="ask('demo')">A demo</button><br/>
+              <p class="white">Arrange for our head of school engagement to visit your school and present a demo of Quizalize to teachers or classes.</p>
+            </div>
+            <div class="col-md-3">
+              <button class="cta3" onclick="ask('question')">A question</button><br/>
+              <p class="white">Ask us anything and we'll get back to you as soon as we can.</p>
+            </div>
+            <div class="col-md-3">
+              <button class="cta3" onclick="ask('order')">An Info Pack</button>
+              <p class="white">Arrange for us to deliver an information pack including a staffroom poster, Quizalize cards and a free promo product</p>
+            </div>          
         </div>
+        <a name="sendForm" id="sendForm">
         <div class="container" id="helpForm">
           <div class="row marginbot-80">
             <div class="col-md-8 col-md-offset-2">
-              <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s"">
+              <form id="contact-form" class="wow bounceInUp" data-wow-offset="10" data-wow-delay="0.2s" onsubmit="return submitForm()">
                 <div class="row marginbot-20">
                   <div class="col-md-6 xs-marginbot-20">
-                    <input type="text" class="form-control input-lg" id="ename" placeholder="Enter name" required/>
+                    <input type="text" class="form-control input-lg" id="ename" placeholder="Enter name"/>
                   </div>
                   <div class="col-md-6">
                     <input type="email" class="form-control input-lg" id="email" placeholder="Enter email" required />
                   </div>
-                </div>
+                </div>                
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <input type="text" class="form-control input-lg" id="subject" placeholder="Subject" required />
-                    </div>
-                    <div class="form-group">
-                      <textarea name="message" id="message" class="form-control" rows="4" cols="25" required
+                      <textarea name="message" id="message" class="form-control" rows="4" cols="25"
                       placeholder="Message"></textarea>
                     </div>
-                    <button type="button" class="btn-lg btn-block" id="btnContactUs">
-                    Send</button>
+                    <input type="submit" class="btn-lg btn-block" id="btnContactUs" value="Send"/>                    
                   </div>
                 </div>
               </form>
@@ -418,26 +427,43 @@
               lowerThan: 'transform',
               languagePath: '/outdatedbrowser/lang/en.html'
           })
-      })
-      $("#btnContactUs").click(function(event){
-      $.ajax({
-      url: "/quizHelp",
-      method: "post",
-      success: function(data,textstatus,jqXHR){
-      $('#helpForm').slideUp();
-      $("#helpSent").slideDown();
-      },
-      error: function(){
-      console.log("Error Posting Form details");
-      },
-      data: {
-      name: $('#ename').val(),
-      subject: $('#subject').val(),
-      email: $('#email').val(),
-      message: $('#message').val()
+      });
+
+      function submitForm() {
+        $.ajax({
+        url: "/quizHelp",
+        method: "post",
+        success: function(data,textstatus,jqXHR){
+        $('#helpForm').slideUp();
+        $("#helpSent").slideDown();
+        },
+        error: function(){
+        console.log("Error Posting Form details");
+        },
+        data: {
+        name: $('#ename').val(),
+        email: $('#email').val(),
+        message: $('#message').val()
+        }
+        });
+        return false;
       }
-      });
-      });
+
+      function ask(type) {
+        if (type=="demo") {
+          $("#message").val("I want a demo at my school");
+        }
+        else if (type=="question") {
+          $("#message").val("");
+        }
+        else if (type=="order") {
+          $("#message").val("I would like an information pack sent to my school");
+        }
+    $('html, body').animate({
+        scrollTop: $("#sendForm").offset().top
+    }, 2000);          
+      }
+
       </script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
