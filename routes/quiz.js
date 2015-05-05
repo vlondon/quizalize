@@ -304,7 +304,11 @@ exports.publishQuiz = function(req, res){
 exports.help = function(req, res){
     //TODO update for class quiz...!
     //should have req.body.email, req.body.subject, req.body.message and req.body.name
-    email.sendEmail('team@zzish.com',[req.body.email],'Quizalize Help','Thanks very much for getting in touch with us.  This is an automatically generated email to let you know we have received your message and will be in touch with you soon.\n\nBest wishes,\n\nThe Quizalize team.');
-	email.sendEmail('admin@zzish.com',['developers@zzish.com'],'Help From Classroom Quiz',"Name: " + req.body.name + "\n\nSubject: " + req.body.subject +"\n\nBody" + req.body.message);
+    var name = "Hi There...\n\n";
+    if (req.body.name!=undefined && req.body.name!="") {
+        name = "Hi " + req.body.name + "\n\n"; 
+    }
+    email.sendEmail('team@zzish.com',[req.body.email],'Quizalize Help',name + 'Thanks very much for getting in touch with us.  This is an automatically generated email to let you know we have received your message and will be in touch with you soon.\n\nBest wishes,\n\nThe Quizalize team.');
+	email.sendEmail('admin@zzish.com',['developers@zzish.com'],'Help From Classroom Quiz',"Name: " + req.body.name + "\n\nSubject: " + req.body.subject +"\n\nBody" + req.body.message+"\n\n" + req.body.message + " Email\n\n" + req.body.email);
     res.send(true);
 };
