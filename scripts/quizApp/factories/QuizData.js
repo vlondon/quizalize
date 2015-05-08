@@ -240,9 +240,8 @@ angular.module('quizApp')
                             currentQuizData.questionCount = currentQuiz.questions.length;
                             currentQuizData.correct = 0;
                             currentQuizData.name = currentQuiz.name;
-                            currentQuizData.uuid = currentQuiz.uuid;
                             currentQuizData.report = [];
-                            ZzishContent.startActivity(currentQuiz, function(err, resp){
+                            currentQuizData.uuid = ZzishContent.startActivity(currentQuiz, function(err, resp){
                                 $log.debug("Got response from start activity:", resp);
                             });
                             callback();
@@ -260,9 +259,8 @@ angular.module('quizApp')
                     currentQuizData.questionCount = currentQuiz.questions.length;
                     currentQuizData.correct = 0;
                     currentQuizData.name = currentQuiz.name;
-                    currentQuizData.uuid = currentQuiz.uuid;
                     currentQuizData.report = [];
-                    ZzishContent.startActivity(currentQuiz, function(err, resp){
+                    currentQuizData.uuid = ZzishContent.startActivity(currentQuiz, function(err, resp){
                         $log.debug("Got response from start activity:", resp);
                     });
                     callback();

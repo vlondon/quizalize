@@ -17,11 +17,11 @@ style.
   }
 
 .container
-    h1(ng-hide="quizzes.creating") Hi there! What would you like to do?
+    h1(ng-hide="quizzes.creating|| quizzes.registering") Hi there! What would you like to do?
         .class-code.pull-right(ng-show="ctrl.classCode")
             Your Class Code: {{ctrl.classCode}}                                    
     br
-    .row(ng-hide="quizzes.creating")
+    .row(ng-hide="quizzes.creating || quizzes.registering")
         .row.well
             .quiz-preview(ng-show="true")
                 .row
@@ -47,6 +47,23 @@ style.
                             center
                                 a.btn.btn-primary.btn-lg(ng-href="{{ctrl.link}}", target="zzishld") Open Teacher Dashboard
 
+    .row.well(ng-show="quizzes.registering")
+        h1.text-center One click class setup
+            .form-horizontal(role="form")
+        p No need to fill in full registration just yet, but please do enter a real email address so we can send you secure access to your data in the future. If you are already registered, then login before proceeding.
+        .form-group
+            .col-sm-3
+                label.control-label Email
+            .col-sm-9
+                input.form-control#question(type="email", ng-model="quizzes.emailAddress", on-enter="quizzes.registerEmail();", placeholder="If you are already registered, please click login above")
+                br
+
+            .col-xs-12
+                center
+                    button.btn.btn-primary(ng-click="quizzes.registerEmail();", ng-disabled="quizzes.emailAddress.length == 0 || quizzes.registeringNow") Register
+                br
+
+
     .row(ng-show="quizzes.creating")
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
@@ -69,12 +86,13 @@ style.
                         .col-sm-12
                             button.btn.btn-primary.btn-block(ng-click="quizzes.createQuiz();", ng-disabled="quizzes.newQuizName==''") Create Quiz
 
-    .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample")
+    .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample || quizzes.registering")
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.hasOwnQuizzes")
             h2 Manage Your Existing quizzes
             .row(ng-repeat="quiz in quizzes.pastQuizzes | filter:{publicAssigned:false} track by $index", style="padding-bottom: 10px")
                 .col-sm-6.col-xs-12(ng-class="{'.col-sm-6.col-xs-12': !quiz.publicAssigned, '.col-sm-10.col-xs-12': quiz.publicAssigned}")
-                    h4 {{quiz.name}}
+                    h4 {{quiz.name}}  
+                        span(ng-show="quiz.categoryId") ({{quizzes.topics[quiz.categoryId].name}})
                 .col-sm-2.col-xs-3
                     button.btn.btn-info.btn-block(ng-click="quizzes.editQuiz(quiz);",ng-hide="quiz.publicAssigned")
                         span.glyphicon.glyphicon-pencil
@@ -91,7 +109,7 @@ style.
             p        
             p.text-info(ng-hide="quizzes.pastQuizzes.length") When you have created quizzes they will appear here
 
-    .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample")
+    .row(ng-hide="quizzes.creating || quizzes.didSupplyQuizName || quizzes.didRequestSample || quizzes.registering")
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3(ng-show="quizzes.hasPublicAssignedQuizzes")
             h2 Your Public Quizzes
             .row(ng-repeat="quiz in quizzes.pastQuizzes | filter:{publicAssigned:true} track by $index", style="padding-bottom: 10px")
@@ -114,11 +132,6 @@ style.
 //                    h4 {{quiz.name}}
 //                .col-sm-4
 //                    button.btn.btn-info.btn-block(ng-click="quizzes.editSampleQuiz($index);") Edit
-.container(ng-show="quizzes.didRequestSample")
-    .row
-        .row.well
-            .col-sm-8.col-sm-offset-2.text-center(ng-show="quizzes.didRequestSample")
-                h2 Retrieving Quiz Data...
 
 script. 
   $(document).ready(function() {

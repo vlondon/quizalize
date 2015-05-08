@@ -131,22 +131,27 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             callback(sampleData);
         },
         getQuizzes: function(callback){
-            if (userUuid!="" && localStorage.getItem('classCode')!=null) {
+            if (userUuid!="") {
                 getQuizzes().success(
                     function(resp){
                         for (i in resp) {
                             resp[i].publicAssigned = false;
                         }
                         data = resp;
-                        getPublicAssignedQuizzes().success(
-                            function(resp) {
-                                for (i in resp) {
-                                    resp[i].publicAssigned = true;
-                                    data.push(resp[i]);
+                        if (localStorage.getItem('classCode')!=null) {
+                            getPublicAssignedQuizzes().success(
+                                function(resp) {
+                                    for (i in resp) {
+                                        resp[i].publicAssigned = true;
+                                        data.push(resp[i]);
+                                    }
+                                    callback(data);
                                 }
-                                callback(data);
-                            }
-                        );                        
+                            );                                                    
+                        }
+                        else {
+                            callback(data);
+                        }
                     }
                 );
             }
@@ -247,12 +252,6 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         addQuiz: function(quiz, callback){
             //hide loginButton as you can no longer login if you haven't already done so
 	        var email = localStorage.getItem("emailAddress");
-            if (!userVerified && email==null) {
-                $("#LoginButton").hide();
-            }
-            else if (email!=null) {
-                $("#LoginButton").html("Logout");
-            }
             if(!data) data = []; //yes it will replace [] with [].
             //get UserId (creates on if it doesn't already exist);
             createUserId(function(err,message) {
@@ -276,6 +275,9 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         unassignAssignQuiz: function(id){
             return $http.post("/quizzes/" + userUuid + "/public/" + localStorage.getItem("classCode") + "/" + id + "/delete");    
         },         
+        registerEmailAddress: function(email) {
+            return $http.post("/quizzes/register", {emailAddress: email});
+        },
         publishQuiz: function(quiz, details){
             $log.debug("Publish Quiz", quiz, details);
             return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/publish", details);
@@ -295,10 +297,13 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             if(newClassCode)
                 localStorage.setItem("classCode", newClassCode);
         },
+        getUser: function () {
+            return userUuid;
+        },
         setUser: function (user) {
             userUuid = user.uuid;
             localStorage.setItem("userId",userUuid);
-	       var email = localStorage.getItem("emailAddress");
+            var email = localStorage.getItem("emailAddress");
             if (user.verified!=undefined) {
                 userVerified = user.verified;
             }
@@ -308,7 +313,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             localStorage.setItem("userVerified",userVerified);
             if (userVerified || email!=null) {
                 $("#LoginButton").html("Logout");
-		$("#LoginButton").show();
+                $("#LoginButton").show();
             }
             else {
                 //just hide it, as this seems to be an anonymous user

@@ -51,6 +51,8 @@ app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
 app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
 app.post('/create/:profileId/quizzes/:id/:group/republish', quiz.republishQuiz);
 
+
+app.post('/quizzes/register', quiz.registerEmail);
 app.get('/quizzes/:profileId/public', quiz.getPublicQuizzes);
 app.post('/quizzes/:profileId/public/:groupCode/:uuid/delete', quiz.deletePublicQuiz);
 app.get('/quizzes/:profileId/public/:groupCode/assigned', quiz.getAssignedPublicQuizzes);

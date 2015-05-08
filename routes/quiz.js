@@ -267,15 +267,31 @@ exports.republishQuiz = function(req, res){
     });
 };
 
+//
+exports.registerEmail = function(req, res){
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    
+    console.log("Will register",  data);
+
+    zzish.registerUser( req.body.emailAddress,'', function(err, resp){        
+        if (!err) {
+            res.sendStatus(200);
+        }
+        else {
+            res.sendStatus(err);
+        }
+        res.send(resp);
+    });
+};
+
+//we need to have a class code now
 exports.publishQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
     var data = {};
-    if (req.body.code!=undefined && req.body.code!='') {
-        data['code'] = req.body.code;
-    }
-    data['email'] = req.body.emailAddress;
+    data['code'] = req.body.code;
     data['access'] = -1;
 
     console.log("Will publish", profileId, id, data);
@@ -299,6 +315,7 @@ exports.publishQuiz = function(req, res){
         res.send(resp);
     });
 };
+
 
 
 exports.help = function(req, res){
