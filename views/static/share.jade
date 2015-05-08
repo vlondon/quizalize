@@ -5,15 +5,17 @@
     .row(style="padding-bottom: 10px")    
         .col-md-12
             .quiz-topic-block                
-                a.quiz-link {{self.quiz.category.name}}
+                a.quiz-link
+                br
+                br
                 .row.quiz-info-row
                     .col-xs-8
                         a.quiz-item
-                            .quiz-title {{self.quiz.name}}
+                            .quiz-title {{share.quiz.name}}
                     .col-xs-2
                         .row.quiz-info-row                        
-                            button.btn.btn-info.btn-block(clickOnce ng-click="share.assignQuiz(self.quiz);") Set this quiz
+                            button.btn.btn-info.btn-block(clickOnce ng-click="share.assignQuiz(share.quiz);") Set this quiz
                     .col-xs-2                            
                         .row.quiz-info-row                        
-                            a.btn.btn-info.btn-block(ng-href="/app#/play/A/{{quiz.uuid}}") Preview
+                            a.btn.btn-info.btn-block(ng-href="/app#/play/A/{{share.quiz.uuid}}") Preview
                                 

@@ -1,5 +1,6 @@
 angular.module('createQuizApp').controller('ShareController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log, $routeParams, $location){
     var self = this;
+    self.quiz = undefined;
 
     self.code = $routeParams.code;
     if (self.code==undefined) $location.path("/");
@@ -9,6 +10,6 @@ angular.module('createQuizApp').controller('ShareController', ['QuizData', '$log
     })
 
     self.assignQuiz = function(quiz) {
-    	
+    		
     }
 }]);

@@ -112,7 +112,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         self.sharing = true;
         QuizData.getEncryptedLink(quiz.id,function(link) {
             self.currentQuizToShare = quiz;    
-            self.currentQuizToShare.shareLink = "http://quizalize/quiz#/share/"+link;
+            self.currentQuizToShare.shareLink = "http://quizalize.com/quiz#/share/"+link;
         })        
     }
 

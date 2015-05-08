@@ -319,12 +319,17 @@ exports.shareQuiz = function(req, res){
     var emailFrom = req.body.email;
     var link = req.body.link;
     if (link==undefined) {
-        link = "http://quizalize/quiz#/share/" + getEncryptQuiz(profileId,id);
+        link = "http://quizalize.com/quiz#/share/" + getEncryptQuiz(profileId,id);
     }
     if (emails!=undefined) {
         email.sendEmail('team@zzish.com',emails,'You have been shared a quiz!','Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
     }
 };
+
+exports.getQuizByCode = function(req,res) {
+    var code = req.params.code;
+    res.send({uuid: 12345, name: 'ABC', category: { name: "Hello"}});
+}
 
 
 exports.help = function(req, res){

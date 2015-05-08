@@ -405,6 +405,14 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 $log.debug("Error from sharing: ", err);
             });
         },    
+        getQuizByCode: function(code,callback) {
+            $http.get("/quiz/code/" + code).success(function(result){
+                $log.debug("Response from get quiz by code: ", result);                    
+                callback(result);
+            }).error(function(err){
+                $log.debug("Error from get quiz by code: ", err);
+            });
+        },
         //message methods
         showMessage : function(title,message,callBack) {
             if (callBack!=null) {

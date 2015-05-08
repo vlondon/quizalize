@@ -36,7 +36,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
                 self.publishing = false;                    
                 if (!err) {
                     $log.debug("Response from publishing: ", result);
-                    self.shareLink = "http://quizalize/quiz#/share/"+result.shareLink;
+                    self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
                     if (result.code!=undefined) {
                         //new group
                         self.currentClass = QuizData.addClass(result.groupName,result.code,result.link);
