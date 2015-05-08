@@ -1,0 +1,42 @@
+.container
+    
+    h1 Your Quizzes
+        .pull-right
+            a.btn.btn-primary.btn-lg(ng-href="/quiz/#/create") Create a new quiz
+    p Here are the quizzes you have created so far...
+                                
+    .row
+        .col-sm-8.col-sm-offset-2
+            .row.well
+                .row(ng-repeat="quiz in quizzes.pastQuizzes track by $index", style="padding-bottom: 10px")
+                    .col-sm-4.col-xs-12
+                        h4 {{quiz.name}}  
+                            span(ng-show="quiz.categoryId") ({{quizzes.topics[quiz.categoryId].name}})
+                    .col-sm-2.col-xs-3
+                        button.btn.btn-info.btn-block(ng-click="quizzes.editQuiz(quiz);")
+                            span.glyphicon.glyphicon-pencil
+                    .col-sm-2.col-xs-3
+                        button.btn.btn-danger.btn-block(ng-click="quizzes.deleteQuiz(quiz);")
+                            span.glyphicon.glyphicon-remove
+                    .col-sm-2.col-xs-3
+                        button.btn.btn-info.btn-block(ng-click="quizzes.assignQuiz(quiz);") Assign
+                    .col-sm-2.col-xs-3
+                        a.btn.btn-info.btn-block(target=_blank, ng-click="quizzes.shareQuiz(quiz)") Share
+    .row(ng-show="quizzes.sharing")
+        .col-sm-8.col-sm-offset-2
+            .border-block
+                center
+                    h1 Share {{quizzes.currentQuizToShare.name}}
+                    h3 Enter the email addresses of up to 10 of your colleagues so that they can use this quiz in their class
+                    .row
+                        .col-sm-10
+                            input.form-control#shareEmails(type="text", ng-model="quizzes.shareEmails", on-enter="quizzes.shareCurrentQuiz();", placeholder="charles@zzish.com samir@zzish.com")
+                        .col-sm-2
+                            a.btn.btn-primary(ng-click="quizzes.shareCurrentQuiz();") Share
+                    br
+                    br
+                    p or share the following link with them
+                    center
+                        p(style="font-size: 11px")
+                            em {{quizzes.shareLink}}                        
+                        

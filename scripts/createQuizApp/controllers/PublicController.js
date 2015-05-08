@@ -2,9 +2,9 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
     var self = this;
 
 	self.assignQuiz = function(quiz) {
-        QuizData.addQuiz(quiz, function(idx) {
-            $location.path("/preview/" + idx);
-        });
+		QuizData.addQuiz(quiz,function() {
+			$location.path("/preview/" + quiz.uuid);	
+		})        
 	}   
 
     QuizData.getPublicQuizzes(function (contents) {

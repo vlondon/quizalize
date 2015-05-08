@@ -3,32 +3,68 @@ img(height='1', width='1', style='display:none;', alt='', src='//t.co/i/adsct?tx
 img(height='1', width='1', alt='', style='display:none', src='https://www.facebook.com/tr?ev=6024319569179&cd[value]=0.01&cd[currency]=GBP&noscript=1')
 
 .container(style="padding-top: 10px")
-    .row
-        .row.well
-            .col-sm-8.col-sm-offset-2.text-center(ng-show="publish.publishing")
-                 h2 Publishing...
-            .quiz-preview(ng-show="publish.published")
-                .row
-                    .col-sm-6
-                        .border-block
+    .row.well
+        .col-sm-8.col-sm-offset-2.text-center(ng-show="publish.publishing")
+             h2 Publishing...
+        .quiz-preview(ng-show="publish.published")
+            .row
+                .col-sm-6
+                    .border-block
+                        center
+                            h1 Players get ready!
+                            h3 Browse to 
+                                strong http://quizal.me
+                                br
+                                | and enter this class code.
                             center
-                                h1 Players get ready!
-                                h3 Browse to 
-                                    strong http://quizal.me
-                                    br
-                                    | and enter this class code.
-                                center
-                                    .class-code 
-                                        {{publish.classCode}}
-                                br
-                                p You can play on any mobile, tablet or desktop devices.
-                    .col-sm-6
-                        .border-block
+                                .class-code 
+                                    {{publish.currentClass.code}}
+                            br
+                            p(style="margin-bottom: 18.5px") You can play on any mobile, tablet or desktop devices.
+                .col-sm-6
+                    .border-block
+                        center
+                            h1 Teacher get ready!
+                            p Open your learning dashboard here:
+                            br
+                            br
                             center
-                                h1 Teacher get ready!
-                                p Open your learning dashboard here:
-                                br
-                                br
-                                br
-                                center
-                                    a.btn.btn-primary.btn-lg(ng-href="{{publish.fullLink}}", target="zzishld") Open Teacher Dashboard
+                                a.btn.btn-primary.btn-lg(ng-href="{{publish.currentClass.link}}", target="zzishld") Open Teacher Dashboard
+                            br
+                            p You can see live results as your students play.
+            br
+            br
+            .row(ng-hide="publish.quiz.publicAssigned")
+                .col-sm-12
+                    .border-block
+                        center
+                            h1 Share this quiz!
+                            h3 Enter the email addresses of up to 10 of your colleagues so that they can use this quiz in their class
+                            .row
+                                .col-sm-10
+                                    input.form-control#shareEmails(type="text", ng-model="publish.shareEmails", on-enter="publish.share();", placeholder="charles@zzish.com samir@zzish.com")
+                                .col-sm-2
+                                    a.btn.btn-primary(ng-click="publish.share();") Share
+                            br
+                            br
+                            p or share the following link with them
+                            center
+                                p(style="font-size: 11px")
+                                    em {{publish.shareLink}}
+
+        .col-sm-8.col-sm-offset-2(ng-show="!publish.publishing && !publish.published")
+            h1.text-center Enter the name of your class
+                .form-horizontal(role="form")
+            p Type in the name of the class that you would like to publish this quiz to. If you have an existing one, it will appear as you type. If you'd like to publish to more than one class, don't worry! You'll be able add the quiz to your class.
+            .form-group
+                .col-sm-3
+                    label.control-label Class Name
+                .col-sm-9
+                    input.form-control#className(type="text", ng-model="publish.className", on-enter="publish.publish();")
+                    br
+
+                .col-xs-12
+                    center
+                        button.btn.btn-primary(ng-click="publish.publish();", ng-disabled="publish.className.length==0 || publish.publishing") Play
+
+        .col-sm-8.col-sm-offset-2(ng-show="!publish.publishing && !publish.published")

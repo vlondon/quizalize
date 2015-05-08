@@ -1,61 +1,52 @@
 angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log, $routeParams,$location){
 
     var self = this;
-    self.emailAddress = localStorage.getItem("emailAddress");
-    self.published = false;
-    self.userVerified = localStorage.getItem("userVerified")=="true";
-
-    self.id = parseInt($routeParams.id);
-    if(isNaN(self.id)) $location.path("/");
+    self.emailAddress = "";
+    self.className = "";
+    self.publishing = false;
+ 
+    self.id = $routeParams.id;
+    if(self.id==undefined) $location.path("/");
 
     self.publish = function(){
-        $log.debug("Publish with email address:", self.emailAddress, "Quiz:", self.quiz);
-        self.statusText = "";
-
-        if(self.userVerified || self.classCode || self.emailAddress){
-            if(self.emailAddress && self.emailAddress.length > 0){
-		      localStorage.setItem("emailAddress",self.emailAddress);
-            }
-	       self.publishing = true;
-
-            var details = { emailAddress: self.emailAddress, access: -1 };
-            if(self.classCode) details.code = self.classCode;
-            $log.debug("Publishing with details", details, "Quiz", self.quiz);
-
-            QuizData.publishQuiz(self.quiz, details).success(function(result){
-                $log.debug("Response from publishing: ", result);
-                if (result.status==200) {
-                    self.classCode = result.code;
-                    self.fullLink = result.link;
-                    localStorage.setItem("link",self.fullLink);
-                    QuizData.saveClassCode(self.classCode);
-                    $("#LoginButton").html("Logout");
-                    $("#LoginButton").show();                    
+        var details = { emailAddress: self.emailAddress, access: -1, groupName: self.className };
+        self.publishing = true;
+        QuizData.registerEmailAddress(self.emailAddress).success(function(result){
+            QuizData.setUser(result);
+            QuizData.publishQuiz(self.quiz, details,function(err,result) {
+                if (!err) {
+                    $log.debug("Response from publishing: ", result);
+                    QuizData.addClass(result.groupName,result.code,result.link);
                     $location.path("/published/"+self.id+"/b");                    
                 }
                 else {
-                    QuizData.showMessage("Error Publishing","It seems this email has been used with Quizalize/Zzish. Please login using the button at the top menu to continue or use a different email.");
+                    $log.debug("Error from publishing: ", err,message);
+                    QuizData.showMessage("Error Publishing","Please contact Quizalize ASAP");
                 }
                 self.publishing = false;
-            }).error(function(err){
-                $log.debug("Error from publishing: ", err);
-                self.statusText = err;
             });
-
-        }else{
-            self.statusText = "Please provide an email address"
-        }
+        }).error(function(err){
+            $log.debug("Error from publishing: ", err);
+            QuizData.showMessage("Error Publishing","It seems this email has been used with Quizalize/Zzish. Please login using the button at the top menu to continue or use a different email.");
+            self.publishing = false;
+        });
     };
 
-    QuizData.getQuiz(self.id, false, function(qz){
-        self.quiz = qz;
+    self.focusClassCode = function() {
+        $("#className").focus();
+    }
 
-        self.classCode = QuizData.getClassCode();
+    self.canSubmit = function() {
+        return self.emailAddress.length == 0 || self.className.length==0 || self.publishing;
+    }
 
-        if(self.classCode || self.userVerified){
-           $location.path("/published/"+self.id+"/p");
-        }
-
-        $log.debug(self);
-    });
+    if (!QuizData.getUser()) {
+        QuizData.getQuiz(self.id, false, function(qz){
+            self.quiz = qz;
+            $log.debug(self);
+        });
+    }
+    else {
+        $location.path("/published/"+self.id+"/p");
+    }
 }]);

@@ -37,6 +37,11 @@ app.get('/amazon-twitter-voucher', quiz.voucher);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
+app.post('/users/register', user.registerEmail);
+app.post('/users/complete', user.completeRegistration);
+app.get('/users/:profileId/groups', user.groups);
+app.get('/users/:profileId/groups/contents', user.groupContents);
+
 
 app.post('/create/profile', quiz.createProfile);
 
@@ -51,15 +56,17 @@ app.get('/create/:profileId/quizzes/', quiz.getMyQuizzes);
 app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
 app.post('/create/:profileId/quizzes/:id/delete', quiz.deleteQuiz);
 app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
+
+app.get('/create/:profileId/quizzes/:id/encrypt',quiz.encryptQuiz);
+app.post('/create/:profileId/quizzes/:id/decrypt',quiz.decryptQuiz);
+
+app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
 app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
-app.post('/create/:profileId/quizzes/:id/:group/republish', quiz.republishQuiz);
 
 
-app.post('/quizzes/register', quiz.registerEmail);
 app.get('/quizzes/:profileId/public', quiz.getPublicQuizzes);
-app.post('/quizzes/:profileId/public/:groupCode/:uuid/delete', quiz.deletePublicQuiz);
-app.get('/quizzes/:profileId/public/:groupCode/assigned', quiz.getAssignedPublicQuizzes);
+app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
 /*
 

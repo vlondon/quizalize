@@ -56,6 +56,8 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
     self.login = function() {
         if (self.mode=="login") {
             authenticate(self.email,self.password).success(function(resp){
+                QuizData.setUser(resp);
+                $location.path("/quiz#/");
                 $log.debug("Response",resp);    
             }).error(function(er,status){
                 QuizData.showMessage("Login Error","Invalid Details during login");
@@ -64,8 +66,12 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
         }
         else if (self.mode=="register") {
             register(self.email,self.password).success(function(resp){
-                $log.debug("Response",resp);    
-            }).error(function(er,status){
+                QuizData.showMessage("Registration Successful","Thanks for registering! Let's now create a quiz",function() {
+                    $log.debug("Response",resp);    
+                    QuizData.setUser(resp);
+                    $location.path("/quiz#/");                    
+                });
+            }).error(function(err,status){                
                 var message = "Invalid Registration";
                 if (status==409) {
                     message = "This email has already been used";
@@ -77,9 +83,9 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
         else if (self.mode=="forget") {
             forget(self.email).success(function(resp){
                 //$log.debug("Response",resp);    
-                QuizData.showMessage("Reset Password1","If you are registered, please check your email for instructions on how to reset your password");
+                QuizData.showMessage("Reset Password","If you are registered, please check your email for instructions on how to reset your password");
             }).error(function(er){
-                QuizData.showMessage("Reset Password2","If you are registered, please check your email for instructions on how to reset your password");
+                QuizData.showMessage("Reset Password","If you are registered, please check your email for instructions on how to reset your password");
                 //QuizData.showMessage("Error with resetting password",er);
                 //$log.debug("Error ", er);
             });

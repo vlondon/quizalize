@@ -192,14 +192,19 @@ body(ng-controller="NavBarController as ctrl")
                         span.icon-bar
             .navbar-collapse.collapse#navbar
                 ul.nav.navbar-nav.navbar-right
-                    li(style="margin-right:5px;")
-                        a.btn.btn-info.navbar-btn(href="/quiz/",ng-show="ctrl.hasQuiz()",style="margin-top:9px; padding: 8px;") Your Quizzes                        
+                    li(style="margin-right:5px;")#quizzes
+                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
+                    li(style="margin-right:5px;")#quizzes
+                        a.btn.btn-info.navbar-btn(href="/quiz/#/quizzes",style="margin-top:9px; padding: 8px;") Your quizzes                        
+                    li(style="margin-right:5px;")#assignments
+                        a.btn.btn-info.navbar-btn(href="/quiz/#/assignments",style="margin-top:9px; padding: 8px;") Your assignments                        
                     li(style="margin-right:5px;")
                         button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
                     li
-                        button.btn.btn-info.navbar-btn(onclick="javascript:login(true)", style="padding: 8px;font-family: sans-serif;font-size: 16px;color: #efefef;background: #8d3b8e;border: 1px solid #b04ab2;border-radius: 4px;text-decoration: none;")#LoginButton Login With Zzish
+                        a.btn.btn-info.navbar-btn(ng-click="ctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Login
+                        //button.btn.btn-info.navbar-btn(, style="padding: 8px;font-family: sans-serif;font-size: 16px;color: #efefef;background: #8d3b8e;border: 1px solid #b04ab2;border-radius: 4px;text-decoration: none;")#LoginButton Login with Zzish
                                 
-    div(ng-view)
+    div(ng-view ngCloak)
 
     button.btn.btn-primary.btn-lg(data-toggle="modal",data-target="#myModal",style="display:none")#messageButton
 
@@ -247,8 +252,8 @@ body(ng-controller="NavBarController as ctrl")
                         button.btn.btn-info.btn-block(ng-click="ctrl.dismiss();") Get Started
 
     script.
-        var token = localStorage.getItem("zzishtoken");
-        if (token == null) {
+        var userId = localStorage.getItem("userId");
+        if (userId == null) {
             $("#homeButton").attr("href");
             $("#homeButton").attr("href","/");
         }   

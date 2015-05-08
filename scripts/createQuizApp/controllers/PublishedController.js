@@ -1,67 +1,94 @@
 angular.module('createQuizApp').controller('PublishedController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log, $routeParams,$location){
 
     var self = this;
-    self.emailAddress = localStorage.getItem("emailAddress");
-    self.published = false;
-    self.userVerified = localStorage.getItem("userVerified")=="true";
 
-    self.id = parseInt($routeParams.id);
+    //status fields
+    self.publishing = false; 
+    self.published = false;
+    self.shareLink = "";
+    self.shareEmails = "";
+
+    //fields
+    self.currentClass = QuizData.getCurrentClass();
+    if (self.currentClass!=undefined) {
+        self.className = self.currentClass.name;
+    }
+    
+    //params
+    self.id = $routeParams.id;
     self.action = $routeParams.action;
-    if(isNaN(self.id)) $location.path("/");
+    if(self.id==undefined) $location.path("/");
 
     self.publish = function(){
-        $log.debug("Publish with email address:", self.emailAddress, "Quiz:", self.quiz);
-        self.statusText = "";
-
-        if(self.userVerified || self.classCode || self.emailAddress){
-            if(self.emailAddress && self.emailAddress.length > 0){
-              localStorage.setItem("emailAddress",self.emailAddress);              
+        self.className = $("#className").val();
+        QuizData.getClassForName(self.className,function(classObject) {
+            var details = { access: -1};
+            if (classObject==undefined) {
+                //new class
+                details['groupName']=self.className;
             }
-           self.publishing = true;
+            else {
+                details['code']=classObject.code;
 
-            var details = { emailAddress: self.emailAddress, access: -1 };
-            if(self.classCode) details.code = self.classCode;
-            $log.debug("Publishing with details", details, "Quiz", self.quiz);
-
-            QuizData.publishQuiz(self.quiz, details).success(function(result){
-                $log.debug("Response from publishing: ", result);
-                if (result.status==200) {
-                    self.classCode = result.code;
-                    self.fullLink = result.link;
-                    $("#LoginButton").html("Logout");
-                    $("#LoginButton").show();
-                    localStorage.setItem("link",self.fullLink);
-                    QuizData.saveClassCode(self.classCode);
+            }
+            self.publishing = true;
+            QuizData.publishQuiz(self.quiz, details,function(err,result) {
+                self.publishing = false;                    
+                if (!err) {
+                    $log.debug("Response from publishing: ", result);
+                    self.shareLink = "http://quizalize/quiz#/share/"+result.shareLink;
+                    if (result.code!=undefined) {
+                        //new group
+                        self.currentClass = QuizData.addClass(result.groupName,result.code,result.link);
+                    }
+                    else {
+                        //existing group
+                        QuizData.setCurrentClass(result.groupName,function(current) {
+                            self.currentClass = current;
+                        });
+                    }     
+                    $("#assignments").show();                                    
                     self.published=true;
                 }
                 else {
-                    QuizData.showMessage("Error Publishing","It seems this email has been used with Quizalize/Zzish. Please login using the button at the top menu to continue or use a different email.");
+                    $log.debug("Error from publishing: ", err,result);
+                    QuizData.showMessage("Error Publishing","Please contact Quizalize ASAP!");
                 }
-                self.publishing = false;
-            }).error(function(err){
-                $log.debug("Error from publishing: ", err);
-                self.statusText = err;
             });
-
-        }else{
-            self.statusText = "Please provide an email address"
-        }
+        });
     };
+
+    self.share = function() {
+        if (self.shareEmails!="") {            
+            QuizData.shareQuiz(self.id,self.shareEmails,self.shareLink);        
+            QuizData.showMessage("Thanks for Sharing","Each of these email addresses will receive a secure email to access your quiz");    
+        }
+        else {
+            QuizData.showMessage("Sharing Error","You must specify at least one email to share with");
+        }
+    }
 
     QuizData.getQuiz(self.id, false, function(qz){
         self.quiz = qz;
 
-        self.classCode = QuizData.getClassCode();
-
-
-        if(self.classCode || self.userVerified){
-            if (self.action=="p") {
-                self.publish();
+        if(QuizData.getUser()) {
+            if (self.action=="b") {
+                self.currentClass = QuizData.getCurrentClass();
+                self.published = true;                
             }
             else {
-                self.published = true;
-                self.classCode = localStorage.getItem("classCode");
-                self.fullLink = localStorage.getItem("link");
+                QuizData.getClassList(function(data) {
+                    var classList = [];
+                    for (var i in data) {
+                        classList.push(data[i].name);
+                    }
+                    if (classList.length==1) {
+                        $( "#className" ).val(classList[0]);
+                    }
+                    $( "#className" ).autocomplete({
+                        source: classList
+                    });                                    
+                });
             }
         }
         else {

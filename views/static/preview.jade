@@ -7,18 +7,21 @@
             .col-sm-8.col-sm-offset-2(ng-show="!preview.publishing")
                 h1.text-center One click class setup
                     .form-horizontal(role="form")
-                p No need to fill in full registration just yet, but please do enter a real email address so we can send you secure access to your class progress dashboard. 
-                .form-group
-                    .col-sm-3(ng-hide="preview.classCode || preview.publishing")
+                p No need to fill in full registration just yet, but please do enter a real email address and a class name so we can send you secure access to your class progress dashboard. 
+                .form-group(ng-hide="preview.publishing")
+                    .col-sm-3
                         label.control-label Email
-                    .col-sm-9(ng-hide="preview.classCode || preview.publishing")
-                        input.form-control#question(type="email", ng-model="preview.emailAddress", on-enter="preview.publish();")
+                    .col-sm-9
+                        input.form-control#email(type="text", ng-model="preview.emailAddress", on-enter="preview.focusClassCode();")
+                        br
+
+                    .col-sm-3
+                        label.control-label Class Name
+                    .col-sm-9
+                        input.form-control#className(type="text", ng-model="preview.className", on-enter="preview.publish();")
                         br
 
                     .col-xs-12
                         center
-                            button.btn.btn-primary(ng-click="preview.publish();", ng-disabled="preview.emailAddress.length == 0 || preview.publishing") Save and Play
+                            button.btn.btn-primary(ng-click="preview.publish();", ng-disabled="preview.canSubmit()") Save and Play
                         br
-
-            .col-sm-8.col-sm-offset-2(ng-show="preview.statusText")
-                p.text-center.text-danger {{preview.statusText}}            
