@@ -14,26 +14,28 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
         }
         if (!hasTopics) {
             QuizData.getPublicQuizzes(function(result) {
-                QuizData.selectQuiz(self.catId,self.id,function() {     
+                QuizData.selectQuiz(self.catId,self.id,function() {
                     self.name = QuizData.currentQuizData.name;
-                });                   
-            });            
+                });
+            });
         }
         else {
-        QuizData.selectQuiz(self.catId,self.id,function() {     
+        QuizData.selectQuiz(self.catId,self.id,function() {
             self.name = QuizData.currentQuizData.name;
-        });                   
+        });
         }
     }
     else {
-        QuizData.selectQuiz(self.catId,self.id,function() {     
+        QuizData.selectQuiz(self.catId,self.id,function() {
             self.name = QuizData.currentQuizData.name;
-        });                   
+        });
     }
 
     self.start = function(){
-        $location.path("/quiz/" +  QuizData.chooseKind(0) + "/0");
-    }; 
+        var url = "/quiz/" + self.catId + '/' + self.id + '/' +  QuizData.chooseKind(0) + "/0";
+        console.log('url', url);
+        $location.path(url);
+    };
 
     self.return = function() {
         $location.path("/app/");
@@ -41,11 +43,11 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
 
     self.cancel = function() {
         QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuizData.name+"'. You won't be able to continue this quiz.",function() {
-            $location.path("/app#/"); 
+            $location.path("/app#/");
             QuizData.cancelQuiz(QuizData.currentQuizData.uuid,function() {
-                
+
             });
         });
-    };        
-            
+    };
+
 }]);

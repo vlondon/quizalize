@@ -26,12 +26,22 @@ angular.module('quizApp')
             controller: "QuizController",
             controllerAs: "quiz"
         })
+        .when('/quiz/:catId/:quizId/fixed/:questionId', {
+            templateUrl: "/quiz/view/quiz",
+            controller: "QuizController",
+            controllerAs: "quiz"
+        })
         .when('/quiz/multiple/:questionId', {
             templateUrl: "/quiz/view/multiple",
             controller: "MultipleController",
             controllerAs: "quiz"
         })
-        .when('/quiz/scrambled/:questionId', {
+        .when('/quiz/:catId/:quizId/multiple/:questionId', {
+            templateUrl: "/quiz/view/multiple",
+            controller: "MultipleController",
+            controllerAs: "quiz"
+        })
+        .when('/quiz/:catId/:quizId/scrambled/:questionId', {
             templateUrl: "/quiz/view/scrambled",
             controller: "ScrambledController",
             controllerAs: "quiz"

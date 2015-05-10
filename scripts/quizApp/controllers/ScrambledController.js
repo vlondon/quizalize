@@ -1,6 +1,6 @@
 var randomise = require('quizApp/utils/randomise');
 
-angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParmas, $location){
+angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParams, $location){
     var getLetters = function(answer){
 
         var letters = answer.toUpperCase().split('');
@@ -37,7 +37,9 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     var self = this;
     var startTime = (new Date()).getTime();
 
-    self.questionId = parseInt($routeParmas.questionId);
+    self.id = $routeParams.quizId;
+    self.catId = $routeParams.catId;
+    self.questionId = parseInt($routeParams.questionId);
     $log.debug("On question", self.questionId);
 
     self.score = QuizData.currentQuizData.totalScore;
@@ -45,21 +47,29 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
 
     var lastEmpty;
 
-    QuizData.getQuestion(self.questionId, function(data){
-        self.question = data.question;
-        self.answer = replaceSpaces(data.answer);
+    var getQuestion = function(){
+        QuizData.getQuestion(self.questionId, function(data){
+            self.question = data.question;
+            self.answer = replaceSpaces(data.answer);
 
-        self.letters = getLetters(self.answer);
-        self.answerLetters = self.answer.toUpperCase().split('');
-        self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
+            self.letters = getLetters(self.answer);
+            self.answerLetters = self.answer.toUpperCase().split('');
+            self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
 
-        if (QuizData.currentQuizData.report[self.questionId]!=undefined) {
-            //we already have this question
-            $location.path("/quiz/answer/"+self.questionId);
-        }
+            if (QuizData.currentQuizData.report[self.questionId]!=undefined) {
+                //we already have this question
+                $location.path("/quiz/answer/"+self.questionId);
+            }
 
-        lastEmpty = 0;
-    });
+            lastEmpty = 0;
+        });
+    }
+
+    if (self.id && self.catId){
+        QuizData.selectQuiz(self.catId, self.id, getQuestion);
+    } else {
+        getQuestion();
+    }
 
     var updateLastEmpty = function(){
         for(var i=0; i < self.userAnswerLetters.length; i++){

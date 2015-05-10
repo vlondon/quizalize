@@ -324,7 +324,7 @@ angular.module('quizApp')
         },
         currentQuizData: currentQuizData,
         answerQuestion: function(idx, response, answer, questionName, duration){
-            $log.debug("Answer question", response, answer, duration);
+            $log.debug('Answer question', response, answer, duration);
 
             var question = currentQuiz.questions[idx];
 
@@ -352,19 +352,19 @@ angular.module('quizApp')
                 correct: correct,
                 score: score,
                 roundedScore: Math.round(score),
-                seconds: Math.ceil(duration/1000),
+                seconds: Math.ceil(duration / 1000),
                 topicId: question.topicId,
                 duration: duration
             };
 
             currentQuizData.report.push(reportItem);
-            $log.debug("Adding report item:", reportItem);
+            $log.debug('Adding report item:', reportItem);
 
-            $location.path("/quiz/answer/" + idx);
+            $location.path('/quiz/answer/' + idx);
         },
         cancelQuiz: function(id,callback) {
             if (id!=undefined) {
-                ZzishContent.cancelActivity(id, function(err, resp){                
+                ZzishContent.cancelActivity(id, function(err, resp){
                     callback();
                 });
             }
@@ -373,9 +373,9 @@ angular.module('quizApp')
             }
         },
         showMessage : function(title,message,callBack) {
-            
+
             if (callBack!=null) {
-                var uuidGen = uuid.v4();    
+                var uuidGen = uuid.v4();
                 $("#modalUuid").val(uuidGen);
                 callbacks[uuidGen]=callBack;
             }
@@ -386,7 +386,7 @@ angular.module('quizApp')
             $("#closeButton").hide();
             $("#modalMessage").html(message);
             $("#closeButton").html("OK");
-            $("#messageButton").click();                
+            $("#messageButton").click();
         },
         confirmWithUser : function(title,message,callBack) {
             var uuidGen = uuid.v4();
@@ -396,8 +396,8 @@ angular.module('quizApp')
             $("#closeButton").show();
             $("#modalMessage").html(message);
             $("#closeButton").html("No");
-            $("#confirmButton").html("Yes");            
-            $("#messageButton").click();                
+            $("#confirmButton").html("Yes");
+            $("#messageButton").click();
         },
         confirmed: function(uuid) {
             if (uuid!=undefined && uuid!="" && callbacks[uuid]!=undefined) {
@@ -405,6 +405,6 @@ angular.module('quizApp')
                 delete callbacks[uuid];
                 x();
             }
-        }        
+        }
     };
 }]);
