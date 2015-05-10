@@ -27,11 +27,15 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.scss$/,
+                loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
             }
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss'],
         modulesDirectories: ['node_modules', 'scripts']
     },
     devtool: '#source-map'

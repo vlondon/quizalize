@@ -1,0 +1,76 @@
+@import './../shared/mixins';
+
+@keyframes qlShake {
+    0%      { transform: rotate(0); }
+    15%      { transform: rotate(10deg); }
+    30%      { transform: rotate(-15deg); }
+    45%      { transform: rotate(20deg); }
+    60%      { transform: rotate(-20deg); }
+    75%      { transform: rotate(25deg); }
+    90%      { transform: rotate(30deg); }
+    100%     { transform: rotate(0); }
+
+}
+@keyframes qlStarAnimated {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0);
+    }
+    50% {opacity: 1;}
+    100% {
+        opacity: 0;
+        transform: translate(200px, 200px);
+    }
+}
+
+.ql-answer-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(red, .2);
+    text-align: center;
+
+    .answer-wrapper {
+        width: 100%;
+        /* margin: 20px; */
+        display: inline-block;
+        text-align: center;
+        padding: 5px;
+
+        @include media($size-mobile) {
+            width: 50%;
+        }
+
+    }
+    .answer {
+        width: 100%;
+        background: #2e60ff;
+        display: block;
+        font-size: 34px;
+        color: #FFF;
+
+        animation: qlEnterScale 400ms ease-out;
+        animation-fill-mode: both;
+
+    }
+
+    .star-container {
+        width: 10px;
+        height: 10px;
+        background: green;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+    }
+    .star-animated {
+        z-index: 5;
+        animation: qlStarAnimated 1500ms linear;
+        animation-fill-mode: both;
+    }
+    .star-transform {
+        width: 0;
+        height: 0;
+    }
+}

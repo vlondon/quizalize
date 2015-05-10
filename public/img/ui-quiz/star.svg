@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="276px" height="279px" viewBox="0 0 276 279" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.1 (12002) - http://www.bohemiancoding.com/sketch -->
+    <title>path2160</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FEED35" offset="0%"></stop>
+            <stop stop-color="#F5C32C" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="2" in="SourceAlpha" operator="dilate" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="10" dy="25" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.289863564 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <path d="M130.30535,6.729172 C135.21044,6.729172 166.50709,78.52218 170.4754,81.40532 C174.4437,84.28846 252.39411,91.86809 253.90987,96.53312 C255.42562,101.19814 196.81761,153.14828 195.30186,157.81331 C193.7861,162.47833 210.66544,238.9558 206.69714,241.83894 C202.72883,244.72209 135.21044,205.03603 130.30534,205.03603 C125.40025,205.03603 57.88185,244.72208 53.91355,241.83894 C49.94524,238.9558 66.82459,162.47832 65.30883,157.8133 C63.79307,153.14828 5.185066,101.19813 6.700824,96.53311 C8.216581,91.86809 86.16699,84.28846 90.13529,81.40532 C94.1036,78.52218 125.40025,6.729172 130.30535,6.729172 L130.30535,6.729172 Z" id="path2160" stroke="#FFFFFF" stroke-width="12" fill="url(#linearGradient-1)" filter="url(#filter-2)" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>
