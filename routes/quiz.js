@@ -148,10 +148,7 @@ exports.getProfileById = function(req,res) {
 
 
 exports.getPublicQuizzes = function(req, res){
-    var profileId = req.params.profileId;
-    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
-
-    zzish.listPublicContent(profileId, function(err, resp){
+    zzish.listPublicContent(function(err, resp){
         res.send(resp);
     });
 };

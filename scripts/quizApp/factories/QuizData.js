@@ -40,9 +40,13 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
         }        
     }
 
-    var registerWithGroup = function(code,callback) {
+    var setClassCode = function(code) {
         classCode = code;
         localStorage.setItem("classCode",classCode);
+    }
+
+    var registerWithGroup = function(code,callback) {
+        setClassCode(code);
         zzish.registerUserWithGroup(userUuid,classCode,function(err,resp) {
             if (!err) {
                 processQuizData(resp);
@@ -198,8 +202,14 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
         getClassCode: function() {
             return classCode;
         },        
-        setUser: function (user,code) {
+        setUser: function (user) {            
             setUser(user);
+        },
+        registerUserWithGroup: function(code,callback) {
+            if (code!=undefined) {
+                setClassCode(code);                
+                registerWithGroup(code,callback);                
+            }
         },
         getCategories: function() {
             return categories;
@@ -369,7 +379,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
                 return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/complete";                
             }
             else {
-                return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + selectQuestionType(q) + '/' + (q);
+                return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/" + selectQuestionType(q) + '/' + (q);
             }
         },
         cancelCurrentQuiz: function(callback) {

@@ -3,8 +3,6 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
 
     self.loading = true;
     self.orderIndex = "category.name";
-    self.user = QuizData.getUser();
-    self.name = QuizData.getUsername();
     self.hasQuizzes = false;
 
     self.startQuiz = function(categoryId,quizId){
@@ -12,6 +10,8 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     };
 
     var loadQuizzes = function() {
+        self.user = QuizData.getUser();
+        self.name = QuizData.getUsername();        
         QuizData.loadPlayerQuizzes(function(err, res){
             if(!err){
                 $scope.$apply(function(){ 
@@ -42,10 +42,34 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         $location.path("/");
     };
 
-    if (QuizData.isLoggedIn()) {
-        loadQuizzes();
+    if(typeof ($location.search()).token != 'undefined'){
+        //Have quiz name
+        self.token = $location.search().token;
     }
+    else if (localStorage.getItem("token")!=undefined) {
+        //
+        self.token = localStorage.getItem("token");
+    }
+    if (self.token!=undefined) {
+        zzish.getCurrentUser(self.token,function(err,message) {
+            if (!err) {
+                QuizData.setUser(message);
+                QuizData.registerUserWithGroup(message.attributes.groupCode,function() {
+                    loadQuizzes();    
+                })                
+            }
+            else {
+                QuizData.unsetUser();
+                $location.path("/app#");                
+            }
+        });
+    }   
     else {
-        $location.path("/");    
-    }
+        if (QuizData.isLoggedIn()) {
+            loadQuizzes();
+        }
+        else {
+            $location.path("/");    
+        }
+    }    
 }]);

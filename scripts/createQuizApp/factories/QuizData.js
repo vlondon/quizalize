@@ -104,6 +104,22 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
 
     }
 
+    var getClassForCode = function(classCode,callback) {
+
+        getClassList(function(classList) {
+            for (var i in classList) {
+                if (classList[i].code==classCode) {
+                    callback(classList[i]);
+                    return;
+                }
+            }
+            callback();
+            //didn't find it            
+        })
+
+    }
+
+
     var getGroupContents = function(callback) {
         $http.get("/users/" + userUuid + "/groups/contents").success(function(resp){
             $log.debug("Response from server for getting group Contents", resp);                
@@ -144,6 +160,14 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         }        
     }
 
+    var setClass = function(data,callback) {
+        if (data!=undefind) {
+            currentClass = data;
+            localStorage.setItem("currentClass",JSON.stringify(currentClass));            
+        }
+        callback(currentClass);        
+    }
+
     return{
         //User methods
         unsetUser: function() {
@@ -180,9 +204,12 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         },
         setCurrentClass: function(className,callback) {
             getClassForName(className,function(data) {
-                currentClass = data;
-                localStorage.setItem("currentClass",JSON.stringify(currentClass));
-                callback(currentClass);
+                setClass(data,callback);
+            })
+        },
+        setCurrentClassByCode: function(code,callback) {
+            getClassForCode(code,function(data) {
+                setClass(data,callback);
             })
         },
         getClassForName: function(className,callback) {
@@ -251,16 +278,14 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             }
         },          
         getPublicQuizzes: function(callback){
-            if (userUuid!="") {
-                $http.get("/quizzes/" + userUuid + "/public").success(function(resp){
-                    $log.debug("Response from server for getting public quizzes", resp);
-                    processQuizList(resp,function() {
-                        callback(resp);    
-                    });                
-                }).error(function(er){
-                    $log.debug("Error from server when getting public quizzes`", er);
+            $http.get("/quizzes/public").success(function(resp){
+                $log.debug("Response from server for getting public quizzes", resp);
+                processQuizList(resp,function() {
+                    callback(resp);    
                 });                
-            }
+            }).error(function(er){
+                $log.debug("Error from server when getting public quizzes`", er);
+            });                
         },  
         addQuizById: function(quizId, callback){
             quizData[quiz.uuid]={uuid: quizId};
