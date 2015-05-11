@@ -318,8 +318,8 @@ hr.bold {
 ============================ */
 
 .home-section {
-	padding-top: 100px;
-	padding-bottom: 100px;
+	padding-top: 60px;
+	padding-bottom: 60px;
 	display: block;
 	position: relative;
 	z-index: auto;
@@ -344,7 +344,8 @@ hr.bold {
 }
 
 .section-heading p {
-	font-weight: 300;
+	margin-top: 50px;
+    font-weight: 300;
 	font-size: 20px;
 	line-height: 1.6em;
 
@@ -584,11 +585,12 @@ section#intro {
 }
 
 .cta-title {
-	margin-bottom: 100px;
-	color: white;
+
+    margin-bottom: 100px;
+	color: #d24a4a;
 	font-weight: 300;
 	font-size: 48px;
-	text-shadow: 0 0 20px black;
+	text-shadow: 5px 5px 20px white;
 }
 .cta1-container {
     margin-top: 100px;
@@ -620,6 +622,7 @@ section#intro {
     text-shadow: 0 0 10px black;
 }
 .cta2 {
+
     padding: 20px 60px;
     background: #FA5858;
     border-radius: 20px;
@@ -652,7 +655,7 @@ section#intro {
 .cta4 {
     padding: 20px 60px;
     margin-top: 500px;
-    background: #FA5858;
+
     border-radius: 20px;
     color: white;
     font-size: 25px;
