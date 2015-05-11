@@ -10,7 +10,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         createQuizApp: 'createQuizApp.js',
-        vendor: ['angular', 'angular-route', 'angular-animate', 'fastclick']
+        vendor: ['fastclick']
     },
     plugins: [ new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js') ],
     cache: true,

@@ -323,7 +323,7 @@ angular.module('quizApp')
             return {classCode: classCode, studentCode: studentCode};
         },
         currentQuizData: currentQuizData,
-        answerQuestion: function(idx, response, answer, questionName, duration){
+        answerQuestion: function(idx, response, answer, questionName, duration, redirect = true){
             $log.debug('Answer question', response, answer, duration);
 
             var question = currentQuiz.questions[idx];
@@ -359,8 +359,9 @@ angular.module('quizApp')
 
             currentQuizData.report.push(reportItem);
             $log.debug('Adding report item:', reportItem);
-
-            $location.path('/quiz/answer/' + idx);
+            if (redirect){
+                $location.path('/quiz/answer/' + idx);
+            }
         },
         cancelQuiz: function(id,callback) {
             if (id!=undefined) {

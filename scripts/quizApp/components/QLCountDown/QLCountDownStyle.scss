@@ -1,0 +1,92 @@
+@import './../shared/mixins';
+
+@keyframes qlTick {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes qlCountDownEnter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes qlCountDownExit {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.ql-countdown {
+    @include clearfix();
+    height: 80px;
+
+    animation: qlCountDownEnter 400ms ease-out;
+    animation-delay: 1500ms;
+    animation-fill-mode: both;
+
+    .exit & {
+        animation: qlCountDownExit 400ms ease-out;
+        animation-fill-mode: both;
+    }
+    .countdown-line {
+        height: 1px;
+        margin: 10px 0;
+        background: #999;
+        position: relative;
+        top: 50px;
+    }
+
+    .countdown-number-holder {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        text-align: center;
+        line-height: 76px;
+        position: relative;
+        top: -40px;
+        margin: -40px auto 0;
+
+        .countdown-number {
+            background: #FFF;
+            border: 2px solid #999;
+            color: #999;
+            font-size: 36px;
+            z-index: 2;
+            background: #FFF;
+
+        }
+        .countdown-number,
+        .tick {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: 100%;
+            z-index: 1;
+        }
+        .tick {
+            background: #999;
+
+            &.animated {
+                animation: qlTick 400ms ease-out;
+                animation-fill-mode: both;
+            }
+        }
+
+    }
+}

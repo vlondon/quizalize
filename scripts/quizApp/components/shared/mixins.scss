@@ -12,6 +12,17 @@ $size-sticky-trigger:       660px;      // Size at which the sticky footer gets 
 $is-ie: false !default;
 $mobile-ie6: true !default;
 
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+    &:after {
+        clear: both;
+    }
+}
+
 
 @mixin media($size: false, $max-width: false, $min-width: false, $ignore-for-ie: false) {
     @if $is-ie and ($ignore-for-ie == false) {

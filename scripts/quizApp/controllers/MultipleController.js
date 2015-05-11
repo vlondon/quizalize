@@ -1,3 +1,4 @@
+
 angular.module('quizApp')
     .controller('MultipleController', ['QuizData', '$log', '$routeParams', '$location', '$scope', function(QuizData, $log,  $routeParams, $location, $scope){
 
@@ -7,6 +8,7 @@ angular.module('quizApp')
 
         var self = this;
         var startTime = (new Date()).getTime();
+        console.log('startTime', startTime, Date.now());
 
         self.id = $routeParams.quizId;
         self.catId = $routeParams.catId;
@@ -17,21 +19,33 @@ angular.module('quizApp')
         self.score = QuizData.currentQuizData.totalScore;
         self.questionCount = QuizData.currentQuizData.questionCount;
 
-
-        var addReactComponent = function(){
-            console.log('self, ', self.question, self.alternatives);
+        console.log('QuizData.currentQuizData', QuizData.currentQuizData);
+        var renderReactComponent = function(){
+            console.log('RENDERING REACT?', document.getElementById('reactContainer'));
             React.render(
                 React.createElement(QLMultiple, {
+                    quizData: QuizData.currentQuizData,
                     question: self.question,
                     alternatives: self.alternatives,
                     onSelect: function(index){
                         $scope.$apply(function(){
                             self.select(index);
                         });
+                    },
+                    onNext: function(){
+                        console.log('NEXT');
+                        $scope.$apply(()=> self.nextQuestion() );
                     }
                 }),
                 document.getElementById('reactContainer')
             );
+        };
+
+
+        var addReactComponent = function(){
+
+            setTimeout(renderReactComponent, 200);
+
             $scope.$on('$destroy', function(){
                 React.unmountComponentAtNode(document.getElementById('reactContainer'));
             });
@@ -39,9 +53,11 @@ angular.module('quizApp')
 
 
 
+
         var getQuestion = function(){
 
             QuizData.getQuestion(self.questionId, function(data){
+
                 self.question = data.question;
                 self.answer = data.answer;
                 self.alternatives = QuizData.getAlternatives(self.questionId);
@@ -72,7 +88,15 @@ angular.module('quizApp')
                                     self.alternatives[idx],
                                     self.answer,
                                     self.question,
-                                    (new Date()).getTime() - startTime);
+                                    (new Date()).getTime() - startTime,
+                                    false);
+            console.log('QuizData.currentQuizData', QuizData.currentQuizData);
+            renderReactComponent();
+        };
+
+        self.nextQuestion = function(){
+            var q = self.questionId + 1;
+            $location.path('/quiz/' +  QuizData.chooseKind(q) + '/' + (q));
         };
 
         $log.debug('Multiple Controller', self);
