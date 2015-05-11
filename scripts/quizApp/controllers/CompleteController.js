@@ -72,12 +72,11 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         return t;
     };
 
-    self.data = QuizData.currentQuizData;
-    self.studentData = QuizData.getStudentData();
+    self.data = QuizData.currentQuizResult();
     self.topics = {};
     self.alltopics = QuizData.getTopics();
 
-    self.totals = calculateTotals(QuizData.currentQuizData.report);
+    self.totals = calculateTotals(self.data.report);
 
     $log.debug("Complete Controller", self);
 

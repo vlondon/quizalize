@@ -1,8 +1,11 @@
-angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '$location', '$timeout', function(QuizData, $log, $location, $timeout){
+angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '$location', '$timeout', '$scope', function(QuizData, $log, $location, $timeout,$scope){
     var self = this;
 
     self.loading = true;
     self.orderIndex = "category.name";
+    self.user = QuizData.getUser();
+    self.name = QuizData.getUsername();
+    self.hasQuizzes = false;
 
     self.startQuiz = function(categoryId,quizId){
         $location.path("/quiz/"+categoryId+"/"+quizId);
@@ -11,8 +14,13 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     var loadQuizzes = function() {
         QuizData.loadPlayerQuizzes(function(err, res){
             if(!err){
-                self.categories = QuizData.getCategories();
-                self.loading = false;
+                $scope.$apply(function(){ 
+                    self.categories = QuizData.getCategories(); 
+                    for (var i in self.categories) {                    
+                       self.hasQuizzes = true;
+                    }
+                    self.loading = false;
+                });                                
             }else{
                 $log.error("Unable to refresh quizzes", err);
             }
@@ -31,9 +39,13 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
 
     self.logout = function(){
         QuizData.unsetUser();
+        $location.path("/");
     };
 
-    if (QuizData.getUser() && QuizData.getClass()) {
+    if (QuizData.isLoggedIn()) {
         loadQuizzes();
+    }
+    else {
+        $location.path("/");    
     }
 }]);

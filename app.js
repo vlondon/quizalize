@@ -43,9 +43,6 @@ app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 
-//this a quick play
-app.post('/player/authenticate', user.pauthenticate);
-
 
 app.post('/create/profile', quiz.createProfile);
 

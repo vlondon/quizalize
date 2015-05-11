@@ -5,8 +5,7 @@ var maxTime = settings.maxTime;
 var minScore = settings.minScore;
 var gracePeriod = settings.gracePeriod;
 
-angular.module('quizApp')
-.factory('ZzishContent', ['$http', '$log', '$rootScope', function($http, $log, $rootScope){
+angular.module('quizApp').factory('ZzishContent', ['$http', '$log', '$rootScope', function($http, $log, $rootScope){
     //Requires zzish.js to have been included
     if(typeof zzish == 'undefined') $log.error("Require zzish.js to use ZzishContent");
 

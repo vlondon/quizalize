@@ -38,23 +38,6 @@ exports.authenticate =  function(req, res) {
     })        
 }
 
-//anonymouse player to authenticate
-exports.pauthenticate =  function(req, res) {
-    var name = req.body.name;
-    var code = req.body.code;
-    var profileId = uuid.v4();
-    //at least password or code is required
-    zzish.authUser(profileId, name, code,function(err,data) {
-        if (!err && typeof data == 'object') {
-            res.status(200);
-        }
-        else {
-            res.status(err);
-        }
-        res.send(data);
-    })        
-}
-
 exports.register =  function(req, res) {
     var email1 = req.body.email;
     var password = req.body.password;

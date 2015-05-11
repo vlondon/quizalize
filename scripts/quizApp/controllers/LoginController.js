@@ -1,4 +1,4 @@
-angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$routeParams', '$location', '$http', function(QuizData, $log, $routeParams, $location,$http){
+angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$routeParams', '$location', '$http', '$scope', function(QuizData, $log, $routeParams, $location,$http,$scope){
     var self = this;
 
     self.name = "";
@@ -19,18 +19,16 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
     self.login = function() {
         QuizData.loginUser(self.name,self.classcode,function(err,resp) {
             if (!err) {
-                $log.debug("Response",resp);    
-                QuizData.setUser(resp);
-                QuizData.setClassCode(self.classcode);
+                $scope.$apply(function(){ $location.path("/list"); });
                 goToLoggedIn();
             }
             else {
-                QuizData.showMessage("Login Error","Can you check that you entered everything correct"+er+status);
+                QuizData.showMessage("Login Error","Can you check that you entered everything correct");
             }
         })
     }
 
-    if (QuizData.getUser() && QuizData.getClass()) {
+    if (QuizData.isLoggedIn()) {
         //we're already logged in. Let's go to the class list
         goToLoggedIn();
     }

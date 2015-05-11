@@ -22,8 +22,6 @@ require('quizApp/controllers/QuizzesController');
 require('quizApp/controllers/QuizController');
 require('quizApp/controllers/MultipleController');
 require('quizApp/controllers/ScrambledController');
-require('quizApp/controllers/ManualController');
-require('quizApp/controllers/IntroController');
 require('quizApp/controllers/AnswerController');
 require('quizApp/controllers/CompleteController');
 
@@ -31,4 +29,11 @@ require('quizApp/filters/OrderByObject');
 
 angular.module('quizApp').run(function() {
     FastClick.attach(document.body);
+
 });
+
+if (!Date.now) {
+    Date.now = function now() {
+        return new Date().getTime();
+    };
+}

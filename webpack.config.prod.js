@@ -25,6 +25,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.scss$/,
+                loader: 'style!css!sass'
             }
         ]
     },
@@ -34,20 +38,8 @@ module.exports = {
         //     'drop_console': true
         // }})
     ],
-    module: {
-        loaders: [
-            {
-                test: /\.jsx$/,
-                loader: 'babel-loader'
-            },
-            {
-                test: /\.js$/,
-                loader: 'babel-loader'
-            }
-        ]
-    },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js'],
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss'],
         modulesDirectories: ['node_modules', 'scripts']
     }
 };
