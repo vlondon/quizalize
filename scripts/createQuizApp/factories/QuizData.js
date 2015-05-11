@@ -161,7 +161,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     }
 
     var setClass = function(data,callback) {
-        if (data!=undefind) {
+        if (data!=undefined) {
             currentClass = data;
             localStorage.setItem("currentClass",JSON.stringify(currentClass));            
         }

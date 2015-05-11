@@ -49,6 +49,18 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
         $("#LoginButton span").text("Reset Password");
     }
 
+    self.initialScreen = $routeParams.init;
+
+    if (self.initialScreen=='login') {
+        self.showLogin();
+    }
+    else if (self.initialScreen=='register') {
+        self.showRegister();
+    }
+    else if (self.initialScreen=='forget') {
+        self.showForget();
+    }    
+
     self.checkCanSubmit = function() {                
         return self.mode =='forget' ? self.email=='' : (self.email=='' || self.password=='');
     }

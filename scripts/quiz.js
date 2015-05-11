@@ -31,6 +31,7 @@ function login(postfix) {
 
 function logout(postfix) {
   token = localStorage.getItem("token");
+  $("#LoginButton").attr("href","/quiz#/login");
   if (token!=null) {
     Zzish.logout(token,function(err,message) {
         localStorage.clear();
@@ -65,28 +66,7 @@ window.logout = logout;
 
 $( document ).ready(function() {
 	var quizData = localStorage.getItem("quizData");
-  var link = localStorage.getItem("link");
-  if (link==undefined) {
-    $("#myquizzes").hide();
-  }
-  else {
-    $("#myquizzes").show();
-    $("#myquizzesa").attr("href",link);
-  }
-	var emailAddress = localStorage.getItem("emailAddress");
 	if (quizData!=undefined) {
-		var qj = $.parseJSON(quizData);
-		if (qj!=undefined && qj.length>0 && emailAddress!=null) {
-			$("#myquizzes").show();
-		}
-		else {
-			$("#myquizzes").hide();
-		}
-		if (emailAddress!=null) {
-			$("#LoginButton").html("Logout");
-		}
-	}
-	else {
-		$("#myquizzes").hide();
+    $("#LoginButton").attr("href","/quiz#/quizzes");
 	}
 });

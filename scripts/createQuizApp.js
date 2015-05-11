@@ -26,6 +26,7 @@ require('createQuizApp/controllers/LoginController');
 require('createQuizApp/controllers/AccountController');
 require('createQuizApp/controllers/PublishedController');
 require('createQuizApp/controllers/ShareController');
+require('createQuizApp/controllers/SignupController');
 
 require('createQuizApp/filters/OrderByObject');
 

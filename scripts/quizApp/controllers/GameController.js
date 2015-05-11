@@ -5,19 +5,7 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     self.action = $routeParams.action;
     self.catId = $routeParams.catId;
 
-    var loaded = false;
-    if (self.action=="false") {
-        //public quiz play
-        loaded = true;
-    }
-    else if (self.action=="false") {
-        //private quiz play
-    }
-    else if (self.action=="teacher") {
-        //teacher play
-        sessionStorage.setItem("teacher",true);
-    }
-    QuizData.selectQuiz(self.catId,self.id,loaded,function(err,result) {
+    QuizData.selectQuiz(self.catId,self.id,self.action!="false",function(err,result) {
         if (!err) {
             $scope.$apply(function(){ 
                self.currentQuiz = result; 
