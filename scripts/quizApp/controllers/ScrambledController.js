@@ -1,6 +1,6 @@
 var randomise = require('quizApp/utils/randomise');
 
-angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParams, $location){
+angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){
     var getLetters = function(answer){
 
         var letters = answer.toUpperCase().split('');
@@ -42,34 +42,31 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     self.questionId = parseInt($routeParams.questionId);
     $log.debug("On question", self.questionId);
 
-    self.score = QuizData.currentQuizData.totalScore;
-    self.questionCount = QuizData.currentQuizData.questionCount;
-
     var lastEmpty;
 
-    var getQuestion = function(){
-        QuizData.getQuestion(self.questionId, function(data){
-            self.question = data.question;
-            self.answer = replaceSpaces(data.answer);
+    QuizData.loadQuiz(self.catId, self.id, function(data) {
+        //$scope.$apply(function(){ 
+            self.currentQuiz = data;
+            self.score = QuizData.currentQuizResult().totalScore;
+            self.questionCount = QuizData.currentQuizResult().questionCount;
+            QuizData.getQuestion(self.questionId, function(data){
 
-            self.letters = getLetters(self.answer);
-            self.answerLetters = self.answer.toUpperCase().split('');
-            self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
+                self.question = data.question;
+                self.answer = replaceSpaces(data.answer);
 
-            if (QuizData.currentQuizData.report[self.questionId]!=undefined) {
-                //we already have this question
-                $location.path("/quiz/answer/"+self.questionId);
-            }
+                self.letters = getLetters(self.answer);
+                self.answerLetters = self.answer.toUpperCase().split('');
+                self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
 
-            lastEmpty = 0;
-        });
-    }
-
-    if (self.id && self.catId){
-        QuizData.selectQuiz(self.catId, self.id, getQuestion);
-    } else {
-        getQuestion();
-    }
+                if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {
+                    //we already have this question
+                    $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+                }
+                // addReactComponent();
+                lastEmpty = 0;
+            }); 
+        //});        
+    });    
 
     var updateLastEmpty = function(){
         for(var i=0; i < self.userAnswerLetters.length; i++){
@@ -88,13 +85,15 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             updateLastEmpty();
         }
 
-        if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizData.report[self.questionId]==undefined){
+        if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizResult().report[self.questionId]==undefined){
             QuizData.answerQuestion(self.questionId,
                                 self.userAnswerLetters.join("").toUpperCase(),
                                 self.answer.toUpperCase(),
                                 self.question,
-                                (new Date()).getTime() - startTime);
+                                (new Date()).getTime() - startTime);            
+            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
         }
+        
     };
 
     self.removeLetter = function(idx){

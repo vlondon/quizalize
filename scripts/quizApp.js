@@ -14,6 +14,7 @@ require('quizApp/factories/QuizData');
 
 require('quizApp/controllers/NavBarController');
 require('quizApp/controllers/StartController');
+require('quizApp/controllers/LoginController');
 require('quizApp/controllers/PublicController');
 require('quizApp/controllers/GameController');
 
@@ -21,8 +22,6 @@ require('quizApp/controllers/QuizzesController');
 require('quizApp/controllers/QuizController');
 require('quizApp/controllers/MultipleController');
 require('quizApp/controllers/ScrambledController');
-require('quizApp/controllers/ManualController');
-require('quizApp/controllers/IntroController');
 require('quizApp/controllers/AnswerController');
 require('quizApp/controllers/CompleteController');
 
