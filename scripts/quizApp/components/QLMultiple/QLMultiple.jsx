@@ -46,7 +46,6 @@ var QLMultiple = React.createClass({
 
     handleCssState: function(newCssStateIndex, cb){
         var newCssState = cssStates[newCssStateIndex];
-        console.log('newCssState', newCssState);
         if (newCssState){
             this.setState({
                 cssState: newCssState
@@ -61,11 +60,8 @@ var QLMultiple = React.createClass({
     },
 
     handleClick: function(index){
-        console.log('button clicked', index);
-
 
         this.handleCssState(2, () => {
-            console.log('new state finished!');
             this.setState({
                 answer: this.props.alternatives[index]
             });

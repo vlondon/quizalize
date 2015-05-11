@@ -8,7 +8,6 @@ angular.module('quizApp')
 
         var self = this;
         var startTime = (new Date()).getTime();
-        console.log('startTime', startTime, Date.now());
 
         self.id = $routeParams.quizId;
         self.catId = $routeParams.catId;
@@ -19,9 +18,7 @@ angular.module('quizApp')
         self.score = QuizData.currentQuizData.totalScore;
         self.questionCount = QuizData.currentQuizData.questionCount;
 
-        console.log('QuizData.currentQuizData', QuizData.currentQuizData);
         var renderReactComponent = function(){
-            console.log('RENDERING REACT?', document.getElementById('reactContainer'));
             React.render(
                 React.createElement(QLMultiple, {
                     quizData: QuizData.currentQuizData,
@@ -33,7 +30,6 @@ angular.module('quizApp')
                         });
                     },
                     onNext: function(){
-                        console.log('NEXT');
                         $scope.$apply(()=> self.nextQuestion() );
                     }
                 }),
@@ -73,7 +69,7 @@ angular.module('quizApp')
                         self.longMode = true;
                     }
                 }
-                addReactComponent();
+                // addReactComponent();
             });
         };
 
@@ -89,8 +85,7 @@ angular.module('quizApp')
                                     self.answer,
                                     self.question,
                                     (new Date()).getTime() - startTime,
-                                    false);
-            console.log('QuizData.currentQuizData', QuizData.currentQuizData);
+                                    true);
             renderReactComponent();
         };
 

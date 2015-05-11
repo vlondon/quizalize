@@ -33,7 +33,6 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
 
     self.start = function(){
         var url = "/quiz/" + self.catId + '/' + self.id + '/' +  QuizData.chooseKind(0) + "/0";
-        console.log('url', url);
         $location.path(url);
     };
 
