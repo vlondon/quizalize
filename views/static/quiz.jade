@@ -1,11 +1,12 @@
 .container
     .row(style="padding-top:10px")
+        div(id="reactContainer")
         .col-sm-8.col-sm-offset-2.col-lg-6.col-lg-offset-3.inverse-text.text-center
             .row
                 .col-xs-6
                     h2 {{quiz.score}} Pts
                 .col-xs-6
-                    h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
+                    h2 QAA: {{quiz.questionId + 1}}/{{quiz.questionCount}}
 
     .row
         .col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4

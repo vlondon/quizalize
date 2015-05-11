@@ -30,4 +30,11 @@ require('quizApp/filters/OrderByObject');
 
 angular.module('quizApp').run(function() {
     FastClick.attach(document.body);
+
 });
+
+if (!Date.now) {
+    Date.now = function now() {
+        return new Date().getTime();
+    };
+}

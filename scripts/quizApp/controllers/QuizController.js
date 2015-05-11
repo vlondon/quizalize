@@ -1,5 +1,5 @@
 angular.module('quizApp')
-    .controller('QuizController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParmas, $location){
+    .controller('QuizController', ['QuizData', '$log', '$routeParams', '$location', function(QuizData, $log,  $routeParams, $location){
 
     var startTime = (new Date()).getTime();
 
@@ -45,23 +45,35 @@ angular.module('quizApp')
 
     var self = this;
 
-    self.questionId = parseInt($routeParmas.questionId);
+    self.id = $routeParams.quizId;
+    self.catId = $routeParams.catId;
+
+    self.questionId = parseInt($routeParams.questionId);
     $log.debug("On question", self.questionId);
 
     self.score = QuizData.currentQuizData.totalScore;
     self.questionCount = QuizData.currentQuizData.questionCount;
     var lastEmpty = 0;
 
-    QuizData.getQuestion(self.questionId, function(data){
-        self.question = data.question;
-        self.answer = replaceSpaces(data.answer);
+    var getQuestion = function(){
+        QuizData.getQuestion(self.questionId, function(data){
+            self.question = data.question;
+            self.answer = replaceSpaces(data.answer);
 
-        self.letters = getLetters(self.answer);
-        self.answerLetters = self.answer.toUpperCase().split('');
-        self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
+            self.letters = getLetters(self.answer);
+            self.answerLetters = self.answer.toUpperCase().split('');
+            self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
 
-        lastEmpty = 0;
-    });
+            lastEmpty = 0;
+        });
+
+    }
+    
+    if (self.id && self.catId) {
+        QuizData.selectQuiz(self.catId, self.id, getQuestion);
+    } else {
+        getQuestion();
+    }
 
     var updateLastEmpty = function(){
         for(var i=0; i < self.userAnswerLetters.length; i++){
