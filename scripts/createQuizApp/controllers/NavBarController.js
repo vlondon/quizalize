@@ -45,6 +45,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
     self.login = function() {
         if (QuizData.unsetUser()) {
             //need to logout
+            //logout();
             $location.path("/quiz#/");
         }
         else {

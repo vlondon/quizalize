@@ -21,10 +21,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         classList = [];
     }
     var quizData = JSON.parse(localStorage.getItem("quizData"));
-    if(!quizData){
-        quizData = {};
-    }
-    else {
+    if(quizData){
         if (Array.isArray(quizData)) {
             var quizHash = {};
             for (var i in quizData) {
@@ -236,16 +233,21 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         //quiz methods
         getQuizzes: function(callback){
             if (userUuid!="") {
-                $http.get("/create/" + userUuid + "/quizzes/").success(
-                    function(resp){
-                        quizData = {};
-                        for (var i in resp) {
-                            quizData[resp[i].uuid] = resp[i];
-                        }                        
-                        localStorage.setItem("quizData",JSON.stringify(quizData));
-                        callback(quizData);
-                    }
-                );
+                if (!quizData) {
+                    $http.get("/create/" + userUuid + "/quizzes/").success(
+                        function(resp){
+                            quizData = {};
+                            for (var i in resp) {
+                                quizData[resp[i].uuid] = resp[i];
+                            }                        
+                            localStorage.setItem("quizData",JSON.stringify(quizData));
+                            callback(quizData);
+                        }
+                    );                    
+                }
+                else {
+                    callback(quizData);
+                }
             }
         },          
         getPublicQuizzes: function(callback){
@@ -277,10 +279,21 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             if (quiz.uuid==undefined) {
                 quiz.uuid = uuid.v4();
             }
+            if (quizData==undefined) {
+                quizData = {};
+            }
             quizData[quiz.uuid]=quiz;
             localStorage.setItem("quizData", JSON.stringify(quizData));
             callback(quiz.uuid);
-        },              
+        },   
+        loadQuizData: function(ids,callback) {
+            $http.post("/quizzes/" + userUuid + "/load" ,{uuids: ids}).success(function(resp){
+                $log.debug("Response from server for loading quizzes", resp);
+                callback(resp);
+            }).error(function(er){
+                $log.debug("Error from server when loading quizzes", er);
+            });            
+        },          
         getQuiz: function(id, loadFromServer, callback){
             if(typeof quizData[id] != 'undefined'){
                 if(typeof quizData[id].questions != 'undefined' || quizData[id].publicAssigned){

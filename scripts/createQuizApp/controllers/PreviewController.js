@@ -10,6 +10,9 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
 
     self.publish = function(){
         var details = { emailAddress: self.emailAddress, access: -1, groupName: self.className };
+        if (QuizData.getUser()!=self.quiz.profileId && self.quiz.share) {
+            details['share']=self.quiz.profileId;
+        }        
         self.publishing = true;
         QuizData.registerEmailAddress(self.emailAddress).success(function(result){
             QuizData.setUser(result);

@@ -1,4 +1,4 @@
-    //general zzish config
+//general zzish config
 var config = require('../config.js');
 //for sending emails
 var email = require("../email");
@@ -6,6 +6,8 @@ var email = require("../email");
 var zzish = require("../zzish");
 //create encrypted password
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = '##34dsadfasdf££FE';
+//uuid generator
+var uuid = require('node-uuid');
 
 function encrypt(text){
   var cipher = crypto.createCipher(algorithm,password)
@@ -24,15 +26,33 @@ function decrypt(text){
 exports.authenticate =  function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
+    //at least password or code is required
     zzish.authenticate(email,encrypt(password),function(err,data) {
-        if (!err) {
+        if (!err && typeof data == 'object') {
             res.status(200);
         }
         else {
             res.status(err);
         }
         res.send(data);
-    })
+    })        
+}
+
+//anonymouse player to authenticate
+exports.pauthenticate =  function(req, res) {
+    var name = req.body.name;
+    var code = req.body.code;
+    var profileId = uuid.v4();
+    //at least password or code is required
+    zzish.authUser(profileId, name, code,function(err,data) {
+        if (!err && typeof data == 'object') {
+            res.status(200);
+        }
+        else {
+            res.status(err);
+        }
+        res.send(data);
+    })        
 }
 
 exports.register =  function(req, res) {
@@ -56,7 +76,7 @@ exports.forget =  function(req, res) {
     zzish.authenticate(email1,null,function(err,data) {
         if (!err) {
             res.status(200);
-            var link ="https://www.quizalize.com/quiz#/account/reset/"+encrypt(data);
+            var link = "https://www.quizalize.com/quiz#/account/reset/"+encrypt(data);
             var registerEmail = "Hi there\n\nClick on the following link to reset your password:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
             email.sendEmail('team@zzish.com',[req.body.emailAddress],'Password Reset',registerEmail);                        
         }

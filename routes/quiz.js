@@ -163,7 +163,13 @@ exports.getAssignedPublicQuizzes = function(req, res){
     })
 };
 
-
+exports.getQuizzes = function(req,res) {
+    var profileId = req.params.id;
+    var ids = req.body.uuids;
+    zzish.getContents(profileId,ids,function(err,resp) {
+        res.send(resp);
+    })
+}
 
 
 exports.getMyQuizzes = function(req, res){
@@ -286,12 +292,15 @@ exports.publishQuiz = function(req, res){
     if (req.body.groupName!=undefined) {
         data['groupName'] = req.body.groupName;    
     }    
+    if (req.body.share!=undefined) {
+        data['share'] = req.body.share;    
+    }    
     data['access'] = -1;
 
 
     console.log("Will publish", profileId, id, data);
 
-    zzish.publishContentToGroup(profileId, id, data, function(err, resp){
+    zzish.publishContent(profileId, id, data, function(err, resp){
         if(!err){
             console.log("Got publish result", resp);
             res.status = 200;
@@ -318,6 +327,7 @@ exports.shareQuiz = function(req, res){
     var quiz = req.body.quiz;
     var emailFrom = req.body.email;
     var link = req.body.link;
+
     if (link==undefined) {
         link = "http://quizalize.com/quiz#/share/" + getEncryptQuiz(profileId,id);
     }
@@ -327,8 +337,11 @@ exports.shareQuiz = function(req, res){
 };
 
 exports.getQuizByCode = function(req,res) {
-    var code = req.params.code;
-    res.send({uuid: 12345, name: 'ABC', category: { name: "Hello"}});
+    var decoded = getDecryptQuiz(req.params.code);
+    console.log("Decoded",decoded);
+    zzish.getContent(decoded.profileId,decoded.uuid,function (err,result) {
+        res.send(result);
+    })
 }
 
 

@@ -34,6 +34,7 @@ app.get('/quiz/create', quiz.create);
 app.get('/amazon-twitter-voucher', quiz.voucher);
 
 //Endpoints for teachers TODO rename appropriately
+
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
@@ -42,12 +43,16 @@ app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 
+//this a quick play
+app.post('/player/authenticate', user.pauthenticate);
+
 
 app.post('/create/profile', quiz.createProfile);
 
 app.get('/quiz/token/:token', quiz.getProfileByToken);
 app.get('/quiz/profile/:uuid', quiz.getProfileById);
 app.get('/quiz/code/:code', quiz.getQuizByCode);
+app.post('/quizzes/:id/load', quiz.getQuizzes);
 
 
 app.get('/create/:profileId/topics/', quiz.getMyTopics);

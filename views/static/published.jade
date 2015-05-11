@@ -33,8 +33,8 @@ img(height='1', width='1', alt='', style='display:none', src='https://www.facebo
                             br
                             p You can see live results as your students play.
             br
-            br
-            .row(ng-hide="publish.quiz.publicAssigned")
+            br 
+            .row(ng-hide="publish.quiz.publicAssigned || publish.quiz.profileId!=publish.profileId")
                 .col-sm-12
                     .border-block
                         center

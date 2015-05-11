@@ -1,71 +1,47 @@
 var token;
+var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "localhost:8080/zzishapi/api/", "webUrl": "http://localhost:3000/","logEnabled": true};  
+var pathArray = location.href.split( '/' );
+var protocol = pathArray[0];
+var host = pathArray[2];
+var url = protocol + '//' + host;
 
-function login(toggleLogin) {
-  var type = "redirect";
-  
-  var pathArray = location.href.split( '/' );
-  var protocol = pathArray[0];
-  var host = pathArray[2];
-  var url = protocol + '//' + host + "/quiz#/";
+//var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
+//var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";  
+if (initParams.webUrl!=undefined && initParams.webUrl.indexOf("http://test")==0) {
+  url = "http://test.quizalize.com/";
+}
 
-  var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "localhost:8080/zzishapi/api/", "webUrl": "http://localhost:3000/","logEnabled": true};  
-  //var initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://","baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
-  //var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";  
-  if (initParams.webUrl!=undefined && initParams.webUrl.indexOf("http://test")==0) {
-    url = "http://test.quizalize.com/quiz#/";
-  }
+Zzish.init(initParams);
 
-  var type = "redirect";
+function login(postfix) {
+  var type = "redirect"; //can be a popup instead
 
-  token = localStorage.getItem("zzishtoken");
-  var email = localStorage.getItem("emailAddress");
-  var classCode = localStorage.getItem("classCode");
-  Zzish.init(initParams);
-  if (email==null) {
-      if (classCode!=null) {
-        //unregistered user
-        localStorage.clear();
-        $("#LoginButton").html("Login with Zzish");
-        location.href="/quiz/";        
-      }
-      else{
-        Zzish.login(type,url);  
-      }      
-  }
-  else if (email!=null) {
-          localStorage.clear();
-          $("#LoginButton").html("Login with Zzish");
-          location.href="/quiz/";
+  //represents a user (that may be a zzish login)
+  var userId = localStorage.getItem("userId");
+  if (userId==null) {
+    //assume no token
+    localStorage.removeItem("token");
+    Zzish.login(type,url+postfix);
   }
   else {
-    if (!!toggleLogin) {
-      Zzish.logout(token,function(err,message) {
-          localStorage.clear();
-          $("#LoginButton").html("Login with Zzish");
-          location.href="/quiz/";
-      });
-    }
-    else {
-      location.href=url;
-    }
+    //just go to the logged in url
+    location.href=url+postfix;
   }
 }
 
-function logout() {
-  var url = "http://www.quizalize.com/quiz#/";
-  Zzish.init(initParams);
-
-  token = localStorage.getItem("zzishtoken");
+function logout(postfix) {
+  token = localStorage.getItem("token");
   if (token!=null) {
-      Zzish.logout(token,function(err,message) {
-          localStorage.clear();
-          $("#LoginButton").html("Login with Zzish");
-          location.href="/quiz/";
-      });
+    Zzish.logout(token,function(err,message) {
+        localStorage.clear();
+        if (postfix!=undefined)
+          location.href=postfix;
+    });
   }
   else {
     localStorage.clear();
-    location.href="/quiz/";
+    if (postfix!=undefined)
+      location.href=postfix;
   }
 }
 

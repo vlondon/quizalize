@@ -10,6 +10,9 @@ angular.module('createQuizApp').controller('ShareController', ['QuizData', '$log
     })
 
     self.assignQuiz = function(quiz) {
-    		
+        quiz.share = true;
+		QuizData.addQuiz(quiz,function() {
+			$location.path("/preview/" + quiz.uuid);	
+		})        
     }
 }]);

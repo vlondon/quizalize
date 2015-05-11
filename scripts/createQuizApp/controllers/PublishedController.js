@@ -29,7 +29,9 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
             }
             else {
                 details['code']=classObject.code;
-
+            }
+            if (QuizData.getUser()!=self.quiz.profileId && self.quiz.share) {
+                details['share']=self.quiz.profileId;
             }
             self.publishing = true;
             QuizData.publishQuiz(self.quiz, details,function(err,result) {
@@ -72,6 +74,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
         self.quiz = qz;
 
         if(QuizData.getUser()) {
+            self.profileId = QuizData.getUser();
             if (self.action=="b") {
                 self.currentClass = QuizData.getCurrentClass();
                 self.published = true;                

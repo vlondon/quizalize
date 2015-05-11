@@ -3,10 +3,10 @@
     h1 Your Quizzes
         .pull-right
             a.btn.btn-primary.btn-lg(ng-href="/quiz/#/create") Create a new quiz
-    p Here are the quizzes you have created so far...
-                                
-    .row
-        .col-sm-8.col-sm-offset-2
+    p(ng-show="quizzes.hasQuiz") Here are the quizzes you have created so far...
+    
+    .row(ng-show="quizzes.hasQuiz")
+        .col-sm-12
             .row.well
                 .row(ng-repeat="quiz in quizzes.pastQuizzes track by $index", style="padding-bottom: 10px")
                     .col-sm-4.col-xs-12
@@ -23,7 +23,7 @@
                     .col-sm-2.col-xs-3
                         a.btn.btn-info.btn-block(target=_blank, ng-click="quizzes.shareQuiz(quiz)") Share
     .row(ng-show="quizzes.sharing")
-        .col-sm-8.col-sm-offset-2
+        .col-sm-12
             .border-block
                 center
                     h1 Share {{quizzes.currentQuizToShare.name}}

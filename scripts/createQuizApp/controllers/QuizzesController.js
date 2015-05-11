@@ -5,6 +5,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
 
     self.shareEmails = "";
     self.currentQuizToShare = undefined;
+    self.hasQuiz = false;
 
     var loadQuizData = function() {
         QuizData.getTopics(function(data){
@@ -15,6 +16,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             QuizData.getQuizzes(function(data){
                 self.pastQuizzes = data;
                 for (var i in self.pastQuizzes) {
+                    self.hasQuiz = true;
                     if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
                     else self.hasOwnQuizzes = true;
                 } 
@@ -110,7 +112,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
 
     self.shareQuiz = function(quiz) {
         self.sharing = true;
-        QuizData.getEncryptedLink(quiz.id,function(link) {
+        QuizData.getEncryptedLink(quiz.uuid,function(link) {
             self.currentQuizToShare = quiz;    
             self.currentQuizToShare.shareLink = "http://quizalize.com/quiz#/share/"+link;
         })        
@@ -118,7 +120,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
 
     self.shareCurrentQuiz = function() {
         if (self.currentQuizToShare!=undefined) {
-            QuizData.shareQuiz(self.currentQuizToShare.id,self.shareEmails);
+            QuizData.shareQuiz(self.currentQuizToShare.uuid,self.shareEmails);
             QuizData.showMessage("Thanks for Sharing","Each of these email addresses will receive a secure email to access your quiz",function() {
                 self.sharing = false;                        
             });    
