@@ -365,7 +365,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
         generateNextQuestionUrl: function(questionId) {
             var q = questionId + 1;
             if (currentQuiz.questions.length==q) {
-                return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/complete";
+                zzish.stopActivity(currentQuizResult.currentActivityId,{});                
+                return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/complete";                
             }
             else {
                 return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + selectQuestionType(q) + '/' + (q);
@@ -373,6 +374,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
         },
         cancelCurrentQuiz: function(callback) {
             zzish.cancelActivity(currentQuizResult.currentActivityId,function(err,message) {
+                initQuizResult();
                 if (callback!=undefined) callback(err,message);
             })
         },        
