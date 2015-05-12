@@ -201,8 +201,7 @@ body(ng-controller="NavBarController as ctrl")
                     li(style="margin-right:5px;")
                         button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
                     li
-                        a.btn.btn-info.navbar-btn(ng-click="ctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Login
-                        //button.btn.btn-info.navbar-btn(, style="padding: 8px;font-family: sans-serif;font-size: 16px;color: #efefef;background: #8d3b8e;border: 1px solid #b04ab2;border-radius: 4px;text-decoration: none;")#LoginButton Login with Zzish
+                        a.btn.btn-info.navbar-btn(ng-click="ctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Log in
                                 
     div(ng-view ngCloak)
 

@@ -539,6 +539,11 @@ twttr.conversion.trackPid('l5zik', { tw_sale_amount: 0, tw_order_quantity: 0 });
 })();
 window._fbq = window._fbq || [];
 window._fbq.push(['track', 'PixelInitialized', {}]);
+  var userId = localStorage.getItem("userId");
+  if (userId!=undefined) {
+    $("#LoginButton").attr("href","/quiz#/quizzes");
+  }
+
 </script>
 <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=832854753469486&amp;ev=PixelInitialized" /></noscript>
     <script type="text/javascript">
@@ -547,6 +552,7 @@ var google_conversion_id = 1034680765;
 var google_custom_params = window.google_tag_params;
 var google_remarketing_only = true;
 /* ]]> */
+
 </script>
     <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
     </script>

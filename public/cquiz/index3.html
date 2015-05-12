@@ -302,6 +302,11 @@ window._fbq.push(['track', 'PixelInitialized', {}]);
               lowerThan: 'transform',
               languagePath: '/outdatedbrowser/lang/en.html'
           })
+        var userId = localStorage.getItem("userId");
+        if (userId!=undefined) {
+          $("#LoginButton").attr("href","/quiz#/quizzes");
+        }
+          
       })      
       $("#btnContactUs").click(function(event){
       $.ajax({

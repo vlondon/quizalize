@@ -63,10 +63,3 @@ window.goToApp = goToApp;
 window.goToQuiz = goToQuiz;
 window.login = login;
 window.logout = logout;
-
-$( document ).ready(function() {
-	var quizData = localStorage.getItem("quizData");
-	if (quizData!=undefined) {
-    $("#LoginButton").attr("href","/quiz#/quizzes");
-	}
-});
