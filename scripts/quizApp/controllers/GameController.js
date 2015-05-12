@@ -5,14 +5,13 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     self.action = $routeParams.action;
     self.catId = $routeParams.catId;
 
-    QuizData.selectQuiz(self.catId,self.id,self.action!="false",function(err,result) {
+    QuizData.selectQuiz(self.catId,self.id,self.action=="false",function(err,result) {
         if (!err) {
             $scope.$apply(function(){ 
                self.currentQuiz = result; 
             });            
         }
     });
-
 
     self.start = function(){
         var url = "/quiz/" + self.catId + '/' + self.id + "/" + QuizData.selectQuestionType(0) + "/0";

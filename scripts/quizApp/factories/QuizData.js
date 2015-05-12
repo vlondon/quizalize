@@ -138,7 +138,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
     }
 
     var selectQuiz = function(catId,quizId,isLoaded,callback) {
-        if (isLoaded) {
+        if (isLoaded || catId=="public") {
             if (categories[catId]==undefined) {
                 loadPlayerQuizzes(function() {
                     searchThroughCategories(catId,quizId,callback);
@@ -149,17 +149,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
             }
         }
         else {
-            if (categories[catId]==undefined) {
-                zzish.listPublicContent(function(err, message){
-                    if(!err) {
-                        processQuizData(message);
-                        getPublicContent(quizId,callback);
-                    }
-                });
-            }
-            else {
-                getPublicContent(quizId,callback);
-            }
+            getPublicContent(quizId,callback);
         }        
     }
 

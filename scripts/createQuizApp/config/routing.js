@@ -70,7 +70,7 @@ angular.module('createQuizApp')
             controller: "AssignController",
             controllerAs: "delete"
         })
-        .when('/playh/:catId/:id', {
+        .when('/playh/:id', {
             templateUrl: "/quiz/view/signup",
             controller: "SignupController",
             controllerAs: "signup"
