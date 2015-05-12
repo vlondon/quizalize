@@ -155,7 +155,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         self.mode = "Create";
         if (self.quiz.questions.length==1 && self.firstTime) {
             self.firstTime = false;
-            QuizData.showMessage("Congratulations!","Great! You've created your first question. It's been added to the list below. Go ahead and create a few more questions. Once you're done, click \"I'm finished\" to let your class this quiz!");
+            QuizData.showMessage("Congratulations!","Great! You've created your first question. It's been added to the list below. Go ahead and create a few more questions. Once you're done, click \"I'm finished\" to let your class take this quiz!");
         }
         self.currentQuestion = self.quiz.questions.length+1;
         self.clearQuestions();
