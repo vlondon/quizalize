@@ -2,7 +2,7 @@
     .row.well
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
-                h1 Create a Quiz
+                h2 Create a Quiz
 
                 form.form-horizontal(role="form")
                     .form-group
@@ -19,7 +19,8 @@
                             input.form-control#category(type="text", on-enter="createq.createQuiz();",ng-model="createq.newQuizCategory", placeholder="e.g. Geography Level 1")
                             br
                         .col-sm-12
-                            button.btn.btn-primary.btn-block(ng-click="createq.createQuiz();", ng-disabled="createq.newQuizName==''") Create Quiz
+                            center
+                                button.btn.btn-primary(ng-click="createq.createQuiz();", ng-disabled="createq.newQuizName==''") Create Quiz
 
 script. 
   $(document).ready(function() {

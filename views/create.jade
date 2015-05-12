@@ -193,11 +193,11 @@ body(ng-controller="NavBarController as ctrl")
             .navbar-collapse.collapse#navbar
                 ul.nav.navbar-nav.navbar-right
                     li(style="margin-right:5px;")#quizzes
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
-                    li(style="margin-right:5px;")#quizzes
                         a.btn.btn-info.navbar-btn(href="/quiz/#/quizzes",style="margin-top:9px; padding: 8px;") Your quizzes                        
                     li(style="margin-right:5px;")#assignments
                         a.btn.btn-info.navbar-btn(href="/quiz/#/assignments",style="margin-top:9px; padding: 8px;") Your assignments                        
+                    li(style="margin-right:5px;")#quizzes
+                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
                     li(style="margin-right:5px;")
                         button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
                     li

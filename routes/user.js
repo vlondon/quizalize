@@ -82,8 +82,8 @@ exports.registerEmail = function(req, res){
         if (!err) {
             res.status(200);
             var link ="https://www.quizalize.com/quiz#/account/complete/"+encrypt(resp.uuid);
-            var registerEmail = "Welcome to Quizalize\n\nClick on the following link to complete your registration:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
-            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Complete Quizalize Registration',registerEmail);
+            var registerEmail = "Welcome to Quizalize\n\nThanks very much for entering your email address. Before you can log in and see your quizzes, you need to complete your registration. Just click on the following link:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
+            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Welcome to Quizalize!',registerEmail);
         }
         else {
             res.status(err);

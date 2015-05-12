@@ -46,5 +46,10 @@ angular.module('quizApp')
             controller: "CompleteController",
             controllerAs: "quiz"
         })
+        .when('/preview/:id' ,{
+            templateUrl: "/quiz/view/intro",
+            controller: "PreviewController",
+            controllerAs: "quiz"
+        })        
         .otherwise({redirectTo: '/'})
 }]);

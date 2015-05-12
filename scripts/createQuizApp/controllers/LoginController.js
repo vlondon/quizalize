@@ -23,10 +23,10 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
 
     self.showLogin = function() {
         self.mode = "login";
-        $("#title").html("Sign into Quizalize");
+        $("#title").html("Quizalize Login");
         $("#email").val("");
         $("#password").val("");
-        $("#LoginButton span").text("Sign in");
+        $("#LoginButton span").text("Log in");
         $("#passwordSpan ").show();
     }
 
@@ -36,13 +36,13 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
         $("#passwordSpan").show();
         $("#email").val("");
         $("#password").val("");        
-        $("#title").html("Sign up with Quizalize");
+        $("#title").html("Quizalize Registration");
         $("#LoginButton span").text("Sign up");
     }
 
     self.showForget = function() {
         self.mode = "forget";
-        $("#title").html("Reset Password");
+        $("#title").html("Password Reset");
         $("#email").val("");
         $("#password").val("");        
         $("#passwordSpan").hide();

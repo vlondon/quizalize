@@ -1,11 +1,10 @@
 angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$log', '$http', '$location', function(QuizData, $log, $http, $location){
     var self = this;
-    self.hasPublicAssignedQuizzes = false;
     self.hasOwnQuizzes = false;
-
+    self.notPublic = 
     self.shareEmails = "";
     self.currentQuizToShare = undefined;
-    self.hasQuiz = false;
+    self.quizzes = [];
 
     var loadQuizData = function() {
         QuizData.getTopics(function(data){
@@ -16,9 +15,10 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             QuizData.getQuizzes(function(data){
                 self.pastQuizzes = data;
                 for (var i in self.pastQuizzes) {
-                    self.hasQuiz = true;
-                    if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
-                    else self.hasOwnQuizzes = true;
+                    if (!self.pastQuizzes[i].publicAssigned) {
+                        self.hasOwnQuizzes = true;
+                        self.quizzes.push(self.pastQuizzes[i]);                        
+                    }
                 } 
                 QuizData.getGroupContents(function(data) {
                     self.groupContents = data;

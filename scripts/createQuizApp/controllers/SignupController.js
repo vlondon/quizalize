@@ -4,7 +4,7 @@ angular.module('createQuizApp').controller('SignupController', ['QuizData', '$lo
     self.id = $routeParams.id;
     self.emailAddress = "";
 
-    sessionStorage.setItem("teacher",true);
+    sessionStorage.setItem("mode","teacher");
     
     self.canSubmit = function() {
         return self.emailAddress=='';

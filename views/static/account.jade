@@ -2,8 +2,8 @@
     .row
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
-                h1#title {{account.title}}
-
+                h2#title {{account.title}}
+                p {{account.message}}
                 form.form-horizontal(role="form")
                     .form-group
                         .col-sm-3
@@ -13,5 +13,5 @@
                             br
                         .col-sm-12
                             center
-                                button.btn.btn-primary.btn-block(ng-click="account.submitForm();", ng-disabled="account.checkCanSubmit() || account.completing")#LoginButton
-                                    span Submit
+                                button.btn.btn-primary(ng-click="account.submitForm();", ng-disabled="account.checkCanSubmit() || account.completing")#LoginButton
+                                    span {{account.buttonName}}

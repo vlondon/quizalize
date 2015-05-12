@@ -237,7 +237,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
             });
         },
         loadQuiz: function(catId,quizId,callback) {
-            if (currentQuiz!=undefined && currentQuiz.categoryId==catId && currentQuiz.uuid==quizId) {
+            if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 callback(currentQuiz);
             }
             else {
@@ -247,7 +247,18 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         },     
         selectQuiz: function(catId,quizId,isLoaded,callback) {
             selectQuiz(catId,quizId,isLoaded,callback);
-        },        
+        },  
+        previewQuiz: function(quizId,callback) {
+            var quizData = JSON.parse(localStorage.getItem("quizData"));
+            if (quizData!=undefined) {
+                var quiz = quizData[quizId];
+                setQuiz(quiz);
+                callback(quiz);
+            }
+            else {
+
+            }
+        },      
         selectQuestionType: function(index) {
             return selectQuestionType(index);
         },
@@ -366,7 +377,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         generateNextQuestionUrl: function(questionId) {
             var q = questionId + 1;
             if (currentQuiz.questions.length==q) {
-                zzish.stopActivity(currentQuizResult.currentActivityId,{});                
+                if (currentQuizResult.currentActivityId!=undefined) {
+                    zzish.stopActivity(currentQuizResult.currentActivityId,{});                    
+                }                
                 return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/complete";                
             }
             else {
@@ -374,10 +387,12 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
             }
         },
         cancelCurrentQuiz: function(callback) {
-            zzish.cancelActivity(currentQuizResult.currentActivityId,function(err,message) {
-                initQuizResult();
-                if (callback!=undefined) callback(err,message);
-            })
+            if (currentQuizResult.currentActivityId!=undefined) {
+                zzish.cancelActivity(currentQuizResult.currentActivityId,function(err,message) {
+                    initQuizResult();
+                    if (callback!=undefined) callback(err,message);
+                })                
+            }
         },        
         showMessage : function(title,message,callBack) {            
             if (callBack!=null) {

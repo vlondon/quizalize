@@ -20,8 +20,9 @@ style.
     .row
         .col-xs-12.col-lg-8.col-lg-offset-2
             .well
-                h1.pull-right Quiz: {{create.currentQuiz}}
-                h2 {{create.mode}} question {{create.currentQuestion}}
+                h3 {{create.mode}}  
+                    span(style="color: red") Question {{create.currentQuestion}} 
+                    | for {{create.currentQuiz}}
                 
                 p.small Speed Tip: We found clicking is a pain - just hit enter to step through quickly
                 
@@ -62,31 +63,33 @@ style.
                             button.btn.btn-primary.btn-block(ng-click="create.addQuestion();", tabindex="7" ) Save - Continue to Next Question
 
 
-
     .row
         .col-xs-12.col-lg-8.col-lg-offset-2
             .row
-                .col-sm-7
-                    h2 Your Questions
-                        .small(style='color: #666') ({{create.quiz.questions.length}} questions)
+                .col-sm-5
+                    h2(ng-show="create.quiz.questions.length==1") Your question
+                    h2(ng-show="create.quiz.questions.length>1") Your {{create.quiz.questions.length}} questions
                     br
+                .col-sm-2(style="margin-top:21px")
+                    a.btn.btn-block.btn-info(ng-href="/app#/preview/{{create.quiz.uuid}}",ng-show="create.quiz.questions.length>0",target="zzishgame") Preview 
                 .col-sm-5(style="margin-top:21px")
-                    button.btn.btn-block.btn-primary(ng-click="create.finished()",ng-hide="create.quiz.questions.length==0") I'm Finished, let's play!&nbsp;
-                    br.visible-xs
+                    button.btn.btn-block.btn-primary(ng-click="create.finished()",ng-show="create.quiz.questions.length>0") I'm Finished, let's play!&nbsp;
+                    
+                    
 
     .row
         .col-xs-12.col-lg-8.col-lg-offset-2
             .well#questionsAnd(ng-show="create.quiz.questions.length")
                 .row(ng-repeat="item in create.quiz.questions track by $index", style="padding: 10px;")
-                    .col-sm-5
+                    .col-sm-6
                         h4 {{$index + 1}}. {{item.question}}
-                    .col-sm-3
+                    .col-sm-4
                         h4.text-info {{item.answer}}
-                    .col-sm-2.col-xs-6
-                        button.btn.btn-info.btn-block(ng-click="create.editQuestion($index);")
+                    .col-sm-1
+                        button.btn.btn-info(ng-click="create.editQuestion($index);")
                             span.glyphicon.glyphicon-pencil
-                    .col-sm-2.col-xs-6
-                        button.btn.btn-danger.btn-block(ng-click="create.remove($index);")
+                    .col-sm-1
+                        button.btn.btn-danger(ng-click="create.remove($index);")
                             span.glyphicon.glyphicon-remove
         .col-xs-12.col-lg-8.col-lg-offset-2(ng-hide="create.quiz.questions.length")
             .well

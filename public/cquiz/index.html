@@ -57,7 +57,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="menu">
               <ul class="nav navbar-nav navbar-right">
-                  <li><a href="#contact">Contact Us</a></li>
+                  <li><a  onclick="ask('order')">Request info pack</a></li>
+                  <li><a  onclick="ask('demo')">Book a demo</a></li>
                   <li><a href="/app">Student Login</a></li>
                 <li><a id="LoginButton" href="/quiz#/login">Teacher Login</a></li>
               </ul>
@@ -351,6 +352,7 @@
 
       <!-- Section: contact -->
       <section id="contact" class=" home-section nopadd-bot color-dark bg-dark text-center">
+        <a name="sendForm" id="sendForm">
         <div class="container marginbot-50">
             <div class="col-md-12 ">
 
@@ -362,7 +364,7 @@
           </div>
           <div class="row">
             <div class="col-md-4">
-              <a class="cta4" onclick="ask('demo')">Request a demo</a>
+              <a class="cta4" onclick="ask('demo')">Book a demo</a>
 
             </div>
             <div class="col-md-4">
@@ -370,11 +372,11 @@
 
             </div>
             <div class="col-md-4">
-              <a class="cta4" onclick="ask('order')">Get an info pack</a>
+              <a class="cta4" onclick="ask('order')">Request an info pack</a>
 
             </div>          
         </div>
-        <a name="sendForm" id="sendForm">
+        
         <div class="container" id="helpForm">
           <div class="row marginbot-80">
             <div class="col-md-12">

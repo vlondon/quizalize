@@ -2,8 +2,7 @@
     .row
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
-                h1#title Sign in with Quizalize
-
+                h2#title Quizalize Login            
                 form.form-horizontal(role="form")
                     .form-group
                         label.col-sm-3.control-label Email:
@@ -19,19 +18,27 @@
                             span(ng-hide="login.mode=='register'") Don't have an account?&nbsp;
                                 a(ng-href='' ng-click="login.showRegister()") Sign Up
                                 br
-                            span(ng-show="login.mode=='login'") Forget Password?&nbsp; 
-                                a(ng-href='' ng-click="login.showForget()") Click here
+                            span(ng-show="login.mode=='login'") Forgotten Password?&nbsp; 
+                                a(ng-href='' ng-click="login.showForget()") Reset
                                 br
                             span(ng-hide="login.mode=='login'") Already registered?&nbsp;
-                                a(ng-href='' ng-click="login.showLogin()") Click here
+                                a(ng-href='' ng-click="login.showLogin()") Log in
                         .col-sm-4
                             button.btn.btn-primary.btn-block(ng-click="login.login();", ng-disabled="login.checkCanSubmit()")#LoginButton
-                                span Sign In
+                                span Log In
+                        .col-xs-12
+                            br
+                            hr(style="border: 1px solid; color: #808080")
                         .col-sm-4.col-sm-offset-4
                             center
+                                strong or
                                 br
                                 br
-                                a.btn.btn-info.btn-block(href="javascript:login('/quiz#/')")#LoginWithZzishButton Login With Zzish
+                                a.btn.btn-info.btn-block(href="javascript:login('/quiz#/')")#LoginWithZzishButton Login with Zzish
+                        .col-xs-8.col-xs-offset-2
+                            br
+                            center
+                                p Zzish is a universal teacher dashboard and unified student login system for educational software
 
 
 

@@ -145,7 +145,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         if (user==undefined) {
             userUuid = "";    
             localStorage.clear();
-            $("#LoginButton").html("Login");
+            $("#LoginButton").html("Log in");
             $("#assignments").hide();            
             $("#quizzes").hide();                        
         }
@@ -154,7 +154,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             userName = user.name;
             localStorage.setItem("userId",userUuid);
             localStorage.setItem("userName",userName);
-            $("#LoginButton").html("Logout");
+            $("#LoginButton").html("Log out");
             $("#quizzes").show();
             $("#assignments").show();
         }        
@@ -199,6 +199,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             }            
             classList.push(obj);
             currentClass = obj; 
+            localStorage.setItem("classList",JSON.stringify(classList));
             localStorage.setItem("currentClass",JSON.stringify(currentClass));
             return obj;
         },
@@ -345,6 +346,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         },
         saveQuiz: function(id, quiz,topics){
             quizData[id] = quiz;
+            localStorage.setItem("quizData",JSON.stringify(quizData));
             $log.debug("Saving Quiz: ", quizData);
 
             for (var i in topics) {

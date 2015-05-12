@@ -31,7 +31,6 @@ app.get('/quiz/view/:page', function(req, res){
 });
 
 app.get('/quiz/create', quiz.create);
-app.get('/amazon-twitter-voucher', quiz.voucher);
 
 //Endpoints for teachers TODO rename appropriately
 

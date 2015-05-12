@@ -16,7 +16,7 @@ require('quizApp/controllers/StartController');
 require('quizApp/controllers/LoginController');
 require('quizApp/controllers/PublicController');
 require('quizApp/controllers/GameController');
-
+require('quizApp/controllers/PreviewController');
 require('quizApp/controllers/QuizzesController');
 require('quizApp/controllers/QuizController');
 require('quizApp/controllers/MultipleController');

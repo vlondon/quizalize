@@ -9,7 +9,7 @@ angular.module('createQuizApp').controller('RegisterController', ['QuizData', '$
         self.registering = true;
         QuizData.registerEmailAddress(self.emailAddress).success(function(result){
             QuizData.setUser(result);
-            QuizData.showMessage("Registration Successful","Thanks for registering. You will receive an email on how to register. Click OK and let's start creating a quiz",function() {
+            QuizData.showMessage("Thanks!","You will receive an email on how to complete your registration later. Click OK and let's start creating a quiz",function() {
                 self.registering = false;
                 if (self.postAction=="create") {
                     $location.path("/create");
