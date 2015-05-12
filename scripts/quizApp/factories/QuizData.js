@@ -1,7 +1,7 @@
 var randomise = require('quizApp/utils/randomise');
 
 
-angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', function($http, $log, $location){
+angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, $log){
     if(typeof zzish == 'undefined') $log.error("Require zzish.js to use zzish");
     var settings = require('quizApp/config/settings');
 
@@ -242,7 +242,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
             }
             else {
                 //we have a problem
-                selectQuiz(catId,quizId,action,callback);
+                selectQuiz(catId,quizId,catId=="public"?false:true,callback);
             }
         },     
         selectQuiz: function(catId,quizId,isLoaded,callback) {
@@ -251,6 +251,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', '$location', fun
         selectQuestionType: function(index) {
             return selectQuestionType(index);
         },
+        currentQuiz: currentQuiz,
         startCurrentQuiz: function(callback) {
             var parameters = {
                 activityDefinition: {

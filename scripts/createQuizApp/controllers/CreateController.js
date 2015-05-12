@@ -149,6 +149,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             }
         }
         else {
+            if (!self.quiz.questions) self.quiz.questions = [];
             self.quiz.questions.push(question_obj);
         }
         self.mode = "Create";

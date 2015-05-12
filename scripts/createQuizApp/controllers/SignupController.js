@@ -24,6 +24,6 @@ angular.module('createQuizApp').controller('SignupController', ['QuizData', '$lo
     }
 
     if (QuizData.getUser()) {
-        window.location.href="/app#/play/"+self.catId+"/"+self.id+"/true";
+        window.location.href="/app#/play/public/"+self.id+"/true";
     }
 }]);
