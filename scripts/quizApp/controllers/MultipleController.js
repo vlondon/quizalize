@@ -69,7 +69,7 @@ angular.module('quizApp')
                         self.longMode = true;
                     }
                 }
-                // addReactComponent();
+                addReactComponent();
             });
         };
 
@@ -85,7 +85,7 @@ angular.module('quizApp')
                                     self.answer,
                                     self.question,
                                     (new Date()).getTime() - startTime,
-                                    true);
+                                    false);
             renderReactComponent();
         };
 
