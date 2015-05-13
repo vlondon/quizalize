@@ -187,6 +187,11 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         $('#question').focus();
         self.mode = "Edit";
         self.currentQuestion = idx+1;
+        $("#alt1").resize();
+        $("#alt2").resize();
+        $("#alt3").resize();
+        $("#question").resize();
+        $("#answer").resize();
         //self.quiz.questions.splice(idx,1);
     };
 

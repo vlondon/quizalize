@@ -16,10 +16,10 @@ nav.navbar.navbar-default.navbar-fixed-top
     .row
         .col-x-12.col-sm-8.col-sm-offset-2
             .well
-                .text-center
+                .text-center.wrapword
                     h2(ng-show="quiz.question.length < 20").quizQuestion {{quiz.question}}
                     h3(ng-show="quiz.question.length >= 20").quizQuestion {{quiz.question}}
                     br
                 .row
                     div(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px;", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
-                        button.btn.btn-block.btn-info(ng-click="quiz.select($index);",style="white-space: normal;") {{alternative}}
+                        button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;") {{alternative}}

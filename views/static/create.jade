@@ -31,26 +31,31 @@ style.
                     .form-group 
                         label.col-sm-3.control-label 
                           | Question 
-                          a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="8")
+                          a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="8")                          
                         .col-sm-8
-                            input.form-control#question(type="text", on-enter="create.focusAnswer();", placeholder="e.g. What is the capital of France", autofocus="true", tabindex="1" )
+                            textarea.autogrow-short.form-control#question(on-enter="create.focusAnswer();", placeholder="e.g. What is the capital of France", autofocus="true", tabindex="1",rows="1",cols="40")
+                            script $('#question').css('overflow', 'hidden').autogrow()
                     .form-group
                         label.col-sm-3.control-label 
                           | Correct Answer 
                           a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Correct Answer" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="9")
                         .col-sm-8
-                            input.form-control#answer(type="text", on-enter="create.nextFromAnswer();", placeholder="e.g. Paris", ng-model="create.answerText" tabindex="2" )
+                            textarea.autogrow-short.form-control#answer(type="text", on-enter="create.nextFromAnswer();", placeholder="e.g. Paris", ng-model="create.answerText" tabindex="2",rows="1",cols="40")
+                            script $('#answer').css('overflow', 'hidden').autogrow()
                     .form-group
                         label.col-sm-3.control-label 
                             | Incorrect Answers
                             a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="10")
 
                         .col-sm-3
-                            input.form-control#alt1(type="text", placeholder="e.g. London", ng-model="create.alt1", on-enter="create.focusAlt(2);", tabindex="3" )
+                            textarea.autogrow-short.form-control#alt1(type="text", placeholder="e.g. London", ng-model="create.alt1", on-enter="create.focusAlt(2);", tabindex="3",rows="1",cols="10")
+                            script $('#alt1').css('overflow', 'hidden').autogrow()
                         .col-sm-3
-                            input.form-control#alt2(type="text", placeholder="e.g. Toronto", ng-model="create.alt2", on-enter="create.focusAlt(3);", tabindex="4" )
+                            textarea.autogrow-short.form-control#alt2(type="text", placeholder="e.g. Toronto", ng-model="create.alt2", on-enter="create.focusAlt(3);", tabindex="4",rows="1",cols="10")
+                            script $('#alt2').css('overflow', 'hidden').autogrow()
                         .col-sm-3
-                            input.form-control#alt3(type="text", placeholder="e.g. Berlin", ng-model="create.alt3", on-enter="create.focusTopic();", tabindex="5" )
+                            textarea.autogrow-short.form-control#alt3(type="text", placeholder="e.g. Berlin", ng-model="create.alt3", on-enter="create.focusTopic();", tabindex="5",rows="1",cols="10")
+                            script $('#alt3').css('overflow', 'hidden').autogrow()
                     .form-group
                         label.col-sm-3.control-label
                           | Subtopic 
