@@ -27,7 +27,10 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
             if (sessionStorage.getItem("mode")=="teacher") {
                 window.location.href="/quiz#/public";
             }
-            else {
+            else if (sessionStorage.getItem("mode")=="preview") {
+                window.close();
+            }
+            else
                 $location.path("/app#/list");
             }
             QuizData.cancelCurrentQuiz(function() {

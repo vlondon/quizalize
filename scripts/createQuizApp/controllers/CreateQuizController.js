@@ -14,9 +14,8 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
 
     self.createQuiz = function(){
         if (self.newQuizCategory.length ==0) {
-            self.newQuizCategory = "Root";
+            self.newQuizCategory = "";
         }
-
         var found = false;
         var rootTopicId = "-1";
         for (var i in self.rootTopics) {

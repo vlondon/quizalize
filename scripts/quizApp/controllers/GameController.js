@@ -20,13 +20,21 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     };
 
     self.return = function() {
-        $location.path("/app/");
+        if (sessionStorage.getItem("mode")=="preview") {
+            window.close();
+        }
+        else {
+            $location.path("/app/");    
+        }        
     }
 
     self.cancel = function() {
         QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz.name+"'. You won't be able to continue this quiz.",function() {
             if (sessionStorage.getItem("mode")=="teacher") {
                 window.location.href="/quiz#/public";
+            }
+            else if (sessionStorage.getItem("mode")=="preview") {
+                window.close();
             }
             else {
                 $location.path("/app#/list");
