@@ -1,4 +1,4 @@
-angular.module('createQuizApp').controller('CreateController', ['QuizData', '$log', '$location', '$routeParams', '$timeout', function(QuizData, $log, $location, $routeParams, $timeout){
+angular.module('createQuizApp').controller('CreateController', ['QuizData', '$log', '$location', '$routeParams', '$timeout', '$scope','$rootScope', function(QuizData, $log, $location, $routeParams, $timeout,$scope,$rootScope){
     var self = this;
 
     //for autocomplete    
@@ -11,6 +11,8 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     //fields on the page
     self.currentQuestion = 1;
     self.mode = "Create";
+
+    self.question = "";
 
 
     self.id = $routeParams.id;
@@ -81,6 +83,10 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.focusTopic = function(){
       $('#topic').focus();
     };
+
+    self.latexCheck = function() {
+        return self.question.length>0 && (self.question.match(/\$/g) || []).length>1;
+    }
 
     self.addQuestion = function() {
         var question = $('#question').val();
@@ -213,7 +219,11 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
 
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
         $location.path("/published/" + self.id+"/p");
-    };
+    }; 
+
+    self.enableLatex = function() {
+        $rootScope.latexAtivated = true;
+    } 
 
     $log.debug(self);
 

@@ -80,7 +80,7 @@ angular.module('quizApp')
                                     (new Date()).getTime() - startTime,
                                     true);
             $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
-            renderReactComponent();
+            //renderReactComponent();
         };
 
         self.nextQuestion = function(){

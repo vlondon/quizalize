@@ -30,7 +30,7 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
             else if (sessionStorage.getItem("mode")=="preview") {
                 window.close();
             }
-            else
+            else {
                 $location.path("/app#/list");
             }
             QuizData.cancelCurrentQuiz(function() {

@@ -18,7 +18,7 @@ style.
 
 .container
     .row
-        .col-xs-12.col-lg-8.col-lg-offset-2
+        .col-xs-12            
             .well
                 h3 {{create.mode}}  
                     span(style="color: red") Question {{create.currentQuestion}} 
@@ -33,14 +33,18 @@ style.
                           | Question 
                           a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="8")                          
                         .col-sm-8
-                            textarea.autogrow-short.form-control#question(on-enter="create.focusAnswer();", placeholder="e.g. What is the capital of France", autofocus="true", tabindex="1",rows="1",cols="40")
+                            textarea.autogrow-short.form-control#question(on-enter="create.focusAnswer();", placeholder="e.g. What is the capital of France", autofocus="true", tabindex="1",rows="1",cols="40", ng-model="create.question") Is this latec?
                             script $('#question').css('overflow', 'hidden').autogrow()
+                            span(mathjax-bind="create.question")
+                        //.col-sm-2  
+                            //span(ng-show="create.latexCheck()",style="margin-top: 9px") Is this Latex? 
+                                //a(ng-click="create.enableLatex();") Yes
                     .form-group
                         label.col-sm-3.control-label 
                           | Correct Answer 
                           a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Correct Answer" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="9")
                         .col-sm-8
-                            textarea.autogrow-short.form-control#answer(type="text", on-enter="create.nextFromAnswer();", placeholder="e.g. Paris", ng-model="create.answerText" tabindex="2",rows="1",cols="40")
+                            textarea.autogrow-short.form-control#answer(type="text", on-enter="create.nextFromAnswer();", placeholder="e.g. Paris", ng-model="create.answerText" tabindex="2",rows="1",cols="44")
                             script $('#answer').css('overflow', 'hidden').autogrow()
                     .form-group
                         label.col-sm-3.control-label 
@@ -67,42 +71,35 @@ style.
                             br.visible-xs
                             button.btn.btn-primary.btn-block(ng-click="create.addQuestion();", tabindex="7" ) Save - Continue to Next Question
 
-
     .row
-        .col-xs-12.col-lg-8.col-lg-offset-2
+        .col-xs-12
             .row
-                .col-sm-5
-                    h2(ng-show="create.quiz.questions.length==1") Your question
+                .col-sm-7
                     h2(ng-show="create.quiz.questions.length>1") Your {{create.quiz.questions.length}} questions
                     br
                 .col-sm-2(style="margin-top:21px")
                     a.btn.btn-block.btn-info(ng-href="/app#/preview/{{create.quiz.uuid}}",ng-show="create.quiz.questions.length>0",target="zzishgame") Preview 
-                .col-sm-5(style="margin-top:21px")
+                .col-sm-3(style="margin-top:21px")
                     button.btn.btn-block.btn-primary(ng-click="create.finished()",ng-show="create.quiz.questions.length>0") I'm Finished, let's play!&nbsp;
                     
                     
-
+    br
     .row
-        .col-xs-12.col-lg-8.col-lg-offset-2
+        .col-xs-12            
             .well#questionsAnd(ng-show="create.quiz.questions.length")
                 .row(ng-repeat="item in create.quiz.questions track by $index", style="padding: 10px;")
                     .col-sm-6
                         h4 {{$index + 1}}. {{item.question}}
                     .col-sm-4
                         h4.text-info {{item.answer}}
-                    .col-sm-1
-                        button.btn.btn-info(ng-click="create.editQuestion($index);")
+                    .col-sm-2
+                        button.btn.btn-info(ng-click="create.editQuestion($index);",style="margin: 4px")
                             span.glyphicon.glyphicon-pencil
-                    .col-sm-1
                         button.btn.btn-danger(ng-click="create.remove($index);")
                             span.glyphicon.glyphicon-remove
         .col-xs-12.col-lg-8.col-lg-offset-2(ng-hide="create.quiz.questions.length")
             .well
                 h4 Your questions will appear here..
-
-
-
-
 
 script. 
   $(document).ready(function() {
