@@ -1,0 +1,18 @@
+.container(style="padding-top: 10px")
+    .row
+        .row.well
+            .col-sm-8.col-sm-offset-2
+                h1.text-center Are you a teacher?
+                    .form-horizontal(role="form")
+                p Please enter a valid teacher email address so that we can set your class up later. 
+                .form-group
+                    .col-sm-3
+                        label.control-label Email
+                    .col-sm-9
+                        input.form-control#email(type="text", ng-model="signup.emailAddress", on-enter="signup.focusClassCode();", placeholder="e.g. jsmith@myschool.staffs.sch.uk")
+                        br
+
+                    .col-xs-12
+                        center
+                            button.btn.btn-primary(ng-click="signup.register();", ng-disabled="signup.canSubmit()") Try it out
+                        br

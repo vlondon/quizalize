@@ -1,17 +1,20 @@
 angular.module('createQuizApp').controller('CreateController', ['QuizData', '$log', '$location', '$routeParams', '$timeout', function(QuizData, $log, $location, $routeParams, $timeout){
     var self = this;
 
+    //for autocomplete    
     self.topics = [];
     self.topicList = [];
-    self.hint = "";
-    self.rootTopicId;
+
+    //whether it's the first time you create a question
+    self.firstTime = true;
+
+    //fields on the page
     self.currentQuestion = 1;
     self.mode = "Create";
-    self.firstTime = true;
-    self.rootTopicId = localStorage.getItem("rootTopicId");
 
-    self.id = parseInt($routeParams.id);
-    if(isNaN(self.id)) $location.path("/");
+
+    self.id = $routeParams.id;
+    if (self.id==undefined) $location.path("/");
 
     QuizData.getQuiz(self.id, true, function(quiz){
         self.quiz = quiz;
@@ -58,27 +61,13 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     };
 
     self.nextFromAnswer = function(){
-        if(self.distractorsActive){
-            self.focusAlt(1);
-        }else{
-            self.addQuestion();
-        }
-    };
-
-    self.nextFromAnswer = function(){
-        if(self.distractorsActive){
-            self.focusAlt(1);
-        }else{
-            self.addQuestion();
-        }
+        self.focusAlt(1);
     };
 
     self.focusAlt = function(altIdx){
-
         $timeout(function(){
             $('#alt' + altIdx).focus();
         });
-
     };
 
     self.focusQuestion = function(){
@@ -87,6 +76,10 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
 
     self.focusAnswer = function(){
       $('#answer').focus();
+    };
+
+    self.focusTopic = function(){
+      $('#topic').focus();
     };
 
     self.addQuestion = function() {
@@ -156,16 +149,18 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             }
         }
         else {
+            if (!self.quiz.questions) self.quiz.questions = [];
             self.quiz.questions.push(question_obj);
         }
         self.mode = "Create";
         if (self.quiz.questions.length==1 && self.firstTime) {
             self.firstTime = false;
-            QuizData.showMessage("Congratulations!","Great! You've created your first question. It's been added to the list below. Go ahead and create a few more questions. Once you're done, click \"I'm finished\" to let your class this quiz!");
+            QuizData.showMessage("Congratulations!","Great! You've created your first question. It's been added to the list below. Go ahead and create a few more questions. Once you're done, click \"I'm finished\" to let your class take this quiz!");
         }
         self.currentQuestion = self.quiz.questions.length+1;
         self.clearQuestions();
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
+        $("#quizzes").show();             
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
@@ -192,6 +187,11 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         $('#question').focus();
         self.mode = "Edit";
         self.currentQuestion = idx+1;
+        $("#alt1").resize();
+        $("#alt2").resize();
+        $("#alt3").resize();
+        $("#question").resize();
+        $("#answer").resize();
         //self.quiz.questions.splice(idx,1);
     };
 
@@ -207,7 +207,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         }
 
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
-        $location.path("/preview/" + self.id);
+        $location.path("/published/" + self.id+"/p");
     };
 
     $log.debug(self);

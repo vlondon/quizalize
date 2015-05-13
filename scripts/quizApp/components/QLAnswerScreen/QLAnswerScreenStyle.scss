@@ -1,0 +1,149 @@
+@import './../shared/mixins';
+
+@keyframes qlShake {
+    0%      { transform: rotate(0); }
+    15%      { transform: rotate(10deg); }
+    30%      { transform: rotate(-15deg); }
+    45%      { transform: rotate(20deg); }
+    60%      { transform: rotate(-20deg); }
+    75%      { transform: rotate(25deg); }
+    90%      { transform: rotate(30deg); }
+    100%     { transform: rotate(0); }
+
+}
+@keyframes qlNextHover {
+
+    0% {
+        background: #2e60ff;
+        transform: rotate(0);
+    }
+    30% { transform: rotate(20deg);}
+    60% { transform: rotate(-20deg);}
+    100% {
+        background: lighten(#2e60ff, 10);
+        transform: rotate(0);
+    }
+}
+
+@keyframes qlStarAnimated {
+    0% {
+        opacity: 0;
+    }
+    50% {opacity: 1;}
+    100% {
+        opacity: 0;
+        transform: translate(150px, 150px);
+    }
+}
+
+.ql-answer-screen {
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0; */
+    text-align: center;
+
+    .answer-wrapper {
+        width: 100%;
+        /* margin: 20px; */
+        display: inline-block;
+        text-align: center;
+        padding: 5px;
+
+        @include media($size-mobile) {
+            width: 50%;
+        }
+
+    }
+    .text-1 {
+        animation: qlEnterTranslateY 300ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 100ms;
+    }
+    .text-2 {
+        animation: qlEnterTranslateY 300ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 1000ms;
+    }
+    .answer {
+        width: 100%;
+        background: #2e60ff;
+        display: block;
+        font-size: 34px;
+        color: #FFF;
+
+        animation: qlEnterScale 400ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 500ms;
+        cursor: default;
+
+    }
+
+    .star-container {
+        width: 0;
+        height: 0;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        pointer-events: none;
+    }
+    .star-animated {
+        z-index: 5;
+        animation: qlStarAnimated 1000ms ease-out;
+        animation-fill-mode: both;
+    }
+    .star-transform {
+        width: 0;
+        height: 0;
+    }
+
+    .score-and-time {
+        @include clearfix();
+        padding: 20px 0;
+        text-align: center;
+    }
+    .next,
+    .time,
+    .score {
+        animation: qlEnterTranslateY 400ms ease-out;
+        animation-fill-mode: both;
+        height: 200px;
+        width: 200px;
+        padding-top: 50px;
+        margin: 20px;
+        background: #ff003f;
+        border-radius: 100%;
+        color: #FFF;
+        display: inline-block;
+
+        strong {
+            font-size: 58px;
+        }
+    }
+    .score {
+        /* text-align: left; */
+        animation-delay: 2000ms;
+    }
+    .time {
+        /* text-align: right; */
+        animation-delay: 2200ms;
+    }
+    .next-anim {
+        animation: qlEnterTranslateY 400ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 2400ms;
+    }
+    .next {
+        /* text-align: right; */
+        animation: none;
+
+        background: #2e60ff;
+        cursor: pointer;
+
+        &:hover {
+            animation: qlNextHover 400ms ease-out;
+            background: lighten(#2e60ff, 10);
+        }
+    }
+}

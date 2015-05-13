@@ -10,7 +10,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         createQuizApp: 'createQuizApp.js',
-        vendor: ['angular', 'angular-route', 'angular-animate', 'fastclick']
+        vendor: ['fastclick']
     },
     plugins: [ new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js') ],
     cache: true,
@@ -27,11 +27,15 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.scss$/,
+                loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
             }
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss'],
         modulesDirectories: ['node_modules', 'scripts']
     },
     devtool: '#source-map'

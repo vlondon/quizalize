@@ -1,0 +1,30 @@
+.container
+    .row.well
+        .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+            .well
+                h2 Create a Quiz
+
+                form.form-horizontal(role="form")
+                    .form-group
+                        label.col-sm-3.control-label
+                            | Name:
+                            a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                        .col-sm-9
+                            input.form-control#question(type="text", on-enter="createq.focusTopic();", ng-model="createq.newQuizName", placeholder="e.g. Capital Cities", autofocus="true")
+                            br
+                        label.control-label.col-sm-3                               
+                            | Topic:    
+                            a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                        .col-sm-9
+                            input.form-control#category(type="text", on-enter="createq.createQuiz();",ng-model="createq.newQuizCategory", placeholder="e.g. Geography Level 1")
+                            br
+                        .col-sm-12
+                            center
+                                button.btn.btn-primary(ng-click="createq.createQuiz();", ng-disabled="createq.newQuizName==''") Create Quiz
+
+script. 
+  $(document).ready(function() {
+    $(".glyphicon").hover(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+  });

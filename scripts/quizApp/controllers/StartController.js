@@ -11,6 +11,10 @@ angular.module('quizApp').controller('StartController', ['QuizData', '$log', '$l
         self.errorMessage = issue;
     };
 
+    self.startClassQuiz = function(){
+        $location.path("/class");
+    }
+
     self.startPublicQuiz = function(){
         $location.path("/public");
     }

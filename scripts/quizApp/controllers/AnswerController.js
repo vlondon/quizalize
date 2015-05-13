@@ -1,10 +1,12 @@
-angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$routeParams', '$location', '$scope', function(QuizData, $log,  $routeParmas, $location,$scope){
+angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$routeParams', '$location', '$scope', function(QuizData, $log,  $routeParams, $location, $scope){
     var self = this;
 
-    self.questionId = parseInt($routeParmas.questionId);
+    self.catId = $routeParams.catId;
+    self.quizId = $routeParams.quizId;
+    self.action = $routeParams.action;
+    self.questionId = parseInt($routeParams.questionId);
 
-    self.data = QuizData.currentQuizData;
-    self.studentData = QuizData.getStudentData();
+    self.data = QuizData.currentQuizResult();
 
     /* Have this data for previous question
                 {id: idx,
@@ -17,16 +19,20 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
     self.last = self.data.report[self.data.report.length-1];
 
     self.nextQuestion = function(){
-        var q = self.questionId + 1;
-        $location.path("/quiz/" +  QuizData.chooseKind(q) + "/" + (q));
+        $location.path(QuizData.generateNextQuestionUrl(self.questionId));
     }
 
     self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuizData.name+"'. You won't be able to continue this quiz.",function() {
-            $location.path("/app#/"); 
-            QuizData.cancelQuiz(QuizData.currentQuizData.uuid,function() {
-                
+        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz.name+"'. You won't be able to continue this quiz.",function() {
+            if (sessionStorage.getItem("mode")=="teacher") {
+                window.location.href="/quiz#/public";
+            }
+            else {
+                $location.path("/app#/list");
+            }
+            QuizData.cancelCurrentQuiz(function() {
+
             });
         });
-    }        
+    }
 }]);

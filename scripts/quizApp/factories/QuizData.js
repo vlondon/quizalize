@@ -1,104 +1,73 @@
 var randomise = require('quizApp/utils/randomise');
 
-angular.module('quizApp')
-.factory('QuizData', ['$http', '$log', '$location', 'ZzishContent', function($http, $log, $location, ZzishContent){
 
-    var uuid = require('node-uuid');
+angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, $log){
+    if(typeof zzish == 'undefined') $log.error("Require zzish.js to use zzish");
     var settings = require('quizApp/config/settings');
+
+    zzish.init(initToken);
+
+    var userUuid = localStorage.getItem("userId");
+    var userName =  localStorage.getItem("userName");
+    zzish.getUser(userUuid,userName);
+    
+    var classCode = localStorage.getItem("classCode");
+    var categories = {};
+    var contents = {};
+    var topics = {};
+    var currentQuiz = JSON.parse(localStorage.getItem("currentQuiz"));
+
+    var currentQuizResult = JSON.parse(localStorage.getItem("currentQuizResult"));
 
     var maxTime = settings.maxTime;
     var maxScore = settings.maxScore;
     var minScore = settings.minScore;
     var gracePeriod = settings.gracePeriod;
+
+    //callbacks for messaging
     var callbacks = {};
 
-    // setup/add helper methods...
-    var quizzes = [];
-    var categories = [];
-    var topics = {};
-    var classCode, studentCode, currentQuiz;
-    var currentQuizData = {correct: 0,
-            questionCount: 0, totalScore: 0, name: "", report: []};
-
-    var userProfileId = "";
-
-    var clearQuizData = function() {
-        for (var i in currentQuizData) {
-            if (typeof currentQuizData[i] === 'Array') {
-                currentQuizData[i].splice(0,currentQuizData[i].length-1);
-            }
-            else if (typeof currentQuizData[i]==='object') {
-                delete currentQuizData[i];
-                currentQuizData[i] = {};
-            }
-            else if (typeof currentQuizData[i]==='String') {
-                currentQuizData[i]="";
-            }
-            else {
-                currentQuizData[i]=0;
-            }
+    var setUser = function(user) {
+        if (user==undefined) {
+            userUuid = "";    
+            localStorage.clear();
         }
+        else {
+            userUuid = user.uuid;
+            userName = user.name;
+            localStorage.setItem("userId",userUuid);
+            localStorage.setItem("userName",userName);
+        }        
     }
 
-    var chooseKind = function(qId){
-        var randomKind = function(){
-            var kinds = ['scrambled'];
-            return kinds[Math.floor(Math.random()*kinds.length)];
-        };
+    var setClassCode = function(code) {
+        classCode = code;
+        localStorage.setItem("classCode",classCode);
+    }
 
-        var isIntegerAnswer = function(ans){
-            return !!ans.match(/^-?\d+$/);
-        };
-
-        var generateIntegerAlternatives = function(ans){
-            var ai = parseInt(ans);
-            return ["" + ai + 2, "" + ai - 2, "" + (ai - 1)];
-        };
-
-        if(typeof qId != 'undefined') {
-            var question = currentQuiz.questions[qId];
-	    if (!question) return randomKind();
-	    var indexOfSpace = question.answer.indexOf(" ");
-            //Always do multiple choice if alternatives
-            if((question && !!question.alternatives) || indexOfSpace>=0)
-                return 'multiple';
-
-            //If integer do multiple choice (generate alternatives if not there already).
-            if(question && isIntegerAnswer(question.answer)){
-                if(!question.alternatives)
-                    question.alternatives = generateIntegerAlternatives(question.answer);
-                return 'multiple';
+    var registerWithGroup = function(code,callback) {
+        setClassCode(code);
+        zzish.registerUserWithGroup(userUuid,classCode,function(err,resp) {
+            if (!err) {
+                processQuizData(resp);
             }
+            callback(err,resp);
+        })        
+    }
 
+    var loadPlayerQuizzes = function(callback) {
+        if (userUuid && classCode) {
+            zzish.listContentForGroup(userUuid,classCode,function(err,resp) {
+                if (!err) {
+                    processQuizData(resp);
+                }
+                callback(err,resp);
+            });
+        }        
+    }
 
-            //If length 1 (and not alternatives) should always do scrambled... (as won't have alternatives)
-            if(currentQuiz.questions.length == 1)
-                return 'scrambled';
-
-            //If the answer length is long then do multiple choice (shouldn't have to type/input)
-            if(question && question.answer.length > 9){
-                return 'multiple';
-            }else{
-                return randomKind();
-            }
-        }else{
-            return randomKind();
-        }
-    };
-    /**
-     *
-     * @param result An object with a code and array of contents (in this case quizzes)
-     * @param isClassCode This will either be processing results with a class code (if the student has used student code)
-     * or student code (if the student used a class code)..
-     */
-    var processQuizList = function(result, isClassCode){
-        if(isClassCode){
-            self.classCode = result.code;
-        }else{
-            self.studentCode = result.code;
-        }
-        quizzes = [];
-        categories = [];
+    var processQuizData = function(result) {
+        categories = {};
         topics = {};
         for (var i in result.contents) {
             var quiz = result.contents[i];
@@ -114,27 +83,75 @@ angular.module('quizApp')
                     }
                 }
             }
-            $log.debug("Order",quiz.order);
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
             categories[cuuid].quizzes.push(quiz);
-            if (category.name=="") {
-                category.homework = true;
-            }
-            if (category.homework) {
-                category.name="Quizzes (" + categories[cuuid].quizzes.length + ")";
-            }
-            quizzes.push(quiz);
         }
         for (var i in result.categories) {
             topics[result.categories[i].uuid] = result.categories[i];
         }
-        for (var i in categories) {
-            categories.push(categories[i]);
+    }
+
+    var selectQuestionType = function(index) {
+        var currentQuestion = currentQuiz.questions[index];
+        var indexOfSpace = currentQuestion.answer.indexOf(" ");
+        if((currentQuestion && !!currentQuestion.alternatives) || indexOfSpace>=0) {
+            //either there are alternatives or there is a space in the anser
+            return "multiple";
         }
-        $log.debug("Have processed. Have quizzes:", quizzes, "classCode:", classCode, "studentCode:", studentCode, "Processed from:", result);
-    };
+        else {
+            return "scrambled";
+        }
+    }
+
+    var initQuizResult = function() {
+        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.questions.length, report: [], correct: 0 };
+        localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
+        return currentQuizResult;
+    }
+
+    var setQuiz = function(quiz) {
+        currentQuiz = quiz;        
+        localStorage.setItem("currentQuiz",JSON.stringify(currentQuiz));
+        initQuizResult();
+    }
+
+    var searchThroughCategories= function(catId,quizId,callback) {
+        for (var i in categories[catId].quizzes) {
+            var quiz = categories[catId].quizzes[i];
+            if (quiz.uuid==quizId) {
+                setQuiz(quiz);
+                callback(null,currentQuiz);
+            }
+        }         
+    }
+
+    var getPublicContent = function(quizId,callback) {
+        zzish.getPublicContent(quizId,function (err,message) {
+            if (!err) {
+                currentQuiz = message;                        
+            }
+            setQuiz(message);
+            callback(err,message);
+        })        
+    }
+
+    var selectQuiz = function(catId,quizId,isLoaded,callback) {
+        if (isLoaded || catId=="public") {
+            if (categories[catId]==undefined) {
+                loadPlayerQuizzes(function() {
+                    searchThroughCategories(catId,quizId,callback);
+                })
+            }            
+            else {
+                searchThroughCategories(catId,quizId,callback);               
+            }
+        }
+        else {
+            getPublicContent(quizId,callback);
+        }        
+    }
 
     var calculateScore = function(correct, duration){
         //Something a bit like (below not clear... probably meant 20000 etc), will go with 100 as max... can obviously easily change this
@@ -149,199 +166,197 @@ angular.module('quizApp')
         }else{
             return 0;
         }
-    };
+    };    
 
     //return client data api
     return {
-        login: function(newStudentCode, callback){
-            ZzishContent.init(initToken);
-            ZzishContent.login(newStudentCode, function(err, message){
-                if(!err) {
-                    processQuizList(message, true);
-                }else{
-                    $log.debug("Error with user login:", err);
-                }
-                callback(err, message);
-            });
+        //User methods
+        isLoggedIn: function() {
+            return userUuid && userUuid.length>0 && classCode && classCode.length>0;
         },
-        getPublicQuizzes: function(callback){
-            ZzishContent.init(initToken);
-            ZzishContent.getPublicQuizzes(function(err, message){
-                if(!err) {
-                    processQuizList(message, true);
-                }else{
-                    $log.debug("Error with user login:", err);
-                }
-                callback(err, message);
-            });
+        unsetUser: function() {
+            var result = userUuid!="" && userUuid!=undefined;
+            setUser(null);
+            var token = localStorage.getItem("token");
+            if (token!=null) {
+                zzish.logout(token);
+            }            
+            return result;
         },
-        logout: function(){
-            classCode = undefined;
-            studentCode = undefined;
-            if (userProfileId=="") {
-                var studentName = localStorage.getItem("zname");
-                var userProfileId = localStorage.getItem("zprofileId"+studentName);
+        getUser: function () {
+            return userUuid;
+        },
+        getUsername: function() {
+            return userName;
+        },
+        getClassCode: function() {
+            return classCode;
+        },        
+        setUser: function (user) {            
+            setUser(user);
+        },
+        registerUserWithGroup: function(code,callback) {
+            if (code!=undefined) {
+                setClassCode(code);                
+                registerWithGroup(code,callback);                
             }
-            ZzishContent.logout(userProfileId,function (err,message) {
-                userProfileId = "";
-                //TODO other logout things?
-                localStorage.clear();
-                $location.path("/");
-            });
         },
-        validate: function(newClassCode) {
-            return ZzishContent.validate(newClassCode);
-        },
-        register: function(studentName, newClassCode, callback) {
-            classCode = newClassCode.toLowerCase();
-            ZzishContent.init(initToken);
-            var userProfileId = localStorage.getItem("zprofileId"+studentName);
-            if (userProfileId==undefined || userProfileId=="") {
-                userProfileId = uuid.v4();
-                localStorage.setItem("zprofileId"+studentName,userProfileId);
-            }
-            ZzishContent.user(userProfileId, studentName, classCode, function(err, message){
-                if(!err) {
-                    userProfileId = message.uuid;
-                    ZzishContent.register(userProfileId, classCode, function(err2, message2){
-                        if(!err2 && err2!=404) processQuizList(message2, false);
-                        callback(err2, message2);
-                    });
-                }else{
-                    $log.debug("Error with user registration");
-                    callback(err, message);
-                }
-            });
-        },
-        getQuizzes: function(){
-            return quizzes;
-        },
-        getCategories: function(){
+        getCategories: function() {
             return categories;
         },
-        getTopics: function(){
+        getTopics: function() {
             return topics;
         },
-        selectQuiz: function(categoryId,quizId,callback) {
-            ZzishContent.init(initToken);
-            var found = false;
-            if (categories[categoryId]!=null) {
-                var category = categories[categoryId];
-                for (var i in category.quizzes) {
-                    var quiz = category.quizzes[i];
-                    if (quiz.uuid==quizId) {
-                        $log.debug("Found quiz", quiz);
-                        found = true;
-                        ZzishContent.getConsumerContent(quizId,function(err,message) {
-                            currentQuiz = message;
-                            currentQuiz.questions = message.questions;
-                            clearQuizData();
-                            currentQuizData.totalScore = 0;
-                            currentQuizData.questionCount = currentQuiz.questions.length;
-                            currentQuizData.correct = 0;
-                            currentQuizData.name = currentQuiz.name;
-                            currentQuizData.report = [];
-                            currentQuizData.uuid = ZzishContent.startActivity(currentQuiz, function(err, resp){
-                                $log.debug("Got response from start activity:", resp);
-                            });
-                            callback();
-                        })
+        loginUser: function(user,classcode,callback) {
+            if (zzish.validateClassCode(classcode)) {
+                var newId = uuid.v4();
+                zzish.authUser(newId,user,classcode,function(err,message) {
+                    if (!err) {
+                        setUser(message);
+                        registerWithGroup(classcode,callback);
                     }
+                    else {
+                        callback(err,message);
+                    }
+                });                
+
+            }
+            else {
+                callback(404,"Check your classcode");
+            }
+        },        
+        loadPlayerQuizzes: function(callback) {
+            loadPlayerQuizzes(callback);
+        },     
+        loadPublicQuizzes: function(callback){
+            zzish.listPublicContent(function(err, message){
+                if(!err) {
+                    processQuizData(message);
+                }
+                callback(err, message);
+            });
+        },
+        loadQuiz: function(catId,quizId,callback) {
+            if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
+                callback(currentQuiz);
+            }
+            else {
+                //we have a problem
+                selectQuiz(catId,quizId,catId=="public"?false:true,callback);
+            }
+        },     
+        selectQuiz: function(catId,quizId,isLoaded,callback) {
+            selectQuiz(catId,quizId,isLoaded,callback);
+        },  
+        previewQuiz: function(quizId,callback) {
+            var quizData = JSON.parse(localStorage.getItem("quizData"));
+            if (quizData!=undefined) {
+                var quiz = quizData[quizId];
+                setQuiz(quiz);
+                callback(quiz);
+            }
+            else {
+
+            }
+        },      
+        selectQuestionType: function(index) {
+            return selectQuestionType(index);
+        },
+        currentQuiz: currentQuiz,
+        startCurrentQuiz: function(callback) {
+            var parameters = {
+                activityDefinition: {
+                    type: currentQuiz.uuid,
+                    name: currentQuiz.name,
+                    score: settings.maxScore * currentQuiz.questions.length,
+                    count: currentQuiz.questions.length,
+                    duration: ""+ currentQuiz.questions.length * settings.maxTime,
+                },
+                extensions: {
+                    contentId: currentQuiz.uuid,
+                    groupCode: classCode
                 }
             }
-            if (!found) {
-                //$log.error("Selecting an invalid quiz", "Have quizzes", categories);
-                ZzishContent.getConsumerContent(quizId,function(err,message) {
-                    currentQuiz = message;
-                    currentQuiz.questions = message.questions;
-                    clearQuizData();
-                    currentQuizData.totalScore = 0;
-                    currentQuizData.questionCount = currentQuiz.questions.length;
-                    currentQuizData.correct = 0;
-                    currentQuizData.name = currentQuiz.name;
-                    currentQuizData.report = [];
-                    currentQuizData.uuid = ZzishContent.startActivity(currentQuiz, function(err, resp){
-                        $log.debug("Got response from start activity:", resp);
-                    });
-                    callback();
-                });
+            if (currentQuiz.categoryId) {
+                parameters.extensions.categoryId = currentQuiz.categoryId;
             }
-
-        },
-        getQuestion: function(id, questionCallback){
-            if(typeof currentQuiz != 'undefined') {
-                if(id < currentQuiz.questions.length) {
-                    questionCallback(currentQuiz.questions[id]);
-                }else{
-                    $log.debug("Quiz complete", "Getting question", id, "from", currentQuiz);
-                    $location.path("/quiz/complete");
-                    ZzishContent.stopActivity();
-                }
-            }else{
-                $log.error("Trying to get quiz without having selected one");
-                return null;
+            if (currentQuiz.publicAssigned==true && userUuid==null) {
+                userUuid = uuid.v4();
             }
+            currentQuizResult.currentActivityId = zzish.startActivityWithObjects(userUuid,parameters, function(err, message){                
+                if (callback!=undefined) callback(err, message);
+            });
         },
-        chooseKind: function(qId){
-            return chooseKind(qId);
+        currentQuizResult: function() {
+            if (currentQuizResult.quizId==currentQuiz.uuid) {
+                return currentQuizResult;
+            }
+            return initQuizResult(currentQuiz);
         },
-        getAlternatives: function(id){
-            $log.debug("Generating Alternatives for ", id, "from", currentQuiz);
-
-            if(currentQuiz.questions[id].alternatives){
+        getQuestion: function(questionIndex,callback) {
+            callback(currentQuiz.questions[questionIndex]);
+        },
+        getAlternatives: function(questionIndex){
+            var question = currentQuiz.questions[questionIndex];
+            if(question.alternatives){
                 var options = [];
-                options.push(currentQuiz.questions[id].answer);
-                for(var i in currentQuiz.questions[id].alternatives){
-                    var alt = currentQuiz.questions[id].alternatives[i];
-		    if (alt!=undefined && alt.length>0)
-                    	options.push(alt);
+                options.push(question.answer);
+                for(var i in question.alternatives) {
+                    var alt = question.alternatives[i];
+                    if (alt!=undefined && alt.length>0) {
+                        options.push(alt);
+                    }
                 }
                 return randomise(options);
 
-            }else{
+            } else {
                 var answers = [];
-                var correct = currentQuiz.questions[id].answer;
+                var correct = question.answer;
 
-                for(var i in currentQuiz.questions){
+                for(var i in currentQuiz.questions){                    
                     var q = currentQuiz.questions[i];
-                    if(q.answer != correct){
-                        answers.push(q.answer);
+                    if (q.question!=question.question) {
+                        if(q.answer != correct){
+                            answers.push(q.answer);
+                        }                        
                     }
                 }
-                var options = randomise(answers).slice(0,3);
+                var options = answers.slice(0,3);
                 options.push(correct);
                 return randomise(options);
             }
         },
-        getStudentData: function(){
-            if (classCode==undefined) {
-                classCode = localStorage.getItem("zcode");
-            }
-            if (studentCode ==undefined) {
-                studentCode =    localStorage.getItem("zname");
-            }
-            return {classCode: classCode, studentCode: studentCode};
-        },
-        currentQuizData: currentQuizData,
         answerQuestion: function(idx, response, answer, questionName, duration){
-            $log.debug("Answer question", response, answer, duration);
-
             var question = currentQuiz.questions[idx];
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
             var score = calculateScore(correct, duration);
 
-            ZzishContent.saveAction(question, {
-                score: score,
-                correct: correct,
-                attempts: 1,
-                response: response,
-                duration: duration
-            });
+            var parameters = {
+                definition: {
+                    type: question.uuid,
+                    name: question.question,
+                    score: maxScore,
+                    duration: maxTime,
+                    response: question.answer
+                },
+                result: {
+                    score: score,
+                    correct: correct,
+                    attempts: 1,
+                    response: response,
+                    duration: duration
+                },
+                extensions: {}
+            }
+            if (question.topicId) {
+                parameters.extensions["categoryId"] = question.topicId;
+            }
+            zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
 
             if(correct) {
-                currentQuizData.correct++;
-                currentQuizData.totalScore += score;
+                currentQuizResult.correct++;
+                currentQuizResult.totalScore += score;
             }
 
             var reportItem = {
@@ -356,24 +371,30 @@ angular.module('quizApp')
                 topicId: question.topicId,
                 duration: duration
             };
-
-            currentQuizData.report.push(reportItem);
-            $log.debug("Adding report item:", reportItem);
-
-            $location.path("/quiz/answer/" + idx);
+            currentQuizResult.report.push(reportItem);
+            localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
         },
-        cancelQuiz: function(id,callback) {
-            if (id!=undefined) {
-                ZzishContent.cancelActivity(id, function(err, resp){                
-                    callback();
-                });
+        generateNextQuestionUrl: function(questionId) {
+            var q = questionId + 1;
+            if (currentQuiz.questions.length==q) {
+                if (currentQuizResult.currentActivityId!=undefined) {
+                    zzish.stopActivity(currentQuizResult.currentActivityId,{});                    
+                }                
+                return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/complete";                
             }
             else {
-                callback();
+                return '/quiz/' +  currentQuiz.categoryId + "/" + currentQuiz.uuid + "/" + selectQuestionType(q) + '/' + (q);
             }
         },
-        showMessage : function(title,message,callBack) {
-            
+        cancelCurrentQuiz: function(callback) {
+            if (currentQuizResult.currentActivityId!=undefined) {
+                zzish.cancelActivity(currentQuizResult.currentActivityId,function(err,message) {
+                    initQuizResult();
+                    if (callback!=undefined) callback(err,message);
+                })                
+            }
+        },        
+        showMessage : function(title,message,callBack) {            
             if (callBack!=null) {
                 var uuidGen = uuid.v4();    
                 $("#modalUuid").val(uuidGen);

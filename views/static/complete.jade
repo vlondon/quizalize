@@ -148,7 +148,7 @@ style.
     .wrapper-complete
         .row(ng-hide="quiz.teacherMode")
             .col-xs-8.col-xs-offset-2
-                a.btn.btn-block.btn-info.btn-sm(href="#/list") Home 
+                a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
         .row(ng-show="quiz.teacherMode")
             .col-xs-8.col-xs-offset-2
                 a.btn.btn-block.btn-info.btn-sm(href="/quiz#/assign/{{quiz.data.uuid}}") Set this Quiz for your class

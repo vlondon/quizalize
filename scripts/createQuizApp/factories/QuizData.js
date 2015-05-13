@@ -1,96 +1,45 @@
 
 angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($http, $log){
-
     var uuid = require('node-uuid');
-    // setup/add helper methods, variables...
 
-    var userUuid = localStorage.getItem("userId");
-    var userVerified = localStorage.getItem("userVerified")=="true";
+    //this is to ensure we're not saving a quiz, while it's being saved
     var savingQuiz = false;
+
+    //callbacks for messaging
     var callbacks = {};
 
-    //Initialise User
-    var data = localStorage.getItem("quizData");
-    data = JSON.parse(data);
+    //these are data object we have (that we would lost if screen was refreshed)    
+    var userUuid = localStorage.getItem("userId"); 
+    var userName = localStorage.getItem("userName"); 
+    var currentClass = JSON.parse(localStorage.getItem("currentClass"));    
+    var topics = null;
+    var rootTopicId = null;
 
-    if(!data){
-        data = [];
+    //these are data object we have that we can get back if we lose
+    var classList = JSON.parse(localStorage.getItem("classList"));
+    if (!classList) {
+        classList = [];
     }
-
-    var timesQuiz = [];
-
-    for(var i=1; i<12; i+=2){
-        for(var j=2; j<13; j+=2){
-            timesQuiz.push({question: "What is " + i + " times " + j + "?",
-                            answer: String(i * j)});
+    var quizData = JSON.parse(localStorage.getItem("quizData"));
+    if(quizData){
+        if (Array.isArray(quizData)) {
+            var quizHash = {};
+            for (var i in quizData) {
+                quizHash[quizData[i].uuid] = quizData[i];
+            }
+            quizData = quizHash; 
+            localStorage.setItem("quizData",JSON.stringify(quizData));
         }
     }
-
-    timesQuiz = function(o){
-        for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-        return o;
-    }(timesQuiz);
-
-    //currently is cities and times quizes
-    var sampleData = require('createQuizApp/data/sampleData');
-
-    function createUserId(callback) {
-        if(!userUuid) {
-            userUuid = uuid.v4();
-            localStorage.setItem("userId", userUuid);
-            localStorage.setItem("userVerified", false);
-
-            $http.post("/create/profile", {uuid: userUuid})
-                .success(function(result){
-                    callback(null,result);
-                    $log.debug("Got result from profile", result);
-                })
-                .error(function(err){
-                    callback(err);
-                    $log.error("Error when registering profile", err);
-            });
-        }
-        else {
-            callback(null,userUuid);
-        }
-    }
-
-    var postDelete = function(quiz){
-        $log.debug(quiz);
-        return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/delete", quiz);
-    };
-
-    var postQuiz = function(quiz){
-        $log.debug(quiz);
-        return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid, quiz);
-    };
-
-    var getQuizzes = function(){
-        return $http.get("/create/" + userUuid + "/quizzes/");
-    };
-
-    var getQuiz = function(uuid){
-        return $http.get("/create/" + userUuid + "/quizzes/" + uuid);
-    };
-
-    var getTopics = function(){
-        return $http.get("/create/" + userUuid + "/topics/");
-    };
-
+    //Post Topic
     var postTopic = function(topic){
+        if (topics!=null) {
+            topics.push(topic);
+        }
         return $http.post("/create/" + userUuid + "/topics/", topic);
     };
 
-    var getPublicQuizzes = function() {
-        return $http.get("/quizzes/" + userUuid + "/public");
-    }
-
-    var getPublicAssignedQuizzes = function() {
-        return $http.get("/quizzes/" + userUuid + "/public/" + localStorage.getItem("classCode") + "/assigned");    
-    }
-
     var processQuizList = function(result,callback){
-        self.quizzes = [];
         self.categories = [];
         var categories = {};
         for (var i in result.contents) {
@@ -110,94 +59,279 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
-            categories[cuuid].quizzes.push(quiz);
             if (category.name=="") {
                 category.homework = true;
             }
             if (category.homework) {
                 category.name="Quizzes (" + categories[cuuid].quizzes.length + ")";
             }
-            self.quizzes.push(quiz);
+            categories[cuuid].quizzes.push(quiz);
         }
         for (var i in categories) {
             self.categories.push(categories[i]);
         }
         callback();
-    };    
+    }; 
 
+    var getClassList = function(callback) {
+        if (classList=="" || classList==undefined || classList.length==0) {
+            $http.get("/users/" + userUuid + "/groups/").success(function(resp){
+                $log.debug("Response from server for getting groups", resp);
+                classList = resp;
+                localStorage.setItem("classList",JSON.stringify(classList));
+                callback(resp);                    
+            }).error(function(er){
+                $log.debug("Error from server when getting groups", er);
+            });                
+        }     
+        else {
+            return callback(classList);       
+        }        
+    }   
+
+    var getClassForName = function(className,callback) {
+
+        getClassList(function(classList) {
+            for (var i in classList) {
+                if (classList[i].name==className) {
+                    callback(classList[i]);
+                    return;
+                }
+            }
+            callback();
+            //didn't find it            
+        })
+
+    }
+
+    var getClassForCode = function(classCode,callback) {
+
+        getClassList(function(classList) {
+            for (var i in classList) {
+                if (classList[i].code==classCode) {
+                    callback(classList[i]);
+                    return;
+                }
+            }
+            callback();
+            //didn't find it            
+        })
+
+    }
+
+
+    var getGroupContents = function(callback) {
+        $http.get("/users/" + userUuid + "/groups/contents").success(function(resp){
+            $log.debug("Response from server for getting group Contents", resp);                
+            self.groupContents = { };
+            for (var i in resp) {
+                var content = resp[i];
+                if (self.groupContents[content.groupCode]==undefined) {
+                    self.groupContents[content.groupCode] = { contents: [] };
+                }
+                self.groupContents[content.groupCode].contents.push(content);
+            }
+            callback(self.groupContents);                    
+        }).error(function(er){
+            $log.debug("Error from server when getting groups", er);
+        });          
+    }
+
+    var setRootTopic = function(topicId) {
+        self.rootTopicId = topicId;
+    }
+
+    var setUser = function(user) {
+        if (user==undefined) {
+            userUuid = "";    
+            localStorage.clear();
+            $("#LoginButton").html("Log in");
+            $("#assignments").hide();            
+            $("#quizzes").hide();                        
+        }
+        else {
+            userUuid = user.uuid;
+            userName = user.name;
+            localStorage.setItem("userId",userUuid);
+            localStorage.setItem("userName",userName);
+            $("#LoginButton").html("Log out");
+            $("#quizzes").show();
+            $("#assignments").show();
+        }        
+    }
+
+    var setClass = function(data,callback) {
+        if (data!=undefined) {
+            currentClass = data;
+            localStorage.setItem("currentClass",JSON.stringify(currentClass));            
+        }
+        callback(currentClass);        
+    }
 
     return{
-        getSampleQuizzes: function(callback){
-            callback(sampleData);
+        //User methods
+        unsetUser: function() {
+            var result = userUuid!="" && userUuid!=undefined;
+            setUser(null);            
+            return result;
         },
-        getQuizzes: function(callback){
-            if (userUuid!="") {
-                getQuizzes().success(
-                    function(resp){
-                        for (i in resp) {
-                            resp[i].publicAssigned = false;
-                        }
-                        data = resp;
-                        if (localStorage.getItem('classCode')!=null) {
-                            getPublicAssignedQuizzes().success(
-                                function(resp) {
-                                    for (i in resp) {
-                                        resp[i].publicAssigned = true;
-                                        data.push(resp[i]);
-                                    }
-                                    callback(data);
-                                }
-                            );                                                    
-                        }
-                        else {
-                            callback(data);
-                        }
-                    }
-                );
+        getUser: function () {
+            return userUuid;
+        },
+        setUser: function (user) {
+            setUser(user);
+        },
+        registerEmailAddress: function(email) {
+            return $http.post("/users/register", {emailAddress: email});
+        },        
+        //class methods
+        getCurrentClass: function() {
+            return currentClass;
+        },
+        getClassList: function(callback) {
+            return getClassList(callback);
+        },
+        addClass: function(name,code,link) {
+            var obj = {
+                name: name,
+                code: code,
+                link: link
+            }            
+            classList.push(obj);
+            currentClass = obj; 
+            localStorage.setItem("classList",JSON.stringify(classList));
+            localStorage.setItem("currentClass",JSON.stringify(currentClass));
+            return obj;
+        },
+        setCurrentClass: function(className,callback) {
+            getClassForName(className,function(data) {
+                setClass(data,callback);
+            })
+        },
+        setCurrentClassByCode: function(code,callback) {
+            getClassForCode(code,function(data) {
+                setClass(data,callback);
+            })
+        },
+        getClassForName: function(className,callback) {
+            getClassForName(className,callback);
+        },
+        //group content (list of assigned quizzes)
+        getGroupContents: function (callback) {
+            if (self.groupContents==undefined) {
+                getGroupContents(callback);              
+            }
+            else {
+                callback(self.groupContents);
             }
         },
-        getPublicAssignedQuizzes: function(callback) {
-            if (userUuid!="" && localStorage.getItem('classCode')!=null) {
-                if (localStorage.getItem("classCode")==undefined) {
-                    callback({});
-                }
-                else {
-                    getPublicAssignedQuizzes().success(function(resp){
-                        callback(resp);    
+        //topic methods
+        setRootTopic: function(topicId) {
+            setRootTopic(topicId);
+        },
+        getRootTopic: function() {
+            return self.rootTopicId;
+        },
+        getTopics: function( callback){
+            if (userUuid!="") {
+                if (topics==undefined) {
+                    $http.get("/create/" + userUuid + "/topics/").success(function(resp){
+                        $log.debug("Response from server for getting topics", resp);
+                        self.topics = {};
+                        for (var i in resp) {
+                            self.topics[resp[i].uuid] = resp[i];
+                        }
+                        callback(resp);
                     }).error(function(er){
-                        $log.debug("Error ", er);
+                        $log.debug("Error from server when getting topics`", er);
                     });                
                 }
+                else {
+                    callback(topics);
+                }
             }
-        },           
+        },
+        getCategories: function() {
+            //created when quizzes are processed
+            return self.categories;
+        },
+
+
+
+        //quiz methods
+        getQuizzes: function(callback){
+            if (userUuid!="") {
+                if (!quizData) {
+                    $http.get("/create/" + userUuid + "/quizzes/").success(
+                        function(resp){
+                            quizData = {};
+                            for (var i in resp) {
+                                quizData[resp[i].uuid] = resp[i];
+                            }                        
+                            localStorage.setItem("quizData",JSON.stringify(quizData));
+                            callback(quizData);
+                        }
+                    );                    
+                }
+                else {
+                    callback(quizData);
+                }
+            }
+        },          
         getPublicQuizzes: function(callback){
-            getPublicQuizzes().success(function(resp){
+            $http.get("/quizzes/public").success(function(resp){
                 $log.debug("Response from server for getting public quizzes", resp);
                 processQuizList(resp,function() {
                     callback(resp);    
                 });                
             }).error(function(er){
                 $log.debug("Error from server when getting public quizzes`", er);
-            });
-        },        
-        getTopics: function( callback){
-            getTopics().success(function(resp){
-                $log.debug("Response from server for getting topics", resp);
+            });                
+        },  
+        addQuizById: function(quizId, callback){
+            quizData[quiz.uuid]={uuid: quizId};
+        },
+        addQuiz: function(quiz, callback){
+            //get UserId (creates on if it doesn't already exist);
+            var rootTopicId = quiz.categoryId;
+            if (rootTopicId=="-1") {
+                //we don't have the root category, so we need to create
+                //need to add the category
+                rootTopicId = uuid.v4();
+                postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
+                quiz.categoryId = rootTopicId;
+            }
+            setRootTopic(rootTopicId);
+            if (quiz.uuid==undefined) {
+                quiz.uuid = uuid.v4();
+            }
+            if (quizData==undefined) {
+                quizData = {};
+            }
+            quizData[quiz.uuid]=quiz;
+            localStorage.setItem("quizData", JSON.stringify(quizData));
+            callback(quiz.uuid);
+        },   
+        loadQuizData: function(ids,callback) {
+            $http.post("/quizzes/" + userUuid + "/load" ,{uuids: ids}).success(function(resp){
+                $log.debug("Response from server for loading quizzes", resp);
                 callback(resp);
             }).error(function(er){
-                $log.debug("Error from server when getting topics`", er);
-            });
-        },
+                $log.debug("Error from server when loading quizzes", er);
+            });            
+        },          
         getQuiz: function(id, loadFromServer, callback){
-            if(typeof data[id] != 'undefined'){
-                if(typeof data[id].questions != 'undefined' || data[id].publicAssigned){
-                    $log.debug("Questions local");
-                    callback(data[id]);
-                }else{
+            if(typeof quizData[id] != 'undefined'){
+                if(typeof quizData[id].questions != 'undefined' || quizData[id].publicAssigned){
+                    $log.debug("Questions local or public");
+                    callback(quizData[id]);
+                } else {
                     if (loadFromServer) {
                         $log.debug("No questions, so fetching from server");
-                        getQuiz(data[id].uuid).success(function(resp){
+                        $http.get("/create/" + userUuid + "/quizzes/" + quizData[id].uuid).success(function(resp){
                             $log.debug("Response from server for getting a quiz", resp);
+                            quizData[id].uuid = resp;
+                            localStorage.setItem("quizData", JSON.stringify(quizData));
                             callback(resp);
                         }).error(function(er){
                             $log.debug("Error from server when getting quiz", er);
@@ -205,28 +339,15 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                     }
                     else {
                         $log.debug("No questions, not loading from server");
-                        callback({uuid: data[id].uuid});
+                        callback({uuid: quizData[id].uuid});
                     }
                 }
-            }
-        },
-        getCategories: function() {
-            return self.categories;
-        },
-        deleteQuiz: function(id,callback){
-            var quiz = data[id];
-            data.splice(id,1);
-            $log.debug("Removing Quiz: ", data);
-            localStorage.setItem("quizData", JSON.stringify(data));
-            postDelete(quiz).success(function(result){
-                callback();
-            });
-
+            }            
         },
         saveQuiz: function(id, quiz,topics){
-            data[id] = quiz;
-            $log.debug("Saving Quiz: ", data);
-            localStorage.setItem("quizData", JSON.stringify(data));
+            quizData[id] = quiz;
+            localStorage.setItem("quizData",JSON.stringify(quizData));
+            $log.debug("Saving Quiz: ", quizData);
 
             for (var i in topics) {
                 if (topics[i].newObject!=undefined && topics[i].newObject) {
@@ -236,95 +357,104 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                     });
                 }
             }
-            localStorage.setItem("topics", JSON.stringify(topics));
             if (!savingQuiz) {
                 $log.debug("About to post");
                 savingQuiz = true;
-                postQuiz(quiz).success(function(resp){
-                    $log.debug("Returning from post");
+                $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid, quiz).success(function(resp){
+                    $log.debug("Returning from post");                    
                     savingQuiz = false;
-                }).error(function(er){
+                }).error(function(er){  
                     $log.debug("Returning from post");
                     savingQuiz = false;
                 });
             }
+        },        
+        deleteQuiz: function(id,callback){
+            var quiz = quizData[id];
+            delete quizData[id];
+            localStorage.setItem("quizData", JSON.stringify(quizData));
+            $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/delete", {}).success(function(result){
+                callback();
+            });                
         },
-        addQuiz: function(quiz, callback){
-            //hide loginButton as you can no longer login if you haven't already done so
-	        var email = localStorage.getItem("emailAddress");
-            if(!data) data = []; //yes it will replace [] with [].
-            //get UserId (creates on if it doesn't already exist);
-            createUserId(function(err,message) {
-                if (quiz.categoryId=="-1") {
-                    //we don't have the root category, so we need to create
-                    //need to add the category
-                    var rootTopicId = uuid.v4();
-                    postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
-                    localStorage.setItem("rootTopicId",rootTopicId);
-                    quiz.categoryId = rootTopicId;
-                }
-                if (quiz.uuid==undefined) {
-                    quiz.uuid = uuid.v4();
-                }
-                data.push(quiz);
-                $log.debug("Saving (addQuiz): ", data);
-                localStorage.setItem("quizData", JSON.stringify(data));
-                callback(data.length -1);
+        publishQuiz: function(quiz, details,callback){
+            $log.debug("Publish Quiz", quiz, details);
+            $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/publish", details).success(function(result){
+                getGroupContents(function() {
+                    callback(null,result);
+                });              
+            }).error(function(err,message){
+                callback(err,message);
             });
         },
-        unassignAssignQuiz: function(id){
-            return $http.post("/quizzes/" + userUuid + "/public/" + localStorage.getItem("classCode") + "/" + id + "/delete");    
-        },         
-        registerEmailAddress: function(email) {
-            return $http.post("/quizzes/register", {emailAddress: email});
+        unpublishQuiz: function(quizId, code){
+            $log.debug("UnPublish Quiz", quizId, code);
+            $http.post("/create/" + userUuid + "/quizzes/" + quizId + "/" + code + "/unpublish",{}).success(function(result){
+                $log.debug("Response from unpublishing: ", result);
+                var idx = 0;
+                var found = false;
+                for (;idx<self.groupContents[code].contents.length;idx++) {
+                    if (self.groupContents[code].contents[idx].contentId==quizId) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    self.groupContents[code].contents.splice(idx,1);
+                }                
+                //remove it from groupContents
+            }).error(function(err){
+                $log.debug("Error from unpublishing: ", err);
+                self.statusText = err;
+            });
+        },  
+        getEncryptedLink: function(id,callback) {
+            $http.get("/create/" + userUuid + "/quizzes/" + id + "/encrypt").success(function(result){
+                $log.debug("Response from sharing: ", result);                    
+                callback(result);
+            }).error(function(err){
+                $log.debug("Error from sharing: ", err);
+            });
         },
-        publishQuiz: function(quiz, details){
-            $log.debug("Publish Quiz", quiz, details);
-            return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/publish", details);
-        },
-        republishQuiz: function(quiz, details){
-            $log.debug("RePublish Quiz", quiz, details);
-            return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/" + localStorage.getItem("classCode") +"/republish", details);
-        },
-        unpublishQuiz: function(quiz, details){
-            $log.debug("UnPublish Quiz", quiz, details);
-            return $http.post("/create/" + userUuid + "/quizzes/" + quiz.uuid + "/" + localStorage.getItem("classCode") + "/unpublish", details);
-        },        
-        getClassCode: function(){
-            return localStorage.getItem("classCode");
-        },
-        saveClassCode: function(newClassCode){
-            if(newClassCode)
-                localStorage.setItem("classCode", newClassCode);
-        },
-        getUser: function () {
-            return userUuid;
-        },
-        setUser: function (user) {
-            userUuid = user.uuid;
-            localStorage.setItem("userId",userUuid);
-            var email = localStorage.getItem("emailAddress");
-            if (user.verified!=undefined) {
-                userVerified = user.verified;
+        shareQuiz: function(id, emails,link) {
+            var tokensSpace = emails.split(" ");
+            var tokensColon = emails.split(";");
+            var tokensComma = emails.split(",");
+            var data = {
+                email: userName,
+                quiz: quizData[id].name          
+            }
+            if (tokensSpace.length>1) {
+                data['emails'] = tokensSpace;
+            }
+            else if (tokensColon.length>1) {
+                data['emails'] = tokensColon;
+            }
+            else if (tokensComma.length>1) {
+                data['emails'] = tokensComma;
             }
             else {
-                userVerified = false;
+                data['emails'] = [emails];    
+            }            
+            if (link!=undefined) {
+                data['link'] = link;
             }
-            localStorage.setItem("userVerified",userVerified);
-            if (userVerified || email!=null) {
-                $("#LoginButton").html("Logout");
-                $("#LoginButton").show();
-            }
-            else {
-                //just hide it, as this seems to be an anonymous user
-                //$("#LoginButton").hide();
-            }
-            if (user.code!=undefined) {
-                localStorage.setItem("classCode",user.code);
-            }
+            $http.post("/create/" + userUuid + "/quizzes/" + id + "/share",data).success(function(result){
+                $log.debug("Response from sharing: ", result);                    
+            }).error(function(err){
+                $log.debug("Error from sharing: ", err);
+            });
+        },    
+        getQuizByCode: function(code,callback) {
+            $http.get("/quiz/code/" + code).success(function(result){
+                $log.debug("Response from get quiz by code: ", result);                    
+                callback(result);
+            }).error(function(err){
+                $log.debug("Error from get quiz by code: ", err);
+            });
         },
+        //message methods
         showMessage : function(title,message,callBack) {
-            
             if (callBack!=null) {
                 var uuidGen = uuid.v4();    
                 $("#modalUuid").val(uuidGen);
@@ -356,6 +486,6 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 delete callbacks[uuid];
                 x();
             }
-        }     
+        }            
     };
 }]);

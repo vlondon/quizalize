@@ -1,0 +1,21 @@
+.container
+    h2 Hi there! What would you like to do?
+    br
+    .row
+        .row.well
+            .quiz-preview(ng-show="true")
+                .row
+                    .col-sm-6
+                        .border-block
+                            center
+                                h3 Make a classroom quiz in 60 seconds
+                            br
+                            center
+                                a.btn.btn-primary.btn-lg(ng-click="dashboard.createQuiz()") Create a new quiz
+                    .col-sm-6
+                        .border-block
+                            center
+                                h3 Choose a pre-made quiz for your class
+                            br
+                            center
+                                a.btn.btn-primary.btn-lg.btn-info(ng-href="/quiz/#/public") Choose a quiz

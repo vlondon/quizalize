@@ -1,0 +1,20 @@
+.container
+    .row.well
+        h1.text-center One click class setup
+            .form-horizontal(role="form")
+        p Please enter a valid teacher email address so you can access your quiz later.
+        .form-group
+            .col-sm-1(style="margin-top: 9px")
+                    label.control-label Email
+            .col-sm-11
+                input.form-control#emailAddress(type="email", ng-model="register.emailAddress", on-enter="register.registerEmail();", placeholder="e.g. jsmith@myschool.staffs.sch.uk")
+                br
+
+            .col-xs-12
+                center
+                    button.btn.btn-primary(ng-click="register.registerEmail();", ng-disabled="register.emailAddress.length == 0 || register.registeringNow") Register
+                    | &nbsp;&nbsp; or 
+                    a(href="/quiz#/login") login
+                    | &nbsp;if you are already registered.
+
+                br
