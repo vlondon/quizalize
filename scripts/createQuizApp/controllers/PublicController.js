@@ -7,6 +7,15 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
 		})        
 	}   
 
+	self.previewQuiz = function(quiz) {
+	    if (QuizData.getUser()) {
+	        window.location.href="/app#/play/public/"+quiz.uuid+"/true";
+	    }
+		else {
+			$location.path("/playh/" + quiz.uuid);
+		}		
+	}
+
     QuizData.getPublicQuizzes(function (contents) {
     	self.categories = QuizData.getCategories();
     });	

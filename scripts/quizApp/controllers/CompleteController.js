@@ -90,7 +90,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             window.close();
         }
         else {
-            $location.path("#/list");            
+            $location.path("/list");            
         }
     }
 }]);
