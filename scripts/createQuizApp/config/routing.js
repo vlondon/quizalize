@@ -25,6 +25,11 @@ angular.module('createQuizApp')
             controller: "RegisterController",
             controllerAs: "register"
         }) 
+        .when('/success/:postAction/:id', {
+            templateUrl: "/quiz/view/registered",
+            controller: "RegisteredController",
+            controllerAs: "registered"
+        }) 
         .when('/create', {
             templateUrl: "/quiz/view/createq",
             controller: "CreateQuizController",

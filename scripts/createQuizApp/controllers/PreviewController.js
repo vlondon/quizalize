@@ -20,7 +20,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
                 if (!err) {
                     $log.debug("Response from publishing: ", result);
                     QuizData.addClass(result.groupName,result.code,result.link);
-                    $location.path("/published/"+self.id+"/b");                    
+                    $location.path("/success/public/"+self.id);                    
                 }
                 else {
                     $log.debug("Error from publishing: ", err,message);

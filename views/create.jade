@@ -25,8 +25,7 @@ html(ng-app='createQuizApp')
         script(src='/lib/angular-animate.min.js')  
         script(src='/lib/angular-route.min.js')
         script(src='/lib/autogrow.js')
-        
-
+        script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
         script(src='/js/createQuizApp.js')        
         script(src='/js/quiz.js')  
 
@@ -174,14 +173,6 @@ html(ng-app='createQuizApp')
             }            
 
 body(ng-controller="NavBarController as ctrl")
-    script.
-        /* <![CDATA[ */
-        var google_conversion_id = 1034680765;
-        var google_custom_params = window.google_tag_params;
-        var google_remarketing_only = true;
-        /* ]]> */
-    script(src='//www.googleadservices.com/pagead/conversion.js')
-
     nav.navbar.navbar-default
         .container-fluid
             .navbar-header
