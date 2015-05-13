@@ -29,7 +29,7 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
                 window.location.href="/quiz#/public";
             }
             else {
-                $location.path("/app#/");
+                $location.path("/app#/list");
             }            
         });
     };
