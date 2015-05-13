@@ -160,6 +160,11 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         self.currentQuestion = self.quiz.questions.length+1;
         self.clearQuestions();
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
+        $("#alt1").resize();
+        $("#alt2").resize();
+        $("#alt3").resize();
+        $("#question").resize();
+        $("#answer").resize();        
         $("#quizzes").show();             
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };

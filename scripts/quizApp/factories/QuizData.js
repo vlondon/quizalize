@@ -138,7 +138,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     }
 
     var selectQuiz = function(catId,quizId,isLoaded,callback) {
-        if (isLoaded || catId=="public") {
+        if (isLoaded && catId!="public") {
             if (categories[catId]==undefined) {
                 loadPlayerQuizzes(function() {
                     searchThroughCategories(catId,quizId,callback);
