@@ -15,13 +15,11 @@ angular.module('quizApp')
         self.questionId = parseInt($routeParams.questionId);
         $log.debug('On question', self.questionId);
 
-        self.score = QuizData.currentQuizData.totalScore;
-        self.questionCount = QuizData.currentQuizData.questionCount;
 
         var renderReactComponent = function(){
             React.render(
                 React.createElement(QLMultiple, {
-                    quizData: QuizData.currentQuizData,
+                    quizData: QuizData.currentQuizResult(),
                     question: self.question,
                     alternatives: self.alternatives,
                     onSelect: function(index){
@@ -47,37 +45,32 @@ angular.module('quizApp')
             });
         };
 
+        QuizData.loadQuiz(self.catId, self.id, function(data) {
+            //$scope.$apply(function(){
+                self.currentQuiz = data;
+                self.score = QuizData.currentQuizResult().totalScore;
+                self.questionCount = QuizData.currentQuizResult().questionCount;
+                QuizData.getQuestion(self.questionId, function(data){
 
+                    self.question = data.question;
+                    self.answer = data.answer;
+                    self.alternatives = QuizData.getAlternatives(self.questionId);
 
-
-        var getQuestion = function(){
-
-            QuizData.getQuestion(self.questionId, function(data){
-
-                self.question = data.question;
-                self.answer = data.answer;
-                self.alternatives = QuizData.getAlternatives(self.questionId);
-
-                if (QuizData.currentQuizData.report[self.questionId] !== undefined) {
-                    //we already have this question
-                    $location.path('/quiz/answer/' + self.questionId);
-                }
-
-                self.longMode = false;
-                for(var i in self.alternatives){
-                    if(self.alternatives[i].length > 10){
-                        self.longMode = true;
+                    if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {
+                        //we already have this question
+                        $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                     }
-                }
-                addReactComponent();
-            });
-        };
 
-        if (self.id && self.catId){
-            QuizData.selectQuiz(self.catId, self.id, getQuestion);
-        } else {
-            getQuestion();
-        }
+                    self.longMode = false;
+                    for(var i in self.alternatives){
+                        if(self.alternatives[i].length > 10){
+                            self.longMode = true;
+                        }
+                    }
+                    // addReactComponent();
+                });
+            //});
+        });
 
         self.select = function(idx){
             QuizData.answerQuestion(self.questionId,
@@ -85,13 +78,13 @@ angular.module('quizApp')
                                     self.answer,
                                     self.question,
                                     (new Date()).getTime() - startTime,
-                                    false);
+                                    true);
+            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
             renderReactComponent();
         };
 
         self.nextQuestion = function(){
-            var q = self.questionId + 1;
-            $location.path('/quiz/' +  QuizData.chooseKind(q) + '/' + (q));
+            $location.path(QuizData.generateNextQuestionUrl(self.questionId));
         };
 
         $log.debug('Multiple Controller', self);

@@ -1,0 +1,26 @@
+.container
+    h1 Your Assigned Quizzes
+        .pull-right
+            a.btn.btn-primary.btn-lg(ng-href="/quiz/#/public") Assign one of our premade quizzes
+    p Here are the quizzes that each of your class can play
+    .row
+        .col-sm-8.col-sm-offset-2
+            .row.well
+                .row(ng-repeat="class in quizzes.classList track by $index", style="padding-bottom: 10px")
+                    h2 {{class.name}}
+                        .pull-right
+                            a.btn.btn-info.btn-block(ng-href="{{class.link}}", target=_blank, style="padding: 10px") Open Dashboard
+                        .pull-right
+                            &nbsp;&nbsp;&nbsp;
+                        .class-code.pull-right(ng-show="class.code")
+                            Your Class Code: {{class.code}} 
+                    br
+                    .row(ng-show="!quizzes.groupContents[class.code] || quizzes.groupContents[class.code].contents.length==0")
+                        .col-xs-12
+                            p You don't have any quizzes assigned to this class.
+                    .row(ng-repeat="content in quizzes.groupContents[class.code].contents track by $index", style="padding-bottom: 10px")
+                        .col-xs-10
+                            h4 {{quizzes.pastQuizzes[content.contentId].name}}
+                        .col-xs-2                    
+                            button.btn.btn-danger.btn-block(ng-click="quizzes.unpublishQuiz(content.contentId,class.code);", style="padding: 10px")
+                                span.glyphicon.glyphicon-remove

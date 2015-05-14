@@ -3,7 +3,43 @@ var config = require('../config.js');
 var email = require("../email");
 var querystring = require('querystring');
 var zzish = require("zzishsdk");
+var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = '##34dsadfasdf££FE';
 
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+
+function getEncryptQuiz(profileId,id) {
+    return encrypt(profileId+"----"+id);
+}
+
+function getDecryptQuiz(code) {    
+    var decrypted = decrypt(code).split("----");
+    return {
+        profileId: decrypted[0],
+        uuid: decrypted[1],
+    }
+}
+
+exports.encryptQuiz = function(req,res) {
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    res.send(getEncryptQuiz(profileId,id));
+}
+
+exports.decryptQuiz = function(req,res) {
+    res.send(getDecryptQuiz(req.body.code));
+}
 
 function getZzishParam(parse) {
     try {
@@ -112,34 +148,25 @@ exports.getProfileById = function(req,res) {
 
 
 exports.getPublicQuizzes = function(req, res){
-    var profileId = req.params.profileId;
-    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
-
-    zzish.listPublicContent(profileId, function(err, resp){
+    zzish.listPublicContent(function(err, resp){
         res.send(resp);
     });
 };
 
-exports.deletePublicQuiz = function(req, res){
-    var profileId = req.params.profileId;
-    var groupCode = req.params.groupCode;
-    var uuid = req.params.uuid;            
-
-    zzish.unassignPublicContent(profileId,groupCode,uuid, function (err,resp) {
-        res.send(resp);
-    })
-};
-
 exports.getAssignedPublicQuizzes = function(req, res){
     var profileId = req.params.profileId;
-    var groupCode = req.params.groupCode;
-
-    zzish.getAssignedPublicContents(profileId,groupCode, function (err,resp) {
+    zzish.listAssignedPublicContent(profileId, function (err,resp) {
         res.send(resp);
     })
 };
 
-
+exports.getQuizzes = function(req,res) {
+    var profileId = req.params.id;
+    var ids = req.body.uuids;
+    zzish.getContents(profileId,ids,function(err,resp) {
+        res.send(resp);
+    })
+}
 
 
 exports.getMyQuizzes = function(req, res){
@@ -250,72 +277,69 @@ exports.unpublishQuiz = function(req, res){
     });
 };
 
-exports.republishQuiz = function(req, res){
+//we need to have a class code now
+exports.publishQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
-    var groupId = req.params.group;
 
-    console.log("Will republish", profileId, id, groupId);
+    var data = {};    
+    if (req.body.code!=undefined) {
+        data['code'] = req.body.code;    
+    }    
+    if (req.body.groupName!=undefined) {
+        data['groupName'] = req.body.groupName;    
+    }    
+    if (req.body.share!=undefined) {
+        data['share'] = req.body.share;    
+    }    
+    data['access'] = -1;
 
-    zzish.republishContent(profileId, id, groupId, function(err, resp){
+
+    console.log("Will publish", profileId, id, data);
+
+    zzish.publishContent(profileId, id, data, function(err, resp){
         if(!err){
-            res.send({status: 200});
+            console.log("Got publish result", resp);
+            res.status = 200;
+            var link = querystring.escape(resp.link);
+            link = replaceAll("/","-----",link);
+            link = replaceAll("\\\\","=====",link);
+            resp.link = config.webUrl + "/learning-hub/tclassroom/" + link +"/live";
+            resp.shareLink = getEncryptQuiz(profileId,id);
         } else {
-            res.send({status: err, message: resp});
-        }
-
-    });
-};
-
-//
-exports.registerEmail = function(req, res){
-    var profileId = req.params.profileId;
-    var id = req.params.id;
-    
-    console.log("Will register",  data);
-
-    zzish.registerUser( req.body.emailAddress,'', function(err, resp){        
-        if (!err) {
-            res.sendStatus(200);
-        }
-        else {
-            res.sendStatus(err);
+            var errorMessage = resp;
+            resp = {};
+            resp.message = errorMessage
+            res.status = err;
         }
         res.send(resp);
     });
 };
 
 //we need to have a class code now
-exports.publishQuiz = function(req, res){
+exports.shareQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
+    var emails = req.body.emails;
+    var quiz = req.body.quiz;
+    var emailFrom = req.body.email;
+    var link = req.body.link;
 
-    var data = {};
-    data['code'] = req.body.code;
-    data['access'] = -1;
-
-    console.log("Will publish", profileId, id, data);
-
-    zzish.publishContentToGroup(profileId, id, data, function(err, resp){
-        if(!err){
-            console.log("Got publish result", resp);
-            resp.status = 200;
-            resp.link = querystring.escape(resp.link);
-            resp.link = config.webUrl + "/learning-hub/tclassroom/" + replaceAll("/","-----",resp.link)+"/live";
-            if (resp.complete!=undefined) {
-                var registerEmail = "Welcome to Quizalize\n\nYou recently used Quizalize where you requested to save some information. Quizalize is an easy and fast way to create, share and set pupils quizzes. You can create your subject specific quizzes which can then be shared with other teachers as well as set as work for particular classes or pupils. Most importantly it saves you time from all that lengthy paperwork by providing a website that allows you to store and amend quizzes to suit you and your pupils needs. \n\nQuizalize plugs into the Zzish Learning Hub, which provides one dashboard with live data being recorded from pupils in the classroom. It can be used for multiple apps, including Quizalize. Our Zzish App Login allows you to record live data you gather using all the apps now on the Zzish Learning Hub and we securely save your data on our servers for you.You just need to complete your registration by clicking on the link below:\n\n" + resp.complete + "\n\nThe Zzish Team\nwww.zzish.com";
-                email.sendEmail('team@zzish.com',[req.body.emailAddress],'Register with Quizalize Powered By Zzish',registerEmail);
-            }
-        } else {
-            var errorMessage = resp;
-            resp = {};
-            resp.status = err;
-            resp.message = errorMessage
-        }
-        res.send(resp);
-    });
+    if (link==undefined) {
+        link = "http://quizalize.com/quiz#/share/" + getEncryptQuiz(profileId,id);
+    }
+    if (emails!=undefined) {
+        email.sendEmail('team@zzish.com',emails,'You have been shared a quiz!','Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
+    }
 };
 
+exports.getQuizByCode = function(req,res) {
+    var decoded = getDecryptQuiz(req.params.code);
+    console.log("Decoded",decoded);
+    zzish.getContent(decoded.profileId,decoded.uuid,function (err,result) {
+        res.send(result);
+    })
+}
 
 
 exports.help = function(req, res){
