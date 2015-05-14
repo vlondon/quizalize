@@ -12,7 +12,7 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
 	        window.location.href="/app#/play/public/"+quiz.uuid+"/true";
 	    }
 		else {
-			$location.path("/playh/" + quiz.uuid);
+			$location.path("/playh/preview/" + quiz.uuid);
 		}		
 	}
 

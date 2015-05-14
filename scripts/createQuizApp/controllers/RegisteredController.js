@@ -25,7 +25,12 @@ angular.module('createQuizApp').controller('RegisteredController', ['QuizData', 
                 $location.path("/published/"+self.id+"/b");                    
             }
             else if (self.postAction=="preview") {
+                alert("/app#/play/public/"+self.id+"/true");
                 window.location.href="/app#/play/public/"+self.id+"/true";
+            }
+            else if (self.postAction.indexOf("share:")==0) {
+                alert("/app#/play/" + self.postAction + "/"+self.id+"/false");
+                window.location.href="/app#/play/" + self.postAction + "/"+self.id+"/true";    
             }
         });
     }
@@ -36,5 +41,5 @@ angular.module('createQuizApp').controller('RegisteredController', ['QuizData', 
 
     setTimeout(function() {
         continueFunction()
-    }, 5000);
+    }, 4000);
 }]);
