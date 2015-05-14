@@ -31,7 +31,7 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
                 window.close();
             }
             else {
-                $location.path("/app#/list");
+                $location.path("/list");
             }
             QuizData.cancelCurrentQuiz(function() {
 

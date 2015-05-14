@@ -144,6 +144,11 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     var setUser = function(user) {
         if (user==undefined) {
             userUuid = "";    
+            currentClass = {};
+            topics = null;
+            rootTopicId = null;
+            classList = [];
+            quizData = {};
             localStorage.clear();
             $("#LoginButton").html("Log in");
             $("#assignments").hide();            
