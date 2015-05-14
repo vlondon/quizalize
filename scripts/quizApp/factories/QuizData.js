@@ -148,6 +148,12 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                 searchThroughCategories(catId,quizId,callback);               
             }
         }
+        else if (catId.indexOf("share:")==0) {
+            zzish.getContent(catId.substring(6),quizId,function (err,result) {
+                setQuiz(result);
+                callback(err,result);
+            });
+        }
         else {
             getPublicContent(quizId,callback);
         }        
@@ -242,7 +248,11 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
             }
             else {
                 //we have a problem
-                selectQuiz(catId,quizId,catId=="public"?false:true,callback);
+                var loaded = true;
+                if (catId=="public" || catId.indexOf("share:")==0) {
+                    loaded = false;
+                }
+                selectQuiz(catId,quizId,loaded,callback);
             }
         },     
         selectQuiz: function(catId,quizId,isLoaded,callback) {
