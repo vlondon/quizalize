@@ -37,7 +37,7 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
                 window.close();
             }
             else {
-                $location.path("/app#/list");
+                $location.path("/list");
             }            
         });
     };
