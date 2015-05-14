@@ -303,7 +303,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 //we don't have the root category, so we need to create
                 //need to add the category
                 rootTopicId = uuid.v4();
-                postTopic({ name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
+                postTopic({subject: quiz.subject, name: quiz.category, parentCategoryId: "-1", uuid: rootTopicId, subContent: false})
                 quiz.categoryId = rootTopicId;
             }
             setRootTopic(rootTopicId);

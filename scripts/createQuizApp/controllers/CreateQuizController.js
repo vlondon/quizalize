@@ -1,15 +1,23 @@
 angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', '$log', '$http', '$location', function(QuizData, $log, $http, $location){
     var self = this;
     //form fields
+    self.subject = "";
     self.newQuizName = "";
     self.newQuizCategory = "";
+    self.numQuestionsInQuiz = -1;
 
     //use for autocomplete
     self.rootTopicList = [];
     self.rootTopics = [];
 
+    self.showSettings = false;
+
     self.focusTopic = function(){
         $('#category').focus();
+    }
+
+    self.focusQuiz = function() {
+        $('#question').focus();   
     }
 
     self.createQuiz = function(){
@@ -30,7 +38,7 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
             QuizData.setRootTopic(rootTopicId);
         }
 
-        QuizData.addQuiz({name: self.newQuizName, categoryId: rootTopicId, category: self.newQuizCategory, questions: []},function(uuid) {
+        QuizData.addQuiz({subject: self.quizSubject, name: self.newQuizName, categoryId: rootTopicId, category: self.newQuizCategory, questions: []},function(uuid) {
             $location.path("/create/" + uuid);
             $log.debug("going to /create/" + uuid);
         });

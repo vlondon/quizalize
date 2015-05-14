@@ -335,7 +335,6 @@ exports.shareQuiz = function(req, res){
 
 exports.getQuizByCode = function(req,res) {
     var decoded = getDecryptQuiz(req.params.code);
-    console.log("Decoded",decoded);
     zzish.getContent(decoded.profileId,decoded.uuid,function (err,result) {
         res.send(result);
     })
