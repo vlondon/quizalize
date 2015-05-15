@@ -19,7 +19,6 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.alt3 = "";
     self.topic = "";
     self.imageURL = "";
-    self.showSettings = false;
 
     self.id = $routeParams.id;
     if (self.id==undefined) $location.path("/");
@@ -29,6 +28,12 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         if (self.quiz.questions!=undefined) {
             self.currentQuestion = self.quiz.questions.length+1;    
         }        
+        if (self.quiz.latexEnabled==undefined) {
+            self.quiz.latexEnabled = false;
+        }
+        if (self.quiz.imageEnabled==undefined) {
+            self.quiz.imageEnabled = false;
+        }
         self.currentQuiz = self.quiz.name;
         self.rootTopicId = quiz.categoryId;
         QuizData.getTopics(function(topics){
@@ -88,14 +93,16 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     }
 
     var resizeAll = function() {
-        $("#alt1").resize();
-        $("#alt2").resize();
-        $("#alt3").resize();
-        $("#alt1a").resize();
-        $("#alt2a").resize();
-        $("#alt3a").resize();
-        $("#question").resize();
-        $("#answer").resize();                
+        setTimeout(function() {
+            $("#alt1").resize();
+            $("#alt2").resize();
+            $("#alt3").resize();
+            $("#alt1a").resize();
+            $("#alt2a").resize();
+            $("#alt3a").resize();
+            $("#question").resize();
+            $("#answer").resize();                            
+        },1000);
     }
 
     self.addQuestion = function() {
@@ -181,6 +188,12 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
+    var addMath = function(field) {
+        var value = self[field];
+        $("#"+field+"Math").text(value == undefined ? "" : value);                            
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#"+field+"Math")[0]]);                                                                                                                            
+    }
+
     self.editQuestion = function(idx){
         var q = self.quiz.questions[idx];
         self.question = q.question;
@@ -207,6 +220,13 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         $('#question').focus();
         self.mode = "Edit";
         self.currentQuestion = idx+1;
+        if (self.quiz.latexEnabled) {
+            addMath("question");
+            addMath("answerText");
+            addMath("alt1");
+            addMath("alt2");
+            addMath("alt3");
+        }
         resizeAll();
         //self.quiz.questions.splice(idx,1);
     };
@@ -223,13 +243,13 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         $location.path("/published/" + self.id+"/p");
     }; 
 
-    self.enableLatex = function() {
-        $rootScope.latexAtivated = self.latexEnabled;
+    self.toggleLatex = function() {
+        $rootScope.latexAtivated = self.quiz.latexEnabled;
     } 
 
-    self.toggleSettings = function() {
-        self.showSettings = !self.showSettings;
-    }
+    self.toggleImage = function() {
+        
+    } 
 
     self.loadImage = function(question) {
         $('#mylink').ekkoLightbox({remote: question.imageURL, title: question.question, footer: question.answer});  
