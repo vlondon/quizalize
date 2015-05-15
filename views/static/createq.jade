@@ -6,21 +6,53 @@
 
                 form.form-horizontal(role="form")
                     .form-group
-                        label.col-sm-3.control-label
-                            | Name:
-                            a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                        label.control-label.col-sm-3                               
+                            | Subject:    
+                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
                         .col-sm-9
-                            input.form-control#question(type="text", on-enter="createq.focusTopic();", ng-model="createq.newQuizName", placeholder="e.g. Capital Cities", autofocus="true")
+                            input.form-control#subject(type="text", on-enter="createq.focusTopic();",ng-model="createq.quizSubject", placeholder="e.g. Geography (Optional)")
                             br
                         label.control-label.col-sm-3                               
-                            | Topic:    
-                            a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                            | Unit/Topic:    
+                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
                         .col-sm-9
-                            input.form-control#category(type="text", on-enter="createq.createQuiz();",ng-model="createq.newQuizCategory", placeholder="e.g. Geography Level 1")
+                            input.form-control#category(type="text", on-enter="createq.focusQuiz();",ng-model="createq.newQuizCategory", placeholder="e.g. Earthquakes (Optional)")
                             br
-                        .col-sm-12
-                            center
-                                button.btn.btn-primary(ng-click="createq.createQuiz();", ng-disabled="createq.newQuizName==''") Create Quiz
+                        label.col-sm-3.control-label
+                            | Quiz Title:
+                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                        .col-sm-9
+                            input.form-control#question(type="text", on-enter="createq.createQuiz();", ng-model="createq.newQuizName", placeholder="e.g. Plate Boundaries", autofocus="true")
+                            br
+                        .col-sm-4.col-sm-offset-4
+                            button.btn.btn-block(ng-click="createq.showSettings=!createq.showSettings", ng-class="{true: 'btn-info', false: ''}[createq.showSettings]") More Settings
+                        .col-sm-4
+                            br.visible-xs
+                            button.btn.btn-primary.btn-block(ng-click="createq.createQuiz();", tabindex="7" ) Create Quiz
+
+
+
+    .row.well(ng-show="createq.showSettings")
+        h2 More Settings
+        p You can choose the default settings for your quiz here. You and teachers you share your quiz with can override these when they assign a quiz to a class. You can change these at any time by clicking on the settings button when editing your quiz.
+        .well       
+            .form-group     
+                label.control-label.col-sm-9
+                    h4 Number of questions to use when playing a quiz
+                        a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                .col-xs-3(style="margin-top: 13px")
+                    select(ng-model="createq.numQuestionsInQuiz")
+                        option(value="-1") All
+                        option(value="10") 10
+                label.control-label.col-sm-9
+                    h4 Randomize question order when playing a quiz
+                        a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Randomize question order" data-content="You can choose to randomize the order of the questions every time someone plays the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                .col-xs-3(style="margin-top: 13px")
+                    label(class="switch")
+                        input(type="checkbox",class="switch-input", ng-model="create.latexEnabled", ng-change="create.enableLatex()")
+                        span(class="switch-label",data-on="Yes",data-off="No")
+                        span(class="switch-handle")    
+
 
 script. 
   $(document).ready(function() {

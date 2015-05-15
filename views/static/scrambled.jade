@@ -19,8 +19,11 @@ nav.navbar.navbar-default.navbar-fixed-top
                 .text-center
                     h2(ng-show="quiz.question.length < 20").quizQuestion {{quiz.question}}
                     h3(ng-show="quiz.question.length >= 20").quizQuestion {{quiz.question}}
-                    br
-
+                    span(ng-show="quiz.imageURL")
+                        img(ng-src="{{quiz.imageURL}}",width="80%")
+                        br
+                        br
+    
                     .btn-group.btn-default
                         button.btn.letterTile.btn-info(ng-repeat="letter in quiz.userAnswerLetters track by $index", ng-click="quiz.removeLetter($index)") {{letter}}
 

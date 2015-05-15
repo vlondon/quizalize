@@ -49,11 +49,15 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.currentQuiz = data;
             self.score = QuizData.currentQuizResult().totalScore;
             self.questionCount = QuizData.currentQuizResult().questionCount;
+            if (self.currentQuiz.latexEnabled) {
+                MathJax.Hub.Config({
+                    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+                });
+            }                 
             QuizData.getQuestion(self.questionId, function(data){
-
                 self.question = data.question;
                 self.answer = replaceSpaces(data.answer);
-
+                self.imageURL = data.imageURL;
                 self.letters = getLetters(self.answer);
                 self.answerLetters = self.answer.toUpperCase().split('');
                 self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
