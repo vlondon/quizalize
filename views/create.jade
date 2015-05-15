@@ -190,7 +190,7 @@ html(ng-app='createQuizApp')
                 margin-left: 5px;
             }
 
-body(ng-controller="NavBarController as ctrl")
+body(ng-controller="NavBarController as nctrl")
     nav.navbar.navbar-default
         .container-fluid
             .navbar-header
@@ -210,9 +210,9 @@ body(ng-controller="NavBarController as ctrl")
                     li(style="margin-right:5px;")#quizzes
                         a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
                     li(style="margin-right:5px;")
-                        button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
+                        button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="nctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[nctrl.showHelp]") ?
                     li
-                        a.btn.btn-info.navbar-btn(ng-click="ctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Log in
+                        a.btn.btn-info.navbar-btn(ng-click="nctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Log in
                                 
     div(ng-view ngCloak)
 
@@ -230,9 +230,9 @@ body(ng-controller="NavBarController as ctrl")
                     p#modalMessage
                 div.modal-footer
                     button.btn.btn-default(data-dismiss="modal")#closeButton Close
-                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="ctrl.confirmed()") OK
+                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
 
-    #intro(ng-show="ctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
+    #intro(ng-show="nctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
             .container-fluid
                 .row
                     .col-xs-12.text-center
@@ -259,7 +259,7 @@ body(ng-controller="NavBarController as ctrl")
                     .col-sm-4.col-sm-offset-4
                         br
                         br
-                        button.btn.btn-info.btn-block(ng-click="ctrl.dismiss();") Get Started
+                        button.btn.btn-info.btn-block(ng-click="nctrl.dismiss();") Get Started
 
     script.
         var userId = localStorage.getItem("userId");

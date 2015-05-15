@@ -8,51 +8,31 @@
                     .form-group
                         label.control-label.col-sm-3                               
                             | Subject:    
-                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="5")                        
                         .col-sm-9
-                            input.form-control#subject(type="text", on-enter="createq.focusTopic();",ng-model="createq.quizSubject", placeholder="e.g. Geography (Optional)")
+                            input.form-control#subject(type="text", on-enter="ctrl.focusTopic();",ng-model="ctrl.quiz.subject", placeholder="e.g. Geography (Optional)", tabindex="1")
                             br
                         label.control-label.col-sm-3                               
                             | Unit/Topic:    
-                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="6")                        
                         .col-sm-9
-                            input.form-control#category(type="text", on-enter="createq.focusQuiz();",ng-model="createq.newQuizCategory", placeholder="e.g. Earthquakes (Optional)")
+                            input.form-control#category(type="text", on-enter="ctrl.focusQuiz();",ng-model="ctrl.quiz.category", placeholder="e.g. Earthquakes (Optional)", tabindex="2")
                             br
                         label.col-sm-3.control-label
                             | Quiz Title:
-                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                            a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="7")
                         .col-sm-9
-                            input.form-control#question(type="text", on-enter="createq.createQuiz();", ng-model="createq.newQuizName", placeholder="e.g. Plate Boundaries", autofocus="true")
+                            input.form-control#question(type="text", on-enter="ctrl.createQuiz();", ng-model="ctrl.quiz.name", placeholder="e.g. Plate Boundaries", autofocus="true",tabindex="3")
                             br
                         .col-sm-4.col-sm-offset-4
-                            button.btn.btn-block(ng-click="createq.showSettings=!createq.showSettings", ng-class="{true: 'btn-info', false: ''}[createq.showSettings]") More Settings
+                            button.btn.btn-block(ng-click="ctrl.showSettings=!ctrl.showSettings", ng-class="{true: 'btn-info', false: ''}[ctrl.showSettings]") More Settings
                         .col-sm-4
                             br.visible-xs
-                            button.btn.btn-primary.btn-block(ng-click="createq.createQuiz();", tabindex="7" ) Create Quiz
+                            button.btn.btn-primary.btn-block(ng-click="ctrl.createQuiz();", tabindex="4", ng-disabled="ctrl.quiz.name==''" ) Save
 
 
 
-    .row.well(ng-show="createq.showSettings")
-        h2 More Settings
-        p You can choose the default settings for your quiz here. You and teachers you share your quiz with can override these when they assign a quiz to a class. You can change these at any time by clicking on the settings button when editing your quiz.
-        .well       
-            .form-group     
-                label.control-label.col-sm-9
-                    h4 Number of questions to use when playing a quiz
-                        a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
-                .col-xs-3(style="margin-top: 13px")
-                    select(ng-model="createq.numQuestionsInQuiz")
-                        option(value="-1") All
-                        option(value="10") 10
-                label.control-label.col-sm-9
-                    h4 Randomize question order when playing a quiz
-                        a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Randomize question order" data-content="You can choose to randomize the order of the questions every time someone plays the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
-                .col-xs-3(style="margin-top: 13px")
-                    label(class="switch")
-                        input(type="checkbox",class="switch-input", ng-model="create.latexEnabled", ng-change="create.enableLatex()")
-                        span(class="switch-label",data-on="Yes",data-off="No")
-                        span(class="switch-handle")    
-
+    include qsettings
 
 script. 
   $(document).ready(function() {

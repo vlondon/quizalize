@@ -260,9 +260,6 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             //created when quizzes are processed
             return self.categories;
         },
-
-
-
         //quiz methods
         getQuizzes: function(callback){
             if (userUuid!="") {

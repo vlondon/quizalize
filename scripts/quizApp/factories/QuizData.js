@@ -114,6 +114,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     var setQuiz = function(quiz) {
         currentQuiz = quiz;        
         localStorage.setItem("currentQuiz",JSON.stringify(currentQuiz));
+        quiz.questions = spliceQuestions(quiz)
         initQuizResult();
     }
 
@@ -125,6 +126,85 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                 callback(null,currentQuiz);
             }
         }         
+    }
+
+    var randomFunctionNumber = function(seed,size) {
+        var x = Math.sin(seed++) * 10000;
+        var result =  x - Math.floor(x);        
+        return Math.floor(result * size) + 1;
+    }
+
+    var hashCode = function(str) {
+        var hash = 0, i, chr, len;
+        if (str.length == 0) return hash;
+        for (i = 0, len = str.length; i < len; i++) {
+            chr   = str.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    };
+
+    function shuffle(array) {
+        if (array.length==1) {
+            ar
+        }
+        var currentIndex = array.length, temporaryValue, randomIndex ;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+
+    var spliceQuestions = function(quiz) {
+        var attributes = quiz.attributes;
+        var questions = quiz.questions;
+        var seed = Math.floor((Math.random() * 100) + 1);
+        var result = [];
+        if (attributes) {
+            if (attributes['random']=="false") {
+                seed = quiz.updated;
+            }
+            var result2 = [];
+            if (attributes['numQuestions']) {
+                var random = false;
+                try {
+                    var num = parseInt(attributes['numQuestions']);
+                    var numToAdd = Math.min(num,questions.length);                                        
+                    for (var i=0;i<numToAdd;i++) {
+                        var randomNumber = randomFunctionNumber(seed,questions.length);
+                        var x = questions.splice(randomNumber,1);
+                        result2.push(x[0]);                        
+                    }
+                }
+                catch (err) {
+
+                }
+            }
+            else {
+                result2 = questions;
+            }
+            if (attributes['random']=="true") {
+                result = shuffle(result2);
+            }
+            else {
+                result = result2;
+            }
+        }
+        else {
+            return questions;
+        }
+        return result;
     }
 
     var getPublicContent = function(quizId,callback) {

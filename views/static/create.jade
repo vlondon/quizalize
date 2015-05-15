@@ -26,11 +26,13 @@ style.
                 h3 {{create.mode}}  
                     span(style="color: red") Question {{create.currentQuestion}} 
                     | for {{create.currentQuiz}}
+                    button.btn.btn-sm.btn-info(ng-click="create.editQuiz();",style="margin: 8px")
+                        span.glyphicon.glyphicon-cog        
                     span.pull-right
                         .row
                             .col-sm-9.setting
                                 p Math Mode
-                                    a.glyphicon.glyphicon-question-sign.left-space(data-toggle="popover" title="Math Mode" data-content="Use maths mode to enter equations in questions and answers. Learn more" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1",)                        
+                                    a.glyphicon.glyphicon-question-sign.left-space(data-toggle="popover" title="Math Mode" data-content="Use maths mode to enter equations in questions and answers. <a  target=_blank href='http://blog.zzish.com/post/119033343859/math-mode-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1",data-html="true")                        
 
                             .col-sm-3
                                 label(class="switch")
@@ -39,7 +41,7 @@ style.
                                     span(class="switch-handle")    
                             .col-sm-9.setting
                                 p Use Images
-                                    a.glyphicon.glyphicon-question-sign.left-space(data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. Learn more" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1")                        
+                                    a.glyphicon.glyphicon-question-sign.left-space(data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. <a target=_blank href='http://blog.zzish.com/post/119032391314/using-images-in-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="1",data-html="true")                        
 
                             .col-sm-3
                                 label(class="switch")
@@ -79,7 +81,7 @@ style.
                     .form-group(ng-hide="create.quiz.latexEnabled")
                         label.col-sm-3.control-label 
                             | Incorrect Answers
-                            a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. Learn more" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="10")
+                            a.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. <a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="10",data-html="true")
                         .col-sm-3
                             textarea.autogrow-short.form-control#alt1(type="text", placeholder="e.g. London", ng-model="create.alt1", on-enter="create.focusAlt('2');", tabindex="3",rows="1",cols="10")
                             script $('#alt1').css('overflow', 'hidden').autogrow()
@@ -154,10 +156,11 @@ style.
                         h4(ng-show="item.imageURL") {{$index + 1}}.
                             a.imgLink(ng-click="create.loadImage(item)")#mylink                            
                                 img(ng-src="{{item.imageURL}}", width="40", heigth="40") 
-                            | {{item.question}}
-                        h4(ng-hide="item.imageURL") {{$index + 1}}. {{item.question}}
+                            span#questionOutput{{item.uuid}} {{item.question}}
+                        h4(ng-hide="item.imageURL") {{$index + 1}}. 
+                            span(id="questionMathRow{{item.uuid}}"){{item.question}}
                     .col-sm-4
-                        h4.text-info {{item.answer}}
+                        h4.text-info(id="answerTextMathRow{{item.uuid}}") {{item.answer}}
                     .col-sm-2
                         button.btn.btn-info(ng-click="create.editQuestion($index);",style="margin: 4px")
                             span.glyphicon.glyphicon-pencil

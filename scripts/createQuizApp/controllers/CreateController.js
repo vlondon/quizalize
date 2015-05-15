@@ -184,7 +184,12 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         self.clearQuestions();
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
         resizeAll();
-        $("#quizzes").show();             
+        $("#quizzes").show();  
+
+        setTimeout(function() {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question_obj.uuid)[0]]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question_obj.uuid)[0]]);
+        },1000);           
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
@@ -253,6 +258,10 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
 
     self.loadImage = function(question) {
         $('#mylink').ekkoLightbox({remote: question.imageURL, title: question.question, footer: question.answer});  
+    }
+
+    self.editQuiz = function() {
+        $location.path("/edit/"+self.id);
     }
 
     $log.debug(self);

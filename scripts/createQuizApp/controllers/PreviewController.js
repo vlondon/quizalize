@@ -9,13 +9,14 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
     if(self.id==undefined) $location.path("/");
 
     self.publish = function(){
-        var details = { emailAddress: self.emailAddress, access: -1, groupName: self.className };
+        var details = { access: -1, groupName: self.className };
         if (QuizData.getUser()!=self.quiz.profileId && self.quiz.share) {
             details['share']=self.quiz.profileId;
         }        
         self.publishing = true;
         QuizData.registerEmailAddress(self.emailAddress).success(function(result){
             QuizData.setUser(result);
+            for (var i in self.settings) details[i] = self.settings[i];
             QuizData.publishQuiz(self.quiz, details,function(err,result) {
                 if (!err) {
                     $log.debug("Response from publishing: ", result);
@@ -46,6 +47,7 @@ angular.module('createQuizApp').controller('PreviewController', ['QuizData', '$l
     if (!QuizData.getUser()) {
         QuizData.getQuiz(self.id, false, function(qz){
             self.quiz = qz;
+            self.settings = $.extend({}, qz.settings);
             $log.debug(self);
         });
     }

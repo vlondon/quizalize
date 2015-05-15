@@ -1,0 +1,21 @@
+.row.well(ng-show="ctrl.showSettings")   
+    h2 More Settings
+    p You can choose the default settings for your quiz here. You and teachers you share your quiz with can override these when they assign a quiz to a class. You can change these at any time by clicking on the settings button when editing your quiz.
+    .well       
+        .form-group     
+            label.control-label.col-sm-9
+                h4 Number of questions to use when playing a quiz
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px") 
+                select(ng-model="ctrl.settings.numQuestions") 
+                    option(value="") All
+                    option(value="10") 10
+                    option(value="20") 20
+            label.control-label.col-sm-9
+                h4 Randomize question order when playing a quiz
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Randomize question order" data-content="You can choose to randomize the order of the questions every time someone plays the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px")
+                label(class="switch")
+                    input(type="checkbox",class="switch-input", ng-model="ctrl.settings.random")
+                    span(class="switch-label",data-on="Yes",data-off="No")
+                    span(class="switch-handle")             
