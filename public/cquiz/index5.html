@@ -36,7 +36,7 @@
 <section id="intro" class="home-slide ">
     <div class="item-inner item-inner__hero item-1">
         <div class="cta-container">
-            <h1 class="cta-title"><strong>Identify GSE Maths learning gaps with our fun classroom game</strong></h1>
+            <h1 class="cta-title"><strong>Identify GCSE Maths learning gaps with our fun classroom game</strong></h1>
 
 
 
@@ -284,6 +284,7 @@
 
           function playQuiz(id) {
             var check = localStorage.getItem("userId");
+            sessionStorage.setItem("mode","teacher");
             if (check) {
               window.location.href="/app#/play/public/"+id+"/true";
             }    
