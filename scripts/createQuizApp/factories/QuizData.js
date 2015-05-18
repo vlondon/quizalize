@@ -15,6 +15,9 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     var topics = null;
     var rootTopicId = null;
 
+    var groupContents = null;
+    var categories = null;
+
     //these are data object we have that we can get back if we lose
     var classList = JSON.parse(localStorage.getItem("classList"));
     if (!classList) {
@@ -40,8 +43,8 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     };
 
     var processQuizList = function(result,callback){
-        self.categories = [];
-        var categories = {};
+        categories = [];
+        var categoriesHash = {};
         for (var i in result.contents) {
             var quiz = result.contents[i];
             var cuuid = "undefined";
@@ -56,19 +59,19 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                     }
                 }
             }
-            if (categories[cuuid]==undefined) {
-                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
+            if (categoriesHash[cuuid]==undefined) {
+                categoriesHash[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
             if (category.name=="") {
                 category.homework = true;
             }
             if (category.homework) {
-                category.name="Quizzes (" + categories[cuuid].quizzes.length + ")";
+                category.name="Quizzes (" + categoriesHash[cuuid].quizzes.length + ")";
             }
-            categories[cuuid].quizzes.push(quiz);
+            categoriesHash[cuuid].quizzes.push(quiz);
         }
-        for (var i in categories) {
-            self.categories.push(categories[i]);
+        for (var i in categoriesHash) {
+            categories.push(categoriesHash[i]);
         }
         callback();
     }; 
@@ -123,22 +126,22 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     var getGroupContents = function(callback) {
         $http.get("/users/" + userUuid + "/groups/contents").success(function(resp){
             $log.debug("Response from server for getting group Contents", resp);                
-            self.groupContents = { };
+            groupContents = { };
             for (var i in resp) {
                 var content = resp[i];
-                if (self.groupContents[content.groupCode]==undefined) {
-                    self.groupContents[content.groupCode] = { contents: [] };
+                if (groupContents[content.groupCode]==undefined) {
+                    groupContents[content.groupCode] = { contents: [] };
                 }
-                self.groupContents[content.groupCode].contents.push(content);
+                groupContents[content.groupCode].contents.push(content);
             }
-            callback(self.groupContents);                    
+            callback(groupContents);                    
         }).error(function(er){
             $log.debug("Error from server when getting groups", er);
         });          
     }
 
     var setRootTopic = function(topicId) {
-        self.rootTopicId = topicId;
+        rootTopicId = topicId;
     }
 
     var setUser = function(user) {
@@ -223,11 +226,11 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         },
         //group content (list of assigned quizzes)
         getGroupContents: function (callback) {
-            if (self.groupContents==undefined) {
+            if (groupContents==undefined) {
                 getGroupContents(callback);              
             }
             else {
-                callback(self.groupContents);
+                callback(groupContents);
             }
         },
         //topic methods
@@ -235,16 +238,16 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             setRootTopic(topicId);
         },
         getRootTopic: function() {
-            return self.rootTopicId;
+            return rootTopicId;
         },
-        getTopics: function( callback){
+        getTopics: function(callback){
             if (userUuid!="") {
                 if (topics==undefined) {
                     $http.get("/create/" + userUuid + "/topics/").success(function(resp){
                         $log.debug("Response from server for getting topics", resp);
-                        self.topics = {};
+                        topics = {};
                         for (var i in resp) {
-                            self.topics[resp[i].uuid] = resp[i];
+                            topics[resp[i].uuid] = resp[i];
                         }
                         callback(resp);
                     }).error(function(er){
@@ -256,9 +259,36 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 }
             }
         },
+        // getQuizData: function(callback) {
+        //     $http.get("/create/" + userUuid + "/quizData/").success(function(resp){
+        //         topics = {};
+        //         for (var i in resp.topics) {
+        //             topics[resp.topics[i].uuid] = resp.topics[i];
+        //         }
+        //         quizData = {};
+        //         for (var i in resp.quizzes) {
+        //             quizData[resp.quizzes[i].uuid] = resp.quizzes[i];
+        //         }                        
+        //         localStorage.setItem("quizData",JSON.stringify(quizData));
+        //         groupContents = { };
+        //         for (var i in resp.contents) {
+        //             var content = resp.contents[i];
+        //             if (groupContents[content.groupCode]==undefined) {
+        //                 groupContents[content.groupCode] = { contents: [] };
+        //             }
+        //             groupContents[content.groupCode].contents.push(content);
+        //         }
+        //         var result = {
+        //             topics: topics,
+        //             quizzes: quizData,
+        //             contents: groupContents
+        //         }
+        //         callback(result);                
+        //     });            
+        // },
         getCategories: function() {
             //created when quizzes are processed
-            return self.categories;
+            return categories;
         },
         //quiz methods
         getQuizzes: function(callback){
@@ -395,19 +425,18 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 $log.debug("Response from unpublishing: ", result);
                 var idx = 0;
                 var found = false;
-                for (;idx<self.groupContents[code].contents.length;idx++) {
-                    if (self.groupContents[code].contents[idx].contentId==quizId) {
+                for (;idx<groupContents[code].contents.length;idx++) {
+                    if (groupContents[code].contents[idx].contentId==quizId) {
                         found = true;
                         break;
                     }
                 }
                 if (found) {
-                    self.groupContents[code].contents.splice(idx,1);
+                    groupContents[code].contents.splice(idx,1);
                 }                
                 //remove it from groupContents
             }).error(function(err){
                 $log.debug("Error from unpublishing: ", err);
-                self.statusText = err;
             });
         },  
         getEncryptedLink: function(id,callback) {
