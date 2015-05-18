@@ -209,14 +209,14 @@ style.
                 .well
                     .row
                         .col-md-4
-                            h4 
-                                strong {{item.question}}
+                            h4  
+                              strong(ng-id="quizQuestion{{item.questionId}}") {{item.question}}
                         .col-md-3
                             h4 Your answer
-                            strong(ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
+                            strong(ng-id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
                         .col-md-3
                             h4 Correct answer&nbsp;
-                            strong {{item.answer}}
+                            strong(ng-id="cresponse{{item.questionId}}") {{item.answer}}
                         .col-md-2
                             h4 Score: {{item.roundedScore}}
                             p(ng-show="item.correct") (You took {{item.seconds}}

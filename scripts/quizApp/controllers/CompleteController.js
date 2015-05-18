@@ -70,6 +70,14 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             }
         }
         t.score = Math.round(t.score);
+        setTimeout(function() {
+            for(var j in items){
+                var item = items[j];
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.uuid)[0]]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.uuid)[0]]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.uuid)[0]]);
+            }
+        },200);         
         return t;
     };
 
