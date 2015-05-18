@@ -24,6 +24,7 @@ require('createQuizApp/controllers/PreviewController');
 require('createQuizApp/controllers/QuizzesController');
 require('createQuizApp/controllers/PublicController');
 require('createQuizApp/controllers/AssignController');
+require('createQuizApp/controllers/PublicAssignController');
 require('createQuizApp/controllers/LoginController');
 require('createQuizApp/controllers/AccountController');
 require('createQuizApp/controllers/PublishedController');
