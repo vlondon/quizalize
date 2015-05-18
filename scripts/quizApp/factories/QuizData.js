@@ -454,6 +454,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
             var reportItem = {
                 id: idx,
                 question: questionName,
+                questionId: question.uuid,
                 response: response,
                 answer: answer,
                 correct: correct,

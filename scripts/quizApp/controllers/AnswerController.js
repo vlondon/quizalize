@@ -22,6 +22,12 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
         $location.path(QuizData.generateNextQuestionUrl(self.questionId));
     }
 
+    setTimeout(function() {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response")[0]]);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse")[0]]);
+    },200);     
+
     self.cancel = function() {
         QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
             if (sessionStorage.getItem("mode")=="teacher") {
