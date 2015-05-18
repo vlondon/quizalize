@@ -352,7 +352,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         selectQuestionType: function(index) {
             return selectQuestionType(index);
         },
-        currentQuiz: currentQuiz,
+        currentQuiz: function() {
+            return currentQuiz;
+        },
         startCurrentQuiz: function(callback) {
             var parameters = {
                 activityDefinition: {
@@ -388,7 +390,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         },
         getAlternatives: function(questionIndex){
             var question = currentQuiz.questions[questionIndex];
-            if(question.alternatives){
+            if(question.alternatives && question.alternatives.length>0){
                 var options = [];
                 options.push(question.answer);
                 for(var i in question.alternatives) {
@@ -397,8 +399,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                         options.push(alt);
                     }
                 }
-                return randomise(options);
-
+                //return randomise(options);
+                return options;
             } else {
                 var answers = [];
                 var correct = question.answer;

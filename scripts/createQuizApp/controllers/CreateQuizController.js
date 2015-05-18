@@ -20,6 +20,7 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
     self.createQuiz = function(){
         var found = false;
         var rootTopicId = "-1";
+        self.quiz.category = $("#category").val();
         for (var i in self.rootTopics) {
             if (self.rootTopics[i].name==self.quiz.category) {
                 //we already have this category
