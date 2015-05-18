@@ -7,6 +7,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
     self.published = false;
     self.shareLink = "";
     self.shareEmails = "";
+    self.showSettings = false;
 
     //fields
     self.currentClass = QuizData.getCurrentClass();
@@ -33,6 +34,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
             if (QuizData.getUser()!=self.quiz.profileId && self.quiz.share) {
                 details['share']=self.quiz.profileId;
             }
+            for (var i in self.settings) details[i] = self.settings[i];
             self.publishing = true;
             QuizData.publishQuiz(self.quiz, details,function(err,result) {
                 self.publishing = false;                    
@@ -72,6 +74,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
 
     QuizData.getQuiz(self.id, false, function(qz){
         self.quiz = qz;
+        self.settings = $.extend({}, qz.settings);
 
         if(QuizData.getUser()) {
             self.profileId = QuizData.getUser();

@@ -13,7 +13,11 @@
                         h4 {{quiz.name}}  
                             span(ng-show="quiz.categoryId")
                     .col-xs-4
-                        h4 {{quizzes.topics[quiz.categoryId].name}}
+                        h4
+                            span(ng-show="quiz.subject")
+                                | {{quiz.subject}} 
+                            span(ng-show="quiz.categoryId")
+                                | {{quizzes.topics[quiz.categoryId].name}}
                     .col-xs-4
                         button.btn.btn-info(ng-click="quizzes.editQuiz(quiz);",style="margin: 4px;")
                             span.glyphicon.glyphicon-pencil                        

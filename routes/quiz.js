@@ -282,18 +282,7 @@ exports.publishQuiz = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
-    var data = {};    
-    if (req.body.code!=undefined) {
-        data['code'] = req.body.code;    
-    }    
-    if (req.body.groupName!=undefined) {
-        data['groupName'] = req.body.groupName;    
-    }    
-    if (req.body.share!=undefined) {
-        data['share'] = req.body.share;    
-    }    
-    data['access'] = -1;
-
+    var data = req.body;
 
     console.log("Will publish", profileId, id, data);
 
@@ -335,7 +324,6 @@ exports.shareQuiz = function(req, res){
 
 exports.getQuizByCode = function(req,res) {
     var decoded = getDecryptQuiz(req.params.code);
-    console.log("Decoded",decoded);
     zzish.getContent(decoded.profileId,decoded.uuid,function (err,result) {
         res.send(result);
     })

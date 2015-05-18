@@ -1,25 +1,27 @@
-angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', '$log', '$http', '$location', function(QuizData, $log, $http, $location){
+angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', '$log', '$http', '$location', '$routeParams', function(QuizData, $log, $http, $location,$routeParams){
     var self = this;
     //form fields
-    self.newQuizName = "";
-    self.newQuizCategory = "";
+    self.id = $routeParams.id;
 
     //use for autocomplete
     self.rootTopicList = [];
     self.rootTopics = [];
 
+    self.showSettings = false;
+
     self.focusTopic = function(){
         $('#category').focus();
     }
 
+    self.focusQuiz = function() {
+        $('#question').focus();   
+    }
+
     self.createQuiz = function(){
-        if (self.newQuizCategory.length ==0) {
-            self.newQuizCategory = "";
-        }
         var found = false;
         var rootTopicId = "-1";
         for (var i in self.rootTopics) {
-            if (self.rootTopics[i].name==self.newQuizCategory) {
+            if (self.rootTopics[i].name==self.quiz.category) {
                 //we already have this category
                 rootTopicId = self.rootTopics[i].uuid;
                 found = true;
@@ -27,10 +29,10 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
             }
         }
         if (found) {
-            QuizData.setRootTopic(rootTopicId);
+            QuizData.setRootTopic(rootTopicId);            
         }
-
-        QuizData.addQuiz({name: self.newQuizName, categoryId: rootTopicId, category: self.newQuizCategory, questions: []},function(uuid) {
+        self.quiz.categoryId = rootTopicId;
+        QuizData.addQuiz(self.quiz,function(uuid) {
             $location.path("/create/" + uuid);
             $log.debug("going to /create/" + uuid);
         });
@@ -38,6 +40,25 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
 
     if (!QuizData.getUser()) {
         $location.path("/register/create"); 
+    }
+    if (self.id) {
+        QuizData.getQuiz(self.id, true, function(quiz){      
+            self.quiz = quiz;            
+            self.settings = self.quiz.settings;
+        });
+    }
+    else {
+        self.quiz = {
+            name: "",
+            category: "",
+            subject: "",
+            questions: [],
+            settings: {
+                numQuestions: "",
+                random: false        
+            }            
+        }        
+        self.settings = self.quiz.settings;
     }
 
     QuizData.getTopics(function(topics){

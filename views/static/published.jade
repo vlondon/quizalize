@@ -1,8 +1,8 @@
 .container(style="padding-top: 10px")
     .row.well
-        .col-sm-8.col-sm-offset-2.text-center(ng-show="publish.publishing")
+        .col-sm-8.col-sm-offset-2.text-center(ng-show="ctrl.publishing")
              h2 Publishing...
-        .quiz-preview(ng-show="publish.published")
+        .quiz-preview(ng-show="ctrl.published")
             .row
                 .col-sm-6
                     .border-block
@@ -15,7 +15,7 @@
                                 | and join this class
                             center
                                 .class-code 
-                                    | Class code: {{publish.currentClass.code}}
+                                    | Class code: {{ctrl.currentClass.code}}
                             br
                             p(style="margin-bottom: 18.5px") You can play on any mobile, tablet or computer.
                 .col-sm-6
@@ -26,12 +26,12 @@
                             br
                             br
                             center
-                                a.btn.btn-primary.btn-lg(ng-href="{{publish.currentClass.link}}", target="zzishld") Open Teacher Dashboard
+                                a.btn.btn-primary.btn-lg(ng-href="{{ctrl.currentClass.link}}", target="zzishld") Open Teacher Dashboard
                             br
                             p You can see live results as your students play.
             br
             br 
-            .row(ng-hide="publish.quiz.publicAssigned || (publish.quiz.profileId!=undefined && publish.quiz.profileId!=publish.profileId)")
+            .row(ng-hide="ctrl.quiz.publicAssigned || (ctrl.quiz.profileId!=undefined && ctrl.quiz.profileId!=ctrl.profileId)")
                 .col-sm-12
                     .border-block(style="background: #D6EBFF; padding: 10px")
                         center
@@ -39,17 +39,17 @@
                             p Enter the email addresses of up to 10 of your colleagues so that they can use this quiz in their class
                             .row
                                 .col-sm-11
-                                    input.form-control#shareEmails(type="text", ng-model="publish.shareEmails", on-enter="publish.share();", placeholder="charles@zzish.com samir@zzish.com")
+                                    input.form-control#shareEmails(type="text", ng-model="ctrl.shareEmails", on-enter="ctrl.share();", placeholder="charles@zzish.com samir@zzish.com")
                                 .col-sm-1
-                                    a.btn.btn-primary(ng-click="publish.share();") Share
+                                    a.btn.btn-primary(ng-click="ctrl.share();") Share
                             br
                             br
                             p or share the following link with them
                             center
                                 p(style="font-size: 11px")
-                                    em {{publish.shareLink}}
+                                    em {{ctrl.shareLink}}
 
-        .col-sm-8.col-sm-offset-2(ng-show="!publish.publishing && !publish.published")
+        .col-sm-8.col-sm-offset-2(ng-show="!ctrl.publishing && !ctrl.published")
             h1.text-center Which class should take this quiz?
                 .form-horizontal(role="form")
             p You can have more than one class with Quizalize. Type in the name of a class should take this quiz. If you type in a new name, you will create a new class. 
@@ -57,11 +57,15 @@
                 .col-sm-3.fieldlabel
                     label.control-label Class Name
                 .col-sm-9
-                    input.form-control#className(type="text", ng-model="publish.className", on-enter="publish.publish();")
+                    input.form-control#className(type="text", ng-model="ctrl.className", on-enter="ctrl.publish();")
                     br
+                .col-sm-3.col-sm-offset-6
+                    button.btn.btn-block(ng-click="ctrl.showSettings=!ctrl.showSettings", ng-class="{true: 'btn-info', false: ''}[ctrl.showSettings]") More Settings
+                .col-sm-3
+                    br.visible-xs
+                    button.btn.btn-block.btn-primary(ng-click="ctrl.publish();", ng-disabled="ctrl.className.length==0 || ctrl.publishing") Play
 
                 .col-xs-12
                     center
-                        button.btn.btn-primary(ng-click="publish.publish();", ng-disabled="publish.className.length==0 || publish.publishing") Play
-
-        .col-sm-8.col-sm-offset-2(ng-show="!publish.publishing && !publish.published")
+                        
+    include qsettings

@@ -16,13 +16,14 @@ angular.module('createQuizApp').directive("mathjaxBind", function() {
         restrict: "A",
         controller: ["$rootScope","$scope", "$element", "$attrs", function($rootScope,$scope, $element, $attrs) {
             $scope.$watch($attrs.mathjaxBind, function(value,oldvalue) {
-                if (!$rootScope.processing && !!$rootScope.latexAtivated && value!=undefined) {
-                    $rootScope.processing = true;
-                    var test = (value.match(/\$/g) || []).length;
-                    if (test%2==0 && test>0) {
-                        $element.text(value == undefined ? "" : value);                            
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]],["PreviewDone",this]);                                                                                                    
-                    }                        
+                if (!!$rootScope.latexAtivated && value!=undefined) {
+                    //var test = (value.match(/\$/g) || []).length;
+                    // if (test%2==0 && test>0) {
+                    //     $element.text(value == undefined ? "" : value);                            
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);                                                                                                    
+                    // }                        
+                    $element.text(value == undefined ? "" : value);                            
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);                                                                                                    
                 }
             });
         }]

@@ -31,5 +31,8 @@ nav.navbar.navbar-default.navbar-fixed-top
                     br
                     h3 Score more points by answering questions quickly!
                     br
+                    span(ng-show="quiz.showSubText")
+                        h4 You will be asked {{quiz.numQuestions}} questions {{quiz.randomText}}
+                    br
                     br
                     .btn.btn-block.btn-info(ng-click="quiz.start();") Start
