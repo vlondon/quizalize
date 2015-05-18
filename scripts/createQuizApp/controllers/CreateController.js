@@ -19,6 +19,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.alt3 = "";
     self.topic = "";
     self.imageURL = "";
+    self.showTextArea = false;
 
     self.id = $routeParams.id;
     if (self.id==undefined) $location.path("/");
@@ -28,6 +29,13 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         if (self.quiz.questions!=undefined) {
             self.currentQuestion = self.quiz.questions.length+1;    
         }        
+        for (var i in self.quiz.questions) {
+            var question = self.quiz.questions[i];
+            setTimeout(function() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question.uuid)[0]]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question.uuid)[0]]);
+            },4000);                       
+        }
         if (self.quiz.latexEnabled==undefined) {
             self.quiz.latexEnabled = false;
         }
@@ -108,6 +116,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.addQuestion = function() {
         var topicId="";
         var questionId = $("#questionId").val();
+        self.topic = $("#topic").val();        
         if (self.topic!="") {
             var found = false;
             for (var i in self.topics) {
@@ -262,6 +271,28 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
 
     self.editQuiz = function() {
         $location.path("/edit/"+self.id);
+    }
+
+    self.showUpload = function() {
+        self.showTextArea = !self.showTextArea;
+    }
+
+    self.uploadData = function() {
+        var lines = self.uploader.split("\n");
+        for (var i in lines) {
+            var line = lines[i].split("\t");
+            self.topic = line[0];
+            self.question = line[1];
+            self.answerText = line[2];
+            self.alt1 = line[3];
+            self.alt2 = line[4];
+            self.alt3 = line[5];
+            if (line.length>6) {
+                self.imageURL = line[6];
+            }
+            self.addQuestion();
+        }
+        console.log("Uploading" + lines.length);
     }
 
     $log.debug(self);
