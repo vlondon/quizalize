@@ -80,6 +80,11 @@ angular.module('createQuizApp')
             controller: "AssignController",
             controllerAs: "delete"
         })
+        .when('/passign/:id', {
+            templateUrl: "/quiz/view/quizzes",
+            controller: "PublicAssignController",
+            controllerAs: "assign"
+        })
         .when('/playh/:postAction/:id', {
             templateUrl: "/quiz/view/signup",
             controller: "SignupController",

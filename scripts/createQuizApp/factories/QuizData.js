@@ -1,4 +1,3 @@
-
 angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($http, $log){
     var uuid = require('node-uuid');
 
@@ -326,7 +325,11 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             });                
         },  
         addQuizById: function(quizId, callback){
-            quizData[quiz.uuid]={uuid: quizId};
+            if (quizData==undefined) {
+                quizData = {};
+            }
+            quizData[quizId]={uuid: quizId};
+            callback(quizData[quizId])
         },
         addQuiz: function(quiz, callback){
             //get UserId (creates on if it doesn't already exist);
@@ -358,7 +361,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             });            
         },          
         getQuiz: function(id, loadFromServer, callback){
-            if(typeof quizData[id] != 'undefined'){
+            if(quizData != undefined && quizData[id] != undefined){
                 if(typeof quizData[id].questions != 'undefined' || quizData[id].publicAssigned){
                     $log.debug("Questions local or public");
                     callback(quizData[id]);
