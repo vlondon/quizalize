@@ -18,6 +18,8 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     var groupContents = null;
     var categories = null;
 
+    var quizDataLoaded = false;
+
     //these are data object we have that we can get back if we lose
     var classList = JSON.parse(localStorage.getItem("classList"));
     if (!classList) {
@@ -151,6 +153,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             currentClass = {};
             topics = null;
             rootTopicId = null;
+            quizDataLoaded = false;
             classList = [];
             quizData = {};
             localStorage.clear();
@@ -293,8 +296,9 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         },
         //quiz methods
         getQuizzes: function(callback){
-            if (userUuid!="") {
-                if (!quizData) {
+            if (userUuid!="") {                
+                if (!quizDataLoaded) {
+                    quizDataLoaded = true;
                     $http.get("/create/" + userUuid + "/quizzes/").success(
                         function(resp){
                             quizData = {};
@@ -363,7 +367,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                         $log.debug("No questions, so fetching from server");
                         $http.get("/create/" + userUuid + "/quizzes/" + quizData[id].uuid).success(function(resp){
                             $log.debug("Response from server for getting a quiz", resp);
-                            quizData[id].uuid = resp;
+                            quizData[id] = resp;
                             localStorage.setItem("quizData", JSON.stringify(quizData));
                             callback(resp);
                         }).error(function(er){
