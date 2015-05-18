@@ -36,9 +36,10 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
     }
     //Post Topic
     var postTopic = function(topic){
-        if (topics!=null) {
-            topics.push(topic);
+        if (topics==null) {
+            topics = {};
         }
+        topics[topic.uuid]=topic;
         return $http.post("/create/" + userUuid + "/topics/", topic);
     };
 
