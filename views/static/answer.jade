@@ -3,7 +3,21 @@ block header
         .answer {
             font-weight: 700;
             font-size: 28px;
+
+            -ms-word-break: break-all;
+
+            /* Be VERY careful with this, breaks normal words wh_erever */
+            word-break: break-all;
+
+            /* Non standard for webkit */
+            word-break: break-word;
+
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            hyphens: auto;
         }
+
+
 
 nav.navbar.navbar-default.navbar-fixed-top
     .container-fluid
@@ -32,14 +46,14 @@ nav.navbar.navbar-default.navbar-fixed-top
         .col-x-12.col-sm-8.col-sm-offset-2
             .well
                 .text-center
-                    h3.quizQuestion {{quiz.last.question}}
+                    h3.quizQuestion#quizQuestion {{quiz.last.question}}
                     .row
                         .col-sm-6
                             h4 Correct answer
-                            .answer {{quiz.last.answer}}
+                            .answer#response {{quiz.last.answer}}
                         .col-sm-6
                             h4 Your answer
-                            .answer(ng-class="{'text-success': quiz.last.correct, 'text-danger': !quiz.last.correct}") {{quiz.last.response}}
+                            .answer(ng-class="{'text-success': quiz.last.correct, 'text-danger': !quiz.last.correct}")#cresponse {{quiz.last.response}}
                     br
 
                     h3(ng-class="{'text-success': quiz.last.correct, 'text-danger': !quiz.last.correct}") Score: <strong>{{quiz.last.roundedScore}}</strong>

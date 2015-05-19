@@ -48,10 +48,22 @@ angular.module('quizApp')
         QuizData.loadQuiz(self.catId, self.id, function(data) {
             //$scope.$apply(function(){
                 self.currentQuiz = data;
+                if (self.currentQuiz.latexEnabled) {
+                    MathJax.Hub.Config({
+                        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+                    });       
+                    setTimeout(function() {
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
+                    },200);                
+                }                        
                 self.score = QuizData.currentQuizResult().totalScore;
                 self.questionCount = QuizData.currentQuizResult().questionCount;
                 QuizData.getQuestion(self.questionId, function(data){
-
+                    self.imageURL = data.imageURL;
                     self.question = data.question;
                     self.answer = data.answer;
                     self.alternatives = QuizData.getAlternatives(self.questionId);
@@ -80,7 +92,7 @@ angular.module('quizApp')
                                     (new Date()).getTime() - startTime,
                                     true);
             $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
-            renderReactComponent();
+            //renderReactComponent();
         };
 
         self.nextQuestion = function(){

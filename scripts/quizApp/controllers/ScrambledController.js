@@ -78,19 +78,27 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
 
 
     QuizData.loadQuiz(self.catId, self.id, function(data) {
-        //$scope.$apply(function(){
+
+        //
+
             self.currentQuiz = data;
             self.score = QuizData.currentQuizResult().totalScore;
             self.questionCount = QuizData.currentQuizResult().questionCount;
+            if (self.currentQuiz.latexEnabled) {
+                MathJax.Hub.Config({
+                    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+                });
+                setTimeout(function() {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
+                },200);
+            }
             QuizData.getQuestion(self.questionId, function(data){
-
                 self.question = data.question;
                 self.answer = replaceSpaces(data.answer);
-
+                self.imageURL = data.imageURL;
                 self.letters = getLetters(self.answer);
                 self.answerLetters = self.answer.toUpperCase().split('');
                 self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
-
                 if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {
                     //we already have this question
                     $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
@@ -137,6 +145,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             updateLastEmpty();
         }
     };
+
 
     $log.debug('Scrambled Controller', self);
 }]);

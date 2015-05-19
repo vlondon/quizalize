@@ -1,27 +1,27 @@
 .container(style="padding-top: 10px")
     .row
         .row.well
-            .col-sm-8.col-sm-offset-2.text-center(ng-show="preview.publishing")
+            .col-sm-8.col-sm-offset-2.text-center(ng-show="ctrl.publishing")
                 h2 Publishing...
 
-            .col-sm-8.col-sm-offset-2(ng-show="!preview.publishing")
+            .col-sm-8.col-sm-offset-2(ng-show="!ctrl.publishing")
                 h1.text-center One click class setup
                     .form-horizontal(role="form")
-                p No need to fill in full registration just yet, but please do enter a real email address and a class name so we can send you secure access to your class progress dashboard. 
-                .form-group(ng-hide="preview.publishing")
-                    .col-sm-3
+                p Please enter a valid school email address and your class name so that you can access your class results securely later.
+                .form-group(ng-hide="ctrl.publishing")
+                    .col-sm-3.fieldlabel
                         label.control-label Email
                     .col-sm-9
-                        input.form-control#email(type="text", ng-model="preview.emailAddress", on-enter="preview.focusClassCode();")
+                        input.form-control#email(type="text", ng-model="ctrl.emailAddress", on-enter="ctrl.focusClassCode();")
                         br
 
-                    .col-sm-3
+                    .col-sm-3.fieldlabel
                         label.control-label Class Name
                     .col-sm-9
-                        input.form-control#className(type="text", ng-model="preview.className", on-enter="preview.publish();")
+                        input.form-control#className(type="text", ng-model="ctrl.className", on-enter="ctrl.publish();")
                         br
 
                     .col-xs-12
                         center
-                            button.btn.btn-primary(ng-click="preview.publish();", ng-disabled="preview.canSubmit()") Save and Play
+                            button.btn.btn-primary(ng-click="ctrl.publish();", ng-disabled="ctrl.canSubmit()") Save and Play
                         br

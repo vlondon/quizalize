@@ -31,7 +31,6 @@ app.get('/quiz/view/:page', function(req, res){
 });
 
 app.get('/quiz/create', quiz.create);
-app.get('/amazon-twitter-voucher', quiz.voucher);
 
 //Endpoints for teachers TODO rename appropriately
 
@@ -81,6 +80,7 @@ Endpoints for students: actually we are making this client side
 app.get('/', checkForMobile, quiz.landingpage);
 app.get('/mobile', quiz.landingpage2);
 app.get('/ie', quiz.landingpage3);
+app.get('/ks4-gcse-maths', quiz.landingpage4);
 
 app.get('/tool/', quiz.landingpage);
 app.get('/quiz/', quiz.create);

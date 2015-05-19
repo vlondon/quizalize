@@ -5,11 +5,12 @@ var maxTime = settings.maxTime;
 var minScore = settings.minScore;
 var gracePeriod = settings.gracePeriod;
 
-angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', function(QuizData, $log){
+angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', function(QuizData, $log, $location){
     var self = this;
     var hasTopics = false;
-    self.teacherMode = !!sessionStorage.getItem("teacher");
-    sessionStorage.removeItem("teacher");
+    self.teacherMode = sessionStorage.getItem("mode")=="teacher";
+    self.previewMode = sessionStorage.getItem("mode")=="preview";
+    sessionStorage.removeItem("mode");
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -69,6 +70,14 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             }
         }
         t.score = Math.round(t.score);
+        setTimeout(function() {
+            for(var j in items){
+                var item = items[j];
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.uuid)[0]]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.uuid)[0]]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.uuid)[0]]);
+            }
+        },200);         
         return t;
     };
 
@@ -82,5 +91,14 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
 
     self.logout = function(){
         QuizData.logout();
+    }
+
+    self.home = function() {
+        if (self.previewMode) {
+            window.close();
+        }
+        else {
+            $location.path("/list");            
+        }
     }
 }]);

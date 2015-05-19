@@ -59,7 +59,7 @@ exports.forget =  function(req, res) {
     zzish.authenticate(email1,null,function(err,data) {
         if (!err) {
             res.status(200);
-            var link = "https://www.quizalize.com/quiz#/account/reset/"+encrypt(data);
+            var link = "http://www.quizalize.com/quiz#/account/reset/"+encrypt(data);
             var registerEmail = "Hi there\n\nClick on the following link to reset your password:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
             email.sendEmail('team@zzish.com',[req.body.emailAddress],'Password Reset',registerEmail);                        
         }
@@ -81,9 +81,9 @@ exports.registerEmail = function(req, res){
         console.log("Result from Register User",err,resp);
         if (!err) {
             res.status(200);
-            var link ="https://www.quizalize.com/quiz#/account/complete/"+encrypt(resp.uuid);
-            var registerEmail = "Welcome to Quizalize\n\nClick on the following link to complete your registration:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
-            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Complete Quizalize Registration',registerEmail);
+            var link ="http://www.quizalize.com/quiz#/account/complete/"+encrypt(resp.uuid);
+            var registerEmail = "Welcome to Quizalize\n\nThanks very much for entering your email address. Before you can log in and see your quizzes, you need to complete your registration. Just click on the following link:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
+            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Welcome to Quizalize!',registerEmail);
         }
         else {
             res.status(err);

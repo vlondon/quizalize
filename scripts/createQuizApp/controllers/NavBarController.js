@@ -6,7 +6,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
         $("#assignments").hide();            
         $("#quizzes").hide();            
         if (QuizData.getUser()) {
-            $("#LoginButton").html("Logout");        
+            $("#LoginButton").html("Log out");        
             QuizData.getGroupContents(function(data) {
                 var hasData = false;
                 for (var i in data) {

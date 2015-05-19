@@ -6,10 +6,14 @@ angular.module('createQuizApp').controller('AccountController', ['QuizData', '$l
     self.completing = false;
 
     if (self.action=="complete") {
-        self.title = "Complete Registration";
+        self.title = "You're almost done!";
+        self.message = "Please enter a secure password."
+        self.buttonName = "Complete Registration";
     }
     else if (self.action=="reset") {
         self.title = "Reset Password";
+        self.message = "Please enter a new secure password.";
+        self.buttonName = "Reset Password";
     }
 
     self.submitForm = function() {

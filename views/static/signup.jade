@@ -2,14 +2,14 @@
     .row
         .row.well
             .col-sm-8.col-sm-offset-2
-                h1.text-center One click class setup
+                h1.text-center Are you a teacher?
                     .form-horizontal(role="form")
-                p No need to fill in full registration just yet, but please do enter a real email address and a class name so we can send you secure access to your class progress dashboard. 
+                p Please enter a valid teacher email address so that we can help you setup your class later. 
                 .form-group
                     .col-sm-3
                         label.control-label Email
                     .col-sm-9
-                        input.form-control#email(type="text", ng-model="signup.emailAddress", on-enter="signup.focusClassCode();")
+                        input.form-control#email(type="text", ng-model="signup.emailAddress", on-enter="signup.focusClassCode();", placeholder="e.g. jsmith@myschool.staffs.sch.uk")
                         br
 
                     .col-xs-12

@@ -24,6 +24,7 @@ html(ng-app='quizApp')
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/uuid.js')
         script(src='#{session.zzishsdkurl}/zzish.js')
+        script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
         script(src='/js/quiz.js')
         script(src='/lib/bootstrap.js')
         script(src='/js/quizApp.js')
@@ -167,20 +168,9 @@ html(ng-app='quizApp')
                 }
             }
     body
-        script.
-            /* <![CDATA[ */
-            var google_conversion_id = 1034680765;
-            var google_custom_params = window.google_tag_params;
-            var google_remarketing_only = true;
-            /* ]]> */
-        script(src='//www.googleadservices.com/pagead/conversion.js')
-        noscript.
-            div(style="display:inline;")
-                img(height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0")       
-
         button.btn.btn-primary.btn-lg(data-toggle="modal",data-target="#myModal",style="display:none")#messageButton
 
-        div.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true",ng-controller="NavBarController as ctrl")#myModal
+        div.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true",ng-controller="NavBarController as nctrl")#myModal
             div.modal-dialog
                 div.modal-content
                     div.modal-header
@@ -192,6 +182,6 @@ html(ng-app='quizApp')
                         p#modalMessage
                     div.modal-footer
                         button.btn.btn-default(data-dismiss="modal")#closeButton Close
-                        button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="ctrl.confirmed()") OK
+                        button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
 
         div(ng-view)

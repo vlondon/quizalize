@@ -24,9 +24,11 @@ html(ng-app='createQuizApp')
         script(src='/lib/angular.min.js')  
         script(src='/lib/angular-animate.min.js')  
         script(src='/lib/angular-route.min.js')
-
+        script(src='/lib/autogrow.js')
+        script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
         script(src='/js/createQuizApp.js')        
         script(src='/js/quiz.js')  
+        script(src='/lib/ekko-lightbox.min.js')  
 
 
 
@@ -42,6 +44,8 @@ html(ng-app='createQuizApp')
         link(href='/css/jquery-ui.structure.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.theme.min.css', rel='stylesheet')
         link(href='/css/quizalize.css', rel='stylesheet')
+        link(href='/css/switch.css', rel='stylesheet')
+        link(href='/css/ekko-lightbox.min.css', rel='stylesheet')
 
         style.
             body{
@@ -171,15 +175,22 @@ html(ng-app='createQuizApp')
                 font-size: 32px;
             }            
 
-body(ng-controller="NavBarController as ctrl")
-    script.
-        /* <![CDATA[ */
-        var google_conversion_id = 1034680765;
-        var google_custom_params = window.google_tag_params;
-        var google_remarketing_only = true;
-        /* ]]> */
-    script(src='//www.googleadservices.com/pagead/conversion.js')
+            .setting {
+                text-align: right;
+                font-size: 13px;
+                margin-top: 7px;
+            }
 
+            .qsetting {
+                text-align: right;
+                margin-top: 7px;
+            }
+
+            .left-space {
+                margin-left: 5px;
+            }
+
+body(ng-controller="NavBarController as nctrl")
     nav.navbar.navbar-default
         .container-fluid
             .navbar-header
@@ -193,16 +204,15 @@ body(ng-controller="NavBarController as ctrl")
             .navbar-collapse.collapse#navbar
                 ul.nav.navbar-nav.navbar-right
                     li(style="margin-right:5px;")#quizzes
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
-                    li(style="margin-right:5px;")#quizzes
                         a.btn.btn-info.navbar-btn(href="/quiz/#/quizzes",style="margin-top:9px; padding: 8px;") Your quizzes                        
                     li(style="margin-right:5px;")#assignments
                         a.btn.btn-info.navbar-btn(href="/quiz/#/assignments",style="margin-top:9px; padding: 8px;") Your assignments                        
+                    li(style="margin-right:5px;")#quizzes
+                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
                     li(style="margin-right:5px;")
-                        button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="ctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[ctrl.showHelp]") ?
+                        button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="nctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[nctrl.showHelp]") ?
                     li
-                        a.btn.btn-info.navbar-btn(ng-click="ctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Login
-                        //button.btn.btn-info.navbar-btn(, style="padding: 8px;font-family: sans-serif;font-size: 16px;color: #efefef;background: #8d3b8e;border: 1px solid #b04ab2;border-radius: 4px;text-decoration: none;")#LoginButton Login with Zzish
+                        a.btn.btn-info.navbar-btn(ng-click="nctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Log in
                                 
     div(ng-view ngCloak)
 
@@ -220,9 +230,9 @@ body(ng-controller="NavBarController as ctrl")
                     p#modalMessage
                 div.modal-footer
                     button.btn.btn-default(data-dismiss="modal")#closeButton Close
-                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="ctrl.confirmed()") OK
+                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
 
-    #intro(ng-show="ctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
+    #intro(ng-show="nctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
             .container-fluid
                 .row
                     .col-xs-12.text-center
@@ -249,7 +259,7 @@ body(ng-controller="NavBarController as ctrl")
                     .col-sm-4.col-sm-offset-4
                         br
                         br
-                        button.btn.btn-info.btn-block(ng-click="ctrl.dismiss();") Get Started
+                        button.btn.btn-info.btn-block(ng-click="nctrl.dismiss();") Get Started
 
     script.
         var userId = localStorage.getItem("userId");

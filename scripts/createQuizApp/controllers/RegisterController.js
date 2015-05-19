@@ -9,16 +9,7 @@ angular.module('createQuizApp').controller('RegisterController', ['QuizData', '$
         self.registering = true;
         QuizData.registerEmailAddress(self.emailAddress).success(function(result){
             QuizData.setUser(result);
-            QuizData.showMessage("Registration Successful","Thanks for registering. You will receive an email on how to register. Click OK and let's start creating a quiz",function() {
-                self.registering = false;
-                if (self.postAction=="create") {
-                    $location.path("/create");
-                }
-                else {
-                    $location.path("/public");    
-                }
-            })
-
+            $location.path("/success/" + self.postAction + "/noid");
         }).error(function(err){
             QuizData.showMessage("Registration Error","There seems to be an error with your email address. This is the error we got: "+err,function() {
                 self.registeringNow = false;  

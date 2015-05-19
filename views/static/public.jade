@@ -1,5 +1,5 @@
 .container
-    h1 Choose a quiz for your class
+    h2 Choose a quiz for your class
     p Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
     
     .row(ng-repeat="category in public.categories | orderObjectBy:['order_index'] track by $index", style="padding-bottom: 10px")    
@@ -17,5 +17,5 @@
                                 button.btn.btn-info.btn-block(clickOnce ng-click="public.assignQuiz(quiz);") Set this quiz
                         .col-xs-2                            
                             .row.quiz-info-row                        
-                                a.btn.btn-info.btn-block(ng-href="/app#/play/A/{{quiz.uuid}}") Preview
+                                a.btn.btn-info.btn-block(clickOnce ng-click="public.previewQuiz(quiz);") Preview
                                 

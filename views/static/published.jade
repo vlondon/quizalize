@@ -1,26 +1,23 @@
-img(height='1', width='1', style='display:none;', alt='', src='https://analytics.twitter.com/i/adsct?txn_id=l5zii&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0')
-img(height='1', width='1', style='display:none;', alt='', src='//t.co/i/adsct?txn_id=l5zii&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0')
-img(height='1', width='1', alt='', style='display:none', src='https://www.facebook.com/tr?ev=6024319569179&cd[value]=0.01&cd[currency]=GBP&noscript=1')
-
 .container(style="padding-top: 10px")
     .row.well
-        .col-sm-8.col-sm-offset-2.text-center(ng-show="publish.publishing")
+        .col-sm-8.col-sm-offset-2.text-center(ng-show="ctrl.publishing")
              h2 Publishing...
-        .quiz-preview(ng-show="publish.published")
+        .quiz-preview(ng-show="ctrl.published")
             .row
                 .col-sm-6
                     .border-block
                         center
                             h1 Players get ready!
                             h3 Browse to 
-                                strong http://quizal.me
+                                strong http://
+                                    span(style="color: red; font-size: 32px") quizal.me
                                 br
-                                | and enter this class code.
+                                | and join this class
                             center
                                 .class-code 
-                                    {{publish.currentClass.code}}
+                                    | Class code: {{ctrl.currentClass.code}}
                             br
-                            p(style="margin-bottom: 18.5px") You can play on any mobile, tablet or desktop devices.
+                            p(style="margin-bottom: 18.5px") You can play on any mobile, tablet or computer.
                 .col-sm-6
                     .border-block
                         center
@@ -29,42 +26,46 @@ img(height='1', width='1', alt='', style='display:none', src='https://www.facebo
                             br
                             br
                             center
-                                a.btn.btn-primary.btn-lg(ng-href="{{publish.currentClass.link}}", target="zzishld") Open Teacher Dashboard
+                                a.btn.btn-primary.btn-lg(ng-href="{{ctrl.currentClass.link}}", target="zzishld") Open Teacher Dashboard
                             br
                             p You can see live results as your students play.
             br
             br 
-            .row(ng-hide="publish.quiz.publicAssigned || publish.quiz.profileId!=publish.profileId")
+            .row(ng-hide="ctrl.quiz.publicAssigned || (ctrl.quiz.profileId!=undefined && ctrl.quiz.profileId!=ctrl.profileId)")
                 .col-sm-12
-                    .border-block
+                    .border-block(style="background: #D6EBFF; padding: 10px")
                         center
                             h1 Share this quiz!
-                            h3 Enter the email addresses of up to 10 of your colleagues so that they can use this quiz in their class
+                            p Enter the email addresses of up to 10 of your colleagues so that they can use this quiz in their class
                             .row
-                                .col-sm-10
-                                    input.form-control#shareEmails(type="text", ng-model="publish.shareEmails", on-enter="publish.share();", placeholder="charles@zzish.com samir@zzish.com")
-                                .col-sm-2
-                                    a.btn.btn-primary(ng-click="publish.share();") Share
+                                .col-sm-11
+                                    input.form-control#shareEmails(type="text", ng-model="ctrl.shareEmails", on-enter="ctrl.share();", placeholder="charles@zzish.com samir@zzish.com")
+                                .col-sm-1
+                                    a.btn.btn-primary(ng-click="ctrl.share();") Share
                             br
                             br
                             p or share the following link with them
                             center
                                 p(style="font-size: 11px")
-                                    em {{publish.shareLink}}
+                                    em {{ctrl.shareLink}}
 
-        .col-sm-8.col-sm-offset-2(ng-show="!publish.publishing && !publish.published")
-            h1.text-center Enter the name of your class
+        .col-sm-8.col-sm-offset-2(ng-show="!ctrl.publishing && !ctrl.published")
+            h1.text-center Which class should take this quiz?
                 .form-horizontal(role="form")
-            p Type in the name of the class that you would like to publish this quiz to. If you have an existing one, it will appear as you type. If you'd like to publish to more than one class, don't worry! You'll be able add the quiz to your class.
+            p You can have more than one class with Quizalize. Type in the name of a class should take this quiz. If you type in a new name, you will create a new class. 
             .form-group
-                .col-sm-3
+                .col-sm-3.fieldlabel
                     label.control-label Class Name
                 .col-sm-9
-                    input.form-control#className(type="text", ng-model="publish.className", on-enter="publish.publish();")
+                    input.form-control#className(type="text", ng-model="ctrl.className", on-enter="ctrl.publish();")
                     br
+                .col-sm-3.col-sm-offset-6
+                    button.btn.btn-block(ng-click="ctrl.showSettings=!ctrl.showSettings", ng-class="{true: 'btn-info', false: ''}[ctrl.showSettings]") More Settings
+                .col-sm-3
+                    br.visible-xs
+                    button.btn.btn-block.btn-primary(ng-click="ctrl.publish();", ng-disabled="ctrl.className.length==0 || ctrl.publishing") Play
 
                 .col-xs-12
                     center
-                        button.btn.btn-primary(ng-click="publish.publish();", ng-disabled="publish.className.length==0 || publish.publishing") Play
-
-        .col-sm-8.col-sm-offset-2(ng-show="!publish.publishing && !publish.published")
+                        
+    include qsettings

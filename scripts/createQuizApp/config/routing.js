@@ -25,10 +25,20 @@ angular.module('createQuizApp')
             controller: "RegisterController",
             controllerAs: "register"
         }) 
+        .when('/success/:postAction/:id', {
+            templateUrl: "/quiz/view/registered",
+            controller: "RegisteredController",
+            controllerAs: "registered"
+        }) 
         .when('/create', {
             templateUrl: "/quiz/view/createq",
             controller: "CreateQuizController",
-            controllerAs: "createq"
+            controllerAs: "ctrl"
+        }) 
+        .when('/edit/:id', {
+            templateUrl: "/quiz/view/createq",
+            controller: "CreateQuizController",
+            controllerAs: "ctrl"
         }) 
         .when('/login', {
             templateUrl: "/quiz/view/login",
@@ -53,12 +63,12 @@ angular.module('createQuizApp')
         .when('/preview/:id', {
             templateUrl: "/quiz/view/preview",
             controller: "PreviewController",
-            controllerAs: "preview"
+            controllerAs: "ctrl"
         })
         .when('/published/:id/:action', {
             templateUrl: "/quiz/view/published",
             controller: "PublishedController",
-            controllerAs: "publish"
+            controllerAs: "ctrl"
         })
         .when('/delete/:id', {
             templateUrl: "/quiz/view/quizzes",
@@ -70,7 +80,12 @@ angular.module('createQuizApp')
             controller: "AssignController",
             controllerAs: "delete"
         })
-        .when('/playh/:catId/:id', {
+        .when('/passign/:id', {
+            templateUrl: "/quiz/view/quizzes",
+            controller: "PublicAssignController",
+            controllerAs: "assign"
+        })
+        .when('/playh/:postAction/:id', {
             templateUrl: "/quiz/view/signup",
             controller: "SignupController",
             controllerAs: "signup"
