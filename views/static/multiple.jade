@@ -5,7 +5,7 @@ block header
         display: block !important; /* yes, important */
         }
         .cssFade {
-            transition: 0.5s linear all;
+            transition: 0.2s linear all;
             opacity: 1;
         }
         .cssFade.ng-hide {
@@ -41,4 +41,3 @@ nav.navbar.navbar-default.navbar-fixed-top
                 .row
                     div.math(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
                         button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") 
-                            span {{alternative}}

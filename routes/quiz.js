@@ -81,6 +81,10 @@ exports.landingpage4 =  function(req, res) {
     res.sendFile('cquiz/index5.html',{ root: 'public' });
 };
 
+exports.landingpage5 =  function(req, res) {
+    res.sendFile('cquiz/landing11.html',{ root: 'public' });
+};
+
 exports.voucher =  function(req, res) {
     res.sendFile('cquiz/index4.html',{ root: 'public' });
 };
