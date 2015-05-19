@@ -51,15 +51,15 @@ angular.module('quizApp')
                 if (self.currentQuiz.latexEnabled) {
                     MathJax.Hub.Config({
                         tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-                    });       
+                    });
                     setTimeout(function() {
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
-                    },200);                
-                }                        
+                    },200);
+                }
                 self.score = QuizData.currentQuizResult().totalScore;
                 self.questionCount = QuizData.currentQuizResult().questionCount;
                 QuizData.getQuestion(self.questionId, function(data){
@@ -79,7 +79,7 @@ angular.module('quizApp')
                             self.longMode = true;
                         }
                     }
-                    // addReactComponent();
+                    addReactComponent();
                 });
             //});
         });

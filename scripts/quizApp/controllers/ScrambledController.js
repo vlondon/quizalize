@@ -50,8 +50,19 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
         React.render(
             React.createElement(QLScrambled, {
                 quizData: QuizData.currentQuizData,
+                answer: self.userAnswerLetters,
                 question: self.question,
                 letters: self.letters,
+                onAddLetter: function(index) {
+                    $scope.$apply(function(){
+                        self.addLetter(index);
+                    });
+                },
+                onRemoveLetter: function(index) {
+                    $scope.$apply(function(){
+                        self.removeLetter(index);
+                    });
+                },
                 onSelect: function(index){
                     $scope.$apply(function(){
                         self.select(index);
@@ -103,7 +114,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                     //we already have this question
                     $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                 }
-                // addReactComponent();
+                addReactComponent();
                 lastEmpty = 0;
             });
         //});
@@ -124,6 +135,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.userAnswerLetters[lastEmpty] = self.letters[idx];
             self.letters.splice(idx, 1);
             updateLastEmpty();
+            renderReactComponent();
         }
 
         if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizResult().report[self.questionId]==undefined){
@@ -144,6 +156,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.userAnswerLetters[idx] = '_';
             updateLastEmpty();
         }
+        renderReactComponent();
     };
 
 

@@ -52,8 +52,7 @@ var QLScrambled = React.createClass({
     propTypes: {
         question: React.PropTypes.string.isRequired,
         letters: React.PropTypes.array.isRequired,
-        onSelect: React.PropTypes.func,
-        onNext: React.PropTypes.func,
+        onAddLetter: React.PropTypes.func,
         quizData: React.PropTypes.object
     },
 
@@ -148,7 +147,12 @@ var QLScrambled = React.createClass({
     },
 
     handleClick: function(index){
+        this.props.onAddLetter(index)
+    },
 
+
+    handleRemoveLetter: function(index){
+        this.props.onRemoveLetter(index)
     },
 
     render: function() {
@@ -157,15 +161,19 @@ var QLScrambled = React.createClass({
 
         if (!this.state.answer) {
             showCountdown = <QLCountDown/>;
-            showTargets = this.props.letters.map(function(letter, index){
+            showTargets = this.props.answer.map(function(letter, index){
                 return (
-                    <button className="letterTile btn-info ng-binding ng-scope solution" key={index}>_</button>
+                    <button className="letterTile btn-info ng-binding ng-scope solution"
+                        onClick={this.handleRemoveLetter.bind(this, index)}
+                        key={index}>
+                        {letter}
+                    </button>
                 );
             }, this);
 
             showOptions = this.props.letters.map(function(letter, index){
                 return (
-                    <button className="letterTile btn-primary ng-binding ng-scope option" key={index} onClick={this.handleClick}>{letter}</button>
+                    <button className="letterTile btn-primary ng-binding ng-scope option" key={index} onClick={this.handleClick.bind(this, index)}>{letter}</button>
                 );
             }, this);
 
@@ -177,9 +185,10 @@ var QLScrambled = React.createClass({
             }
         } else {
             var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
+            console.log('currentAnswer', currentAnswer, this.props.answer);
             showAnswer = (
                 <QLAnswerScreen
-                    answerData={currentAnswer}
+                    answerData={answer}
                     onNext={this.props.onNext}/>
             );
         }

@@ -24,6 +24,8 @@ var CountDown = React.createClass({
     handleTimeout: function(){
         var time = Math.floor(startInterval - (Date.now() - startTimer) / 1000);
 
+        time = (time > 0) ? time : 0;
+
         if (this.state.time !== time){
             this.setState({
                 time,
