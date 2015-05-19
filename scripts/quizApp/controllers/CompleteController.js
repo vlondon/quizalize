@@ -1,4 +1,4 @@
-yovar settings = require('quizApp/config/settings');
+var settings = require('quizApp/config/settings');
 
 var maxScore = settings.maxScore;
 var maxTime = settings.maxTime;
