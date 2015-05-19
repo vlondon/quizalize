@@ -97,7 +97,7 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
                 //$log.debug("Response",resp);    
                 QuizData.showMessage("Reset Password","If you are registered, please check your email for instructions on how to reset your password");
             }).error(function(er){
-                QuizData.showMessage("Reset Password","If you are registered, please check your email for instructions on how to reset your password");
+                QuizData.showMessage("Reset Error","The email address you entered doesn’t match a Quizalize user");
                 //QuizData.showMessage("Error with resetting password",er);
                 //$log.debug("Error ", er);
             });

@@ -7,6 +7,7 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
     self.questionId = parseInt($routeParams.questionId);
 
     self.data = QuizData.currentQuizResult();
+    self.showButtons = false;
 
     /* Have this data for previous question
                 {id: idx,
@@ -23,19 +24,20 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
     }
 
     if (self.data.latexEnabled) {
-        $("#quizQuestion").hide();
-        $("#response").hide();
-        $("#cresponse").hide();
+        self.showButtons = false;
         setTimeout(function() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response")[0]]);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse")[0]]);
+            MathJax.Hub.Queue(function () {
+                $scope.$apply(function() {
+                    self.showButtons = true;
+                });                        
+            });                
         },200);     
-        setTimeout(function() {
-            $("#quizQuestion").show();
-            $("#response").show();
-            $("#cresponse").show();
-        },1000);     
+    }
+    else {
+        self.showButtons = true;
     }
 
     self.cancel = function() {

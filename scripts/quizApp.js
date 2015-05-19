@@ -5,7 +5,6 @@ var FastClick = require('fastclick');
 // Angular is global and already defined in vendor.js
 angular.module('quizApp', ['ngRoute', 'ngAnimate']);
 
-
 require('quizApp/config/routing');
 require('quizApp/config/logProvider');
 

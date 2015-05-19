@@ -16,6 +16,18 @@ block header
             -moz-hyphens: auto;
             hyphens: auto;
         }
+        .ng-hide-add, .ng-hide-remove {
+           /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+        }
+        .cssFade {
+            transition: 0.5s linear all;
+            opacity: 1;
+        }
+        .cssFade.ng-hide {
+            opacity: 0;
+        }
+
 
 
 
@@ -44,7 +56,7 @@ nav.navbar.navbar-default.navbar-fixed-top
 
     .row
         .col-x-12.col-sm-8.col-sm-offset-2
-            .well
+            .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
                 .text-center
                     h3.quizQuestion#quizQuestion {{quiz.last.question}}
                     .row

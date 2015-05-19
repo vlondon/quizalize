@@ -1,6 +1,7 @@
 var randomise = require('quizApp/utils/randomise');
 
 angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){
+    self.showButtons = false;
     var getLetters = function(answer){
 
         var letters = answer.toUpperCase().split('');
@@ -50,17 +51,22 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.score = QuizData.currentQuizResult().totalScore;
             self.questionCount = QuizData.currentQuizResult().questionCount;
             if (self.currentQuiz.latexEnabled) {
-                $("#quizQuestion").hide();
+                self.showButtons = false;
                 MathJax.Hub.Config({
                     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
                 }); 
                 setTimeout(function() {
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);                                                
+                    MathJax.Hub.Queue(function () {
+                        $scope.$apply(function() {
+                            self.showButtons = true;
+                        });                        
+                    });                    
                 },200);
-                setTimeout(function() {
-                    $("#quizQuestion").show();
-                },1000);
-            }                 
+            }      
+            else {
+                self.showButtons = true;
+            }           
             QuizData.getQuestion(self.questionId, function(data){
                 self.question = data.question;
                 self.answer = replaceSpaces(data.answer);
