@@ -1,0 +1,30 @@
+nav.navbar.navbar-default.navbar-fixed-top
+    .container-fluid
+        .navbar-header
+            a(href="#")
+                img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+
+.container
+    .row
+        h1(ng-show="market.group",style="color: white") {{market.group.name}}
+
+
+    h3(ng-hide="market.hasQuizzes",style="color: white") There are currently no quizzes available.
+    br
+
+    .row(ng-repeat="category in market.categories | orderObjectBy:['order_index'] track by $index", style="padding-bottom: 10px; ")    
+        .col-md-12
+            .quiz-topic-block                
+                a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
+                    h2.quiz-topic-title.text-center {{category.category.name}}
+                .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
+                    .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderObjectBy:['index'] track by $index",style="padding-right: 15px;")
+                        .col-xs-8
+                            a.quiz-item
+                                .quiz-title {{quiz.name}}
+                        .col-xs-2
+                            .row.quiz-info-row                        
+                                a.btn.btn-info.btn-block( ng-click="market.assignQuiz(quiz)") Set Quiz
+                        .col-xs-2
+                            .row.quiz-info-row                        
+                                a.btn.btn-info.btn-block( ng-click="market.playQuiz(quiz)") Preview                                                            

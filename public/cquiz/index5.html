@@ -297,13 +297,7 @@
           }
 
           function setQuiz(id) {
-            var check = localStorage.getItem("userId");
-            if (check) {
-              window.location.href="/quiz#/published/"+id+"/p";
-            }    
-            else {
-              window.location.href="/quiz#/passign/"+id;
-            }        
+            window.location.href="/quiz#/passign/"+id;
           }
       </script>
 

@@ -40,4 +40,4 @@ nav.navbar.navbar-default.navbar-fixed-top
                         br
                 .row
                     div.math(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
-                        button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") 
+                        button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") {{alternative}}

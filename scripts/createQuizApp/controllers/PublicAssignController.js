@@ -2,9 +2,13 @@ angular.module('createQuizApp').controller('PublicAssignController', ['QuizData'
     var self = this;
 
     self.id = $routeParams.id;
-    if(self.id==undefined) $location.path("/");
 
 	QuizData.addQuizById(self.id,function(quiz) {
-		$location.path("/preview/" + quiz.uuid);	
+		if (QuizData.getUser()) {
+			$location.path("/published/" + quiz.uuid+"/p");		
+		}
+		else {
+			$location.path("/preview/" + quiz.uuid);			
+		}		
 	})            
 }]);
