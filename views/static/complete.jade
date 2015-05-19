@@ -151,7 +151,7 @@ style.
                 a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
         .row(ng-show="quiz.teacherMode")
             .col-xs-8.col-xs-offset-2
-                a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz#/assign/{{quiz.data.uuid}}") Set this Quiz for your class
+                a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz#/passign/{{quiz.data.quizId}}") Set this Quiz for your class
                 br
                 a.btn.btn-block.btn-info.btn-sm(href="/quiz#/public") Choose Another
                 
@@ -210,13 +210,13 @@ style.
                     .row
                         .col-md-4
                             h4  
-                              strong(ng-id="quizQuestion{{item.questionId}}") {{item.question}}
+                              strong(id="quizQuestion{{item.questionId}}") {{item.question}}
                         .col-md-3
                             h4 Your answer
-                            strong(ng-id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
+                            strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
                         .col-md-3
                             h4 Correct answer&nbsp;
-                            strong(ng-id="cresponse{{item.questionId}}") {{item.answer}}
+                            strong(id="cresponse{{item.questionId}}") {{item.answer}}
                         .col-md-2
                             h4 Score: {{item.roundedScore}}
                             p(ng-show="item.correct") (You took {{item.seconds}}

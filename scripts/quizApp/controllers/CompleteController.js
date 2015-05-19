@@ -70,14 +70,27 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             }
         }
         t.score = Math.round(t.score);
-        setTimeout(function() {
-            for(var j in items){
-                var item = items[j];
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.uuid)[0]]);
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.uuid)[0]]);
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.uuid)[0]]);
-            }
-        },200);         
+        if (self.data.latexEnabled) {
+            setTimeout(function() {
+                for(var j in items){
+                    var item = items[j];
+                    $("#quizQuestion"+item.questionId).hide();
+                    $("#response"+item.questionId).hide();
+                    $("#cresponse"+item.questionId).hide();
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.questionId)[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.questionId)[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.questionId)[0]]);
+                }
+            },200); 
+            setTimeout(function() {
+                for(var j in items){
+                    var item = items[j];
+                    $("#quizQuestion"+item.questionId).show();
+                    $("#response"+item.questionId).show();
+                    $("#cresponse"+item.questionId).show();
+                }
+            },1000);                                 
+        }
         return t;
     };
 

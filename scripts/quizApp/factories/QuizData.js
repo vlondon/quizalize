@@ -106,7 +106,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     }
 
     var initQuizResult = function() {
-        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.questions.length, report: [], correct: 0 };
+        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
         localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
     }

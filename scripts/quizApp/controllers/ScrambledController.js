@@ -50,12 +50,16 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.score = QuizData.currentQuizResult().totalScore;
             self.questionCount = QuizData.currentQuizResult().questionCount;
             if (self.currentQuiz.latexEnabled) {
+                $("#quizQuestion").hide();
                 MathJax.Hub.Config({
                     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
                 }); 
                 setTimeout(function() {
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);                                                
                 },200);
+                setTimeout(function() {
+                    $("#quizQuestion").show();
+                },1000);
             }                 
             QuizData.getQuestion(self.questionId, function(data){
                 self.question = data.question;
