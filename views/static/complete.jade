@@ -143,6 +143,17 @@ style.
     .well--complete {
       overflow: hidden;
     }
+    .ng-hide-add, .ng-hide-remove {
+           /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+        }
+        .cssFade {
+            transition: 0.5s linear all;
+            opacity: 1;
+        }
+        .cssFade.ng-hide {
+            opacity: 0;
+        }
 
 .container
     .wrapper-complete
@@ -204,7 +215,7 @@ style.
                       .bar-topic-title {{topic.name}}
                       .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage | number: 0}}%
                   .complte-main-text
-        .row(ng-repeat="item in quiz.data.report")
+        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
             .col-xs-8.col-xs-offset-2
                 .well
                     .row

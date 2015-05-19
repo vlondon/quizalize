@@ -30,7 +30,7 @@ nav.navbar.navbar-default.navbar-fixed-top
 
     .row
         .col-x-12.col-sm-8.col-sm-offset-2
-            .well
+            .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
                 .text-center.wrapword
                     h2.math.quizQuestion#quizQuestion {{quiz.question}}
                     br                    
@@ -41,4 +41,3 @@ nav.navbar.navbar-default.navbar-fixed-top
                 .row
                     div.math(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
                         button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") 
-                            span {{alternative}}            

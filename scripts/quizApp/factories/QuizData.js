@@ -24,6 +24,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     var minScore = settings.minScore;
     var gracePeriod = settings.gracePeriod;
 
+    var topicsLoaded = false;
+
     //callbacks for messaging
     var callbacks = {};
 
@@ -69,7 +71,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     var processQuizData = function(result) {
         categories = {};
         topics = {};
-        for (var i in result.contents) {
+        for (var i in result.contents) {                            
             var quiz = result.contents[i];
             var cuuid = "undefined";
             var category = { name: "Other" };
@@ -89,6 +91,20 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
             categories[cuuid].quizzes.push(quiz);
         }
         for (var i in result.categories) {
+            topicsLoaded = true;
+            topics[result.categories[i].uuid] = result.categories[i];
+        }
+    }
+
+    var processQuizCategories = function(result) {
+        for (var i in result.categories) {
+            var category = result.categories[i];
+            if (categories[category.uuid]==undefined) {
+                categories[category.uuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
+            }
+        }
+        for (var i in result.categories) {
+            topicsLoaded = true;
             topics[result.categories[i].uuid] = result.categories[i];
         }
     }
@@ -290,8 +306,18 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         getCategories: function() {
             return categories;
         },
-        getTopics: function() {
-            return topics;
+        getTopics: function(callback) {
+            if (!topicsLoaded) {
+                zzish.listPublicContent(function(err,data) {
+                    if (!err) {
+                        processQuizCategories(data);                                        
+                    }
+                    callback(topics);    
+                })
+            }
+            else {
+                return callback(topics);                
+            }            
         },
         loginUser: function(user,classcode,callback) {
             if (zzish.validateClassCode(classcode)) {
