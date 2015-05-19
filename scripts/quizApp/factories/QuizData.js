@@ -399,8 +399,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                         options.push(alt);
                     }
                 }
-                //return randomise(options);
-                return options;
+                return randomise(options);
+                //return options;
             } else {
                 var answers = [];
                 var correct = question.answer;
