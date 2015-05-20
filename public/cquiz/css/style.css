@@ -6,7 +6,7 @@
 body {
 	width: 100%;
 	height: 100%;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-weight: 300;
 	color: #000;
 	background-color: #fff;
@@ -45,8 +45,8 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 30px;
-	font-family: Arial, Helvetica, sans-serif;
+	margin: 0 0 0px;
+	font-family: Helvetica,Arial, sans-serif;
 	font-weight: 400;
 	color: #FA5858;
 }
@@ -146,7 +146,9 @@ blockquote strong {
 /* --- logo --- */
 
 .site-logo a.brand img {
-	width: 80px;
+	height: 45px;
+	margin-bottom: 10px;
+	margin-top:10px;
 }
 .site-logo-container {
 	padding: 10px;
@@ -155,17 +157,22 @@ blockquote strong {
 
 /* ------- Navigation ------------ */
 #navigation {
-	background: #fff;
+	background: #fa5858;
 	z-index: 9999;
 	width:100%;
     box-sizing:border-box;
-	border-bottom: 1px solid #eee;
+	/* border-bottom: 1px solid #eee; */
 	box-shadow:0px 0px 20px rgba(0, 0, 0, 0.1);
+
 }
 
 
 .navbar {
     margin-bottom: 0;
+    background-color: #fa5858;
+  border-color: #fa5858;
+   min-height: 50px;
+
 }
 
 .navbar-brand {
@@ -178,18 +185,19 @@ blockquote strong {
 }
 
 .nav.navbar-nav {
-    background-color: rgba(255,255,255,.6);
+    background-color: #FA5858;
 }
 
 .navbar-custom.top-nav-collapse .nav.navbar-nav {
-    background-color: rgba(0,0,0,0);
+    background-color: #FA5858;
+
 }
 
 
 .navbar-custom ul.nav li a {
 	font-size: 13px;
 	letter-spacing: 1px;
-    color: #444;
+    color: white;
 	text-transform: uppercase;
 	font-weight: 700;
 }
@@ -264,7 +272,10 @@ blockquote strong {
 .navbar-toggle:active {
     outline: 0;
 }
+.nav_red{
+background-color: red;
 
+}
 
 /* misc */
 hr {
@@ -318,8 +329,8 @@ hr.bold {
 ============================ */
 
 .home-section {
-	padding-top: 60px;
-	padding-bottom: 60px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	display: block;
 	position: relative;
 	z-index: auto;
@@ -592,6 +603,15 @@ section#intro {
 	font-size: 48px;
 	text-shadow: 2px 2px 10px white;
 }
+.cta2-title {
+
+    margin-bottom: 60px;
+	color: #d24a4a;
+	font-weight: 300;
+	font-size: 48px;
+	/* text-shadow: 2px 2px 10px white; */
+text-shadow: 2px 2px 2px white;
+}
 .cta1-container {
     margin-top: 100px;
     width: 100%;
@@ -622,7 +642,7 @@ section#intro {
     text-shadow: 0 0 10px black;
 }
 .cta2 {
-
+	margin-top: 10px;
     padding: 20px 60px;
     background: #FA5858;
     border-radius: 20px;
@@ -663,6 +683,19 @@ section#intro {
 
 }
 
+.cta_thirty{
+	color: white;
+	text-shadow: 1px 1px 1px #000;
+	margin-top: 20px;
+
+}
+.cta_what{
+	color: white;
+	text-shadow: 1px 1px 1px #000;
+	text-decoration: underline;
+	font-size: 30px;
+}
+
 .item-inner__hero {
 	height: 750px;
 }
@@ -690,7 +723,7 @@ section#intro {
 	height: 400px;
 }
 .item-1 {
-	background-image: url("../img/5.jpg");
+	background-image: url("../img/6.jpg");
 }
 .item-2 {
 	background-image: url("../img/4.jpg");
@@ -1140,7 +1173,10 @@ a.btn:focus{
     margin-top: 0;
 }
 .what_is{
-	margin-top:-25px;
+	margin-top:50px;
+text-shadow: 1px 1px 1px white;
+font-size:48px;
+
 
 }
 
@@ -1156,10 +1192,12 @@ a.btn:focus{
 
 /* Media queries */
 
-@media(min-width:767px) {
+@media(min-width:760px) {
 
     .navbar {
-        padding: 20px 0;
+       /* padding: 20px 0; */
+       margin-top: -10px;
+       margin-bottom: -10px;
         border-bottom: 0;
         letter-spacing: 1px;
         background: 0 0;
@@ -1193,12 +1231,12 @@ a.btn:focus{
 
 
 }
-@media (max-width:768px) {
+@media (max-width:760px) {
 	#navigation {
 		padding: 20px 0;
 	}
 	.site-logo{
-		margin: 0 0 0 30px;
+		margin: 0 0 0 0px;
 		float:none;
 	}
 	.navbar-custom ul.nav li a {
@@ -1246,7 +1284,7 @@ a.btn:focus{
 
 }
 
-@media (max-width:480px) {
+@media (max-width:759px) {
 
 	.navbar-custom .nav.navbar-nav {
     background-color: rgba(255,255,255,.4);
@@ -1257,7 +1295,146 @@ a.btn:focus{
 	}
 }
 
-// Custom
+// Custom 
+
+/* Carousel */
+.carousel_div {
+	height:250px;
+}
+
+#quote-carousel 
+{
+  padding: 0 10px 30px 10px;
+  margin-top: 10px;
+  height:250px;
+}
+
+/* Control buttons  */
+#quote-carousel .carousel-control
+{
+  background: none;
+  color: black;
+  font-size: 2.3em;
+  text-shadow: none;
+  margin-top: 30px;
+  visibility: hidden;
+}
+/* Previous button  */
+#quote-carousel .carousel-control.left 
+{
+  left: -12px;
+}
+/* Next button  */
+#quote-carousel .carousel-control.right 
+{
+  right: -12px !important;
+}
+/* Changes the position of the indicators */
+#quote-carousel .carousel-indicators 
+{
+  right: 50%;
+  top: auto;
+  bottom: 0px;
+  margin-right: -19px;
+  visibility: hidden;
+}
+/* Changes the color of the indicators */
+#quote-carousel .carousel-indicators li 
+{
+  background: #c0c0c0;
+}
+#quote-carousel .carousel-indicators .active 
+{
+  background: #333333;
+}
+#quote-carousel img
+{
+  width: 250px;
+  height: 100px
+}
+/* End carousel */
+
+.item blockquote {
+    border-left: none; 
+    margin: 0;
+}
+
+.item blockquote img {
+    margin-bottom: 10px;
+}
+
+.item blockquote p:before {
+    content: "\f10d";
+    font-family: 'Fontawesome';
+    float: left;
+    margin-right: 10px;
+}
+.quote_giver {
+	color:white;
+
+}
 
 
+
+/**
+  MEDIA QUERIES
+*/
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    #quote-carousel 
+    {
+      margin-bottom: 0;
+      padding: 0 40px 30px 40px;
+    }
+    
+}
+
+/* Small devices (tablets, up to 768px) */
+@media (max-width: 768px) { 
+    
+    /* Make the indicators larger for easier clicking with fingers/thumb on mobile */
+    
+    #quote-carousel .carousel-indicators {
+        bottom: -20px !important;  
+       
+    }
+    #quote-carousel .carousel-indicators li {
+        display: inline-block;
+        margin: 0px 5px;
+        width: 15px;
+        height: 15px;
+        visibility: hidden;
+    }
+    #quote-carousel .carousel-indicators li.active {
+        margin: 0px 5px;
+        width: 20px;
+        height: 20px;
+        visibility: hidden;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+    .navbar-collapse.collapse.in {
+        display: block !important;
+    }
+    .navbar-header .collapse, .navbar-toggle {
+        display:block !important;
+    }
+    .navbar-header {
+        float:none;
+    }
+}
+
+/* Techstars and stuff */
+.tech_img img{
+	max-height:60px;
+}
+.tech_img {
+	min-height:130px;
+	margin-top:20px;
+}
 
