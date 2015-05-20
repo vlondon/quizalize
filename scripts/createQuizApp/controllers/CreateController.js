@@ -28,19 +28,21 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         self.quiz = quiz;
         if (self.quiz.questions!=undefined) {
             self.currentQuestion = self.quiz.questions.length+1;    
-        }        
-        for (var i in self.quiz.questions) {
-            var question = self.quiz.questions[i];
-            setTimeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question.uuid)[0]]);
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question.uuid)[0]]);
-            },4000);                       
-        }
+        } 
         if (self.quiz.latexEnabled==undefined) {
             self.quiz.latexEnabled = false;
         }
         if (self.quiz.imageEnabled==undefined) {
             self.quiz.imageEnabled = false;
+        }               
+        if (self.quiz.latexEnabled) {
+            for (var i in self.quiz.questions) {
+                var question = self.quiz.questions[i];
+                setTimeout(function() {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question.uuid)[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question.uuid)[0]]);
+                },4000);                       
+            }            
         }
         self.currentQuiz = self.quiz.name;
         self.rootTopicId = quiz.categoryId;
@@ -196,11 +198,12 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         QuizData.saveQuiz(self.id, self.quiz, self.topics);
         resizeAll();
         $("#quizzes").show();  
-
-        setTimeout(function() {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question_obj.uuid)[0]]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question_obj.uuid)[0]]);
-        },1000);           
+        if (self.quiz.latexEnabled) {
+            setTimeout(function() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question_obj.uuid)[0]]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question_obj.uuid)[0]]);
+            },1000);                       
+        }
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
@@ -283,12 +286,20 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         var lines = self.uploader.split("\n");
         for (var i in lines) {
             var line = lines[i].split("\t");
-            self.topic = line[0];        
-            self.question = line[1];
-            self.answerText = line[2];
-            self.alt1 = line[3];
-            self.alt2 = line[4];
-            self.alt3 = line[5];
+            self.question = line[0].replace(new RegExp('@@@@', 'g'), '\n');
+            self.answerText = line[1].replace(new RegExp('@@@@', 'g'), '\n');;
+            if (line.length>2) {
+                self.topic = line[2];                    
+            }            
+            if (line.length>3) {
+                self.alt1 = line[3].replace(new RegExp('@@@@', 'g'), '\n');;    
+            }
+            if (line.length>4) {
+                self.alt2 = line[4].replace(new RegExp('@@@@', 'g'), '\n');;
+            }
+            if (line.length>5) {
+                self.alt3 = line[5].replace(new RegExp('@@@@', 'g'), '\n');;    
+            }
             if (line.length>6) {
                 self.imageURL = line[6];
             }
