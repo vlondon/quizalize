@@ -10,25 +10,23 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
 
     QuizData.selectQuiz(self.catId,self.id,self.action=="false",function(err,result) {
         if (!err) {
-            $scope.$apply(function(){ 
-                self.currentQuiz = result; 
-                if (self.currentQuiz.attributes) {
-                    if (self.currentQuiz.attributes['random']) {
-                        self.randomText = " in random order.";
-                        self.showSubText = true;
-                    }
-                    if (self.currentQuiz.attributes['numQuestions']) {
-                        self.numQuestions = self.currentQuiz.questions.length;
-                        try {
-                            self.numQuestions = Math.min(parseInt(self.currentQuiz.attributes['numQuestions']),self.currentQuiz.questions.length);
-                        }
-                        catch (e) {
-                            
-                        }
-                        self.showSubText = true;
-                    }
+            self.currentQuiz = result; 
+            if (self.currentQuiz.attributes) {
+                if (self.currentQuiz.attributes['random']) {
+                    self.randomText = " in random order.";
+                    self.showSubText = true;
                 }
-            });            
+                if (self.currentQuiz.attributes['numQuestions']) {
+                    self.numQuestions = self.currentQuiz.questions.length;
+                    try {
+                        self.numQuestions = Math.min(parseInt(self.currentQuiz.attributes['numQuestions']),self.currentQuiz.questions.length);
+                    }
+                    catch (e) {
+                        
+                    }
+                    self.showSubText = true;
+                }
+            }
         }
     });
 

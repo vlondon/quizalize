@@ -80,7 +80,8 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
             self.profileId = QuizData.getUser();
             if (self.action=="b") {
                 self.currentClass = QuizData.getCurrentClass();
-                self.published = true;                
+                self.published = true;    
+                self.showSettings = false;            
             }
             else {
                 QuizData.getClassList(function(data) {

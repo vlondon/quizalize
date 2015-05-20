@@ -163,7 +163,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
 
     function shuffle(array) {
         if (array.length==1) {
-            ar
+            return array;
         }
         var currentIndex = array.length, temporaryValue, randomIndex ;
 
@@ -187,7 +187,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         var questions = quiz.questions;
         var seed = Math.floor((Math.random() * 100) + 1);
         var result = [];
-        if (attributes) {
+        if (attributes && quiz.questions.length>1) {
             if (attributes['random']=="false") {
                 seed = quiz.updated;
             }
