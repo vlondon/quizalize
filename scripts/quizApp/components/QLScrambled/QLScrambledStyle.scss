@@ -65,6 +65,22 @@
         animation-delay: 400ms;
     }
 
+    .ql-question-img {
+        display: block;
+        width: 100%;
+        max-width: 400px;
+        max-height: 400px;
+        margin: auto;
+        margin-bottom: 40px;
+    }
+
+    &.enter .ql-question-img {
+        animation: qlEnterTranslateY 200ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 400ms;
+    }
+
+    
     .answers {
         position: relative
     }

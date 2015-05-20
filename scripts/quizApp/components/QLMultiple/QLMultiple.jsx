@@ -93,7 +93,7 @@ var QLMultiple = React.createClass({
             showQuestions = this.props.alternatives.map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
-                    <button type="button" className={`btn alternative alternative-${index}`} onClick={this.handleClick.bind(this, index)}>
+                    <button type="button" className={`btn alternative alternative-${index} wrapword`} onClick={this.handleClick.bind(this, index)}>
                         {alternative}
                     </button>
                 </div>);
@@ -113,6 +113,7 @@ var QLMultiple = React.createClass({
                     <h3 className='question'>
                         {this.props.question}
                     </h3>
+                    {this.props.imageURL ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers alternatives">
                         {showAnswer}

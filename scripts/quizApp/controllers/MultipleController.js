@@ -23,10 +23,9 @@ angular.module('quizApp')
                     quizData: QuizData.currentQuizResult(),
                     question: self.question,
                     alternatives: self.alternatives,
+                    imageURL: self.imageURL,
                     onSelect: function(index){
-                        $scope.$apply(function(){
-                            self.select(index);
-                        });
+                        $scope.$apply(() => self.select(index) );
                     },
                     onNext: function(){
                         $scope.$apply(()=> self.nextQuestion() );
@@ -44,11 +43,11 @@ angular.module('quizApp')
             $scope.$on('$destroy', function(){
                 React.unmountComponentAtNode(document.getElementById('reactContainer'));
             });
+
         };
 
-        console.log("Loading Quiz");
         QuizData.loadQuiz(self.catId, self.id, function(data) {
-            console.log("Loaded Quiz");
+
             //$scope.$apply(function(){
                 self.currentQuiz = data;
                 self.showButtons = !self.currentQuiz.latexEnabled;
@@ -92,6 +91,7 @@ angular.module('quizApp')
                             self.longMode = true;
                         }
                     }
+                    console.log('imageUrl', data);
                     addReactComponent();
                 });
             //});

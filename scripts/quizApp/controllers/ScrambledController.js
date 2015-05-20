@@ -3,6 +3,7 @@ var React = require('react');
 var QLScrambled = require('quizApp/components/QLScrambled');
 
 angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){
+    var self = this;
     var getLetters = function(answer){
 
         var letters = answer.toUpperCase().split('');
@@ -43,6 +44,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                 answer: self.userAnswerLetters,
                 question: self.question,
                 letters: self.letters,
+                imageURL: self.imageURL,
                 onAddLetter: function(index) {
                     $scope.$apply(function(){
                         self.addLetter(index);
@@ -78,7 +80,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     };
 
 
-    var self = this;
+
     var startTime = (new Date()).getTime();
 
     self.id = $routeParams.quizId;
