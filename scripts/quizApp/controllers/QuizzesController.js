@@ -14,13 +14,11 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         self.name = QuizData.getUsername();        
         QuizData.loadPlayerQuizzes(function(err, res){
             if(!err){
-                $scope.$apply(function(){ 
-                    self.categories = QuizData.getCategories(); 
-                    for (var i in self.categories) {                    
-                       self.hasQuizzes = true;
-                    }
-                    self.loading = false;
-                });                                
+                self.categories = QuizData.getCategories(); 
+                for (var i in self.categories) {                    
+                   self.hasQuizzes = true;
+                }
+                self.loading = false;
             }else{
                 $log.error("Unable to refresh quizzes", err);
             }

@@ -19,7 +19,7 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
     self.login = function() {
         QuizData.loginUser(self.name,self.classcode,function(err,resp) {
             if (!err) {
-                $scope.$apply(function(){ $location.path("/list"); });
+                $location.path("/list");
                 goToLoggedIn();
             }
             else {

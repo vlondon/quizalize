@@ -195,7 +195,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         }
         self.currentQuestion = self.quiz.questions.length+1;
         self.clearQuestions();
-        QuizData.saveQuiz(self.id, self.quiz, self.topics);
+        QuizData.saveQuiz(self.quiz, self.topics);
         resizeAll();
         $("#quizzes").show();  
         if (self.quiz.latexEnabled) {
@@ -258,7 +258,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         if(self.question.length > 0 && self.answerText.length > 0){
             self.addQuestion();
         }
-        QuizData.saveQuiz(self.id, self.quiz, self.topics);
+        QuizData.saveQuiz(self.quiz, self.topics);
         $location.path("/published/" + self.id+"/p");
     }; 
 

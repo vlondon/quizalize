@@ -3,11 +3,9 @@ angular.module('quizApp').controller('PublicController', ['QuizData', '$log', '$
     self.hasQuizzes = false;
 
     QuizData.loadPublicQuizzes(function(err, res){
-    	$scope.$apply(function(){ 
-        	self.categories = QuizData.getCategories();        
-        	for (var i in self.categories) {
-        		self.hasQuizzes = true;
-        	}
-        });
+    	self.categories = QuizData.getCategories();        
+    	for (var i in self.categories) {
+    		self.hasQuizzes = true;
+    	}
     });
 }]);
