@@ -1,10 +1,9 @@
 
 angular.module('quizApp')
-    .controller('MultipleController', ['QuizData', '$log', '$routeParams', '$location', '$scope', function(QuizData, $log,  $routeParams, $location, $scope){
+    .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
 
         var React = require('react');
         var QLMultiple = require('quizApp/components/QLMultiple');
-
 
         var self = this;
         var startTime = (new Date()).getTime();
@@ -20,6 +19,7 @@ angular.module('quizApp')
         var renderReactComponent = function(){
             React.render(
                 React.createElement(QLMultiple, {
+                    currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
                     question: self.question,
                     alternatives: self.alternatives,
@@ -67,7 +67,7 @@ angular.module('quizApp')
                                 self.showButtons = true;
                             });
                         });
-                    },200);
+                    }, 200);
                 }
                 else {
                     self.showButtons = true;
@@ -113,4 +113,4 @@ angular.module('quizApp')
         };
 
         $log.debug('Multiple Controller', self);
-    }]);
+    });
