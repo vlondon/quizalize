@@ -1,7 +1,6 @@
 var randomise = require('quizApp/utils/randomise');
 
-angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){
-    self.showButtons = false;
+angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){    
     var getLetters = function(answer){
 
         var letters = answer.toUpperCase().split('');
@@ -41,6 +40,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     self.id = $routeParams.quizId;
     self.catId = $routeParams.catId;
     self.questionId = parseInt($routeParams.questionId);
+    self.showButtons = false;
     $log.debug("On question", self.questionId);
 
     var lastEmpty;

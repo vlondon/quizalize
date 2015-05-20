@@ -66,9 +66,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         //only show topics for which we have data
         for (var i in self.alltopics) {
             if (self.alltopics[i].stats!=undefined) {
-                $scope.$apply(function() {
-                    self.hasTopics = true;
-                });                                                        
+                self.hasTopics = true;
                 self.topics[i]=self.alltopics[i];
             }
         }
@@ -80,7 +78,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     self.topics = {};
     QuizData.getTopics(function(data) {
         self.alltopics = data;
-        self.totals = calculateTotals(self.data.report);    
+            self.totals = calculateTotals(self.data.report);    
         if (self.data.latexEnabled) {
             setTimeout(function() {
                 var items = self.data.report;
@@ -104,7 +102,6 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             self.showButtons = true;
         }        
     });
-
     
 
     $log.debug("Complete Controller", self);
