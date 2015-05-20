@@ -34,7 +34,7 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
 
 <section id="intro" class="home-slide ">
-    <div class="item-inner item-inner__hero item-1">
+    <div class="item-inner item-inner__hero_shorter item-1">
         <div class="cta-container">
             <h1 class="cta-title"><strong>Identify GCSE Maths learning gaps with our fun classroom game</strong></h1>
 
@@ -46,65 +46,6 @@
     </div>
 </section>
 <!-- /Section: intro -->
-<!-- Navigation -->
-<div id="navigation">
-    <nav class="navbar navbar-custom" role="navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-x-2 site-logo-container">
-                    <div class="site-logo">
-                        <a href="/" class="brand"><img src="/cquiz/img/logo.png"></a>
-                    </div>
-                </div>
-
-                <div class="col-xs-10">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="menu">
-                        <ul class="nav navbar-nav navbar-right">
-
-                            <li><a href="/">Home</a></li>
-                        </ul>
-                    </div>
-
-
-                    <!-- /.Navbar-collapse -->
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-    </nav>
-</div>
-<!-- /Navigation -->
-
-
-
-<!-- Section: about -->
-<section id="about" class="home-section color-light bg-dark">
-    <div class="container marginbot-50">
-        <div class="text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <iframe src="https://player.vimeo.com/video/127418677?badge=0&byline=0&portrait=0&title=0" width="600" height="340" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="data-wow-offset=0" data-wow-delay="0.4s">
-                    <div class="section-heading">
-                        <p>Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone.   It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.  You can create your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague has shared with you or pick one from our growing library of public curriculum based quizzes.</P>
-                        <div class="row">
-
-</section>
-
 <section class="home-section color-dark bg-gray">
     <div class="container marginbot-50">
         <div class="row">
@@ -117,7 +58,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1><strong>Try one of our GCSE Maths diagonistic quizzes</h1>
+                        <h1><strong>Try one of our GCSE Maths diagnostic quizzes</h1>
                         <h3>Set a quiz for your class to play or preview a quiz to see the questions</h3>
             <div class="row">
                 <div class="container">
@@ -193,6 +134,68 @@
     </div>
 
 </section>
+<!-- Navigation -->
+<!--<div id="navigation">
+    <nav class="navbar navbar-custom" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-x-2 site-logo-container">
+                    <div class="site-logo">
+                        <a href="/" class="brand"><img src="/cquiz/img/logo.png"></a>
+                    </div>
+                </div>
+
+                <div class="col-xs-10"> -->
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                   <!-- <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div> -->
+                    <!-- Collect the nav links, forms, and other content for toggling 
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <li><a href="/">Home</a></li>
+                        </ul>
+                    </div>
+
+
+                     /.Navbar-collapse 
+                </div>
+            </div>
+        </div>
+        /.container 
+    </nav>
+</div> 
+/Navigation -->
+
+
+
+<!-- Section: about -->
+<section id="about" class="home-section color-light bg-dark">
+    <div class="container marginbot-50">
+        <div class="text-center">
+            
+            <div class="row">
+            <h1>What is Quizalize?</h1>
+                <div class="data-wow-offset=0" data-wow-delay="0.4s">
+                    <div class="section-heading">
+                        <p>Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone.   It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.  You can create your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague has shared with you or pick one from our growing library of public curriculum based quizzes.</P>
+                        <div class="row">
+                        <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <iframe src="https://player.vimeo.com/video/127418677?badge=0&byline=0&portrait=0&title=0" width="600" height="340" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+                    </div>
+                </div>
+
+            </div>
+
+</section>
+
+
 <!-- Section: contact -->
 <section id="contact" class=" home-section nopadd-bot color-dark bg-dark text-center">
     <a name="sendForm" id="sendForm">
@@ -294,13 +297,7 @@
           }
 
           function setQuiz(id) {
-            var check = localStorage.getItem("userId");
-            if (check) {
-              window.location.href="/quiz#/published/"+id+"/p";
-            }    
-            else {
-              window.location.href="/quiz#/passign/"+id;
-            }        
+            window.location.href="/quiz#/passign/"+id;
           }
       </script>
 

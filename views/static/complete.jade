@@ -143,6 +143,17 @@ style.
     .well--complete {
       overflow: hidden;
     }
+    .ng-hide-add, .ng-hide-remove {
+           /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+        }
+        .cssFade {
+            transition: 0.5s linear all;
+            opacity: 1;
+        }
+        .cssFade.ng-hide {
+            opacity: 0;
+        }
 
 .container
     .wrapper-complete
@@ -151,7 +162,7 @@ style.
                 a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
         .row(ng-show="quiz.teacherMode")
             .col-xs-8.col-xs-offset-2
-                a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz#/assign/{{quiz.data.uuid}}") Set this Quiz for your class
+                a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz#/passign/{{quiz.data.quizId}}") Set this Quiz for your class
                 br
                 a.btn.btn-block.btn-info.btn-sm(href="/quiz#/public") Choose Another
                 
@@ -204,19 +215,19 @@ style.
                       .bar-topic-title {{topic.name}}
                       .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage | number: 0}}%
                   .complte-main-text
-        .row(ng-repeat="item in quiz.data.report")
+        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
             .col-xs-8.col-xs-offset-2
                 .well
                     .row
                         .col-md-4
-                            h4  
-                              strong(ng-id="quizQuestion{{item.questionId}}") {{item.question}}
-                        .col-md-3
+                            h4.wrapword
+                              strong(id="quizQuestion{{item.questionId}}") {{item.question}}
+                        .col-md-3.wrapword
                             h4 Your answer
-                            strong(ng-id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
-                        .col-md-3
+                            strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
+                        .col-md-3.wrapword
                             h4 Correct answer&nbsp;
-                            strong(ng-id="cresponse{{item.questionId}}") {{item.answer}}
+                            strong(id="cresponse{{item.questionId}}") {{item.answer}}
                         .col-md-2
                             h4 Score: {{item.roundedScore}}
                             p(ng-show="item.correct") (You took {{item.seconds}}

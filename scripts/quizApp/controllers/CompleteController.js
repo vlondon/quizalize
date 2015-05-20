@@ -5,12 +5,13 @@ var maxTime = settings.maxTime;
 var minScore = settings.minScore;
 var gracePeriod = settings.gracePeriod;
 
-angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', function(QuizData, $log, $location){
+angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', '$scope', function(QuizData, $log, $location, $scope){
     var self = this;
-    var hasTopics = false;
+    self.hasTopics = false;
     self.teacherMode = sessionStorage.getItem("mode")=="teacher";
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     sessionStorage.removeItem("mode");
+    self.showButtons = false;
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -65,27 +66,46 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         //only show topics for which we have data
         for (var i in self.alltopics) {
             if (self.alltopics[i].stats!=undefined) {
-                self.hasTopics = true;
+                $scope.$apply(function() {
+                    self.hasTopics = true;
+                });                                                        
                 self.topics[i]=self.alltopics[i];
             }
         }
         t.score = Math.round(t.score);
-        setTimeout(function() {
-            for(var j in items){
-                var item = items[j];
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.uuid)[0]]);
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.uuid)[0]]);
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.uuid)[0]]);
-            }
-        },200);         
         return t;
     };
 
     self.data = QuizData.currentQuizResult();
     self.topics = {};
-    self.alltopics = QuizData.getTopics();
+    QuizData.getTopics(function(data) {
+        self.alltopics = data;
+        self.totals = calculateTotals(self.data.report);    
+        if (self.data.latexEnabled) {
+            setTimeout(function() {
+                var items = self.data.report;
+                for(var j in items){
+                    var item = items[j];
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.questionId)[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.questionId)[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.questionId)[0]]);
+                }
+                MathJax.Hub.Queue(function () {
+                    $scope.$apply(function() {
+                        self.showButtons = true;
+                    });                        
+                });                                                    
+            },1000); 
+            $scope.$apply(function() {
+                self.showButtons = true;
+            });                        
+        }
+        else {
+            self.showButtons = true;
+        }        
+    });
 
-    self.totals = calculateTotals(self.data.report);
+    
 
     $log.debug("Complete Controller", self);
 

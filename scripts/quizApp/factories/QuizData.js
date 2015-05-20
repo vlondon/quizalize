@@ -24,6 +24,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     var minScore = settings.minScore;
     var gracePeriod = settings.gracePeriod;
 
+    var topicsLoaded = false;
+
     //callbacks for messaging
     var callbacks = {};
 
@@ -69,7 +71,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     var processQuizData = function(result) {
         categories = {};
         topics = {};
-        for (var i in result.contents) {
+        for (var i in result.contents) {                            
             var quiz = result.contents[i];
             var cuuid = "undefined";
             var category = { name: "Other" };
@@ -89,6 +91,20 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
             categories[cuuid].quizzes.push(quiz);
         }
         for (var i in result.categories) {
+            topicsLoaded = true;
+            topics[result.categories[i].uuid] = result.categories[i];
+        }
+    }
+
+    var processQuizCategories = function(result) {
+        for (var i in result.categories) {
+            var category = result.categories[i];
+            if (categories[category.uuid]==undefined) {
+                categories[category.uuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
+            }
+        }
+        for (var i in result.categories) {
+            topicsLoaded = true;
             topics[result.categories[i].uuid] = result.categories[i];
         }
     }
@@ -106,7 +122,7 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
     }
 
     var initQuizResult = function() {
-        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.questions.length, report: [], correct: 0 };
+        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
         localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
     }
@@ -290,8 +306,18 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
         getCategories: function() {
             return categories;
         },
-        getTopics: function() {
-            return topics;
+        getTopics: function(callback) {
+            if (!topicsLoaded) {
+                zzish.listPublicContent(function(err,data) {
+                    if (!err) {
+                        processQuizCategories(data);                                        
+                    }
+                    callback(topics);    
+                })
+            }
+            else {
+                return callback(topics);                
+            }            
         },
         loginUser: function(user,classcode,callback) {
             if (zzish.validateClassCode(classcode)) {
@@ -322,6 +348,14 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                 callback(err, message);
             });
         },
+        loadGroupContent: function(code,callback){
+            zzish.listPublicContentForGroup(code,function(err, message){
+                if(!err) {
+                    processQuizData(message);
+                }
+                callback(err, message);
+            });
+        },        
         loadQuiz: function(catId,quizId,callback) {
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 callback(currentQuiz);
@@ -399,8 +433,8 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                         options.push(alt);
                     }
                 }
-                //return randomise(options);
-                return options;
+                return randomise(options);
+                //return options;
             } else {
                 var answers = [];
                 var correct = question.answer;
@@ -413,9 +447,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                         }                        
                     }
                 }
-                var options = answers.slice(0,3);
+                var options = randomise(answers).slice(0,3);
                 options.push(correct);
-                return randomise(options);
+                return options;
             }
         },
         answerQuestion: function(idx, response, answer, questionName, duration){
@@ -439,11 +473,15 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                     response: response,
                     duration: duration
                 },
-                extensions: {}
+                extensions: {},
+                attributes: {}
             }
             if (question.topicId) {
                 parameters.extensions["categoryId"] = question.topicId;
             }
+            if (question.imageURL) {
+                parameters.attributes["image_url"] = question.imageURL;
+            }            
             zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
 
             if(correct) {

@@ -116,7 +116,9 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     self.addQuestion = function() {
         var topicId="";
         var questionId = $("#questionId").val();
-        self.topic = $("#topic").val();        
+        if ($("#topic").val()!="" && $("#topic").val()!=self.topic) {
+            self.topic = $("#topic").val();            
+        }        
         if (self.topic!="") {
             var found = false;
             for (var i in self.topics) {
@@ -281,7 +283,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         var lines = self.uploader.split("\n");
         for (var i in lines) {
             var line = lines[i].split("\t");
-            self.topic = line[0];
+            self.topic = line[0];        
             self.question = line[1];
             self.answerText = line[2];
             self.alt1 = line[3];

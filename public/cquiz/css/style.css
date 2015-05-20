@@ -666,14 +666,25 @@ section#intro {
 .item-inner__hero {
 	height: 750px;
 }
+.item-inner__hero_short {
 
+	height: 750px;
+	margin-bottom: -200px;
+
+}
+.item-inner__hero_shorter {
+
+	height: 750px;
+	margin-bottom: -300px;
+
+}
 .item-inner {
 	display: block;
 	width: 100%;
 
 	background-size: cover;
 	background-position: center;
-	overflow: hidden;
+	overflow: hidden; 
 }
 .item-inner__fixed {
 	height: 400px;
@@ -1127,6 +1138,10 @@ a.btn:focus{
 
 .banner-social-buttons {
     margin-top: 0;
+}
+.what_is{
+	margin-top:-25px;
+
 }
 
 /* --- progress --- */
