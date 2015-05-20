@@ -159,7 +159,7 @@ var QLScrambled = React.createClass({
 
         var showAnswer, showTargets, showOptions, showCountdown;
 
-        if (!this.state.answer) {
+        if (this.props.letters.length > 0) {
             showCountdown = <QLCountDown/>;
             showTargets = this.props.answer.map(function(letter, index){
                 return (
@@ -185,10 +185,9 @@ var QLScrambled = React.createClass({
             }
         } else {
             var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
-            console.log('currentAnswer', currentAnswer, this.props.answer);
             showAnswer = (
                 <QLAnswerScreen
-                    answerData={answer}
+                    answerData={currentAnswer}
                     onNext={this.props.onNext}/>
             );
         }
@@ -203,9 +202,7 @@ var QLScrambled = React.createClass({
                         {showAnswer}
                         {showTargets}
                         <div className="user-interaction" ref='userInteraction'>
-                            <div>
-                                Unscrambble the letters below to find the correct answer
-                            </div>
+                            {!showAnswer ? <div>Unscrambble the letters below to find the correct answer</div> : null}
                             {showOptions}
                         </div>
                     </div>

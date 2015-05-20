@@ -49,15 +49,15 @@ angular.module('quizApp')
         console.log("Loading Quiz");
         QuizData.loadQuiz(self.catId, self.id, function(data) {
             console.log("Loaded Quiz");
-            //$scope.$apply(function(){             
-                self.currentQuiz = data;                
+            //$scope.$apply(function(){
+                self.currentQuiz = data;
                 self.showButtons = !self.currentQuiz.latexEnabled;
                 if (self.currentQuiz.latexEnabled) {
                     console.log("Hiding question" + $("#quizQuestion" ));
                     MathJax.Hub.Config({
                         tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-                    });       
-                    setTimeout(function() {                                            
+                    });
+                    setTimeout(function() {
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
@@ -66,15 +66,15 @@ angular.module('quizApp')
                         MathJax.Hub.Queue(function () {
                             $scope.$apply(function() {
                                 self.showButtons = true;
-                            });                        
-                        });                            
-                    },200); 
+                            });
+                        });
+                    },200);
                 }
                 else {
                     self.showButtons = true;
                 }
                 self.score = QuizData.currentQuizResult().totalScore;
-                self.questionCount = QuizData.currentQuizResult().questionCount;            
+                self.questionCount = QuizData.currentQuizResult().questionCount;
                 QuizData.getQuestion(self.questionId, function(data){
                     self.imageURL = data.imageURL;
                     self.question = data.question;
@@ -92,9 +92,9 @@ angular.module('quizApp')
                             self.longMode = true;
                         }
                     }
-                    // addReactComponent();
-                });  
-            //});          
+                    addReactComponent();
+                });
+            //});
         });
 
         self.select = function(idx){
@@ -103,9 +103,9 @@ angular.module('quizApp')
                                     self.answer,
                                     self.question,
                                     (new Date()).getTime() - startTime,
-                                    true);
-            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
-            //renderReactComponent();
+                                    false);
+            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+            renderReactComponent();
         };
 
         self.nextQuestion = function(){
