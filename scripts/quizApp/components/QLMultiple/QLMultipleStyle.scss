@@ -33,6 +33,13 @@
     }
 }
 
+// We hide old content
+.row.multiple-row {
+    display: none;
+}
+
+
+
 .ql-quiz-container {
     position: relative;
 }
@@ -122,5 +129,5 @@
         &.alternative-6 { animation-delay: $delay-base + ($delay-between-elements * 6); }
     }
 
-    
+
 }

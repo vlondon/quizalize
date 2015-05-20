@@ -1,9 +1,9 @@
 var React = require('react');
 
-
 var toSeconds = function(ms){
     return Math.round(ms / 10) / 100 + 's';
 };
+
 var Star = React.createClass({
 
     getInitialState: function() {
@@ -62,8 +62,11 @@ var QLAnswerScreen = React.createClass({
 
     render: function() {
         var stars = [];
-        for (var i = 0; i < 30; i++){
-            stars.push(<Star key={i}/>);
+
+        if (this.props.answerData.correct){
+            for (var i = 0; i < 30; i++){
+                stars.push(<Star key={i}/>);
+            }
         }
 
         return (
@@ -76,13 +79,13 @@ var QLAnswerScreen = React.createClass({
                 </h4>
                 <div className="alternatives">
                         <div className="alternative-wrapper">
-                            <button type="button" className={`btn answer answer-correct`}>
-                                {this.props.answerData.answer}
+                            <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
+                                {this.props.answerData.response}
                             </button>
                         </div>
                 </div>
                 <h4 className="text-2">
-                    is correct!
+                    {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
                 </h4>
 
                 <div className="score-and-time">

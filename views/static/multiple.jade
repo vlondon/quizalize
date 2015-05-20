@@ -1,5 +1,5 @@
 block header
-    style.  
+    style.
         .ng-hide-add, .ng-hide-remove {
            /* ensure visibility during the transition */
         display: block !important; /* yes, important */
@@ -20,7 +20,7 @@ nav.navbar.navbar-default.navbar-fixed-top
 
 .container
     #reactContainer
-    .row(style="padding-top:10px")
+    .row(style="padding-top:10px").multiple-row
         .col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.col-lg-4.col-lg-offset-4.inverse-text
             .row
                 .col-xs-6.text-left
@@ -28,16 +28,17 @@ nav.navbar.navbar-default.navbar-fixed-top
                 .col-xs-6.text-right
                     h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
 
-    .row
+    .row.multiple-row
         .col-x-12.col-sm-8.col-sm-offset-2
             .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
                 .text-center.wrapword
                     h2.math.quizQuestion#quizQuestion {{quiz.question}}
-                    br                    
+                    br
                     span(ng-show="quiz.imageURL")
                         img(ng-src="{{quiz.imageURL}}",width="80%")
                         br
                         br
                 .row
+
                     div.math(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
                         button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") {{alternative}}
