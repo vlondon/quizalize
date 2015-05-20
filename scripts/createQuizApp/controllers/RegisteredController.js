@@ -18,7 +18,10 @@ angular.module('createQuizApp').controller('RegisteredController', ['QuizData', 
 
     var continueFunction = function() {
         $scope.$apply(function(){
-            if (self.postAction=="create") {
+            if (self.postAction=="dashboard") {
+                $location.path("/quiz#/");
+            }
+            else if (self.postAction=="create") {
                 $location.path("/create");
             }
             else if (self.postAction=="public") {
