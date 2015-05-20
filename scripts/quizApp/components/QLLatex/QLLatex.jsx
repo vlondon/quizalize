@@ -19,7 +19,7 @@ var QLLatex = React.createClass({
         if (hasDoubleDollar){
             content = this.props.children.slice(2, -2);
         } else if (hasSingleDollar){
-            content = this.props.children.sclie(1, -1);
+            content = this.props.children.slice(1, -1);
         }
 
         return {
