@@ -30,6 +30,7 @@
         "es6": true
     },
     "globals": {
+        "MathJax": true,
         "super": true,
         "angular": true
     }
