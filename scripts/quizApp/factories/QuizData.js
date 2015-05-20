@@ -447,9 +447,9 @@ angular.module('quizApp').factory('QuizData', ['$http', '$log', function($http, 
                         }                        
                     }
                 }
-                var options = answers.slice(0,3);
+                var options = randomise(answers).slice(0,3);
                 options.push(correct);
-                return randomise(options);
+                return options;
             }
         },
         answerQuestion: function(idx, response, answer, questionName, duration){

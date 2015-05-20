@@ -220,12 +220,12 @@ style.
                 .well
                     .row
                         .col-md-4
-                            h4  
+                            h4.wrapword
                               strong(id="quizQuestion{{item.questionId}}") {{item.question}}
-                        .col-md-3
+                        .col-md-3.wrapword
                             h4 Your answer
                             strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
-                        .col-md-3
+                        .col-md-3.wrapword
                             h4 Correct answer&nbsp;
                             strong(id="cresponse{{item.questionId}}") {{item.answer}}
                         .col-md-2
