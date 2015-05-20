@@ -140,7 +140,11 @@ var QLScrambled = React.createClass({
             if (newCssState.duration){
                 setTimeout(()=>{
                     if (cb) { cb(); }
-                    this.handleCssState(newCssStateIndex + 1);
+                    if (newCssStateIndex + 1 < cssStates.length) {
+                        this.handleCssState(newCssStateIndex + 1);
+                    } else {
+                        cssStateIndex = 0;
+                    }
                 }, newCssState.duration);
             }
         }
