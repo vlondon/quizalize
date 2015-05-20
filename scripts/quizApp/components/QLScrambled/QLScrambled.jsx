@@ -207,7 +207,7 @@ var QLScrambled = React.createClass({
                         {showAnswer}
                         {showTargets}
                         <div className="user-interaction" ref='userInteraction'>
-                            {!showAnswer ? <div>Unscrambble the letters below to find the correct answer</div> : null}
+                            {!showAnswer ? <div>Unscramble the letters below to find the correct answer</div> : null}
                             {showOptions}
                         </div>
                     </div>
