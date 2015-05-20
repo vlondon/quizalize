@@ -1,0 +1,15 @@
+
+.ql-score {
+    margin-top: 20px;
+    height: 60px;
+    color: #FFF;
+    .score,
+    .questions {
+        width: 50%;
+    }
+    .score { float: left; }
+    .questions {
+        float: right;
+        text-align: right;
+    }
+}

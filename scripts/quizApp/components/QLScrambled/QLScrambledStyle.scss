@@ -1,4 +1,5 @@
 @import './../shared/mixins';
+@import './../shared/score';
 
 @keyframes qlEnterScale {
     from {
@@ -36,7 +37,6 @@
 
 // Hide old content
 .row.row-scrambled { display: none; }
-
 
 .ql-quiz-container {
     position: relative;
