@@ -45,6 +45,9 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
     if (self.id) {
         QuizData.getQuiz(self.id, true, function(quiz){      
             self.quiz = quiz;            
+            if (self.quiz.settings==undefined) {
+                self.quiz.settings = {};
+            }            
             self.settings = self.quiz.settings;
         });
     }
