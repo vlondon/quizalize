@@ -1,6 +1,57 @@
 var React = require('react');
 var TeX = require('react-components/js/tex.jsx');
 
+
+var detectLatex = function(string, regularExpression){
+
+    var stripDollars = function(stringToStrip){
+
+        if (stringToStrip[1] === '$'){
+            stringToStrip = stringToStrip.slice(2, -2);
+        } else {
+            stringToStrip = stringToStrip.slice(1, -1);
+        }
+
+        return stringToStrip;
+
+    };
+    var result = [];
+    console.log('regularExpression', regularExpression);
+
+    var latexMatch = string.match(regularExpression);
+    var stringWithoutLatex = string.split(regularExpression);
+
+    if (latexMatch){
+
+        stringWithoutLatex.forEach(function(s, index) {
+            result.push({
+                string: s,
+                type: 'text'
+            });
+            if(latexMatch[index]) {
+                result.push({
+                    string: stripDollars(latexMatch[index]),
+                    type: 'latex'
+                });
+            }
+        });
+
+
+    } else {
+        result.push({
+            string: string,
+            type: 'string'
+        });
+    }
+
+    console.log('result', string, result);
+
+    return result;
+
+
+
+};
+
 var QLLatex = React.createClass({
 
     propTypes: {
@@ -8,36 +59,28 @@ var QLLatex = React.createClass({
     },
 
     getInitialState: function() {
-        var doubleDollar = /\$\$[\s\S]+?\$\$/g;
-        var singleDollar = /\$[\s\S]+?\$/g;
-        var content = this.props.children;
-
-
-        var hasDoubleDollar = doubleDollar.test(this.props.children);
-        var hasSingleDollar = singleDollar.test(this.props.children);
-
-        if (hasDoubleDollar){
-            content = this.props.children.slice(2, -2);
-        } else if (hasSingleDollar){
-            content = this.props.children.slice(1, -1);
-        }
+        var patternToDected = /\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g;
+        var content = detectLatex(this.props.children, patternToDected);
 
         return {
-            isLatex: hasDoubleDollar || hasSingleDollar,
             content
         };
     },
 
     render: function() {
 
-        if (this.state.isLatex) {
-            return (<TeX>{this.state.content}</TeX>);
-        } else {
-            return (
-                <div>{this.state.content}</div>
-            );
+        var content = this.state.content.map(c => {
+            if (c.type === 'latex') {
+                return (<TeX>{c.string}</TeX>);
+            } else {
+                return (<span>{c.string}</span>);
+            }
+        });
 
-        }
+        return (<string>
+            {content}
+        </string>);
+
     }
 
 });

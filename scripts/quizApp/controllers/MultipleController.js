@@ -53,21 +53,21 @@ angular.module('quizApp')
                 self.showButtons = !self.currentQuiz.latexEnabled;
                 if (self.currentQuiz.latexEnabled) {
                     console.log("Hiding question" + $("#quizQuestion" ));
-                    MathJax.Hub.Config({
-                        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-                    });
-                    setTimeout(function() {
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
-                        MathJax.Hub.Queue(function () {
-                            $scope.$apply(function() {
-                                self.showButtons = true;
-                            });
-                        });
-                    }, 200);
+                    // MathJax.Hub.Config({
+                    //     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+                    // });
+                    // setTimeout(function() {
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
+                    //     MathJax.Hub.Queue(function () {
+                    //         $scope.$apply(function() {
+                    //             self.showButtons = true;
+                    //         });
+                    //     });
+                    // }, 200);
                 }
                 else {
                     self.showButtons = true;
