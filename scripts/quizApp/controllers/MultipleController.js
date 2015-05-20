@@ -91,8 +91,8 @@ angular.module('quizApp')
                                     self.question,
                                     (new Date()).getTime() - startTime,
                                     true);
-            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
-            //renderReactComponent();
+            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+            renderReactComponent();
         };
 
         self.nextQuestion = function(){

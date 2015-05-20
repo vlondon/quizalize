@@ -144,7 +144,8 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                                 self.answer.toUpperCase(),
                                 self.question,
                                 (new Date()).getTime() - startTime);
-            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+            renderReactComponent();
         }
 
     };

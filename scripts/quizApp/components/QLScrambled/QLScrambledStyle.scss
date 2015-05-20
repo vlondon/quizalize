@@ -33,6 +33,11 @@
     }
 }
 
+
+// Hide old content
+.row.row-scrambled { display: none; }
+
+
 .ql-quiz-container {
     position: relative;
 }
@@ -86,18 +91,21 @@
         border: 1px solid transparent;
         white-space: nowrap;
         user-select: none;
+        outline: none;
 
-
-        width: 60px;
-        height: 60px;
-        font-size: 36px;
-        line-height: 50px;
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        line-height: 32px;
 
         @include media($size-mobile) {
+            width: 60px;
+            height: 60px;
         }
     }
 
     .option {
+        outline: none;
         width: 60px;
         height: 60px;
         font-size: 36px;
