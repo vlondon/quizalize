@@ -107,7 +107,7 @@ var QLAnswerScreen = React.createClass({
                                 Next
                             </div>
                             <strong>
-                                <img src="/img/ui-quiz/arrow-right.svg" width="102" height="80"/>
+                                <img src="/img/ui-quiz/arrow-right.svg" />
                             </strong>
                         </h3>
                     </span>

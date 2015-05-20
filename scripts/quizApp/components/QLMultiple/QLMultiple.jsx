@@ -94,7 +94,6 @@ var QLMultiple = React.createClass({
     render: function() {
 
         var showAnswer, showQuestions, showCountdown;
-        
 
         if (!this.state.answer) {
             showCountdown = <QLCountDown/>;
