@@ -10,8 +10,9 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         createQuizApp: 'createQuizApp.js',
-        vendor: []
+        vendor: ['fastclick']
     },
+    plugins: [ new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js') ],
     output: {
         path: __dirname,
         filename: '[name].js'
@@ -24,7 +25,8 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/
             },
             {
                 test: /\.scss$/,
@@ -32,12 +34,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
-        // new webpack.optimize.UglifyJsPlugin({compress: {
-        //     'drop_console': true
-        // }})
-    ],
     resolve: {
         extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss'],
         modulesDirectories: ['node_modules', 'scripts']
