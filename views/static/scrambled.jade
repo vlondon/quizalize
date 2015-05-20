@@ -30,7 +30,7 @@ nav.navbar.navbar-default.navbar-fixed-top
 
     .row
         .col-x-12.col-sm-8.col-sm-offset-2
-            .well(ng-show="quiz.showButtons",ng-class="cssFade ng-scope ng-hide")
+            .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
                 .text-center
                     h2.math.quizQuestion#quizQuestion {{quiz.question}}
                     span(ng-show="quiz.imageURL")
