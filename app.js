@@ -77,7 +77,7 @@ app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 Endpoints for students: actually we are making this client side
  */
 
-app.get('/', checkForMobile, quiz.landingpage);
+app.get('/', checkForMobile, quiz.landingpage5);
 app.get('/mobile', quiz.landingpage2);
 app.get('/ie', quiz.landingpage3);
 app.get('/ks4-gcse-maths', quiz.landingpage4);

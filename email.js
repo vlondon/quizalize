@@ -16,11 +16,17 @@ exports.sendEmail = function(from,toArray,subject,body){
 		// load AWS SES
 		var ses = new awssdk.SES;
 
+		var dest = { ToAddresses: toArray };
+		if (process.env.vini=="true") {
+			console.log("Sending to Vini");
+			dest['BccAddresses'] =  ["vini@zzish.com"];
+		}
+
 		// this sends the email
 		ses.sendEmail( 
 			{ 
 				Source: from, 
-				Destination: { ToAddresses: toArray },
+				Destination: dest,
 				Message: {
 					Subject: {
 						Data: subject
