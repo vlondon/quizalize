@@ -19,3 +19,17 @@
                     input(type="checkbox",class="switch-input", ng-model="ctrl.settings.random")
                     span(class="switch-label",data-on="Yes",data-off="No")
                     span(class="switch-handle")             
+            label.control-label.col-sm-9
+                h4 Quiz Image URL
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Image URL" data-content="Provide a quiz image URL to represent your quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px")
+                input(type="text" ng-model="ctrl.quiz.attributes.imageUrl")
+            label.control-label.col-sm-9
+                h4 Feature this quiz
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="" data-content="Choose this quiz as your featured quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px")
+                label(class="switch")
+                    input(type="checkbox",class="switch-input", ng-model="ctrl.quiz.attributes.featured")
+                    span(class="switch-label",data-on="Yes",data-off="No")
+                    span(class="switch-handle")             
+

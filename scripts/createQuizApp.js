@@ -13,7 +13,7 @@ require('createQuizApp/directives/MathBind');
 
 require('createQuizApp/controllers/DashboardController');
 require('createQuizApp/controllers/AssignmentsController');
-
+require('createQuizApp/controllers/QuizOfTheDayController.js');
 require('createQuizApp/controllers/CreateQuizController');
 require('createQuizApp/controllers/CreateController');
 require('createQuizApp/controllers/RegisterController');

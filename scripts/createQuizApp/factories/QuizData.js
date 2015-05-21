@@ -325,6 +325,16 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 $log.debug("Error from server when getting public quizzes`", er);
             });                
         },  
+        getPublicQuiz: function(id,callback){
+            $http.get("/quizzes/public/"+id).success(function(resp){
+                $log.debug("Response from server for getting public quizzes", resp);
+                processQuizList(resp,function() {
+                    callback(resp);    
+                });                
+            }).error(function(er){
+                $log.debug("Error from server when getting public quizzes`", er);
+            });                
+        },  
         addQuizById: function(quizId, callback){
             if (quizData==undefined) {
                 quizData = {};

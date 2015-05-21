@@ -6,6 +6,7 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
     //use for autocomplete
     self.rootTopicList = [];
     self.rootTopics = [];
+    var oldOne = false;
 
     self.showSettings = false;
 
@@ -33,7 +34,11 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
             QuizData.setRootTopic(rootTopicId);            
         }
         self.quiz.categoryId = rootTopicId;
+
         QuizData.addQuiz(self.quiz,function(uuid) {
+            if (oldOne) {
+                QuizData.saveQuiz(self.quiz);
+            }
             $location.path("/create/" + uuid);
             $log.debug("going to /create/" + uuid);
         });
@@ -43,12 +48,16 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
         $location.path("/register/create"); 
     }
     if (self.id) {
+        oldOne = true;
         QuizData.getQuiz(self.id, true, function(quiz){      
             self.quiz = quiz;            
             if (self.quiz.settings==undefined) {
                 self.quiz.settings = {};
             }            
             self.settings = self.quiz.settings;
+            if (self.quiz.attributes = undefined) {
+                self.quiz.attributes = {};
+            }
         });
     }
     else {
@@ -63,7 +72,11 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
             }            
         }        
         self.settings = self.quiz.settings;
+        if (self.quiz.attributes = undefined) {
+            self.quiz.attributes = {};
+        }
     }
+
 
     QuizData.getTopics(function(topics){
         if (topics) {

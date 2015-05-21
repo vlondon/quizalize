@@ -13,6 +13,7 @@ body {
 	font-size: 18px;
 	line-height: 1.6em;
 	font-weight: 400;
+
 }
 
 html {
@@ -606,7 +607,8 @@ section#intro {
 .cta2-title {
 
     margin-bottom: 60px;
-	color: #d24a4a;
+    margin-top:240px;
+	color: #d24a4a; 
 	font-weight: 300;
 	font-size: 48px;
 	/* text-shadow: 2px 2px 10px white; */
@@ -723,7 +725,7 @@ text-shadow: 2px 2px 2px white;
 	height: 400px;
 }
 .item-1 {
-	background-image: url("../img/6.jpg");
+	background-image: url("../img/7.jpg");
 }
 .item-2 {
 	background-image: url("../img/4.jpg");
@@ -1299,14 +1301,14 @@ font-size:48px;
 
 /* Carousel */
 .carousel_div {
-	height:250px;
+	min-height:260px;
 }
 
 #quote-carousel 
 {
   padding: 0 10px 30px 10px;
   margin-top: 10px;
-  height:250px;
+  min-height:260px;
 }
 
 /* Control buttons  */
@@ -1386,6 +1388,7 @@ font-size:48px;
     {
       margin-bottom: 0;
       padding: 0 40px 30px 40px;
+
     }
     
 }
@@ -1394,7 +1397,8 @@ font-size:48px;
 @media (max-width: 768px) { 
     
     /* Make the indicators larger for easier clicking with fingers/thumb on mobile */
-    
+    #quote-carousel {
+    min-height:410px;}
     #quote-carousel .carousel-indicators {
         bottom: -20px !important;  
        
@@ -1430,11 +1434,153 @@ font-size:48px;
 }
 
 /* Techstars and stuff */
-.tech_img img{
-	max-height:60px;
-}
+
 .tech_img {
 	min-height:130px;
 	margin-top:20px;
 }
+.tech_img img{
+	max-height:70px;
+}
+.tech_img ul {
+    margin: 0;
+    padding: 5px;
+}
 
+.tech_img ul li {
+    list-style: none outside none;
+    display: inline-block;
+    padding: 10px;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+
+.diag {
+	text-shadow: 2px 2px 2px black;
+}
+
+/* Social Media Icon Styling */
+.social {
+    margin: 0;
+    padding: 0;
+}
+
+.social ul {
+    margin: 0;
+    padding: 5px;
+}
+
+.social ul li {
+    margin: 5px;
+    list-style: none outside none;
+    display: inline-block;
+}
+.social i {
+    width: 70px;
+    height: 70px;
+    color: #FFF;
+    background-color: #909AA0;
+    font-size: 50px;
+    text-align:center;
+    padding-top: 17px;
+    margin-left:30px;
+    margin-right:30px;
+    border-radius: 20%;
+    -moz-border-radius: 20%;
+    -webkit-border-radius: 20%;
+    -o-border-radius: 20%;
+    transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+}
+
+.social i:hover {
+    color: #FFF;
+    text-decoration: none;
+    transition: all ease 0.3s;
+    -moz-transition: all ease 0.3s;
+    -webkit-transition: all ease 0.3s;
+    -o-transition: all ease 0.3s;
+    -ms-transition: all ease 0.3s;
+}
+.social .fa-facebook:hover { /* round facebook icon*/
+    background: #4060A5;
+}
+
+.social .fa-twitter:hover { /* round twitter icon*/
+    background: #00ABE3;
+}
+
+.social .fa-google-plus:hover { /* round google plus icon*/
+    background: #e64522;
+}
+
+.social .fa-github:hover { /* round github icon*/
+    background: #343434;
+}
+
+.social .fa-pinterest:hover { /* round pinterest icon*/
+    background: #cb2027;
+}
+
+.social .fa-linkedin:hover { /* round linkedin icon*/
+    background: #0094BC;
+}
+
+.social .fa-flickr:hover { /* round flickr icon*/
+    background: #FF57AE;
+}
+
+.social .fa-instagram:hover { /* round instagram icon*/
+    background: #375989;
+}
+
+.social .fa-vimeo-square:hover { /* round vimeo square icon*/
+    background: #83DAEB;
+}
+
+.social .fa-stack-overflow:hover { /* round stack overflow icon*/
+    background: #FEA501;
+}
+
+.social .fa-dropbox:hover { /* round dropbox icon*/
+    background: #017FE5;
+}
+
+.social .fa-tumblr:hover { /* round tumblr icon*/
+    background: #3a5876;
+}
+
+.social .fa-dribbble:hover { /* round dribble icon*/
+    background: #F46899;
+}
+
+.social .fa-skype:hover { /* round skype icon*/
+    background: #00C6FF;
+}
+
+.social .fa-stack-exchange:hover { /* round stack exchange icon*/
+    background: #4D86C9;
+}
+
+.social .fa-youtube:hover { /* round youtube icon*/
+    background: #FF1F25;
+}
+
+.social .fa-xing:hover { /* round xing icon*/
+    background: #005C5E;
+}
+
+.social .fa-rss:hover { /* round rss icon*/
+    background: #e88845;
+}
+
+.social .fa-foursquare:hover { /* round foursquare icon*/
+    background: #09B9E0;
+}
+
+.social .fa-youtube-play:hover { /* round youtube play button icon*/
+    background: #DF192A;
+}

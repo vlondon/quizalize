@@ -161,6 +161,12 @@ exports.getPublicQuizzes = function(req, res){
     });
 };
 
+exports.getPublicQuiz = function(req, res){
+    zzish.getPublicContent(req.params.id, function(err, resp){
+        res.send(resp);
+    });
+};
+
 exports.getAssignedPublicQuizzes = function(req, res){
     var profileId = req.params.profileId;
     zzish.listAssignedPublicContent(profileId, function (err,resp) {
@@ -354,4 +360,8 @@ exports.getQuizResults = function(req,res) {
     zzish.getContentResults(req.params.id,req.params.quizId,function (err,result) {
         res.send(result);
     })    
+}
+
+exports.quizoftheday = function(req,res) {
+    res.render('quizoftheday',{quiz: { title: 'Space'}});
 }

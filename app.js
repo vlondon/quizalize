@@ -71,6 +71,7 @@ app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
 
 
 app.get('/quizzes/public', quiz.getPublicQuizzes);
+app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
 /*
