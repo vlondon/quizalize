@@ -17,21 +17,23 @@ angular.module('createQuizApp').controller('RegisteredController', ['QuizData', 
 
 
     var continueFunction = function() {
-        if (self.postAction=="dashboard") {
-            $location.path("/quiz#/");
-        }
-        else if (self.postAction=="create") {
-            $location.path("/create");
-        }
-        else if (self.postAction=="public") {
-            $location.path("/published/"+self.id+"/b");                    
-        }
-        else if (self.postAction=="preview") {
-            window.location.href="/app#/play/public/"+self.id+"/true";
-        }
-        else if (self.postAction.indexOf("share:")==0) {
-            window.location.href="/app#/play/" + self.postAction + "/"+self.id+"/true";    
-        }
+        $scope.$apply(function(){
+            if (self.postAction=="dashboard") {
+                $location.path("/quiz#/");
+            }
+            else if (self.postAction=="create") {
+                $location.path("/create");
+            }
+            else if (self.postAction=="public") {
+                $location.path("/published/"+self.id+"/b");                    
+            }
+            else if (self.postAction=="preview") {
+                window.location.href="/app#/play/public/"+self.id+"/true";
+            }
+            else if (self.postAction.indexOf("share:")==0) {
+                window.location.href="/app#/play/" + self.postAction + "/"+self.id+"/true";    
+            }
+        });
     }
 
     self.continue = function() {
