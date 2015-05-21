@@ -1,19 +1,29 @@
 extends baseLayout2
 
 block header
-	p Hello
-
-block body
-	h1 #{quiz.title}
-	p Hello
-	p Hello
-		| Goodbye
-		| LADKF
-	.container
+	
+block body	
+	.container.quiz
+		.row.text-center.quiz-title
+			h1 Quiz of the day - #{quiz.title}
 		.row
-			.col-xs-4
-				p Hello
-			.col-xs-4
-				p Goodbye
-			.col-xs-4
-				p No
+			.col-md-6.col-md-push-6.quiz-col
+				.row.play(id="play row")
+					button.button#play-button Play
+				.row.playtoo
+					button.button#play-too Play with your class	
+				.row.leaderboard
+				h4 Top 5 Scores 
+			.col-md-6.col-md-pull-6.quiz-col.quiz-col1
+				.row
+					img.quiz-img.img-responsive(src='/cquiz/img/Moon.JPG') 
+				.row.social(id="social media")
+					p SHARE THIS QUIZ
+					ul
+						li 	
+							a(href="http://www.facebook.com/sharer/sharer.php?u=quizalize.com/quiz-of-the-day") 
+								span.fa.fa-lg.fa-facebook  
+
+						li 
+							a(href="http://www.twittter.com/quizalize") 
+								span.fa.fa-lg.fa-twitter 				
