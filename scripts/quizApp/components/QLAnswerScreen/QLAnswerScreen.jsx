@@ -1,4 +1,6 @@
 var React = require('react');
+var TeX = require('react-components/js/tex.jsx');
+var QLLatex = require('quizApp/components/QLLatex');
 
 var toSeconds = function(ms){
     return Math.round(ms / 10) / 100 + 's';
@@ -80,7 +82,7 @@ var QLAnswerScreen = React.createClass({
                 <div className="alternatives">
                         <div className="alternative-wrapper">
                             <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
-                                {this.props.answerData.response}
+                                <QLLatex>{this.props.answerData.response}</QLLatex>
                             </button>
                         </div>
                 </div>
