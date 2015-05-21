@@ -31,6 +31,7 @@ app.get('/quiz/view/:page', function(req, res){
 });
 
 app.get('/quiz/create', quiz.create);
+app.get('/quiz-of-the-day', quiz.quizoftheday);
 
 //Endpoints for teachers TODO rename appropriately
 
