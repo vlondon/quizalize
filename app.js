@@ -50,6 +50,8 @@ app.get('/quiz/profile/:uuid', quiz.getProfileById);
 app.get('/quiz/code/:code', quiz.getQuizByCode);
 app.post('/quizzes/:id/load', quiz.getQuizzes);
 
+app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
+
 
 app.get('/create/:profileId/topics/', quiz.getMyTopics);
 app.post('/create/:profileId/topics/', quiz.postTopic);

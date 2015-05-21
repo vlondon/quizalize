@@ -19,6 +19,8 @@ html(ng-app='createQuizApp')
         script(src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js")
         <![endif]-->
 
+        block header
+
         script(src='#{session.zzishsdkurl}/zzish.js')        
         script(src='/js/vendor.js')        
         script(src='/lib/angular.min.js')  
@@ -27,6 +29,8 @@ html(ng-app='createQuizApp')
         script(src='/lib/autogrow.js')
         script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
         script(src='/js/createQuizApp.js')        
+        script(src="/lib/Chart.js")
+        script(src='/lib/angular-chart.min.js')             
         script(src='/js/quiz.js')  
         script(src='/lib/ekko-lightbox.min.js')  
 
@@ -203,6 +207,8 @@ body(ng-controller="NavBarController as nctrl")
                         span.icon-bar
             .navbar-collapse.collapse#navbar
                 ul.nav.navbar-nav.navbar-right
+                    //li(style="margin-right:5px;")#quizzes
+                        //a.btn.btn-info.navbar-btn(href="/quiz/#/pquizzes",style="margin-top:9px; padding: 8px;") Your Public Quizzes
                     li(style="margin-right:5px;")#quizzes
                         a.btn.btn-info.navbar-btn(href="/quiz/#/quizzes",style="margin-top:9px; padding: 8px;") Your quizzes                        
                     li(style="margin-right:5px;")#assignments

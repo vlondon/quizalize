@@ -1,6 +1,6 @@
 var FastClick = require('fastclick');
 
-angular.module('createQuizApp', ['ngRoute', 'ngAnimate']);
+angular.module('createQuizApp', ['ngRoute', 'ngAnimate', "chart.js"]);
 
 require('createQuizApp/config/routing');
 require('createQuizApp/config/logProvider');
@@ -30,6 +30,7 @@ require('createQuizApp/controllers/AccountController');
 require('createQuizApp/controllers/PublishedController');
 require('createQuizApp/controllers/ShareController');
 require('createQuizApp/controllers/SignupController');
+require('createQuizApp/controllers/ResultsController');
 
 require('createQuizApp/filters/OrderByObject');
 

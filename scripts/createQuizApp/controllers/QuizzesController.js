@@ -135,6 +135,10 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         QuizData.saveQuiz(quiz);
     }
 
+    self.showResults = function(quiz) {
+        $location.path("/results/"+quiz.uuid);
+    }
+
     self.currentClass = QuizData.getCurrentClass();
 
     $log.debug(self);

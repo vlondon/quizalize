@@ -1,0 +1,32 @@
+.container
+	h2 Results for {{ctrl.quiz.name}} 
+	p Here are the latest results for people who have played for this quiz
+	.row
+		.col-xs-1
+			p &nbsp;
+		.col-xs-2			
+			center
+				h2.dashboard-panel-info-title Total Plays
+				h1(style="font-size: 9vw;") {{ctrl.results.length}}
+		.col-xs-2
+		.col-xs-2
+			center
+				h2.dashboard-panel-info-title Average Score
+			canvas(id="myChart2",width="300",height="300",class="chart chart-doughnut",data="data_score",labels="labels_score",colours="color_score",options="{fontSize: 20, colour: '#8d3b8e', showTooltips: false, dtype: 1}")
+		.col-xs-2
+		.col-xs-2
+			center
+				h2.dashboard-panel-info-title Average Percentage
+			canvas(id="myChart2",width="300",height="300",class="chart chart-doughnut",data="data_per",labels="labels_per",colours="color_per",options="{fontSize: 20, colour: '#8d3b8e', showTooltips: false, dtype: 3}")
+		.col-xs-1
+			p &nbsp;
+	.row(ng-repeat="player in ctrl.results | orderObjectBy:['-score'] | limitTo:ctrl.quantityToShow track by $index",style="border: 1px solid black")
+		.col-xs-1
+			h3 {{$index+1}}.
+		.col-xs-7
+			h3 {{player.profile.name}}
+		.col-xs-4			
+			h3(ng-switch="player.statusInt",ng-show="player.score") {{player.score}}
+				span(ng-switch-when="0").glyphicon.glyphicon-play
+				span(ng-switch-when="1").glyphicon.glyphicon-remove
+				span(ng-switch-when="2").glyphicon.glyphicon-stop

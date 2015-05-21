@@ -486,7 +486,15 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             }).error(function(err){
                 $log.debug("Error from sharing: ", err);
             });
-        },    
+        },   
+        getResults: function(quizId,callback) {
+            $http.get("/users/" + userUuid + "/quizzes/" + quizId + "/results").success(function(result){
+                $log.debug("Response from get result: ", result);                    
+                callback(result);
+            }).error(function(err){
+                $log.debug("Error from get result ", err);
+            });
+        },
         getQuizByCode: function(code,callback) {
             $http.get("/quiz/code/" + code).success(function(result){
                 $log.debug("Response from get quiz by code: ", result);                    

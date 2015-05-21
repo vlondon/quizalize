@@ -94,6 +94,11 @@ angular.module('createQuizApp')
             templateUrl: "/quiz/view/pquizzes",
             controller: "PublicQuizzesController",
             controllerAs: "pquizzes"
-        })       
+        })
+        .when('/results/:id', {
+            templateUrl: "/quiz/view/results",
+            controller: "ResultsController",
+            controllerAs: "ctrl"
+        })        
         .otherwise({redirectTo: '/'})
 }]);

@@ -349,3 +349,9 @@ exports.help = function(req, res){
 	email.sendEmail('admin@zzish.com',['developers@zzish.com'],'Help From Classroom Quiz',"Name: " + req.body.name + "\n\nBody" + req.body.message+"\n\nEmail\n\n" + req.body.email);
     res.send(true);
 };
+
+exports.getQuizResults = function(req,res) {
+    zzish.getContentResults(req.params.id,req.params.quizId,function (err,result) {
+        res.send(result);
+    })    
+}
