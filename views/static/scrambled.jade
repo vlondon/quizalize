@@ -1,5 +1,5 @@
 block header
-    style.  
+    style.
         .ng-hide-add, .ng-hide-remove {
            /* ensure visibility during the transition */
         display: block !important; /* yes, important */
@@ -19,16 +19,15 @@ nav.navbar.navbar-default.navbar-fixed-top
             img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
 
 .container
-    .row(style="padding-top:10px")
-        div(id="reactContainer")
-        .col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.col-lg-5.col-lg-offset-2.inverse-text
-            .row
-                .col-xs-6.text-left
-                    h2 {{quiz.score}} pts
-                .col-xs-6.text-right
-                    h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
+    .ql-score
+        .score
+            h2 {{quiz.score}} pts
+        .questions
+            h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
+    #reactContainer
+    
 
-    .row
+    .row.row-scrambled
         .col-x-12.col-sm-8.col-sm-offset-2
             .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
                 .text-center
@@ -37,7 +36,7 @@ nav.navbar.navbar-default.navbar-fixed-top
                         img(ng-src="{{quiz.imageURL}}",width="80%")
                         br
                         br
-    
+
                     .btn-group.btn-default
                         button.btn.letterTile.btn-info(ng-repeat="letter in quiz.userAnswerLetters track by $index", ng-click="quiz.removeLetter($index)") {{letter}}
 

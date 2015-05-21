@@ -1,10 +1,8 @@
-var gulp = require('gulp'),
-    del = require('del'),
-    $ = require('gulp-load-plugins')(),
-    webpack = require('gulp-webpack');
-
-
-
+var gulp = require('gulp');
+var del = require('del');
+var $ = require('gulp-load-plugins')();
+var webpack = require('gulp-webpack');
+var ngAnnotate = require('gulp-ng-annotate');
 
 
 gulp.task('webpack', function() {
@@ -34,6 +32,17 @@ gulp.task('webpack-dev', function() {
 
 });
 
+gulp.task('minify', ['webpack-prod'], function(){
+    return gulp.src('public/js/*.js')
+    .pipe(ngAnnotate())
+    .pipe($.uglify({
+        complress: {
+            'drop_console': true
+        }
+    }))
+    .pipe(gulp.dest('public/js'));
+});
+
 
 // Scripts
 // gulp.task('eslint', function () {
@@ -57,4 +66,4 @@ gulp.task('clean', function (cb) {
 // Watch
 gulp.task('watch', ['clean', 'webpack']);
 gulp.task('dev', ['clean', 'webpack-dev']);
-gulp.task('default', ['clean', 'webpack-prod']);
+gulp.task('default', ['clean', 'webpack-prod', 'minify']);

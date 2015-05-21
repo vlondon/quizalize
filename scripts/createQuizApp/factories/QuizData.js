@@ -303,6 +303,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                             quizData = {};
                             for (var i in resp) {
                                 quizData[resp[i].uuid] = resp[i];
+                                quizData[resp[i].uuid].attributes.live = resp[i].attributes.live=="true";
                             }                        
                             localStorage.setItem("quizData",JSON.stringify(quizData));
                             callback(quizData);
@@ -384,18 +385,20 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                 }
             }            
         },
-        saveQuiz: function(id, quiz,topics){
-            quizData[id] = quiz;
+        saveQuiz: function(quiz,topics){
+            quizData[quiz.uuid] = quiz;
             localStorage.setItem("quizData",JSON.stringify(quizData));
             $log.debug("Saving Quiz: ", quizData);
 
-            for (var i in topics) {
-                if (topics[i].newObject!=undefined && topics[i].newObject) {
-                    topics[i].newObject = null;
-                    postTopic(topics[i]).success(function(resp){
-                        $log.debug("Returning from post topic");
-                    });
-                }
+            if (topics!=undefined) {
+                for (var i in topics) {
+                    if (topics[i].newObject!=undefined && topics[i].newObject) {
+                        topics[i].newObject = null;
+                        postTopic(topics[i]).success(function(resp){
+                            $log.debug("Returning from post topic");
+                        });
+                    }
+                }                
             }
             if (!savingQuiz) {
                 $log.debug("About to post");

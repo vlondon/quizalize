@@ -1,10 +1,9 @@
 
 angular.module('quizApp')
-    .controller('MultipleController', ['QuizData', '$log', '$routeParams', '$location', '$scope', function(QuizData, $log,  $routeParams, $location, $scope){
+    .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
 
         var React = require('react');
         var QLMultiple = require('quizApp/components/QLMultiple');
-
 
         var self = this;
         var startTime = (new Date()).getTime();
@@ -20,13 +19,13 @@ angular.module('quizApp')
         var renderReactComponent = function(){
             React.render(
                 React.createElement(QLMultiple, {
+                    currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
                     question: self.question,
                     alternatives: self.alternatives,
+                    imageURL: self.imageURL,
                     onSelect: function(index){
-                        $scope.$apply(function(){
-                            self.select(index);
-                        });
+                        $scope.$apply(() => self.select(index) );
                     },
                     onNext: function(){
                         $scope.$apply(()=> self.nextQuestion() );
@@ -44,37 +43,37 @@ angular.module('quizApp')
             $scope.$on('$destroy', function(){
                 React.unmountComponentAtNode(document.getElementById('reactContainer'));
             });
+
         };
 
-        console.log("Loading Quiz");
         QuizData.loadQuiz(self.catId, self.id, function(data) {
-            console.log("Loaded Quiz");
-            //$scope.$apply(function(){             
-                self.currentQuiz = data;                
+
+            //$scope.$apply(function(){
+                self.currentQuiz = data;
                 self.showButtons = !self.currentQuiz.latexEnabled;
                 if (self.currentQuiz.latexEnabled) {
                     console.log("Hiding question" + $("#quizQuestion" ));
-                    MathJax.Hub.Config({
-                        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-                    });       
-                    setTimeout(function() {                                            
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
-                        MathJax.Hub.Queue(function () {
-                            $scope.$apply(function() {
-                                self.showButtons = true;
-                            });                        
-                        });                            
-                    },200); 
+                    // MathJax.Hub.Config({
+                    //     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+                    // });
+                    // setTimeout(function() {
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
+                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
+                    //     MathJax.Hub.Queue(function () {
+                    //         $scope.$apply(function() {
+                    //             self.showButtons = true;
+                    //         });
+                    //     });
+                    // }, 200);
                 }
                 else {
                     self.showButtons = true;
                 }
                 self.score = QuizData.currentQuizResult().totalScore;
-                self.questionCount = QuizData.currentQuizResult().questionCount;            
+                self.questionCount = QuizData.currentQuizResult().questionCount;
                 QuizData.getQuestion(self.questionId, function(data){
                     self.imageURL = data.imageURL;
                     self.question = data.question;
@@ -92,9 +91,10 @@ angular.module('quizApp')
                             self.longMode = true;
                         }
                     }
-                    // addReactComponent();
-                });  
-            //});          
+                    console.log('imageUrl', data);
+                    addReactComponent();
+                });
+            //});
         });
 
         self.select = function(idx){
@@ -103,9 +103,9 @@ angular.module('quizApp')
                                     self.answer,
                                     self.question,
                                     (new Date()).getTime() - startTime,
-                                    true);
-            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
-            //renderReactComponent();
+                                    false);
+            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+            renderReactComponent();
         };
 
         self.nextQuestion = function(){
@@ -113,4 +113,4 @@ angular.module('quizApp')
         };
 
         $log.debug('Multiple Controller', self);
-    }]);
+    });

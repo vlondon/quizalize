@@ -1,4 +1,5 @@
 @import './../shared/mixins';
+@import './../shared/score';
 
 @keyframes qlShake {
     0%      { transform: rotate(0); }
@@ -80,6 +81,10 @@
 
     }
 
+    .answer-wrong {
+        background: #ff003f;
+    }
+
     .star-container {
         width: 0;
         height: 0;
@@ -106,19 +111,41 @@
     .next,
     .time,
     .score {
+        $size-big: 150px;
+        $size-small: 80px;
+
+
         animation: qlEnterTranslateY 400ms ease-out;
         animation-fill-mode: both;
-        height: 200px;
-        width: 200px;
-        padding-top: 50px;
-        margin: 20px;
+        height: $size-small;
+        width: $size-small;
+        padding-top: 20px;
+        margin: 10px;
         background: #ff003f;
         border-radius: 100%;
         color: #FFF;
         display: inline-block;
+        font-size: 16px;
+        overflow: hidden;
 
         strong {
-            font-size: 58px;
+            font-size: 20px;
+        }
+        img {
+            max-width: 80px;
+            max-height: 50px;
+            width: 100%;
+        }
+
+
+        @include media($size-mobile) {
+            padding-top: $size-big / 4;
+            width: $size-big;
+            height: $size-big;
+            font-size: 26px;
+            strong {
+                font-size: 48px;
+            }
         }
     }
     .score {

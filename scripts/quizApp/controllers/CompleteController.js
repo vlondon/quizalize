@@ -94,9 +94,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
                     });                        
                 });                                                    
             },1000); 
-            $scope.$apply(function() {
-                self.showButtons = true;
-            });                        
+            self.showButtons = true;
         }
         else {
             self.showButtons = true;

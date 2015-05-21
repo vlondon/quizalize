@@ -1,4 +1,4 @@
-angular.module('createQuizApp').controller('RegisteredController', ['QuizData', '$log', '$location','$rootScope', '$routeParams', '$scope',function(QuizData, $log, $location,$rootScope,$routeParams,$scope){
+angular.module('createQuizApp').controller('RegisteredController', ['QuizData', '$log', '$location','$rootScope', '$routeParams', '$scope','$timeout',function(QuizData, $log, $location,$rootScope,$routeParams,$scope,$timeout){
     var self = this;
 
     self.id = $routeParams.id;
@@ -40,7 +40,7 @@ angular.module('createQuizApp').controller('RegisteredController', ['QuizData', 
         continueFunction();   
     }
 
-    setTimeout(function() {
-        continueFunction()
+    $timeout(function() {
+        continueFunction();        
     }, 4000);
 }]);

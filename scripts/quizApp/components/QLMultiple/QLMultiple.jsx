@@ -2,6 +2,8 @@ var React = require('react');
 
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
+var TeX = require('react-components/js/tex.jsx');
+var QLLatex = require('quizApp/components/QLLatex');
 
 var cssStates = [
     {
@@ -26,15 +28,28 @@ var QLMultiple = React.createClass({
         alternatives: React.PropTypes.array.isRequired,
         onSelect: React.PropTypes.func,
         onNext: React.PropTypes.func,
-        quizData: React.PropTypes.object
+        quizData: React.PropTypes.object,
+        currentQuiz: React.PropTypes.object,
+        imageURL: React.PropTypes.string
     },
 
     getInitialState: function() {
+        console.log('currentQuiz', this.props.currentQuiz);
+
         return {
             cssState: cssStates[cssStateIndex],
             answered: null,
-            startTime: Date.now()
+            startTime: Date.now(),
+            hasLatex: this.props.currentQuiz.latexEnabled
         };
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        if (this.props.question !== nextProps.question) {
+            this.setState({
+                cssSate: cssStates[0]
+            });
+        }
     },
 
     componentDidMount: function() {
@@ -53,7 +68,11 @@ var QLMultiple = React.createClass({
             if (newCssState.duration){
                 setTimeout(()=>{
                     if (cb) { cb(); }
-                    this.handleCssState(newCssStateIndex + 1);
+                    if (newCssStateIndex + 1 < cssStates.length) {
+                        this.handleCssState(newCssStateIndex + 1);
+                    } else {
+                        cssStateIndex = 0;
+                    }
                 }, newCssState.duration);
             }
         }
@@ -81,8 +100,8 @@ var QLMultiple = React.createClass({
             showQuestions = this.props.alternatives.map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
-                    <button type="button" className={`btn alternative alternative-${index}`} onClick={this.handleClick.bind(this, index)}>
-                        {alternative}
+                    <button type="button" className={`btn alternative alternative-${index} wrapword`} onClick={this.handleClick.bind(this, index)}>
+                        <QLLatex>{alternative}</QLLatex>
                     </button>
                 </div>);
             }, this);
@@ -99,8 +118,11 @@ var QLMultiple = React.createClass({
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
                     <h3 className='question'>
-                        {this.props.question}
+                        <QLLatex>
+                            {this.props.question}
+                        </QLLatex>
                     </h3>
+                    {this.props.imageURL ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers alternatives">
                         {showAnswer}

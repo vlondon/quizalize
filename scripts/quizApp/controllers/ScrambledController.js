@@ -1,6 +1,9 @@
 var randomise = require('quizApp/utils/randomise');
+var React = require('react');
+var QLScrambled = require('quizApp/components/QLScrambled');
 
-angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){    
+angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){
+    var self = this;
     var getLetters = function(answer){
 
         var letters = answer.toUpperCase().split('');
@@ -34,7 +37,50 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
         return s.replace(/\s+/g, "_");
     };
 
-    var self = this;
+    var renderReactComponent = function(){
+        React.render(
+            React.createElement(QLScrambled, {
+                quizData: QuizData.currentQuizResult(),
+                answer: self.userAnswerLetters,
+                question: self.question,
+                letters: self.letters,
+                imageURL: self.imageURL,
+                onAddLetter: function(index) {
+                    $scope.$apply(function(){
+                        self.addLetter(index);
+                    });
+                },
+                onRemoveLetter: function(index) {
+                    $scope.$apply(function(){
+                        self.removeLetter(index);
+                    });
+                },
+                onSelect: function(index){
+                    $scope.$apply(function(){
+                        self.select(index);
+                    });
+                },
+                onNext: function(){
+                    $scope.$apply(()=> self.nextQuestion() );
+                }
+            }),
+            document.getElementById('reactContainer')
+        );
+    };
+
+
+    var addReactComponent = function(){
+
+        setTimeout(renderReactComponent, 200);
+
+        $scope.$on('$destroy', function(){
+            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+        });
+
+    };
+
+
+
     var startTime = (new Date()).getTime();
 
     self.id = $routeParams.quizId;
@@ -54,19 +100,19 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                 self.showButtons = false;
                 MathJax.Hub.Config({
                     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-                }); 
+                });
                 setTimeout(function() {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);                                                
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
                     MathJax.Hub.Queue(function () {
                         $scope.$apply(function() {
                             self.showButtons = true;
-                        });                        
-                    });                    
+                        });
+                    });
                 },200);
-            }      
+            }
             else {
                 self.showButtons = true;
-            }           
+            }
             QuizData.getQuestion(self.questionId, function(data){
                 self.question = data.question;
                 self.answer = replaceSpaces(data.answer);
@@ -78,11 +124,11 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                     //we already have this question
                     $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                 }
-                // addReactComponent();
+                addReactComponent();
                 lastEmpty = 0;
-            }); 
-        //});        
-    });    
+            });
+        //});
+    });
 
     var updateLastEmpty = function(){
         for(var i=0; i < self.userAnswerLetters.length; i++){
@@ -101,15 +147,16 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             updateLastEmpty();
         }
 
-        if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizResult().report[self.questionId]==undefined){
+        if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizResult().report[self.questionId] == undefined){
             QuizData.answerQuestion(self.questionId,
                                 self.userAnswerLetters.join("").toUpperCase(),
                                 self.answer.toUpperCase(),
                                 self.question,
-                                (new Date()).getTime() - startTime);            
-            $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+                                (new Date()).getTime() - startTime);
+            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
         }
-        
+        renderReactComponent();
+
     };
 
     self.removeLetter = function(idx){
@@ -119,6 +166,11 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.userAnswerLetters[idx] = "_";
             updateLastEmpty();
         }
+        renderReactComponent();
+    };
+
+    self.nextQuestion = function(){
+        $location.path(QuizData.generateNextQuestionUrl(self.questionId));
     };
 
 

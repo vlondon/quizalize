@@ -1,4 +1,5 @@
 @import './../shared/mixins';
+@import './../shared/score';
 
 @keyframes qlEnterScale {
     from {
@@ -33,14 +34,22 @@
     }
 }
 
+// We hide old content
+.row.multiple-row {
+    display: none;
+}
+
+
+
 .ql-quiz-container {
     position: relative;
 }
 .ql-multiple {
     background: #FFF;
     padding: 20px;
-    margin-top: 20px;
+    margin: 20px auto;
     border-radius: 5px;
+
 
     &.enter {
         animation: qlEnterScale 300ms cubic-bezier(0,0,.47,1);
@@ -56,6 +65,21 @@
     }
 
     &.enter .question {
+        animation: qlEnterTranslateY 200ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 400ms;
+    }
+
+    .ql-question-img {
+        display: block;
+        width: 100%;
+        max-width: 400px;
+        max-height: 400px;
+        margin: auto;
+        margin-bottom: 40px;
+    }
+
+    &.enter .ql-question-img {
         animation: qlEnterTranslateY 200ms ease-out;
         animation-fill-mode: both;
         animation-delay: 400ms;
@@ -83,6 +107,7 @@
         display: block;
         font-size: 34px;
         color: #FFF;
+        white-space: normal;
 
 
     }
@@ -122,5 +147,5 @@
         &.alternative-6 { animation-delay: $delay-base + ($delay-between-elements * 6); }
     }
 
-    
+
 }

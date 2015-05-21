@@ -131,6 +131,10 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         
     }
 
+    self.toggleLive = function(quiz) {
+        QuizData.saveQuiz(quiz);
+    }
+
     self.currentClass = QuizData.getCurrentClass();
 
     $log.debug(self);

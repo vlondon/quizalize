@@ -7,7 +7,7 @@
                 .row.well(ng-repeat="class in quizzes.classList track by $index", style="padding-bottom: 10px")  
                     .col-xs-12                  
                         h3 {{class.name}}
-                            a.btn.btn-info.pull-right(ng-href="{{class.link}}", target=_blank, style="padding: 10px") Open {{class.name}} Dashboard
+                            a.btn.btn-info.pull-right(ng-href="{{class.link}}", target="_blank", style="padding: 10px") Open {{class.name}} Dashboard
                         p(style="color: #2a7ed0; font-size: 16px")
                                 Your Class Code: {{class.code}} 
 

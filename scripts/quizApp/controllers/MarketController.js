@@ -4,13 +4,11 @@ angular.module('quizApp').controller('MarketController', ['QuizData', '$log', '$
     self.hasQuizzes = false;
 
     QuizData.loadGroupContent(self.id,function(err, res){
-    	$scope.$apply(function(){ 
-        	self.categories = QuizData.getCategories();        
-        	self.group = res.group;
-        	for (var i in self.categories) {
-        		self.hasQuizzes = true;
-        	}
-        });
+    	self.categories = QuizData.getCategories();        
+    	self.group = res.group;
+    	for (var i in self.categories) {
+    		self.hasQuizzes = true;
+    	}
     });
 
     self.playQuiz = function(quiz) {
