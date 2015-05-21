@@ -114,12 +114,17 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var selectQuestionType = function(index) {
         var currentQuestion = currentQuiz.questions[index];
         var indexOfSpace = currentQuestion.answer.indexOf(" ");
-        if((currentQuestion && !!currentQuestion.alternatives) || indexOfSpace>=0) {
+        var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
+        var length = currentQuestion.answer.length;
+        if((currentQuestion && !!currentQuestion.alternatives) || patternToDected || length ==1 || indexOfSpace>=0 || length ==8) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
         else {
-            return "scrambled";
+            var options = ["scrambled","multiple"];
+            var ran = Math.floor(Math.random()*options.length);
+            return options[ran];
+            //return "scrambled";
         }
     }
 
