@@ -4,9 +4,9 @@
 	.row
 		.col-md-4.quiz-col.quiz-col1
 			.row
-				img.quiz-img.img-responsive(ng-src='{{ctrl.quiz.attributes.imageUrl}}') 
+				img.quiz-img.img-responsive(ng-src='{{ctrl.quiz.settings.imageUrl}}') 
 			.row.attribution
-				span Attribution 
+				span {{ctrl.quiz.settings.imageAttribution}} 
 			.row.social(id="social media")
 				p Share this quiz
 				ul
@@ -23,22 +23,24 @@
 				p {{ctrl.quiz.settings.featureDate}}
 			.row.description
 				h4 Description 
-				p{{ctrl.quiz.settings.description}}
+				p{{ctrl.quiz.settings.Description}}
 			.row.leaderboard
 			h4.quiz1 Top 5 Scores 
 			span(ng-show="ctrl.loading") Loading ...
 			.row(ng-show="!ctrl.loading",ng-repeat="player in ctrl.results | orderObjectBy:['-score'] | limitTo:ctrl.quantityToShow track by $index")
 				.col-xs-1
-					h3.quiz1 {{$index+1}}.
+					span.quiz1 {{$index+1}}.
 				.col-xs-7(data-toggle="tooltip" title="{{player.profile.name}}" data-placement="top")
-					h3.quiz1.over {{player.profile.name}}
+					span.quiz1.over {{player.profile.name}}
 					script $('[data-toggle="tooltip"]').tooltip();                   
 				.col-xs-4			
-					h3.quiz1(ng-switch="player.statusInt",ng-show="player.score") {{player.score}} 
+					span.quiz1(ng-switch="player.statusInt",ng-show="player.score") {{player.score}} 
 		.col-md-4.quiz-col.quiz-col2
 			.row.play(id="play row")
 				button.button(ng-click="ctrl.playQuiz(ctrl.quiz)")#play-button Play
 			.row.playtoo
 				button.button(ng-click="ctrl.assignQuiz(ctrl.quiz)")#play-too Set this quiz for your Class
+			.row.global-lead
+				a(ng-href='/quiz#/results/{{ctrl.quiz.uuid}}') Global Leaderboard
 
 		

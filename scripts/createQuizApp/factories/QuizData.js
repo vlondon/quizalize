@@ -179,6 +179,17 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         callback(currentClass);        
     }
 
+    var getPublicQuiz = function(id,callback) {
+        $http.get("/quizzes/public/"+id).success(function(resp){
+            $log.debug("Response from server for getting public quizzes", resp);
+            processQuizList(resp,function() {
+                callback(resp);    
+            });                
+        }).error(function(er){
+            $log.debug("Error from server when getting public quizzes`", er);
+        }); 
+    }
+
     return{
         //User methods
         unsetUser: function() {
@@ -325,14 +336,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
             });                
         },  
         getPublicQuiz: function(id,callback){
-            $http.get("/quizzes/public/"+id).success(function(resp){
-                $log.debug("Response from server for getting public quizzes", resp);
-                processQuizList(resp,function() {
-                    callback(resp);    
-                });                
-            }).error(function(er){
-                $log.debug("Error from server when getting public quizzes`", er);
-            });                
+            getPublicQuiz(id,callback);               
         },  
         addQuizById: function(quizId, callback){
             if (quizData==undefined) {
@@ -392,7 +396,10 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                         callback({uuid: quizData[id].uuid});
                     }
                 }
-            }            
+            }       
+            else {
+               getPublicQuiz(id,callback); 
+            }     
         },
         saveQuiz: function(quiz,topics){
             quizData[quiz.uuid] = quiz;
