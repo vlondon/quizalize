@@ -52,7 +52,7 @@ angular.module('createQuizApp').controller('ResultsController', ['QuizData', '$l
                 total+=instance.total;
                 score+=instance.score;
                 if (totalscore>0) {
-                    instance.width = ""+(instance.score*100/totalscore)+"%";
+                    instance.width = (instance.score*100/totalscore);
                 }
             }
             if (total!=0) {

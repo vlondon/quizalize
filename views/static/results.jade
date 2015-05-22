@@ -2,6 +2,10 @@ style.
 	.sel {
 		-webkit-appearance: menulist-button;
 	}
+	.progress-bar {
+		font-size: 14px;
+	}
+
 
 
 .container
@@ -57,5 +61,6 @@ style.
 					p {{$index+1}}.
 				.col-xs-3
 					p {{player.profile.name}}
-				.col-xs-5(ng-style="{{player.style}}",width="30%") 
-					{{player.score}}
+				.col-xs-5() 
+					div.progress-bar(ng-style="player.style", style="width: {{player.width}}%; padding: 5px; text-align: right; font-size: 15px") 
+						{{player.score}}

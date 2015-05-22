@@ -24,7 +24,7 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
     QuizData.getPublicQuizzes(function (data) {
         for (var i in data.contents) {
             var quiz = data.contents[i];
-            if (quiz.settings!=undefined && quiz.settings.featured=="true") {                
+            if (quiz.settings!=undefined && quiz.settings.featured==true) {                
                 QuizData.getPublicQuiz(quiz.uuid,function(data){
                     self.quiz = data;   
                     if (self.quiz.settings==undefined) {
