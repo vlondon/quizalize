@@ -51,7 +51,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         setClassCode(code);
         zzish.registerUserWithGroup(userUuid, classCode, function(err,resp) {
             if (!err) {
-                processQuizData(resp);
+                processQuizData(resp,false);
             }
             callback(err, resp);
             $rootScope.$digest();
@@ -62,7 +62,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         if (userUuid && classCode) {
             zzish.listContentForGroup(userUuid,classCode,function(err,resp) {
                 if (!err) {
-                    processQuizData(resp);
+                    processQuizData(resp,false);
                 }
                 callback(err,resp);
                 $rootScope.$digest();
@@ -70,7 +70,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     }
 
-    var processQuizData = function(result) {
+    var processQuizData = function(result,privateMode) {
         categories = {};
         topics = {};
         for (var i in result.contents) {
@@ -90,6 +90,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
+            quiz.publicAssigned = privateMode;
             categories[cuuid].quizzes.push(quiz);
         }
         for (var i in result.categories) {
@@ -353,8 +354,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         loadPublicQuizzes: function(callback){
             zzish.listPublicContent(function(err, message){
-                if(!err) {
-                    processQuizData(message);
+                if(!err) {                    
+                    processQuizData(message,true);
                 }
                 callback(err, message);
                 $rootScope.$digest();
@@ -363,7 +364,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         loadGroupContent: function(code,callback){
             zzish.listPublicContentForGroup(code,function(err, message){
                 if(!err) {
-                    processQuizData(message);
+                    processQuizData(message,true);
                 }
                 callback(err, message);
                 $rootScope.$digest();

@@ -42,7 +42,7 @@ nav.navbar.navbar-default.navbar-fixed-top
         .col-x-12.col-sm-8.col-sm-offset-2
             .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
                 .text-center.wrapword
-                    h2.math.quizQuestion#quizQuestion {{quiz.question}}
+                    p.math.quizQuestion#quizQuestion {{quiz.question}}
                     br
                     span(ng-show="quiz.imageURL")
                         img(ng-src="{{quiz.imageURL}}",width="80%")
