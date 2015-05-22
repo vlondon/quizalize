@@ -71,7 +71,7 @@
         width: 100%;
         background: #2e60ff;
         display: block;
-        font-size: 34px;
+        font-size: 4.5vw;
         color: #FFF;
 
         animation: qlEnterScale 400ms ease-out;
@@ -114,7 +114,6 @@
         $size-big: 150px;
         $size-small: 80px;
 
-
         animation: qlEnterTranslateY 400ms ease-out;
         animation-fill-mode: both;
         height: $size-small;
@@ -125,7 +124,7 @@
         border-radius: 100%;
         color: #FFF;
         display: inline-block;
-        font-size: 16px;
+        font-size:  4.5vw;
         overflow: hidden;
 
         strong {
