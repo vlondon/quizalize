@@ -1,12 +1,14 @@
 .container.quiz
 	.row.text-center.quiz-title
-		h1.quiz1 Quiz of the day - {{ctrl.quiz.name}}
+		h1.quiz1 Quiz of the day - {{ctrl.quiz.name}} 
 	.row
-		.col-md-6.quiz-col.quiz-col1
+		.col-md-4.quiz-col.quiz-col1
 			.row
 				img.quiz-img.img-responsive(ng-src='{{ctrl.quiz.attributes.imageUrl}}') 
+			.row.attribution
+				span Attribution 
 			.row.social(id="social media")
-				p SHARE THIS QUIZ
+				p Share this quiz
 				ul
 					li 	
 						a(target="_blank",href="http://www.facebook.com/sharer/sharer.php?u=quizalize.com/#quiz/quiz-of-the-day") 
@@ -14,12 +16,14 @@
 
 					li 
 						a(target="_blank", ng-href="http://twitter.com/home?status=I'm%20playing%20{{ctrl.quiz.name}}, the Quizalize quiz%20of%20the%20day%20%40quizalizeapp.%20http://bit.ly/quizaday%0A") 
-							span.fa.fa-lg.fa-twitter 	
-		.col-md-6.quiz-col.quiz-col2
-			.row.play(id="play row")
-				button.button(ng-click="ctrl.playQuiz(ctrl.quiz)")#play-button Play
-			.row.playtoo
-				button.button(ng-click="ctrl.assignQuiz(ctrl.quiz)")#play-too Set this quiz for your Class
+							span.fa.fa-lg.fa-twitter 
+		.col-md-4.quiz-col
+			.row.date
+				h4 Date 
+				p {{ctrl.quiz.settings.featureDate}}
+			.row.description
+				h4 Description 
+				p{{ctrl.quiz.settings.description}}
 			.row.leaderboard
 			h4.quiz1 Top 5 Scores 
 			span(ng-show="ctrl.loading") Loading ...
@@ -30,6 +34,11 @@
 					h3.quiz1.over {{player.profile.name}}
 					script $('[data-toggle="tooltip"]').tooltip();                   
 				.col-xs-4			
-					h3.quiz1(ng-switch="player.statusInt",ng-show="player.score") {{player.score}}
+					h3.quiz1(ng-switch="player.statusInt",ng-show="player.score") {{player.score}} 
+		.col-md-4.quiz-col.quiz-col2
+			.row.play(id="play row")
+				button.button(ng-click="ctrl.playQuiz(ctrl.quiz)")#play-button Play
+			.row.playtoo
+				button.button(ng-click="ctrl.assignQuiz(ctrl.quiz)")#play-too Set this quiz for your Class
 
 		

@@ -244,6 +244,7 @@ blockquote strong {
 	color: #666;
 }
 
+
 .navbar-custom .nav li a {
     -webkit-transition: background .3s ease-in-out;
     -moz-transition: background .3s ease-in-out;
@@ -1315,11 +1316,10 @@ font-size:48px;
 #quote-carousel .carousel-control
 {
   background: none;
-  color: black;
+  color: white;
   font-size: 2.3em;
   text-shadow: none;
-  margin-top: 30px;
-  visibility: hidden;
+  margin-top: 80px;
 }
 /* Previous button  */
 #quote-carousel .carousel-control.left 
@@ -1438,19 +1438,23 @@ font-size:48px;
 .tech_img {
 	min-height:130px;
 	margin-top:20px;
+	margin: 0 auto;
 }
 .tech_img img{
 	max-height:70px;
 }
 .tech_img ul {
-    margin: 0;
+    margin: 0 auto;
+    margin-left:85px;
     padding: 5px;
+
 }
 
 .tech_img ul li {
     list-style: none outside none;
     display: inline-block;
     padding: 10px;
+    padding-right: 20px;
     margin-left: auto ;
     margin-right: auto ;
 }
@@ -1463,6 +1467,7 @@ font-size:48px;
 .social {
     margin: 0;
     padding: 0;
+    
 }
 
 .social ul {
@@ -1583,4 +1588,27 @@ font-size:48px;
 
 .social .fa-youtube-play:hover { /* round youtube play button icon*/
     background: #DF192A;
+}
+#LoginButton {background-color: #F5423F;}
+#LoginButton:hover,
+#LoginButton:focus,
+#LoginButton.active {
+    outline: 0;
+    background-color: rgba(255,255,255,.2);
+}
+#StudentLogin {background-color: #F5423F;}
+#StudentLogin:hover,
+#StudentLogin:focus,
+#StudentLogin.active {
+    outline: 0;
+    background-color: rgba(255,255,255,.2);
+}
+@media (max-width:550px) {
+	 .cta2  {
+		font-size:20px;
+	}
+	.cta3 {
+		font-size:20px;
+	}
+
 }
