@@ -2,6 +2,7 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
     var self = this;
     //form fields
     self.id = $routeParams.id;
+    self.title = "Crerate a Quiz";
 
     //use for autocomplete
     self.rootTopicList = [];
@@ -48,6 +49,7 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
         $location.path("/register/create"); 
     }
     if (self.id) {
+        self.title = "Edit Quiz Details";
         oldOne = true;
         QuizData.getQuiz(self.id, true, function(quiz){      
             self.quiz = quiz;            
@@ -55,9 +57,6 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
                 self.quiz.settings = {};
             }            
             self.settings = self.quiz.settings;
-            if (self.quiz.attributes = undefined) {
-                self.quiz.attributes = {};
-            }
         });
     }
     else {
@@ -72,9 +71,6 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
             }            
         }        
         self.settings = self.quiz.settings;
-        if (self.quiz.attributes = undefined) {
-            self.quiz.attributes = {};
-        }
     }
 
 
@@ -91,6 +87,12 @@ angular.module('createQuizApp').controller('CreateQuizController', ['QuizData', 
             });
         }
     });
+
+    self.toggleLive = function() {
+        if (!self.quiz.settings.live) {
+            self.quiz.settings.featured = false;
+        }
+    }
 
     $log.debug(self);
 

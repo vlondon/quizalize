@@ -1,8 +1,50 @@
 .row.well(ng-show="ctrl.showSettings")   
     h2 More Settings
     p You can choose the default settings for your quiz here. You and teachers you share your quiz with can override these when they assign a quiz to a class. You can change these at any time by clicking on the settings button when editing your quiz.
-    .well       
-        .form-group     
+    .well   
+        
+        .form-group        
+            .col-xs-12
+                h3 Additional Quiz Details         
+            label.control-label.col-sm-9
+                h4 Description
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Description" data-content="Enter a description so that players can understand why your quiz is about." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px") 
+                textarea.autogrow(rows="5",cols="30",ng-model="ctrl.quiz.settings.Description")
+            label.control-label.col-sm-9
+                h4 Quiz Image URL
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Image URL" data-content="Provide a quiz image URL to represent your quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px")
+                input(type="text" ng-model="ctrl.quiz.settings.imageUrl")
+            label.control-label.col-sm-9(ng-show="ctrl.quiz.settings.imageUrl")
+                h4 Image Attribute
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Image Attribute" data-content="Provide a reference of where this image was found" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px",ng-show="ctrl.quiz.settings.imageUrl")
+                input(type="text" ng-model="ctrl.quiz.settings.imageAttribution")
+            label.control-label.col-sm-9(ng-show="ctrl.quiz.settings.imageUrl")
+                h4 Public
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Public" data-content="Make this quiz public" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px")
+                label(class="switch",style="margin-top: 10px")
+                    input(type="checkbox",class="switch-input", ng-model="ctrl.quiz.settings.live",ng-change="ctrl.toggleLive()")
+                    span(class="switch-label",data-on="Live",data-off="No")
+                    span(class="switch-handle")                                     
+            label.control-label.col-sm-9(ng-show="ctrl.quiz.settings.live")
+                h4 Feature this quiz
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Featured Quiz" data-content="Choose this public quiz as your featured quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px",ng-show="ctrl.quiz.settings.live")
+                label(class="switch")
+                    input(type="checkbox",class="switch-input", ng-model="ctrl.quiz.settings.featured")
+                    span(class="switch-label",data-on="Yes",data-off="No")
+                    span(class="switch-handle")             
+            label.control-label.col-sm-9(ng-show="ctrl.quiz.settings.featured")
+                h4 Feature Date
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Featured Date" data-content="Enter the date you would like to feature this quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px",ng-show="ctrl.quiz.settings.featured")
+                input(type="date" ng-model="ctrl.quiz.settings.featureDate")            
+        .col-xs-12
+            h3 Quiz Playing Details
+        .form-group
             label.control-label.col-sm-9
                 h4 Number of questions to use when playing a quiz
                     a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
@@ -20,16 +62,22 @@
                     span(class="switch-label",data-on="Yes",data-off="No")
                     span(class="switch-handle")             
             label.control-label.col-sm-9
-                h4 Quiz Image URL
-                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Quiz Image URL" data-content="Provide a quiz image URL to represent your quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
-            .col-xs-3(style="margin-top: 13px")
-                input(type="text" ng-model="ctrl.quiz.attributes.imageUrl")
-            label.control-label.col-sm-9
-                h4 Feature this quiz
-                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="" data-content="Choose this quiz as your featured quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+                h4 Show Answers during play
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Show quiz answers" data-content="Show quiz answers after each question and at the end of the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
             .col-xs-3(style="margin-top: 13px")
                 label(class="switch")
-                    input(type="checkbox",class="switch-input", ng-model="ctrl.quiz.attributes.featured")
+                    input(type="checkbox",class="switch-input", ng-model="ctrl.settings.showanswers")
                     span(class="switch-label",data-on="Yes",data-off="No")
                     span(class="switch-handle")             
+            label.control-label.col-sm-9
+                h4 Enable Question Timer
+                    a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Enable Question Timer" data-content="Display timer and score questions based on speed of answer" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0")
+            .col-xs-3(style="margin-top: 13px")
+                label(class="switch")
+                    input(type="checkbox",class="switch-input", ng-model="ctrl.settings.timer")
+                    span(class="switch-label",data-on="Yes",data-off="No")
+                    span(class="switch-handle")             
+
+
+
 

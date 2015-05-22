@@ -24,15 +24,14 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
     QuizData.getPublicQuizzes(function (data) {
         for (var i in data.contents) {
             var quiz = data.contents[i];
-            console.log(quiz.attributes);
-            if (quiz.attributes!=undefined && quiz.attributes.featured=="true") {                
+            if (quiz.settings!=undefined && quiz.settings.featured=="true") {                
                 QuizData.getPublicQuiz(quiz.uuid,function(data){
                     self.quiz = data;   
-                    if (self.quiz.attributes==undefined) {
-                        self.quiz.attributes = {};    
+                    if (self.quiz.settings==undefined) {
+                        self.quiz.settings = {};    
                     }
-                    if(self.quiz.attributes.imageUrl==undefined) {
-                        self.quiz.attributes.imageUrl = '/cquiz/img/Moon.JPG';  
+                    if(self.quiz.settings.imageUrl==undefined) {
+                        self.quiz.settings.imageUrl = '/cquiz/img/Moon.JPG';  
                     }
                     var totalqs = self.quiz.questions.length;           
                     var totalscore = totalqs*200;
