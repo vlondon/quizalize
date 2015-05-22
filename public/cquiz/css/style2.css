@@ -98,6 +98,7 @@ h2.quiz1:hover {color:white;}
 	text-align: center;
 	color:white;
 padding-top:10px;
+margin-top:20px;
 margin-bottom:10px;}
 
 .quiz-col{
@@ -115,7 +116,10 @@ margin-bottom:10px;}
 	text-align: center;
 	height: 200px;
 	line-height:200px;
-	margin-bottom: 20px;}
+	margin-bottom: 20px;
+	border-style:solid;
+	border-color: #2a7ed0; 
+		}
 
 
 #play-too{
@@ -123,7 +127,10 @@ margin-bottom:10px;}
 	font-size:30px; 
 	height:140px;
 margin-bottom:20px;
-margin-right:20px;}
+margin-right:20px;
+	border-style:solid;
+	border-color: #2a7ed0; 
+		}
 
 .button {
 
@@ -155,25 +162,36 @@ margin-right:20px;}
 
 .button:hover {
 		background-color:#FA5858;
-		border-style:solid;
-	border-color: #2a7ed0;
-		
+	
 
 }
 .button:active {
    /*-webkit-box-shadow:  0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
     -moz-box-shadow: 0px 3px 0px rgba(219,31,5,1), 0px 3px 6px rgba(0,0,0,.9);
     box-shadow: 0px 3px 0px #2A4CD2, 0px 3px 6px rgba(0,0,0,.9); */
-        top: 6px;
+      /*  top: 6px;
         padding-top:6px; 
         z-index: 9999;
-        outline:none;
+        outline:none; */
 
 }
 
 .leaderboard{ color:white;
 
 	margin-top:20px; }
+.global-lead a { 
+	text-decoration:none; 
+	color:white; 
+	text-align:center; 
+	border-style:solid; 
+	border-color:#2a7ed0;
+	padding-top:10px;
+	padding-bottom:10px;
+margin-bottom:10px;}
+.global-lead a:hover { 
+	text-decoration:none; 
+	color:white;}
+
 
 @media(max-width:1089px){
 	.quiz-img{height:auto;}

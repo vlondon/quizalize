@@ -1467,7 +1467,7 @@ font-size:48px;
 .social {
     margin: 0;
     padding: 0;
-    
+
 }
 
 .social ul {
@@ -1609,6 +1609,19 @@ font-size:48px;
 	}
 	.cta3 {
 		font-size:20px;
+	}
+	#play-but {display: none;}
+
+}
+@media (max-width:350px) {
+	 .cta2  {
+		font-size:15px;
+	}
+	.cta3 {
+		font-size:15px;
+	}
+	.cta2-title {
+		font-size:30px;
 	}
 
 }
