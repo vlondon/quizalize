@@ -59,8 +59,8 @@ style.
 					p &nbsp;
 				.col-xs-1(style="width:3%")
 					p {{$index+1}}.
-				.col-xs-3
-					p {{player.profile.name}}
+				.col-xs-3(data-toggle="tooltip" title="{{player.profile.name}}" data-placement="top")
+					p.quiz1.over {{player.profile.name}}					
 				.col-xs-5() 
 					div.progress-bar(ng-style="player.style", style="width: {{player.width}}%; padding: 5px; text-align: right; font-size: 15px") 
 						{{player.score}}
