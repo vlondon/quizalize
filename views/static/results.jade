@@ -1,5 +1,11 @@
+style.
+	.sel {
+		-webkit-appearance: menulist-button;
+	}
+
+
 .container
-	h2 Results for {{ctrl.quiz.name}} 
+	h2 Results for {{ctrl.quiz.name}}  
 	p Here are the latest results for people who have played for this quiz
 	.row
 		.col-xs-1
@@ -11,22 +17,45 @@
 		.col-xs-2
 		.col-xs-2
 			center
-				h2.dashboard-panel-info-title Average Score
+				h2.dashboard-panel-info-title Avg. Score
+				h1(ng-show="!ctrl.loading && ctrl.results.length==0",style="font-size: 7vw;") N/A
 			canvas(id="myChart2",width="300",height="300",class="chart chart-doughnut",data="data_score",labels="labels_score",colours="color_score",options="{fontSize: 20, colour: '#8d3b8e', showTooltips: false, dtype: 1}")
+				
 		.col-xs-2
 		.col-xs-2
 			center
-				h2.dashboard-panel-info-title Average Percentage
+				h2.dashboard-panel-info-title Avg. %
+				h1(ng-show="!ctrl.loading && ctrl.results.length==0",style="font-size: 7vw;") N/A
 			canvas(id="myChart2",width="300",height="300",class="chart chart-doughnut",data="data_per",labels="labels_per",colours="color_per",options="{fontSize: 20, colour: '#8d3b8e', showTooltips: false, dtype: 3}")
 		.col-xs-1
 			p &nbsp;
-	.row(ng-repeat="player in ctrl.results | orderObjectBy:['-score'] | limitTo:ctrl.quantityToShow track by $index",style="border: 1px solid black")
-		.col-xs-1
-			h3 {{$index+1}}.
-		.col-xs-7
-			h3 {{player.profile.name}}
-		.col-xs-4			
-			h3(ng-switch="player.statusInt",ng-show="player.score") {{player.score}}
-				span(ng-switch-when="0").glyphicon.glyphicon-play
-				span(ng-switch-when="1").glyphicon.glyphicon-remove
-				span(ng-switch-when="2").glyphicon.glyphicon-stop
+	h4(ng-show="ctrl.loading") Loading ...
+	span(ng-show="!ctrl.loading") 
+		h3(ng-show="ctrl.results.length==0") No Results
+		h3(ng-show="ctrl.results.length>0") Showing Top {{ctrl.quantityToShow}}
+			br
+			br
+			.row(ng-show="!ctrl.loading")
+				.col-xs-3
+					p(style="font-size:18px") Number of Records to Show
+				.col-xs-3
+					select.sel(name="showQuantity" ng-model="ctrl.quantityToShow",ng-change="ctrl.updateValues()")
+						option(value="100") Top 100
+						option(value="10",ng-show="ctrl.results.length>10") Top 10
+						option(value="20",ng-show="ctrl.results.length>20") Top 20
+				.col-xs-3
+					p(style="font-size:18px") Show Completed Activities Only
+				.col-xs-3
+					label(class="switch")
+						input(type="checkbox",class="switch-input", ng-model="ctrl.completed", ng-change="ctrl.toggleCompleted()")
+						span(class="switch-label",data-on="Yes",data-off="No")
+						span(class="switch-handle")		
+			.row(ng-repeat="player in ctrl.results | orderObjectBy:['-score'] | limitTo:ctrl.quantityToShow track by $index")
+				.col-xs-3
+					p &nbsp;
+				.col-xs-1(style="width:3%")
+					p {{$index+1}}.
+				.col-xs-3
+					p {{player.profile.name}}
+				.col-xs-5(ng-style="{{player.style}}",width="30%") 
+					{{player.score}}

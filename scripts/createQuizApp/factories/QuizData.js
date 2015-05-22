@@ -303,7 +303,6 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                             quizData = {};
                             for (var i in resp) {
                                 quizData[resp[i].uuid] = resp[i];
-                                quizData[resp[i].uuid].attributes.live = resp[i].attributes.live=="true";
                             }                        
                             localStorage.setItem("quizData",JSON.stringify(quizData));
                             callback(quizData);
@@ -373,7 +372,7 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
         },          
         getQuiz: function(id, loadFromServer, callback){
             if(quizData != undefined && quizData[id] != undefined){
-                if(typeof quizData[id].questions != 'undefined' || quizData[id].publicAssigned){
+                if(typeof quizData[id].questions != 'undefined' || (quizData[id].publicAssigned && !loadFromServer)){
                     $log.debug("Questions local or public");
                     callback(quizData[id]);
                 } else {

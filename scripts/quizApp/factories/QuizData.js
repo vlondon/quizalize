@@ -190,19 +190,19 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var spliceQuestions = function(quiz) {
-        var attributes = quiz.attributes;
+        var settings = quiz.settings;
         var questions = quiz.questions;
         var seed = Math.floor((Math.random() * 100) + 1);
         var result = [];
-        if (attributes && quiz.questions!=undefined && quiz.questions.length>1) {
-            if (attributes['random']=="false") {
+        if (settings && quiz.questions!=undefined && quiz.questions.length>1) {
+            if (settings['random']=="false") {
                 seed = quiz.updated;
             }
             var result2 = [];
-            if (attributes['numQuestions']) {
+            if (settings['numQuestions']) {
                 var random = false;
                 try {
-                    var num = parseInt(attributes['numQuestions']);
+                    var num = parseInt(settings['numQuestions']);
                     var numToAdd = Math.min(num,questions.length);
                     for (var i=0;i<numToAdd;i++) {
                         var randomNumber = randomFunctionNumber(seed,questions.length);
@@ -217,7 +217,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             else {
                 result2 = questions;
             }
-            if (attributes['random']=="true") {
+            if (settings['random']=="true") {
                 result = shuffle(result2);
             }
             else {

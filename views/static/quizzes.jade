@@ -11,28 +11,20 @@
                 .row
                     .col-xs-3
                         strong Quiz Title
-                    .col-xs-3(style="width: 23%")
+                    .col-xs-4
                         strong Subject/Topic
-                    .col-xs-1(style="width: 10%")
-                        //strong Public?
-                            //a.left-space.glyphicon.glyphicon-question-sign(data-toggle="popover" title="Publish Your Quiz" data-content="You can publish your quizzes to our public database and even host your own set of quizzes on your personal URL. Learn more" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="5")                        
                     .col-xs-5
                         
                 .row(ng-repeat="quiz in quizzes.quizzes track by $index", style="padding-bottom: 10px")
                     .col-xs-3
                         h4 {{quiz.name}}  
                             span(ng-show="quiz.categoryId")
-                    .col-xs-3(style="width: 23%")
+                    .col-xs-4
                         h4
                             span(ng-show="quiz.subject")
                                 | {{quiz.subject}} 
                             span(ng-show="quiz.categoryId")
                                 | {{quizzes.topics[quiz.categoryId].name}}                            
-                    .col-xs-1(style="width: 10%")
-                        //label(class="switch",style="margin-top: 10px")
-                            //input(type="checkbox",class="switch-input", ng-model="quiz.attributes.live", ng-change="quizzes.toggleLive(quiz)")
-                            //span(class="switch-label",data-on="Live",data-off="No")
-                            //span(class="switch-handle")                                     
                     .col-xs-5
                         butto.btn.btn-info(ng-click="quizzes.editQuiz(quiz);",style="margin: 4px;")                            
                             span.glyphicon.glyphicon-pencil                        
