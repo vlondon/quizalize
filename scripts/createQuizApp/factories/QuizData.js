@@ -174,6 +174,10 @@ angular.module('createQuizApp')
             }
         };
 
+        var getUserDetails = function(){
+            return user;
+        };
+
         var setClass = function(data, callback) {
             if (data !== undefined) {
                 currentClass = data;
@@ -203,9 +207,8 @@ angular.module('createQuizApp')
             getUser: function () {
                 return userUuid;
             },
-            setUser: function (user) {
-                setUser(user);
-            },
+            setUser,
+            getUserDetails,
             registerEmailAddress: function(email) {
                 return $http.post('/users/register', {emailAddress: email});
             },

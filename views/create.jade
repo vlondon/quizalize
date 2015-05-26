@@ -28,10 +28,9 @@ html(ng-app='createQuizApp')
         script(src='/lib/angular-route.min.js')
         script(src='/lib/autogrow.js')
         script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
-        script(src='/js/createQuizApp.js')        
         script(src="/lib/Chart.js")
         script(src='/lib/angular-chart.min.js')             
-        script(src='/js/quiz.js')  
+        
         script(src='/lib/ekko-lightbox.min.js')  
 
         link(href='/cquiz/css/style2.css', rel='stylesheet')
@@ -197,6 +196,8 @@ html(ng-app='createQuizApp')
             .left-space {
                 margin-left: 5px;
             }
+        script(src='/js/quiz.js')  
+        script(src='/js/createQuizApp.js')        
 
 body(ng-controller="NavBarController as nctrl")
     nav.navbar.navbar-default
