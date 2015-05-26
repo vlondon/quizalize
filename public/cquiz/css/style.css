@@ -1177,7 +1177,6 @@ a.btn:focus{
 }
 .what_is{
 	margin-top:50px;
-text-shadow: 1px 1px 1px white;
 font-size:48px;
 
 
@@ -1465,13 +1464,13 @@ font-size:48px;
 
 /* Social Media Icon Styling */
 .social {
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
 
 }
 
 .social ul {
-    margin: 0;
+    margin: 0 auto;
     padding: 5px;
 }
 
@@ -1602,7 +1601,9 @@ font-size:48px;
 #StudentLogin.active {
     outline: 0;
     background-color: rgba(255,255,255,.2);
+
 }
+#play-but2{display:none; }
 @media (max-width:550px) {
 	 .cta2  {
 		font-size:20px;
@@ -1611,6 +1612,10 @@ font-size:48px;
 		font-size:20px;
 	}
 	#play-but {display: none;}
+	#play-but2 {display:block; margin-top:10px;}
+	.social i {width:45px; height:45px; font-size: 30px;
+		padding-top: 10px;
+}
 
 }
 @media (max-width:350px) {
@@ -1623,5 +1628,7 @@ font-size:48px;
 	.cta2-title {
 		font-size:30px;
 	}
+	.social i {margin-left:10px;
+    margin-right:10px;};
 
 }
