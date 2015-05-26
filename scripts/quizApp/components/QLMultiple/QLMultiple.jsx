@@ -2,7 +2,6 @@ var React = require('react');
 
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
-var TeX = require('react-components/js/tex.jsx');
 var QLLatex = require('quizApp/components/QLLatex');
 
 var cssStates = [
