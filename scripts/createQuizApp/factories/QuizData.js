@@ -1,3 +1,6 @@
+var AppDispatcher = require('createQuizApp/flux/dispatcher/CQDispatcher');
+var UserConstants = require('createQuizApp/flux/constants/UserConstants');
+
 /*eslint no-shadow:0 */
 angular.module('createQuizApp')
     .factory('QuizData', function($http, $log){
@@ -175,6 +178,16 @@ angular.module('createQuizApp')
         };
 
         var getUserDetails = function(){
+            var user = {
+                uuid: userUuid,
+                name: userName
+            };
+            console.log('calling dispatcher', AppDispatcher, UserConstants.USER_DETAILS);
+            AppDispatcher.dispatch({
+                actionType: UserConstants.USER_DETAILS,
+                payload: user
+            });
+
             return user;
         };
 

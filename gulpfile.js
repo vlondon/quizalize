@@ -36,7 +36,7 @@ gulp.task('minify', ['webpack-prod'], function(){
     return gulp.src('public/js/*.js')
     .pipe(ngAnnotate())
     .pipe($.uglify({
-        complress: {
+        compress: {
             'drop_console': true
         }
     }))

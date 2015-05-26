@@ -1,30 +1,33 @@
 var React = require('react');
-// var CQDashboard = require('createQuizApp/components/CQDashboard');
+var CQDashboard = require('createQuizApp/flux/components/CQDashboard');
 
 angular.module('createQuizApp')
-  .controller('DashboardController', function(QuizData, UserActions, $log, $http, $location, $scope){
+  .controller('DashboardController', function(QuizData, $log, $http, $location, $scope){
 
         var self = this;
 
-        // var renderReactComponent = function(){
-        //     React.render(
-        //         React.createElement(CQDashboard, {}),
-        //         document.getElementById('reactContainer')
-        //     );
-        // };
-        //
-        //
-        // var addReactComponent = function(){
-        //
-        //     setTimeout(renderReactComponent, 20);
-        //
-        //     $scope.$on('$destroy', function(){
-        //         React.unmountComponentAtNode(document.getElementById('reactContainer'));
-        //     });
-        //
-        // };
-        //
-        // addReactComponent();
+        var userDetails = QuizData.getUserDetails();
+        console.log('userDetails', userDetails);
+
+        var renderReactComponent = function(){
+            React.render(
+                React.createElement(CQDashboard, {}),
+                document.getElementById('reactContainer')
+            );
+        };
+
+
+        var addReactComponent = function(){
+
+            setTimeout(renderReactComponent, 20);
+
+            $scope.$on('$destroy', function(){
+                React.unmountComponentAtNode(document.getElementById('reactContainer'));
+            });
+
+        };
+
+        addReactComponent();
 
         self.createQuiz = function() {
             if (!QuizData.getUser()) {

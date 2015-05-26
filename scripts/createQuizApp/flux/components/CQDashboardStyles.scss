@@ -1,0 +1,10 @@
+@import './../../../shared/scss/layout';
+body {
+    background: #FFF;
+}
+
+.ql-container {
+    @include ql-container;
+
+
+}
