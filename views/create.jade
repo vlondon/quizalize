@@ -197,9 +197,10 @@ html(ng-app='createQuizApp')
                 margin-left: 5px;
             }
         script(src='/js/quiz.js')  
-        script(src='/js/createQuizApp.js')        
+        script(src='/js/createQuizApp.js')
 
 body(ng-controller="NavBarController as nctrl")
+    #reactApp
     nav.navbar.navbar-default
         .container-fluid
             .navbar-header
@@ -281,3 +282,4 @@ body(ng-controller="NavBarController as nctrl")
         else {
             $("#homeButton").attr("href","/quiz/");
         }    
+    script(src='/js/cqApp.js')

@@ -9,6 +9,17 @@ var CHANGE_EVENT = 'change';
 
 var _user;
 
+var readUserInfo = function(){
+    return {
+        uuid: localStorage.getItem('userId'),
+        name: localStorage.getItem('userName')
+    };
+};
+
+if (localStorage.getItem('userId') !== null) {
+    _user = readUserInfo();
+}
+
 
 var UserStore = assign({}, EventEmitter.prototype, {
 
