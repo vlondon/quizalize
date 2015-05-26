@@ -1,12 +1,11 @@
 .container.quiz
-	.row.text-center.quiz-title
-		h1.quiz1 Quiz of the day - {{ctrl.quiz.name}} 
 	.row
-		.col-md-4.quiz-col.quiz-col1
+		.col-md-3.quiz-col.quiz-col1
 			.row
 				img.quiz-img.img-responsive(ng-src='{{ctrl.quiz.settings.imageUrl}}') 
-			.row.attribution
-				span {{ctrl.quiz.settings.imageAttribution}} 
+			.row
+				a.glyphicon.glyphicon-question-sign.att-icon(tabindex="0")
+				span.attribution {{ctrl.quiz.settings.imageAttribution}} 
 			.row.social(id="social media")
 				p Share this quiz
 				ul
@@ -17,11 +16,12 @@
 					li 
 						a(target="_blank", ng-href="http://twitter.com/home?status=I'm%20playing%20{{ctrl.quiz.name}}, the Quizalize quiz%20of%20the%20day%20%40quizalizeapp.%20http://bit.ly/quizaday%0A") 
 							span.fa.fa-lg.fa-twitter 
-		.col-md-4.quiz-col
+		.col-md-5.quiz-col
+			.row.text-center.quiz-title
+				h3.quiz1 Quiz of the day - {{ctrl.quiz.name}} 
 			.row.date 
-				p Date - {{ctrl.quiz.settings.featureDate}}
-			.row.description
-				h4 Description 
+				h4 {{ctrl.quiz.settings.featureDate}}
+			.row.description 
 				p{{ctrl.quiz.settings.Description}}
 			.row.leaderboard
 			h4.quiz1 Top 5 Scores 
