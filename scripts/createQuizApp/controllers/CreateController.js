@@ -27,22 +27,22 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
     QuizData.getQuiz(self.id, true, function(quiz){
         self.quiz = quiz;
         if (self.quiz.questions!=undefined) {
-            self.currentQuestion = self.quiz.questions.length+1;    
-        } 
+            self.currentQuestion = self.quiz.questions.length+1;
+        }
         if (self.quiz.latexEnabled==undefined) {
             self.quiz.latexEnabled = false;
         }
         if (self.quiz.imageEnabled==undefined) {
             self.quiz.imageEnabled = false;
-        }               
+        }
         if (self.quiz.latexEnabled) {
             for (var i in self.quiz.questions) {
                 var question = self.quiz.questions[i];
                 setTimeout(function() {
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question.uuid)[0]]);
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question.uuid)[0]]);
-                },4000);                       
-            }            
+                },4000);
+            }
         }
         self.currentQuiz = self.quiz.name;
         self.rootTopicId = quiz.categoryId;
@@ -111,7 +111,7 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             $("#alt2a").resize();
             $("#alt3a").resize();
             $("#question").resize();
-            $("#answer").resize();                            
+            $("#answer").resize();
         },1000);
     }
 
@@ -119,8 +119,8 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         var topicId="";
         var questionId = $("#questionId").val();
         if ($("#topic").val()!="" && $("#topic").val()!=self.topic) {
-            self.topic = $("#topic").val();            
-        }        
+            self.topic = $("#topic").val();
+        }
         if (self.topic!="") {
             var found = false;
             for (var i in self.topics) {
@@ -197,20 +197,20 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         self.clearQuestions();
         QuizData.saveQuiz(self.quiz, self.topics);
         resizeAll();
-        $("#quizzes").show();  
+        $("#quizzes").show();
         if (self.quiz.latexEnabled) {
             setTimeout(function() {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("questionMathRow"+question_obj.uuid)[0]]);
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("answerTextMathRow"+question_obj.uuid)[0]]);
-            },1000);                       
+            },1000);
         }
         $('#questionsAnd').animate({"scrollTop": $('#questionsAnd')[0].scrollHeight}, "slow");
     };
 
     var addMath = function(field) {
         var value = self[field];
-        $("#"+field+"Math").text(value == undefined ? "" : value);                            
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#"+field+"Math")[0]]);                                                                                                                            
+        $("#"+field+"Math").text(value == undefined ? "" : value);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#"+field+"Math")[0]]);
     }
 
     self.editQuestion = function(idx){
@@ -260,18 +260,18 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
         }
         QuizData.saveQuiz(self.quiz, self.topics);
         $location.path("/published/" + self.id+"/p");
-    }; 
+    };
 
     self.toggleLatex = function() {
         $rootScope.latexAtivated = self.quiz.latexEnabled;
-    } 
+    }
 
     self.toggleImage = function() {
-        
-    } 
+
+    }
 
     self.loadImage = function(question) {
-        $('#mylink').ekkoLightbox({remote: question.imageURL, title: question.question, footer: question.answer});  
+        $('#mylink').ekkoLightbox({remote: question.imageURL, title: question.question, footer: question.answer});
     }
 
     self.editQuiz = function() {
@@ -289,16 +289,16 @@ angular.module('createQuizApp').controller('CreateController', ['QuizData', '$lo
             self.question = line[0].replace(new RegExp('@@@@', 'g'), '\n');
             self.answerText = line[1].replace(new RegExp('@@@@', 'g'), '\n');;
             if (line.length>2) {
-                self.topic = line[2];                    
-            }            
+                self.topic = line[2];
+            }
             if (line.length>3) {
-                self.alt1 = line[3].replace(new RegExp('@@@@', 'g'), '\n');;    
+                self.alt1 = line[3].replace(new RegExp('@@@@', 'g'), '\n');;
             }
             if (line.length>4) {
                 self.alt2 = line[4].replace(new RegExp('@@@@', 'g'), '\n');;
             }
             if (line.length>5) {
-                self.alt3 = line[5].replace(new RegExp('@@@@', 'g'), '\n');;    
+                self.alt3 = line[5].replace(new RegExp('@@@@', 'g'), '\n');;
             }
             if (line.length>6) {
                 self.imageURL = line[6];

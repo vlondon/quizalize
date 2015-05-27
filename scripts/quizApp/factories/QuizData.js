@@ -122,10 +122,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             return "multiple";
         }
         else {
-            var options = ["scrambled","multiple"];
+            var options = ["scrambled", "multiple"];
             var ran = Math.floor(Math.random()*options.length);
             return options[ran];
-            //return "scrambled";
+            return "scrambled";
         }
     }
 
@@ -354,7 +354,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         loadPublicQuizzes: function(callback){
             zzish.listPublicContent(function(err, message){
-                if(!err) {                    
+                if(!err) {
                     processQuizData(message,true);
                 }
                 callback(err, message);

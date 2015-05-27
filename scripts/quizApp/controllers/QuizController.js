@@ -21,7 +21,7 @@ angular.module('quizApp')
 
     var getUserAnswer = function(n){
         var ans = [];
-        for(var i=0; i < n; i++){
+        for(var i = 0; i < n; i++){
             ans.push("_");
         }
         return ans;
@@ -68,7 +68,7 @@ angular.module('quizApp')
         });
 
     }
-    
+
     if (self.id && self.catId) {
         QuizData.selectQuiz(self.catId, self.id, getQuestion);
     } else {

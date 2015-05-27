@@ -19,7 +19,7 @@ var renderPage = (page, properties) => {
 /// Set routing and parameters
 
 // Set path parameters
-// Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathParams[param]) );
+Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathParams[param]) );
 
 console.log('pages', pages, pages.mainPage.path);
 // Public pages
@@ -28,6 +28,11 @@ router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
+router.on(pages.create.path, () => renderPage(pages.create) );
+router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
+router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
+
+//editQuestion
 //
 // // Private pages
 // router.on(pages.quizPageWithCategory.path, (category) => renderPage(pages.quizPageWithCategory, { category }) );
@@ -86,9 +91,7 @@ var options = {
         renderPage(pages.pageNotFound);
     },
     before: function(){
-        console.log('path?', router.getPath());
         var destinationURL = newUrl(router.getPath());
-
         if (destinationURL === router.getPath()) {
             var next = arguments[arguments.length - 1];
             next();

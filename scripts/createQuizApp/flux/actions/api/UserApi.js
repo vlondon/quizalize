@@ -10,7 +10,7 @@ var UserApi = {
             if (!uuid) {
                 reject();
             } else {
-                request.get(`/users/${uuid}`)
+                request.get(`/user/${uuid}`)
                     .end(function(error, res){
                         if (error) {
                             reject();

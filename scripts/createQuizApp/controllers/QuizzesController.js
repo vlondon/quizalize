@@ -1,7 +1,7 @@
 angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$log', '$http', '$location', function(QuizData, $log, $http, $location){
     var self = this;
     self.hasOwnQuizzes = false;
-    self.notPublic = 
+    self.notPublic =
     self.shareEmails = "";
     self.currentQuizToShare = undefined;
     self.quizzes = [];
@@ -17,15 +17,16 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 for (var i in self.pastQuizzes) {
                     if (!self.pastQuizzes[i].publicAssigned) {
                         self.hasOwnQuizzes = true;
-                        self.quizzes.push(self.pastQuizzes[i]);                        
+                        self.quizzes.push(self.pastQuizzes[i]);
                     }
-                } 
+                }
                 QuizData.getGroupContents(function(data) {
                     self.groupContents = data;
-                })                       
-            });            
+                });
+                
+            });
         });
-    }    
+    }
 
     var getIdxForQuiz = function(quiz) {
         var idx = 0;
@@ -35,7 +36,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             }
             idx++;
         }
-        return idx;        
+        return idx;
     }
 
     if (QuizData.getUser()) {
@@ -56,7 +57,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
                 if (self.groupContents[i].contents[j].contentId==quiz.uuid) {
                     found = true;
                     QuizData.showMessage("Cannot Delete","You cannot delete this quiz as you have this quiz assigned in class");
-                    break;                                    
+                    break;
                 }
             }
             if (found) break;
@@ -64,7 +65,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
         if (!found) {
             QuizData.confirmWithUser("Confirm Delete","Are you sure you want to permanently delete this quiz?",function() {
                 $location.path("/delete/" + quiz.uuid);
-            });            
+            });
         }
     };
 
@@ -73,7 +74,7 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
     };
 
     self.previewQuiz = function(quiz){
-        //$location.path("/app#/play/B/{{quiz.uuid}}");        
+        //$location.path("/app#/play/B/{{quiz.uuid}}");
     };
 
     self.unpublishQuiz = function(quiz){
@@ -106,29 +107,29 @@ angular.module('createQuizApp').controller('QuizzesController', ['QuizData', '$l
             }).error(function(err){
                 $log.debug("Error from republishing: ", err);
                 self.statusText = err;
-            });        
+            });
         });
     }
 
     self.shareQuiz = function(quiz) {
         self.sharing = true;
         QuizData.getEncryptedLink(quiz.uuid,function(link) {
-            self.currentQuizToShare = quiz;    
+            self.currentQuizToShare = quiz;
             self.currentQuizToShare.shareLink = "http://quizalize.com/quiz#/share/"+link;
-        })        
+        })
     }
 
     self.shareCurrentQuiz = function() {
         if (self.currentQuizToShare!=undefined) {
             QuizData.shareQuiz(self.currentQuizToShare.uuid,self.shareEmails);
             QuizData.showMessage("Thanks for Sharing","Each of these email addresses will receive a secure email to access your quiz",function() {
-                self.sharing = false;                        
-            });    
+                self.sharing = false;
+            });
         }
         else {
-            self.sharing = false;    
+            self.sharing = false;
         }
-        
+
     }
 
     self.toggleLive = function(quiz) {

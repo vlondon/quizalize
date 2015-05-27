@@ -8,6 +8,8 @@ var CQLogin             = require('createQuizApp/flux/components/pages/CQLogin')
 var CQRegister          = require('createQuizApp/flux/components/pages/CQRegister');
 var CQRecoverPassword          = require('createQuizApp/flux/components/pages/CQRecoverPassword');
 var CQQuizzes          = require('createQuizApp/flux/components/pages/CQQuizzes');
+var CQCreate           = require('createQuizApp/flux/components/pages/CQCreate');
+var CQEdit             = require('createQuizApp/flux/components/pages/CQEdit');
 // var RegisterPage    = require('components/RegisterPage.jsx');
 // var RecoverPasswordPage = require('components/RecoverPasswordPage.jsx');
 // var ResetPasswordPage = require('components/ResetPasswordPage.jsx');
@@ -22,8 +24,8 @@ var CQQuizzes          = require('createQuizApp/flux/components/pages/CQQuizzes'
 
 var pages = {
     pathParams: {
-        category: /([\w\-]+)/,
-        userid: /([\w\-]+)/
+        quizId: /([\w\-]+)/,
+        questionIndex: /([\w\-]+)/
     },
     mainPage: {
         path: '/quiz/',
@@ -72,6 +74,40 @@ var pages = {
         renderer: function(){
             React.render(
                 React.createElement(CQQuizzes, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    create: {
+        path: '/quiz/create',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQCreate, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    edit: {
+        path: '/quiz/create/:quizId',
+        pathRegEx: /\/quiz\/create\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQEdit, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    editQuestion: {
+        path: '/quiz/create/:quizId/:questionIndex',
+        pathRegEx: /\/quiz\/create\/([\w\-]+)\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQEdit, props),
                 document.getElementById('reactApp')
             );
         }

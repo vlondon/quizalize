@@ -1,0 +1,5 @@
+module.exports = {
+    QUIZZES_LOADED: 'QUIZZES_LOADED',
+    QUIZ_ADDED: 'QUIZ_ADDED',
+    TOPICS_LOADED: 'TOPICS_LOADED'
+};

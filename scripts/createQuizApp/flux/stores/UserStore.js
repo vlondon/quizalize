@@ -46,7 +46,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
     // var text;
-    console.log('we got action', action);
+    
     switch(action.actionType) {
         case UserConstants.USER_DETAILS:
             console.log('we got action yah!', action);

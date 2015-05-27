@@ -203,30 +203,6 @@ html(ng-app='createQuizApp')
 
 body(ng-controller="NavBarController as nctrl")
     #reactApp
-    nav.navbar.navbar-default
-        .container-fluid
-            .navbar-header
-                a(href="/quiz/")#homeButton
-                    img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
-                    button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
-                        span.sr-only Toggle navigation
-                        span.icon-bar
-                        span.icon-bar
-                        span.icon-bar
-            .navbar-collapse.collapse#navbar
-                ul.nav.navbar-nav.navbar-right
-                    //li(style="margin-right:5px;")#quizzes
-                        //a.btn.btn-info.navbar-btn(href="/quiz/#/pquizzes",style="margin-top:9px; padding: 8px;") Your Public Quizzes
-                    li(style="margin-right:5px;")#quizzes
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/quizzes",style="margin-top:9px; padding: 8px;") Your quizzes                        
-                    li(style="margin-right:5px;")#assignments
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/assignments",style="margin-top:9px; padding: 8px;") Your assignments                        
-                    li(style="margin-right:5px;")#quizzes
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
-                    li(style="margin-right:5px;")
-                        button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="nctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[nctrl.showHelp]") ?
-                    li
-                        a.btn.btn-info.navbar-btn(ng-click="nctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Log in
                                 
     div(ng-view ngCloak)
 
