@@ -124,8 +124,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         else {
             var options = ["scrambled","multiple"];
             var ran = Math.floor(Math.random()*options.length);
-            return options[ran];
-            //return "scrambled";
+          //return options[ran];
+            return "scrambled";
         }
     }
 
