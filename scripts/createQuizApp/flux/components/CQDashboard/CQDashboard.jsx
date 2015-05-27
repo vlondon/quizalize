@@ -3,6 +3,9 @@ var React = require('react');
 var UserStore = require('createQuizApp/flux/stores/UserStore');
 var UserActions = require('createQuizApp/flux/actions/UserActions');
 
+
+var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
+
 require('./CQDashboardStyles');
 
 var CQDashboard = React.createClass({
@@ -28,7 +31,7 @@ var CQDashboard = React.createClass({
 
     render: function() {
         return (
-            <div className="container">
+            <CQPageTemplate className="container">
                 <h2>
                     Hi there! What would you like to do?
                 </h2>
@@ -77,7 +80,7 @@ var CQDashboard = React.createClass({
                         </div>
                     </div>
                 </div>
-            </div>
+            </CQPageTemplate>
         );
     }
 

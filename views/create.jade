@@ -5,6 +5,8 @@ html(ng-app='createQuizApp')
         meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"')
         meta(name='description', content='')
         meta(charset='UTF-8')
+            
+        base(href='/quiz/')
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -197,7 +199,7 @@ html(ng-app='createQuizApp')
                 margin-left: 5px;
             }
         script(src='/js/quiz.js')  
-        script(src='/js/createQuizApp.js')
+        //- script(src='/js/createQuizApp.js')
 
 body(ng-controller="NavBarController as nctrl")
     #reactApp

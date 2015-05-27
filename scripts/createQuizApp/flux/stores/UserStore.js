@@ -9,22 +9,15 @@ var CHANGE_EVENT = 'change';
 
 var _user;
 
-var readUserInfo = function(){
-    return {
-        uuid: localStorage.getItem('userId'),
-        name: localStorage.getItem('userName')
-    };
-};
-
-if (localStorage.getItem('userId') !== null) {
-    _user = readUserInfo();
-}
-
-
 var UserStore = assign({}, EventEmitter.prototype, {
 
     getUser: function() {
         return _user;
+    },
+
+
+    putUser: function(){
+
     },
 
 
@@ -61,17 +54,17 @@ AppDispatcher.register(function(action) {
             UserStore.emitChange();
             break;
         //
-        // case UserConstants.USER_IS_LOGGED:
-        // case UserConstants.USER_PROFILE_UPDATED:
-        //     _user = action.payload;
-        //     UserStore.emitChange();
-        //     break;
+        case UserConstants.USER_IS_LOGGED:
+        case UserConstants.USER_PROFILE_UPDATED:
+            _user = action.payload;
+            UserStore.emitChange();
+            break;
         //
         //
-        // case UserConstants.USER_IS_NOT_LOGGED:
-        //     _user = false;
-        //     UserStore.emitChange();
-        //     break;
+        case UserConstants.USER_IS_NOT_LOGGED:
+            _user = false;
+            UserStore.emitChange();
+            break;
         //
         // case UserConstants.USER_LOGIN_ERROR:
         //     console.log('we got USER_LOGIN_ERROR', action);

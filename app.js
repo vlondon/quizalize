@@ -37,6 +37,8 @@ app.get('/quiz/create', quiz.create);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
+app.get('/user/:profileId', user.details);
+
 app.post('/users/register', user.registerEmail);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
@@ -88,13 +90,13 @@ app.get('/landing1', quiz.landingpage);
 
 
 app.get('/tool/', quiz.landingpage);
-app.get('/quiz/', quiz.create);
 app.get('/app/', quiz.index);
 app.post('/quizHelp/', quiz.help);
 
 app.get('/quiz/service', quiz.service);
 app.get('/quiz/privacy', quiz.privacy);
 app.get('/quiz/find-a-quiz', quiz.quizFinder);
+app.get('/quiz/*', quiz.create);
 
 //Things near top of list given priority
 app.use(express.static('public'));
@@ -119,12 +121,12 @@ function isIE(req) {
   return isIE;
 }
 
- 
+
 // note: the next method param is passed as well
 function checkForMobile(req, res, next) {
   // check to see if the caller is a mobile device
   var isMobile = isCallerMobile(req);
- 
+
   if (isMobile) {
     console.log("Going mobile");
     res.redirect('/mobile');

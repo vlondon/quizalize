@@ -34,9 +34,16 @@ require('createQuizApp/controllers/ResultsController');
 
 require('createQuizApp/filters/OrderByObject');
 
-angular.module('createQuizApp').run(["$rootScope", "$anchorScroll" , function ($rootScope, $anchorScroll) {
+angular.module('createQuizApp').run(["$rootScope", "$anchorScroll", function ($rootScope, $anchorScroll) {
     $rootScope.$on("$locationChangeSuccess", function() {
         $anchorScroll();
     });
     FastClick.attach(document.body);
-}]);
+}])
+.config( ['$provide', function ($provide){
+        $provide.decorator('$browser', ['$delegate', function ($delegate) {
+            $delegate.onUrlChange = function () {};
+            $delegate.url = function () { return ""; };
+            return $delegate;
+        }]);
+    }]);

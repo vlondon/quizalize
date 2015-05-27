@@ -1,6 +1,9 @@
 var React = require('react');
 
+var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 var UserStore = require('createQuizApp/flux/stores/UserStore');
+
+require('./CQHeaderStyles');
 
 var CQHeader = React.createClass({
 
@@ -36,16 +39,16 @@ var CQHeader = React.createClass({
             if (this.state.isLoggedIn){
                 displayedButtons.push((
                     <li id="cq-quizzes">
-                        <a href="/quiz/#/quizzes" className="btn btn-info navbar-btn">
+                        <CQLink href="/quiz/quizzes" className="btn btn-info navbar-btn">
                             Your quizzes
-                        </a>
+                        </CQLink>
                     </li>));
 
                 displayedButtons.push((
                     <li id="cq-assignments">
-                        <a href="/quiz/#/assignments" className="btn btn-info navbar-btn">
+                        <CQLink href="/quiz/assignments" className="btn btn-info navbar-btn">
                             Your assignments
-                        </a>
+                        </CQLink>
                     </li>
                 ));
             }
@@ -54,7 +57,7 @@ var CQHeader = React.createClass({
         };
 
         return (
-            <nav className="navbar navbar-default">
+            <nav className="navbar navbar-default cq-header">
                 <div className="container-fluid">
                     <div className="navbar-header">
                         <a href="/quiz/">
@@ -68,21 +71,21 @@ var CQHeader = React.createClass({
                             {buttons()}
 
                             <li id="cq-publicQuizzes">
-                                <a href="/quiz/#/assignments" className="btn btn-info navbar-btn">
+                                <CQLink href="/quiz/assignments" className="btn btn-info navbar-btn">
                                     Public quizzes
-                                </a>
+                                </CQLink>
                             </li>
 
                             <li id="cq-publicQuizzes">
-                                <a className="btn btn-info navbar-btn">
+                                <CQLink className="btn btn-info navbar-btn">
                                     ?
-                                </a>
+                                </CQLink>
                             </li>
 
                             <li>
-                                <a href="/quiz/#/login/" className="btn btn-info navbar-btn">
+                                <CQLink href="/quiz/login/" className="btn btn-info navbar-btn">
                                     Login
-                                </a>
+                                </CQLink>
                             </li>
 
 

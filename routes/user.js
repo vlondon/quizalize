@@ -5,29 +5,31 @@ var email = require("../email");
 //initialized zzish
 var zzish = require("../zzish");
 //create encrypted password
-var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = '##34dsadfasdf££FE';
+var crypto = require('crypto');
+
+var algorithm = 'aes-256-ctr',
+    password = '##34dsadfasdf££FE';
 //uuid generator
 var uuid = require('node-uuid');
 
 function encrypt(text){
-  var cipher = crypto.createCipher(algorithm,password)
-  var crypted = cipher.update(text,'utf8','hex')
+  var cipher = crypto.createCipher(algorithm, password);
+  var crypted = cipher.update(text, 'utf8', 'hex');
   crypted += cipher.final('hex');
   return crypted;
 }
- 
+
 function decrypt(text){
   var decipher = crypto.createDecipher(algorithm,password)
   var dec = decipher.update(text,'hex','utf8')
   dec += decipher.final('utf8');
   return dec;
-}
+};
 
-exports.authenticate =  function(req, res) {
-    var email = req.body.email;
-    var password = req.body.password;
-    //at least password or code is required
-    zzish.authenticate(email,encrypt(password),function(err,data) {
+
+exports.details = function(req, res) {
+    var uuid = req.params.profileId;
+    zzish.user(uuid, function(err, data){
         if (!err && typeof data == 'object') {
             res.status(200);
         }
@@ -35,8 +37,23 @@ exports.authenticate =  function(req, res) {
             res.status(err);
         }
         res.send(data);
-    })        
+    });
 }
+
+exports.authenticate =  function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    //at least password or code is required
+    zzish.authenticate(email, encrypt(password), function(err,data) {
+        if (!err && typeof data == 'object') {
+            res.status(200);
+        }
+        else {
+            res.status(err);
+        }
+        res.send(data);
+    });
+};
 
 exports.register =  function(req, res) {
     var email1 = req.body.email;
@@ -45,7 +62,7 @@ exports.register =  function(req, res) {
         if (!err) {
             res.status(200);
             var registerEmail = "Hi there\n\nQuizalize is an easy and fast way to create, share and set pupils quizzes. You can create your subject specific quizzes which can then be shared with other teachers as well as set as work for particular classes or pupils. Most importantly it saves you time from all that lengthy paperwork by providing a website that allows you to store and amend quizzes to suit you and your pupils needs. \n\nQuizalize plugs into the Zzish Learning Hub, which provides one dashboard with live data being recorded from pupils in the classroom.\n\nThe Quizalize Team\nwww.quizalize.com";
-            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Welcome to Quizalize',registerEmail);            
+            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Welcome to Quizalize',registerEmail);
         }
         else {
             res.status(err);
@@ -61,7 +78,7 @@ exports.forget =  function(req, res) {
             res.status(200);
             var link = "http://www.quizalize.com/quiz#/account/reset/"+encrypt(data);
             var registerEmail = "Hi there\n\nClick on the following link to reset your password:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
-            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Password Reset',registerEmail);                        
+            email.sendEmail('team@zzish.com',[req.body.emailAddress],'Password Reset',registerEmail);
         }
         else {
             res.status(err);
@@ -74,10 +91,10 @@ exports.forget =  function(req, res) {
 exports.registerEmail = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
-    
+
     console.log("Will register",  req.body.emailAddress);
 
-    zzish.registerUser( req.body.emailAddress,'', function(err, resp){        
+    zzish.registerUser( req.body.emailAddress,'', function(err, resp){
         console.log("Result from Register User",err,resp);
         if (!err) {
             res.status(200);
@@ -99,13 +116,13 @@ exports.completeRegistration = function(req,res) {
         console.log("Result from Verifying User",err,resp);
         if (!err) {
             zzish.user(uuid, function(err,resp) {
-                res.send(resp);                
+                res.send(resp);
             });
         }
         else {
             res.status(err);
-            res.send(resp);        
-        }        
+            res.send(resp);
+        }
     })
 }
 
@@ -118,8 +135,8 @@ exports.groups = function(req,res) {
         }
         else {
             res.status(err);
-        }   
-        res.send(resp);     
+        }
+        res.send(resp);
     })
 }
 
@@ -132,7 +149,7 @@ exports.groupContents = function(req,res) {
         }
         else {
             res.status(err);
-        }   
-        res.send(resp);     
+        }
+        res.send(resp);
     })
 }
