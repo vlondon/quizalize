@@ -96,43 +96,65 @@ style.
     }
     .bar-item-container {
       text-align: left;
-      margin-bottom: 10px;
+      margin-bottom: 1px;
       width: 100%;
       float: left;
+      position: relative;
+      background-color: rgba(0,0,0,.2);
+      border-radius: 0;
     }
 
     .bar-topic-title {
       font-size: 18px;
+      line-height: 40px;
+      z-index: 2;
+      position: relative;
+      height: 40px;
+      padding-left: 10px;
+    }
+    .bar-topic-percent {
+        float: right;
+        line-height: 40px;
+        padding-right: 10px;
+        z-index: 2;
+        position: relative;
     }
 
     .bar-block {
       height: 40px;
-      border-radius: 4px;
       text-align: right;
       line-height: 20px;
       padding: 10px;
       margin-bottom: 5px;
+      position: absolute;
+      top: 0;
+      z-index: 1;
     }
     .bar-block-g {
       background: linear-gradient(90deg, lime, green);
+      opacity: 0.8;
     }
     .bar-block-a {
       background: linear-gradient(90deg, orange, brown);
+      opacity: 0.8;
     }
     .bar-block-r {
       background: linear-gradient(90deg, red, crimson);
+      opacity: 0.8;
     }
     .bar-block-b {
       background: linear-gradient(90deg, blue, navy);
+      opacity: 0.8;
     }
     .bar-block-c {
       line-height: 0;
       height: 10px;
       background: grey;
       font-size: 8px;
+      opacity: 0.8;
     }
     .bar-wrapper {
-      background: #2D2833;
+      
       border: 1px solid rgba(255,255,255,.25);
       border-radius: 8px;
       padding: 10px;
@@ -144,16 +166,20 @@ style.
       overflow: hidden;
     }
     .ng-hide-add, .ng-hide-remove {
-           /* ensure visibility during the transition */
+       /* ensure visibility during the transition */
         display: block !important; /* yes, important */
-        }
-        .cssFade {
-            transition: 0.5s linear all;
-            opacity: 1;
-        }
-        .cssFade.ng-hide {
-            opacity: 0;
-        }
+    }
+    .cssFade {
+        transition: 0.5s linear all;
+        opacity: 1;
+    }
+    .cssFade.ng-hide {
+        opacity: 0;
+    }
+    
+    .share-score {
+        text-align: center;
+    }
 #reactContainer
 .container
     .wrapper-complete
@@ -180,6 +206,7 @@ style.
                       .score-value.rag2
                           {{quiz.totals.score}} 
                           .score-points Points
+                  
               .col-sm-4
                   br
                   br
@@ -196,24 +223,31 @@ style.
                           {{quiz.totals.seconds}} Seconds
 
             div(ng-show="quiz.hasTopics")
-              .col-sm-4
-                  .complete-info
+              .col-sm-12
+                  .complete-info.col-sm-4
                       .score-value.rag2
                           {{quiz.totals.score}} 
                           .score-points Points
-                  .complete-info
+                      .share-score Share your score with your friends!
+                          .share-fb 
+                              a(href='facebook') Facebook
+                          .share-tw 
+                              a(href='Twitter') Twitter
+                              
+                  .complete-info.col-sm-4
                       .score-fraction
                           .fraction-top {{quiz.data.correct}}
                           .fraction-bottom {{quiz.data.questionCount}} 
-                  .complete-info
+                  .complete-info.col-sm-4
                       .score-time
                           span.glyphicon.glyphicon-time 
                           {{quiz.totals.seconds}} Seconds
-              .col-sm-8
+              .col-sm-12
                   .bar-wrapper
                     .bar-item-container(ng-repeat="topic in quiz.topics")
+                      .bar-topic-percent {{topic.stats.percentage | number: 0}}%
                       .bar-topic-title {{topic.name}}
-                      .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") {{topic.stats.percentage | number: 0}}%
+                      .bar-block(style="width: {{topic.stats.percentage}}%",class="bar-block-{{topic.stats.state}}") 
                   .complte-main-text
         .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
             .col-xs-8.col-xs-offset-2
