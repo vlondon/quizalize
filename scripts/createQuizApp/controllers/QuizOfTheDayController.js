@@ -1,4 +1,8 @@
-angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData', '$log', '$http', '$location','$routeParams','$scope',function(QuizData, $log, $http, $location,$routeParams,$scope){
+var React = require('react');
+var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
+
+angular.module('createQuizApp')
+    .controller('QuizOfTheDayController', function(QuizData, $log, $http, $location, $routeParams, $scope){
     var self = this;
     //form fields
     //self.id = $routeParams.id;
@@ -11,6 +15,31 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
     var greenColour = "#008000";
     var blueColour = "#0000FF";
     var redColour = "#FF0000";
+
+    var renderReactComponent = function(){
+        React.render(
+            React.createElement(CQQuizOfTheDay, {
+                quiz: self.quiz,
+                results: self.results
+            }),
+            document.getElementById('reactContainer')
+        );
+    };
+
+
+    var addReactComponent = function(){
+
+        setTimeout(renderReactComponent, 200);
+
+        $scope.$on('$destroy', function(){
+            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+        });
+
+    };
+
+    addReactComponent();
+
+
 
 
     $scope.data_score = [100,10];
@@ -35,6 +64,7 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
                     }
                     var totalqs = self.quiz.questions.length;
                     var totalscore = totalqs*200;
+                    renderReactComponent();
                     QuizData.getResults(quiz.uuid,function(data){
                         self.results = data;
                         var correct = 0;
@@ -53,6 +83,7 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
 
                             $scope.data_score[0] = Math.round(score/length);
                             $scope.data_score[1] = totalscore-$scope.data_score[0];
+                            renderReactComponent();
                         }
                         self.loading = false;
                     });
@@ -66,8 +97,8 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
     }
 
     self.assignQuiz = function(quiz) {
-        QuizData.addQuiz(quiz,function() {
+        QuizData.addQuiz(quiz, function() {
             $location.path("/preview/" + quiz.uuid);
         })
     }
-}]);
+});
