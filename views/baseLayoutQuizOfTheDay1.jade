@@ -20,6 +20,5 @@ html(ng-app='createQuizApp')
             ga('send', 'pageview');
         script.
             window.location="http://www.quizalize.com/quiz#/quiz-of-the-day";
-            var domain= document.referrer.split('/')[2]; 
+            var domain = document.referrer ? document.referrer.split('/')[2] : undefined; 
             ga('send', 'event', 'quiz-of-the-day', 'banana', domain);
-

@@ -86,7 +86,7 @@ exports.landingpage5 =  function(req, res) {
 };
 
 exports.voucher =  function(req, res) {
-    res.sendFile('cquiz/index4.html',{ root: 'public' });
+    res.sendFile('cquiz/index4.html', { root: 'public' });
 };
 
 exports.service =  function(req, res) {
@@ -100,6 +100,12 @@ exports.privacy =  function(req, res) {
 exports.quizFinder =  function(req, res) {
     res.render('quizFinder');
 };
+
+exports.quizOfTheDay1 = function(req, res){
+    res.render('baseLayoutQuizOfTheDay1');
+};
+
+
 
 exports.createProfile = function(req, res){
     var id = req.body.uuid;
