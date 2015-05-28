@@ -49,7 +49,7 @@ var CQLogin = React.createClass({
                                     <CQLink href="/quiz/register"> Sign Up</CQLink>
                                 </div>
                                 <div ng-show="login.mode=='login'" className="">
-                                    Forgotten Password?&nbsp;
+                                    Forgotten Password? &nbsp;
                                     <CQLink href="/quiz/recover">Reset</CQLink>
 
                                 </div>

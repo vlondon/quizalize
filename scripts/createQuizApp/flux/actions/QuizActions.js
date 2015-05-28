@@ -60,6 +60,7 @@ var QuizActions = {
         var addOrCreateCategory = function(){
             var topicUuid;
             var topics = TopicStore.getTopics();
+            console.log('topics', topics);
             var topicFound = topics.filter( t => t.name === quiz.category )[0];
 
             if (topicFound) {

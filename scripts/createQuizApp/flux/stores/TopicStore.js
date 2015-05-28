@@ -15,6 +15,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
 
 
     getTopics: function() {
+        console.log('gettopics', _topics);
         return _topics;
     },
 
@@ -46,9 +47,11 @@ var TopicStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
     // var text;
 
+    console.trace('action', action);
     switch(action.actionType) {
-        case QuizConstants.QUIZ_LOADED:
-        case TopicConstants.QUIZ_LOADED:
+        case QuizConstants.QUIZZES_LOADED:
+        case TopicConstants.TOPICS_LOADED:
+            console.log('topics to save', action.payload.topics);
             _topics = action.payload.topics;
             TopicStore.emitChange();
             break;
