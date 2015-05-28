@@ -20,7 +20,7 @@ h2.quiz1:hover {color:white;}
 }
 
 .quiz-img{
-	width:220px; height:auto;
+	width:100%; height:auto;
 	margin: 0 auto;
 	border-radius:5px;
 	margin-top: 20px;
@@ -204,11 +204,7 @@ margin-bottom:10px;}
 }
 
 @media(max-width:970px;){
-	.quiz-img{width:auto;
-
-
-
-	}
+	.quiz-img{width:1000px;}
 
 
 

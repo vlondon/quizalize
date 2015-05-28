@@ -1,4 +1,8 @@
-angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData', '$log', '$http', '$location','$routeParams','$scope',function(QuizData, $log, $http, $location,$routeParams,$scope){
+var React = require('react');
+var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
+
+angular.module('createQuizApp')
+    .controller('QuizOfTheDayController', function(QuizData, $log, $http, $location, $routeParams, $scope){
     var self = this;
     //form fields
     //self.id = $routeParams.id;
@@ -12,6 +16,35 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
     var blueColour = "#0000FF";
     var redColour = "#FF0000";
 
+    var renderReactComponent = function(){
+        React.render(
+            React.createElement(CQQuizOfTheDay, {
+                quiz: self.quiz,
+                results: self.results,
+                play: self.playQuiz,
+                assign: self.assignQuiz,
+                leaderboard: self.leaderboard
+
+            }),
+            document.getElementById('reactContainer')
+        );
+    };
+
+
+    var addReactComponent = function(){
+
+        setTimeout(renderReactComponent, 200);
+
+        $scope.$on('$destroy', function(){
+            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+        });
+
+    };
+
+    addReactComponent();
+
+
+
 
     $scope.data_score = [100,10];
     $scope.labels_score = ["Current Score", ""];
@@ -24,19 +57,20 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
     QuizData.getPublicQuizzes(function (data) {
         for (var i in data.contents) {
             var quiz = data.contents[i];
-            if (quiz.settings!=undefined && quiz.settings.featured==true) {                
+            if (quiz.settings !== undefined && quiz.settings.featured === true) {
                 QuizData.getPublicQuiz(quiz.uuid,function(data){
-                    self.quiz = data;   
-                    if (self.quiz.settings==undefined) {
-                        self.quiz.settings = {};    
+                    self.quiz = data;
+                    if (self.quiz.settings === undefined) {
+                        self.quiz.settings = {};
                     }
-                    if(self.quiz.settings.imageUrl==undefined) {
-                        self.quiz.settings.imageUrl = '/cquiz/img/Moon.JPG';  
+                    if(self.quiz.settings.imageUrl === undefined) {
+                        self.quiz.settings.imageUrl = '/cquiz/img/Moon.JPG';
                     }
-                    var totalqs = self.quiz.questions.length;           
-                    var totalscore = totalqs*200;
-                    QuizData.getResults(quiz.uuid,function(data){
-                        self.results = data;                
+                    var totalqs = self.quiz.questions.length;
+                    var totalscore = totalqs * 200;
+                    renderReactComponent();
+                    QuizData.getResults(quiz.uuid, function(data){
+                        self.results = data;
                         var correct = 0;
                         var total = 0;
                         var score = 0;
@@ -44,30 +78,38 @@ angular.module('createQuizApp').controller('QuizOfTheDayController', ['QuizData'
                             var length = self.results.length;
                             for (var i in self.results) {
                                 var instance = self.results[i];
-                                correct+=instance.correct;
-                                total+=instance.total;
-                                score+=instance.score;
+                                correct += instance.correct;
+                                total += instance.total;
+                                score += instance.score;
                             }
-                            $scope.data_per[0] = Math.round(correct*100/total);
-                            $scope.data_per[1] = 100-$scope.data_per[0];
+                            $scope.data_per[0] = Math.round(correct * 100 / total);
+                            $scope.data_per[1] = 100 - $scope.data_per[0];
 
-                            $scope.data_score[0] = Math.round(score/length);
-                            $scope.data_score[1] = totalscore-$scope.data_score[0];
-                        }       
-                        self.loading = false;   
+                            $scope.data_score[0] = Math.round(score / length);
+                            $scope.data_score[1] = totalscore - $scope.data_score[0];
+                            renderReactComponent();
+                        }
+                        self.loading = false;
                     });
-                });  
+                });
             }
-        } 
-    }); 
+        }
+    });
 
     self.playQuiz = function(quiz) {
-        window.location.href = "app#/play/" + quiz.categoryId + "/" + quiz.uuid + "/true";
-    }    
+        quiz = quiz || self.quiz;
+        window.location.href = '/app#/play/' + quiz.categoryId + '/' + quiz.uuid + '/true';
+    };
 
     self.assignQuiz = function(quiz) {
-        QuizData.addQuiz(quiz,function() {
-            $location.path("/preview/" + quiz.uuid);    
-        })                
-    }
-}]);
+        quiz = quiz || self.quiz;
+        QuizData.addQuiz(quiz, function() {
+            $location.path('/preview/' + quiz.uuid);
+        });
+    };
+
+    self.leaderboard = function(quiz) {
+        quiz = quiz || self.quiz;
+        window.location.href = '/quiz#/results/' + quiz.uuid;
+    };
+});

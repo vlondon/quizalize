@@ -1,4 +1,6 @@
 var settings = require('quizApp/config/settings');
+// var React = require('react');
+// var QLComplete = require('quizApp/components/QLComplete');
 
 var maxScore = settings.maxScore;
 var maxTime = settings.maxTime;
@@ -12,6 +14,25 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     sessionStorage.removeItem("mode");
     self.showButtons = false;
+
+    // var renderReactComponent = function(){
+    //     React.render(
+    //         React.createElement(QLComplete, {
+    //             totals: self.totals
+    //         }),
+    //         document.getElementById('reactContainer')
+    //     );
+    // };
+    //
+    //
+    // var addReactComponent = function(){
+    //     setTimeout(renderReactComponent, 200);
+    //     $scope.$on('$destroy', function(){
+    //         React.unmountComponentAtNode(document.getElementById('reactContainer'));
+    //     });
+    // };
+
+    // addReactComponent();
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -78,7 +99,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     self.topics = {};
     QuizData.getTopics(function(data) {
         self.alltopics = data;
-            self.totals = calculateTotals(self.data.report);    
+        self.totals = calculateTotals(self.data.report);
         if (self.data.latexEnabled) {
             setTimeout(function() {
                 var items = self.data.report;
@@ -91,29 +112,31 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
                 MathJax.Hub.Queue(function () {
                     $scope.$apply(function() {
                         self.showButtons = true;
-                    });                        
-                });                                                    
-            },1000); 
+                    });
+                });
+            },1000);
             self.showButtons = true;
         }
         else {
             self.showButtons = true;
-        }        
+        }
+
+        // renderReactComponent();
     });
-    
+
 
     $log.debug("Complete Controller", self);
 
     self.logout = function(){
         QuizData.logout();
-    }
+    };
 
     self.home = function() {
         if (self.previewMode) {
             window.close();
         }
         else {
-            $location.path("/list");            
+            $location.path("/list");
         }
-    }
+    };
 }]);

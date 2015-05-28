@@ -64,8 +64,8 @@ app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
 app.post('/create/:profileId/quizzes/:id/delete', quiz.deleteQuiz);
 app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
 
-app.get('/create/:profileId/quizzes/:id/encrypt',quiz.encryptQuiz);
-app.post('/create/:profileId/quizzes/:id/decrypt',quiz.decryptQuiz);
+app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
+app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
@@ -76,6 +76,10 @@ app.get('/quizzes/public', quiz.getPublicQuizzes);
 app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
+
+///// QUIZ OF THE DAY PAGES ////
+
+app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
 /*
 
 
