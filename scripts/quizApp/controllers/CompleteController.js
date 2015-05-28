@@ -78,7 +78,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     self.topics = {};
     QuizData.getTopics(function(data) {
         self.alltopics = data;
-            self.totals = calculateTotals(self.data.report);    
+            self.totals = calculateTotals(self.data.report);
         if (self.data.latexEnabled) {
             setTimeout(function() {
                 var items = self.data.report;
@@ -91,16 +91,16 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
                 MathJax.Hub.Queue(function () {
                     $scope.$apply(function() {
                         self.showButtons = true;
-                    });                        
-                });                                                    
-            },1000); 
+                    });
+                });
+            },1000);
             self.showButtons = true;
         }
         else {
             self.showButtons = true;
-        }        
+        }
     });
-    
+
 
     $log.debug("Complete Controller", self);
 
@@ -113,7 +113,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             window.close();
         }
         else {
-            $location.path("/list");            
+            $location.path("/list");
         }
     }
 }]);

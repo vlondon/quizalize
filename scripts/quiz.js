@@ -7,10 +7,10 @@ var url = protocol + '//' + host;
 
 var initParams = "2d14d1984a2e3293bd13aab34c85e2ea";
 
-console.log(function(){
+console.log((function(){
     initParams = {"api": "2d14d1984a2e3293bd13aab34c85e2ea", "protocol": "http://", "baseUrl": "test-api.zzish.com/api/", "webUrl": "http://test.zzish.com/"};
     return 'Quizalize set to TEST mode';
-});
+})());
 
 if (initParams.webUrl !== undefined && initParams.webUrl.indexOf("http://test") === 0) {
   url = "http://test.quizalize.com/";

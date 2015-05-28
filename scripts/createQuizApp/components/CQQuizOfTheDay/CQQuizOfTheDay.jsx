@@ -2,14 +2,13 @@ var React = require('react');
 
 var CQQuizOfTheDay = React.createClass({
 
-
-
     propTypes: {
-        quiz: React.PropTypes.object,
+        quiz: React.PropTypes.object.isRequired,
         results: React.PropTypes.array,
         play: React.PropTypes.func,
         assign: React.PropTypes.func,
-        leaderboard: React.PropTypes.func
+        leaderboard: React.PropTypes.func,
+        showActions: React.PropTypes.bool
     },
 
     getDefaultProps: function() {
@@ -17,7 +16,8 @@ var CQQuizOfTheDay = React.createClass({
             quiz: {
                 settings: {}
             },
-            results: []
+            results: [],
+            showActions: true
         };
     },
 
@@ -70,12 +70,33 @@ var CQQuizOfTheDay = React.createClass({
             );
         }
 
-        return (
-            <div className="container quiz qd-container">
-                <div className="qd-header">
-                    Quiz of the day
+        var actions;
+
+        if (this.props.showActions){
+            actions = (<div className="qd-actions">
+
+                <div className="qd-actions-main">
+                    {playButton}
+                    {assignButton}
+                    {leaderboardButton}
                 </div>
 
+
+                <div className="qd-actions-extra">
+                    <button className="btn btn-social btn-twitter" type="button">
+                        <span className="fa fa-lg fa-twitter"/>
+                    </button>
+
+                    <button className="btn btn-social btn-facebook" type="button">
+                        <span className="fa fa-lg fa-facebook"/>
+                    </button>
+                </div>
+
+            </div>);
+        }
+
+        return (
+            <div className="qd-container">
                 <div className="qd-description" style={background}>
 
                     {takeoverButton}
@@ -89,29 +110,7 @@ var CQQuizOfTheDay = React.createClass({
                             <p>{this.props.quiz.settings.Description}</p>
                         </div>
 
-
-
-                        <div className="qd-actions">
-
-
-                            <div className="qd-actions-main">
-                                {playButton}
-                                {assignButton}
-                                {leaderboardButton}
-                            </div>
-
-
-                            <div className="qd-actions-extra">
-                                <button className="btn btn-social btn-twitter" type="button">
-                                    <span className="fa fa-lg fa-twitter"/>
-                                </button>
-
-                                <button className="btn btn-social btn-facebook" type="button">
-                                    <span className="fa fa-lg fa-facebook"/>
-                                </button>
-                            </div>
-
-                        </div>
+                        {actions}
                     </div>
                 </div>
 

@@ -1,4 +1,7 @@
-angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$location','$rootScope', '$routeParams', '$scope',function(QuizData, $log, $location,$rootScope,$routeParams,$scope){
+var React = require('react');
+var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
+
+angular.module('quizApp').controller('GameController', function(QuizData, $log, $location, $rootScope, $routeParams, $scope){
     var self = this;
 
     self.id = $routeParams.id;
@@ -8,7 +11,28 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     self.randomText = ".";
     self.showSubText = false;
 
-    QuizData.selectQuiz(self.catId,self.id,self.action=="false",function(err,result) {
+    var renderReactComponent = function(){
+        React.render(
+            React.createElement(CQQuizOfTheDay, {
+                quiz: self.currentQuiz,
+                showActions: false
+            }),
+            document.getElementById('reactContainer')
+        );
+    };
+
+
+    var addReactComponent = function(){
+        setTimeout(renderReactComponent, 200);
+        $scope.$on('$destroy', function(){
+            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+        });
+    };
+
+    addReactComponent();
+
+
+    QuizData.selectQuiz(self.catId, self.id, self.action === "false", function(err, result) {
         if (!err) {
             self.currentQuiz = result;
             if (self.currentQuiz.settings) {
@@ -37,20 +61,20 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
     };
 
     self.return = function() {
-        if (sessionStorage.getItem("mode")=="preview") {
+        if (sessionStorage.getItem("mode") === "preview") {
             window.close();
         }
         else {
             $location.path("/app/");
         }
-    }
+    };
 
     self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
-            if (sessionStorage.getItem("mode")=="teacher") {
-                window.location.href="/quiz#/public";
+        QuizData.confirmWithUser("Cancel Quiz", "Are you sure you want to cancel '" + QuizData.currentQuiz().name + "'. You won't be able to continue this quiz.", function() {
+            if (sessionStorage.getItem("mode") === "teacher") {
+                window.location.href = "/quiz#/public";
             }
-            else if (sessionStorage.getItem("mode")=="preview") {
+            else if (sessionStorage.getItem("mode") === "preview") {
                 window.close();
             }
             else {
@@ -59,4 +83,4 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
         });
     };
 
-}]);
+});
