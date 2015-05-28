@@ -20,7 +20,11 @@ angular.module('createQuizApp')
         React.render(
             React.createElement(CQQuizOfTheDay, {
                 quiz: self.quiz,
-                results: self.results
+                results: self.results,
+                play: self.playQuiz,
+                assign: self.assignQuiz,
+                leaderboard: self.leaderboard
+
             }),
             document.getElementById('reactContainer')
         );
@@ -82,7 +86,7 @@ angular.module('createQuizApp')
                             $scope.data_per[1] = 100-$scope.data_per[0];
 
                             $scope.data_score[0] = Math.round(score/length);
-                            $scope.data_score[1] = totalscore-$scope.data_score[0];
+                            $scope.data_score[1] = totalscore- $scope.data_score[0];
                             renderReactComponent();
                         }
                         self.loading = false;
@@ -93,12 +97,19 @@ angular.module('createQuizApp')
     });
 
     self.playQuiz = function(quiz) {
-        window.location.href = "app#/play/" + quiz.categoryId + "/" + quiz.uuid + "/true";
-    }
+        quiz = quiz || self.quiz;
+        window.location.href = '/app#/play/' + quiz.categoryId + '/' + quiz.uuid + '/true';
+    };
 
     self.assignQuiz = function(quiz) {
+        quiz = quiz || self.quiz;
         QuizData.addQuiz(quiz, function() {
-            $location.path("/preview/" + quiz.uuid);
-        })
-    }
+            $location.path('/preview/' + quiz.uuid);
+        });
+    };
+
+    self.leaderboard = function(quiz) {
+        quiz = quiz || self.quiz;
+        window.location.href = '/quiz#/results/' + quiz.uuid;
+    };
 });

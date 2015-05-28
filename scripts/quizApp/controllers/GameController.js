@@ -10,7 +10,7 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
 
     QuizData.selectQuiz(self.catId,self.id,self.action=="false",function(err,result) {
         if (!err) {
-            self.currentQuiz = result; 
+            self.currentQuiz = result;
             if (self.currentQuiz.settings) {
                 if (self.currentQuiz.settings['random']) {
                     self.randomText = " in random order.";
@@ -22,7 +22,7 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
                         self.numQuestions = Math.min(parseInt(self.currentQuiz.settings['numQuestions']),self.currentQuiz.questions.length);
                     }
                     catch (e) {
-                        
+
                     }
                     self.showSubText = true;
                 }
@@ -41,8 +41,8 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
             window.close();
         }
         else {
-            $location.path("/app/");    
-        }        
+            $location.path("/app/");
+        }
     }
 
     self.cancel = function() {
@@ -55,7 +55,7 @@ angular.module('quizApp').controller('GameController', ['QuizData', '$log', '$lo
             }
             else {
                 $location.path("/list");
-            }            
+            }
         });
     };
 

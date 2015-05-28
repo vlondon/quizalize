@@ -1,5 +1,125 @@
+@import './../../../quizApp/components/shared/variables';
 @import './../../../quizApp/components/shared/mixins';
 
-.cq-quizoftheday {
-    background: #FFF;
+.qd-container {
+    background: #FFF !important;
+
+    .qd-description {
+        min-height: 300px;
+        background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+        background-size: cover;
+        background-position: center center;
+        position: relative;
+        border-radius: 5px;
+        overflow: hidden;
+
+        h3 {
+            font-weight: 300;
+        }
+
+        h3, p {
+            margin: 5px;
+        }
+    }
+
+    .qd-description-details {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: #FFF;
+        background: rgba(#000, .3);
+    }
+    .qd-source {
+        font-size: 10px;
+        line-height: 12px;
+        position: absolute;
+        color: #FFF;
+        right: 0;
+        padding: 3px;
+        background: rgba(#000, .3);
+    }
+
+    .qd-actions {
+        @include clearfix();
+        background: rgba(#000, .3);
+        text-align: left;
+        padding: 5px;
+        z-index: 3;
+        position: relative;
+    }
+
+    .qd-actions-extra {
+        width: 100%;
+        float: left;
+        @include media($size-mobile) {
+            width: auto;
+            float: right;
+        }
+    }
+    .qd-actions-main {
+        width: 100%;
+        text-align: left;
+        display: inline-block;
+        @include media($size-mobile) {
+            width: auto;
+        }
+    }
+
+    .qd-action-takeover {
+        /* background: rgba(red, .2); */
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+        z-index: 2;
+        cursor: pointer;
+
+        &:hover {
+            /* background: rgba(green, .2); */
+            .btn-play {
+                background: rgba($brand-color-red, .6);
+            }
+        }
+    }
+
+    .qd-text {
+        padding: 10px;
+    }
+    .btn {
+        background: none;
+        border: 1px solid #FFF;
+
+        padding: 5px;
+        display: inline-block;
+        margin: 5px;
+
+        &:hover {
+            background: rgba($brand-color-red, .6);
+        }
+    }
+
+    .btn-social {
+        width: 35px;
+        height: 35px;
+        border-radius: 100%;
+        &:hover {
+            color: #ed3041;
+            background: rgba(#FFF, .8);
+        }
+    }
+
+    .btn-facebook {
+        &:hover {
+            color: #4060A5;
+        }
+    }
+
+    .btn-twitter {
+        &:hover {
+            color: #00ABE3;
+        }
+    }
+
 }

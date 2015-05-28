@@ -10,7 +10,7 @@ angular.module('quizApp')
             templateUrl: "/quiz/view/plogin",
             controller: "LoginController",
             controllerAs: "login"
-        })        
+        })
         .when('/list', {
             templateUrl: "/quiz/view/studentCategoryList",
             controller: "QuizzesController",
@@ -41,20 +41,20 @@ angular.module('quizApp')
             controller: "AnswerController",
             controllerAs: "quiz"
         })
-        .when('/quiz/:catId/:quizId/complete' ,{
+        .when('/quiz/:catId/:quizId/complete', {
             templateUrl: "/quiz/view/complete",
             controller: "CompleteController",
             controllerAs: "quiz"
         })
-        .when('/preview/:id' ,{
+        .when('/preview/:id', {
             templateUrl: "/quiz/view/intro",
             controller: "PreviewController",
             controllerAs: "quiz"
-        })        
-        .when('/mp/:id' ,{
+        })
+        .when('/mp/:id', {
             templateUrl: "/quiz/view/app",
             controller: "MarketController",
             controllerAs: "market"
-        })           
-        .otherwise({redirectTo: '/'})
+        })
+        .otherwise({redirectTo: '/'});
 }]);
