@@ -15,7 +15,6 @@ var vomitify = function(f) {
 var AppDispatcher = assign(new Dispatcher(), {
 
     handleViewAction: function(action) {
-        console.log(action);
         this.dispatch({
             source: 'VIEW_ACTION',
             action: action
@@ -23,7 +22,6 @@ var AppDispatcher = assign(new Dispatcher(), {
     },
 
     handleServerAction: function(action) {
-        console.log(action);
         this.dispatch({
             source: 'SERVER_ACTION',
             action: action

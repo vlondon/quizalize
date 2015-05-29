@@ -5,6 +5,7 @@ var router = require('createQuizApp/flux/config/router');
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 var CQEditNormal = require('./CQEditNormal');
 var CQQuestionList = require('./CQQuestionList');
+var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 
 var QuizStore = require('createQuizApp/flux/stores/QuizStore');
 var QuizActions = require('createQuizApp/flux/actions/QuizActions');
@@ -21,6 +22,7 @@ var CQEdit = React.createClass({
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
+        console.log("QUIAAA", quiz, props.quizId);
         if (quiz === undefined){
             QuizActions.loadQuiz(this.props.quizId);
         }
@@ -39,10 +41,22 @@ var CQEdit = React.createClass({
 
         // QuizActions.loadQuizzes();
         QuizStore.addChangeListener(this.onChange);
+        this.onChange();
+
+        $(document).on('mouseenter', '[data-toggle="popover"]', function(){
+            $(this).popover('show');
+        });
+
+        $(document).on('mouseleave', '[data-toggle="popover"]', function(){
+            $(this).popover('hide');
+        });
+
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
+        $(document).off('mouseenter');
+        $(document).off('mouseleave');
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -57,8 +71,7 @@ var CQEdit = React.createClass({
         };
 
         if (newState.quiz){
-
-
+            newState.quiz.questions = newState.quiz.questions || [];
             if (props.questionIndex) {
                 newState.questionIndex = parseInt(props.questionIndex, 10);
             } else if (this.state.questionIndex === undefined) {
@@ -112,7 +125,11 @@ var CQEdit = React.createClass({
                                 <div className="well">
                                     <h3>{this.state.mode}
                                         <span style={{color: 'red'}}>Question {this.state.currentQuestion} </span>for {this.state.quiz.name}
-                                        <button ng-click="create.editQuiz();" style={{margin: '8px'}} className="btn btn-sm btn-info"><span className="glyphicon glyphicon-cog"> </span></button>
+                                            <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
+                                                <button ng-click="create.editQuiz();" style={{margin: '8px'}} className="btn btn-sm btn-info">
+                                                    <span className="glyphicon glyphicon-cog"> </span>
+                                                </button>
+                                            </CQLink>
                                     </h3>
                                     <p class="small">
                                         Speed Tip: We found clicking is a pain - just hit enter to step through quickly

@@ -51,6 +51,4 @@ var UserActions = {
     }
 };
 
-console.log('UserActions???', UserActions.login);
-
 module.exports = UserActions;

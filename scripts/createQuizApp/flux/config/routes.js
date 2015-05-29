@@ -89,6 +89,18 @@ var pages = {
         }
     },
 
+    editQuiz: {
+        path: '/quiz/edit/:quizId',
+        pathRegEx: /\/quiz\/edit\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQCreate, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
     edit: {
         path: '/quiz/create/:quizId',
         pathRegEx: /\/quiz\/create\/([\w\-]+)/,
@@ -112,72 +124,7 @@ var pages = {
             );
         }
     },
-    // resetPassword: {
-    //     path: '/resetpass',
-    //     needsLogin: false,
-    //     renderer: function(){
-    //         React.render(
-    //             React.createElement(ResetPasswordPage, null),
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // },
-    // assessmentsPage: {
-    //     path: settings.routeQuiz,
-    //     needsLogin: true,
-    //     renderer: function() {
-    //         React.render(
-    //             React.createElement(AssessmentsPage, null),
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // },
-    // quizPageWithCategory: {
-    //     path: settings.routeQuiz + '/:category',
-    //     pathRegEx: /\/my\/assessment\/([\w\-]+)/,
-    //     needsLogin: true,
-    //     renderer: function(props) {
-    //         if (props) {
-    //             router.category(props.category);
-    //         }
-    //         React.render(
-    //             React.createElement(QuizPage, null),
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // },
-    // myResultsPage: {
-    //     path: '/my/results',
-    //     needsLogin: true,
-    //     renderer: function() {
-    //         React.render(
-    //             React.createElement(QuizPage, null), // TODO: Change
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // },
-    // mySettingsPage: {
-    //     path: '/my/settings',
-    //     needsLogin: true,
-    //     renderer: function() {
-    //         React.render(
-    //             React.createElement(SettingsPage, null),
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // },
-    // talentPassportPage: {
-    //     path: '/talentpassport/:userid',
-    //     pathRegEx: /\/talentpassport\/([\w\-]+)/,
-    //     needsLogin: false,
-    //     public: true,
-    //     renderer: function(props) {
-    //         React.render(
-    //             React.createElement(PassportPage, { userid: props.userid }),
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // },
+
     pageNotFound: {
         path: '',
         needsLogin: false,
@@ -187,17 +134,7 @@ var pages = {
                 document.getElementById('reactApp')
             );
         }
-    },
-    // pageNotAllowed: {
-    //     path: '',
-    //     needsLogin: false,
-    //     renderer: function() {
-    //         React.render(
-    //             React.createElement(NotAllowedPage, null),
-    //             document.getElementById('reactApp')
-    //         );
-    //     }
-    // }
+    }
 };
 
 module.exports = pages;

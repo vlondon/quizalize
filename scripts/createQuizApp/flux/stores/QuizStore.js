@@ -18,7 +18,6 @@ var init = false;
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        console.log('returning quizzes', _quizzes);
         return _quizzes;
     },
 
@@ -33,7 +32,6 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
 
     emitChange: function() {
-        console.log('emitting');
         this.emit(CHANGE_EVENT);
     },
 
@@ -42,7 +40,6 @@ var QuizStore = assign({}, EventEmitter.prototype, {
      */
     addChangeListener: function(callback) {
         if (!init) {
-            console.log('loading quizzes');
             QuizActions.loadQuizzes();
             init = true;
         }
@@ -63,13 +60,7 @@ AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
-        // case UserConstants.USER_DETAILS:
-        //     console.log('we got action yah!', action);
-        //     _user = action.payload;
-        //     QuizStore.emitChange();
-        //     break;
-        // //
-        // case UserConstants.USER_IS_LOGGED:
+
         case QuizConstants.QUIZZES_LOADED:
             _quizzes = action.payload.quizzes;
             _topics = action.payload.topics;
@@ -85,26 +76,8 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
-
-
-        // //
-        // //
-        // case UserConstants.USER_IS_NOT_LOGGED:
-        //     _user = false;
-        //     QuizStore.emitChange();
-        //     break;
-        //
-        // case UserConstants.USER_LOGIN_ERROR:
-        //     console.log('we got USER_LOGIN_ERROR', action);
-        //     _error = action.payload;
-        //     QuizStore.emitChange();
-        //     break;
-
-
-
         default:
             // no op
     }
 });
-console.log('QuizStore', QuizStore);
 module.exports = QuizStore;

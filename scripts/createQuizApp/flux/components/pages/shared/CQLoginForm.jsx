@@ -35,7 +35,6 @@ var CQLoginForm = React.createClass({
 
     handleSubmit: function(e){
         e.preventDefault();
-        console.log('handle submit', e);
         if (this.state.isReady){
             this.props.onSubmit({
                 email: this.state.email,

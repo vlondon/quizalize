@@ -5,8 +5,7 @@ var QuizActions = require('createQuizApp/flux/actions/QuizActions');
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 var CQCreateMore = require('./CQCreateMore');
 var QuizStore = require('createQuizApp/flux/stores/QuizStore');
-var uuid = require('node-uuid');
-require('./CQCreateStyles');
+
 
 var CQCreate = React.createClass({
 
@@ -25,7 +24,6 @@ var CQCreate = React.createClass({
     },
 
     onChange: function(){
-        console.log('onChange', QuizStore);
         this.setState({quizzes: QuizStore.getQuizzes()});
     },
 
@@ -68,12 +66,10 @@ var CQCreate = React.createClass({
         this.setState({
             isMoreVisible: !this.state.isMoreVisible
         });
-        console.log('handleMoreClick', this.state.isMoreVisible);
     },
 
     handleNewQuiz: function(){
         QuizActions.newQuiz(this.state.quiz).then(function(){
-            console.log('quiz saved, fuck yeah!');
         });
     },
 

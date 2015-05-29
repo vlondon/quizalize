@@ -9,7 +9,6 @@ var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 
 require('./CQLoginStyles');
 
-console.log('UserActions', UserActions.login);
 
 var CQLogin = React.createClass({
 

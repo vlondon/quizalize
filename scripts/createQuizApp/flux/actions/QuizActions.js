@@ -143,7 +143,7 @@ var QuizActions = {
         quiz.categoryId = addOrCreateCategory();
 
         quiz = _questionsTopicToTopicId(quiz);
-        
+
         var promise = QuizApi.putQuiz(quiz);
 
         promise.then(function(){
@@ -161,6 +161,5 @@ var QuizActions = {
 
 };
 
-console.log('QuizActions???', QuizActions.login);
 
 module.exports = QuizActions;

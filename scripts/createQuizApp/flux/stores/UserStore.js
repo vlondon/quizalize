@@ -22,7 +22,6 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
 
     emitChange: function() {
-        console.log('emitting');
         this.emit(CHANGE_EVENT);
     },
 
@@ -30,7 +29,6 @@ var UserStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
-        console.log('adding listener');
         this.on(CHANGE_EVENT, callback);
     },
 
@@ -46,10 +44,9 @@ var UserStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
     // var text;
-    
+
     switch(action.actionType) {
         case UserConstants.USER_DETAILS:
-            console.log('we got action yah!', action);
             _user = action.payload;
             UserStore.emitChange();
             break;
