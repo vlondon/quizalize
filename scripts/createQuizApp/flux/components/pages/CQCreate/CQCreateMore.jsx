@@ -37,7 +37,7 @@ var CQCreateMore = React.createClass({
                             <h3>Additional Quiz Details         </h3>
                         </div>
                         <label className="control-label col-sm-9">
-                            <h4>Description<a data-toggle="popover" title="Description" data-content="Enter a description so that players can understand why your quiz is about." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Description<a data-toggle="popover" title="Description" data-content="Enter a description so that players can understand why your quiz is about." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <textarea
@@ -48,7 +48,7 @@ var CQCreateMore = React.createClass({
                                 className="autogrow"/>
                         </div>
                         <label className="control-label col-sm-9">
-                            <h4>Quiz Image URL<a data-toggle="popover" title="Quiz Image URL" data-content="Provide a quiz image URL to represent your quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Quiz Image URL<a data-toggle="popover" title="Quiz Image URL" data-content="Provide a quiz image URL to represent your quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <input type="text"
@@ -57,7 +57,7 @@ var CQCreateMore = React.createClass({
                                 ng-model="ctrl.quiz.settings.imageUrl"/>
                         </div>
                         <label ng-show="ctrl.quiz.settings.imageUrl" className="control-label col-sm-9">
-                            <h4>Image Attribute<a data-toggle="popover" title="Image Attribute" data-content="Provide a reference of where this image was found" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Image Attribute<a data-toggle="popover" title="Image Attribute" data-content="Provide a reference of where this image was found" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" ng-show="ctrl.quiz.settings.imageUrl" className="col-xs-3">
                             <input type="text"
@@ -66,7 +66,7 @@ var CQCreateMore = React.createClass({
                                 ng-model="ctrl.quiz.settings.imageAttribution"/>
                         </div>
                         <label ng-show="ctrl.quiz.settings.imageUrl" className="control-label col-sm-9">
-                            <h4>Public<a data-toggle="popover" title="Public" data-content="Make this quiz public" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Public<a data-toggle="popover" title="Public" data-content="Make this quiz public" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label ng-style="margin-top: 10px" className="switch">
@@ -90,7 +90,7 @@ var CQCreateMore = React.createClass({
                         </div>
 
                         <label ng-show="ctrl.quiz.settings.live" className="control-label col-sm-9">
-                            <h4>Feature this quiz<a data-toggle="popover" title="Featured Quiz" data-content="Choose this public quiz as your featured quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Feature this quiz<a data-toggle="popover" title="Featured Quiz" data-content="Choose this public quiz as your featured quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
 
 
@@ -106,7 +106,7 @@ var CQCreateMore = React.createClass({
                     </div>
                     <div className="form-group">
                         <label className="control-label col-sm-9">
-                            <h4>Number of questions to use when playing a quiz<a data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Number of questions to use when playing a quiz<a data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <select ng-model="ctrl.settings.numQuestions"
@@ -118,7 +118,7 @@ var CQCreateMore = React.createClass({
                             </select>
                         </div>
                         <label className="control-label col-sm-9">
-                            <h4>Randomize question order when playing a quiz<a data-toggle="popover" title="Randomize question order" data-content="You can choose to randomize the order of the questions every time someone plays the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Randomize question order when playing a quiz<a data-toggle="popover" title="Randomize question order" data-content="You can choose to randomize the order of the questions every time someone plays the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">
@@ -130,7 +130,7 @@ var CQCreateMore = React.createClass({
                             </label>
                         </div>
                         <label className="control-label col-sm-9">
-                            <h4>Show Answers during play<a data-toggle="popover" title="Show quiz answers" data-content="Show quiz answers after each question and at the end of the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Show Answers during play<a data-toggle="popover" title="Show quiz answers" data-content="Show quiz answers after each question and at the end of the quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">
@@ -143,7 +143,7 @@ var CQCreateMore = React.createClass({
                             </label>
                         </div>
                         <label className="control-label col-sm-9">
-                            <h4>Enable Question Timer<a data-toggle="popover" title="Enable Question Timer" data-content="Display timer and score questions based on speed of answer" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                            <h4>Enable Question Timer<a data-toggle="popover" title="Enable Question Timer" data-content="Display timer and score questions based on speed of answer" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">

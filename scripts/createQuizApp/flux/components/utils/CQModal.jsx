@@ -20,7 +20,7 @@ var CQModal = React.createClass({
         var className = this.state.isVisible ? 'modal fade in' : 'modal fade';
         var display = this.state.isVisible ? 'block' : 'none';
         return (
-            <div tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="myModal" className={className}
+            <div tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="myModal" className={className}
                 style={{display}}>
                 <div className="modal-dialog">
                     <div className="modal-content">

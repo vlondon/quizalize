@@ -131,7 +131,7 @@ var CQEdit = React.createClass({
                                                 </button>
                                             </CQLink>
                                     </h3>
-                                    <p class="small">
+                                    <p className="small">
                                         Speed Tip: We found clicking is a pain - just hit enter to step through quickly
                                     </p>
 

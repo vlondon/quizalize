@@ -17,13 +17,12 @@ var _questionsTopicIdToTopic = function(quiz){
     };
 
 
-    if (quiz.questions.length > 0){
+    if (quiz.questions && quiz.questions.length > 0){
         quiz.questions = quiz.questions.map(question => {
             question._topic = findTopicName(question.topicId);
             return question;
         });
     }
-    console.info('converting ', quiz, topics);
 
     return quiz;
 };
@@ -50,7 +49,7 @@ var _questionsTopicToTopicId = function(quiz){
         return topic ? topic.uuid : uuid.v4();
     };
 
-    if (questions.length > 0) {
+    if (questions && questions.length > 0) {
         questions = questions.map(function(question){
             if (question._topic){
                 question.topicId = findTopicId(question._topic);
@@ -104,9 +103,11 @@ var QuizActions = {
 
     },
 
+
     loadQuiz: function(quizId){
         QuizApi.getQuiz(quizId)
             .then(function(quiz){
+
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
                     payload: _questionsTopicIdToTopic(quiz)

@@ -45,7 +45,7 @@ var CQQuizzes = React.createClass({
 
                     <p>{introCopy}</p>
 
-                    <div ng-show="quizzes.hasOwnQuizzes" class="row">
+                    <div ng-show="quizzes.hasOwnQuizzes" className="row">
                         <div className="col-sm-12">
                             <div className="row well">
                                 <div className="row">

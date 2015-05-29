@@ -38,14 +38,14 @@ var CQHeader = React.createClass({
             var displayedButtons = [];
             if (this.state.isLoggedIn){
                 displayedButtons.push((
-                    <li id="cq-quizzes">
+                    <li id="cq-quizzes" key='cq-quizzes'>
                         <CQLink href="/quiz/quizzes" className="btn btn-info navbar-btn">
                             Your quizzes
                         </CQLink>
                     </li>));
 
                 displayedButtons.push((
-                    <li id="cq-assignments">
+                    <li id="cq-assignments" key='cq-assignments'>
                         <CQLink href="/quiz/assignments" className="btn btn-info navbar-btn">
                             Your assignments
                         </CQLink>

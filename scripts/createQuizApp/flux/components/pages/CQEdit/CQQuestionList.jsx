@@ -43,11 +43,10 @@ var CQQuestionList = React.createClass({
 
                                     </div>
                                 </div>
-                            )
+                            );
                         })}
                     </div>
                 </div>
-                ql
             </div>
         );
     }

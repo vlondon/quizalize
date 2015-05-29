@@ -9,22 +9,39 @@ var QuizStore = require('createQuizApp/flux/stores/QuizStore');
 
 var CQCreate = React.createClass({
 
+    propTypes: {
+        quizId: React.PropTypes.string
+    },
+
     getInitialState: function() {
+        console.log('do we have props', this.props);
+
         return {
-            quiz: {
-                subject: '',
-                settings: {
-                    numQuestions: '',
-                    random: false
-                }
-            },
             isMoreVisible: true
         };
 
     },
+    _getQuiz: function(props){
+        props = props || this.props;
+        var quiz = QuizStore.getQuiz(props.quizId);
+        console.log("QUIAAA", quiz, props);
+        if (quiz === undefined){
+            QuizActions.loadQuiz(this.props.quizId);
+        }
+
+        return quiz;
+    },
 
     onChange: function(){
-        this.setState({quizzes: QuizStore.getQuizzes()});
+
+        var quizzes = QuizStore.getQuizzes();
+        var newState = {};
+        if (this.props.quizId){
+            var quiz = this._getQuiz();
+            newState.quiz = quiz;
+
+        }
+        this.setState(newState);
     },
 
     componentDidMount: function() {
@@ -74,6 +91,9 @@ var CQCreate = React.createClass({
     },
 
     render: function() {
+        if (this.state.quiz){
+
+
         return (
             <CQPageTemplate className="container">
                 <div className="container">
@@ -86,7 +106,7 @@ var CQCreate = React.createClass({
                                 <form role="form" className="form-horizontal">
                                     <div className="form-group">
                                         <label className="control-label col-sm-3">
-                                            Subject:    <a data-toggle="popover" title="Quiz Subject" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="5" className="left-space glyphicon glyphicon-question-sign"></a>
+                                            Subject:    <a data-toggle="popover" title="Quiz Subject" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="5" className="left-space glyphicon glyphicon-question-sign"></a>
                                     </label>
                                     <div className="col-sm-9">
                                         <input id="subject"
@@ -96,36 +116,36 @@ var CQCreate = React.createClass({
                                              on-enter="ctrl.focusTopic();"
                                              ng-model="ctrl.quiz.subject"
                                              placeholder="e.g. Geography (Optional)"
-                                             tabindex="1"
+                                             tabIndex="1"
                                              className="form-control"/>
                                         <br/>
                                     </div>
                                     <label className="control-label col-sm-3">
-                                        Unit/Topic:    <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="6" className="left-space glyphicon glyphicon-question-sign"></a>
+                                        Unit/Topic:    <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="6" className="left-space glyphicon glyphicon-question-sign"></a>
                                 </label>
                                 <div className="col-sm-9">
                                     <input id="category"
                                         type="text"
-                                        value={this.state.category}
+                                        value={this.state.quiz.category}
                                         onChange={this.handleChange.bind(this, 'category')}
                                         on-enter="ctrl.focusQuiz();"
                                         ng-model="ctrl.quiz.category"
                                         placeholder="e.g. Earthquakes (Optional)"
-                                        tabindex="2"
+                                        tabIndex="2"
                                         className="form-control"/>
                                     <br/>
                                 </div>
-                                <label className="col-sm-3 control-label">Quiz Title:<a data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabindex="7" className="left-space glyphicon glyphicon-question-sign"></a></label>
+                                <label className="col-sm-3 control-label">Quiz Title:<a data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="7" className="left-space glyphicon glyphicon-question-sign"></a></label>
                                 <div className="col-sm-9">
                                     <input id="question"
                                         type="text"
-                                        value={this.state.name}
+                                        value={this.state.quiz.name}
                                         onChange={this.handleChange.bind(this, 'name')}
                                         on-enter="ctrl.createQuiz();"
                                         ng-model="ctrl.quiz.name"
                                         placeholder="e.g. Plate Boundaries"
                                         autofocus="true"
-                                        tabindex="3"
+                                        tabIndex="3"
                                         className="form-control"/><br/>
                                 </div>
                                 <div className="col-sm-4 col-sm-offset-4">
@@ -136,20 +156,22 @@ var CQCreate = React.createClass({
                                     </button>
                                 </div>
                                 <div className="col-sm-4"><br className="visible-xs"/>
-                                <button type="button" onClick={this.handleNewQuiz} tabindex="4" ng-disabled="ctrl.quiz.name==''" className="btn btn-primary btn-block">Save</button>
+                                <button type="button" onClick={this.handleNewQuiz} tabIndex="4" ng-disabled="ctrl.quiz.name==''" className="btn btn-primary btn-block">Save</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
 
-        </div>
-        {this.state.isMoreVisible ? <CQCreateMore/> : undefined }
-    </div>
-</CQPageTemplate>
-);
-}
-
+                </div>
+                {this.state.isMoreVisible ? <CQCreateMore/> : undefined }
+            </div>
+        </CQPageTemplate>
+        );
+        } else {
+            return <div>Loading</div>;
+        }
+    }
 });
 
 module.exports = CQCreate;
