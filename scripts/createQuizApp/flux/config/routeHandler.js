@@ -31,6 +31,7 @@ router.on(pages.create.path, () => renderPage(pages.create) );
 router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) );
 router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
 router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
+router.on(pages.assignments.path, () => renderPage(pages.assignments) );
 
 
 

@@ -14,8 +14,8 @@ angular.module('createQuizApp').controller('AssignmentsController', ['QuizData',
                 for (var i in self.pastQuizzes) {
                     if (self.pastQuizzes[i].publicAssigned) self.hasPublicAssignedQuizzes=true;
                     else self.hasOwnQuizzes = true;
-                } 
-                QuizData.getGroupContents(function(data) {                    
+                }
+                QuizData.getGroupContents(function(data) {
                     self.groupContents = data;
                     var arrayToLookup = [];
                     for (var i in self.groupContents) {
@@ -40,12 +40,12 @@ angular.module('createQuizApp').controller('AssignmentsController', ['QuizData',
                         });
                     }
                     QuizData.getClassList(function(data) {
-                        self.classList = data;    
-                    });                    
+                        self.classList = data;
+                    });
                 });
-            });            
+            });
         });
-    }    
+    }
 
     if (QuizData.getUser()) {
         loadQuizData();
@@ -54,12 +54,12 @@ angular.module('createQuizApp').controller('AssignmentsController', ['QuizData',
         $location.path("/");
     }
 
-    self.unpublishQuiz = function(quizId,code){
-        QuizData.unpublishQuiz(quizId,code,function(err,message) {
+    self.unpublishQuiz = function(quizId, code){
+        QuizData.unpublishQuiz(quizId, code, function(err, message) {
             QuizData.getGroupContents(function(data) {
                 self.groupContents = data;
-            });            
-        })
+            });
+        });
     };
 
     $log.debug(self);

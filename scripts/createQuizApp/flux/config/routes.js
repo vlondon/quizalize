@@ -10,6 +10,7 @@ var CQRecoverPassword          = require('createQuizApp/flux/components/pages/CQ
 var CQQuizzes          = require('createQuizApp/flux/components/pages/CQQuizzes');
 var CQCreate           = require('createQuizApp/flux/components/pages/CQCreate');
 var CQEdit             = require('createQuizApp/flux/components/pages/CQEdit');
+var CQAssignments      = require('createQuizApp/flux/components/pages/CQAssignments');
 // var RegisterPage    = require('components/RegisterPage.jsx');
 // var RecoverPasswordPage = require('components/RecoverPasswordPage.jsx');
 // var ResetPasswordPage = require('components/ResetPasswordPage.jsx');
@@ -120,6 +121,17 @@ var pages = {
         renderer: function(props){
             React.render(
                 React.createElement(CQEdit, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    assignments: {
+        path: '/quiz/assignments',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQAssignments, null),
                 document.getElementById('reactApp')
             );
         }
