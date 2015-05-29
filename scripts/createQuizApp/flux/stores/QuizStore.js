@@ -1,6 +1,7 @@
 var AppDispatcher = require('createQuizApp/flux/dispatcher/CQDispatcher');
 var QuizConstants = require('createQuizApp/flux/constants/QuizConstants');
 var QuizActions = require('createQuizApp/flux/actions/QuizActions');
+var TopicStore  = require('createQuizApp/flux/stores/TopicStore');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -11,6 +12,8 @@ var _quizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
 var init = false;
+
+
 
 var QuizStore = assign({}, EventEmitter.prototype, {
 
@@ -74,6 +77,9 @@ AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_LOADED:
+            AppDispatcher.waitFor([
+                TopicStore.dispatchToken
+            ]);
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
             QuizStore.emitChange();

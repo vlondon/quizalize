@@ -9,7 +9,6 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var _topics = [];
-var init = false;
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
@@ -22,7 +21,6 @@ var TopicStore = assign({}, EventEmitter.prototype, {
 
 
     emitChange: function() {
-        console.log('emitting');
         this.emit(CHANGE_EVENT);
     },
 
@@ -44,7 +42,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
 
 
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
+TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     // var text;
 
     console.trace('action', action);
