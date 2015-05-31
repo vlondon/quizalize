@@ -101,6 +101,7 @@ app.get('/quiz/service', quiz.service);
 app.get('/quiz/privacy', quiz.privacy);
 app.get('/quiz/find-a-quiz', quiz.quizFinder);
 app.get('/quiz/*', quiz.create);
+app.get('/quiz', quiz.create);
 
 //Things near top of list given priority
 app.use(express.static('public'));

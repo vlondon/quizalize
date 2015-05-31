@@ -1,6 +1,7 @@
 var React = require('react');
 
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
+var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 
 var GroupActions = require('createQuizApp/flux/actions/GroupActions');
 var GroupStore  = require('createQuizApp/flux/stores/GroupStore');
@@ -95,11 +96,23 @@ var CQEditQuiz = React.createClass({
                                                             <div className="col-xs-5">
                                                                 <h4>{assignment.name}</h4>
                                                             </div>
-                                                            <div className="col-xs-5">
+                                                            <div className="col-xs-3">
                                                                 <h4>{assignment.category.name}</h4>
                                                             </div>
                                                             <div className="col-xs-2">
-                                                                <button onClick={this.handleUnpublish.bind(this, assignment.uuid, classN.code)} ng-click="quizzes.unpublishQuiz(content.contentId,class.code);" className="btn btn-danger">Unassign</button>
+                                                                <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
+
+                                                                    <button
+                                                                        className="btn">
+                                                                        View info
+                                                                    </button>
+                                                                </CQLink>
+                                                            </div>
+                                                            <div className="col-xs-2">
+                                                                <button
+                                                                    className="btn btn-danger">
+                                                                    Unassign
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     );

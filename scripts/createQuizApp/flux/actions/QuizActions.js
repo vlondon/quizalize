@@ -5,6 +5,11 @@ var Promise             = require('es6-promise').Promise;
 var TopicStore          = require('createQuizApp/flux/stores/TopicStore');
 var TopicActions        = require('createQuizApp/flux/actions/TopicActions');
 var uuid                = require('node-uuid');
+var UserStore           = require('createQuizApp/flux/stores/UserStore');
+
+
+var shouldLoadQuizzes = true;
+
 
 
 var _questionsTopicIdToTopic = function(quiz){
@@ -69,8 +74,14 @@ var _questionsTopicToTopicId = function(quiz){
 var QuizActions = {
 
     loadQuizzes: function(){
+        if (!shouldLoadQuizzes) {
+            console.warn('quizzes loaded, aborting');
+            return;
+        }
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
+
+        shouldLoadQuizzes = false;
         Promise.all([quizzes, topics])
             .then(value => {
 
@@ -118,6 +129,7 @@ var QuizActions = {
     newQuiz: function(quiz){
 
         var addOrCreateCategory = function(){
+            shouldLoadQuizzes = true;
             var topicUuid;
             var topics = TopicStore.getTopics();
             var topicFound = topics.filter( t => t.name === quiz.category )[0];
@@ -156,6 +168,36 @@ var QuizActions = {
 
         return promise;
 
+
+    },
+
+    shareQuiz: function(quizId, quizName, emails, link){
+        var user = UserStore.getUser();
+        var tokensSpace = emails.split(' ');
+        var tokensColon = emails.split(';');
+        var tokensComma = emails.split(',');
+
+        var data = {
+            email: user.name,
+            quiz: quizName
+        };
+        if (tokensSpace.length > 1) {
+            data.emails = tokensSpace;
+        }
+        else if (tokensColon.length > 1) {
+            data.emails = tokensColon;
+        }
+        else if (tokensComma.length > 1) {
+            data.emails = tokensComma;
+        }
+        else {
+            data.emails = [emails];
+        }
+        if (link !== undefined) {
+            data.link = link;
+        }
+
+        QuizApi.shareQuiz(quizId, data);
 
     }
 

@@ -31,6 +31,10 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
+            },
+            {
+                test: /\.css$/,
+                loader: 'style!css!autoprefixer-loader?browsers=last 2 version'
             }
         ]
     },

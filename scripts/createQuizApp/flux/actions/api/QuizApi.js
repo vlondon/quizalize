@@ -103,6 +103,25 @@ var QuizApi = {
             }
         });
 
+    },
+    shareQuiz: function(quizId, data){
+        return new Promise(function(resolve, reject){
+            var uuid = localStorage.getItem('uuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.post(`/create/${uuid}/quizzes/${quizId}/share`)
+                    .send(data)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+            }
+        });
     }
 };
 

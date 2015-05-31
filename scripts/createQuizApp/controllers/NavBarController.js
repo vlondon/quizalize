@@ -3,10 +3,10 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
     self.showHelp = false;
 
     var loadForUser = function() {
-        $("#assignments").hide();            
-        $("#quizzes").hide();            
+        $("#assignments").hide();
+        $("#quizzes").hide();
         if (QuizData.getUser()) {
-            $("#LoginButton").html("Log out");        
+            $("#LoginButton").html("Log out");
             QuizData.getGroupContents(function(data) {
                 var hasData = false;
                 for (var i in data) {
@@ -14,8 +14,8 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
                     break;
                 }
                 if (hasData) {
-                    $("#assignments").show();            
-                }            
+                    $("#assignments").show();
+                }
                 QuizData.getQuizzes(function(data) {
                     var hasData = false;
                     for (var i in data) {
@@ -27,7 +27,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
                     }
                 })
             })
-        }        
+        }
     }
 
     if(typeof ($location.search()).token != 'undefined'){
@@ -51,7 +51,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
                     QuizData.setUser(result);
                     if (result.attributes.groupCode!=undefined) {
                         QuizData.setCurrentClassByCode(result.attributes.groupCode,function() {
-                                
+
                         });
                     }
                     loadForUser();
@@ -60,14 +60,14 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
             .error(function(err){
                 $log.error("error gettint profile",err)
                 QuizData.unsetUser();
-                $location.path("/quiz#");                
+                $location.path("/quiz#");
             })
     }
     else {
         loadForUser();
     }
 
-    
+
 
     self.dismiss = function(){
         self.showHelp = !self.showHelp;
@@ -91,7 +91,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
             $location.path("/quiz#/");
         }
         else {
-            $location.path("/login");    
+            $location.path("/login");
         }
     }
 }]);

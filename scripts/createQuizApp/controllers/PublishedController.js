@@ -3,7 +3,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
     var self = this;
 
     //status fields
-    self.publishing = false; 
+    self.publishing = false;
     self.published = false;
     self.shareLink = "";
     self.shareEmails = "";
@@ -14,7 +14,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
     if (self.currentClass!=undefined) {
         self.className = self.currentClass.name;
     }
-    
+
     //params
     self.id = $routeParams.id;
     self.action = $routeParams.action;
@@ -37,10 +37,10 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
             for (var i in self.settings) details[i] = self.settings[i];
             self.publishing = true;
             QuizData.publishQuiz(self.quiz, details,function(err,result) {
-                self.publishing = false;                    
+                self.publishing = false;
                 if (!err) {
                     $log.debug("Response from publishing: ", result);
-                    self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
+                    self.shareLink = "http://quizalize.com/quiz#/share/" + result.shareLink;
                     if (result.code!=undefined) {
                         //new group
                         self.currentClass = QuizData.addClass(result.groupName,result.code,result.link);
@@ -50,8 +50,8 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
                         QuizData.setCurrentClass(result.groupName,function(current) {
                             self.currentClass = current;
                         });
-                    }     
-                    $("#assignments").show();                                    
+                    }
+                    $("#assignments").show();
                     self.published=true;
                 }
                 else {
@@ -63,9 +63,9 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
     };
 
     self.share = function() {
-        if (self.shareEmails!="") {            
-            QuizData.shareQuiz(self.id,self.shareEmails,self.shareLink);        
-            QuizData.showMessage("Thanks for Sharing","Each of these email addresses will receive a secure email to access your quiz");    
+        if (self.shareEmails!="") {
+            QuizData.shareQuiz(self.id,self.shareEmails,self.shareLink);
+            QuizData.showMessage("Thanks for Sharing","Each of these email addresses will receive a secure email to access your quiz");
         }
         else {
             QuizData.showMessage("Sharing Error","You must specify at least one email to share with");
@@ -80,8 +80,8 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
             self.profileId = QuizData.getUser();
             if (self.action=="b") {
                 self.currentClass = QuizData.getCurrentClass();
-                self.published = true;    
-                self.showSettings = false;            
+                self.published = true;
+                self.showSettings = false;
             }
             else {
                 QuizData.getClassList(function(data) {
@@ -94,7 +94,7 @@ angular.module('createQuizApp').controller('PublishedController', ['QuizData', '
                     }
                     $( "#className" ).autocomplete({
                         source: classList
-                    });                                    
+                    });
                 });
             }
         }

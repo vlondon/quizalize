@@ -82,9 +82,11 @@ var CQQuizzes = React.createClass({
                                                 <button ng-click="quizzes.deleteQuiz(quiz);" ng-style="margin: 4px" className="btn btn-danger">
                                                     <span className="glyphicon glyphicon-remove"></span>
                                                 </button>
-                                                <button ng-click="quizzes.assignQuiz(quiz);" ng-style="margin: 4px" className="btn btn-info">
-                                                    Set Quiz
-                                                </button>
+                                                <CQLink href={`/quiz/published/${quiz.uuid}`}>
+                                                    <button className="btn btn-info">
+                                                        Set Quiz
+                                                    </button>
+                                                </CQLink>
                                                 <a ng-click="quizzes.shareQuiz(quiz)" ng-style="margin: 4px" className="btn btn-info">Share</a>
                                                 <a ng-click="quizzes.showResults(quiz)" ng-style="margin: 4px" className="btn btn-info">Results</a>
                                             </div>

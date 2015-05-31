@@ -23,6 +23,7 @@ Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathPara
 
 // Public pages
 router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
+router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
@@ -32,6 +33,8 @@ router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) 
 router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
 router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
 router.on(pages.assignments.path, () => renderPage(pages.assignments) );
+router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
+router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
 
 
 

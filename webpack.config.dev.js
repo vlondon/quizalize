@@ -30,9 +30,19 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /(node_modules|bower_components)/
             },
+
+            {
+                test: /\.es6.js$/,
+                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/
+            },
             {
                 test: /\.scss$/,
                 loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
+            },
+            {
+                test: /\.css$/,
+                loader: 'style!css!autoprefixer-loader?browsers=last 2 version'
             }
         ]
     },

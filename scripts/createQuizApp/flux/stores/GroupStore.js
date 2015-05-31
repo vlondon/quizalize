@@ -54,6 +54,14 @@ GroupStore.dispatchToken = AppDispatcher.register(function(action) {
             GroupStore.emitChange();
             break;
 
+        case GroupConstants.NEW_GROUP_PUBLISHED:
+            var newGroup = action.payload;
+            newGroup.name = newGroup.groupName;
+            delete newGroup.groupName;
+            _groups.push(newGroup);
+            GroupStore.emitChange();
+            break;
+
 
 
         default:
