@@ -1,11 +1,15 @@
 var React = require('react');
 
 
-var UserActions = require('createQuizApp/flux/actions/UserActions');
 
-var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
-var CQLoginForm = require('createQuizApp/flux/components/pages/shared/CQLoginForm');
-var CQLink = require('createQuizApp/flux/components/utils/CQLink');
+var CQPageTemplate  = require('createQuizApp/flux/components/CQPageTemplate');
+var CQLoginForm     = require('createQuizApp/flux/components/pages/shared/CQLoginForm');
+var CQLink          = require('createQuizApp/flux/components/utils/CQLink');
+
+var UserActions = require('createQuizApp/flux/actions/UserActions');
+var swal = require('sweetalert/dist/sweetalert-dev');
+require('sweetalert/dev/sweetalert.scss');
+
 
 require('./CQLoginStyles');
 
@@ -28,7 +32,10 @@ var CQLogin = React.createClass({
 
     handleLogin: function(data){
 
-        UserActions.login(data);
+        UserActions.login(data)
+            .catch(function(){
+                swal('Login Error', 'Invalid Details during login');
+            });
     },
 
 

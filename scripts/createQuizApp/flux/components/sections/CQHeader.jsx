@@ -2,6 +2,7 @@ var React = require('react');
 
 var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 var UserStore = require('createQuizApp/flux/stores/UserStore');
+var UserActions = require('createQuizApp/flux/actions/UserActions');
 
 require('./CQHeaderStyles');
 
@@ -32,6 +33,10 @@ var CQHeader = React.createClass({
         };
     },
 
+    handleLogout: function () {
+        UserActions.logout();
+    },
+
 
     render: function() {
 
@@ -54,17 +59,19 @@ var CQHeader = React.createClass({
                 </li>
             ));
 
-            loginButton = (<li>
-                <CQLink href="/quiz/login/" className="btn btn-info navbar-btn">
-                    Login
-                </CQLink>
-            </li>);
+            loginButton = (
+                <li>
+                    <button onClick={this.handleLogout} type="button" className="btn btn-info navbar-btn">
+                        Log out
+                    </button>
+                </li>);
         } else {
-            loginButton = (<li>
-                <CQLink href="/quiz/login/" className="btn btn-info navbar-btn">
-                    Logout
-                </CQLink>
-            </li>);
+            loginButton = (
+                <li>
+                    <CQLink href="/quiz/login/" className="btn btn-info navbar-btn">
+                        Login
+                    </CQLink>
+                </li>);
         }
 
 

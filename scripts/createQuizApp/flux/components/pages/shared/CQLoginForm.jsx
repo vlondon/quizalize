@@ -4,12 +4,15 @@ var assign = require('object-assign');
 var CQLoginForm = React.createClass({
 
     propTypes: {
-        onSubmit: React.PropTypes.func
+        onSubmit: React.PropTypes.func,
+        showPasswordField: React.PropTypes.bool
     },
 
     getDefaultProps: function() {
         return {
-            onSubmit: function(){}
+            onSubmit: function(){},
+            buttonLabel: 'Log In',
+            showPasswordField: true
         };
     },
 
@@ -26,7 +29,12 @@ var CQLoginForm = React.createClass({
 
         var newState = assign({}, this.state);
         newState[property] = event.target.value;
-        newState.isReady = newState.email.length > 0 && newState.password.length > 0;
+
+        if (this.props.showPasswordField) {
+            newState.isReady = newState.email.length > 0 && newState.password.length > 0;
+        } else {
+            newState.isReady = newState.email.length > 0;
+        }
 
         this.setState(newState);
     },
@@ -46,6 +54,24 @@ var CQLoginForm = React.createClass({
 
 
     render: function() {
+
+        var passwordField;
+
+        if (this.props.showPasswordField){
+            passwordField = (<span id="passwordSpan">
+                <label className="control-label col-sm-3">Password</label>
+                <div className="col-sm-9">
+                    <input id="password"
+                        type="password"
+                        value={this.state.password}
+                        onChange={this.handleChange.bind(this, 'password')}
+                        ng-model="login.password"
+                        className="form-control ng-pristine ng-valid"/>
+                    <br/>
+
+                </div>
+            </span>);
+        }
         return (
             <form role="form" className="form-horizontal" onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -62,19 +88,9 @@ var CQLoginForm = React.createClass({
                         <br/>
 
                     </div>
-                    <span id="passwordSpan">
-                        <label className="control-label col-sm-3">Password</label>
-                        <div className="col-sm-9">
-                            <input id="password"
-                                type="password"
-                                value={this.state.password}
-                                onChange={this.handleChange.bind(this, 'password')}
-                                ng-model="login.password"
-                                className="form-control ng-pristine ng-valid"/>
-                            <br/>
 
-                        </div>
-                    </span>
+                    {passwordField}
+
                     <div className="col-sm-8">
                         {this.props.children}
                     </div>
@@ -84,7 +100,7 @@ var CQLoginForm = React.createClass({
                             type='submit'
                             className="btn btn-primary btn-block">
 
-                            <span>Log In</span>
+                            <span>{this.props.buttonLabel}</span>
 
                         </button>
 

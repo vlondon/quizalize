@@ -4,7 +4,9 @@ var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 var CQLoginForm = require('createQuizApp/flux/components/pages/shared/CQLoginForm');
 var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 
-require('./CQRecoverPassword');
+var UserActions = require('createQuizApp/flux/actions/UserActions');
+var swal = require('sweetalert/dist/sweetalert-dev');
+require('sweetalert/dev/sweetalert.scss');
 
 var CQRecoverPassword = React.createClass({
 
@@ -20,6 +22,9 @@ var CQRecoverPassword = React.createClass({
         // expects data as an object with
         // email and password
         console.log('form submitted with', data);
+        UserActions.recover(data.email);
+        swal('Reset Password', 'If you are registered, please check your email for instructions on how to reset your password', 'success');
+
 
     },
 
@@ -31,7 +36,10 @@ var CQRecoverPassword = React.createClass({
                     <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
                         <div className="well">
                             <h2 id="title">Password Reset</h2>
-                                <CQLoginForm>
+                                <CQLoginForm
+                                    showPasswordField={false}
+                                    onSubmit={this.handleSubmit}
+                                    buttonLabel="Reset Password">
 
                                     <div className="">
                                         Don't have an account?&nbsp;

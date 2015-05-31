@@ -47,27 +47,25 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case UserConstants.USER_DETAILS:
-            _user = action.payload;
-            UserStore.emitChange();
-            break;
-        //
         case UserConstants.USER_IS_LOGGED:
         case UserConstants.USER_PROFILE_UPDATED:
+        case UserConstants.USER_REGISTERED:
             _user = action.payload;
             UserStore.emitChange();
             break;
         //
         //
         case UserConstants.USER_IS_NOT_LOGGED:
+        case UserConstants.USER_LOGOUT:
             _user = false;
             UserStore.emitChange();
             break;
         //
-        // case UserConstants.USER_LOGIN_ERROR:
-        //     console.log('we got USER_LOGIN_ERROR', action);
-        //     _error = action.payload;
-        //     UserStore.emitChange();
-        //     break;
+        case UserConstants.USER_LOGIN_ERROR:
+            console.log('we got USER_LOGIN_ERROR', action);
+            // _user = false;
+            // UserStore.emitChange();
+            break;
 
 
 

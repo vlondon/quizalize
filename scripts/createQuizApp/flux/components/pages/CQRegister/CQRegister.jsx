@@ -4,10 +4,22 @@ var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 var CQLoginForm = require('createQuizApp/flux/components/pages/shared/CQLoginForm');
 var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 
-require('./CQRegister');
+
+var UserActions = require('createQuizApp/flux/actions/UserActions');
+var swal = require('sweetalert/dist/sweetalert-dev');
+require('sweetalert/dev/sweetalert.scss');
+
+
 
 var CQRegister = React.createClass({
 
+    handleRegister: function(data){
+
+        UserActions.register(data)
+            .catch(function(){
+                swal('Register Error', 'Something went wrong, please try again later.');
+            });
+    },
     render: function() {
         return (
             <CQPageTemplate className="container cq-login">
@@ -16,7 +28,7 @@ var CQRegister = React.createClass({
                         <div className="well">
                             <h2 id="title">Quizalize Registration</h2>
 
-                            <CQLoginForm>
+                            <CQLoginForm onSubmit={this.handleRegister}>
                                 <div>
                                     Already registered?&nbsp;
                                     <CQLink href="/quiz/login">Log in</CQLink>

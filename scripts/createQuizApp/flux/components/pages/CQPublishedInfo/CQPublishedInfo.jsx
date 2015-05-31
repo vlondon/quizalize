@@ -7,7 +7,6 @@ var GroupStore  = require('createQuizApp/flux/stores/GroupStore');
 var QuizStore  = require('createQuizApp/flux/stores/QuizStore');
 var QuizActions = require('createQuizApp/flux/actions/QuizActions');
 var swal = require('sweetalert/dist/sweetalert-dev');
-// var swal = require('sweetalert/dev/sweetalert.es6.js');
 require('sweetalert/dev/sweetalert.scss');
 
 console.log('swal?', swal);
