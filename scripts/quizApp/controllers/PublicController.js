@@ -1,4 +1,4 @@
-angular.module('quizApp').controller('PublicController', function(QuizData, $log, $location, $rootScope, $scope){
+angular.module('quizApp').controller('PublicController', function(QuizData, $log){
 	var self = this;
 	self.hasQuizzes = false;
 

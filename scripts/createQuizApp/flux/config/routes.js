@@ -3,6 +3,7 @@ var router          = require('./router');
 // var settings        = require('utils/settings');
 
 var CQDashboard         = require('createQuizApp/flux/components/CQDashboard');
+var CQPublic            = require('createQuizApp/flux/components/pages/CQPublic');
 var CQNotFound          = require('createQuizApp/flux/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/flux/components/pages/CQLogin');
 var CQRegister          = require('createQuizApp/flux/components/pages/CQRegister');
@@ -40,6 +41,16 @@ var pages = {
             console.info('renderMain');
             React.render(
                 React.createElement(CQDashboard, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    publicPage: {
+        path: '/quiz/public',
+        needsLogin: undefined,
+        renderer: function(){
+            React.render(
+                React.createElement(CQPublic, null),
                 document.getElementById('reactApp')
             );
         }

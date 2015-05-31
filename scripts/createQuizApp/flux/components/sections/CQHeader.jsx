@@ -94,13 +94,13 @@ var CQHeader = React.createClass({
                             {buttons}
 
                             <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/assignments" className="btn btn-info navbar-btn">
+                                <CQLink href="/quiz/public" className="btn btn-info navbar-btn">
                                     Public quizzes
                                 </CQLink>
                             </li>
 
                             <li id="cq-publicQuizzes">
-                                <CQLink className="btn btn-info navbar-btn">
+                                <CQLink href=""className="btn btn-info navbar-btn">
                                     ?
                                 </CQLink>
                             </li>

@@ -24,6 +24,7 @@ Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathPara
 // Public pages
 router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
+router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
@@ -56,6 +57,10 @@ var newUrl = function(requestedUrl){
 
     var page = getPage(requestedUrl);
     if (page) {
+        if (page.needsLogin === undefined){
+            console.log('NO NEED TO CHECK IF NEEDS LOGIN OR NOT');
+            return requestedUrl;
+        }
         if (!page.needsLogin) {
             if (typeof user === 'object' && !page.public) {
                 return settings.defaultLoggedPage;

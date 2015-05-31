@@ -24,6 +24,22 @@ var QuizApi = {
         });
     },
 
+    getPublicQuizzes: function(){
+        return new Promise(function(resolve, reject){
+            request.get(`/quizzes/public`)
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
+
+                });
+
+        });
+    },
+
+
     getQuiz: function(quizId){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('uuid');

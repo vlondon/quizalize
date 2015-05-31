@@ -9,6 +9,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var _quizzes = [];
+var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
 var init = false;
@@ -23,6 +24,10 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuiz: function(quizId){
         return _fullQuizzes[quizId];
+    },
+
+    getPublicQuizzes: function(){
+        return _publicQuizzes;
     },
 
     getTopics: function() {
@@ -76,6 +81,10 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
+        case QuizConstants.QUIZZES_PUBLIC_LOADED:
+            _publicQuizzes = action.payload;
+            QuizStore.emitChange();
+            break;
         default:
             // no op
     }
