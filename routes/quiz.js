@@ -101,6 +101,15 @@ exports.quizFinder =  function(req, res) {
     res.render('quizFinder');
 };
 
+
+exports.quizOfTheDay1 = function(req, res){
+    res.render('baseLayoutQuizOfTheDay1');
+};
+exports.packages = function (req, res){
+    res.render('packages');
+};
+
+
 exports.createProfile = function(req, res){
     var id = req.body.uuid;
     var name = "";

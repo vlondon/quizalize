@@ -74,7 +74,15 @@ app.get('/quizzes/public', quiz.getPublicQuizzes);
 app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
+
+
+///// QUIZ OF THE DAY PAGES ////
+
+app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
+app.get('/packages', quiz.packages);
+
 /*
+
 
 
 Endpoints for students: actually we are making this client side
