@@ -1,5 +1,6 @@
 var React = require('react');
 var assign = require('object-assign');
+var router = require('createQuizApp/flux/config/router');
 
 var QuizActions = require('createQuizApp/flux/actions/QuizActions');
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
@@ -18,6 +19,7 @@ var CQCreate = React.createClass({
 
         return {
             isMoreVisible: false,
+            isSaving: false,
             quiz: {
 
             }
@@ -90,13 +92,15 @@ var CQCreate = React.createClass({
     },
 
     handleNewQuiz: function(){
+        this.setState({isSaving: true});
         QuizActions.newQuiz(this.state.quiz).then(function(){
+            router.setRoute(`/quiz/quizzes`);
         });
     },
 
     render: function() {
-        if (true){
 
+        if (true){
 
             return (
                 <CQPageTemplate className="container">
@@ -161,7 +165,10 @@ var CQCreate = React.createClass({
                                         </button>
                                     </div>
                                     <div className="col-sm-4"><br className="visible-xs"/>
-                                    <button type="button" onClick={this.handleNewQuiz} tabIndex="4" ng-disabled="ctrl.quiz.name==''" className="btn btn-primary btn-block">Save</button>
+                                    <button type="button"
+                                        onClick={this.handleNewQuiz}
+                                        disabled={this.isSaving}
+                                        tabIndex="4" ng-disabled="ctrl.quiz.name==''" className="btn btn-primary btn-block">Save</button>
                                 </div>
                             </div>
                         </form>

@@ -8,10 +8,6 @@ var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/flux/stores/UserStore');
 
 
-var shouldLoadQuizzes = true;
-
-
-
 var _questionsTopicIdToTopic = function(quiz){
 
     var topics = TopicStore.getTopics();
@@ -74,14 +70,11 @@ var _questionsTopicToTopicId = function(quiz){
 var QuizActions = {
 
     loadQuizzes: function(){
-        if (!shouldLoadQuizzes) {
-            console.warn('quizzes loaded, aborting');
-            return;
-        }
+
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
 
-        shouldLoadQuizzes = false;
+
         Promise.all([quizzes, topics])
             .then(value => {
 
@@ -178,7 +171,6 @@ var QuizActions = {
     newQuiz: function(quiz){
 
         var addOrCreateCategory = function(){
-            shouldLoadQuizzes = true;
             var topicUuid;
             var topics = TopicStore.getTopics();
             var topicFound = topics.filter( t => t.name === quiz.category )[0];
