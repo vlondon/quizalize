@@ -361,15 +361,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 $rootScope.$digest();
             });
         },
-        loadGroupContent: function(code,callback){
-            zzish.listPublicContentForGroup(code,function(err, message){
-                if(!err) {
-                    processQuizData(message,true);
-                }
-                callback(err, message);
-                $rootScope.$digest();
-            });
-        },
         loadQuiz: function(catId,quizId,callback) {
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 callback(currentQuiz);

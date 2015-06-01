@@ -51,10 +51,5 @@ angular.module('quizApp')
             controller: "PreviewController",
             controllerAs: "quiz"
         })        
-        .when('/mp/:id' ,{
-            templateUrl: "/quiz/view/app",
-            controller: "MarketController",
-            controllerAs: "market"
-        })           
         .otherwise({redirectTo: '/'})
 }]);

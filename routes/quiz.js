@@ -317,7 +317,7 @@ exports.publishQuiz = function(req, res){
             link = replaceAll("/","-----",link);
             link = replaceAll("\\\\","=====",link);
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + link +"/live";
-            resp.shareLink = getEncryptQuiz(profileId,id);
+            resp.shareLink = resp.qcode;
         } else {
             var errorMessage = resp;
             resp = {};
@@ -338,7 +338,7 @@ exports.shareQuiz = function(req, res){
     var link = req.body.link;
 
     if (link==undefined) {
-        link = "http://quizalize.com/quiz#/share/" + getEncryptQuiz(profileId,id);
+        link = "http://quizalize.com/quiz#/share/" + quiz.code;
     }
     if (emails!=undefined) {
         email.sendEmail('team@zzish.com',emails,'You have been shared a quiz!','Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
@@ -346,8 +346,7 @@ exports.shareQuiz = function(req, res){
 };
 
 exports.getQuizByCode = function(req,res) {
-    var decoded = getDecryptQuiz(req.params.code);
-    zzish.getContent(decoded.profileId,decoded.uuid,function (err,result) {
+    zzish.getContentByCode(req.params.code,function (err,result) {
         res.send(result);
     })
 }
