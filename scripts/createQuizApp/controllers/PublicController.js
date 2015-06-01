@@ -4,9 +4,9 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
 
 	self.assignQuiz = function(quiz) {
 		QuizData.addQuiz(quiz,function() {
-			$location.path("/preview/" + quiz.uuid);	
-		})        
-	}   
+			$location.path("/preview/" + quiz.uuid);
+		});
+	};
 
 	self.previewQuiz = function(quiz) {
 	    if (QuizData.getUser()) {
@@ -14,7 +14,7 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
 	    }
 		else {
 			$location.path("/playh/preview/" + quiz.uuid);
-		}		
+		}
 	}
 
     QuizData.getPublicQuizzes(function (contents) {
@@ -22,5 +22,5 @@ angular.module('createQuizApp').controller('PublicController', ['QuizData', '$lo
     	for (var i in self.categories) {
     		self.hasQuizzes = true;
     	}
-    });	
+    });
 }]);

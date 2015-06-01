@@ -3,6 +3,8 @@ var React = require('react');
 var UserStore = require('createQuizApp/flux/stores/UserStore');
 var UserActions = require('createQuizApp/flux/actions/UserActions');
 
+var CQLink          = require('createQuizApp/flux/components/utils/CQLink');
+
 
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 
@@ -51,9 +53,9 @@ var CQDashboard = React.createClass({
                                         </center>
                                         <br/>
                                         <center>
-                                            <a href="/register/create" className="btn btn-primary btn-lg">
+                                            <CQLink href="/register/create" className="btn btn-primary btn-lg">
                                                 Create a new quiz
-                                            </a>
+                                            </CQLink>
                                         </center>
 
                                     </div>
@@ -70,7 +72,9 @@ var CQDashboard = React.createClass({
                                         </center>
                                         <br/>
                                         <center>
-                                            <a href="" className="btn btn-primary btn-lg btn-info">Choose a quiz</a>
+                                            <CQLink href="/quiz/public" className="btn btn-primary btn-lg btn-info">
+                                                Choose a quiz
+                                            </CQLink>
                                         </center>
 
                                     </div>

@@ -57,6 +57,9 @@ var CQNotFound = React.createClass({
         // }
     },
 
+    handleSet: function(){
+
+    },
 
     render: function() {
         return (

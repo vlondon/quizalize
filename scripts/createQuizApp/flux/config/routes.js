@@ -25,7 +25,7 @@ var pages = {
     },
     mainPage: {
         path: '/quiz',
-        needsLogin: false,
+        needsLogin: undefined,
         renderer: function(){
             console.info('renderMain');
             React.render(
@@ -67,6 +67,17 @@ var pages = {
     },
     registerPage: {
         path: '/quiz/register',
+        needsLogin: false,
+        renderer: function(){
+            React.render(
+                React.createElement(CQRegister, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    registerAndCreatePage: {
+        path: '/quiz/register/create',
         needsLogin: false,
         renderer: function(){
             React.render(

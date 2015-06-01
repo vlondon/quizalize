@@ -129,7 +129,7 @@ var QuizActions = {
     loadPublicQuizzes: function(){
 
         var processQuizList = function(result){
-            console.log('processing', result);
+
             var categories = [];
             var categoriesHash = {};
             for (var i in result.contents) {
@@ -140,7 +140,6 @@ var QuizActions = {
                     cuuid = quiz.categoryId;
                     if (result.categories !== undefined) {
                         for (var o in result.categories) {
-                            console.log('assigning, ',  result.categories[o].uuid === quiz.categoryId);
                             if (result.categories[o].uuid === quiz.categoryId) {
                                 category = result.categories[o];
                             }

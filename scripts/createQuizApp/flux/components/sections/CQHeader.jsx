@@ -9,7 +9,6 @@ require('./CQHeaderStyles');
 var CQHeader = React.createClass({
 
     getInitialState: function() {
-        console.log('UserStore.getUser', UserStore.getUser());
         return this.getState();
     },
 
@@ -26,7 +25,6 @@ var CQHeader = React.createClass({
     },
 
     getState: function(){
-        console.log('UserStore.getUser', UserStore.getUser());
         var isLoggedIn = UserStore.getUser() !== false;
         return {
             isLoggedIn
