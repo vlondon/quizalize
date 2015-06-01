@@ -1,4 +1,4 @@
-angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log', '$timeout', '$location', '$http', function(QuizData,$log, $timeout,$location,$http){
+angular.module('createQuizApp').controller('NavBarController',  function(QuizData, $rootScope, $log, $timeout,$location,$http){
     var self = this;
     self.showHelp = false;
     self.showQuizzes = false;
@@ -6,23 +6,23 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
 
     var loadForUser = function() {
         if (QuizData.getUser()) {
-            $("#LoginButton").html("Log out");        
+            $("#LoginButton").html("Log out");
             QuizData.getGroupContents(function(data) {
-                var hasData = false;
                 for (var i in data) {
                     self.showAssignments = true;
                     break;
                 }
             });
             QuizData.getQuizzes(function(data) {
-                var hasData = false;
                 for (var i in data) {
                     self.showQuizzes = true;
                     break;
                 }
-            });            
-        }        
+            });
+        }
     }
+
+    $rootScope.$on('USER_LOGGED_IN', loadForUser);
 
     if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
@@ -45,7 +45,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
                     QuizData.setUser(result);
                     if (result.attributes.groupCode!=undefined) {
                         QuizData.setCurrentClassByCode(result.attributes.groupCode,function() {
-                                
+
                         });
                     }
                     loadForUser();
@@ -54,14 +54,14 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
             .error(function(err){
                 $log.error("error gettint profile",err)
                 QuizData.unsetUser();
-                $location.path("/quiz#");                
+                $location.path("/quiz#");
             })
     }
     else {
         loadForUser();
     }
 
-    
+
 
     self.dismiss = function(){
         self.showHelp = !self.showHelp;
@@ -87,7 +87,7 @@ angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log
             $location.path("/quiz#/");
         }
         else {
-            $location.path("/login");    
+            $location.path("/login");
         }
     }
-}]);
+});

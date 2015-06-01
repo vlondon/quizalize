@@ -57,7 +57,7 @@ angular.module('createQuizApp')
                     cuuid = quiz.categoryId;
                     if (result.categories !== undefined) {
                         for (var o in result.categories) {
-                            if (result.categories[i].uuid === quiz.categoryId) {
+                            if (result.categories[o].uuid === quiz.categoryId) {
                                 category = result.categories[o];
                             }
                         }
@@ -197,7 +197,7 @@ angular.module('createQuizApp')
             //User methods
             unsetUser: function() {
                 var result = userUuid !== '' && userUuid !== undefined;
-                setUser(null);
+                setUser();
                 return result;
             },
             getUser: function () {
