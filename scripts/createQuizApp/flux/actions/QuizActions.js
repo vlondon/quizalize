@@ -200,11 +200,12 @@ var QuizActions = {
 
         var promise = QuizApi.putQuiz(quiz);
 
-        promise.then(function(){
+        promise.then(()=>{
             AppDispatcher.dispatch({
                 actionType: QuizConstants.QUIZ_ADDED,
                 payload: quiz
             });
+            this.loadQuizzes();
         });
 
         return promise;
