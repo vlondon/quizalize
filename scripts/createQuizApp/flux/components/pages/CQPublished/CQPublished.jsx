@@ -30,6 +30,8 @@ var CQPublished = React.createClass({
         var selectedClass;
         if (groups && groups.length > 0){
             selectedClass = groups[0].code;
+        } else {
+            selectedClass = 'new';
         }
         var newState = { groups, selectedClass };
 
@@ -101,7 +103,6 @@ var CQPublished = React.createClass({
             console.log('about to save an already existing class', this.state.selectedClass);
             GroupActions.publishAssignment(this.props.quizId, this.state.selectedClass)
                 .then(()=>{
-                debugger;
                     console.log('saved!!', this.state.selectedClass);
                     redirect(this.props.quizId, this.state.selectedClass);
                 });
