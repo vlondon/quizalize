@@ -1,32 +1,26 @@
 angular.module('createQuizApp').controller('NavBarController', ['QuizData','$log', '$timeout', '$location', '$http', function(QuizData,$log, $timeout,$location,$http){
     var self = this;
     self.showHelp = false;
+    self.showQuizzes = false;
+    self.showAssignments = false;
 
     var loadForUser = function() {
-        $("#assignments").hide();            
-        $("#quizzes").hide();            
         if (QuizData.getUser()) {
             $("#LoginButton").html("Log out");        
             QuizData.getGroupContents(function(data) {
                 var hasData = false;
                 for (var i in data) {
-                    hasData = true;
+                    self.showAssignments = true;
                     break;
                 }
-                if (hasData) {
-                    $("#assignments").show();            
-                }            
-                QuizData.getQuizzes(function(data) {
-                    var hasData = false;
-                    for (var i in data) {
-                        hasData = true;
-                        break;
-                    }
-                    if (hasData) {
-                        $("#quizzes").show();
-                    }
-                })
-            })
+            });
+            QuizData.getQuizzes(function(data) {
+                var hasData = false;
+                for (var i in data) {
+                    self.showQuizzes = true;
+                    break;
+                }
+            });            
         }        
     }
 
