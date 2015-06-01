@@ -114,11 +114,7 @@ var CQEdit = React.createClass({
 
     render: function() {
 
-        var editQuestion;
 
-        if (this.state.quiz && this.state.quiz.questions[this.state.questionIndex]){
-            editQuestion = (<div/>);
-        }
         if (this.state.quiz){
 
 
@@ -151,11 +147,21 @@ var CQEdit = React.createClass({
                                         <div className="col-xs-12">
                                             <div className="row">
                                                 <div className="col-sm-7">
-                                                    <h2 ng-show="create.quiz.questions.length&gt;1">Your {this.state.quiz.questions.length} questions</h2><br/>
+                                                    <h2 ng-show="create.quiz.questions.length&gt;1">Yourquestions</h2><br/>
                                                 </div>
-                                                <div ol-style="margin-top:21px" className="col-sm-2"><a ng-href="/app#/preview/{create.quiz.uuid}}" ng-show="create.quiz.questions.length&gt;0" target="zzishgame" className="btn btn-block btn-info">Preview </a></div>
+                                                <div ol-style="margin-top:21px" className="col-sm-2">
+                                                    <a href={`/app#/preview/${this.state.quiz.uuid}`} ng-show="create.quiz.questions.length&gt;0" target="zzishgame" className="btn btn-block btn-info">
+                                                        Preview
+                                                    </a>
+
+                                                    </div>
                                                 <div ol-style="margin-top:21px" className="col-sm-3">
-                                                    <button ng-click="create.finished()" ng-show="create.quiz.questions.length&gt;0" className="btn btn-block btn-primary">I'm Finished, let's play!&nbsp;</button>
+                                                    <CQLink href={`/quiz/published/${this.state.quiz.uuid}`}>
+
+                                                        <button click="create.finished()" ng-show="create.quiz.questions.length&gt;0" className="btn btn-block btn-primary">
+                                                            I'm Finished, let's play!
+                                                        </button>
+                                                    </CQLink>
                                                 </div>
                                             </div>
                                         </div>

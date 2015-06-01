@@ -29,7 +29,7 @@ var CQCreate = React.createClass({
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
-        console.log("QUIAAA", quiz, props);
+
         if (quiz === undefined){
             QuizActions.loadQuiz(this.props.quizId);
             return {};
@@ -40,7 +40,6 @@ var CQCreate = React.createClass({
 
     onChange: function(){
 
-        var quizzes = QuizStore.getQuizzes();
         var newState = {};
         if (this.props.quizId){
             var quiz = this._getQuiz();
