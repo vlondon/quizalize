@@ -303,7 +303,6 @@ angular.module('createQuizApp').factory('QuizData', ['$http', '$log', function($
                             quizData = {};
                             for (var i in resp) {
                                 quizData[resp[i].uuid] = resp[i];
-                                quizData[resp[i].uuid].attributes.live = resp[i].attributes.live=="true";
                             }                        
                             localStorage.setItem("quizData",JSON.stringify(quizData));
                             callback(quizData);
