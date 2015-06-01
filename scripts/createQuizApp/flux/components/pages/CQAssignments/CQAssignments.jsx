@@ -110,6 +110,7 @@ var CQEditQuiz = React.createClass({
                                                             </div>
                                                             <div className="col-xs-2">
                                                                 <button
+                                                                    onClick={this.handleUnpublish.bind(this, assignment.uuid, classN.code)}
                                                                     className="btn btn-danger">
                                                                     Unassign
                                                                 </button>

@@ -1,9 +1,9 @@
 var AppDispatcher = require('createQuizApp/flux/dispatcher/CQDispatcher');
 var QuizConstants = require('createQuizApp/flux/constants/QuizConstants');
 var QuizActions = require('createQuizApp/flux/actions/QuizActions');
-var TopicStore  = require('createQuizApp/flux/stores/TopicStore');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
+var TopicStore      = require('createQuizApp/flux/stores/TopicStore');
+var EventEmitter    = require('events').EventEmitter;
+var assign          = require('object-assign');
 
 
 var CHANGE_EVENT = 'change';
@@ -86,10 +86,12 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
-        case QuizConstants.QUIZ_LOADED:
+        case QuizConstants.QUIZ_DELETED:
             var quizIdToBeDeleted = action.payload;
             var quizToBeDeleted = _quizzes.filter(q => q.uuid === quizIdToBeDeleted)[0];
-
+            _quizzes.splice(_quizzes.indexOf(quizToBeDeleted), 1);
+            QuizStore.emitChange();
+            break;
 
 
         default:
