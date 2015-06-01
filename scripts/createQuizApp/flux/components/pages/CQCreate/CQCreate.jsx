@@ -95,7 +95,7 @@ var CQCreate = React.createClass({
     },
 
     render: function() {
-        if (this.props.quizId && this.state.quiz.uuid !== undefined){
+        if (true){
 
 
             return (
