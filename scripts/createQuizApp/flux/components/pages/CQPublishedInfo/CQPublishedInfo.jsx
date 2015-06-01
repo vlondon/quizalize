@@ -1,6 +1,7 @@
 var React = require('react');
 
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
+var CQLink          = require('createQuizApp/flux/components/utils/CQLink');
 
 var GroupActions = require('createQuizApp/flux/actions/GroupActions');
 var GroupStore  = require('createQuizApp/flux/stores/GroupStore');
@@ -11,7 +12,7 @@ require('sweetalert/dev/sweetalert.scss');
 
 console.log('swal?', swal);
 
-var CQNotFound = React.createClass({
+var CQPUblishedInfo = React.createClass({
 
     propTypes: {
         classCode: React.PropTypes.string
@@ -108,9 +109,9 @@ var CQNotFound = React.createClass({
                                     <h1>Teacher get ready!</h1>
                                     <p>Open your learning dashboard here:</p><br/><br/>
                                     <center>
-                                        <button type="button" disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
+                                        <a type="button" disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
                                             Open Teacher Dashboard
-                                        </button>
+                                        </a>
                                     </center>
                                     <br/>
                                     <p>You can see live results as your students play.</p>
@@ -155,4 +156,4 @@ var CQNotFound = React.createClass({
 
 });
 
-module.exports = CQNotFound;
+module.exports = CQPUblishedInfo;
