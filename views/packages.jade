@@ -1,0 +1,205 @@
+extends baseLayout2
+
+block body
+	section.color-dark
+		.container.packages
+			row.text-center
+				h2.cat-title Our Services
+			row
+				.col-md-10.col-md-offset-1
+					p.text-center
+						strong We offer a range of services to suit your schools wants and needs. Below are some of
+						strong| the packages we offer, however, we can tailor these to suit your needs.
+			row
+				.col-md-6.p-column
+					h3.pack-title.text-center Quizalize day at your school
+					p
+						strong Are you determined to raise standards across your school?
+					p
+						strong Are you looking for ways to engage your children in their learning?
+					p One day workshops for pupils. Experience fun assessments with a technological twist.
+					| During the session pupils are trained through a game based learning approach on how 
+					|complete assessments and how to improve their knowledge. Classroom teachers are simultaneously 
+					|trained on how to analyse each child's progress data and identify their learning gaps.
+					|Many schools enjoy this day as we work with a variety of classes across all key stages which can then have a real long term impact on raising whole school achievement.
+				.col-md-6.p-column
+					h3.pack-title.text-center CPD at your school
+					p A personalised training based on your school's individual needs by our Head of School Engagement. 
+					|All staff will be introduced to a variety of educational technology available, 
+					|learn how to incorporate technology in their teaching and understand the impact that 
+					|these resources have on their pupils learning.
+					img.package-image2.img-responsive.center-block(src='/cquiz/img/teacher-ipad-square.jpg')
+	section.color-dark.bg-gray2.ex-topics
+		.container.packages
+			row.text-center
+				h3.pack-title.text-center Examples of the topics we offer in CPD training
+			row
+				.col-md-3
+					h5.pack-title How to tackle pupil behaviour through engagement?
+					p We use a game based learning approach to engage pupils in their learning
+				.col-md-3
+					h5.pack-title Identify pupil progress and learning gaps instantly
+					p We understand how to use the data from live diagnostic assessments to support individual pupils instantly
+				.col-md-3
+					h5.pack-title Differentiation made easy through technology
+					p We understand how to use technology to personalise learning for your pupils
+				.col-md-3
+					h5.pack-title Technology as a tool for assessment for learning
+					p Using technology to create formative and summative assessments
+	section.color-dark#our-packages
+		.container.packages
+			row.text-center
+				h2.cat-title Our Packages
+			row
+				.col-md-6
+					.text-center
+					h3.pack-title.text-center  Teacher Package
+					ul
+						li Create, save and share your assessments on Quizalize
+						li Use any of the free curriculum-based assessments from the public library
+						li Set assessments for as many different classes as you want
+						li Use the Zzish Learning Hub to track student progress and spot class and individual learning gaps
+						li Print the class data as well as individual student results
+						li Create a personalised URL for your assessments (e.g. www.quizalize.com/MrSmithsQuizzes)
+						li Turn your personal page into your own mobile app where students can play your quizzes. (Coming Sept 2015)
+					.text-center.red-box
+						button
+							a(href="/quiz#/register/dashboard")
+								h3 Free
+				.col-md-6
+					.text-center
+					h3.pack-title.text-center Whole School Package
+					ul(style='margin-bottom:38px')
+						li Includes all the features of the Teacher Package, plus…
+						li Create a school Quizalize page
+						li Create a personalised URL for your school (e.g www.quizalize.com/StJohns)
+						li Personalise your school Quizalize page with your school branding
+						li Organise assessments by teacher and subject, for example ‘Mr. Smith’s Maths Quizzes’
+						li Turn your school page into a mobile app where students can play your school quizzes.
+					.text-center.red-box
+						button
+							a(onclick="ask('order')")
+								h3 £399 per school year*
+					p.text-center *or only £199 if you sign up by 30th June 2015
+	section.color-dark.bg-gray2
+		.container.packages
+			row
+				.col-md-6
+					.text-center
+						h3.pack-title Additional Services
+					ul
+						li Quizalize Day Workshop with classes in your school training children on how to use 
+						| online assessment platfroms such as Quizalize and training teachers on how to use real-
+						|time teacher dashboards such as the Zzish Learning Hub
+					p 
+						strong Cost: £599
+					ul
+						li Education Technology CPD for all staff
+					p
+						strong Cost: £799
+				.col-md-6
+					img.package-image.img-responsive.center-block(src='/cquiz/img/quizalize-still 2.png')
+	section.color-dark
+		.container.packages
+			row
+				.col-md-6
+					img.img-responsive.center-block(src='/cquiz/img/Smiling-GCSE.jpg')
+				.col-md-6
+					h3.pack-title.text-center Exclusive offer for referrals
+					p Refer 5 schools that sign up to the whole school package and receive:
+					div.refer-offer
+						p.red-box-small.text-center A free iPad for your school
+						p.text-center or
+						p.red-box-small.text-center 1 x Quizalize Day Workshop in your school
+	section.color-dark(style="padding-top:20px")
+		.container.packages
+			a(href="/quiz#/register/dashboard").red-box
+				button
+					h3.text-center Get your free teacher account
+			p.text-center Or contact us below
+	section#contact.home-section.nopadd-bot.color-dark.bg-dark.text-center
+		a#sendForm(name='sendForm')
+			.container.marginbot-50
+				.col-md-12
+					.section-heading.text-center
+						h1
+							strong Get in touch
+			.row
+				.col-md-4
+					a.cta4(onClick="ask('order')") Request an info pack
+				.col-md-4
+					a.cta4(onClick="ask('question')") Ask a question
+				.col-md-4
+					a.cta4(onClick="ask('demo')") Book a demo
+			#helpForm.container
+				.row.marginbot-80
+					.col-md-12
+						form#contact-form(onSubmit='return submitForm()')
+							.row.marginbot-20
+								.col-md-6.xs-marginbot-20
+									input#ename.form-control.input-lg(type='text', placeholder='Enter name')
+								.col-md-6
+									input#email.form-control.input-lg(type='email', placeholder='Enter email', required='')
+							.row
+								.col-md-12
+									.form-group
+										textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
+									input#btnContactUs.btn-lg.btn-block(type='submit', value='Send')
+			#helpSent.container(style='display: none;')
+				.row.marginbot-80
+					.col-md-8.col-md-offset-2
+						h3 Thanks for getting in touch. We'll get back to you ASAP!
+	section.color-light.bg-gray2(id='social media')
+		.row
+			.col-md-6.col-md-offset-3
+				.social
+					ul
+						li
+							a(href='http://www.facebook.com/quizalize')
+								i.fa.fa-lg.fa-facebook
+						li
+							a(href='http://twitter.com/quizalizeapp')
+								i.fa.fa-lg.fa-twitter
+						li
+							a(href='http://blog.zzish.com/')
+								i.fa.fa-lg.fa-tumblr
+						li
+							a(href='http://www.youtube.com/channel/UCsN-UvRQ-hYUAndrQePJkMA')
+								i.fa.fa-lg.fa-youtube
+	script.
+		function submitForm() {
+			$.ajax({
+				url: "/quizHelp",
+				method: "post",
+				success: function(data,textstatus,jqXHR){
+					$('#helpForm').slideUp();
+					$("#helpSent").slideDown();
+					},
+					error: function(){
+						console.log("Error Posting Form details");
+						},
+						data: {
+							name: $('#ename').val(),
+							email: $('#email').val(),
+							message: $('#message').val()
+						}
+						});
+			return false;
+		}
+		function ask(type) {
+			if (type=="demo") {
+				$("#message").val("I want a demo at my school");
+			}
+			else if (type =="question") {
+				$("#message").val("");
+			}
+			else if (type=="order") {
+				$("#message").val("I would like an information pack sent to my school");
+			}
+			ask2("#sendForm")
+		}
+		function ask2(type) {
+			$('html, body').animate({
+				scrollTop: $(type).offset().top
+				}, 2000);
+		}
