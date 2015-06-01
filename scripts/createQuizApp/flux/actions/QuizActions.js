@@ -203,24 +203,29 @@ var QuizActions = {
             return topicUuid;
         };
 
+        return new Promise((resolve, reject) => {
 
 
-        quiz.uuid = quiz.uuid || uuid.v4();
-        quiz.categoryId = addOrCreateCategory();
+            quiz.uuid = quiz.uuid || uuid.v4();
+            quiz.categoryId = addOrCreateCategory();
 
-        quiz = _questionsTopicToTopicId(quiz);
+            quiz = _questionsTopicToTopicId(quiz);
 
-        var promise = QuizApi.putQuiz(quiz);
+            var promise = QuizApi.putQuiz(quiz);
 
-        promise.then(()=>{
-            AppDispatcher.dispatch({
-                actionType: QuizConstants.QUIZ_ADDED,
-                payload: quiz
+            promise.then(()=>{
+                AppDispatcher.dispatch({
+                    actionType: QuizConstants.QUIZ_ADDED,
+                    payload: quiz
+                });
+                this.loadQuizzes();
+                resolve(quiz);
+            }, ()=> {
+                reject();
             });
-            this.loadQuizzes();
-        });
 
-        return promise;
+
+        });
 
 
     },

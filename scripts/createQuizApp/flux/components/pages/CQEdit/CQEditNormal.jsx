@@ -7,7 +7,6 @@ var TopicStore = require('createQuizApp/flux/stores/TopicStore');
 var CQEditNormal = React.createClass({
 
     propTypes: {
-        onChange: React.PropTypes.func,
         onSave: React.PropTypes.func.isRequired,
         question: React.PropTypes.object
     },
@@ -33,9 +32,22 @@ var CQEditNormal = React.createClass({
         this.setState(newState);
     },
 
+    getRefs: function(){
+        return  [
+            this.refs.question,
+            this.refs.answer,
+            this.refs.alternatives0,
+            this.refs.alternatives1,
+            this.refs.alternatives2,
+            this.refs._topic
+        ];
+    },
+
     getState: function(props) {
         props = props || this.props;
         var newState = {question: props.question};
+
+
         // // we need to get the topic
         // var topicList = TopicStore.getTopics();
         //
@@ -49,11 +61,36 @@ var CQEditNormal = React.createClass({
         return newState;
     },
 
+    handleNext: function(property, index, event){
+        var ref;
+        var refs = this.getRefs();
+
+        if (event.keyCode === 13) {
+
+            if (index !== undefined){
+                ref = this.refs[property + index];
+            } else {
+                ref = this.refs[property];
+            }
+            console.log('refs', this.refs);
+            console.log('event', event.keyCode);
+            console.log('ref', refs.indexOf(ref));
+
+            var indexRef = refs.indexOf(ref);
+            var nextRef = indexRef < refs.length ? indexRef + 1 : 0;
+            var nextElement = refs[nextRef];
+            var node = React.findDOMNode(nextElement);
+            node.focus();
+            console.log('node', node, nextElement);
+            event.preventDefault();
+        }
+
+    },
+
 
     handleChange: function(property, index, event) {
-        console.log('index', index);
-        var newQuestionState = assign({}, this.state.question);
 
+        var newQuestionState = assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
         } else {
@@ -92,7 +129,9 @@ var CQEditNormal = React.createClass({
                         <textarea
                             value={this.state.question.question}
                             onChange={this.handleChange.bind(this, 'question', undefined)}
+                            onKeyDown={this.handleNext.bind(this, 'question', undefined)}
                             id="question"
+                            ref='question'
                             placeholder="e.g. What is the capital of France"
                             autofocus="true"
                             tabIndex="1"
@@ -111,7 +150,9 @@ var CQEditNormal = React.createClass({
                     <div className="col-sm-8">
                         <textarea
                             value={this.state.question.answer}
+                            ref='answer'
                             onChange={this.handleChange.bind(this, 'answer', undefined)}
+                            onKeyDown={this.handleNext.bind(this, 'answer', undefined)}
                             id="answer" type="text" on-enter="create.nextFromAnswer();" placeholder="e.g. Paris" ng-model="create.answerText" tabIndex="2" rows="1" cols="44" className="autogrow-short form-control"></textarea>
                     </div>
                     <div ng-show="create.quiz.latexEnabled" className="col-xs-4"><span mathjax-bind="create.answerText" id="answerTextMath">            </span></div>
@@ -125,21 +166,27 @@ var CQEditNormal = React.createClass({
                     <div className="col-sm-3">
                         <textarea
                             value={this.state.question.alternatives[0]}
+                            ref='alternatives0'
                             onChange={this.handleChange.bind(this, 'alternatives', 0)}
+                            onKeyDown={this.handleNext.bind(this, 'alternatives', 0)}
                             id="alt1" type="text" placeholder="e.g. London" ng-model="create.alt1" on-enter="create.focusAlt('2');" tabIndex="3" rows="1" cols="10" className="autogrow-short form-control"></textarea>
                         <script>$('#alt1').css('overflow', 'hidden').autogrow()</script>
                     </div>
                     <div className="col-sm-3">
                         <textarea
                             value={this.state.question.alternatives[1]}
+                            ref='alternatives1'
                             onChange={this.handleChange.bind(this, 'alternatives', 1)}
+                            onKeyDown={this.handleNext.bind(this, 'alternatives', 1)}
                             id="alt2" type="text" placeholder="e.g. Toronto" ng-model="create.alt2" on-enter="create.focusAlt('3');" tabIndex="4" rows="1" cols="10" className="autogrow-short form-control"></textarea>
                         <script>$('#alt2').css('overflow', 'hidden').autogrow()</script>
                     </div>
                     <div className="col-sm-3">
                         <textarea
                             value={this.state.question.alternatives[2]}
+                            ref='alternatives2'
                             onChange={this.handleChange.bind(this, 'alternatives', 2)}
+                            onKeyDown={this.handleNext.bind(this, 'alternatives', 2)}
                             id="alt3" type="text" placeholder="e.g. Berlin" ng-model="create.alt3" on-enter="create.focusTopic();" tabIndex="5" rows="1" cols="10" className="autogrow-short form-control"></textarea>
                         <script>$('#alt3').css('overflow', 'hidden').autogrow()</script>
                     </div>
@@ -151,7 +198,9 @@ var CQEditNormal = React.createClass({
                     <div className="col-sm-9">
                         <input
                             value={this.state.question._topic}
+                            ref='_topic'
                             onChange={this.handleChange.bind(this, '_topic', undefined)}
+                            onKeyDown={this.handleNext.bind(this, '_topic', undefined)}
                             id="topic" type="text" on-enter="create.addQuestion();" placeholder="e.g. European Capital Cities" autofocus="true" tabIndex="6" ng-model="create.topic" className="form-control"/>
                     </div>
                 </div>

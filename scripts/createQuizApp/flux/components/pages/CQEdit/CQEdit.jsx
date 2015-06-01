@@ -3,7 +3,7 @@ var assign = require('object-assign');
 var router = require('createQuizApp/flux/config/router');
 
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
-var CQEditNormal = require('./CQEditNormal');
+
 var CQQuestionList = require('./CQQuestionList');
 var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 
@@ -19,6 +19,13 @@ var CQEdit = React.createClass({
     },
 
 
+    getInitialState: function() {
+
+        return {
+            mode: 'Create'
+        };
+    },
+
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
@@ -28,13 +35,6 @@ var CQEdit = React.createClass({
         // }
 
         return quiz;
-    },
-
-    getInitialState: function() {
-
-        return {
-            mode: 'Create'
-        };
     },
 
     componentDidMount: function() {
@@ -74,11 +74,9 @@ var CQEdit = React.createClass({
             newState.quiz.questions = newState.quiz.questions || [];
             if (props.questionIndex) {
                 newState.questionIndex = parseInt(props.questionIndex, 10);
-            } else if (this.state.questionIndex === undefined) {
-                console.warn('YAAHAAHAHAHA', this.state.questionIndex, newState.quiz.questions.length);
-                newState.questionIndex = newState.quiz.questions.length;
             } else {
-                newState.questionIndex = this.state.questionIndex;
+                newState.questionIndex = newState.quiz.questions.length;
+                // newState.questionIndex = this.state.questionIndex;
             }
 
             // Check if the questionIndex is in range
@@ -93,7 +91,7 @@ var CQEdit = React.createClass({
     },
 
     handleQuestion: function(question){
-
+        console.log('saving quiestion?????', question);
         var updatedQuiz = assign({}, this.state.quiz);
 
         var index = this.state.questionIndex;
@@ -107,9 +105,17 @@ var CQEdit = React.createClass({
         this.setState({quiz: updatedQuiz});
     },
 
-    handleSave: function(){
+    handleSave: function(newQuestion){
+        console.log('saving?', newQuestion);
+        var quiz = this.state.quiz;
+        quiz.questions[this.state.questionIndex] = newQuestion;
+        var questionIndex = quiz.questions.length;
 
-        QuizActions.newQuiz(this.state.quiz);
+        this.setState({quiz, questionIndex}, ()=>{
+            QuizActions.newQuiz(this.state.quiz);
+            router.setRoute(`/quiz/create/${quiz.uuid}`);
+
+        });
     },
 
     render: function() {
@@ -136,10 +142,7 @@ var CQEdit = React.createClass({
                                             Speed Tip: We found clicking is a pain - just hit enter to step through quickly
                                         </p>
 
-                                        <CQEditNormal
-                                            onChange={this.handleQuestion}
-                                            question={this.state.quiz.questions[this.state.questionIndex]}
-                                            onSave={this.handleSave}/>
+
 
                                     </div>
 
@@ -147,7 +150,7 @@ var CQEdit = React.createClass({
                                         <div className="col-xs-12">
                                             <div className="row">
                                                 <div className="col-sm-7">
-                                                    <h2 ng-show="create.quiz.questions.length&gt;1">Yourquestions</h2><br/>
+                                                    <h2 ng-show="create.quiz.questions.length&gt;1">Your questions</h2><br/>
                                                 </div>
                                                 <div ol-style="margin-top:21px" className="col-sm-2">
                                                     <a href={`/app#/preview/${this.state.quiz.uuid}`} ng-show="create.quiz.questions.length&gt;0" target="zzishgame" className="btn btn-block btn-info">
@@ -167,7 +170,11 @@ var CQEdit = React.createClass({
                                         </div>
                                     </div>
 
-                                    <CQQuestionList questions={this.state.quiz.questions} quiz={this.state.quiz}/>
+                                    <CQQuestionList
+                                        quiz={this.state.quiz}
+                                        questionIndex={this.state.questionIndex}
+                                        handleQuestion={this.handleQuestion}
+                                        handleSave={this.handleSave}/>
                                 </div>
                             </div>
                         </div>
