@@ -1,9 +1,15 @@
 var React = require('react');
 
+var QuizActions = require('createQuizApp/flux/actions/QuizActions');
 var QuizStore = require('createQuizApp/flux/stores/QuizStore');
+var GroupStore = require('createQuizApp/flux/stores/GroupStore');
 
 var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 var CQLink = require('createQuizApp/flux/components/utils/CQLink');
+
+var swal = require('sweetalert/dist/sweetalert-dev');
+require('sweetalert/dev/sweetalert.scss');
+
 
 require('./CQQuizzesStyles');
 
@@ -26,6 +32,40 @@ var CQQuizzes = React.createClass({
     onChange: function(){
         console.log('onChange', QuizStore);
         this.setState({quizzes: QuizStore.getQuizzes()});
+    },
+
+    handleDelete: function(quiz){
+        var found = false;
+        var groupContents = GroupStore.getGroupsContent();
+
+        console.log('groupContents', quiz, groupContents);
+        for (var i in groupContents) {
+
+            console.log('quiz found', groupContents[i].contentId, quiz.uuid, groupContents[i].contentId === quiz.uuid);
+            if (groupContents[i].contentId === quiz.uuid) {
+                found = true;
+                swal('Cannot Delete', 'You cannot delete this quiz as you have this quiz assigned in class');
+                break;
+            }
+
+            if (found) { break; }
+        }
+        if (!found) {
+            //swal
+            swal({
+                title: 'Confirm Delete',
+                text: 'Are you sure you want to permanently delete this quiz?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }, function(isConfirmed){
+                if (isConfirmed){
+                    QuizActions.deleteQuiz(quiz.uuid);
+                }
+            });
+            //     $location.path("/delete/" + quiz.uuid);
+            // });
+        }
     },
 
 
@@ -79,7 +119,7 @@ var CQQuizzes = React.createClass({
                                                     </button>
                                                 </CQLink>
 
-                                                <button ng-click="quizzes.deleteQuiz(quiz);" ng-style="margin: 4px" className="btn btn-danger">
+                                                <button onClick={this.handleDelete.bind(this, quiz)} ng-style="margin: 4px" className="btn btn-danger">
                                                     <span className="glyphicon glyphicon-remove"></span>
                                                 </button>
                                                 <CQLink href={`/quiz/published/${quiz.uuid}`}>
@@ -92,7 +132,7 @@ var CQQuizzes = React.createClass({
                                             </div>
                                         </div>
                                     );
-                                })}
+                                }, this)}
                             </div>
                         </div>
                     </div>

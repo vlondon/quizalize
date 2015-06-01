@@ -85,6 +85,13 @@ AppDispatcher.register(function(action) {
             _publicQuizzes = action.payload;
             QuizStore.emitChange();
             break;
+
+        case QuizConstants.QUIZ_LOADED:
+            var quizIdToBeDeleted = action.payload;
+            var quizToBeDeleted = _quizzes.filter(q => q.uuid === quizIdToBeDeleted)[0];
+
+
+
         default:
             // no op
     }

@@ -60,6 +60,28 @@ var QuizApi = {
         });
     },
 
+    deleteQuiz: function(quizId){
+        return new Promise(function(resolve, reject){
+            var uuid = localStorage.getItem('uuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.post(`/create/${uuid}/quizzes/${quizId}/delete`)
+                    .send({})
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+
+                    });
+            }
+        });
+    },
+
+
     getTopics: function(){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('uuid');

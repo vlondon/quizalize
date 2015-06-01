@@ -119,6 +119,18 @@ var QuizActions = {
             });
     },
 
+    deleteQuiz: function(quizId){
+        QuizApi.deleteQuiz(quizId)
+            .then(function(){
+
+                AppDispatcher.dispatch({
+                    actionType: QuizConstants.QUIZ_DELETED,
+                    payload: quizId
+                });
+            });
+    },
+
+
     loadPublicQuizzes: function(){
 
         var processQuizList = function(result){
