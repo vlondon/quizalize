@@ -43,6 +43,8 @@ var CQEditNormal = React.createClass({
         // if (topic){
         //     newState.topic = topic.name;
         // }
+
+        newState.question.alternatives = newState.question.alternatives || [];
         console.log('we got topics!', newState.question);
         return newState;
     },

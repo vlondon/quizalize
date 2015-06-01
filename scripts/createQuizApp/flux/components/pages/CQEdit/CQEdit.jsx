@@ -23,9 +23,9 @@ var CQEdit = React.createClass({
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
         console.log("QUIAAA", quiz, props.quizId);
-        if (quiz === undefined){
-            QuizActions.loadQuiz(this.props.quizId);
-        }
+        // if (quiz === undefined){
+        //
+        // }
 
         return quiz;
     },
@@ -38,7 +38,7 @@ var CQEdit = React.createClass({
     },
 
     componentDidMount: function() {
-
+        QuizActions.loadQuiz(this.props.quizId);
         // QuizActions.loadQuizzes();
         QuizStore.addChangeListener(this.onChange);
         this.onChange();
@@ -114,6 +114,11 @@ var CQEdit = React.createClass({
 
     render: function() {
 
+        var editQuestion;
+
+        if (this.state.quiz && this.state.quiz.questions[this.state.questionIndex]){
+            editQuestion = (<div/>);
+        }
         if (this.state.quiz){
 
 
@@ -130,30 +135,44 @@ var CQEdit = React.createClass({
                                                     <span className="glyphicon glyphicon-cog"> </span>
                                                 </button>
                                             </CQLink>
-                                    </h3>
-                                    <p className="small">
-                                        Speed Tip: We found clicking is a pain - just hit enter to step through quickly
-                                    </p>
+                                        </h3>
+                                        <p className="small">
+                                            Speed Tip: We found clicking is a pain - just hit enter to step through quickly
+                                        </p>
 
-                                    <CQEditNormal
-                                        onChange={this.handleQuestion}
-                                        question={this.state.quiz.questions[this.state.questionIndex]}
-                                        onSave={this.handleSave}/>
+                                        <CQEditNormal
+                                            onChange={this.handleQuestion}
+                                            question={this.state.quiz.questions[this.state.questionIndex]}
+                                            onSave={this.handleSave}/>
 
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-xs-12">
+                                            <div className="row">
+                                                <div className="col-sm-7">
+                                                    <h2 ng-show="create.quiz.questions.length&gt;1">Your {this.state.quiz.questions.length} questions</h2><br/>
+                                                </div>
+                                                <div ol-style="margin-top:21px" className="col-sm-2"><a ng-href="/app#/preview/{create.quiz.uuid}}" ng-show="create.quiz.questions.length&gt;0" target="zzishgame" className="btn btn-block btn-info">Preview </a></div>
+                                                <div ol-style="margin-top:21px" className="col-sm-3">
+                                                    <button ng-click="create.finished()" ng-show="create.quiz.questions.length&gt;0" className="btn btn-block btn-primary">I'm Finished, let's play!&nbsp;</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <CQQuestionList questions={this.state.quiz.questions} quiz={this.state.quiz}/>
                                 </div>
-
-                                <CQQuestionList questions={this.state.quiz.questions} quiz={this.state.quiz}/>
                             </div>
                         </div>
-                    </div>
-                </CQPageTemplate>
-            );
-        } else {
-            // add a loading animation
-            return (<div>Loading</div>);
+                    </CQPageTemplate>
+                );
+            } else {
+                // add a loading animation
+                return (<div>Loading</div>);
+            }
         }
-    }
 
-});
+    });
 
-module.exports = CQEdit;
+    module.exports = CQEdit;
