@@ -476,12 +476,7 @@ angular.module('createQuizApp')
                 });
             },
             getEncryptedLink: function(id, callback) {
-                $http.get("/create/" + userUuid + "/quizzes/" + id + "/encrypt").success(function(result){
-                    $log.debug("Response from sharing: ", result);
-                    callback(result);
-                }).error(function(err){
-                    $log.debug("Error from sharing: ", err);
-                });
+                callback(quizData[id].code);
             },
             shareQuiz: function(id, emails, link) {
                 var tokensSpace = emails.split(" ");
