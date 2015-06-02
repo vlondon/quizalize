@@ -1,12 +1,14 @@
 var AppDispatcher       = require('createQuizApp/flux/dispatcher/CQDispatcher');
 var UserConstants       = require('createQuizApp/flux/constants/UserConstants');
 var UserApi             = require('createQuizApp/flux/actions/api/UserApi');
+var urlParams           = require('createQuizApp/flux/utils/urlParams');
 
 var Promise = require('es6-promise').Promise;
 
 var UserActions = {
 
     request: function() {
+
         UserApi.get()
             .then(function(user){
                 AppDispatcher.dispatch({
@@ -57,10 +59,30 @@ var UserActions = {
     },
 
     logout: function(){
-        localStorage.clear();
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USER_LOGOUT
-        });
+
+        var logoutEnd = function(){
+            localStorage.clear();
+            AppDispatcher.dispatch({
+                actionType: UserConstants.USER_LOGOUT
+            });
+
+
+            var pathArray = location.href.split( '/' );
+            var protocol = pathArray[0];
+            var host = pathArray[2];
+            var url = protocol + '//' + host;
+            window.location = url;
+        };
+
+        var token = localStorage.getItem('token');
+
+        if (token !== null) {
+            console.log('zzish logout');
+            Zzish.logout(token, logoutEnd);
+        } else {
+            logoutEnd();
+        }
+
     },
 
     register: function(data) {

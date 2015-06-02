@@ -33,6 +33,7 @@
         "MathJax": true,
         "super": true,
         "angular": true,
-        "$": true
+        "$": true,
+        "Zzish": true
     }
 }

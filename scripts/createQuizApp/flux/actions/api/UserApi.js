@@ -4,11 +4,17 @@ var Promise = require('es6-promise').Promise;
 var UserApi = {
 
     get: function(){
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject) => {
             var uuid = localStorage.getItem('uuid');
+            var token = localStorage.getItem('token');
 
-            if (!uuid) {
+            if (!uuid && !token){
                 reject();
+            } else if (uuid && token) {
+                localStorage.clean();
+                reject();
+            } else if (token){
+                this.getZzishUser(token).then(resolve).catch(reject);
             } else {
                 request.get(`/user/${uuid}`)
                     .end(function(error, res){
@@ -21,6 +27,26 @@ var UserApi = {
                     });
             }
 
+        });
+    },
+
+    getZzishUser: function(token) {
+
+        return new Promise(function(resolve, reject){
+            request.get(`/quiz/token/${token}`)
+                .end(function(error, res){
+                    console.log('res', res);
+                    if (error) {
+                        reject();
+                    } else {
+                        if (res.body === 'Invalid Request'){
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    }
+
+                });
         });
     },
 

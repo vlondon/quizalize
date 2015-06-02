@@ -1,5 +1,6 @@
 var React = require('react');
 var assign = require('object-assign');
+var CQZzishLogin = require('./CQZzishLogin');
 
 var CQLoginForm = React.createClass({
 
@@ -112,7 +113,13 @@ var CQLoginForm = React.createClass({
                         <hr/>
                     </div>
                     <div className="col-sm-4 col-sm-offset-4">
-                        <center><strong>or</strong><br/><br/><a href="login('/quiz#/')" id="LoginWithZzishButton" className="login-zzish btn btn-info btn-block">Login with Zzish</a></center>
+                        <center>
+                            <strong>or</strong>
+                            <br/>
+                            <br/>
+                            <CQZzishLogin/>
+
+                        </center>
                     </div>
                     <div className="col-xs-8 col-xs-offset-2">
                         <br/>

@@ -2,7 +2,7 @@ var React           = require('react');
 var router          = require('./router');
 // var settings        = require('utils/settings');
 
-var CQDashboard         = require('createQuizApp/flux/components/CQDashboard');
+var CQDashboard         = require('createQuizApp/flux/components/pages/CQDashboard');
 var CQPublic            = require('createQuizApp/flux/components/pages/CQPublic');
 var CQNotFound          = require('createQuizApp/flux/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/flux/components/pages/CQLogin');
@@ -14,6 +14,7 @@ var CQEdit              = require('createQuizApp/flux/components/pages/CQEdit');
 var CQAssignments       = require('createQuizApp/flux/components/pages/CQAssignments');
 var CQPublished         = require('createQuizApp/flux/components/pages/CQPublished');
 var CQPublishedInfo     = require('createQuizApp/flux/components/pages/CQPublishedInfo');
+var CQHelp              = require('createQuizApp/flux/components/pages/CQHelp');
 
 
 
@@ -36,11 +37,21 @@ var pages = {
     },
     mainPageWithSlash: {
         path: '/quiz/',
-        needsLogin: false,
+        needsLogin: undefined,
         renderer: function(){
             console.info('renderMain');
             React.render(
                 React.createElement(CQDashboard, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    helpPage: {
+        path: '/quiz/help',
+        needsLogin: undefined,
+        renderer: function(){
+            React.render(
+                React.createElement(CQHelp, null),
                 document.getElementById('reactApp')
             );
         }

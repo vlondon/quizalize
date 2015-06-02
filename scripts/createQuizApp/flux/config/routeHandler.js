@@ -25,6 +25,7 @@ Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathPara
 router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
+router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
@@ -92,7 +93,8 @@ var options = {
         var destinationURL = newUrl(router.getPath());
         if (destinationURL === router.getPath()) {
             var next = arguments[arguments.length - 1];
-            next();
+            console.log('next', next);
+            if (next) { next(); }
         } else if (destinationURL) {
             if (routerReady) {
                 router.setRoute(destinationURL);

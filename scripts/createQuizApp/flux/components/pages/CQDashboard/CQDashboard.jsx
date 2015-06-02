@@ -53,7 +53,7 @@ var CQDashboard = React.createClass({
                                         </center>
                                         <br/>
                                         <center>
-                                            <CQLink href="/register/create" className="btn btn-primary btn-lg">
+                                            <CQLink href="/quiz/create" className="btn btn-primary btn-lg">
                                                 Create a new quiz
                                             </CQLink>
                                         </center>
