@@ -5,6 +5,14 @@ var urlParams           = require('createQuizApp/utils/urlParams');
 
 var Promise = require('es6-promise').Promise;
 
+var handleRedirect = function(){
+    var params = urlParams();
+    if (params.redirect){
+        window.location = window.decodeURIComponent(params.redirect);
+        return true;
+    }
+    return false;
+};
 var UserActions = {
 
     request: function() {
@@ -34,11 +42,13 @@ var UserActions = {
 
             UserApi.login(data)
                 .then(function(user){
-                    resolve(user);
-                    AppDispatcher.dispatch({
-                        actionType: UserConstants.USER_IS_LOGGED,
-                        payload: user
-                    });
+                    if (handleRedirect() === false){
+                        resolve(user);
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_IS_LOGGED,
+                            payload: user
+                        });
+                    }
                 })
                 .catch(function(error){
                     reject(error);
@@ -84,17 +94,15 @@ var UserActions = {
     },
 
     register: function(data) {
-        var params = urlParams();
 
-        console.log('register', params, window.decodeURIComponent(params.redirect));
+
+
         return new Promise(function(resolve, reject){
 
             UserApi.register(data)
                 .then(function(user){
 
-                    if (params.redirect){
-                        window.location = window.decodeURIComponent(params.redirect);
-                    } else {
+                    if (handleRedirect() === false){
                         resolve(user);
                         AppDispatcher.dispatch({
                             actionType: UserConstants.USER_REGISTERED,

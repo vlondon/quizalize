@@ -73,7 +73,7 @@ var newUrl = function(requestedUrl){
             if (typeof user === 'object'){
                 return requestedUrl;
             } else {
-                return '/quiz/login';
+                return '/quiz/register?redirect=' + window.encodeURIComponent(requestedUrl);
             }
         }
     }
