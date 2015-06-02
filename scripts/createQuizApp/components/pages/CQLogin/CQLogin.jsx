@@ -1,7 +1,5 @@
 var React = require('react');
 
-
-
 var CQPageTemplate  = require('createQuizApp/components/CQPageTemplate');
 var CQLoginForm     = require('createQuizApp/components/pages/shared/CQLoginForm');
 var CQLink          = require('createQuizApp/components/utils/CQLink');
