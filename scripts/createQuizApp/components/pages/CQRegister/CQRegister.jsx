@@ -29,7 +29,7 @@ var CQRegister = React.createClass({
                             <h2 id="title">Quizalize Registration</h2>
 
                             <CQLoginForm onSubmit={this.handleRegister}
-                                buttonLabel='Sing up'>
+                                buttonLabel='Sign up'>
                                 <div>
                                     Already registered?&nbsp;
                                     <CQLink href="/quiz/login">Log in</CQLink>

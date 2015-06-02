@@ -40,7 +40,23 @@ var CQAssignments = React.createClass({
     },
 
     _getAssignments: function(groupCode){
-        console.log('checking', groupCode, this.state.groupsContent);
+        var selectPublicQuiz = (quizId) => {
+            if (typeof this.state.publicQuizzes !== 'object'){
+                return [];
+            }
+            var quizFound;
+            this.state.publicQuizzes.forEach(function(publicCategory){
+                publicCategory.quizzes.forEach(function(quiz){
+                    if (quiz.uuid === quizId){
+                        quizFound = quiz;
+                    }
+                });
+
+            });
+            console.log('quiz found?',quizId,  quizFound);
+            return quizFound;
+        };
+        // console.log('checking', groupCode);
         if (this.state.groupsContent && this.state.quizzes){
 
             var quizIds = this.state.groupsContent.map(c => {
@@ -48,11 +64,20 @@ var CQAssignments = React.createClass({
                     return c.contentId;
                 }
             });
-            var quizzes = this.state.quizzes.filter(q => quizIds.indexOf(q.uuid) > -1);
-            var publicQuizzes = this.state.publicQuizzes.filter(q => quizIds.indexOf(q.uuid) > -1);
-            console.log('quizIds??', quizIds);
-            console.log('publicQuizzes??', quizzes);
-            return quizzes;
+
+            quizIds = quizIds.filter(q => q !== undefined);
+
+            var quizzes = this.state.quizzes.filter(function(q){
+                return quizIds.indexOf(q.uuid) !== -1;
+            });
+            var publicQuizzes = quizIds.map(q => selectPublicQuiz(q));
+            publicQuizzes = publicQuizzes.filter(q => q !== undefined);
+            // console.log('quizIds??', quizIds);
+            console.log('publicQuizzes??', groupCode, publicQuizzes);
+
+            var result = quizzes.concat(publicQuizzes);
+            console.log('result', result);
+            return result;
         }
         return [];
     },
@@ -98,7 +123,7 @@ var CQAssignments = React.createClass({
                                                                 <h4>{assignment.name}</h4>
                                                             </div>
                                                             <div className="col-xs-3">
-                                                                <h4>{assignment.category.name}</h4>
+                                                                <h4>{assignment.category ? assignment.category.name : ''}</h4>
                                                             </div>
                                                             <div className="col-xs-2">
                                                                 <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
