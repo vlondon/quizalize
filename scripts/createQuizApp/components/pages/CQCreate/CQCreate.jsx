@@ -29,9 +29,7 @@ var CQCreate = React.createClass({
             quiz: this._getQuiz()
         };
 
-        if (initialState.quiz.uuid !== undefined){
-            initialState.title = 'Edit a quiz';
-        }
+
 
         return initialState;
 
@@ -44,7 +42,9 @@ var CQCreate = React.createClass({
 
 
         if (quiz === undefined){
-            QuizActions.loadQuiz(this.props.quizId);
+            if (this.props.quizId) {
+                QuizActions.loadQuiz(this.props.quizId);
+            }
             quiz = {
                 settings: {}
             };
