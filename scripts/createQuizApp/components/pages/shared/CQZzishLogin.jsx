@@ -20,7 +20,7 @@ var login = function (options) {
     }
     else {
         //just go to the logged in url
-        location.href = url + postfix;
+        location.href = url + '/quiz';
     }
 };
 

@@ -47,10 +47,10 @@ function showQuiz(id) {
 
 function login (){
     var options = {
-            classcode: 2,
+            classcode: 1,
             optionstoshow: ';student;teacher;',
             redirectURL: url + '/app#/list',
-            verify: 0
+            verify: 1
         };
     var type = "redirect"; //can be a popup instead
 
