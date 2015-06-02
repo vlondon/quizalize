@@ -15,9 +15,8 @@ var CQEditQuiz = React.createClass({
     },
 
     componentDidMount: function() {
-        GroupActions.loadGroups();
-        QuizActions.loadQuizzes();
-        // QuizActions.loadQuizzes();
+
+        
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
 

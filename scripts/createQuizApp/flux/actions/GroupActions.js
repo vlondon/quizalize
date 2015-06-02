@@ -2,20 +2,13 @@ var AppDispatcher       = require('createQuizApp/flux/dispatcher/CQDispatcher');
 var GroupConstants      = require('createQuizApp/flux/constants/GroupConstants');
 var GroupApi            = require('createQuizApp/flux/actions/api/GroupApi');
 var Promise             = require('es6-promise').Promise;
-var UserStore           = require('createQuizApp/flux/stores/UserStore');
-// var uuid                = require('node-uuid');
+var assign              = require('object-assign');
 
-var shouldLoadGroups = true;
 
 var GroupActions = {
 
     loadGroups: function(){
 
-        if (!shouldLoadGroups){
-            console.warn('groups already loading, aborting');
-            return;
-        }
-        shouldLoadGroups = false;
         var groups = GroupApi.getGroups();
         var groupsContent = GroupApi.getGroupContents();
 
@@ -40,7 +33,7 @@ var GroupActions = {
     },
 
     unpublishQuiz: function(quizId, groupCode){
-        shouldLoadGroups = true;
+
         console.log('about to unpublish quizId, groupCode');
         GroupApi.unpublishQuiz(quizId, groupCode)
             .then(() => {
@@ -50,7 +43,7 @@ var GroupActions = {
     },
 
     publishNewAssignment: function(quizId, groupName) {
-        shouldLoadGroups = true;
+
         return new Promise(function(resolve, reject){
 
             GroupApi.publishNewAssignment(quizId, groupName)
@@ -59,25 +52,32 @@ var GroupActions = {
                         actionType: GroupConstants.NEW_GROUP_PUBLISHED,
                         payload: response
                     });
-
+                    this.loadGroups();
                     resolve(response);
                 })
                 .catch(reject);
         });
     },
 
-    publishAssignment: function(quizId, code) {
-        shouldLoadGroups = true;
-        return new Promise(function(resolve, reject){
+    publishAssignment: function(quizId, code, settings) {
 
-            GroupApi.publishAssignment(quizId, code)
+        return new Promise(function(resolve, reject){
+            var dataToSend = {
+                access: -1,
+                code
+            };
+
+            var data = assign({}, dataToSend, settings);
+
+            GroupApi.publishAssignment(quizId, data)
                 .then((response) => {
                     AppDispatcher.dispatch({
                         actionType: GroupConstants.ASSIGMENT_PUBLISHED,
                         payload: response
                     });
-
                     resolve(response);
+                    console.log('we got response!', response);
+                    this.loadGroups();
                 })
                 .catch(reject);
         });

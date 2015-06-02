@@ -93,7 +93,7 @@ var GroupApi = {
         });
     },
 
-    publishAssignment: function(quizId, code){
+    publishAssignment: function(quizId, data){
         return new Promise(function(resolve, reject){
 
             var uuid = localStorage.getItem('uuid');
@@ -102,10 +102,7 @@ var GroupApi = {
                 reject();
             } else {
                 request.post(`/create/${uuid}/quizzes/${quizId}/publish`)
-                    .send({
-                        access: -1,
-                        code
-                    })
+                    .send(data)
                     .end(function(error, res){
                         if (error) {
                             reject();

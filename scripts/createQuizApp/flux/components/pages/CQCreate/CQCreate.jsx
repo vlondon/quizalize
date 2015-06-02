@@ -12,7 +12,6 @@ var CQCreate = React.createClass({
 
     propTypes: {
         quizId: React.PropTypes.string
-
     },
 
     getDefaultProps: function() {
@@ -40,12 +39,18 @@ var CQCreate = React.createClass({
 
     _getQuiz: function(props){
         props = props || this.props;
-        var quiz = QuizStore.getQuiz(props.quizId);
-        console.log('quiz??', quiz);
+
+        var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
+
+
         if (quiz === undefined){
             QuizActions.loadQuiz(this.props.quizId);
-            return {};
+            quiz = {
+                settings: {}
+            };
+
         }
+
 
         return quiz;
     },
@@ -53,10 +58,11 @@ var CQCreate = React.createClass({
     onChange: function(){
 
         var newState = {};
-        if (this.props.quizId){
-            var quiz = this._getQuiz();
-            newState.quiz = quiz;
-        }
+
+        var quiz = this._getQuiz();
+        newState.quiz = quiz;
+
+
 
         if (newState.quiz.uuid !== undefined){
             newState.title = 'Edit a quiz';
@@ -92,6 +98,14 @@ var CQCreate = React.createClass({
         newQuizState[property] = event.target.value;
 
         this.setState({quiz: newQuizState});
+    },
+
+    handleSettings: function(newSettings){
+        var quiz = assign({}, this.state.quiz);
+        var newQuizSettings = assign(this.state.quiz.settings, newSettings);
+        quiz.settings = newQuizSettings;
+        this.setState({quiz});
+
     },
 
     handleMoreClick: function(){
@@ -185,7 +199,7 @@ var CQCreate = React.createClass({
                 </div>
 
                     </div>
-                    {this.state.isMoreVisible ? <CQCreateMore/> : undefined }
+                    {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.settings}/> : undefined }
                 </div>
             </CQPageTemplate>
         );

@@ -12,6 +12,21 @@ var CQPageTemplate = React.createClass({
         wrapperStyleClassName: React.PropTypes.string
     },
 
+    componentDidMount: function() {
+        $(document).on('mouseenter', '[data-toggle="popover"]', function(){
+            $(this).popover('show');
+        });
+
+        $(document).on('mouseleave', '[data-toggle="popover"]', function(){
+            $(this).popover('hide');
+        });
+    },
+
+    componentWillUnmount: function() {
+        $(document).off('mouseenter');
+        $(document).off('mouseleave');
+    },
+
     getDefaultProps: function(){
         return {
             wrapperMainClassName: 'wrapper',

@@ -5,6 +5,7 @@ var CQPageTemplate = require('createQuizApp/flux/components/CQPageTemplate');
 var GroupActions = require('createQuizApp/flux/actions/GroupActions');
 var GroupStore  = require('createQuizApp/flux/stores/GroupStore');
 
+var CQCreateMore = require('createQuizApp/flux/components/pages/CQCreate/CQCreateMore');
 
 var CQPublished = React.createClass({
 
@@ -24,16 +25,18 @@ var CQPublished = React.createClass({
     },
 
     getState: function(){
-        var groups = GroupStore.getGroups();
-        console.log('groups', groups);
 
-        var selectedClass;
-        if (groups && groups.length > 0){
-            selectedClass = groups[0].code;
-        } else {
-            selectedClass = 'new';
-        }
-        var newState = { groups, selectedClass };
+        var groups = GroupStore.getGroups();
+        var selectedClass = (groups && groups.length > 0) ? groups[0].code : 'new';
+        var isMoreVisible = this.state ? this.state.isMoreVisible : false;
+        var settings = this.state ? this.state.settings : {};
+
+        var newState = {
+            groups,
+            selectedClass,
+            isMoreVisible,
+            settings
+        };
 
         return newState;
 
@@ -86,30 +89,41 @@ var CQPublished = React.createClass({
 
     handleClick: function(){
         var redirect = function(quizId, classId){
-            console.log('REDIRECTING TO', `/quiz/published/${quizId}/${classId}/info`);
+            console.log('should redirect!');
             router.setRoute(`/quiz/published/${quizId}/${classId}/info`);
         };
-        console.log('saving?', this.state.selectedClass);
+
+        console.log('about to publish', this.state.selectedClass);
         if (this.state.selectedClass === 'new') {
-            console.log('about to save a new class', this.props.quizId, this.state.newClass);
-            GroupActions.publishNewAssignment(this.props.quizId, this.state.newClass)
+
+            GroupActions.publishNewAssignment(this.props.quizId, this.state.newClass, this.state.settings)
                 .then((response) =>{
-                    console.log('saved!! new classrom', response);
+                    debugger;
+
                     redirect(this.props.quizId, response.code);
 
                 });
 
         } else {
             console.log('about to save an already existing class', this.state.selectedClass);
-            GroupActions.publishAssignment(this.props.quizId, this.state.selectedClass)
+            GroupActions.publishAssignment(this.props.quizId, this.state.selectedClass, this.state.settings)
                 .then(()=>{
-                    console.log('saved!!', this.state.selectedClass);
+                    debugger;
                     redirect(this.props.quizId, this.state.selectedClass);
                 });
         }
     },
 
+    handleSettings: function(settings){
+        console.log('settingsObject', settings);
+        this.setState({settings});
+    },
 
+    handleMoreClick: function(){
+        this.setState({
+            isMoreVisible: !this.state.isMoreVisible
+        });
+    },
 
     render: function() {
 
@@ -170,7 +184,12 @@ var CQPublished = React.createClass({
 
                                 </div>
                                 <div className="col-sm-3 col-sm-offset-3">
-                                    <button ng-click="ctrl.showSettings=!ctrl.showSettings" ng-class="{true: 'btn-info', false: ''}[ctrl.showSettings]" className="btn btn-block">More Settings</button>
+                                    <button type="button"
+
+                                        onClick={this.handleMoreClick}
+                                        className={this.state.isMoreVisible ? 'btn btn-block btn-info' : 'btn btn-block'}>
+                                        More Settings
+                                    </button>
                                 </div>
                                 <div className="col-sm-3"><br className="visible-xs"/>
                                 <button type="button" onClick={this.handleClick}
@@ -182,8 +201,10 @@ var CQPublished = React.createClass({
                                 <center></center>
                             </div>
                         </div>
+
                     </div>
                 </div>
+                {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.settings}/> : undefined }
             </CQPageTemplate>
         );
     }
