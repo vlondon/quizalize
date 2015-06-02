@@ -1972,6 +1972,17 @@ a.btn:focus{
 	padding-bottom:20px;
 }
 .p-column {}
+/* FAQ styling */
+.faq-list ul li p {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.faq-question-list a {
+	color:black;
+
+}
+.teach-acct { 
+}
 
 @media (max-width:1200px){
 	#quiz-day{
@@ -1996,6 +2007,10 @@ a.btn:focus{
 	.cat-title {
 		font-size:60px;
 	}
+		.teach-acct{
+		font-size:25px;
+	}
+
 }
 
 @media (max-width:550px) {
@@ -2017,16 +2032,24 @@ a.btn:focus{
 	.cta_what{
 		font-size:18px;
 	}
-
-
-	.social i {width:45px; height:45px; font-size: 30px;
-		padding-top: 10px; margin-bottom:10px;}
-		.btn-s {font-size:10px; width:60px; margin-left:5px;}
-
-
+	.teach-acct{
+		font-size:20px;
 	}
-	#teach-acct{
-		font-size:25px;
+
+	.social i {
+		width:45px; 
+		height:45px; 
+		font-size: 30px;
+		padding-top: 10px; 
+		margin-bottom:10px;
+	}
+		.btn-s {
+			font-size:10px; 
+			width:60px; 
+			margin-left:5px;
+		}
+
+
 	}
 
 }
@@ -2051,23 +2074,18 @@ a.btn:focus{
 	.cta_what{
 		font-size:13px;
 	}
-
-	.social i {margin-left:10px;
-		margin-right:10px; margin-bottom:10px;};
+	.teach-acct{
+		font-size:10px;
+	}
+	.social i {
+		margin-left:10px;
+		margin-right:10px; margin-bottom:10px;
 
 	} 
-
-
+	
+}
 
 
 }
 
-/* FAQ styling */
-.faq-list ul li p {
-	margin-top:10px;
-	margin-bottom:10px;
-}
-.faq-question-list a {
-	color:black;
 
-}

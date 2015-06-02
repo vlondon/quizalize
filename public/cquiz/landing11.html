@@ -11,7 +11,7 @@
   <meta property="og:url" content="http://www.quizalize.com" />
   <meta property="og:description" content="Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="http://www.quizalize.com/cquiz/img/quizalize meta.png" />
+  <meta property="og:image" content="http://www.quizalize.com/cquiz/img/quizalize-meta.png" />
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:site" content="@quizalizeapp"/>
   <meta name="twitter:creator" content="@quizalizeapp"/>
@@ -78,7 +78,7 @@
       <h1 class="cta2-title"><strong>Spot student learning gaps instantly</strong></h1>
       <div class='row'>
 
-        <div class="col-md-12" class="free"><a class="cta2" href="/quiz#/register/dashboard">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
+        <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
 
 
 
@@ -212,7 +212,7 @@
 
  <section>
 
-  <div class="home-section text-center color-dark">
+  <div class="home-section text-center color-dark" style="background-color:white">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -335,11 +335,11 @@
               <div class="wow fadeInUp" data-wow-delay="0.2s">
                 <div class="service-box">
                   <div class="service-desc">
-                    <form class="form-horizontal" method="get" action="/quiz#/" onsubmit="return newQuiz()">
+                    <form class="form-horizontal" method="get" action="/quiz/" onsubmit="return newQuiz()">
                       <div class="form-group">
                         <div class="form-group">
                           <div class="col-md-12">
-                            <a class="cta3" href="/quiz#/">Create or set a quiz</a><br/>
+                            <a class="cta3" href="/quiz/">Create or set a quiz</a><br/>
                           </div>
                         </div>
                       </div>
@@ -580,7 +580,7 @@
     <!-- Core JavaScript Files -->
     <script>
       function newQuiz() {
-        window.location.href="/quiz#";
+        window.location.href="/quiz";
       }
     </script>
     <script src="/cquiz/js/jquery.min.js"></script>
@@ -604,8 +604,7 @@
         $('#play-but').nivoLightbox();
       });
     </script>
-    <script>
-    </script>
+
     <script>
       $( document ).ready(function() {
         outdatedBrowser({
@@ -713,7 +712,7 @@
         window._fbq.push(['track', 'PixelInitialized', {}]);
         var userId = localStorage.getItem("userId");
         if (userId!=undefined) {
-          $("#LoginButton").attr("href","/quiz#/quizzes");
+          $("#LoginButton").attr("href","/quiz/quizzes");
         }
 
       </script>
