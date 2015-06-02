@@ -2,7 +2,7 @@ var assign = require('object-assign');
 
 var defaultSettings = {
     apiDomain: '/',
-    defaultLoggedPage: '/quiz/quizzes'
+    defaultLoggedPage: '/quiz'
 };
 
 var settings = assign(defaultSettings, {});

@@ -18,6 +18,14 @@ var CQLink = React.createClass({
         };
     },
 
+    handleKeyDown: function(ev){
+        console.log('ev', ev.keyCode);
+    },
+
+    handleKeyUp: function(ev){
+        console.log('ev', ev.keyCode);
+    },
+
     handleClick: function(ev){
         ev.preventDefault();
         router.setRoute(this.props.href);
@@ -25,7 +33,11 @@ var CQLink = React.createClass({
 
     render: function(){
         return (
-            <a onClick={this.handleClick} href={this.props.href} className={this.props.className}>
+            <a onClick={this.handleClick}
+                href={this.props.href}
+                onKeyDown={this.handleKeyDown}
+                onKeyUp={this.handleKeyUp}
+                className={this.props.className}>
                 {this.props.children}
             </a>
         );

@@ -29,7 +29,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
         });
     };
 
-    addReactComponent();
+
 
 
     QuizData.selectQuiz(self.catId, self.id, self.action === "false", function(err, result) {
@@ -50,6 +50,11 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
                     }
                     self.showSubText = true;
                 }
+
+                if (self.currentQuiz.settings.featured) {
+                    addReactComponent();
+                }
+                console.log('self.currentQuiz, ', self.currentQuiz);
             }
         }
     });

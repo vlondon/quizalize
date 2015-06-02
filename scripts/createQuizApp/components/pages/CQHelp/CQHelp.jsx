@@ -1,10 +1,8 @@
 var React = require('react');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-
-
-
-var CQNotFound = React.createClass({
+var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQHelp = React.createClass({
 
     getInitialState: function() {
         return {};
@@ -39,7 +37,12 @@ var CQNotFound = React.createClass({
             </div>
             <div className="row">
                 <div className="col-sm-4 col-sm-offset-4"><br/><br/>
-                <button ng-click="nctrl.dismiss();" className="btn btn-info btn-block">Get Started</button>
+                <CQLink href="/quiz">
+                    <button className="btn btn-info btn-block">
+                        Get started
+                    </button>
+                </CQLink>
+                <br/>
             </div>
         </div>
     </div>
@@ -50,4 +53,4 @@ var CQNotFound = React.createClass({
 
 });
 
-module.exports = CQNotFound;
+module.exports = CQHelp;
