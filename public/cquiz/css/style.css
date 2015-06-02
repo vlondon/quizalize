@@ -1666,6 +1666,9 @@ a.btn:focus{
 	-moz-border-radius: 15px;
 
 }
+.red-box-front:hover {
+	background-color: #D71324;
+}
 .red-box h3, h2 {	
 	color:white;
 	line-height: 100px;
@@ -1750,6 +1753,12 @@ background-color:#FA5855;
 	}
 	.cat-title {
 		font-size:60px;
+	}
+	h1 {
+		font-size:27px;
+	}
+	h2 {
+		font-size:20px;
 	}
 }
 @media (max-width:550px) {
