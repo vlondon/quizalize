@@ -78,7 +78,7 @@
       <h1 class="cta2-title"><strong>Spot student learning gaps instantly</strong></h1>
       <div class='row'>
 
-        <div class="col-md-12" class="free"><a class="cta2" href="/quiz#/register/dashboard">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
+        <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
 
 
 
@@ -212,7 +212,7 @@
 
  <section>
 
-  <div class="home-section text-center color-dark">
+  <div class="home-section text-center color-dark" style="background-color:white">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -335,11 +335,11 @@
               <div class="wow fadeInUp" data-wow-delay="0.2s">
                 <div class="service-box">
                   <div class="service-desc">
-                    <form class="form-horizontal" method="get" action="/quiz#/" onsubmit="return newQuiz()">
+                    <form class="form-horizontal" method="get" action="/quiz/" onsubmit="return newQuiz()">
                       <div class="form-group">
                         <div class="form-group">
                           <div class="col-md-12">
-                            <a class="cta3" href="/quiz#/">Create or set a quiz</a><br/>
+                            <a class="cta3" href="/quiz/">Create or set a quiz</a><br/>
                           </div>
                         </div>
                       </div>
@@ -580,7 +580,7 @@
     <!-- Core JavaScript Files -->
     <script>
       function newQuiz() {
-        window.location.href="/quiz#";
+        window.location.href="/quiz";
       }
     </script>
     <script src="/cquiz/js/jquery.min.js"></script>
@@ -611,7 +611,7 @@
           window.location.href="/app#/play/public/"+id+"/true";
         }    
         else {
-          window.location.href="/quiz#/playh/preview/"+id;
+          window.location.href="/quiz/playh/preview/"+id;
         }        
       }          
     </script>
@@ -722,7 +722,7 @@
         window._fbq.push(['track', 'PixelInitialized', {}]);
         var userId = localStorage.getItem("userId");
         if (userId!=undefined) {
-          $("#LoginButton").attr("href","/quiz#/quizzes");
+          $("#LoginButton").attr("href","/quiz/quizzes");
         }
 
       </script>

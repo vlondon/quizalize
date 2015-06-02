@@ -64,7 +64,7 @@
       <div class="collapse navbar-collapse" id="menu">
         <ul class="nav navbar-nav navbar-right">
           <li><a id='StudentLogin'href="/app">Student Login</a></li>
-          <li><a id="LoginButton" href="/quiz#/login">Teacher Login</a></li>
+          <li><a id="LoginButton" href="/quiz/login">Teacher Login</a></li>
       </ul>
   </div>
 
@@ -83,7 +83,7 @@
       <h1 class="cta3-title"><strong>Boost GCSE Maths grades</strong></h1>
       <div class='row'>
 
-        <div class="col-md-12" class="free"><a class="cta2" href="/quiz#/register/dashboard">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
+        <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
 
 
 
@@ -269,7 +269,7 @@
 
 
               </div>
-              <div class="col-md-12 text-center" ><a class="cta2" href="/quiz#/register/dashboard">Get my free account</a><p class="cta-thirty" style="text-shadow:none; margin-bottom:40px;">Sign up in less than 30 seconds</p></div> 
+              <div class="col-md-12 text-center" ><a class="cta2" href="/quiz/register/dashboard">Get my free account</a><p class="cta-thirty" style="text-shadow:none; margin-bottom:40px; font-weight:100">Sign up in less than 30 seconds</p></div> 
 
 
           </div>
@@ -328,7 +328,7 @@
 
 <script>
     function newQuiz() {
-      window.location.href="/quiz#";
+      window.location.href="/quiz";
   }
 </script>
 <script src="/cquiz/js/jquery.min.js"></script>
@@ -459,7 +459,7 @@ function ask2(type) {
   window._fbq.push(['track', 'PixelInitialized', {}]);
   var userId = localStorage.getItem("userId");
   if (userId!=undefined) {
-    $("#LoginButton").attr("href","/quiz#/quizzes");
+    $("#LoginButton").attr("href","/quiz/quizzes");
 }
 
 </script>
@@ -486,7 +486,7 @@ function ask2(type) {
       window.location.href="/app#/play/public/"+id+"/true";
   }    
   else {
-      window.location.href="/quiz#/playh/preview/"+id;
+      window.location.href="/quiz/playh/preview/"+id;
   }        
 }          
 
@@ -497,12 +497,12 @@ function playQuiz(id) {
       window.location.href="/app#/play/public/"+id+"/true";
   }    
   else {
-      window.location.href="/quiz#/playh/preview/"+id;
+      window.location.href="/quiz/playh/preview/"+id;
   }        
 }
 
 function setQuiz(id) {
-    window.location.href="/quiz#/passign/"+id;
+    window.location.href="/quiz/passign/"+id;
 }
 </script>
 
@@ -512,7 +512,7 @@ function setQuiz(id) {
 
 
   function newQuiz() {
-      window.location.href="/quiz#";
+      window.location.href="/quiz";
   }
 </script>
 <script src="/cquiz/js/jquery.min.js"></script>
@@ -631,7 +631,7 @@ function ask(type) {
     window._fbq.push(['track', 'PixelInitialized', {}]);
     var userId = localStorage.getItem("userId");
     if (userId!=undefined) {
-        $("#LoginButton").attr("href","/quiz#/quizzes");
+        $("#LoginButton").attr("href","/quiz/quizzes");
     }
 
 </script>
