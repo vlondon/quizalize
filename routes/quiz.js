@@ -105,8 +105,13 @@ exports.quizFinder =  function(req, res) {
 exports.quizOfTheDay1 = function(req, res){
     res.render('baseLayoutQuizOfTheDay1');
 };
+
 exports.packages = function (req, res){
     res.render('packages');
+};
+
+exports.faq = function(req, res){
+    res.render('faq');
 };
 
 

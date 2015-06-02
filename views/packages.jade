@@ -1,10 +1,45 @@
 extends baseLayout2
 
 block body
-	section.color-dark
+	section.color-dark#our-packages
 		.container.packages
 			row.text-center
-				h2.cat-title Our Services
+				h2.cat-title School Packages
+			row
+				.col-md-6
+					.text-center
+					h3.pack-title.text-center  Teacher Package
+					ul
+						li Create, save and share your assessments on Quizalize
+						li Use any of the free curriculum-based assessments from the public library
+						li Set assessments for as many different classes as you want
+						li Use the Zzish Learning Hub to track student progress and spot class and individual learning gaps
+						li Print the class data as well as individual student results
+						li Create a personalised URL for your assessments (e.g. www.quizalize.com/MrSmithsQuizzes)
+						li Turn your personal page into your own mobile app where students can play your quizzes. (Coming Sept 2015)
+					.text-center.red-box
+						button
+							a(href="/quiz#/register/dashboard")
+								h3 Get my free teacher account
+				.col-md-6
+					.text-center
+					h3.pack-title.text-center Whole School Package
+					ul(style='margin-bottom:38px')
+						li Includes all the features of the Teacher Package, plus…
+						li Create a school Quizalize page
+						li Create a personalised URL for your school (e.g www.quizalize.com/StJohns)
+						li Personalise your school Quizalize page with your school branding
+						li Organise assessments by teacher and subject, for example ‘Mr. Smith’s Maths Quizzes’
+						li Turn your school page into a mobile app where students can play your school quizzes.
+					.text-center.red-box
+						button
+							a(onclick="ask('order')")
+								h3 £399 per school year*
+					p.text-center *or only £199 if you sign up by 30th June 2015
+	section.color-dark#our-services
+		.container.packages
+			row.text-center
+				h2.cat-title Additonal Services
 			row
 				.col-md-10.col-md-offset-1
 					p.text-center
@@ -29,7 +64,25 @@ block body
 					|learn how to incorporate technology in their teaching and understand the impact that 
 					|these resources have on their pupils learning.
 					img.package-image2.img-responsive.center-block(src='/cquiz/img/teacher-ipad-square.jpg')
-	section.color-dark.bg-gray2.ex-topics
+	section.color-dark.bg-gray2
+		.container.packages
+			row
+				.col-md-6
+					.text-center
+						h3.pack-title Pricing
+					ul
+						li Quizalize Day Workshop with classes in your school training children on how to use 
+						| online assessment platfroms such as Quizalize and training teachers on how to use real-
+						|time teacher dashboards such as the Zzish Learning Hub
+					p 
+						strong Cost: £599
+					ul
+						li Education Technology CPD for all staff
+					p
+						strong Cost: £799
+				.col-md-6
+					img.package-image.img-responsive.center-block(src='/cquiz/img/quizalize-still 2.png')
+	section.color-dark.ex-topics
 		.container.packages
 			row.text-center
 				h3.pack-title.text-center Examples of the topics we offer in CPD training
@@ -46,72 +99,23 @@ block body
 				.col-md-3
 					h5.pack-title Technology as a tool for assessment for learning
 					p Using technology to create formative and summative assessments
-	section.color-dark#our-packages
-		.container.packages
-			row.text-center
-				h2.cat-title Our Packages
-			row
-				.col-md-6
-					.text-center
-					h3.pack-title.text-center  Teacher Package
-					ul
-						li Create, save and share your assessments on Quizalize
-						li Use any of the free curriculum-based assessments from the public library
-						li Set assessments for as many different classes as you want
-						li Use the Zzish Learning Hub to track student progress and spot class and individual learning gaps
-						li Print the class data as well as individual student results
-						li Create a personalised URL for your assessments (e.g. www.quizalize.com/MrSmithsQuizzes)
-						li Turn your personal page into your own mobile app where students can play your quizzes. (Coming Sept 2015)
-					.text-center.red-box
-						button
-							a(href="/quiz#/register/dashboard")
-								h3 Free
-				.col-md-6
-					.text-center
-					h3.pack-title.text-center Whole School Package
-					ul(style='margin-bottom:38px')
-						li Includes all the features of the Teacher Package, plus…
-						li Create a school Quizalize page
-						li Create a personalised URL for your school (e.g www.quizalize.com/StJohns)
-						li Personalise your school Quizalize page with your school branding
-						li Organise assessments by teacher and subject, for example ‘Mr. Smith’s Maths Quizzes’
-						li Turn your school page into a mobile app where students can play your school quizzes.
-					.text-center.red-box
-						button
-							a(onclick="ask('order')")
-								h3 £399 per school year*
-					p.text-center *or only £199 if you sign up by 30th June 2015
 	section.color-dark.bg-gray2
 		.container.packages
+			row.text-center
+				h2.pack-title 
+					strong Get free iPads or workshops for your school
 			row
 				.col-md-6
-					.text-center
-						h3.pack-title Additional Services
-					ul
-						li Quizalize Day Workshop with classes in your school training children on how to use 
-						| online assessment platfroms such as Quizalize and training teachers on how to use real-
-						|time teacher dashboards such as the Zzish Learning Hub
-					p 
-						strong Cost: £599
-					ul
-						li Education Technology CPD for all staff
-					p
-						strong Cost: £799
-				.col-md-6
-					img.package-image.img-responsive.center-block(src='/cquiz/img/quizalize-still 2.png')
-	section.color-dark
-		.container.packages
-			row
-				.col-md-6
-					img.img-responsive.center-block(src='/cquiz/img/Smiling-GCSE.jpg')
+					img.img-responsive.center-block(src='/cquiz/img/Smiling-GCSE.jpg' style="margin-bottom:20px")
 				.col-md-6
 					h3.pack-title.text-center Exclusive offer for referrals
-					p Refer 5 schools that sign up to the whole school package and receive:
+					p For every 5 schools that you refer and sign up to the whole school package you will receive:
 					div.refer-offer
-						p.red-box-small.text-center A free iPad for your school
+						p.text-center A free iPad for your school
 						p.text-center or
-						p.red-box-small.text-center 1 x Quizalize Day Workshop in your school
-	section.color-dark(style="padding-top:20px")
+						p.text-center 1 x Quizalize Day Workshop in your school
+
+	section.color-dark(style="padding-top:20px; margin-top:-50px")
 		.container.packages
 			a(href="/quiz#/register/dashboard").red-box
 				button

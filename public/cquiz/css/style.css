@@ -1659,6 +1659,9 @@ a.btn:focus{
 	height:100px;
 	color:white;
 	line-height: 100px;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
 
 
 }
@@ -1670,6 +1673,7 @@ a.btn:focus{
 	border-radius: 15px;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
+
 
 }
 .red-box-front:hover {
@@ -1701,6 +1705,9 @@ a.btn:focus{
 	color:white;
 	line-height: 100px;
 	border-style: none;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
 }
 .red-box button:hover {
 	background-color:#D71324;
@@ -1766,6 +1773,8 @@ a.btn:focus{
 	h2 {
 		font-size:20px;
 	}
+	h3 {font-size:17px;}
+	h4 {font-size:14px;}
 }
 @media (max-width:550px) {
 	.cta2  {
@@ -1974,12 +1983,7 @@ a.btn:focus{
 	font-weight:900;
 	font-size:80px;
 }
-.cat-title:hover {
-	color: #FA5855;
-	margin-top:10px;
-	font-weight:900;
-	font-size:80px;
-}
+
 
 .ex-topics {
 	padding-top:20px; 
@@ -2074,3 +2078,8 @@ a.btn:focus{
 
 
 		}
+/* FAQ styling */
+.faq-list ul li p {
+	margin-top:10px;
+	margin-bottom:10px;
+}

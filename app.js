@@ -86,6 +86,7 @@ app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
 app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
 app.get('/packages', quiz.packages);
+app.get('/faq', quiz.faq);
 
 /*
 
