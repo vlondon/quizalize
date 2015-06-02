@@ -1,0 +1,241 @@
+extends baseLayout2
+
+block body
+	section.color-dark
+		.container.packages
+			row.text-center
+				h2.cat-title Frequently Asked Questions
+	section.color-dark
+		.container.packages
+			.col-md-10.col-md-offset-1
+				ul
+					li
+						strong
+							a(href="#whatisquizalize") What is Quizalize?
+						ul
+							li
+								a(href="#quizalizefree") Is Quizalize free?
+							li
+								a(href="#quizalizesignup") How do I sign up to Quizalize?
+					li
+						strong
+							a(href="#usingquizalize") Using Quizalize
+						ul
+							li
+								a(href="#createaquiz") How do I create a quiz?
+							li
+								a(href="#savequiz") How do I save a quiz?
+							li
+								a(href="#findquiz") Where can I find the quizzes I’ve made?
+							li
+								a(href="#accessquiz") How can my students access my quizzes?
+							li
+								a(href="#assignquiz") How do I assign quizzes to students or classes?
+							li
+								a(href="#findassignquiz") Where can I find the quizzes I’ve assigned to my students?
+							li
+								a(href="#resultsquiz") Where can I find my students' results?
+							li
+								a(href="#classcode") What is a class code?
+					li
+						strong
+							a(href="#servicepackage") Packages and Services
+						ul
+							li
+								a(href="#servpack") Which packages and services does Quizalize offer?
+
+
+
+	section.color-dark
+		.container.packages
+			.col-md-10.col-md-offset-1
+				h4#whatisquizalize.text-center
+					strong What is Quizalize?
+			.col-md-8.col-md-offset-2.faq-list
+				p 
+					|Quizalize is a new diagnostic assessment website by Zzish that provides 
+					|children with a fun and engaging way to learn. Quizalize goes one-step further 
+					|than just being your average quiz website, it provides teachers with in-depth data to 
+					|analyze their children’s strengths, weaknesses and learning gaps instantly. 
+					|It not only caters for the main subjects such as Maths and Science but it is versatile 
+					|and can be used across all subjects.
+				ul
+					li
+						p#quizalizefree
+							strong Is Quizalize free?
+						p 
+							|Quizalize is free for individual teachers. If you’re enquiring about 
+							|using Quizalize at school please refer to our packages section 
+							a(href="/packages#our-packages") here 
+							| or 
+							a(href="mailto:team@zzish.com?subject=I would like Quizalize in my school") contact one of our team.
+					li
+						p#quizalizesignup
+							strong How do I sign up to Quizalize?
+						p To sign up to Quizalize all you need is a valid email and a password. 
+							a(href="http://localhost:3001/quiz#/register/dashboard") Click here to go to our sign-up page. 
+			.col-md-10.col-md-offset-1
+				h4#usingquizalize.text-center
+					strong Using Quizalize
+			.col-md-8.col-md-offset-2.faq-list
+				ul
+					li
+						p#createaquiz
+							strong 	How do I create a quiz?
+						p 
+							|Once you are logged in you can create a quiz by clicking “Create a new quiz” 
+							|button in the “Your Quizzes” tab.
+					li
+						p#savequiz
+							strong How do I save a quiz?
+						p 	
+							|To save a quiz, you need to click the “Save” button on the quiz creation page. 
+							|You can find all of your finished quizzes in  the “Your Quizzes” tab in the top right corner.
+					li
+						p#findquiz
+							strong Where can I find the quizzes I’ve made?
+						p
+							|All of your quizzes can be found in the “Your Quizzes” tab in the top right corner.
+					li
+						p#accessquiz
+							strong How can my students access my quizzes?
+						p
+							|You can set any quiz to any class and receive a unique class code. The students can 
+							|then go to 
+							a(href="http://quizal.me") www.quizal.me 
+							|and input the class code and their name to access the quiz.
+					li
+						p#assignquiz
+							strong How do I assign quizzes to students or classes?
+						p 
+						|Once you have completed a quiz, you can click the ‘Set Quiz’ button to assign the quiz 
+						|to one of your classes. Once you have entered your class’ name you will be given a unique 
+						|class code which your students can use to access the quiz.
+					li
+						p#findassignquiz
+							strong Where can I find the quizzes I’ve assigned to my students?
+						p
+						|Quizzes you have assigned are found under the “Your Assignments” tab in the top right corner. 
+						|This page will list all your classes and all the quizzes assigned to each class.
+					li
+						p#resultsquiz
+							strong Where can I find my students' results?
+						p
+						|You can access the teacher dashboard for each class in the “Your Assignment” page. Just click the 
+						|button labeled “Open *class name* Dashboard”, where *class name* is the name you’ve given to that class.
+					li
+						p#classcode
+							strong What is a class code?
+						p
+						|A class code is a randomly generated identifier created when you first set a quiz to a class. 
+						|The same class will have always the same class code. Students using the class code will be able 
+						|to access every single quiz you have assigned to that class.
+			.col-md-10.col-md-offset-1
+				h4#servicepackage.text-center
+					strong Services and packages
+			.col-md-8.col-md-offset-2.faq-list
+				ul
+					li
+						p#servpack
+							strong Which services and packages does Quizalize offer?
+						p
+						|All the information you need is on our 
+						a(href="/packages") "Packages and Services" page. 
+						|Otherwise, 
+						a(href="mailto:team@zzish.com?subject=I would like Quizalize in my school") contact one of our team 
+						|for chat and advice. We’re friendly! Promise!
+
+	section#contact.home-section.nopadd-bot.color-dark.bg-dark.text-center
+		a#sendForm(name='sendForm')
+			.container.marginbot-50
+				.col-md-12
+					.section-heading.text-center
+						h1
+							strong Get in touch
+			.row
+				.col-md-4
+					a.cta4(onClick="ask('order')") Request an info pack
+				.col-md-4
+					a.cta4(onClick="ask('question')") Ask a question
+				.col-md-4
+					a.cta4(onClick="ask('demo')") Book a demo
+			#helpForm.container
+				.row.marginbot-80
+					.col-md-12
+						form#contact-form(onSubmit='return submitForm()')
+							.row.marginbot-20
+								.col-md-6.xs-marginbot-20
+									input#ename.form-control.input-lg(type='text', placeholder='Enter name')
+								.col-md-6
+									input#email.form-control.input-lg(type='email', placeholder='Enter email', required='')
+							.row
+								.col-md-12
+									.form-group
+										textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
+									input#btnContactUs.btn-lg.btn-block(type='submit', value='Send')
+			#helpSent.container(style='display: none;')
+				.row.marginbot-80
+					.col-md-8.col-md-offset-2
+						h3 Thanks for getting in touch. We'll get back to you ASAP!
+	section.color-light.bg-gray2(id='social media')
+		.row
+			.col-md-6.col-md-offset-3
+				.social
+					ul
+						li
+							a(href='http://www.facebook.com/quizalize')
+								i.fa.fa-lg.fa-facebook
+						li
+							a(href='http://twitter.com/quizalizeapp')
+								i.fa.fa-lg.fa-twitter
+						li
+							a(href='http://blog.zzish.com/')
+								i.fa.fa-lg.fa-tumblr
+						li
+							a(href='http://www.youtube.com/channel/UCsN-UvRQ-hYUAndrQePJkMA')
+								i.fa.fa-lg.fa-youtube
+	section.popover-title.color-dark.bg-gray2
+		.container
+			.row
+				.text-center(style='margin:10px')
+					h3(style='font-size:20px')
+						| Powered by 
+						a(href='http://zzish.com', style='color:purple') Zzish
+	script.
+		function submitForm() {
+			$.ajax({
+				url: "/quizHelp",
+				method: "post",
+				success: function(data,textstatus,jqXHR){
+					$('#helpForm').slideUp();
+					$("#helpSent").slideDown();
+					},
+					error: function(){
+						console.log("Error Posting Form details");
+						},
+						data: {
+							name: $('#ename').val(),
+							email: $('#email').val(),
+							message: $('#message').val()
+						}
+						});
+			return false;
+		}
+		function ask(type) {
+			if (type=="demo") {
+				$("#message").val("I want a demo at my school");
+			}
+			else if (type =="question") {
+				$("#message").val("");
+			}
+			else if (type=="order") {
+				$("#message").val("I would like an information pack sent to my school");
+			}
+			ask2("#sendForm")
+		}
+		function ask2(type) {
+			$('html, body').animate({
+				scrollTop: $(type).offset().top
+				}, 2000);
+		}
+

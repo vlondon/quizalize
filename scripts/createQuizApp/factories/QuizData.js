@@ -340,7 +340,7 @@ angular.module('createQuizApp')
             },
             getPublicQuiz: getPublicQuiz,
             addQuizById: function(quizId, callback){
-                if (quizData === undefined) {
+                if (quizData === undefined || quizData==null) {
                     quizData = {};
                 }
                 quizData[quizId] = {uuid: quizId};
