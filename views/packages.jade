@@ -19,7 +19,7 @@ block body
 						li Turn your personal page into your own mobile app where students can play your quizzes. (Coming Sept 2015)
 					.text-center.red-box
 						button
-							a(href="/quiz#/register/dashboard")
+							a(href="/quiz/register")
 								h3.teach-acct Get my free account
 				.col-lg-6
 					.text-center
@@ -110,13 +110,13 @@ block body
 						p.text-center 1 x Quizalize Day Workshop in your school
 					.text-center.red-box
 						button
-							a(href="mailto:team@zzish.com")
+							a(onclick="ask('referral')")
 								h3.teach-acct Join our referral program
 
 	section.color-dark(style="padding-top:20px; margin-top:-50px")
 		.container.packages
 			.col-md-6.col-md-offset-3
-				a(href="/quiz#/register/dashboard").red-box
+				a(href="/quiz/register").red-box
 					button
 						h3.text-center.teach-acct Get your free account
 				p.text-center Or contact us below
@@ -127,13 +127,6 @@ block body
 					.section-heading.text-center
 						h1
 							strong Get in touch
-			.row
-				.col-md-4
-					a.cta4(onClick="ask('order')") Request an info pack
-				.col-md-4
-					a.cta4(onClick="ask('question')") Ask a question
-				.col-md-4
-					a.cta4(onClick="ask('demo')") Book a demo
 			#helpForm.container
 				.row.marginbot-80
 					.col-md-12
