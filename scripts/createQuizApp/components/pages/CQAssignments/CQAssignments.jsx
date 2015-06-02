@@ -8,7 +8,7 @@ var GroupStore  = require('createQuizApp/stores/GroupStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
-var CQEditQuiz = React.createClass({
+var CQAssignments = React.createClass({
 
     getInitialState: function() {
         return this.getState();
@@ -16,7 +16,7 @@ var CQEditQuiz = React.createClass({
 
     componentDidMount: function() {
 
-        
+        QuizActions.loadPublicQuizzes();
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
 
@@ -31,8 +31,9 @@ var CQEditQuiz = React.createClass({
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
+        var publicQuizzes = QuizStore.getPublicQuizzes();
         console.log('groups', groups, groupsContent);
-        var newState = { groups, groupsContent, quizzes };
+        var newState = { groups, groupsContent, quizzes, publicQuizzes };
 
         return newState;
 
@@ -48,8 +49,9 @@ var CQEditQuiz = React.createClass({
                 }
             });
             var quizzes = this.state.quizzes.filter(q => quizIds.indexOf(q.uuid) > -1);
+            var publicQuizzes = this.state.publicQuizzes.filter(q => quizIds.indexOf(q.uuid) > -1);
             console.log('quizIds??', quizIds);
-            console.log('quizzes??', quizzes);
+            console.log('publicQuizzes??', quizzes);
             return quizzes;
         }
         return [];
@@ -131,4 +133,4 @@ var CQEditQuiz = React.createClass({
 
 });
 
-module.exports = CQEditQuiz;
+module.exports = CQAssignments;

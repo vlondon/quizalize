@@ -28,7 +28,6 @@ var pages = {
         path: '/quiz',
         needsLogin: undefined,
         renderer: function(){
-            console.info('renderMain');
             React.render(
                 React.createElement(CQDashboard, null),
                 document.getElementById('reactApp')
@@ -39,7 +38,6 @@ var pages = {
         path: '/quiz/',
         needsLogin: undefined,
         renderer: function(){
-            console.info('renderMain');
             React.render(
                 React.createElement(CQDashboard, null),
                 document.getElementById('reactApp')

@@ -11,7 +11,7 @@ var router = require('createQuizApp/config/router');
 
 require('./CQPublicStyles');
 
-var CQNotFound = React.createClass({
+var CQPublic = React.createClass({
 
     getInitialState: function() {
         return {
@@ -47,9 +47,10 @@ var CQNotFound = React.createClass({
         this.setState(this.getState());
     },
 
-    handlePreview: function(){
-        // if (QuizData.getUser()) {
-        //     window.location.href="/app#/play/public/"+quiz.uuid+"/true";
+    handlePreview: function(quiz){
+        console.log('a', UserStore.getUser());
+        window.location.href = `/app#/play/public/${quiz.uuid}/true`;
+        // if (UserStore.getUser() === false) {
         // }
         // else {
         //     router.setRoute(this.props.href);
@@ -57,8 +58,8 @@ var CQNotFound = React.createClass({
         // }
     },
 
-    handleSet: function(){
-
+    handleSet: function(quiz){
+        router.setRoute(`/quiz/published/${quiz.uuid}`);
     },
 
     render: function() {
@@ -71,8 +72,8 @@ var CQNotFound = React.createClass({
                     Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
                 </p>
 
-                {this.state.quizzes.map(category =>{
-                    return (<div className="row">
+                {this.state.quizzes.map((category, categoryIndex) =>{
+                    return (<div className="row" key={categoryIndex}>
                         <div className="col-md-12">
                             <div className="quiz-topic-block">
                                 <a href="" className="quiz-link">
@@ -81,9 +82,9 @@ var CQNotFound = React.createClass({
                                     </h2>
                                 </a>
                                 <div className="quiz-list collapse in">
-                                    {category.quizzes.map(quiz=>{
+                                    {category.quizzes.map((quiz, index)=>{
                                         return (
-                                            <div className="row quiz-info-row">
+                                            <div className="row quiz-info-row" key={index}>
                                                 <div className="col-xs-8">
                                                     <a href="" className="quiz-item">
                                                         <div className="quiz-title">{quiz.name}</div>
@@ -102,8 +103,6 @@ var CQNotFound = React.createClass({
 
                                                     <div className="row quiz-info-row">
                                                         <button onClick={this.handlePreview.bind(this, quiz)} className="btn btn-info btn-block">Preview</button>
-
-
                                                     </div>
                                                 </div>
 
@@ -123,4 +122,4 @@ var CQNotFound = React.createClass({
 
 });
 
-module.exports = CQNotFound;
+module.exports = CQPublic;

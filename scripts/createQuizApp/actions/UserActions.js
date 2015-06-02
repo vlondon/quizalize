@@ -16,9 +16,7 @@ var UserActions = {
                     payload: user
                 });
             })
-            .catch(function(error){
-                console.trace('error: ', error);
-                // AnalyticsActions.sendEvent('user', 'USER_IS_NOT_LOGGED');
+            .catch(function(){
                 AppDispatcher.dispatch({
                     actionType: UserConstants.USER_IS_NOT_LOGGED,
                     user: false

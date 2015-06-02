@@ -6,7 +6,10 @@ var CQModal   = require('./utils/CQModal');
 var CQPageTemplate = React.createClass({
 
     propTypes: {
-        children: React.PropTypes.element,
+        children: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.element
+        ]),
         className: React.PropTypes.string,
         wrapperMainClassName: React.PropTypes.string,
         wrapperStyleClassName: React.PropTypes.string

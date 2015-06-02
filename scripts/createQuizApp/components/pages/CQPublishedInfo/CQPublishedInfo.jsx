@@ -1,7 +1,7 @@
 var React = require('react');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLink          = require('createQuizApp/components/utils/CQLink');
+
 
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
@@ -10,7 +10,6 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 var swal = require('sweetalert/dist/sweetalert-dev');
 require('sweetalert/dev/sweetalert.scss');
 
-console.log('swal?', swal);
 
 var CQPUblishedInfo = React.createClass({
 

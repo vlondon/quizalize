@@ -5,6 +5,8 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 
+var QuizActions = require('createQuizApp/actions/QuizActions');
+
 var CQCreateMore = require('createQuizApp/components/pages/CQCreate/CQCreateMore');
 
 var CQPublished = React.createClass({
@@ -18,8 +20,10 @@ var CQPublished = React.createClass({
     },
 
     componentDidMount: function() {
+
         GroupStore.addChangeListener(this.onChange);
     },
+
     componentWillUnmount: function() {
         GroupStore.removeChangeListener(this.onChange);
     },
@@ -98,17 +102,13 @@ var CQPublished = React.createClass({
 
             GroupActions.publishNewAssignment(this.props.quizId, this.state.newClass, this.state.settings)
                 .then((response) =>{
-                    debugger;
-
                     redirect(this.props.quizId, response.code);
-
                 });
 
         } else {
             console.log('about to save an already existing class', this.state.selectedClass);
             GroupActions.publishAssignment(this.props.quizId, this.state.selectedClass, this.state.settings)
                 .then(()=>{
-                    debugger;
                     redirect(this.props.quizId, this.state.selectedClass);
                 });
         }

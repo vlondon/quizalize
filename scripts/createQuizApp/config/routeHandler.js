@@ -120,15 +120,14 @@ var options = {
 // Add user listener
 UserStore.addChangeListener(function(){
     user = UserStore.getUser();
-    console.log('user changed', user);
-    if (routerReady !== true) {
 
+    if (routerReady !== true) {
         router.init();
         routerReady = true;
     } else {
-        console.log('redirecting');
         options.before();
     }
+
 });
 
 /// Initialize router
