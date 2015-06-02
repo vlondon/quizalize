@@ -202,63 +202,7 @@ html(ng-app='createQuizApp')
         script(src='/js/quiz.js')  
         //- script(src='/js/createQuizApp.js')
 
-body(ng-controller="NavBarController as nctrl")
+body
     #reactApp
-                                
-    div(ng-view ngCloak)
 
-    button.btn.btn-primary.btn-lg(data-toggle="modal",data-target="#myModal",style="display:none")#messageButton
-
-    div.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")#myModal
-        div.modal-dialog
-            div.modal-content
-                div.modal-header
-                    input(type="hidden",value="")#modalUuid
-                    button.close(data-dismiss="modal" aria-label="Close")
-                        span(aria-hidden="true") &times;
-                    h4.modal-title#modalTitle
-                div.modal-body
-                    p#modalMessage
-                div.modal-footer
-                    button.btn.btn-default(data-dismiss="modal")#closeButton Close
-                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
-
-    #intro(ng-show="nctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
-            .container-fluid
-                .row
-                    .col-xs-12.text-center
-                        h1 Welcome to Quizalize
-                .row
-                    .col-sm-4
-                        img.img-responsive.bordered(src="/img/helpScreens/create.png")
-                        h4.text-primary 1. Choose a name for your quiz
-                        p The only thing you need to do to get started.
-                        p Quiz Topic is optional and allows you to organise your quizzes. You can also choose from one of our premade quizzes.
-
-                    .col-sm-4
-                        img.img-responsive.bordered(src="/img/helpScreens/add.png")
-                        h4.text-primary 2. Add questions and answers
-                        p Quickly add questions and answers using our streamlined interface.
-                        p You can (optionally) add incorrect answers for use in multiple choice format and a subtopic to group questions.
-
-                    .col-sm-4
-                        img.img-responsive.bordered(src="/img/helpScreens/publish.png")
-                        h4.text-primary 3. Publish your quiz to your students
-                        p Your students can access our quizalize quiz app at quizal.me and enter the class code you received when publishing.
-
-                .row
-                    .col-sm-4.col-sm-offset-4
-                        br
-                        br
-                        button.btn.btn-info.btn-block(ng-click="nctrl.dismiss();") Get Started
-
-    script.
-        var userId = localStorage.getItem("userId");
-        if (userId == null) {
-            $("#homeButton").attr("href");
-            $("#homeButton").attr("href","/");
-        }   
-        else {
-            $("#homeButton").attr("href","/quiz/");
-        }    
     script(src='/js/cqApp.js')
