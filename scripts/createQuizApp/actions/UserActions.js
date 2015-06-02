@@ -84,15 +84,23 @@ var UserActions = {
     },
 
     register: function(data) {
+        var params = urlParams();
+
+        console.log('register', params, window.decodeURIComponent(params.redirect));
         return new Promise(function(resolve, reject){
 
             UserApi.register(data)
                 .then(function(user){
-                    resolve(user);
-                    AppDispatcher.dispatch({
-                        actionType: UserConstants.USER_REGISTERED,
-                        payload: user
-                    });
+
+                    if (params.redirect){
+                        window.location = window.decodeURIComponent(params.redirect);
+                    } else {
+                        resolve(user);
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_REGISTERED,
+                            payload: user
+                        });
+                    }
                 })
                 .catch(function(error){
                     reject(error);

@@ -31,6 +31,20 @@ function goToApp() {
   window.location.href="/app#/"
 }
 
+
+function showQuiz(id) {
+    var check = localStorage.getItem("userId") || localStorage.getItem('token');
+    var quizUrl = window.location.href = "/app#/play/public/" + id + "/true";
+    if (check) {
+        window.location.href = quizUrl;
+    }
+    else {
+        window.location.href = "/quiz/register?redirect=" + window.encodeURIComponent(quizUrl);
+    }
+}
+
+
 window.goToService = goToService;
 window.goToApp = goToApp;
 window.goToQuiz = goToQuiz;
+window.showQuiz = showQuiz;
