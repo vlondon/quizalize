@@ -4,7 +4,7 @@ var settings        = require('createQuizApp/config/settings');
 
 var UserStore       = require('createQuizApp/stores/UserStore');
 var UserActions     = require('createQuizApp/actions/UserActions');
-// var urlParamsToObject   = require('./../utils/urlParamsToObject');
+var urlParams       = require('createQuizApp/utils/urlParams');
 
 var user = null;
 var routerReady = false;
@@ -65,7 +65,16 @@ var newUrl = function(requestedUrl){
         }
         if (!page.needsLogin) {
             if (typeof user === 'object' && !page.public) {
-                return settings.defaultLoggedPage;
+
+                var params = urlParams();
+                if (params.redirect){
+                    window.location = window.decodeURIComponent(params.redirect);
+                    return true;
+                } else {
+
+                    return settings.defaultLoggedPage;
+                }
+
             } else {
                 return requestedUrl;
             }
