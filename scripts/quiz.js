@@ -44,7 +44,31 @@ function showQuiz(id) {
 }
 
 
+
+function login (){
+    var options = {
+            classcode: 2,
+            optionstoshow: ';student;teacher;',
+            redirectURL: url + '/app#/list',
+            verify: 0
+        };
+    var type = "redirect"; //can be a popup instead
+
+    //represents a user (that may be a zzish login)
+    var userId = localStorage.getItem("userId");
+    if (userId === null) {
+        //assume no token
+        localStorage.removeItem("token");
+        Zzish.login(type, options);
+    }
+    else {
+        //just go to the logged in url
+        location.href = url + '/app#/list';
+    }
+}
+
 window.goToService = goToService;
 window.goToApp = goToApp;
 window.goToQuiz = goToQuiz;
 window.showQuiz = showQuiz;
+window.login = login;

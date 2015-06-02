@@ -43,6 +43,8 @@
 
 .ql-quiz-container {
     position: relative;
+    max-width: 768px;
+    margin: 0 auto;
 }
 .ql-multiple {
     background: #FFF;
@@ -62,6 +64,9 @@
         text-align: center;
         margin: 40px auto;
         font-size: 4.5vw;
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
     }
 
     &.enter .question {
@@ -87,6 +92,7 @@
 
     .answers {
         position: relative
+
     }
 
     .alternative-wrapper {
@@ -108,6 +114,10 @@
         font-size: 4.5vw;
         color: #FFF;
         white-space: normal;
+
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
 
 
     }
