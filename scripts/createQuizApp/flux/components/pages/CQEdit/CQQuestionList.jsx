@@ -3,12 +3,15 @@ var React = require('react');
 var CQLink = require('createQuizApp/flux/components/utils/CQLink');
 var CQEditNormal = require('./CQEditNormal');
 
+var CQLatexString = require('./CQLatexString');
+
 var CQQuestionList = React.createClass({
     propTypes: {
         quiz: React.PropTypes.object.isRequired,
         handleSave: React.PropTypes.func.isRequired,
         questionIndex: React.PropTypes.number,
-        handleQuestion: React.PropTypes.func
+        handleQuestion: React.PropTypes.func,
+        handleRemoveQuestion: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -27,8 +30,12 @@ var CQQuestionList = React.createClass({
         }
     },
 
+    handleRemove: function(question){
+        this.props.handleRemoveQuestion(question);
+    },
+
     render: function() {
-        console.log('rerendering!');
+
         var questions;
         var isNewQuestion;
         var addButton;
@@ -44,7 +51,7 @@ var CQQuestionList = React.createClass({
         var newQuestionEditor;
 
         if (this.props.questionIndex === this.props.quiz.questions.length){
-            console.log('is new question!!!!');
+
             newQuestionEditor = (
                 <span className='new-question'>
                     <div className="col-sm-6">
@@ -86,7 +93,7 @@ var CQQuestionList = React.createClass({
             questions = this.props.quiz.questions.map((item, index) => {
                 var editor;
                 var className = 'row';
-                console.log('should add the editor', index, this.props.questionIndex);
+                
                 if (index === this.props.questionIndex) {
                     editor = questionEditor;
                     className = 'row selected';
@@ -95,12 +102,12 @@ var CQQuestionList = React.createClass({
                     <div className={className} key={index}>
                         <div className="col-sm-6">
                             <h4>
-                                {index + 1}. {item.question}
+                                {index + 1}. <CQLatexString>{item.question}</CQLatexString>
                             </h4>
                         </div>
                         <div className="col-sm-4">
                             <h4 className="text-info">
-                                {item.answer}
+                                <CQLatexString>{item.answer}</CQLatexString>
                             </h4>
                         </div>
                         <div className="col-sm-2 icons">
@@ -110,11 +117,12 @@ var CQQuestionList = React.createClass({
                                     <span className="glyphicon glyphicon-pencil"></span>
                                 </button>
                             </CQLink>
-                            <button type='button' className="btn btn-danger">
+                            <button type='button' className="btn btn-danger" onClick={this.handleRemove.bind(this, item)}>
                                 <span className="glyphicon glyphicon-remove"></span>
                             </button>
 
                         </div>
+                        <div className="clearfix"></div>
                         {editor}
                     </div>
                 );

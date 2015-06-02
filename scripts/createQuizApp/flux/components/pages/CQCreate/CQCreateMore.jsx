@@ -21,7 +21,11 @@ var CQCreateMore = React.createClass({
     handleChange: function(property, event) {
 
         var newState = assign({}, this.state);
-        newState[property] = event.target.value;
+        if (event.target.checked !== undefined){
+            newState[property] = event.target.checked;
+        } else {
+            newState[property] = event.target.value;
+        }
 
         this.setState(newState);
     },
@@ -71,21 +75,24 @@ var CQCreateMore = React.createClass({
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label ng-style="margin-top: 10px" className="switch">
                                 <input type="checkbox"
-                                    value={this.state.live}
+                                    checked={this.state.live}
                                     onChange={this.handleChange.bind(this, 'live')}
                                     ng-model="ctrl.quiz.settings.live"
                                     ng-change="ctrl.toggleLive()" className="switch-input"/>
-                                    <span data-on="Live" data-off="No" className="switch-label"></span><span className="switch-handle">                                    </span>
+                                <span data-on="Live" data-off="No" className="switch-label"></span>
+                                <span className="switch-handle"></span>
                             </label>
                         </div>
 
                         <div ng-style="margin-top: 13px" ng-show="ctrl.quiz.settings.live" className="col-xs-3">
                             <label className="switch">
                                 <input type="checkbox"
-                                    value={this.state.featured}
+                                    checked={this.state.featured}
                                     onChange={this.handleChange.bind(this, 'featured')}
                                     ng-model="ctrl.quiz.settings.featured"
-                                    className="switch-input"/><span data-on="Yes" data-off="No" className="switch-label"></span><span className="switch-handle">            </span>
+                                    className="switch-input"/>
+                                    <span data-on="Yes" data-off="No" className="switch-label"></span>
+                                    <span className="switch-handle"></span>
                             </label>
                         </div>
 
@@ -123,10 +130,12 @@ var CQCreateMore = React.createClass({
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">
                                 <input type="checkbox"
-                                    value={this.state.random}
+                                    checked={this.state.random}
                                     onChange={this.handleChange.bind(this, 'random')}
                                     ng-model="ctrl.settings.random"
-                                    className="switch-input"/><span data-on="Yes" data-off="No" className="switch-label"></span><span className="switch-handle">            </span>
+                                    className="switch-input"/>
+                                <span data-on="Yes" data-off="No" className="switch-label"/>
+                                <span className="switch-handle"/>
                             </label>
                         </div>
                         <label className="control-label col-sm-9">
@@ -135,7 +144,7 @@ var CQCreateMore = React.createClass({
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">
                                 <input type="checkbox"
-                                    value={this.state.showanswers}
+                                    checked={this.state.showanswers}
                                     onChange={this.handleChange.bind(this, 'showanswers')}
                                     ng-model="ctrl.settings.showanswers"
                                     className="switch-input"/>
@@ -148,7 +157,7 @@ var CQCreateMore = React.createClass({
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">
                                 <input type="checkbox"
-                                    value={this.state.timer}
+                                    checked={this.state.timer}
                                     onChange={this.handleChange.bind(this, 'timer')}
                                     ng-model="ctrl.settings.timer"
                                     className="switch-input"/><span data-on="Yes" data-off="No" className="switch-label"></span><span className="switch-handle">            </span>

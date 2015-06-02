@@ -4,16 +4,16 @@ var latexString = require('createQuizApp/flux/utils/LatexString');
 
 var CQLatexString = React.createClass({
     propTypes: {
-        string: React.PropTypes.string
+        children: React.PropTypes.string
     },
     getDefaultProps: function() {
         return {
-            string: ''
+            children: ''
         };
     },
     render: function() {
         return (
-            <div dangerouslySetInnerHTML={{__html: latexString(this.props.string)}}/>
+            <span dangerouslySetInnerHTML={{__html: latexString(this.props.children)}}/>
         );
     }
 

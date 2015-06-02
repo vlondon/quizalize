@@ -124,6 +124,16 @@ var CQEdit = React.createClass({
         this.setState({quiz});
     },
 
+    handleRemoveQuestion: function(question){
+        var questionIndex = this.state.quiz.questions.indexOf(question);
+        var quiz = assign({}, this.state.quiz);
+        quiz.questions = this.state.quiz.questions;
+        quiz.questions.splice(questionIndex, 1);
+        console.log('about to remove question', quiz.questions);
+        this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
+
+    },
+
 
     render: function() {
 
@@ -203,6 +213,7 @@ var CQEdit = React.createClass({
                                         quiz={this.state.quiz}
                                         questionIndex={this.state.questionIndex}
                                         handleQuestion={this.handleQuestion}
+                                        handleRemoveQuestion={this.handleRemoveQuestion}
                                         handleSave={this.handleSave}/>
                                 </div>
                             </div>

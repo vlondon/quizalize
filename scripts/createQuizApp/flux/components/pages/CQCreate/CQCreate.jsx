@@ -12,24 +12,36 @@ var CQCreate = React.createClass({
 
     propTypes: {
         quizId: React.PropTypes.string
+
+    },
+
+    getDefaultProps: function() {
+        return {
+        };
     },
 
     getInitialState: function() {
         console.log('do we have props', this.props);
 
-        return {
+        var initialState = {
             isMoreVisible: false,
+            title: 'Create a Quiz',
             isSaving: false,
-            quiz: {
-
-            }
+            quiz: this._getQuiz()
         };
 
+        if (initialState.quiz.uuid !== undefined){
+            initialState.title = 'Edit a quiz';
+        }
+
+        return initialState;
+
     },
+
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
-
+        console.log('quiz??', quiz);
         if (quiz === undefined){
             QuizActions.loadQuiz(this.props.quizId);
             return {};
@@ -44,8 +56,12 @@ var CQCreate = React.createClass({
         if (this.props.quizId){
             var quiz = this._getQuiz();
             newState.quiz = quiz;
-
         }
+
+        if (newState.quiz.uuid !== undefined){
+            newState.title = 'Edit a quiz';
+        }
+
         this.setState(newState);
     },
 
@@ -68,12 +84,6 @@ var CQCreate = React.createClass({
         QuizStore.removeChangeListener(this.onChange);
         $(document).off('mouseenter');
         $(document).off('mouseleave');
-    },
-
-    getDefaultProps: function() {
-        return {
-            title: 'Create a Quiz'
-        };
     },
 
     handleChange: function(property, event) {
@@ -100,7 +110,6 @@ var CQCreate = React.createClass({
 
     render: function() {
 
-        if (true){
 
             return (
                 <CQPageTemplate className="container">
@@ -109,7 +118,7 @@ var CQCreate = React.createClass({
                             <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
                                 <div className="well">
                                     <h2>
-                                        {this.props.title}
+                                        {this.state.title}
                                     </h2>
                                     <form role="form" className="form-horizontal">
                                         <div className="form-group">
@@ -158,7 +167,7 @@ var CQCreate = React.createClass({
                                     </div>
                                     <div className="col-sm-4 col-sm-offset-4">
                                         <button type="button"
-                                            disabled
+
                                             onClick={this.handleMoreClick}
                                             className={this.state.isMoreVisible ? 'btn btn-block btn-info' : 'btn btn-block'}>
                                             More Settings
@@ -180,9 +189,7 @@ var CQCreate = React.createClass({
                 </div>
             </CQPageTemplate>
         );
-        } else {
-            return <div>Loading</div>;
-        }
+
     }
 });
 

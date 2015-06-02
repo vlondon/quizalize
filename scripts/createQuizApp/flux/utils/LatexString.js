@@ -4,7 +4,7 @@ var detectLatex = function(string){
 
     string = string.replace(/(<([^>]+)>)/ig, '');
     var regularExpression = /\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g;
-    
+
     var stripDollars = function(stringToStrip){
 
         if (stringToStrip[1] === '$'){
@@ -17,7 +17,7 @@ var detectLatex = function(string){
 
     };
     var result = [];
-    console.log('regularExpression', regularExpression);
+
 
     var latexMatch = string.match(regularExpression);
     var stringWithoutLatex = string.split(regularExpression);
