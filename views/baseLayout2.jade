@@ -4,9 +4,17 @@ html(ng-app='createQuizApp')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         meta(name='description', content='')
         meta(charset='UTF-8')
-        script(src='/js/jquery-1.11.0.js')
-        script(src='/js/uuid.js')
-        script(src='/js/bootstrap.js')
+        meta(property='og:title', content='Spot student learning gaps instantly')
+        meta(property='og:site_name', content='Quizalize')
+        meta(property='og:url', content='http://www.quizalize.com')
+        meta(property='og:description', content='Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.')
+        meta(property='og:type', content='website')
+        meta(property='og:image', content='http://www.quizalize.com/cquiz/img/quizalize meta.png')
+        meta(name='twitter:card', content='summary_large_image')
+        meta(name='twitter:site', content='@quizalizeapp')
+        meta(name='twitter:creator', content='@quizalizeapp')
+        script(src='/lib/jquery-1.11.0.js')
+        script(src='/lib/bootstrap.js')
         script.
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -15,15 +23,22 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
-        link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
-        link(href='/cquiz/css/style2.css', rel='stylesheet')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
-
+        link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
+        link(href='/cquiz/css/bootstrap.min.css', rel='stylesheet', type='text/css')
+        link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+        link(href='/cquiz/css/nivo-lightbox.css', rel='stylesheet')
+        link(href='/cquiz/css/nivo-lightbox-theme/default/default.css', rel='stylesheet', type='text/css')
+        link(href='/cquiz/css/owl.carousel.css', rel='stylesheet', media='screen')
+        link(href='/cquiz/css/owl.theme.css', rel='stylesheet', media='screen')
+        link(href='/cquiz/css/flexslider.css', rel='stylesheet')
+        link(href='/cquiz/css/animate.css', rel='stylesheet')
+        link(href='/cquiz/css/style.css', rel='stylesheet')
+        link(href='/cquiz/color/default.css', rel='stylesheet')
         block header
         style.
             body{
-                padding-top: 75px;
             }
             .container.ng-enter {
                 -webkit-transition: .3s ease-out all; /* Safari/Chrome */
@@ -62,11 +77,28 @@ html(ng-app='createQuizApp')
                 font-weight: 700;
             }
 body
-    span asdf
-    .navbar.navbar-default.navbar-fixed-top
-        .container
-            .navbar-header
-                a(href="/#")
-                    img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+    #navigation
+            .nav.navbar.navbar-custom.reduced_nav(role='navigation')
+                .container.red_nav
+                    .row
+                        .col-xs-2.site-logo-container
+                            .site-logo
+                                img(src='/cquiz/img/logo 2.png')         
+                        .col-xs-10
+                            .navbar-header
+                                button.navbar-toggle(type='button', data-toggle='collapse', data-target='#menu')
+                                    i.fa.fa-bars
+                            #menu.collapse.navbar-collapse
+                                ul.nav.navbar-nav.navbar-right
+                                    li
+                                        a(href='/packages') Services and packages
+                                    li
+                                        a(onclick="ask('order')") Info pack               
+                                    li
+                                        a(onclick="ask('demo')") Book a demo               
+                                    li
+                                        a#StudentLogin(href='/app') Student Login             
+                                    li
+                                        a#LoginButton(href='/quiz/login') Teacher Login
 
     block body

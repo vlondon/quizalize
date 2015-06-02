@@ -11,7 +11,6 @@ require('quizApp/config/logProvider');
 require('quizApp/factories/QuizData');
 
 require('quizApp/controllers/NavBarController');
-require('quizApp/controllers/MarketController');
 require('quizApp/controllers/StartController');
 require('quizApp/controllers/LoginController');
 require('quizApp/controllers/PublicController');

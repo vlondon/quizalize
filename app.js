@@ -37,8 +37,6 @@ app.get('/quiz/create', quiz.create);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
-app.get('/user/:profileId', user.details);
-
 app.post('/users/register', user.registerEmail);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
@@ -64,8 +62,8 @@ app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
 app.post('/create/:profileId/quizzes/:id/delete', quiz.deleteQuiz);
 app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
 
-app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
-app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
+app.get('/create/:profileId/quizzes/:id/encrypt',quiz.encryptQuiz);
+app.post('/create/:profileId/quizzes/:id/decrypt',quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
@@ -77,10 +75,14 @@ app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
 
+
 ///// QUIZ OF THE DAY PAGES ////
 
 app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
+app.get('/packages', quiz.packages);
+
 /*
+
 
 
 Endpoints for students: actually we are making this client side
@@ -94,14 +96,13 @@ app.get('/landing1', quiz.landingpage);
 
 
 app.get('/tool/', quiz.landingpage);
+app.get('/quiz/', quiz.create);
 app.get('/app/', quiz.index);
 app.post('/quizHelp/', quiz.help);
 
 app.get('/quiz/service', quiz.service);
 app.get('/quiz/privacy', quiz.privacy);
 app.get('/quiz/find-a-quiz', quiz.quizFinder);
-app.get('/quiz/*', quiz.create);
-app.get('/quiz', quiz.create);
 
 //Things near top of list given priority
 app.use(express.static('public'));
@@ -126,12 +127,12 @@ function isIE(req) {
   return isIE;
 }
 
-
+ 
 // note: the next method param is passed as well
 function checkForMobile(req, res, next) {
   // check to see if the caller is a mobile device
   var isMobile = isCallerMobile(req);
-
+ 
   if (isMobile) {
     console.log("Going mobile");
     res.redirect('/mobile');

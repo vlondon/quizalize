@@ -60,7 +60,7 @@ angular.module('createQuizApp')
                     cuuid = quiz.categoryId;
                     if (result.categories !== undefined) {
                         for (var o in result.categories) {
-                            if (result.categories[i].uuid === quiz.categoryId) {
+                            if (result.categories[o].uuid === quiz.categoryId) {
                                 category = result.categories[o];
                             }
                         }
@@ -214,7 +214,7 @@ angular.module('createQuizApp')
             //User methods
             unsetUser: function() {
                 var result = userUuid !== '' && userUuid !== undefined;
-                setUser(null);
+                setUser();
                 return result;
             },
             getUser: function () {
@@ -492,12 +492,7 @@ angular.module('createQuizApp')
                 });
             },
             getEncryptedLink: function(id, callback) {
-                $http.get("/create/" + userUuid + "/quizzes/" + id + "/encrypt").success(function(result){
-                    $log.debug("Response from sharing: ", result);
-                    callback(result);
-                }).error(function(err){
-                    $log.debug("Error from sharing: ", err);
-                });
+                callback(quizData[id].code);
             },
             shareQuiz: function(id, emails, link) {
                 var tokensSpace = emails.split(" ");

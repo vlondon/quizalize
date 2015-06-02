@@ -1,4 +1,4 @@
-angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log', '$routeParams', '$location', '$http', function(QuizData, $log, $routeParams, $location,$http){
+angular.module('createQuizApp').controller('LoginController', function(QuizData, $rootScope, $log, $routeParams, $location, $http){
     var self = this;
 
     self.email = "";
@@ -6,15 +6,15 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
     self.mode = "login";
 
     self.focusPassword = function() {
-        $('#password').focus();
+    	$('#password').focus();
     }
 
-    var authenticate = function(email, password) {
-        return $http.post("/user/authenticate", {email: email, password: password});
+    var authenticate = function(email,password) {
+        return $http.post("/user/authenticate",{email: email,password: password});
     }
 
     var register = function(email,password) {
-        return $http.post("/user/register", {email: email,password: password});
+        return $http.post("/user/register",{email: email,password: password});
     }
 
     var forget = function(email) {
@@ -51,7 +51,7 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
 
     self.initialScreen = $routeParams.init;
 
-    if (self.initialScreen == 'login') {
+    if (self.initialScreen=='login') {
         self.showLogin();
     }
     else if (self.initialScreen=='register') {
@@ -71,6 +71,7 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
                 QuizData.setUser(resp);
                 $location.path("/quiz#/");
                 $log.debug("Response",resp);
+                $rootScope.$broadcast('USER_LOGGED_IN');
             }).error(function(er,status){
                 QuizData.showMessage("Login Error","Invalid Details during login");
                 //$log.debug("Error ", er);
@@ -85,7 +86,7 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
                 });
             }).error(function(err,status){
                 var message = "Invalid Registration";
-                if (status == 409) {
+                if (status==409) {
                     message = "This email has already been used";
                 }
                 QuizData.showMessage("Registration Error",message);
@@ -97,10 +98,10 @@ angular.module('createQuizApp').controller('LoginController', ['QuizData', '$log
                 //$log.debug("Response",resp);
                 QuizData.showMessage("Reset Password","If you are registered, please check your email for instructions on how to reset your password");
             }).error(function(er){
-                QuizData.showMessage("Reset Error", "The email address you entered doesn’t match a Quizalize user");
+                QuizData.showMessage("Reset Error","The email address you entered doesn’t match a Quizalize user");
                 //QuizData.showMessage("Error with resetting password",er);
                 //$log.debug("Error ", er);
             });
         }
     }
-}]);
+});
