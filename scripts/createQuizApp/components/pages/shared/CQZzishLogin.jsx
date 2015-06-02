@@ -47,15 +47,9 @@ var logout = function(postfix) {
 var CQZzishLogin = React.createClass({
 
     handleLogin: function(){
-        // var options = {
-        //     classcode: 0,
-        //     optionstoshow: ';teacher;student;',
-        //     redirectURL: url + '/quiz/',
-        //     verify: 0
-        // };
         var options = {
-            classcode: 2,
-            optionstoshow: ';student;teacher;',
+            classcode: 0,
+            optionstoshow: ';teacher;student;',
             redirectURL: url + '/quiz/',
             verify: 0
         };
