@@ -11,6 +11,7 @@ var UserStore           = require('createQuizApp/stores/UserStore');
 var _questionsTopicIdToTopic = function(quiz){
 
     var topics = TopicStore.getTopics();
+    console.warn('TOPCIS', topics);
 
     var findTopicName = function(topicId){
         var topic = topics.filter( t => t.uuid === topicId)[0];
@@ -39,7 +40,7 @@ var _questionsTopicToTopicId = function(quiz){
         if (topic === undefined){
             // we create a new topic and save it
             topic = {
-                uudi: uuid.v4(),
+                uuid: uuid.v4(),
                 name: topicName,
                 subContent: true,
                 parentCategoryId: quiz.categoryId
@@ -61,7 +62,7 @@ var _questionsTopicToTopicId = function(quiz){
             return question;
         });
     }
-    quiz.questions = questions;
+    // quiz.questions = questions;
 
     return quiz;
 };
@@ -216,7 +217,7 @@ var QuizActions = {
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
-                    payload: quiz
+                    payload: _questionsTopicIdToTopic(quiz)
                 });
                 this.loadQuizzes();
                 resolve(quiz);

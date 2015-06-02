@@ -30,15 +30,11 @@ var CQEdit = React.createClass({
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
         console.log("QUIAAA", quiz, props.quizId);
-        // if (quiz === undefined){
-        //
-        // }
-
         return quiz;
     },
 
     componentDidMount: function() {
-        QuizActions.loadQuiz(this.props.quizId);
+
         // QuizActions.loadQuizzes();
         QuizStore.addChangeListener(this.onChange);
         this.onChange();
@@ -64,7 +60,13 @@ var CQEdit = React.createClass({
     },
 
     onChange: function(props){
+
         props = props || this.props;
+        // TODO: we need to load the quiz without having to worry about
+        // if the quiz store have finished loading
+        if (QuizStore.getQuizzes().length !== 0 && QuizStore.getQuiz(props.quizId) === undefined) {
+            QuizActions.loadQuiz(this.props.quizId);
+        }
 
         var newState = {
             quiz: this._getQuiz(props)
