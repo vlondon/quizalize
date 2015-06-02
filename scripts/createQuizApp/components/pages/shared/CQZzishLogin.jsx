@@ -8,7 +8,7 @@ var protocol = pathArray[0];
 var host = pathArray[2];
 var url = protocol + '//' + host;
 
-var login = function (postfix) {
+var login = function (options) {
     var type = "redirect"; //can be a popup instead
 
     //represents a user (that may be a zzish login)
@@ -16,7 +16,7 @@ var login = function (postfix) {
     if (userId === null) {
         //assume no token
         localStorage.removeItem("token");
-        Zzish.login(type, url + postfix);
+        Zzish.login(type, options);
     }
     else {
         //just go to the logged in url
@@ -47,7 +47,19 @@ var logout = function(postfix) {
 var CQZzishLogin = React.createClass({
 
     handleLogin: function(){
-        login('/quiz/');
+        // var options = {
+        //     classcode: 0,
+        //     optionstoshow: ';teacher;student;',
+        //     redirectURL: url + '/quiz/',
+        //     verify: 0
+        // };
+        var options = {
+            classcode: 2,
+            optionstoshow: ';student;teacher;',
+            redirectURL: url + '/quiz/',
+            verify: 0
+        };
+        login(options);
     },
 
     render: function() {
