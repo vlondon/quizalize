@@ -6,7 +6,9 @@ var CQEditNormal = require('./CQEditNormal');
 var CQQuestionList = React.createClass({
     propTypes: {
         quiz: React.PropTypes.object.isRequired,
-        handleSave: React.PropTypes.func.isRequired
+        handleSave: React.PropTypes.func.isRequired,
+        questionIndex: React.PropTypes.number,
+        handleQuestion: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -30,23 +32,51 @@ var CQQuestionList = React.createClass({
         var questions;
         var isNewQuestion;
         var addButton;
-        var questionEditor = (<CQEditNormal
-            question={this.props.quiz.questions[this.props.questionIndex]}
-            onChange={this.handleQuestion}
-            onSave={this.handleSave}/>);
+
+        var questionEditor = (
+            <CQEditNormal
+                quiz={this.props.quiz}
+                questionIndex={this.props.questionIndex}
+                onChange={this.handleQuestion}
+                onSave={this.handleSave}/>
+            );
+
         var newQuestionEditor;
 
         if (this.props.questionIndex === this.props.quiz.questions.length){
-            newQuestionEditor = questionEditor;
-            isNewQuestion = true;
-            addButton = (<div/>);
-        } else {
-            addButton = (<CQLink href={`/quiz/create/${this.props.quiz.uuid}/`}>
+            console.log('is new question!!!!');
+            newQuestionEditor = (
+                <span className='new-question'>
+                    <div className="col-sm-6">
+                        <h4>
+                            <i>{this.props.questionIndex + 1}. Creating new question</i>
+                        </h4>
+                    </div>
+                    <div className="col-sm-4">
+                        <h4 className="text-info">
 
-                <button type='button' style={{margin: '4px'}} className="btn btn-info">
-                    <span className="glyphicon glyphicon-plus"></span>
-                </button>
-            </CQLink>);
+                        </h4>
+                    </div>
+
+                    <div className="clearfix"></div>
+                    {questionEditor}
+                </span>
+            );
+            isNewQuestion = true;
+        } else {
+
+            addButton = (
+                <div className='new-question-cta'>
+
+                    <CQLink href={`/quiz/create/${this.props.quiz.uuid}/${this.props.quiz.questions.length}`}>
+                        <button type='button' style={{margin: '4px'}} className="btn">
+                            <span className="glyphicon glyphicon-plus"></span>
+                            &nbsp;Add a new question
+                        </button>
+                    </CQLink>
+
+                </div>
+            );
             newQuestionEditor = (<div/>);
             isNewQuestion = false;
         }
@@ -99,18 +129,10 @@ var CQQuestionList = React.createClass({
                 <div className="col-xs-12 ">
                     <div className="well">
                         {questions}
+
                         <div className={isNewQuestion ? 'row selected' : 'row'}>
-                            <div className="col-sm-10">
-                                <h4>
-                                    {this.props.quiz.questions.length + 1}. Add a new question
-                                </h4>
-                            </div>
-                            <div className="col-sm-2 icons">
-                                {addButton}
 
-
-                            </div>
-
+                            {addButton}
                             {newQuestionEditor}
                         </div>
 

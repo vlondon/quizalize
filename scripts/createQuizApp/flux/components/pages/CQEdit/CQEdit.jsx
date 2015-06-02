@@ -75,7 +75,7 @@ var CQEdit = React.createClass({
             if (props.questionIndex) {
                 newState.questionIndex = parseInt(props.questionIndex, 10);
             } else {
-                newState.questionIndex = newState.quiz.questions.length;
+                // newState.questionIndex = newState.quiz.questions.length;
                 // newState.questionIndex = this.state.questionIndex;
             }
 
@@ -113,10 +113,17 @@ var CQEdit = React.createClass({
 
         this.setState({quiz, questionIndex}, ()=>{
             QuizActions.newQuiz(this.state.quiz);
-            router.setRoute(`/quiz/create/${quiz.uuid}`);
+            router.setRoute(`/quiz/create/${quiz.uuid}/${quiz.questions.length}`);
 
         });
     },
+
+    handleCheckbox: function(property){
+        var quiz = assign({}, this.state.quiz);
+        quiz[property] = !this.state.quiz[property];
+        this.setState({quiz});
+    },
+
 
     render: function() {
 
@@ -125,26 +132,48 @@ var CQEdit = React.createClass({
 
 
             return (
-                <CQPageTemplate className="container">
+                <CQPageTemplate className="container cq-edit">
                     <div className="container">
                         <div className="row">
                             <div className="col-xs-12">
-                                <div className="well">
-                                    <h3>{this.state.mode}
-                                        <span style={{color: 'red'}}>Question {this.state.currentQuestion} </span>for {this.state.quiz.name}
-                                            <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
-                                                <button ng-click="create.editQuiz();" style={{margin: '8px'}} className="btn btn-sm btn-info">
-                                                    <span className="glyphicon glyphicon-cog"> </span>
-                                                </button>
-                                            </CQLink>
-                                        </h3>
-                                        <p className="small">
-                                            Speed Tip: We found clicking is a pain - just hit enter to step through quickly
-                                        </p>
+                                <div >
 
+                                    <div className="quiz-extras">
 
+                                        <div className="math-mode">
+                                            <span>Math mode</span>
+                                            <label  className="switch">
+                                                <input type="checkbox" className="switch-input"  checked={this.state.quiz.latexEnabled} onChange={this.handleCheckbox.bind(this, 'latexEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                                                <span className="switch-label" data-on="Yes" data-off="No"></span>
+                                                <span className="switch-handle"></span>
+                                            </label>
+                                        </div>
 
+                                        <div className="image-mode">
+                                            <span>Use Images</span>
+                                            <label  className="switch">
+                                                <input type="checkbox" className="switch-input"  checked={this.state.quiz.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                                                <span className="switch-label" data-on="Yes" data-off="No"></span>
+                                                <span className="switch-handle"></span>
+                                            </label>
+                                        </div>
                                     </div>
+
+                                    <h3>Now editing quiz &nbsp;
+                                        <span style={{color: 'red'}}>{this.state.quiz.name}</span>
+                                        <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
+                                            <button ng-click="create.editQuiz();" style={{margin: '8px'}} className="btn btn-sm btn-info">
+                                                <span className="glyphicon glyphicon-cog"> </span>
+                                            </button>
+                                        </CQLink>
+                                    </h3>
+                                    <p className="small">
+                                        Speed Tip: We found clicking is a pain - just hit enter to step through quickly
+                                    </p>
+
+
+
+                                </div>
 
                                     <div className="row">
                                         <div className="col-xs-12">
@@ -177,6 +206,7 @@ var CQEdit = React.createClass({
                                         handleSave={this.handleSave}/>
                                 </div>
                             </div>
+
                         </div>
                     </CQPageTemplate>
                 );
