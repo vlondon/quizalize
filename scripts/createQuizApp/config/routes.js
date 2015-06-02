@@ -7,7 +7,8 @@ var CQPublic            = require('createQuizApp/components/pages/CQPublic');
 var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/components/pages/CQLogin');
 var CQRegister          = require('createQuizApp/components/pages/CQRegister');
-var CQRecoverPassword          = require('createQuizApp/components/pages/CQRecoverPassword');
+var CQRecoverPassword   = require('createQuizApp/components/pages/CQRecoverPassword');
+var CQRedirect          = require('createQuizApp/components/pages/CQRedirect');
 var CQQuizzes           = require('createQuizApp/components/pages/CQQuizzes');
 var CQCreate            = require('createQuizApp/components/pages/CQCreate');
 var CQEdit              = require('createQuizApp/components/pages/CQEdit');
@@ -22,7 +23,8 @@ var pages = {
     pathParams: {
         quizId: /([\w\-]+)/,
         questionIndex: /([\w\-]+)/,
-        classCode: /([\w\-]+)/
+        classCode: /([\w\-]+)/,
+        redirectURL: /([\w\-]+)/
     },
     mainPage: {
         path: '/quiz',
@@ -115,6 +117,18 @@ var pages = {
             );
         }
     },
+    redirect: {
+        path: '/quiz/playh/:redirectURL',
+        pathRegEx: /\/quiz\/playh\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQRedirect, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
     create: {
         path: '/quiz/create',
         needsLogin: true,
