@@ -15,8 +15,10 @@ require('sweetalert/dev/sweetalert.scss');
 var CQRegister = React.createClass({
 
     getInitialState: function() {
+        console.log('window.location.search;,', window.location.search);
         return {
-            isRedirect: urlParams().redirect ? true : false
+            isRedirect: urlParams().redirect ? true : false,
+            redirectUrl: ''
         };
     },
 
@@ -52,7 +54,7 @@ var CQRegister = React.createClass({
                                 buttonLabel='Sign up'>
                                 <div>
                                     Already registered?&nbsp;
-                                    <CQLink href="/quiz/login">Log in</CQLink>
+                                    <CQLink href={`/quiz/login${window.location.search}`}>Log in</CQLink>
                                 </div>
                             </CQLoginForm>
                         </div>
