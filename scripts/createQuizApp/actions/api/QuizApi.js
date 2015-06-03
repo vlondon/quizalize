@@ -31,6 +31,9 @@ var QuizApi = {
                     if (error) {
                         reject();
                     } else {
+                        console.log('res', res.body);
+                        res.body.categories = res.body.categories.filter(c => c !== null);
+                        res.body.contents = res.body.contents.filter(c => c !== null);
                         resolve(res.body);
                     }
 
