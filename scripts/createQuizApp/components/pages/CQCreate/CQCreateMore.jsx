@@ -13,6 +13,12 @@ var removeUndefinedProps = function(obj) {
 
 var CQCreateMore = React.createClass({
 
+    getDefaultProps: function() {
+        return {
+            settings: {}
+        };
+    },
+
     propTypes: {
         onSettings: React.PropTypes.func.isRequired,
         settings: React.PropTypes.object

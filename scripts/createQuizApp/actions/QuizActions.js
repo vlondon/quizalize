@@ -61,7 +61,6 @@ var _questionsTopicToTopicId = function(quiz){
             return question;
         });
     }
-    // quiz.questions = questions;
 
     return quiz;
 };
@@ -109,13 +108,43 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
-        QuizApi.getQuiz(quizId)
-            .then(function(quiz){
+        var quizzesPromise = QuizApi.getQuizzes();
+        var quizPromise = QuizApi.getQuiz(quizId);
+        var topicsPromise = QuizApi.getTopics();
+
+
+        Promise.all([quizzesPromise, quizPromise, topicsPromise])
+            .then(function(value){
+
+                // // let's stitch quizzes to their topic
+                var loadedQuizzes = value[0];
+                var quiz = value[1];
+                var topics = value[2];
+                //
+                var getCategoryFormUuid = function(){
+
+                    if (!quiz.categoryId) {
+                        var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
+                        quiz.categoryId = fq.categoryId;
+                    }
+                    //
+                    if (quiz.categoryId) {
+                        var topicFound = topics.filter( t => t.uuid === quiz.categoryId )[0];
+                        return topicFound ? topicFound.name : '';
+                    }
+                    return '';
+
+                };
+
+                quiz.category = getCategoryFormUuid();
+
+                console.log('a');
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
                     payload: _questionsTopicIdToTopic(quiz)
                 });
+
             });
     },
 
@@ -262,7 +291,6 @@ var QuizActions = {
         QuizApi.shareQuiz(quizId, data);
 
     }
-
 
 };
 
