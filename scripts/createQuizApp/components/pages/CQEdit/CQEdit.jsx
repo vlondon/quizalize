@@ -194,7 +194,7 @@ var CQEdit = React.createClass({
                                                     <h2 ng-show="create.quiz.questions.length&gt;1">Your questions</h2><br/>
                                                 </div>
                                                 <div ol-style="margin-top:21px" className="col-sm-2">
-                                                    <a href={`/app#/preview/${this.state.quiz.uuid}`} style={{display: 'none'}} target="zzishgame" className="btn btn-block btn-info">
+                                                    <a href={`/app#/preview/${this.state.quiz.uuid}`} target="zzishgame" className="btn btn-block btn-info">
                                                         Preview
                                                     </a>
 
@@ -202,7 +202,7 @@ var CQEdit = React.createClass({
                                                 <div ol-style="margin-top:21px" className="col-sm-3">
                                                     <CQLink href={`/quiz/published/${this.state.quiz.uuid}`}>
 
-                                                        <button click="create.finished()" ng-show="create.quiz.questions.length&gt;0" className="btn btn-block btn-primary">
+                                                        <button className="btn btn-block btn-primary">
                                                             I'm Finished, let's play!
                                                         </button>
                                                     </CQLink>

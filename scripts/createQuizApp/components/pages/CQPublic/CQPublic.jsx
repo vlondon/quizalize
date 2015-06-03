@@ -36,7 +36,6 @@ var CQPublic = React.createClass({
     getState: function(){
 
         var quizzes = QuizStore.getPublicQuizzes();
-        console.log('quizzes', quizzes);
         var newState = { quizzes };
 
         return newState;

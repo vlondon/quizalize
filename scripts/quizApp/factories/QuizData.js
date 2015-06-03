@@ -1,8 +1,10 @@
 var randomise = require('quizApp/utils/randomise');
 
-
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
-    if(typeof zzish == 'undefined') $log.error("Require zzish.js to use zzish");
+    if(typeof zzish == 'undefined') {
+        $log.error("Require zzish.js to use zzish");
+    }
+
     var settings = require('quizApp/config/settings');
 
     zzish.init(initToken);
@@ -373,23 +375,25 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 selectQuiz(catId,quizId,loaded,callback);
             }
         },
-        selectQuiz: function(catId,quizId,isLoaded,callback) {
-            selectQuiz(catId,quizId,isLoaded,callback);
+        selectQuiz: selectQuiz,
+        previewQuiz: function(quizId, callback) {
+            var uuid = localStorage.getItem('uuid');
+            $http.get(`/create/${uuid}/quizzes/${quizId}`).then(function(response){
+                console.log('we got quiz!', response.data);
+                setQuiz(response.data);
+                callback(response.data);
+            });
+            // var quizData = JSON.parse(localStorage.getItem("quizData"));
+            // if (quizData !== undefined) {
+            //     var quiz = quizData[quizId];
+            //     setQuiz(quiz);
+            //     callback(quiz);
+            // }
+            // else {
+            //     console.error('No data found for quiz', quizId);
+            // }
         },
-        previewQuiz: function(quizId,callback) {
-            var quizData = JSON.parse(localStorage.getItem("quizData"));
-            if (quizData!=undefined) {
-                var quiz = quizData[quizId];
-                setQuiz(quiz);
-                callback(quiz);
-            }
-            else {
-
-            }
-        },
-        selectQuestionType: function(index) {
-            return selectQuestionType(index);
-        },
+        selectQuestionType: selectQuestionType,
         currentQuiz: function() {
             return currentQuiz;
         },
@@ -460,6 +464,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         },
         answerQuestion: function(idx, response, answer, questionName, duration){
+
             var question = currentQuiz.questions[idx];
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
@@ -482,14 +487,17 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 },
                 extensions: {},
                 attributes: {}
-            }
+            };
+
             if (question.topicId) {
                 parameters.extensions["categoryId"] = question.topicId;
             }
             if (question.imageURL) {
                 parameters.attributes["image_url"] = question.imageURL;
             }
-            zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
+            if (currentQuizResult.currentActivityId !== undefined) {
+                zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
+            }
 
             if(correct) {
                 currentQuizResult.correct++;
@@ -510,7 +518,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 duration: duration
             };
             currentQuizResult.report.push(reportItem);
-            localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
+            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
         },
         generateNextQuestionUrl: function(questionId) {
             var q = questionId + 1;
@@ -535,7 +543,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 })
             }
         },
-        showMessage : function(title,message,callBack) {
+        showMessage : function(title, message, callBack) {
             if (callBack!=null) {
                 var uuidGen = uuid.v4();
                 $("#modalUuid").val(uuidGen);
@@ -550,7 +558,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             $("#closeButton").html("OK");
             $("#messageButton").click();
         },
-        confirmWithUser : function(title,message,callBack) {
+        confirmWithUser : function(title, message, callBack) {
             var uuidGen = uuid.v4();
             $("#modalUuid").val(uuidGen);
             callbacks[uuidGen]=callBack;

@@ -61,7 +61,9 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
 
     self.start = function(){
         var url = "/quiz/" + self.catId + '/' + self.id + "/" + QuizData.selectQuestionType(0) + "/0";
-        QuizData.startCurrentQuiz();
+        if (self.catId !== 'private'){
+            QuizData.startCurrentQuiz();
+        }
         $location.path(url);
     };
 

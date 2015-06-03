@@ -11,7 +11,6 @@ var UserStore           = require('createQuizApp/stores/UserStore');
 var _questionsTopicIdToTopic = function(quiz){
 
     var topics = TopicStore.getTopics();
-    console.warn('TOPCIS', topics);
 
     var findTopicName = function(topicId){
         var topic = topics.filter( t => t.uuid === topicId)[0];
