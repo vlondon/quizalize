@@ -128,7 +128,6 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
                     });
                 });
             },200);
-            self.showButtons = true;
         }
         else {
             self.showButtons = true;
