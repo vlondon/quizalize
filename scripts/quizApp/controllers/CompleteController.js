@@ -7,6 +7,19 @@ var maxTime = settings.maxTime;
 var minScore = settings.minScore;
 var gracePeriod = settings.gracePeriod;
 
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    showProcessingMessages: false,
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },    
+    "HTML-CSS": { availableFonts: ["TeX"] }
+});
+MathJax.Hub.Configured();   
+
 angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', '$scope', function(QuizData, $log, $location, $scope){
     var self = this;
     self.hasTopics = false;
@@ -101,7 +114,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);
         if (self.data.latexEnabled) {
-            setTimeout(function() {
+            setTimeout(function() {                
                 var items = self.data.report;
                 for(var j in items){
                     var item = items[j];
@@ -114,8 +127,7 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
                         self.showButtons = true;
                     });
                 });
-            },1000);
-            self.showButtons = true;
+            },200);
         }
         else {
             self.showButtons = true;
