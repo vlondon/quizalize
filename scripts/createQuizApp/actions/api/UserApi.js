@@ -36,10 +36,11 @@ var UserApi = {
             request.get(`/quiz/token/${token}`)
                 .end(function(error, res){
                     console.log('res', res);
-                    if (error || res.body.uuid === undefined) {
+                    if (error || (res.body && res.body.uuid === undefined)) {
                         reject();
                     } else {
-                        if (res.body === 'Invalid Request'){
+                        if (res.text === 'Invalid Request'){
+                            localStorage.removeItem('token');
                             reject();
                         } else {
                             localStorage.setItem('cqUuid', res.body.uuid);
