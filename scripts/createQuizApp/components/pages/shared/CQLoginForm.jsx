@@ -148,7 +148,7 @@ var CQLoginForm = React.createClass({
                     <div className="col-xs-8 col-xs-offset-2">
                         <br/>
                         <center>
-                            <p>Zzish is a universal teacher dashboard and unified student login system for educational software</p>
+                            <p>Zzish is a universal teacher dashboard and unified login system for educational software</p>
                         </center>
                     </div>
                 </div>
