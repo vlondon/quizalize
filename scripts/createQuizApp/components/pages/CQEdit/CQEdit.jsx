@@ -122,7 +122,7 @@ var CQEdit = React.createClass({
 
     handleCheckbox: function(property){
         var quiz = assign({}, this.state.quiz);
-        quiz[property] = !this.state.quiz[property];
+        quiz.settings[property] = !this.state.quiz.settings[property];
         this.setState({quiz});
     },
 
@@ -155,7 +155,7 @@ var CQEdit = React.createClass({
                                         <div className="math-mode">
                                             <span>Math mode</span>
                                             <label  className="switch">
-                                                <input type="checkbox" className="switch-input"  checked={this.state.quiz.latexEnabled} onChange={this.handleCheckbox.bind(this, 'latexEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                                                <input type="checkbox" className="switch-input"  checked={this.state.quiz.settings.latexEnabled} onChange={this.handleCheckbox.bind(this, 'latexEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
                                                 <span className="switch-label" data-on="Yes" data-off="No"></span>
                                                 <span className="switch-handle"></span>
                                             </label>
@@ -164,7 +164,7 @@ var CQEdit = React.createClass({
                                         <div className="image-mode">
                                             <span>Use Images</span>
                                             <label  className="switch">
-                                                <input type="checkbox" className="switch-input"  checked={this.state.quiz.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                                                <input type="checkbox" className="switch-input"  checked={this.state.quiz.settings.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
                                                 <span className="switch-label" data-on="Yes" data-off="No"></span>
                                                 <span className="switch-handle"></span>
                                             </label>

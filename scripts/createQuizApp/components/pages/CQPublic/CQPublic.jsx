@@ -71,7 +71,7 @@ var CQPublic = React.createClass({
                     Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
                 </p>
 
-                {this.state.quizzes.map((category, categoryIndex) =>{
+                {this.state.quizzes.map((category, categoryIndex) => {
                     return (<div className="row" key={categoryIndex}>
                         <div className="col-md-12">
                             <div className="quiz-topic-block">
