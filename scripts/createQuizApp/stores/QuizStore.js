@@ -95,7 +95,7 @@ AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_ADDED:
             var quizAdded = action.payload;
-            _fullQuizzes[quizAdded.uuid] = quiz;
+            _fullQuizzes[quizAdded.uuid] = quizAdded;
             QuizStore.emitChange();
             break;
 

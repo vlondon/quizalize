@@ -244,12 +244,14 @@ var QuizActions = {
             quiz = _questionsTopicToTopicId(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
-
+            
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
                     payload: _questionsTopicIdToTopic(quiz)
                 });
+
+                // TODO: Call loadQuizzes only if the quiz is new
                 this.loadQuizzes();
                 resolve(quiz);
             }, ()=> {
