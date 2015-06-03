@@ -30,7 +30,6 @@ var CQCreate = React.createClass({
         };
 
 
-
         return initialState;
 
     },
