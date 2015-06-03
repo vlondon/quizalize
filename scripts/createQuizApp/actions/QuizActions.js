@@ -88,7 +88,7 @@ var QuizActions = {
                         return t.uuid === quiz.categoryId;
                     })[0];
 
-                    quiz.category = topic;
+                    quiz.category = topic || {};
 
                     return quiz;
                 });
