@@ -2,6 +2,7 @@ var router          = require('./router');
 var pages           = require('./routes');
 var settings        = require('createQuizApp/config/settings');
 var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
+var GroupActions     = require('createQuizApp/actions/GroupActions');
 
 var UserStore       = require('createQuizApp/stores/UserStore');
 var UserActions     = require('createQuizApp/actions/UserActions');
@@ -135,7 +136,9 @@ var options = {
 // Add user listener
 UserStore.addChangeListener(function(){
     user = UserStore.getUser();
-
+    if (user !== undefined){
+        GroupActions.loadGroups();
+    }
     if (routerReady !== true) {
         router.init();
         routerReady = true;

@@ -87,6 +87,6 @@ var GroupActions = {
 
 
 };
-GroupActions.loadGroups();
+
 
 module.exports = GroupActions;
