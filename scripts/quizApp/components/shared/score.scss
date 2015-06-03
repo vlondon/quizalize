@@ -1,5 +1,7 @@
 
 .ql-score {
+    max-width: 768px;
+    margin: 0 auto;
     margin-top: 20px;
     height: 60px;
     color: #FFF;
@@ -7,7 +9,9 @@
     .questions {
         width: 50%;
     }
-    .score { float: left; }
+    .score { 
+        float: left; 
+    }
     .questions {
         float: right;
         text-align: right;
