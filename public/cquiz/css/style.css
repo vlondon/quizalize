@@ -1981,7 +1981,9 @@ a.btn:focus{
 	color:black;
 
 }
-.teach-acct { 
+.referral-text {
+	font-weight:900;
+	color:#FA5855;
 }
 
 @media (max-width:1200px){
