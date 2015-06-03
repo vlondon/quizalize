@@ -113,7 +113,7 @@ var CQLoginForm = React.createClass({
                             type='submit'
                             className="btn btn-primary btn-block">
 
-                            <span>{this.state.buttonLabel}</span>
+                            <span>{this.props.buttonLabel}</span>
 
                         </button>
 
