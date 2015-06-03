@@ -1,6 +1,7 @@
 var router          = require('./router');
 var pages           = require('./routes');
 var settings        = require('createQuizApp/config/settings');
+var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
 
 var UserStore       = require('createQuizApp/stores/UserStore');
 var UserActions     = require('createQuizApp/actions/UserActions');
@@ -99,11 +100,14 @@ var options = {
         console.warn('Page not found', router.getPath());
         renderPage(pages.pageNotFound);
     },
+    after: function(next){
+        AnalyticsActions.trackPageView();
+        next();
+    },
     before: function(){
         var destinationURL = newUrl(router.getPath());
         if (destinationURL === router.getPath()) {
             var next = arguments[arguments.length - 1];
-            console.log('next', next);
             if (next) { next(); }
         } else if (destinationURL) {
             if (routerReady) {

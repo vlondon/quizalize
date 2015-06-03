@@ -4,7 +4,8 @@
   "description": "Quizalize Quizzes",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest": "gulp test",
+    "test": "nodemon app.js",
     "prestart": "gulp",
     "start": "nodemon app.js"
   },

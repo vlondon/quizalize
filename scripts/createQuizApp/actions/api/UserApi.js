@@ -72,7 +72,10 @@ var UserApi = {
             request.post('/user/register')
                 .send(data)
                 .end(function(error, res){
-                    if (error){
+                    console.log('res', res);
+                    if (res.status === 409) {
+                        reject(res.text);
+                    } else if (error){
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place

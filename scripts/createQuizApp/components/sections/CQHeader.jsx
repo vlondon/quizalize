@@ -1,6 +1,8 @@
 var React = require('react');
 
 var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
+
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions = require('createQuizApp/actions/UserActions');
 
@@ -109,6 +111,7 @@ var CQHeader = React.createClass({
                         </ul>
                     </div>
                 </div>
+                <CQAnalytics/>
             </nav>
 
         );

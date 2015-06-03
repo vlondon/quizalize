@@ -18,15 +18,22 @@ var CQRegister = React.createClass({
         console.log('window.location.search;,', window.location.search);
         return {
             isRedirect: urlParams().redirect ? true : false,
-            redirectUrl: ''
+            redirectUrl: '',
+            isEnabled: true
         };
     },
 
     handleRegister: function(data){
-
+        this.setState({isEnabled: false});
         UserActions.register(data)
-            .catch(function(){
-                swal('Register Error', 'Something went wrong, please try again later.');
+            .catch(function(error){
+                console.log('error AAA', typeof error);
+                if (error === 'Duplicate Email address'){
+                    swal('Register Error', 'This email has already been used.');
+                } else {
+                    swal('Register Error', 'Something went wrong, please try again later.');
+                }
+                this.setState({isEnabled: true});
             });
     },
     render: function() {
@@ -50,7 +57,9 @@ var CQRegister = React.createClass({
 
                             {moreInfo}
 
-                            <CQLoginForm onSubmit={this.handleRegister}
+                            <CQLoginForm
+                                enabled={this.state.isEnabled}
+                                onSubmit={this.handleRegister}
                                 buttonLabel='Sign up'>
                                 <div>
                                     Already registered?&nbsp;

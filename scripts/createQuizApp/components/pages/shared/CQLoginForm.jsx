@@ -6,14 +6,17 @@ var CQLoginForm = React.createClass({
 
     propTypes: {
         onSubmit: React.PropTypes.func,
-        showPasswordField: React.PropTypes.bool
+        showPasswordField: React.PropTypes.bool,
+        enabled: React.PropTypes.bool,
+        buttonLabel: React.PropTypes.string
     },
 
     getDefaultProps: function() {
         return {
             onSubmit: function(){},
             buttonLabel: 'Log In',
-            showPasswordField: true
+            showPasswordField: true,
+            enabled: true
         };
     },
 
@@ -21,8 +24,15 @@ var CQLoginForm = React.createClass({
         return {
             email: '',
             password: '',
-            isReady: false
+            isReady: false,
+            buttonLabel: this.props.buttonLabel
         };
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        if (nextProps.enabled === true) {
+            this.setState({buttonLabel: nextProps.buttonLable});
+        }
     },
 
 
@@ -50,6 +60,8 @@ var CQLoginForm = React.createClass({
                 password: this.state.password
             });
         }
+
+        this.setState({buttonLabel: 'Working…'});
 
     },
 
@@ -97,11 +109,11 @@ var CQLoginForm = React.createClass({
                     </div>
                     <div className="col-sm-4">
                         <button ng-click="login.login();"
-                            disabled={!this.state.isReady}
+                            disabled={!this.state.isReady || !this.props.enabled}
                             type='submit'
                             className="btn btn-primary btn-block">
 
-                            <span>{this.props.buttonLabel}</span>
+                            <span>{this.state.buttonLabel}</span>
 
                         </button>
 

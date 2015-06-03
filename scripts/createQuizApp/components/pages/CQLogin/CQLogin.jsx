@@ -43,7 +43,7 @@ var CQLogin = React.createClass({
                 <div className="row">
                     <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
                         <div className="well">
-                            <h2 id="title">
+                            <h2 id="title" style={{'text-align': 'center'}}>
                                 Quizalize Login
                             </h2>
                             <CQLoginForm onSubmit={this.handleLogin}>

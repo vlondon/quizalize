@@ -2,8 +2,9 @@ var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
 var UserConstants       = require('createQuizApp/constants/UserConstants');
 var UserApi             = require('createQuizApp/actions/api/UserApi');
 var urlParams           = require('createQuizApp/utils/urlParams');
+var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
+var Promise             = require('es6-promise').Promise;
 
-var Promise = require('es6-promise').Promise;
 
 var handleRedirect = function(){
     var params = urlParams();
@@ -42,6 +43,7 @@ var UserActions = {
 
             UserApi.login(data)
                 .then(function(user){
+                    AnalyticsActions.triggerPixels();
                     if (handleRedirect() === false){
                         resolve(user);
                         AppDispatcher.dispatch({
@@ -95,20 +97,20 @@ var UserActions = {
 
     register: function(data) {
 
-
-
         return new Promise(function(resolve, reject){
 
             UserApi.register(data)
                 .then(function(user){
-
-                    if (handleRedirect() === false){
-                        resolve(user);
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_REGISTERED,
-                            payload: user
-                        });
-                    }
+                    
+                    AnalyticsActions.triggerPixels().then(function(){
+                        if (handleRedirect() === false){
+                            resolve(user);
+                            AppDispatcher.dispatch({
+                                actionType: UserConstants.USER_REGISTERED,
+                                payload: user
+                            });
+                        }
+                    });
                 })
                 .catch(function(error){
                     reject(error);
