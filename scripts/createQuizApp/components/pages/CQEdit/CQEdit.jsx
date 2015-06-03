@@ -194,7 +194,7 @@ var CQEdit = React.createClass({
                                                     <h2 ng-show="create.quiz.questions.length&gt;1">Your questions</h2><br/>
                                                 </div>
                                                 <div ol-style="margin-top:21px" className="col-sm-2">
-                                                    <a href={`/app#/preview/${this.state.quiz.uuid}`} ng-show="create.quiz.questions.length&gt;0" target="zzishgame" className="btn btn-block btn-info">
+                                                    <a href={`/app#/preview/${this.state.quiz.uuid}`} style={{display: 'none'}} target="zzishgame" className="btn btn-block btn-info">
                                                         Preview
                                                     </a>
 

@@ -64,7 +64,7 @@ var CQCreate = React.createClass({
 
 
 
-        if (newState.quiz.uuid !== undefined){
+        if (this.props.quizId !== undefined){
             newState.title = 'Edit a quiz';
         }
 

@@ -10,12 +10,10 @@ var UserApi = {
 
             if (!uuid && !token){
                 reject();
-            } else if (uuid && token) {
-                localStorage.clean();
-                reject();
-            } else if (token){
-                this.getZzishUser(token).then(resolve).catch(reject);
-            } else {
+            // } else if (uuid && token) {
+            //     localStorage.clean();
+            //     reject();
+            } else if(uuid) {
                 request.get(`/user/${uuid}`)
                     .end(function(error, res){
                         if (error) {
@@ -25,6 +23,8 @@ var UserApi = {
                         }
 
                     });
+            } else if (token){
+                this.getZzishUser(token).then(resolve).catch(reject);
             }
 
         });
@@ -36,12 +36,13 @@ var UserApi = {
             request.get(`/quiz/token/${token}`)
                 .end(function(error, res){
                     console.log('res', res);
-                    if (error) {
+                    if (error || res.body.uuid === undefined) {
                         reject();
                     } else {
                         if (res.body === 'Invalid Request'){
                             reject();
                         } else {
+                            localStorage.setItem('uuid', res.body.uuid);
                             resolve(res.body);
                         }
                     }

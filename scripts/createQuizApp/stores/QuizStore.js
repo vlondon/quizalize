@@ -93,6 +93,12 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
+        case QuizConstants.QUIZ_ADDED:
+            var quizAdded = action.payload;
+            _fullQuizzes[quizAdded.uuid] = quiz;
+            QuizStore.emitChange();
+            break;
+
 
         default:
             // no op

@@ -7,7 +7,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     zzish.init(initToken);
 
-    var userUuid = localStorage.getItem("userId");
+    var userUuid = localStorage.getItem("uuid");
     var userName =  localStorage.getItem("userName");
     zzish.getUser(userUuid,userName);
 
@@ -37,7 +37,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         else {
             userUuid = user.uuid;
             userName = user.name;
-            localStorage.setItem("userId",userUuid);
+            localStorage.setItem("uuid",userUuid);
             localStorage.setItem("userName",userName);
         }
     }
