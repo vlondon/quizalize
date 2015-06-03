@@ -319,7 +319,11 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getTopics: function(callback) {
             if (!topicsLoaded) {
-                zzish.listPublicContent(function(err,data) {
+                zzish.listPublicContent(function(err, data) {
+
+                    data.payload.categories = data.payload.categories.filter(c => c !== null);
+                    data.payload.contents = data.payload.contents.filter(c => c !== null);
+
                     if (!err) {
                         processQuizCategories(data);
                     }
