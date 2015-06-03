@@ -145,9 +145,9 @@ var CQEditNormal = React.createClass({
 
                         <div className="entry-input-full-width">
                             <textarea
-                                value={this.state.question.imageUrl}
-                                onChange={this.handleChange.bind(this, 'imageUrl', undefined)}
-                                onKeyDown={this.handleNext.bind(this, 'imageUrl', undefined)}
+                                value={this.state.question.imageURL}
+                                onChange={this.handleChange.bind(this, 'imageURL', undefined)}
+                                onKeyDown={this.handleNext.bind(this, 'imageURL', undefined)}
                                 id="imageUrl"
                                 ref='imageUrl'
                                 placeholder="e.g. http://www.quizalize.com/graph.png"

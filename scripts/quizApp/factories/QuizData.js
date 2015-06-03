@@ -372,12 +372,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 if (catId=="public" || catId.indexOf("share:")==0) {
                     loaded = false;
                 }
-                selectQuiz(catId,quizId,loaded,callback);
+                selectQuiz(catId, quizId, loaded, callback);
             }
         },
         selectQuiz: selectQuiz,
         previewQuiz: function(quizId, callback) {
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
             $http.get(`/create/${uuid}/quizzes/${quizId}`).then(function(response){
                 console.log('we got quiz!', response.data);
                 setQuiz(response.data);
