@@ -39,7 +39,7 @@ var CQAnalytics = React.createClass({
         if (this.state.googleConversion) {
             googleConversion = (
                 <span className="google-conversion">
-                    <img height="1" width="1" style={{'border-style': 'none'}} alt="" src="//www.googleadservices.com/pagead/conversion/1034680765/?value=1.00&amp;amp;current_code=GBP&amp;amp;label=Tp2vCKeA3lcQvfOv7QM&amp;amp;guid=ON&amp;amp;script=0"/>
+                    <img height="1" width="1" style={{'border-style': 'none'}} alt="" src="//www.googleadservices.com/pagead/conversion/1034680765/?value=1.00&amp;amp;current_code=GBP&amp;amp;label=FqfWCIWT-lwQvfOv7QM&amp;amp;guid=ON&amp;amp;script=0"/>
                 </span>
             );
         }
