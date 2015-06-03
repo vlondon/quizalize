@@ -321,10 +321,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (!topicsLoaded) {
                 zzish.listPublicContent(function(err, data) {
 
-                    data.payload.categories = data.payload.categories.filter(c => c !== null);
-                    data.payload.contents = data.payload.contents.filter(c => c !== null);
-
                     if (!err) {
+                        data.categories = data.categories.filter(c => c !== null);
+                        data.contents = data.contents.filter(c => c !== null);
                         processQuizCategories(data);
                     }
                     callback(topics);
@@ -360,6 +359,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         loadPublicQuizzes: function(callback){
             zzish.listPublicContent(function(err, message){
                 if(!err) {
+                    data.categories = data.categories.filter(c => c !== null);
+                    data.contents = data.contents.filter(c => c !== null);
+
                     processQuizData(message,true);
                 }
                 callback(err, message);
