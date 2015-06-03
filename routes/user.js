@@ -76,7 +76,7 @@ exports.forget =  function(req, res) {
     zzish.authenticate(email1,null,function(err,data) {
         if (!err) {
             res.status(200);
-            var link = "http://www.quizalize.com/quiz#/account/reset/"+encrypt(data);
+            var link = "http://www.quizalize.com/quiz/reset/"+encrypt(data);
             var registerEmail = "Hi there\n\nClick on the following link to reset your password:\n\n" + link + "\n\nThe Quizalize Team\nwww.quizalize.com";
             email.sendEmail('team@zzish.com',[req.body.emailAddress],'Password Reset',registerEmail);
         }
