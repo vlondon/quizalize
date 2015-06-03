@@ -82,6 +82,9 @@
          @include media($size-mobile) {
             font-size:2.5vw;
         }
+        @include media($size-widescreen) {
+            font-size:2vw;
+        }
 
     }
 
@@ -132,7 +135,7 @@
         overflow: hidden;
 
         @include media($size-mobile) {
-            font-size:40px;
+            font-size:38px;
         }
 
         strong {
