@@ -5,7 +5,7 @@ var UserApi = {
 
     get: function(){
         return new Promise((resolve, reject) => {
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
             var token = localStorage.getItem('token');
 
             if (!uuid && !token){
@@ -42,7 +42,7 @@ var UserApi = {
                         if (res.body === 'Invalid Request'){
                             reject();
                         } else {
-                            localStorage.setItem('uuid', res.body.uuid);
+                            localStorage.setItem('cqUuid', res.body.uuid);
                             resolve(res.body);
                         }
                     }
@@ -60,7 +60,7 @@ var UserApi = {
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place
-                        localStorage.setItem('uuid', res.body.uuid);
+                        localStorage.setItem('cqUuid', res.body.uuid);
                         resolve(res.body);
                     }
                 });
@@ -79,7 +79,7 @@ var UserApi = {
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place
-                        localStorage.setItem('uuid', res.body.uuid);
+                        localStorage.setItem('cqUuid', res.body.uuid);
                         resolve(res.body);
                     }
                 });

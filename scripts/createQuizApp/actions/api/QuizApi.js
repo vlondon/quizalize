@@ -5,7 +5,7 @@ var QuizApi = {
 
     getQuizzes: function(){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -42,7 +42,7 @@ var QuizApi = {
 
     getQuiz: function(quizId){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -62,7 +62,7 @@ var QuizApi = {
 
     deleteQuiz: function(quizId){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -84,7 +84,7 @@ var QuizApi = {
 
     getTopics: function(){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -104,7 +104,7 @@ var QuizApi = {
 
     putTopic: function(topic){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -124,7 +124,7 @@ var QuizApi = {
 
     putQuiz: function(quiz){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -144,7 +144,7 @@ var QuizApi = {
     },
     shareQuiz: function(quizId, data){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();

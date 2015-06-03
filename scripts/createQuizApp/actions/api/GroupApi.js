@@ -6,7 +6,7 @@ var GroupApi = {
 
     getGroups: function(){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -27,7 +27,7 @@ var GroupApi = {
 
     getGroupContents: function(){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -48,7 +48,7 @@ var GroupApi = {
 
     unpublishQuiz: function(quizId, groupCode){
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -70,7 +70,7 @@ var GroupApi = {
     publishNewAssignment: function(quizId, groupName){
         return new Promise(function(resolve, reject){
 
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
@@ -96,7 +96,7 @@ var GroupApi = {
     publishAssignment: function(quizId, data){
         return new Promise(function(resolve, reject){
 
-            var uuid = localStorage.getItem('uuid');
+            var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
