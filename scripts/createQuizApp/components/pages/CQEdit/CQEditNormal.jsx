@@ -136,7 +136,7 @@ var CQEditNormal = React.createClass({
 
         var imageLink;
 
-        if (this.props.quiz.imageEnabled) {
+        if (this.props.quiz.settings.imageEnabled) {
             imageLink = (
                 <div className='block clearfix'>
 
@@ -167,7 +167,7 @@ var CQEditNormal = React.createClass({
         }
 
         return (
-            <div className={this.props.quiz.latexEnabled ? 'create-question latex-enabled' : 'create-question'}>
+            <div className={this.props.quiz.settings.latexEnabled ? 'create-question latex-enabled' : 'create-question'}>
 
 
                 {imageLink}
@@ -194,7 +194,7 @@ var CQEditNormal = React.createClass({
                         </div>
 
                         <div className="latex-field">
-                            {this.props.quiz.latexEnabled ? <CQLatexString>{this.state.question.question}</CQLatexString> : null}
+                            {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.question}</CQLatexString> : null}
                         </div>
                     </div>
                 </div>
@@ -214,7 +214,7 @@ var CQEditNormal = React.createClass({
                                 id="answer" type="text" on-enter="create.nextFromAnswer();" placeholder="e.g. Paris" ng-model="create.answerText" tabIndex="2" rows="1" cols="44" className="autogrow-short form-control"></textarea>
                         </div>
                         <div className="latex-field">
-                            {this.props.quiz.latexEnabled ? <CQLatexString>{this.state.question.answer}</CQLatexString> : null}
+                            {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.answer}</CQLatexString> : null}
                         </div>
                     </div>
                 </div>
@@ -238,7 +238,7 @@ var CQEditNormal = React.createClass({
                             </div>
 
                             <div className="latex-field">
-                                {this.props.quiz.latexEnabled ? <CQLatexString>{this.state.question.alternatives[0]}</CQLatexString> : null}
+                                {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.alternatives[0]}</CQLatexString> : null}
                             </div>
                         </div>
 
@@ -254,7 +254,7 @@ var CQEditNormal = React.createClass({
                             </div>
 
                             <div className="latex-field">
-                                {this.props.quiz.latexEnabled ? <CQLatexString>{this.state.question.alternatives[1]}</CQLatexString> : null}
+                                {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.alternatives[1]}</CQLatexString> : null}
                             </div>
                         </div>
 
@@ -271,7 +271,7 @@ var CQEditNormal = React.createClass({
 
 
                             <div className="latex-field">
-                                {this.props.quiz.latexEnabled ? <CQLatexString>{this.state.question.alternatives[2]}</CQLatexString> : null}
+                                {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.alternatives[2]}</CQLatexString> : null}
                             </div>
                         </div>
                     </div>
