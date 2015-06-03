@@ -68,7 +68,7 @@ var CQPublic = React.createClass({
                     Choose a quiz for your class
                 </h2>
                 <p>
-                    Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz#/'>Create your own in 60 seconds</a>.
+                    Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz/create'>Create your own in 60 seconds</a>.
                 </p>
 
                 {this.state.quizzes.map((category, categoryIndex) => {
