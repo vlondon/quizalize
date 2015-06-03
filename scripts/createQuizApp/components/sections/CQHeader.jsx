@@ -54,7 +54,7 @@ var CQHeader = React.createClass({
                 buttons.push((
                 <li id="cq-assignments" key='cq-assignments'>
                     <CQLink href="/quiz/assignments" className="btn btn-info navbar-btn">
-                        Your Classes
+                        Your classes
                     </CQLink>
                 </li>
             ));
