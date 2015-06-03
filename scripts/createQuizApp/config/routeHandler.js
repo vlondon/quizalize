@@ -30,6 +30,7 @@ router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
+router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
 router.on(pages.create.path, () => renderPage(pages.create) );

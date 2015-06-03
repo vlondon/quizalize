@@ -99,6 +99,24 @@ var UserApi = {
                     }
                 });
         });
+    },
+
+    reset: function(code, password){
+        return new Promise(function(resolve, reject){
+            request.post('/users/complete')
+                .send({
+                    code,
+                    password
+                })
+                .end(function(error, res){
+                    localStorage.setItem('cqUuid', res.body.uuid);
+                    if (error){
+                        reject(error);
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+        });
     }
 };
 

@@ -101,7 +101,7 @@ var UserActions = {
 
             UserApi.register(data)
                 .then(function(user){
-                    
+
                     AnalyticsActions.triggerPixels().then(function(){
                         if (handleRedirect() === false){
                             resolve(user);
@@ -130,6 +130,24 @@ var UserActions = {
         return new Promise(function(resolve, reject){
             UserApi.recover(email)
                 .then(resolve)
+                .catch(reject);
+        });
+    },
+
+    reset: function(code, newPassword) {
+        return new Promise(function(resolve, reject){
+            UserApi.reset(code, newPassword)
+                .then(function(user){
+
+                    setTimeout(function(){
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_IS_LOGGED,
+                            payload: user
+                        });
+                    }, 3000);
+
+                    resolve(user);
+                })
                 .catch(reject);
         });
     }
