@@ -12,6 +12,16 @@ var AnalyticsActions = {
         }
     },
 
+    sendEvent: function(category, action, label){
+
+        if (window.ga){
+            window.ga('send', 'event', category, action, label);
+        } else {
+            console.warn('No GA object found');
+        }
+    },
+
+
     addAll: function(){
         this.googleConveersion();
         this.twitterConversion();
@@ -46,13 +56,10 @@ var AnalyticsActions = {
 		window.google_conversion_value = 1.00;
 		window.google_conversion_currency = "GBP";
 
-
-
         var fileref = document.createElement('script')
         fileref.setAttribute('type','text/javascript')
         fileref.setAttribute('src', filename)
         document.getElementsByTagName('head')[0].appendChild(fileref);
-
 
     },
 
