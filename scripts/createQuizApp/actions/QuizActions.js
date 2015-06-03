@@ -169,7 +169,7 @@ var QuizActions = {
                 categories.push(categoriesHash[u]);
             }
             categories.sort(function(a, b){
-                return a.order_index > b.order_index ? -1 : 1;
+                return a.order_index > b.order_index ? 1 : -1;
             });
             return categories;
         };
