@@ -113,7 +113,6 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     QuizData.getTopics(function(data) {
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);
-        console.log("Am I here?")
         if (self.data.latexEnabled) {
             setTimeout(function() {                
                 var items = self.data.report;
