@@ -359,8 +359,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         loadPublicQuizzes: function(callback){
             zzish.listPublicContent(function(err, message){
                 if(!err) {
-                    data.categories = data.categories.filter(c => c !== null);
-                    data.contents = data.contents.filter(c => c !== null);
+                    message.categories = message.categories.filter(c => c !== null);
+                    message.contents = message.contents.filter(c => c !== null);
 
                     processQuizData(message,true);
                 }
