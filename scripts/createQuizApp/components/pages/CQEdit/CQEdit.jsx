@@ -29,7 +29,6 @@ var CQEdit = React.createClass({
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
-        console.log("QUIAAA", quiz, props.quizId);
         return quiz;
     },
 
@@ -39,20 +38,11 @@ var CQEdit = React.createClass({
         QuizStore.addChangeListener(this.onChange);
         this.onChange();
 
-        $(document).on('mouseenter', '[data-toggle="popover"]', function(){
-            $(this).popover('show');
-        });
-
-        $(document).on('mouseleave', '[data-toggle="popover"]', function(){
-            $(this).popover('hide');
-        });
 
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
-        $(document).off('mouseenter');
-        $(document).off('mouseleave');
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -60,7 +50,6 @@ var CQEdit = React.createClass({
     },
 
     onChange: function(props){
-
         props = props || this.props;
         // TODO: we need to load the quiz without having to worry about
         // if the quiz store have finished loading
@@ -108,14 +97,15 @@ var CQEdit = React.createClass({
     },
 
     handleSave: function(newQuestion){
-        console.log('saving?', newQuestion);
+
         var quiz = this.state.quiz;
         quiz.questions[this.state.questionIndex] = newQuestion;
         var questionIndex = quiz.questions.length;
 
         this.setState({quiz, questionIndex}, ()=>{
-            QuizActions.newQuiz(this.state.quiz);
-            router.setRoute(`/quiz/create/${quiz.uuid}/${quiz.questions.length}`);
+            QuizActions.newQuiz(this.state.quiz).then( ()=> {
+                router.setRoute(`/quiz/create/${quiz.uuid}/${quiz.questions.length}`);
+            });
 
         });
     },
