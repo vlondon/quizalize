@@ -8,6 +8,7 @@ var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/components/pages/CQLogin');
 var CQRegister          = require('createQuizApp/components/pages/CQRegister');
 var CQRecoverPassword   = require('createQuizApp/components/pages/CQRecoverPassword');
+var CQRestorePassword   = require('createQuizApp/components/pages/CQRestorePassword');
 var CQRedirect          = require('createQuizApp/components/pages/CQRedirect');
 var CQQuizzes           = require('createQuizApp/components/pages/CQQuizzes');
 var CQCreate            = require('createQuizApp/components/pages/CQCreate');
@@ -24,7 +25,8 @@ var pages = {
         quizId: /([\w\-]+)/,
         questionIndex: /([\w\-]+)/,
         classCode: /([\w\-]+)/,
-        redirectURL: /([\w\-]+)/
+        redirectURL: /([\w\-]+)/,
+        code: /([\w\-]+)/
     },
     mainPage: {
         path: '/quiz',
@@ -103,6 +105,17 @@ var pages = {
         renderer: function(){
             React.render(
                 React.createElement(CQRecoverPassword, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    restorePassword: {
+        path: '/quiz/reset/:code',
+        pathRegEx: /\/quiz\/reset\/([\w\-]+)/,
+        needsLogin: false,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQRestorePassword, props),
                 document.getElementById('reactApp')
             );
         }

@@ -7,6 +7,7 @@ var CQLoginForm = React.createClass({
     propTypes: {
         onSubmit: React.PropTypes.func,
         showPasswordField: React.PropTypes.bool,
+        showEmailField: React.PropTypes.bool,
         enabled: React.PropTypes.bool,
         buttonLabel: React.PropTypes.string
     },
@@ -16,6 +17,7 @@ var CQLoginForm = React.createClass({
             onSubmit: function(){},
             buttonLabel: 'Log In',
             showPasswordField: true,
+            showEmailField: true,
             enabled: true
         };
     },
@@ -41,8 +43,11 @@ var CQLoginForm = React.createClass({
         var newState = assign({}, this.state);
         newState[property] = event.target.value;
 
-        if (this.props.showPasswordField) {
+        if (this.props.showPasswordField && this.props.showEmailField) {
             newState.isReady = newState.email.length > 0 && newState.password.length > 0;
+
+        } else if(this.props.showPasswordField && !this.props.showEmailField) {
+            newState.isReady = newState.password.length > 0;
         } else {
             newState.isReady = newState.email.length > 0;
         }
@@ -68,7 +73,7 @@ var CQLoginForm = React.createClass({
 
     render: function() {
 
-        var passwordField;
+        var passwordField, emailField;
 
         if (this.props.showPasswordField){
             passwordField = (<span id="passwordSpan">
@@ -85,23 +90,30 @@ var CQLoginForm = React.createClass({
                 </div>
             </span>);
         }
+
+        if (this.props.showEmailField){
+            emailField = (
+                <span>
+                    <label className="col-sm-3 control-label">Email:</label>
+                    <div className="col-sm-9">
+                    <input id="email" type="email"
+                        on-enter="login.focusPassword();"
+                        value={this.state.email}
+                        onChange={this.handleChange.bind(this, 'email')}
+                        placeholder="e.g. abc@zzish.com"
+                        autofocus="true"
+                        className="form-control ng-pristine ng-valid"/>
+
+                    <br/>
+                </div>
+            </span>);
+        }
         return (
             <form role="form" className="form-horizontal" onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Email:</label>
-                    <div className="col-sm-9">
-                        <input id="email" type="email"
-                            on-enter="login.focusPassword();"
-                            value={this.state.email}
-                            onChange={this.handleChange.bind(this, 'email')}
-                            placeholder="e.g. abc@zzish.com"
-                            autofocus="true"
-                            className="form-control ng-pristine ng-valid"/>
 
-                        <br/>
 
-                    </div>
-
+                    {emailField}
                     {passwordField}
 
                     <div className="col-sm-8">
