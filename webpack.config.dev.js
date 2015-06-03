@@ -9,8 +9,8 @@ module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        createQuizApp: 'createQuizApp.js',
-        vendor: ['fastclick']
+        cqApp: 'createQuizApp/CQApp.js',
+        vendor: ['fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [ new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js') ],
     cache: true,
@@ -29,9 +29,19 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /(node_modules|bower_components)/
             },
+
+            {
+                test: /\.es6.js$/,
+                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/
+            },
             {
                 test: /\.scss$/,
                 loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
+            },
+            {
+                test: /\.css$/,
+                loader: 'style!css!autoprefixer-loader?browsers=last 2 version'
             }
         ]
     },

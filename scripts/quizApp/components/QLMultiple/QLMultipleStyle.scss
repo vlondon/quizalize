@@ -43,6 +43,8 @@
 
 .ql-quiz-container {
     position: relative;
+    max-width: 768px;
+    margin: 0 auto;
 }
 .ql-multiple {
     background: #FFF;
@@ -61,7 +63,13 @@
     .question {
         text-align: center;
         margin: 40px auto;
-        font-size: 48px;
+        font-size: 4.5vw;
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
+        @include media($size-widescreen) {
+            font-size:2vw;
+        }
     }
 
     &.enter .question {
@@ -87,6 +95,7 @@
 
     .answers {
         position: relative
+
     }
 
     .alternative-wrapper {
@@ -105,9 +114,16 @@
         width: 100%;
         background: #2e60ff;
         display: block;
-        font-size: 34px;
+        font-size: 4.5vw;
         color: #FFF;
         white-space: normal;
+
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
+        @include media($size-widescreen) {
+            font-size:2vw;
+        }
 
 
     }

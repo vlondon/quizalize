@@ -1,11 +1,12 @@
-angular.module('quizApp').controller('PublicController', ['QuizData', '$log', '$location','$rootScope', '$scope',function(QuizData, $log, $location,$rootScope,$scope){
-    var self = this;
-    self.hasQuizzes = false;
+angular.module('quizApp').controller('PublicController', function(QuizData, $log){
+	var self = this;
+	self.hasQuizzes = false;
 
-    QuizData.loadPublicQuizzes(function(err, res){
-    	self.categories = QuizData.getCategories();        
-    	for (var i in self.categories) {
-    		self.hasQuizzes = true;
-    	}
-    });
-}]);
+	QuizData.loadPublicQuizzes(function(){
+		self.categories = QuizData.getCategories();
+        console.log('self', self);
+		for (var i in self.categories) {
+			self.hasQuizzes = true;
+		}
+	});
+});

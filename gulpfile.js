@@ -36,8 +36,19 @@ gulp.task('minify', ['webpack-prod'], function(){
     return gulp.src('public/js/*.js')
     .pipe(ngAnnotate())
     .pipe($.uglify({
-        complress: {
+        compress: {
             'drop_console': true
+        }
+    }))
+    .pipe(gulp.dest('public/js'));
+});
+
+gulp.task('minify-test', ['webpack-prod'], function(){
+    return gulp.src('public/js/*.js')
+    .pipe(ngAnnotate())
+    .pipe($.uglify({
+        compress: {
+            'drop_console': false
         }
     }))
     .pipe(gulp.dest('public/js'));
@@ -67,3 +78,4 @@ gulp.task('clean', function (cb) {
 gulp.task('watch', ['clean', 'webpack']);
 gulp.task('dev', ['clean', 'webpack-dev']);
 gulp.task('default', ['clean', 'webpack-prod', 'minify']);
+gulp.task('test', ['clean', 'webpack-prod', 'minify-test']);

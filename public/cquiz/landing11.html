@@ -11,7 +11,7 @@
   <meta property="og:url" content="http://www.quizalize.com" />
   <meta property="og:description" content="Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="http://www.quizalize.com/cquiz/img/quizalize meta.png" />
+  <meta property="og:image" content="http://www.quizalize.com/cquiz/img/quizalize-meta.png" />
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:site" content="@quizalizeapp"/>
   <meta name="twitter:creator" content="@quizalizeapp"/>
@@ -41,7 +41,7 @@
       <div class="row">
         <div class="col-xs-2 site-logo-container">
           <div class="site-logo">
-            <a onclick="ask2('#page-top')" class="brand"><img src="/cquiz/img/logo 2.png"></a>
+            <a href="/" class="brand"><img src="/cquiz/img/logo 2.png"></a>
           </div>
         </div>
 
@@ -55,11 +55,11 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="menu">
             <ul class="nav navbar-nav navbar-right">
-              <!--<li><a href='/packages'>Services and packages</a></li>-->
+              <li><a href='/packages'>Schools</a></li>
               <li><a  onclick="ask('order')">Info pack</a></li>
               <li><a  onclick="ask('demo')">Book a demo</a></li>
               <li><a id='StudentLogin'href="/app">Student Login</a></li>
-              <li><a id="LoginButton" href="/quiz#/login">Teacher Login</a></li>
+              <li><a id="LoginButton" href="/quiz/login">Teacher Login</a></li>
             </ul>
           </div>
 
@@ -78,7 +78,7 @@
       <h1 class="cta2-title"><strong>Spot student learning gaps instantly</strong></h1>
       <div class='row'>
 
-        <div class="col-md-12" class="free"><a class="cta2" href="/quiz#/register/dashboard">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
+        <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
 
 
 
@@ -130,12 +130,12 @@
   <div class="container marginbot-50">
     <div class="text-center">
       <h1 class="what_is"> What is Quizalize?</h1>
-      
+
       <div class="container">
         <div class="row">
          <div class="data-wow-offset=0" data-wow-delay="0.4s">
           <div class="section-heading">
-            <p>Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone.   It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.  You can create your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague has shared with you or pick one from our growing library of public curriculum based quizzes.</p>
+            <p style="text-align:left">Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone.   It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.  You can create your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague has shared with you or pick one from our growing library of public curriculum based quizzes.</p>
             <div class="row">
               <div class="row">
                 <div class="col-md-12">
@@ -146,7 +146,7 @@
               </div>
 
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
@@ -177,39 +177,42 @@
 
 
   </div>
-  <!--
-<div class='container packages' style="padding-bottom:45px">
+
+
+  <!-- <div class='container packages' style="padding-bottom:45px">
     <h1 class="what_is text-center"> What we offer</h1>
+
     <row>
       <div class="col-md-6">
         <div class="text-center red-box-front">
-          <a href='/packages'><h3> Our services</h3></a>
+          <a href='/packages#our-packages'><h3> Our packages</h3></a>
         </div>
-        
-      
+
+
       </div>
-      
+
       <div class="col-md-6">
         <div class="text-center red-box-front">
-         <a href='/packages#our-packages'> <h3>Our packages</h3></a>
-        </div>
-        
-      </div>
-    </row> -->
+         <a href='/packages#our-services'> <h3>Our services</h3></a>
+       </div>
+
+     </div>
+
+   </row>
+
+   </row>
+
+ </section> -->
+
+
+ <!-- Section: about -->
 
 
 
-</section>
 
+ <section>
 
-<!-- Section: about -->
-
-
-
-
-<section>
-
-  <div class="home-section text-center color-dark">
+  <div class="home-section text-center color-dark" style="background-color:white">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -301,7 +304,7 @@
             <!-- Carousel Buttons Next/Prev -->
             <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
             <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
-          </div>                          
+          </div>
         </div>
       </div>
     </div>
@@ -332,11 +335,11 @@
               <div class="wow fadeInUp" data-wow-delay="0.2s">
                 <div class="service-box">
                   <div class="service-desc">
-                    <form class="form-horizontal" method="get" action="/quiz#/" onsubmit="return newQuiz()">
+                    <form class="form-horizontal" method="get" action="/quiz/" onsubmit="return newQuiz()">
                       <div class="form-group">
                         <div class="form-group">
                           <div class="col-md-12">
-                            <a class="cta3" href="/quiz#/">Create or set a quiz</a><br/>
+                            <a class="cta3" href="/quiz/register">Create or set a quiz</a><br/>
                           </div>
                         </div>
                       </div>
@@ -394,9 +397,9 @@
                 <li><h3>Geography</h3></li>
                 <li><a href="javascript:showQuiz('b9eff617-7233-4464-bc39-9cc5a131c1e7')">Terminology</a></li>
                 <li><a href="javascript:showQuiz('fc2fd023-0fc5-43c4-803d-a8d5adbf6675')">Climate and Weather</a></li>
-                <li><a href="javascript:showQuiz('a4b8d503-6017-4f2f-97c8-438dfadc29d3')">Global Warming</a></li>                        
-                <li><a href="javascript:showQuiz('7c623d0c-2950-4989-8dbc-7e6c45345136')">Regions - Europe</a></li>                                                
-                <li><a href="javascript:showQuiz('c48a2ce7-c90f-401c-9d4b-502c31396892')">Earthquakes</a></li>                                                                        
+                <li><a href="javascript:showQuiz('a4b8d503-6017-4f2f-97c8-438dfadc29d3')">Global Warming</a></li>
+                <li><a href="javascript:showQuiz('7c623d0c-2950-4989-8dbc-7e6c45345136')">Regions - Europe</a></li>
+                <li><a href="javascript:showQuiz('c48a2ce7-c90f-401c-9d4b-502c31396892')">Earthquakes</a></li>
                 <li>&nbsp;</li>
               </ul>
             </div>
@@ -408,23 +411,23 @@
                 <li><a href="javascript:showQuiz('3c281df9-b248-4d82-820d-36dc4d3fb892')">The Tudor Area</a></li>
                 <li><a href="javascript:showQuiz('6d642331-d7fd-4565-ba11-cfba6d744d6b')">Winston Churchill</a></li>
                 <li><a href="javascript:showQuiz('dfdedc1e-63e4-425a-a113-f16072e09c87')">Henry VIII</a></li>
-                <li><a href="javascript:showQuiz('1bb62157-46b7-4ebd-8ad2-f3ab131197ca')">Henry II and T. Becket</a></li>                      
+                <li><a href="javascript:showQuiz('1bb62157-46b7-4ebd-8ad2-f3ab131197ca')">Henry II and T. Becket</a></li>
               </ul>
             </div>
             <div class="col-md-4">
               <ul class="example-list">
                 <li><h3>Religious Studies/Music</h3></li>
                 <li><a href="javascript:showQuiz('3502011b-f6f8-4f00-9872-ec2c48eaaef2')">RS - Christianity</a></li>
-                <li><a href="javascript:showQuiz('ea5477ed-575b-4667-a0cd-ab791a748a97')">RS - World Religions </a></li> 
-                <li><a href="javascript:showQuiz('00332e3e-36f2-428e-8ea6-2ca0a86f7a9f')">RS - Churches</a></li>                                                
+                <li><a href="javascript:showQuiz('ea5477ed-575b-4667-a0cd-ab791a748a97')">RS - World Religions </a></li>
+                <li><a href="javascript:showQuiz('00332e3e-36f2-428e-8ea6-2ca0a86f7a9f')">RS - Churches</a></li>
                 <li><a href="javascript:showQuiz('c5df93ad-b4a1-427a-b01d-a1b0f5091bd9')">Music - Composition</a></li>
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
               </ul>
-            </div>  
+            </div>
             <div class="col-md-12">
               &nbsp;
-            </div>                                      
+            </div>
             <h2>or just try one of our General Quizzes</h2>
             <div class="col-md-4">
               <ul class="example-list">
@@ -445,7 +448,7 @@
                 <li><a href="javascript:showQuiz('e307480b-2537-475a-943f-f66a35d0de5d')">French (Animals)</a></li>
                 <li><a href="javascript:showQuiz('bf2b1480-665b-40d3-b280-382a532ebcdc')">Spanish (Animals)</a></li>
               </ul>
-            </div>                    
+            </div>
             <div class="col-md-4">
               <ul class="example-list">
                 <li><h3>General Knowledge</h3></li>
@@ -455,7 +458,7 @@
                 <li><a href="javascript:showQuiz('4ad6ac9d-b6ce-4c31-a875-c71c4eaddc5e')">The Tudors</a></li>
                 <li><a href="javascript:showQuiz('e162dd73-df7d-4a2a-91ab-bf688cd70ea1')">European Capital Cities</a></li>
               </ul>
-            </div>                    
+            </div>
           </div>
         </div>
 
@@ -488,7 +491,7 @@
       <div class="col-md-4">
         <a class="cta4" onclick="ask('order')">Request an info pack</a>
 
-      </div>                    
+      </div>
       <div class="col-md-4">
         <a class="cta4" onclick="ask('question')">Ask a question</a>
 
@@ -510,14 +513,14 @@
               <div class="col-md-6">
                 <input type="email" class="form-control input-lg" id="email" placeholder="Enter email" required />
               </div>
-            </div>                
+            </div>
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <textarea name="message" id="message" class="form-control" rows="4" cols="25"
                   placeholder="Message"></textarea>
                 </div>
-                <input type="submit" class="btn-lg btn-block" id="btnContactUs" value="Send"/>                    
+                <input type="submit" class="btn-lg btn-block" id="btnContactUs" value="Send"/>
               </div>
             </div>
           </form>
@@ -577,7 +580,7 @@
     <!-- Core JavaScript Files -->
     <script>
       function newQuiz() {
-        window.location.href="/quiz#";
+        window.location.href="/quiz";
       }
     </script>
     <script src="/cquiz/js/jquery.min.js"></script>
@@ -592,7 +595,7 @@
 
     <script src="/cquiz/js/nivo-lightbox.min.js"></script>
     <script src="/cquiz/js/custom.js"></script>
-    <script src="/js/vendor.js"></script>      
+    <script src="/js/vendor.js"></script>
     <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
     <script src="/js/quiz.js"></script>
     <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
@@ -601,24 +604,14 @@
         $('#play-but').nivoLightbox();
       });
     </script>
-    <script>
-      function showQuiz(id) {
-        var check = localStorage.getItem("userId");
-        if (check) {
-          window.location.href="/app#/play/public/"+id+"/true";
-        }    
-        else {
-          window.location.href="/quiz#/playh/preview/"+id;
-        }        
-      }          
-    </script>
+
     <script>
       $( document ).ready(function() {
         outdatedBrowser({
           bgColor: '#f25648',
           color: '#ffffff',
           lowerThan: 'transform',
-          languagePath: '/outdatedbrowser/lang/en.html'                        
+          languagePath: '/outdatedbrowser/lang/en.html'
         })
         $('#quote-carousel').carousel({
           pause: false,
@@ -656,13 +649,13 @@
         else if (type=="order") {
           $("#message").val("I would like an information pack sent to my school");
         }
-        ask2("#sendForm")        
+        ask2("#sendForm")
       }
       function ask2(type) {
 
         $('html, body').animate({
           scrollTop: $(type).offset().top
-        }, 2000);          
+        }, 2000);
       }
 
     </script>
@@ -719,7 +712,7 @@
         window._fbq.push(['track', 'PixelInitialized', {}]);
         var userId = localStorage.getItem("userId");
         if (userId!=undefined) {
-          $("#LoginButton").attr("href","/quiz#/quizzes");
+          $("#LoginButton").attr("href","/quiz/quizzes");
         }
 
       </script>

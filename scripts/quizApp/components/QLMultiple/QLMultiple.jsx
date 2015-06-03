@@ -2,7 +2,6 @@ var React = require('react');
 
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
-var TeX = require('react-components/js/tex.jsx');
 var QLLatex = require('quizApp/components/QLLatex');
 
 var cssStates = [
@@ -117,11 +116,11 @@ var QLMultiple = React.createClass({
         return (
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
-                    <h3 className='question'>
+                    <p className='question'>
                         <QLLatex>
                             {this.props.question}
                         </QLLatex>
-                    </h3>
+                    </p>
                     {this.props.imageURL ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers alternatives">

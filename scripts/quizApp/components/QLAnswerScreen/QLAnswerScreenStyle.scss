@@ -71,13 +71,20 @@
         width: 100%;
         background: #2e60ff;
         display: block;
-        font-size: 34px;
+        font-size: 4.5vw;
         color: #FFF;
 
         animation: qlEnterScale 400ms ease-out;
         animation-fill-mode: both;
         animation-delay: 500ms;
         cursor: default;
+
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
+        @include media($size-widescreen) {
+            font-size:2vw;
+        }
 
     }
 
@@ -114,7 +121,6 @@
         $size-big: 150px;
         $size-small: 80px;
 
-
         animation: qlEnterTranslateY 400ms ease-out;
         animation-fill-mode: both;
         height: $size-small;
@@ -125,16 +131,21 @@
         border-radius: 100%;
         color: #FFF;
         display: inline-block;
-        font-size: 16px;
+        font-size:  13px;
         overflow: hidden;
+
+        @include media($size-mobile) {
+            font-size:38px;
+        }
 
         strong {
             font-size: 20px;
         }
         img {
-            max-width: 80px;
-            max-height: 50px;
-            width: 100%;
+            
+            max-width:40px;
+            max-height:25px;
+            width:100%;
         }
 
 
@@ -143,6 +154,11 @@
             width: $size-big;
             height: $size-big;
             font-size: 26px;
+            img {
+                max-width: 80px;
+                max-height: 50px;
+                width: 100%;
+            }
             strong {
                 font-size: 48px;
             }

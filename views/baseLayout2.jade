@@ -9,7 +9,7 @@ html(ng-app='createQuizApp')
         meta(property='og:url', content='http://www.quizalize.com')
         meta(property='og:description', content='Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.')
         meta(property='og:type', content='website')
-        meta(property='og:image', content='http://www.quizalize.com/cquiz/img/quizalize meta.png')
+        meta(property='og:image', content='http://www.quizalize.com/cquiz/img/quizalize-meta.png')
         meta(name='twitter:card', content='summary_large_image')
         meta(name='twitter:site', content='@quizalizeapp')
         meta(name='twitter:creator', content='@quizalizeapp')
@@ -83,7 +83,8 @@ body
                     .row
                         .col-xs-2.site-logo-container
                             .site-logo
-                                img(src='/cquiz/img/logo 2.png')         
+                                a(href="/")
+                                    img(src='/cquiz/img/logo 2.png')         
                         .col-xs-10
                             .navbar-header
                                 button.navbar-toggle(type='button', data-toggle='collapse', data-target='#menu')
@@ -91,7 +92,7 @@ body
                             #menu.collapse.navbar-collapse
                                 ul.nav.navbar-nav.navbar-right
                                     li
-                                        a(href='/packages') Services and packages
+                                        a(href='/packages') Schools
                                     li
                                         a(onclick="ask('order')") Info pack               
                                     li

@@ -2,9 +2,11 @@ doctype html
 html(ng-app='createQuizApp')
     head
         title Create Quizalize Quiz
-        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"')
+        meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1')
         meta(name='description', content='')
         meta(charset='UTF-8')
+            
+        base(href='/quiz/')
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -19,16 +21,18 @@ html(ng-app='createQuizApp')
         script(src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js")
         <![endif]-->
 
+        block header
+
         script(src='#{session.zzishsdkurl}/zzish.js')        
         script(src='/js/vendor.js')        
-        script(src='/lib/angular.min.js')  
-        script(src='/lib/angular-animate.min.js')  
-        script(src='/lib/angular-route.min.js')
         script(src='/lib/autogrow.js')
-        script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
-        script(src='/js/createQuizApp.js')        
-        script(src='/js/quiz.js')  
+        script(src="/lib/Chart.js")
+        
         script(src='/lib/ekko-lightbox.min.js')  
+
+        link(href='/cquiz/css/style2.css', rel='stylesheet')
+        link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+        link(href='//fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
 
 
 
@@ -46,6 +50,7 @@ html(ng-app='createQuizApp')
         link(href='/css/quizalize.css', rel='stylesheet')
         link(href='/css/switch.css', rel='stylesheet')
         link(href='/css/ekko-lightbox.min.css', rel='stylesheet')
+        link(href='//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.2.0/katex.min.css', rel='stylesheet')
 
         style.
             body{
@@ -189,84 +194,10 @@ html(ng-app='createQuizApp')
             .left-space {
                 margin-left: 5px;
             }
+        script(src='/js/quiz.js')
+        //- script(src='/js/createQuizApp.js')
 
-body(ng-controller="NavBarController as nctrl")
-    nav.navbar.navbar-default
-        .container-fluid
-            .navbar-header
-                a(href="/quiz/")#homeButton
-                    img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
-                    button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
-                        span.sr-only Toggle navigation
-                        span.icon-bar
-                        span.icon-bar
-                        span.icon-bar
-            .navbar-collapse.collapse#navbar
-                ul.nav.navbar-nav.navbar-right
-                    li(style="margin-right:5px;")#quizzes
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/quizzes",style="margin-top:9px; padding: 8px;") Your quizzes                        
-                    li(style="margin-right:5px;")#assignments
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/assignments",style="margin-top:9px; padding: 8px;") Your assignments                        
-                    li(style="margin-right:5px;")#quizzes
-                        a.btn.btn-info.navbar-btn(href="/quiz/#/public",style="margin-top:9px; padding: 8px;") Public quizzes
-                    li(style="margin-right:5px;")
-                        button.btn.btn-info.navbar-btn(style="margin-top:9px; padding: 8px;", ng-click="nctrl.dismiss()", ng-class="{true: 'btn-info', false: 'btn-default'}[nctrl.showHelp]") ?
-                    li
-                        a.btn.btn-info.navbar-btn(ng-click="nctrl.login()",style="margin-top:9px; padding: 8px;")#LoginButton Log in
-                                
-    div(ng-view ngCloak)
+body
+    #reactApp
 
-    button.btn.btn-primary.btn-lg(data-toggle="modal",data-target="#myModal",style="display:none")#messageButton
-
-    div.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")#myModal
-        div.modal-dialog
-            div.modal-content
-                div.modal-header
-                    input(type="hidden",value="")#modalUuid
-                    button.close(data-dismiss="modal" aria-label="Close")
-                        span(aria-hidden="true") &times;
-                    h4.modal-title#modalTitle
-                div.modal-body
-                    p#modalMessage
-                div.modal-footer
-                    button.btn.btn-default(data-dismiss="modal")#closeButton Close
-                    button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
-
-    #intro(ng-show="nctrl.showHelp", style="display: none; position: fixed; padding: 10px; right:20px; top:80px; left: 20px; bottom:20px; background-color: rgba(244,244,244, 0.9); overflow: scroll; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px 0px;")
-            .container-fluid
-                .row
-                    .col-xs-12.text-center
-                        h1 Welcome to Quizalize
-                .row
-                    .col-sm-4
-                        img.img-responsive.bordered(src="/img/helpScreens/create.png")
-                        h4.text-primary 1. Choose a name for your quiz
-                        p The only thing you need to do to get started.
-                        p Quiz Topic is optional and allows you to organise your quizzes. You can also choose from one of our premade quizzes.
-
-                    .col-sm-4
-                        img.img-responsive.bordered(src="/img/helpScreens/add.png")
-                        h4.text-primary 2. Add questions and answers
-                        p Quickly add questions and answers using our streamlined interface.
-                        p You can (optionally) add incorrect answers for use in multiple choice format and a subtopic to group questions.
-
-                    .col-sm-4
-                        img.img-responsive.bordered(src="/img/helpScreens/publish.png")
-                        h4.text-primary 3. Publish your quiz to your students
-                        p Your students can access our quizalize quiz app at quizal.me and enter the class code you received when publishing.
-
-                .row
-                    .col-sm-4.col-sm-offset-4
-                        br
-                        br
-                        button.btn.btn-info.btn-block(ng-click="nctrl.dismiss();") Get Started
-
-    script.
-        var userId = localStorage.getItem("userId");
-        if (userId == null) {
-            $("#homeButton").attr("href");
-            $("#homeButton").attr("href","/");
-        }   
-        else {
-            $("#homeButton").attr("href","/quiz/");
-        }    
+    script(src='/js/cqApp.js')

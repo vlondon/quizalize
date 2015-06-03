@@ -1480,7 +1480,11 @@ a.btn:focus{
 	margin-left:85px;
 	padding: 5px;
 	text-align:center;
+	
+
+	
 	margin: 0 auto;
+	
 
 }
 
@@ -1550,6 +1554,8 @@ a.btn:focus{
 }
 .social .fa-facebook:hover { /* round facebook icon*/
 	background: #4060A5;
+	
+
 }
 
 .social .fa-twitter:hover { /* round twitter icon*/
@@ -1653,6 +1659,9 @@ a.btn:focus{
 	height:100px;
 	color:white;
 	line-height: 100px;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
 
 
 }
@@ -1665,6 +1674,10 @@ a.btn:focus{
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
 
+
+}
+.red-box-front:hover {
+	background-color: #D71324;
 }
 .red-box h3, h2 {	
 	color:white;
@@ -1678,7 +1691,7 @@ a.btn:focus{
 
 }
 .red-box-small {
-background-color:#FA5855;
+	background-color:#FA5855;
 	height:50px;
 	color:white;
 	line-height: 50px;
@@ -1692,6 +1705,9 @@ background-color:#FA5855;
 	color:white;
 	line-height: 100px;
 	border-style: none;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
 }
 .red-box button:hover {
 	background-color:#D71324;
@@ -1737,6 +1753,248 @@ background-color:#FA5855;
 	padding-top:20px; 
 	padding-bottom:15px;
 }
+
+
+.social .fa-twitter:hover { /* round twitter icon*/
+	background: #00ABE3;
+}
+
+.social .fa-google-plus:hover { /* round google plus icon*/
+	background: #e64522;
+}
+
+.social .fa-github:hover { /* round github icon*/
+	background: #343434;
+}
+
+.social .fa-pinterest:hover { /* round pinterest icon*/
+	background: #cb2027;
+}
+
+.social .fa-linkedin:hover { /* round linkedin icon*/
+	background: #0094BC;
+}
+
+.social .fa-flickr:hover { /* round flickr icon*/
+	background: #FF57AE;
+}
+
+.social .fa-instagram:hover { /* round instagram icon*/
+	background: #375989;
+}
+
+.social .fa-vimeo-square:hover { /* round vimeo square icon*/
+	background: #83DAEB;
+}
+
+.social .fa-stack-overflow:hover { /* round stack overflow icon*/
+	background: #FEA501;
+}
+
+.social .fa-dropbox:hover { /* round dropbox icon*/
+	background: #017FE5;
+}
+
+.social .fa-tumblr:hover { /* round tumblr icon*/
+	background: #3a5876;
+}
+
+.social .fa-dribbble:hover { /* round dribble icon*/
+	background: #F46899;
+}
+
+.social .fa-skype:hover { /* round skype icon*/
+	background: #00C6FF;
+}
+
+.social .fa-stack-exchange:hover { /* round stack exchange icon*/
+	background: #4D86C9;
+}
+
+.social .fa-youtube:hover { /* round youtube icon*/
+	background: #FF1F25;
+}
+
+.social .fa-xing:hover { /* round xing icon*/
+	background: #005C5E;
+}
+
+.social .fa-rss:hover { /* round rss icon*/
+	background: #e88845;
+}
+
+.social .fa-foursquare:hover { /* round foursquare icon*/
+	background: #09B9E0;
+}
+
+.social .fa-youtube-play:hover { /* round youtube play button icon*/
+	background: #DF192A;
+}
+#LoginButton {background-color: #F5423F;}
+#LoginButton:hover,
+#LoginButton:focus,
+#LoginButton.active {
+	outline: 0;
+	background-color: rgba(255,255,255,.2);
+}
+#StudentLogin {background-color: #F5423F;}
+#StudentLogin:hover,
+#StudentLogin:focus,
+#StudentLogin.active {
+	outline: 0;
+	background-color: rgba(255,255,255,.2);
+
+}
+.embed-container {
+	margin-top:40px;
+	position: relative; 
+	padding-bottom: 56.25%; 
+	height: 0; overflow: 
+	hidden; 
+	max-width: 100%; 
+}
+
+.embed-container iframe, .embed-container object, .embed-container embed { 
+	position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+}
+.quizalize-explainer {
+	margin-top:20px;
+}
+.diag-gcse p{ color:white;
+	margin-top:20px; text-align:left; font-weight:100;
+
+
+}
+#play-but2{display:none; }
+/* packages and services */
+.packages{
+	margin-top: 40px; 
+	margin-bottom:40px;
+}
+.red-box {
+	background-color:#FA5855;
+	height:100px;
+	color:white;
+	line-height: 100px;
+
+
+}
+.red-box-front {
+	background-color:#FA5855;
+	height:100px;
+	color:white;
+	line-height: 100px;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+
+}
+.red-box h3, h2 {	
+	color:white;
+	line-height: 100px;
+
+
+}
+.red-box-front h3,h2{
+	color:white;
+	line-height: 100px;
+
+}
+.red-box-small {
+	background-color:#FA5855;
+	height:50px;
+	color:white;
+	line-height: 50px;
+	padding-left: 5px;
+	padding-right:5px;
+}
+.red-box button {
+	background-color:#FA5855;
+	height:100px;
+	width:100%;
+	color:white;
+	line-height: 100px;
+	border-style: none;
+}
+.red-box button:hover {
+	background-color:#D71324;
+
+}
+.red-box button:active {
+	box-shadow:none;
+	border-style:none;
+}
+.package-image {
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	height: 400px;
+	margin-bottom:20px;
+}
+.package-image2 {
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	height: 290px;
+	margin-bottom:20px;
+}
+.refer-offer {
+	margin-left: 40px;
+	margin-right: 40px;
+}
+.pack-title {
+	color: #FA5855;
+	margin-bottom:20px;
+	margin-top:10px;
+}
+.cat-title {
+	color: #FA5855;
+	margin-top:10px;
+	font-weight:900;
+	font-size:80px;
+}
+
+.ex-topics {
+	padding-top:20px; 
+	padding-bottom:15px;
+}
+#quiz-day { margin-top:100px;
+
+}
+#cpd-box {
+}
+#our-services{
+	padding-bottom:20px;
+	padding-top:10px;
+}
+#free-ipads {
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.p-column {}
+/* FAQ styling */
+.faq-list ul li p {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.faq-question-list a {
+	color:black;
+
+}
+.referral-text {
+	font-weight:900;
+	color:#FA5855;
+}
+
+@media (max-width:1200px){
+	#quiz-day{
+		margin-top:16px;
+	}
+}
+
+
+
+
 @media (max-width:667px){
 	.cta3-title{ 
 		margin-bottom: 280px;
@@ -1751,7 +2009,12 @@ background-color:#FA5855;
 	.cat-title {
 		font-size:60px;
 	}
+		.teach-acct{
+		font-size:25px;
+	}
+
 }
+
 @media (max-width:550px) {
 	.cta2  {
 		font-size:20px;
@@ -1771,11 +2034,22 @@ background-color:#FA5855;
 	.cta_what{
 		font-size:18px;
 	}
+	.teach-acct{
+		font-size:20px;
+	}
 
-
-	.social i {width:45px; height:45px; font-size: 30px;
-		padding-top: 10px; margin-bottom:10px;}
-		.btn-s {font-size:10px; width:60px; margin-left:5px;}
+	.social i {
+		width:45px; 
+		height:45px; 
+		font-size: 30px;
+		padding-top: 10px; 
+		margin-bottom:10px;
+	}
+		.btn-s {
+			font-size:10px; 
+			width:60px; 
+			margin-left:5px;
+		}
 
 
 	}
@@ -1793,6 +2067,7 @@ background-color:#FA5855;
 		font-size:12px;
 		padding-left:5px;
 		padding-right:5px;
+
 	}
 	.cta2-title {
 		font-size:30px;
@@ -1801,26 +2076,18 @@ background-color:#FA5855;
 	.cta_what{
 		font-size:13px;
 	}
-
-	.social i {margin-left:10px;
-		margin-right:10px; margin-bottom:10px;};
-
-
-
-
+	.teach-acct{
+		font-size:10px;
 	}
-	.embed-container {
-		margin-top:40px;
-		position: relative; 
-		padding-bottom: 56.25%; 
-		height: 0; overflow: 
-		hidden; 
-		max-width: 100%; } 
-		.embed-container iframe, .embed-container object, .embed-container embed { 
-			position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-			.quizalize-explainer {margin-top:20px;}
-			.diag-gcse p{ color:white;
-				margin-top:20px; text-align:left; font-weight:100;
+	.social i {
+		margin-left:10px;
+		margin-right:10px; margin-bottom:10px;
+
+	} 
+	
+}
 
 
-			}
+}
+
+

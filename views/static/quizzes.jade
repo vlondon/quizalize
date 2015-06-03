@@ -8,8 +8,15 @@
     .row(ng-show="quizzes.hasOwnQuizzes")
         .col-sm-12
             .row.well
-                .row(ng-repeat="quiz in quizzes.quizzes track by $index", style="padding-bottom: 10px")
+                .row
+                    .col-xs-3
+                        strong Quiz Title
                     .col-xs-4
+                        strong Subject/Topic
+                    .col-xs-5
+                        
+                .row(ng-repeat="quiz in quizzes.quizzes track by $index", style="padding-bottom: 10px")
+                    .col-xs-3
                         h4 {{quiz.name}}  
                             span(ng-show="quiz.categoryId")
                     .col-xs-4
@@ -17,14 +24,15 @@
                             span(ng-show="quiz.subject")
                                 | {{quiz.subject}} 
                             span(ng-show="quiz.categoryId")
-                                | {{quizzes.topics[quiz.categoryId].name}}
-                    .col-xs-4
-                        button.btn.btn-info(ng-click="quizzes.editQuiz(quiz);",style="margin: 4px;")
+                                | {{quizzes.topics[quiz.categoryId].name}}                            
+                    .col-xs-5
+                        butto.btn.btn-info(ng-click="quizzes.editQuiz(quiz);",style="margin: 4px;")                            
                             span.glyphicon.glyphicon-pencil                        
                         button.btn.btn-danger(ng-click="quizzes.deleteQuiz(quiz);",style="margin: 4px")
                             span.glyphicon.glyphicon-remove
                         button.btn.btn-info(ng-click="quizzes.assignQuiz(quiz);",style="margin: 4px") Set Quiz
                         a.btn.btn-info(target=_blank, ng-click="quizzes.shareQuiz(quiz)",style="margin: 4px") Share
+                        a.btn.btn-info(target=_blank, ng-click="quizzes.showResults(quiz)",style="margin: 4px") Results
     .row(ng-show="quizzes.sharing")
         .col-sm-12
             .border-block
@@ -43,3 +51,9 @@
                         p(style="font-size: 11px")
                             em {{quizzes.currentQuizToShare.shareLink}}                        
                         
+script. 
+  $(document).ready(function() {
+    $(".glyphicon").hover(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+  });

@@ -41,6 +41,8 @@ app.post('/users/register', user.registerEmail);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
+app.get('/user/:profileId', user.details);
+
 
 
 app.post('/create/profile', quiz.createProfile);
@@ -49,6 +51,12 @@ app.get('/quiz/token/:token', quiz.getProfileByToken);
 app.get('/quiz/profile/:uuid', quiz.getProfileById);
 app.get('/quiz/code/:code', quiz.getQuizByCode);
 app.post('/quizzes/:id/load', quiz.getQuizzes);
+
+app.get('/quiz/*', quiz.create);
+app.get('/quiz', quiz.create);
+
+
+app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
 
 
 app.get('/create/:profileId/topics/', quiz.getMyTopics);
@@ -60,8 +68,8 @@ app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
 app.post('/create/:profileId/quizzes/:id/delete', quiz.deleteQuiz);
 app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
 
-app.get('/create/:profileId/quizzes/:id/encrypt',quiz.encryptQuiz);
-app.post('/create/:profileId/quizzes/:id/decrypt',quiz.decryptQuiz);
+app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
+app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
@@ -69,9 +77,19 @@ app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
 
 
 app.get('/quizzes/public', quiz.getPublicQuizzes);
+app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
 
+
+
+///// QUIZ OF THE DAY PAGES ////
+
+app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
+app.get('/packages', quiz.packages);
+app.get('/faq', quiz.faq);
+
 /*
+
 
 
 Endpoints for students: actually we are making this client side
@@ -81,7 +99,6 @@ app.get('/', checkForMobile, quiz.landingpage5);
 app.get('/mobile', quiz.landingpage5);
 app.get('/ie', quiz.landingpage3);
 app.get('/ks4-gcse-maths', quiz.landingpage4);
-app.get('/landing1', quiz.landingpage);
 
 
 app.get('/tool/', quiz.landingpage);
@@ -116,12 +133,12 @@ function isIE(req) {
   return isIE;
 }
 
- 
+
 // note: the next method param is passed as well
 function checkForMobile(req, res, next) {
   // check to see if the caller is a mobile device
   var isMobile = isCallerMobile(req);
- 
+
   if (isMobile) {
     console.log("Going mobile");
     res.redirect('/mobile');
