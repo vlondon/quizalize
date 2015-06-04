@@ -89,6 +89,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     }
                 }
             }
+            else {
+                quiz.categoryId = "unknown";
+            }
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
@@ -150,6 +153,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 setQuiz(quiz);
                 callback(null,currentQuiz);
             }
+        }
+        for (var p in categories) {
+            for (var i in categories[p].quizzes) {
+                var quiz = categories[p].quizzes[i];
+                if (quiz.uuid==quizId) {
+                    setQuiz(quiz);
+                    callback(null,currentQuiz);
+                }
+            }    
         }
     }
 
