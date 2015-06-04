@@ -15,6 +15,7 @@
  <meta name="twitter:site" content="@quizalizeapp"/>
  <meta name="twitter:creator" content="@quizalizeapp"/>
 
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
  <title>Quizalize</title>
  <!-- css -->
  <link rel="stylesheet" href="/outdatedbrowser/outdatedbrowser.min.css">
@@ -38,6 +39,9 @@
 
     .blue {
         background: #2a7ed0
+    }
+    .pointer {
+        cursor: pointer;
     }
 </style>
 
@@ -78,21 +82,27 @@
 </div>
 <!-- /Navigation -->
 <section id="intro" class="home-slide ">
-  <div class="item-inner item-inner__hero item-6">
-    <div class="cta-container">
-      <h1 class="cta3-title"><strong>Boost GCSE Maths grades</strong></h1>
-      <div class='row'>
+    <div class="item-inner item-inner__hero item-6">
+        <div class="cta-container">
+            <h1 class="cta3-title"><strong>Boost a GCSE Maths grades</strong></h1>
+            <div class='row'>
 
-        <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
+                <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
 
 
 
+            </div>
+            <div class="row text-center">
+                <a onclick="ask2('#Diagnostic')" class="cta_what pointer">
+                    Boost grades now!
+                </a>
+                <a href="https://www.youtube.com/watch?v=J3_CWmLcEI0" target="_blank" title="Quizalize Video" id="play-but">
+                    <img src="cquiz/img/play.png" style="height:100px; margin-left:20px"alt="" /></a>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div class="row text-center"><a onclick="ask2('#Diagnostic')" class="cta_what">Boost grades now!</a> <a href="https://www.youtube.com/watch?v=J3_CWmLcEI0" title="Quizalize Video" id="play-but"><img src="cquiz/img/play.png" style="height:100px; margin-left:20px"alt="" /></a> </div>
-    <div class="row text-center"><a href="https://www.youtube.com/watch?v=J3_CWmLcEI0" title="Quizalize Video" id="play-but2"><img src="cquiz/img/play.png" style="height:80px;" alt="" /></a> </div>
-</div>
-</div>
-</div>
 </section>
 <!-- /Section: intro -->
 <section id="Diagnostic"class="home-section color-dark bg-gray">
@@ -343,14 +353,21 @@
 
 <script src="/cquiz/js/nivo-lightbox.min.js"></script>
 <script src="/cquiz/js/custom.js"></script>
-<script src="/js/vendor.js"></script>
+
 <script src="http://zzish.github.io/zzishsdk-js/zzish.js"></script>
-<script src="/js/quiz.js"></script>
+
 <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
 <script>
+    var isIE9OrBelow = function() {
+        return /MSIE\s/.test(navigator.userAgent) && parseFloat(navigator.appVersion.split("MSIE")[1]) < 10;
+    }
+
     $(document).ready(function(){
-      $('#play-but').nivoLightbox();
-  });
+        if (!isIE9OrBelow()) {
+            $('#play-but').nivoLightbox();
+        }
+
+    });
 </script>
 <script>
     $( document ).ready(function() {
