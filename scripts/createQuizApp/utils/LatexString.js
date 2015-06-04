@@ -16,6 +16,18 @@ var detectLatex = function(string){
         return stringToStrip;
 
     };
+
+    var renderLatexString = function(s){
+        try {
+            var renderedString = katex.renderToString(s);
+
+        } catch (err){
+            console.log('couldn`t convert string', s);
+            return s;
+        }
+        return renderedString;
+    }
+
     var result = [];
 
 
@@ -48,9 +60,10 @@ var detectLatex = function(string){
 
 
     var processResult = function(resultToProcess) {
+        console.log('whole string', resultToProcess);
         var newResult = resultToProcess.map(function(r) {
             if (r.type === 'text') { return r.string; }
-            if (r.type === 'latex') { return katex.renderToString(r.string); }
+            if (r.type === 'latex') { return renderLatexString(r.string); }
         });
 
         return newResult.join(' ');
