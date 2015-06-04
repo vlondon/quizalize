@@ -137,7 +137,8 @@ var QuizActions = {
                 };
 
                 quiz.category = getCategoryFormUuid();
-
+                // settings property is assumed, so it should be present
+                quiz.settings = quiz.settings || {};
                 console.log('a');
 
                 AppDispatcher.dispatch({
@@ -244,7 +245,7 @@ var QuizActions = {
             quiz = _questionsTopicToTopicId(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
-            
+
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,

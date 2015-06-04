@@ -60,7 +60,7 @@ var detectLatex = function(string){
 
 
     var processResult = function(resultToProcess) {
-        console.log('whole string', resultToProcess);
+        
         var newResult = resultToProcess.map(function(r) {
             if (r.type === 'text') { return r.string; }
             if (r.type === 'latex') { return renderLatexString(r.string); }
