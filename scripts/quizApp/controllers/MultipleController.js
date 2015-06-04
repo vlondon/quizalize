@@ -50,7 +50,14 @@ angular.module('quizApp')
 
             //$scope.$apply(function(){
                 self.currentQuiz = data;
-                self.showButtons = !self.currentQuiz.latexEnabled;
+                // self.showButtons;
+
+                // if (self.currentQuiz && self.currentQuiz.latexEnabled) {
+                //     self.showButtons = false;
+                // } else if (self.currentQuiz && self.currentQuiz.settings && self.currentQuiz.settings.latexEnabled) {
+                //     self.showButtons = false;
+                // }
+
                 if (self.currentQuiz.latexEnabled) {
                     console.log("Hiding question" + $("#quizQuestion" ));
                     // MathJax.Hub.Config({
