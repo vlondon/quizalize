@@ -34,18 +34,18 @@ var GroupActions = {
 
     unpublishQuiz: function(quizId, groupCode){
 
-        console.log('about to unpublish quizId, groupCode');
         GroupApi.unpublishQuiz(quizId, groupCode)
             .then(() => {
                 // Update Content Id
                 this.loadGroups();
             });
+        
     },
 
     publishNewAssignment: function(quizId, groupName) {
 
-        return new Promise(function(resolve, reject){
 
+        return new Promise((resolve, reject) => {
             GroupApi.publishNewAssignment(quizId, groupName)
                 .then((response) => {
                     AppDispatcher.dispatch({
@@ -61,7 +61,7 @@ var GroupActions = {
 
     publishAssignment: function(quizId, code, settings) {
 
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject) => {
             var dataToSend = {
                 access: -1,
                 code
