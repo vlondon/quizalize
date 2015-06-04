@@ -139,7 +139,6 @@ var QuizActions = {
                 quiz.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
                 quiz.settings = quiz.settings || {};
-                console.log('a');
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
