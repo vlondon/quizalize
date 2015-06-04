@@ -513,6 +513,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (question.imageURL) {
                 parameters.attributes["image_url"] = question.imageURL;
             }
+            if (!!currentQuizResult.latexEnabled) {
+                parameters.attributes["latex"] = true;
+            }
             if (currentQuizResult.currentActivityId !== undefined) {
                 zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
             }
