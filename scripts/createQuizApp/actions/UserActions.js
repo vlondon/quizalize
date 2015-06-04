@@ -43,7 +43,7 @@ var UserActions = {
 
             UserApi.login(data)
                 .then(function(user){
-                    AnalyticsActions.triggerPixels();
+                    // AnalyticsActions.triggerPixels();
                     if (handleRedirect() === false){
                         resolve(user);
                         AppDispatcher.dispatch({

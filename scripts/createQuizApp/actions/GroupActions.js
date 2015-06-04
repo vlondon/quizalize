@@ -39,7 +39,6 @@ var GroupActions = {
                 // Update Content Id
                 this.loadGroups();
             });
-        
     },
 
     publishNewAssignment: function(quizId, groupName) {
