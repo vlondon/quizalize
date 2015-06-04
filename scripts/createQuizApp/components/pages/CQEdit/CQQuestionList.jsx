@@ -76,7 +76,7 @@ var CQQuestionList = React.createClass({
                 <div className='new-question-cta'>
 
                     <CQLink href={`/quiz/create/${this.props.quiz.uuid}/${this.props.quiz.questions.length}`}>
-                        <button type='button' style={{margin: '4px'}} className="btn">
+                        <button type='button' style={{margin: '4px'}} className="btn btn-default">
                             <span className="glyphicon glyphicon-plus"></span>
                             &nbsp;Add a new question
                         </button>
@@ -93,7 +93,7 @@ var CQQuestionList = React.createClass({
             questions = this.props.quiz.questions.map((item, index) => {
                 var editor;
                 var className = 'row';
-                
+
                 if (index === this.props.questionIndex) {
                     editor = questionEditor;
                     className = 'row selected';

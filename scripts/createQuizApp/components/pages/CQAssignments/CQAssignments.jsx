@@ -129,7 +129,7 @@ var CQAssignments = React.createClass({
                                                                 <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
 
                                                                     <button
-                                                                        className="btn">
+                                                                        className="btn btn-default">
                                                                         View info
                                                                     </button>
                                                                 </CQLink>
