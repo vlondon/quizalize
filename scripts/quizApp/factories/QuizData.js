@@ -161,7 +161,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     setQuiz(quiz);
                     callback(null,currentQuiz);
                 }
-            }    
+            }
         }
     }
 
@@ -255,15 +255,23 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         })
     }
 
-    var selectQuiz = function(catId,quizId,isLoaded,callback) {
-        if (isLoaded && catId!="public") {
-            if (categories[catId]==undefined) {
-                loadPlayerQuizzes(function() {
+    var selectQuiz = function(catId, quizId, isLoaded, callback) {
+
+        if (catId!="public") {
+            if (isLoaded){
+                if (categories[catId]==undefined) {
+                    loadPlayerQuizzes(function() {
+                        searchThroughCategories(catId,quizId,callback);
+                    })
+                }
+                else {
                     searchThroughCategories(catId,quizId,callback);
-                })
-            }
-            else {
-                searchThroughCategories(catId,quizId,callback);
+                }
+            } else {
+                // we need to load the quizzes first
+                loadPlayerQuizzes(function(){
+                    selectQuiz(catId, quizId, true, callback);
+                });
             }
         }
         else if (catId.indexOf("share:")==0) {
