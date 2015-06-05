@@ -7,6 +7,8 @@ var CQLink          = require('createQuizApp/components/utils/CQLink');
 var CQDashboardProfile = require('./extra/CQDashboardProfile');
 var CQDashboardQuizzes = require('./extra/CQDashboardQuizzes');
 
+var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay/CQQuizOfTheDayWithInfo');
+
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 
@@ -44,9 +46,13 @@ var CQDashboard = React.createClass({
                 <div className="cq-dashboard">
                     <CQDashboardProfile/>
                     <div className="cq-dashboard__dashboard">
-                        Quiz of the day
+                        <h3>
+                            Quiz of the day
+                        </h3>
+                        <div className="cq-dashboard__qofd">
 
-                        <h3>Quizzes</h3>
+                            <CQQuizOfTheDay/>
+                        </div>
                         <CQDashboardQuizzes/>
                     </div>
                 </div>
@@ -64,7 +70,6 @@ var CQDashboard = React.createClass({
 
                                         <div className="border-block">
                                             <center>
-
                                                 <h3>
                                                     Make a classroom quiz in 60 seconds
                                                 </h3>

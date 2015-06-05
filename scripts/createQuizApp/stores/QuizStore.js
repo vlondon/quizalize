@@ -14,6 +14,18 @@ var _fullQuizzes = {};
 var _topics = [];
 var init = false;
 
+var findPublicQuiz = function(quizId){
+    var quizFound;
+    _publicQuizzes.forEach(category =>{
+        category.quizzes.forEach(quiz =>{
+            if (quiz.uuid === quizId) {
+                quizFound = quiz;
+            }
+        });
+    });
+
+    return quizFound;
+};
 
 
 var QuizStore = assign({}, EventEmitter.prototype, {
@@ -28,6 +40,18 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
     getPublicQuizzes: function(){
         return _publicQuizzes;
+    },
+
+    getQuizOfTheDay: function(){
+        return findPublicQuiz('f2742669-b4ad-4da2-8ef5-0f6f9cf7d15b');
+        console.log('_publicQuizzes', _publicQuizzes);
+        if (_publicQuizzes.length === 0) {
+            return [];
+        } else {
+            var quizIndex = Math.round(Math.random() * _publicQuizzes.length);
+            console.log('quizoftheday', quizIndex, _publicQuizzes[quizIndex]);
+            return _publicQuizzes[quizIndex].quizzes[0];
+        }
     },
 
     getTopics: function() {

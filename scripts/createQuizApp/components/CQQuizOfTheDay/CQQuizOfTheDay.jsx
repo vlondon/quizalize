@@ -1,5 +1,5 @@
 var React = require('react');
-
+require('./CQQuizOfTheDayStyles');
 var CQQuizOfTheDay = React.createClass({
 
     propTypes: {
@@ -21,6 +21,28 @@ var CQQuizOfTheDay = React.createClass({
         };
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        var quiz = {
+            settings: {}
+        };
+        if (nextProps.quiz.uuid) {
+            quiz = nextProps.quiz;
+        }
+        this.setState({quiz});
+    },
+
+    getInitialState: function() {
+        var quiz = {
+            settings: {}
+        };
+        if (this.props.quiz.uuid) {
+            quiz = this.props.quiz;
+        }
+        return {
+            quiz
+        };
+    },
+
     handlePlay: function(){
         this.props.play();
     },
@@ -35,9 +57,9 @@ var CQQuizOfTheDay = React.createClass({
 
         var background = {};
 
-        if (this.props.quiz.settings.imageUrl) {
+        if (this.state.quiz.settings.imageUrl) {
             background  = {
-                backgroundImage: `url(${this.props.quiz.settings.imageUrl})`
+                backgroundImage: `url(${this.state.quiz.settings.imageUrl})`
             };
         }
 
@@ -101,13 +123,13 @@ var CQQuizOfTheDay = React.createClass({
 
                     {takeoverButton}
                     <div className="qd-source">
-                        source: {this.props.quiz.settings.imageAttribution}
+                        source: {this.state.quiz.settings.imageAttribution}
                     </div>
                     <div className="qd-description-details">
 
                         <div className="qd-text">
-                            <h3>{this.props.quiz.name}</h3>
-                            <p>{this.props.quiz.settings.Description}</p>
+                            <h3>{this.state.quiz.name}</h3>
+                            <p>{this.state.quiz.settings.Description}</p>
                         </div>
 
                         {actions}

@@ -6,7 +6,8 @@ var CQLink = React.createClass({
     propTypes: {
         children: React.PropTypes.oneOfType([
             React.PropTypes.string,
-            React.PropTypes.element
+            React.PropTypes.element,
+            React.PropTypes.arrayOf(React.PropTypes.element)
         ]),
         href: React.PropTypes.string,
         className: React.PropTypes.string

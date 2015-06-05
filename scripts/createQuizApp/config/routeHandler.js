@@ -3,9 +3,10 @@ var pages           = require('./routes');
 var settings        = require('createQuizApp/config/settings');
 var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
 var GroupActions     = require('createQuizApp/actions/GroupActions');
+var UserActions     = require('createQuizApp/actions/UserActions');
+var QuizActions     = require('createQuizApp/actions/QuizActions');
 
 var UserStore       = require('createQuizApp/stores/UserStore');
-var UserActions     = require('createQuizApp/actions/UserActions');
 var urlParams       = require('createQuizApp/utils/urlParams');
 
 var user = null;
@@ -138,6 +139,7 @@ UserStore.addChangeListener(function(){
     user = UserStore.getUser();
     if (user !== undefined){
         GroupActions.loadGroups();
+        QuizActions.loadPublicQuizzes();
     }
     if (routerReady !== true) {
         router.init();
