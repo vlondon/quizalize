@@ -5,6 +5,7 @@ var UserStore = require('createQuizApp/stores/UserStore');
 // var UserActions = require('createQuizApp/actions/UserActions');
 var CQLink          = require('createQuizApp/components/utils/CQLink');
 var CQDashboardProfile = require('./extra/CQDashboardProfile');
+var CQDashboardQuizzes = require('./extra/CQDashboardQuizzes');
 
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
@@ -44,6 +45,9 @@ var CQDashboard = React.createClass({
                     <CQDashboardProfile/>
                     <div className="cq-dashboard__dashboard">
                         Quiz of the day
+
+                        <h3>Quizzes</h3>
+                        <CQDashboardQuizzes/>
                     </div>
                 </div>
 

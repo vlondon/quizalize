@@ -16,9 +16,7 @@ require('./CQQuizzesStyles');
 var CQQuizzes = React.createClass({
 
     getInitialState: function() {
-        return {
-            quizzes: QuizStore.getQuizzes()
-        };
+        return this.getState();
     },
 
     componentDidMount: function() {
@@ -31,7 +29,15 @@ var CQQuizzes = React.createClass({
 
     onChange: function(){
         console.log('onChange', QuizStore);
-        this.setState({quizzes: QuizStore.getQuizzes()});
+        this.setState(this.getState());
+    },
+
+    getState: function(){
+
+        var quizzes = QuizStore.getQuizzes();
+        console.log('quizzes', quizzes);
+        quizzes = quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
+        return { quizzes };
     },
 
     handleDelete: function(quiz){
