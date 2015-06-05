@@ -8,12 +8,13 @@ var TopicActions = {
     createTopic: function(topic){
         var putTopic = QuizApi.putTopic(topic);
         putTopic
-            .then(function(){
-                AppDispatcher.dispatch({
-                    actionType: TopicConstants.TOPIC_ADDED,
-                    payload: topic
-                });
+            .catch(function(er){
+                console.error('There has been an error', er);
             });
+        AppDispatcher.dispatch({
+            actionType: TopicConstants.TOPIC_ADDED,
+            payload: topic
+        });
         return putTopic;
     }
 
