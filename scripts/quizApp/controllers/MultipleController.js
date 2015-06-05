@@ -58,7 +58,7 @@ angular.module('quizApp')
                 //     self.showButtons = false;
                 // }
 
-                if (self.currentQuiz.latexEnabled) {
+                // if (self.currentQuiz.latexEnabled) {
                     console.log("Hiding question" + $("#quizQuestion" ));
                     // MathJax.Hub.Config({
                     //     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
@@ -75,10 +75,10 @@ angular.module('quizApp')
                     //         });
                     //     });
                     // }, 200);
-                }
-                else {
-                    self.showButtons = true;
-                }
+                // }
+                // else {
+                self.showButtons = true;
+                // }
                 self.score = QuizData.currentQuizResult().totalScore;
                 self.questionCount = QuizData.currentQuizResult().questionCount;
                 QuizData.getQuestion(self.questionId, function(data){
