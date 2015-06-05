@@ -23,6 +23,11 @@ $mobile-ie6: true !default;
     }
 }
 
+@mixin cq-container {
+    max-width: 1170px;
+    margin: auto;
+}
+
 
 @mixin media($size: false, $max-width: false, $min-width: false, $ignore-for-ie: false) {
     @if $is-ie and ($ignore-for-ie == false) {

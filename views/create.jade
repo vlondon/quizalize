@@ -24,7 +24,7 @@ html(ng-app='createQuizApp')
         block header
 
         script(src='#{session.zzishsdkurl}/zzish.js')        
-        script(src='/js/vendor.js')        
+             
         script(src='/lib/autogrow.js')
         script(src="/lib/Chart.js")
         
@@ -194,10 +194,11 @@ html(ng-app='createQuizApp')
             .left-space {
                 margin-left: 5px;
             }
-        script(src='/js/quiz.js')
         //- script(src='/js/createQuizApp.js')
 
 body
     #reactApp
-
-    script(src='/js/cqApp.js')
+    script(src='http://localhost:7071/js/vendor.js')
+    script(src='http://localhost:7071/js/quiz.js')
+    script(src='http://localhost:7071/js/cqApp.js')
+    script(src="http://localhost:7071/webpack-dev-server.js")

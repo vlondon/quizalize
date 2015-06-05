@@ -1,10 +1,54 @@
 @import './../../../../shared/scss/layout';
+@import './../../../../quizApp/components/shared/variables';
+@import './../../../../quizApp/components/shared/mixins';
 body {
     background: #FFF;
 }
 
 .ql-container {
     @include ql-container;
+}
+
+.cq-dashboard {
+    @include ql-container;
+    @include clearfix;
 
 
+    @at-root #{&}__profile {
+        width: 100%;
+        float: left;
+        background: rgba(green, .5);
+        padding: 10px;
+        @include media($size-mobile) {
+            width: 25%;
+        }
+    }
+
+    @at-root #{&}__dashboard {
+        width: 100%;
+        background: rgba(red, .5);
+        float: left;
+        padding: 10px;
+        @include media($size-mobile) {
+            width: 75%;
+        }
+    }
+
+    @at-root #{&}__profilepic {
+        border-radius: 10px;
+        max-width: 220px;
+        max-height: 220px;
+        width: 100%;
+    }
+
+    @at-root #{&}__details {
+
+        /* margin: 0; */
+        /* padding: 0 4px; */
+        padding-left: 10px;
+
+        list-style: none;
+        li:before{ content:"-"; position:relative; left:-5px;}
+        li{ text-indent:-5px; }
+    }
 }
