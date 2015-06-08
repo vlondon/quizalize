@@ -34,7 +34,7 @@ function goToApp() {
 
 function showQuiz(id) {
     var check = localStorage.getItem("userId") || localStorage.getItem('token');
-    var quizUrl = window.location.href = "/app#/play/public/" + id + "/true";
+    var quizUrl = window.location.href = "/app#/play/public/" + id;
     if (check) {
         window.location.href = quizUrl;
     }

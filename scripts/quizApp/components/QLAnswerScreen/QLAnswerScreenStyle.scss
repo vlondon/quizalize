@@ -61,11 +61,20 @@
         animation: qlEnterTranslateY 300ms ease-out;
         animation-fill-mode: both;
         animation-delay: 100ms;
+        margin-bottom: 20px;
     }
     .text-2 {
         animation: qlEnterTranslateY 300ms ease-out;
         animation-fill-mode: both;
         animation-delay: 1000ms;
+        margin-bottom: 20px;
+    }
+    .description {
+        margin: 20px 60px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        animation: qlEnterTranslateY 300ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 1200ms;
     }
     .answer {
         width: 100%;
@@ -142,7 +151,7 @@
             font-size: 20px;
         }
         img {
-            
+
             max-width:40px;
             max-height:25px;
             width:100%;

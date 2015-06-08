@@ -1,11 +1,11 @@
 var React = require('react');
+var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
 
 angular.module('quizApp').controller('GameController', function(QuizData, $log, $location, $rootScope, $routeParams, $scope){
     var self = this;
 
     self.id = $routeParams.id;
-    self.action = $routeParams.action;
     self.catId = $routeParams.catId;
     self.numQuestions = "the";
     self.randomText = ".";
@@ -32,9 +32,9 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
 
 
 
-    QuizData.selectQuiz(self.catId, self.id, self.action === "false", function(err, result) {
+    QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
-            self.currentQuiz = result;
+            self.currentQuiz = QuizFormat.process(result);
             if (self.currentQuiz.settings) {
                 if (self.currentQuiz.settings['random']) {
                     self.randomText = " in random order.";

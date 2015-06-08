@@ -28,8 +28,11 @@ var QLMultiple = React.createClass({
         onSelect: React.PropTypes.func,
         onNext: React.PropTypes.func,
         quizData: React.PropTypes.object,
+        questionData: React.PropTypes.object,
         currentQuiz: React.PropTypes.object,
-        imageURL: React.PropTypes.string
+        imageURL: React.PropTypes.string,
+        latexEnabled: React.PropTypes.bool,
+        imageEnabled: React.PropTypes.bool
     },
 
     getInitialState: function() {
@@ -92,6 +95,14 @@ var QLMultiple = React.createClass({
 
     render: function() {
 
+        var latexWrapper = (string) => {
+            if (this.props.latexEnabled) {
+                return (<QLLatex>{string}</QLLatex>);
+            } else {
+                return (<span>{string}</span>);
+            }
+        }
+
         var showAnswer, showQuestions, showCountdown;
 
         if (!this.state.answer) {
@@ -100,7 +111,7 @@ var QLMultiple = React.createClass({
                 return (
                 <div className="alternative-wrapper" key={index}>
                     <button type="button" className={`btn alternative alternative-${index} wrapword`} onClick={this.handleClick.bind(this, index)}>
-                        <QLLatex>{alternative}</QLLatex>
+                        {latexWrapper(alternative)}
                     </button>
                 </div>);
             }, this);
@@ -108,6 +119,7 @@ var QLMultiple = React.createClass({
             var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
             showAnswer = (
                 <QLAnswerScreen
+                    questionData={this.props.questionData}
                     answerData={currentAnswer}
                     onNext={this.props.onNext}/>
             );
@@ -117,11 +129,11 @@ var QLMultiple = React.createClass({
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
                     <p className='question'>
-                        <QLLatex>
-                            {this.props.question}
-                        </QLLatex>
+
+                        {latexWrapper(this.props.question)}
+
                     </p>
-                    {this.props.imageURL ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
+                    {this.props.imageURL && this.props.imageEnabled ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers alternatives">
                         {showAnswer}
