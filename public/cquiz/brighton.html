@@ -112,16 +112,20 @@
 <section class="color-dark bg-gray" style="padding-bottom:40px;">
     <div class="container marginbot-50">
         <row>
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center" style="padding-bottom:20px">
                 <h1>Try one of our quizzes</h1>
             </div>
         </row>
-
+    <row>
+     <div class="col-md-12 text-center" style='padding-bottom:20px'>
+        <a class="cta5" href="http://bit.ly/quizday1" >Bananas - Quiz of the Day</a><br/>
+        </div>
+    </row>
 
         <row>
             <div class="col-md-4">
               <ul class="example-list">
-                <li><h3 class="text-center">Key Stage 2</h3></li>
+                <li><h2 class="text-center ks-s">Key Stage 2</h2></li>
                 <li><a href="javascript:showQuiz('3c281df9-b248-4d82-820d-36dc4d3fb892')">Shapes (2D)</a></li>
                 <li><a href="javascript:showQuiz('61c31276-ed30-4bfc-9f8d-732bbf7e2fd7')">Verbs 5 (Year 5)</a></li>
                 <li><a href="javascript:showQuiz('5a476312-dde9-4c6e-b747-c94353215e0f')">Numbers 1 - Year 4</a></li>
@@ -130,7 +134,7 @@
 
         <div class="col-md-4">
           <ul class="example-list">
-            <li><h3 class="text-center">Key Stage 3</h3></li>
+            <li><h2 class="text-center ks-s">Key Stage 3</h2></li>
             <li><a href="javascript:showQuiz('cea6705f-cd26-4bdc-afc5-babbb65b7c09')">Biology (Human Organs)</a></li>
             <li><a href="javascript:showQuiz('bf2b1480-665b-40d3-b280-382a532ebcdc')">Spanish (Animals)</a></li>
             <li><a href="javascript:showQuiz('f2742669-b4ad-4da2-8ef5-0f6f9cf7d15b')">British History (WWI)</a></li>
@@ -138,7 +142,7 @@
     </div>
     <div class="col-md-4">
       <ul class="example-list">
-        <li><h3 class="text-center">Key Stage 4</h3></li>
+        <li><h2 class="text-center ks-s">Key Stage 4</h2></li>
         <li><a href="javascript:showQuiz('b9eff617-7233-4464-bc39-9cc5a131c1e7')">Geography - Terminology</a></li>
         <li><a href="javascript:showQuiz('95691dc0-bd2a-47dd-9dc6-16d7f1b58779')">GCSE Maths Foundation - Number</a></li>
         <li><a href="javascript:showQuiz('3502011b-f6f8-4f00-9872-ec2c48eaaef2')">Religious Studies - Christianity</a></li>
@@ -150,16 +154,12 @@
 <row>
     <div class="col-md-12">
 
-        <h3 class="text-center" style="padding-bottom:20px"> or try our quiz of the day!</h3>
+        <a href="http://www.quizalize.com/quiz/public"><h3 class="text-center" style="padding-bottom:20px; text-decoration:underline"> or select one from our library</h3></a>
     </div>
 
 
 </row>
-<row>
-    <div class="col-md-12 text-center">
-        <a class="cta3" href="http://bit.ly/quizday1">Bananas - Quiz of the Day</a><br/>
-    </div>
-</row>
+
 </div>
 
 
@@ -221,7 +221,66 @@
 
 
       </section>
+<!-- Section: contact -->
+<section id="contact" class=" home-section nopadd-bot color-dark bg-gray2 text-center">
+  <a name="sendForm" id="sendForm">
+    <div class="container marginbot-50">
+      <div class="col-md-12 ">
 
+        <div class="section-heading text-center ">
+          <h1><strong >GET IN TOUCH</strong></h1>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <a class="cta4" onclick="ask('order')">Request an info pack</a>
+
+      </div>
+      <div class="col-md-4">
+        <a class="cta4" onclick="ask('question')">Ask a question</a>
+
+      </div>
+      <div class="col-md-4">
+        <a class="cta4" onclick="ask('demo')">Book a demo</a>
+
+      </div>
+    </div>
+
+    <div class="container" id="helpForm">
+      <div class="row marginbot-80">
+        <div class="col-md-12">
+          <form id="contact-form" onsubmit="return submitForm()">
+            <div class="row marginbot-20">
+              <div class="col-md-6 xs-marginbot-20">
+                <input type="text" class="form-control input-lg" id="ename" placeholder="Enter name"/>
+              </div>
+              <div class="col-md-6">
+                <input type="email" class="form-control input-lg" id="email" placeholder="Enter email" required />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <textarea name="message" id="message" class="form-control" rows="4" cols="25"
+                  placeholder="Message"></textarea>
+                </div>
+                <input type="submit" class="btn-lg btn-block" id="btnContactUs" value="Send"/>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container" id="helpSent" style="display: none;">
+      <div class="row marginbot-80">
+        <div class="col-md-8 col-md-offset-2">
+          <h3>Thanks for getting in touch. We'll get back to you ASAP!</h3>
+        </div>
+      </div>
+    </div>
+  </section>
 
       <!-- Section: contact -->
       <section class="color-light bg-white">
