@@ -5,6 +5,9 @@
     .quiz-extras {
         float: right;
         font-size: 12px;
+        position: absolute;
+        top: 60px;
+        left: 20px;
     }
     .new-question-cta {
         text-align: center;
@@ -14,6 +17,9 @@
         i {
             color: #999;
         }
+    }
+    .cq-edit__quiz {
+        position: relative;
     }
 }
 .ql-question-list {

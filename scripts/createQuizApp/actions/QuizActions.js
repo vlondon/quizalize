@@ -7,6 +7,7 @@ var TopicActions        = require('createQuizApp/actions/TopicActions');
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
+var QuizFormat          = require('createQuizApp/actions/format/QuizFormat');
 
 var _questionsTopicIdToTopic = function(quiz){
 
@@ -138,7 +139,8 @@ var QuizActions = {
 
                 quiz.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
-                quiz.settings = quiz.settings || {};
+                quiz = QuizFormat.process(quiz);
+
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,

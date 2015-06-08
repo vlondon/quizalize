@@ -126,17 +126,19 @@ var CQEditNormal = React.createClass({
     },
 
     handleCheckbox: function(property){
-        var newState = {};
-        newState[property] = !this.state[property];
-        this.setState(newState);
+        var question = assign({}, this.state.question);
+        question[property] = !this.state.question[property];
+
+        this.setState({question});
     },
+
 
 
     render: function() {
 
         var imageLink;
 
-        if (this.props.quiz.settings.imageEnabled) {
+        if (this.state.question.imageEnabled) {
             imageLink = (
                 <div className='block clearfix'>
 
@@ -167,8 +169,31 @@ var CQEditNormal = React.createClass({
         }
 
         return (
-            <div className={this.props.quiz.settings.latexEnabled ? 'create-question latex-enabled' : 'create-question'}>
+            <div className={this.state.question.latexEnabled ? 'create-question latex-enabled' : 'create-question'}>
 
+                <div className="quiz-extras">
+
+                    <div className="math-mode">
+                        <span>Math mode</span>
+                        <label  className="switch">
+                            <input type="checkbox" className="switch-input"
+                                checked={this.state.question.latexEnabled}
+                                onChange={this.handleCheckbox.bind(this, 'latexEnabled')}
+                                />
+                            <span className="switch-label" data-on="Yes" data-off="No"></span>
+                            <span className="switch-handle"></span>
+                        </label>
+                    </div>
+
+                    <div className="image-mode">
+                        <span>Use Images</span>
+                        <label  className="switch">
+                            <input type="checkbox" className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                            <span className="switch-label" data-on="Yes" data-off="No"></span>
+                            <span className="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
 
                 {imageLink}
 
@@ -194,7 +219,7 @@ var CQEditNormal = React.createClass({
                         </div>
 
                         <div className="latex-field">
-                            {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.question}</CQLatexString> : null}
+                            {this.state.question.latexEnabled ? <CQLatexString>{this.state.question.question}</CQLatexString> : null}
                         </div>
                     </div>
                 </div>
@@ -214,7 +239,7 @@ var CQEditNormal = React.createClass({
                                 id="answer" type="text" on-enter="create.nextFromAnswer();" placeholder="e.g. Paris" ng-model="create.answerText" tabIndex="2" rows="1" cols="44" className="autogrow-short form-control"></textarea>
                         </div>
                         <div className="latex-field">
-                            {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.answer}</CQLatexString> : null}
+                            {this.state.question.latexEnabled ? <CQLatexString>{this.state.question.answer}</CQLatexString> : null}
                         </div>
                     </div>
                 </div>
@@ -222,7 +247,7 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                        Incorrect Answers<a data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. &lt;a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'&gt;Learn more&lt;/a&gt;" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="10" data-html="true" className="glyphicon glyphicon-question-sign"></a>
+                        Incorrect Answers <a data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. &lt;a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'&gt;Learn more&lt;/a&gt;" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="10" data-html="true" className="glyphicon glyphicon-question-sign"></a>
                     </label>
                     <div className="right no-left-margin">
 
@@ -238,7 +263,7 @@ var CQEditNormal = React.createClass({
                             </div>
 
                             <div className="latex-field">
-                                {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.alternatives[0]}</CQLatexString> : null}
+                                {this.state.question.latexEnabled ? <CQLatexString>{this.state.question.alternatives[0]}</CQLatexString> : null}
                             </div>
                         </div>
 
@@ -254,7 +279,7 @@ var CQEditNormal = React.createClass({
                             </div>
 
                             <div className="latex-field">
-                                {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.alternatives[1]}</CQLatexString> : null}
+                                {this.state.question.latexEnabled ? <CQLatexString>{this.state.question.alternatives[1]}</CQLatexString> : null}
                             </div>
                         </div>
 
@@ -271,11 +296,37 @@ var CQEditNormal = React.createClass({
 
 
                             <div className="latex-field">
-                                {this.props.quiz.settings.latexEnabled ? <CQLatexString>{this.state.question.alternatives[2]}</CQLatexString> : null}
+                                {this.state.question.latexEnabled ? <CQLatexString>{this.state.question.alternatives[2]}</CQLatexString> : null}
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+                <div className="block clearfix">
+                    <label className="left control-label">Answer explanation <a data-toggle="popover"
+                        title="Answer explanation (Optional)"
+                        data-content="A detailed reason provided for the correct answer"
+                        data-trigger="focus"
+                        data-placement="auto left"
+                        data-container="body"
+                        role="button"
+                        tabIndex="11"
+                        className="glyphicon glyphicon-question-sign"></a>
+                    </label>
+                    <div className="right">
+                        <div className="entry-input-full-width">
+
+                            <input
+                                value={this.state.question.answerExplanation}
+                                ref='_topic'
+                                onChange={this.handleChange.bind(this, 'answerExplanation', undefined)}
+                                onKeyDown={this.handleNext.bind(this, 'answerExplanation', undefined)}
+                                id="topic" type="text" placeholder="e.g. Barcelona has a population of 1,620,943" autofocus="true" tabIndex="6" className="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <div className="block clearfix">
