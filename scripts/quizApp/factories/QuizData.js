@@ -1,5 +1,6 @@
 var randomise = require('quizApp/utils/randomise');
 var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
+var QUIZ_CONTENT_TYPE = "quiz";
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     if(typeof zzish == 'undefined') {
@@ -259,7 +260,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var getPublicContent = function(quizId,callback) {
-        zzish.getPublicContent(quizId,function (err,message) {
+        zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizId,function (err,message) {
             if (!err) {
                 currentQuiz = message;
             }
@@ -288,7 +289,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
         else if (catId.indexOf("share:")==0) {
-            zzish.getContent(catId.substring(6),quizId,function (err,result) {
+            zzish.getContent(catId.substring(6),QUIZ_CONTENT_TYPE,quizId,function (err,result) {
                 setQuiz(result);
                 callback(err,result);
                 $rootScope.$digest();
@@ -352,7 +353,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getTopics: function(callback) {
             if (!topicsLoaded) {
-                zzish.listPublicContent(function(err, data) {
+                zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
 
                     if (!err) {
                         data.categories = data.categories.filter(c => c !== null);
@@ -390,7 +391,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             loadPlayerQuizzes(callback);
         },
         loadPublicQuizzes: function(callback){
-            zzish.listPublicContent(function(err, message){
+            zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, message){
                 if(!err) {
                     message.categories = message.categories.filter(c => c !== null);
                     message.contents = message.contents.filter(c => c !== null);
