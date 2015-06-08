@@ -31,8 +31,8 @@ var QLMultiple = React.createClass({
         questionData: React.PropTypes.object,
         currentQuiz: React.PropTypes.object,
         imageURL: React.PropTypes.string,
-        latexEnabled: React.PropTypes.boolean,
-        imageEnabled: React.PropTypes.boolean
+        latexEnabled: React.PropTypes.bool,
+        imageEnabled: React.PropTypes.bool
     },
 
     getInitialState: function() {

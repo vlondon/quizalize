@@ -191,6 +191,7 @@ var QLScrambled = React.createClass({
             var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
             showAnswer = (
                 <QLAnswerScreen
+                    questionData={this.props.questionData}
                     answerData={currentAnswer}
                     onNext={this.props.onNext}/>
             );

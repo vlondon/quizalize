@@ -1,5 +1,3 @@
-var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
-
 angular.module('quizApp')
     .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
 
@@ -53,8 +51,7 @@ angular.module('quizApp')
         QuizData.loadQuiz(self.catId, self.id, function(data) {
 
             //$scope.$apply(function(){
-                self.currentQuiz = QuizFormat.process(data);
-
+                self.currentQuiz = data;
 
                 self.score = QuizData.currentQuizResult().totalScore;
                 self.questionCount = QuizData.currentQuizResult().questionCount;

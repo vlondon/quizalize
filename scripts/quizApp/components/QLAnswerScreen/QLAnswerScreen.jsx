@@ -76,7 +76,7 @@ var QLAnswerScreen = React.createClass({
 
         if (!this.props.answerData.correct){
             correctAnswer = (
-                <div>
+                <div className="text-2">
                     The correct answer was:
                     <div className="alternatives">
                         <div className="alternative-wrapper">
@@ -89,29 +89,38 @@ var QLAnswerScreen = React.createClass({
             );
         }
 
+        var explanation;
+
+        if (this.props.questionData.answerExplanation && this.props.questionData.answerExplanation.length > 0) {
+            explanation = (<blockquote className="description">
+                <p>
+                    {this.props.questionData.answerExplanation}
+                </p>
+            </blockquote>);
+        }
+
         return (
             <div className='ql-answer-screen'>
                 <div className="star-container">
                     {stars}
                 </div>
-                <h4 className="text-1">
-                    <span>Your answer </span>
-                    {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
-                </h4>
-                <div className="alternatives">
-                        <div className="alternative-wrapper">
-                            <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
-                                <QLLatex>{this.props.answerData.response}</QLLatex>
-                            </button>
-                        </div>
+                <div className="text-1">
+
+                    <h4>
+                        <span>Your answer </span>
+                        {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
+                    </h4>
+                    <div className="alternatives">
+                            <div className="alternative-wrapper">
+                                <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
+                                    <QLLatex>{this.props.answerData.response}</QLLatex>
+                                </button>
+                            </div>
+                    </div>
                 </div>
 
                 {correctAnswer}
-                <blockquote className="description">
-                    <p>
-                        {this.props.questionData.answerExplanation}
-                    </p>
-                </blockquote>
+                {explanation}
 
 
                 <div className="score-and-time">

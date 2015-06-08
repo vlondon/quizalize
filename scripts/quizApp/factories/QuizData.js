@@ -1,4 +1,5 @@
 var randomise = require('quizApp/utils/randomise');
+var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     if(typeof zzish == 'undefined') {
@@ -161,7 +162,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     setQuiz(quiz);
                     callback(null,currentQuiz);
                 }
-            }    
+            }
         }
     }
 
@@ -381,8 +382,11 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             });
         },
         loadQuiz: function(catId,quizId,callback) {
+            var cb = function(data){
+                callback(QuizFormat.process(data));
+            }
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
-                callback(currentQuiz);
+                cb(currentQuiz);
             }
             else {
                 //we have a problem
@@ -390,7 +394,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 if (catId=="public" || catId.indexOf("share:")==0) {
                     loaded = false;
                 }
-                selectQuiz(catId, quizId, loaded, callback);
+                selectQuiz(catId, quizId, loaded, cb);
             }
         },
         selectQuiz: selectQuiz,
