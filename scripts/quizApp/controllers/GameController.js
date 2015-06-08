@@ -32,7 +32,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
 
 
 
-    QuizData.selectQuiz(self.catId, self.id, self.action == "false", function(err, result) {
+    QuizData.selectQuiz(self.catId, self.id, self.action === "false", function(err, result) {
         if (!err) {
             self.currentQuiz = result;
             if (self.currentQuiz.settings) {
