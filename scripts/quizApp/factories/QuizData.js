@@ -125,7 +125,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var length = currentQuestion.answer.length;
         var numAlternatives = 0;
         if (currentQuestion.alternatives) {
-            for (var i currentQuestion.alternatives) {
+            for (var i in currentQuestion.alternatives) {
                 if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i]!=="") {
                     numAlternatives++;
                 }
