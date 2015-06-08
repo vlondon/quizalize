@@ -17,6 +17,11 @@ var QuizFormat = {
     moveSettingsToQuestion: function(quiz) {
 
         var converted = false;
+        if (quiz.questions === undefined) {
+            converted = true;
+            quiz.questions = [];
+        }
+        quiz.questions = quiz.questions || [];
         if (quiz.settings && quiz.settings.latexEnabled) {
             quiz.questions.forEach(question => {
                 question.latexEnabled = quiz.settings.latexEnabled || false;
