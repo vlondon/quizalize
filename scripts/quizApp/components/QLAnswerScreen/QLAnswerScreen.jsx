@@ -77,7 +77,7 @@ var QLAnswerScreen = React.createClass({
         if (!this.props.answerData.correct){
             correctAnswer = (
                 <div className="text-2">
-                    The correct answer was:
+                    The correct answer is
                     <div className="alternatives">
                         <div className="alternative-wrapper">
                             <button type="button" className={`btn answer answer-correct`}>

@@ -1,6 +1,8 @@
 var settings = require('quizApp/config/settings');
-// var React = require('react');
+var React = require('react');
+var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 // var QLComplete = require('quizApp/components/QLComplete');
+
 
 var maxScore = settings.maxScore;
 var maxTime = settings.maxTime;
@@ -15,12 +17,13 @@ MathJax.Hub.Config({
       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
       processEscapes: true
-    },    
+    },
     "HTML-CSS": { availableFonts: ["TeX"] }
 });
-MathJax.Hub.Configured();   
+MathJax.Hub.Configured();
 
-angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', '$scope', function(QuizData, $log, $location, $scope){
+angular.module('quizApp').controller('CompleteController', function(QuizData, ExtraData, $log, $location, $scope){
+
     var self = this;
     self.hasTopics = false;
     self.teacherMode = sessionStorage.getItem("mode")=="teacher";
@@ -28,24 +31,26 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     sessionStorage.removeItem("mode");
     self.showButtons = false;
 
-    // var renderReactComponent = function(){
-    //     React.render(
-    //         React.createElement(QLComplete, {
-    //             totals: self.totals
-    //         }),
-    //         document.getElementById('reactContainer')
-    //     );
-    // };
-    //
-    //
-    // var addReactComponent = function(){
-    //     setTimeout(renderReactComponent, 200);
-    //     $scope.$on('$destroy', function(){
-    //         React.unmountComponentAtNode(document.getElementById('reactContainer'));
-    //     });
-    // };
 
-    // addReactComponent();
+    var renderReactComponent = function(){
+        React.render(
+            React.createElement(QLLeaderboard, {
+                leaderboard: self.leaderboard,
+                activityId: self.data.currentActivityId
+            }),
+            document.getElementById('reactContainer')
+        );
+    };
+
+
+    var addReactComponent = function(){
+        setTimeout(renderReactComponent, 200);
+        $scope.$on('$destroy', function(){
+            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+        });
+    };
+
+    addReactComponent();
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -109,12 +114,19 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     };
 
     self.data = QuizData.currentQuizResult();
+
     self.topics = {};
+    ExtraData.getLeaderBoard(self.data.quizId)
+        .then(function(score){
+            console.log('we got score!', score);
+            self.leaderboard = score;
+            renderReactComponent();
+        });
     QuizData.getTopics(function(data) {
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);
         if (self.data.latexEnabled) {
-            setTimeout(function() {                
+            setTimeout(function() {
                 var items = self.data.report;
                 for(var j in items){
                     var item = items[j];
@@ -152,4 +164,4 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
             $location.path("/list");
         }
     };
-}]);
+});

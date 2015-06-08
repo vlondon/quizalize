@@ -1,8 +1,9 @@
 var React = require('react');
 var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
+var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 
-angular.module('quizApp').controller('GameController', function(QuizData, $log, $location, $rootScope, $routeParams, $scope){
+angular.module('quizApp').controller('GameController', function(QuizData, ExtraData, $log, $location, $rootScope, $routeParams, $scope){
     var self = this;
 
     self.id = $routeParams.id;
@@ -13,9 +14,8 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
 
     var renderReactComponent = function(){
         React.render(
-            React.createElement(CQQuizOfTheDay, {
-                quiz: self.currentQuiz,
-                showActions: false
+            React.createElement(QLLeaderboard, {
+                leaderboard: self.leaderboard
             }),
             document.getElementById('reactContainer')
         );
@@ -30,16 +30,28 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
     };
 
 
+    var getLeaderBoard = function(quiz){
+        ExtraData.getLeaderBoard(quiz.uuid)
+            .then(function(result){
+                self.leaderboard = result;
+                renderReactComponent();
+            });
+
+    };
+
 
 
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = QuizFormat.process(result);
+            getLeaderBoard(self.currentQuiz);
             if (self.currentQuiz.settings) {
+
                 if (self.currentQuiz.settings['random']) {
                     self.randomText = " in random order.";
                     self.showSubText = true;
                 }
+
                 if (self.currentQuiz.settings['numQuestions']) {
                     self.numQuestions = self.currentQuiz.questions.length;
                     try {
@@ -50,7 +62,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
                     }
                     self.showSubText = true;
                 }
-
+                console.log('self.currentQuiz.settings', self.currentQuiz);
                 if (self.currentQuiz.settings.featured) {
                     addReactComponent();
                 }

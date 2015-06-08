@@ -9,6 +9,7 @@ require('quizApp/config/routing');
 require('quizApp/config/logProvider');
 
 require('quizApp/factories/QuizData');
+require('quizApp/factories/ExtraData');
 
 require('quizApp/controllers/NavBarController');
 require('quizApp/controllers/StartController');
