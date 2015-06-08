@@ -123,7 +123,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var indexOfSpace = currentQuestion.answer.indexOf(" ");
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
-        if((currentQuestion && !!currentQuestion.alternatives) || patternToDected || length ==1 || indexOfSpace>=0 || length ==8) {
+        var numAlternatives = 0;
+        if (currentQuestion.alternatives) {
+            for (var i currentQuestion.alternatives) {
+                if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i]!=="") {
+                    numAlternatives++;
+                }
+            }            
+        }
+        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
