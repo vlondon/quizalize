@@ -28,6 +28,10 @@ var CQEditNormal = React.createClass({
         return this.getState();
     },
 
+    componentDidMount: function() {
+        $('textarea').autogrow();
+    },
+
     componentWillReceiveProps: function(nextProps) {
 
         var newState = this.getState(nextProps);
@@ -180,7 +184,7 @@ var CQEditNormal = React.createClass({
                 <div className="quiz-extras">
 
                     <div className="math-mode">
-                        <span>Math mode</span>
+                        <div>Math mode</div>
                         <label  className="switch">
                             <input type="checkbox" className="switch-input"
                                 checked={this.state.question.latexEnabled}
@@ -192,7 +196,7 @@ var CQEditNormal = React.createClass({
                     </div>
 
                     <div className="image-mode">
-                        <span>Use Images</span>
+                        <div>Use Image</div>
                         <label  className="switch">
                             <input type="checkbox" className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
                             <span className="switch-label" data-on="Yes" data-off="No"></span>

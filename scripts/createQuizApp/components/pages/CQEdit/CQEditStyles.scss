@@ -1,13 +1,20 @@
 @import './../../../../quizApp/components/shared/variables';
 @import './../../../../quizApp/components/shared/mixins';
 .cq-edit {
-
+    .create-question {
+        position: relative;
+    }
     .quiz-extras {
         float: right;
         font-size: 12px;
         position: absolute;
-        top: 60px;
+        top: 20px;
         left: 20px;
+
+        .math-mode,
+        .image-mode {
+            margin-bottom: 20px;
+        }
     }
     .new-question-cta {
         text-align: center;

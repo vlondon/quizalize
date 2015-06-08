@@ -2,13 +2,21 @@ var QuizFormat = {
 
     moveSettingsToQuestion: function(quiz) {
         var converted = false;
-        if (quiz.settings) {
+        if (quiz.settings.latexEnabled) {
             quiz.questions.forEach(question => {
                 question.latexEnabled = quiz.settings.latexEnabled || false;
-                question.imageEnabled = quiz.settings.imageEnabled || false;
+                delete quiz.settings.latexEnabled;
             });
             converted = true;
-            // delete quiz.settings;
+        }
+
+        if (quiz.settings.imageEnabled) {
+            quiz.questions.forEach(question => {
+                question.imageEnabled = quiz.settings.imageEnabled || false;
+                delete quiz.settings.imageEnabled;
+
+            });
+            converted = true;
         }
 
 
