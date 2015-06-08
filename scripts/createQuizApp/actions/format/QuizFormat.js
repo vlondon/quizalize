@@ -1,8 +1,23 @@
+var uuid = require('node-uuid');
 var QuizFormat = {
 
-    moveSettingsToQuestion: function(quiz) {
+    allQuestionsWithId: function(quiz){
         var converted = false;
-        if (quiz.settings.latexEnabled) {
+
+        quiz.questions.forEach( question => {
+            if (!question.uuid) {
+                question.uuid = uuid.v4();
+                converted = true;
+            }
+        });
+
+        return { quiz, converted };
+    },
+
+    moveSettingsToQuestion: function(quiz) {
+
+        var converted = false;
+        if (quiz.settings && quiz.settings.latexEnabled) {
             quiz.questions.forEach(question => {
                 question.latexEnabled = quiz.settings.latexEnabled || false;
                 delete quiz.settings.latexEnabled;
@@ -10,7 +25,7 @@ var QuizFormat = {
             converted = true;
         }
 
-        if (quiz.settings.imageEnabled) {
+        if (quiz.settings && quiz.settings.imageEnabled) {
             quiz.questions.forEach(question => {
                 question.imageEnabled = quiz.settings.imageEnabled || false;
                 delete quiz.settings.imageEnabled;
@@ -45,14 +60,30 @@ var QuizFormat = {
         if (converted) {
             console.warn(`Quiz ${quiz.uuid} converted to new format`);
         }
-        return quiz;
+        return { quiz, converted };
 
+    },
+
+    convert: function(quiz){
+        var converted;
+        var result1 = this.moveSettingsToQuestion(quiz);
+        var result2 = this.allQuestionsWithId(result1.quiz);
+
+        converted = result1.converted || result2.converted;
+
+        if (converted) {
+            console.error('There is an error on the data, resaving');
+        }
+        return {
+            quiz: result2.quiz,
+            converted
+        };
     },
 
 
     process: function(quiz){
-        quiz = this.moveSettingsToQuestion(quiz);
-        return quiz;
+        var result = this.moveSettingsToQuestion(quiz);
+        return result.quiz;
     }
 };
 

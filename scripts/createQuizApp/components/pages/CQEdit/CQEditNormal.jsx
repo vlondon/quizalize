@@ -57,7 +57,8 @@ var CQEditNormal = React.createClass({
             question: question || {
                 alternatives: ['', '', ''],
                 question: '',
-                answer: ''
+                answer: '',
+                uuid: uuid.v4()
             }
         };
 
@@ -167,7 +168,6 @@ var CQEditNormal = React.createClass({
                                 tabIndex="1"
                                 rows="1"
                                 cols="40"
-
                                 className="autogrow-short form-control"/>
                         </div>
 

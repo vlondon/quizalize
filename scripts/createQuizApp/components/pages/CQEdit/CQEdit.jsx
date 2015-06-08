@@ -97,7 +97,7 @@ var CQEdit = React.createClass({
     },
 
     handleSave: function(newQuestion){
-
+        console.log('about to save', newQuestion);
         var quiz = this.state.quiz;
         quiz.questions[this.state.questionIndex] = newQuestion;
         var questionIndex = quiz.questions.length;

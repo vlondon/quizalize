@@ -6,7 +6,6 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
     var self = this;
 
     self.id = $routeParams.id;
-    self.action = $routeParams.action;
     self.catId = $routeParams.catId;
     self.numQuestions = "the";
     self.randomText = ".";
@@ -33,7 +32,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
 
 
 
-    QuizData.selectQuiz(self.catId, self.id, self.action === "false", function(err, result) {
+    QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = QuizFormat.process(result);
             if (self.currentQuiz.settings) {

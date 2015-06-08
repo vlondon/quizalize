@@ -11,18 +11,18 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
 
     var loadQuizzes = function() {
         self.user = QuizData.getUser();
-        self.name = QuizData.getUsername();        
+        self.name = QuizData.getUsername();
         QuizData.loadPlayerQuizzes(function(err, res){
             if(!err){
-                self.categories = QuizData.getCategories(); 
-                for (var i in self.categories) {                    
+                self.categories = QuizData.getCategories();
+                for (var i in self.categories) {
                    self.hasQuizzes = true;
                 }
                 self.loading = false;
             }else{
                 $log.error("Unable to refresh quizzes", err);
             }
-       });        
+       });
     }
 
     self.reloadQuizzes = function(){
@@ -31,8 +31,8 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
 
         $timeout(function(){
             self.reloadActive = true;
-        }, 2000); 
-        loadQuizzes();       
+        }, 2000);
+        loadQuizzes();
     };
 
     self.logout = function(){
@@ -53,21 +53,21 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
             if (!err) {
                 QuizData.setUser(message);
                 QuizData.registerUserWithGroup(message.attributes.groupCode,function() {
-                    loadQuizzes();    
-                })                
+                    loadQuizzes();
+                })
             }
             else {
                 QuizData.unsetUser();
-                $location.path("/app#");                
+                $location.path("/app#");
             }
         });
-    }   
+    }
     else {
         if (QuizData.isLoggedIn()) {
             loadQuizzes();
         }
         else {
-            $location.path("/");    
+            $location.path("/");
         }
-    }    
+    }
 }]);
