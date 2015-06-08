@@ -118,11 +118,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     }
 
-    var selectQuestionType = function(index) {
-        var currentQuestion = currentQuiz.questions[index];
-        var indexOfSpace = currentQuestion.answer.indexOf(" ");
-        var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
-        var length = currentQuestion.answer.length;
+    var getNumAlternvatives = function(currentQuestion) {
         var numAlternatives = 0;
         if (currentQuestion.alternatives) {
             for (var i in currentQuestion.alternatives) {
@@ -130,7 +126,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     numAlternatives++;
                 }
             }            
-        }
+        }        
+    }
+
+    var selectQuestionType = function(index) {
+        var currentQuestion = currentQuiz.questions[index];
+        var indexOfSpace = currentQuestion.answer.indexOf(" ");
+        var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
+        var length = currentQuestion.answer.length;
+        var numAlternatives = getNumAlternvatives(currentQuestion);
         if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
@@ -469,7 +473,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getAlternatives: function(questionIndex){
             var question = currentQuiz.questions[questionIndex];
-            if(question.alternatives && question.alternatives.length>0){
+            var numAlternatives = getNumAlternvatives(question);
+            if(numAlternatives>0){
                 var options = [];
                 options.push(question.answer);
                 for(var i in question.alternatives) {
