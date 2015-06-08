@@ -1,4 +1,5 @@
 var React = require('react');
+var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
 
 angular.module('quizApp').controller('GameController', function(QuizData, $log, $location, $rootScope, $routeParams, $scope){
@@ -34,7 +35,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
 
     QuizData.selectQuiz(self.catId, self.id, self.action === "false", function(err, result) {
         if (!err) {
-            self.currentQuiz = result;
+            self.currentQuiz = QuizFormat.process(result);
             if (self.currentQuiz.settings) {
                 if (self.currentQuiz.settings['random']) {
                     self.randomText = " in random order.";

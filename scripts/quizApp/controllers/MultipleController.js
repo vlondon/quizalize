@@ -1,3 +1,4 @@
+var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 
 angular.module('quizApp')
     .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
@@ -21,9 +22,12 @@ angular.module('quizApp')
                 React.createElement(QLMultiple, {
                     currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
+                    questionData: self.questionData,
                     question: self.question,
                     alternatives: self.alternatives,
                     imageURL: self.imageURL,
+                    latexEnabled: self.latexEnabled,
+                    imageEnabled: self.imageEnabled,
                     onSelect: function(index){
                         $scope.$apply(() => self.select(index) );
                     },
@@ -49,42 +53,19 @@ angular.module('quizApp')
         QuizData.loadQuiz(self.catId, self.id, function(data) {
 
             //$scope.$apply(function(){
-                self.currentQuiz = data;
-                // self.showButtons;
+                self.currentQuiz = QuizFormat.process(data);
 
-                // if (self.currentQuiz && self.currentQuiz.latexEnabled) {
-                //     self.showButtons = false;
-                // } else if (self.currentQuiz && self.currentQuiz.settings && self.currentQuiz.settings.latexEnabled) {
-                //     self.showButtons = false;
-                // }
 
-                // if (self.currentQuiz.latexEnabled) {
-                    console.log("Hiding question" + $("#quizQuestion" ));
-                    // MathJax.Hub.Config({
-                    //     tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-                    // });
-                    // setTimeout(function() {
-                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
-                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt0")[0]]);
-                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt1")[0]]);
-                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt2")[0]]);
-                    //     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#alt3")[0]]);
-                    //     MathJax.Hub.Queue(function () {
-                    //         $scope.$apply(function() {
-                    //             self.showButtons = true;
-                    //         });
-                    //     });
-                    // }, 200);
-                // }
-                // else {
-                self.showButtons = true;
-                // }
                 self.score = QuizData.currentQuizResult().totalScore;
                 self.questionCount = QuizData.currentQuizResult().questionCount;
                 QuizData.getQuestion(self.questionId, function(data){
+                    console.log('question???', data);
                     self.imageURL = data.imageURL;
                     self.question = data.question;
+                    self.questionData = data;
                     self.answer = data.answer;
+                    self.latexEnabled = data.latexEnabled;
+                    self.imageEnabled = data.imageEnabled;
                     self.alternatives = QuizData.getAlternatives(self.questionId);
 
                     if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {

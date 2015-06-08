@@ -53,6 +53,7 @@ var QLAnswerScreen = React.createClass({
 
     propTypes: {
         answerData: React.PropTypes.object.isRequired,
+        questionData: React.PropTypes.object.isRequired,
         onNext: React.PropTypes.func
     },
 
@@ -71,13 +72,31 @@ var QLAnswerScreen = React.createClass({
             }
         }
 
+        var correctAnswer;
+
+        if (!this.props.answerData.correct){
+            correctAnswer = (
+                <div>
+                    The correct answer was:
+                    <div className="alternatives">
+                        <div className="alternative-wrapper">
+                            <button type="button" className={`btn answer answer-correct`}>
+                                <QLLatex>{this.props.questionData.answer}</QLLatex>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className='ql-answer-screen'>
                 <div className="star-container">
                     {stars}
                 </div>
                 <h4 className="text-1">
-                    Your answer
+                    <span>Your answer </span>
+                    {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
                 </h4>
                 <div className="alternatives">
                         <div className="alternative-wrapper">
@@ -86,9 +105,14 @@ var QLAnswerScreen = React.createClass({
                             </button>
                         </div>
                 </div>
-                <h4 className="text-2">
-                    {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
-                </h4>
+
+                {correctAnswer}
+                <blockquote className="description">
+                    <p>
+                        {this.props.questionData.answerExplanation}
+                    </p>
+                </blockquote>
+
 
                 <div className="score-and-time">
                     <h3 className="score">

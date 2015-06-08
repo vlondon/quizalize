@@ -105,7 +105,7 @@ var CQEditNormal = React.createClass({
             newQuestionState[property] = event.target.value;
         }
 
-        var canBeSaved = newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
+        var canBeSaved = this.canBeSaved(newQuestionState);
         console.info('can be saved?', canBeSaved);
         this.setState({
             question: newQuestionState,
@@ -115,9 +115,15 @@ var CQEditNormal = React.createClass({
         this.props.onChange(newQuestionState);
     },
 
+    canBeSaved: function(newQuestionState){
+        newQuestionState = newQuestionState || this.state.question;
+        return newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
+    },
+
     handleTopic: function(event){
         console.log('were changing topic for', event.target.value);
-        this.setState({topic: event.target.value});
+        var canBeSaved = this.canBeSaved();
+        this.setState({topic: event.target.value, canBeSaved});
     },
 
     handleSave: function(){
@@ -128,8 +134,8 @@ var CQEditNormal = React.createClass({
     handleCheckbox: function(property){
         var question = assign({}, this.state.question);
         question[property] = !this.state.question[property];
-
-        this.setState({question});
+        var canBeSaved = this.canBeSaved(question);
+        this.setState({question, canBeSaved});
     },
 
 

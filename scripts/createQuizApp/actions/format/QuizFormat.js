@@ -8,7 +8,7 @@ var QuizFormat = {
                 question.imageEnabled = quiz.settings.imageEnabled || false;
             });
             converted = true;
-            delete quiz.settings;
+            // delete quiz.settings;
         }
 
 
@@ -28,6 +28,12 @@ var QuizFormat = {
             converted = true;
             delete quiz.imageEnabled;
         }
+        quiz.questions.forEach(question => {
+            if (question.imageUrl) {
+                delete question.imageUrl;
+                converted = true;
+            }
+        });
         if (converted) {
             console.warn(`Quiz ${quiz.uuid} converted to new format`);
         }
