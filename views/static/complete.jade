@@ -180,14 +180,14 @@ style.
     .share-score {
         text-align: center;
     }
-#reactContainer
+
 .container
     .wrapper-complete
         .row(ng-hide="quiz.teacherMode")
-            .col-xs-8.col-xs-offset-2
+            .col-md-8.col-md-offset-2
                 a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
         .row(ng-show="quiz.teacherMode")
-            .col-xs-8.col-xs-offset-2
+            .col-md-8.col-md-offset-2
                 a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz#/passign/{{quiz.data.quizId}}") Set this Quiz for your class
                 br
                 a.btn.btn-block.btn-info.btn-sm(href="/quiz#/public") Choose Another
@@ -199,7 +199,7 @@ style.
                     |Congratulations 
                     br
                     p(ng-show="quiz.studentData") {{quiz.studentData.studentCode}}
-          .well.well--complete.col-xs-8.col-xs-offset-2
+          .well.well--complete.col-md-8.col-md-offset-2
             div(ng-hide="quiz.hasTopics")
               .col-sm-4
                   .complete-info
@@ -228,11 +228,7 @@ style.
                       .score-value.rag2
                           {{quiz.totals.score}} 
                           .score-points Points
-                      .share-score(style="display: none;") Share your score with your friends!
-                          .share-fb 
-                              a(href='facebook') Facebook
-                          .share-tw 
-                              a(href='Twitter') Twitter
+                     
                               
                   .complete-info.col-sm-4
                       .score-fraction
@@ -243,14 +239,23 @@ style.
                           span.glyphicon.glyphicon-time 
                           {{quiz.totals.seconds}} Seconds
               .col-sm-12
+                 
+                 
                   .bar-wrapper
                     .bar-item-container(ng-repeat="topic in quiz.topics")
                       .bar-topic-percent {{topic.stats.percentage | number: 0}}%
                       .bar-topic-title {{topic.name}}
                       .bar-block(ng-style="{width: topic.stats.percentage+'%'}",class="bar-block-{{topic.stats.state}}") 
                   .complte-main-text
+              .col-sm-12
+                  #reactContainer
+                  .share-score Share your score with your friends!
+                    .fa.fa-lg.fa-facebook
+                       a(href='facebook') Facebook
+                    .share-tw 
+                       a(href='Twitter') Twitter
         .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
-            .col-xs-8.col-xs-offset-2
+            .col-md-8.col-md-offset-2
                 .well
                     .row
                         .col-md-4
