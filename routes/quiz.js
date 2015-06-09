@@ -59,20 +59,13 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    if (req.session.quiz === undefined) {
-        req.session.quiz = {};
-    }
-    console.log(req.session);
-    res.render('index', {zzishapi : getZzishParam()});
+    res.render('index', {zzishapi: getZzishParam()});
 };
 
 exports.indexQuiz =  function(req, res) {
     zzish.getPublicContent('quiz', req.params.id, function(err, result) {
         if (!err) {
             req.session.quiz = result;
-        }
-        else {
-            req.session.quiz = {};
         }
         res.redirect('/app#/play/public/' + req.params.id);
     });

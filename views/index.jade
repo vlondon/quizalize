@@ -10,13 +10,17 @@ html(ng-app='quizApp')
         meta(name="twitter:card" content="summary_large_image")
         meta(name="twitter:site" content="@quizalizeapp")
         meta(name="twitter:creator" content="@quizalizeapp")
-        meta(property='og:title' content='#{session.quiz.name}') 
+        if session.quiz && session.quiz.name
+            meta(property='og:title' content='#{session.quiz.name}') 
         meta(property='og:site_name' content='Quizalize')
-        meta(property="og:url" content="http://www.quizalize.com/qapp/#{session.quiz.uuid}")
-        meta(property='og:description' content='#{session.quiz.settings.description}')
+        if session.quiz && session.quiz.uuid
+           meta(property="og:url" content="http://www.quizalize.com/qapp/#{session.quiz.uuid}")
+        if session.quiz && session.quiz.settings && session.quiz.settings.description
+            meta(property='og:description' content='#{session.quiz.settings.description}')
         //description will break in refactor
         meta(property='og:type' content='article')
-        meta(property='og:image' content="#{session.quiz.settings.imageUrl}")
+        if session.quiz && session.quiz.settings && session.quiz.settings.imageUrl
+            meta(property='og:image' content="#{session.quiz.settings.imageUrl}")
         //imageUrl will break in refactor
         meta(name="apple-mobile-web-app-capable" content="yes")
         link(rel='apple-touch-icon', sizes='72x72', href='/img/icons/touch-icon-ipad-precomposed.png')
