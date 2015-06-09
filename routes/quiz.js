@@ -59,13 +59,18 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {
-        var params = {zzishapi: getZzishParam()};
-        if (!err) {
-            params['quiz'] = result;
-        }
-        res.render('index', params);        
-    });    
+    var params = {zzishapi: getZzishParam()};
+    if (req.query.uuid!==undefined) {
+        zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {            
+            if (!err) {
+                params['quiz'] = result;
+            }
+            res.render('index', params);        
+        });    
+    }
+    else {
+        res.render('index', params);
+    }
     
 };
 
