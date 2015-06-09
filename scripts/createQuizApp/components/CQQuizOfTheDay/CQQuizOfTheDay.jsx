@@ -101,7 +101,7 @@ var CQQuizOfTheDay = React.createClass({
             </div>);
         }
 
-        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description || '';
+        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description : '';
 
         return (
             <div className="qd-container">
