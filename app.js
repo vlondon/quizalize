@@ -105,6 +105,7 @@ app.get('/brighton', quiz.brightonlanding);
 app.get('/tool/', quiz.landingpage);
 app.get('/quiz/', quiz.create);
 app.get('/app/', quiz.index);
+app.get('/qapp/:id', quiz.indexQuiz);
 app.post('/quizHelp/', quiz.help);
 
 app.get('/quiz/service', quiz.service);

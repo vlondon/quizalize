@@ -1,20 +1,36 @@
 doctype html
 html(ng-app='quizApp')
     head
-        title Quizalize
+        
+
         meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
         meta(name='description', content='')
         meta(charset='UTF-8')
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
-
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon" sizes="72x72" href="/img/icons/touch-icon-ipad-precomposed.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="/img/icons/touch-icon-iphone-retina-precomposed.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="/img/icons/touch-icon-ipad-retina-precomposed.png" />
-        <link rel="icon" sizes="192x192" href="/img/icons/ic_launcher.png">
-        <link rel="stylesheet" href="/outdatedbrowser/outdatedbrowser.min.css">
+        meta(name="twitter:card" content="summary_large_image")
+        meta(name="twitter:site" content="@quizalizeapp")
+        meta(name="twitter:creator" content="@quizalizeapp")
+        if session.quiz && session.quiz.name
+            meta(property='og:title' content='#{session.quiz.name}') 
+        meta(property='og:site_name' content='Quizalize')
+        if session.quiz && session.quiz.uuid
+           meta(property="og:url" content="http://www.quizalize.com/qapp/#{session.quiz.uuid}")
+        if session.quiz && session.quiz.settings && session.quiz.settings.description
+            meta(property='og:description' content='#{session.quiz.settings.description}')
+        //description will break in refactor
+        meta(property='og:type' content='article')
+        if session.quiz && session.quiz.settings && session.quiz.settings.imageUrl
+            meta(property='og:image' content="#{session.quiz.settings.imageUrl}")
+        //imageUrl will break in refactor
+        meta(name="apple-mobile-web-app-capable" content="yes")
+        link(rel='apple-touch-icon', sizes='72x72', href='/img/icons/touch-icon-ipad-precomposed.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='/img/icons/touch-icon-iphone-retina-precomposed.png')
+        link(rel='apple-touch-icon', sizes='144x144', href='/img/icons/touch-icon-ipad-retina-precomposed.png')
+        link(rel='icon', sizes='192x192', href='/img/icons/ic_launcher.png')
+        link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+
 
         script.
             var initToken = JSON.parse(!{JSON.stringify(zzishapi)});
