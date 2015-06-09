@@ -11,10 +11,12 @@ html(ng-app='quizApp')
         meta(name="twitter:site" content="@quizalizeapp")
         meta(name="twitter:creator" content="@quizalizeapp")
         if session.quiz && session.quiz.name
-            meta(property='og:title' content='#{session.quiz.name}') 
+            meta(property='og:title' content='#{session.quiz.name}')
+        else
+            meta(property='og:title' content='Quizalize - Spot student learning gaps instantly')
         meta(property='og:site_name' content='Quizalize')
         if session.quiz && session.quiz.uuid
-           meta(property="og:url" content="http://www.quizalize.com/qapp/#{session.quiz.uuid}")
+           meta(property="og:url" content="http://test.quizalize.com/qapp/#{session.quiz.uuid}")
         if session.quiz && session.quiz.settings && session.quiz.settings.description
             meta(property='og:description' content='#{session.quiz.settings.description}')
         //description will break in refactor
