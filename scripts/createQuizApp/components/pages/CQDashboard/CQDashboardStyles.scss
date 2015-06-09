@@ -130,6 +130,14 @@ body {
         /* color: $brand-color-blue; */
     }
 
+    @at-root #{&}__empty {
+        text-align: center;
+        padding: 20px;
+        background: rgba(#000, .1);
+        color: rgba(#000, .8);
+        /* color: $brand-color-blue; */
+    }
+
 
 
     .created,
