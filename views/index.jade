@@ -18,7 +18,7 @@ html(ng-app='quizApp')
             meta(property='og:title' content='Quizalize - Spot student learning gaps instantly')
         meta(property='og:site_name' content='Quizalize')
         if quiz && quiz.uuid
-           meta(property="og:url" content="http://test.quizalize.com/app?uuid=#{quiz.uuid}#/play/public/#{quiz.uuid}")
+           meta(property="og:url" content="http://www.quizalize.com/app?uuid=#{quiz.uuid}#/play/public/#{quiz.uuid}")
         if quiz && quiz.settings && quiz.settings.description
             meta(property='og:description' content='#{quiz.settings.description}')
         else
