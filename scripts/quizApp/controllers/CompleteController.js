@@ -22,7 +22,7 @@ MathJax.Hub.Config({
 });
 MathJax.Hub.Configured();
 
-angular.module('quizApp').controller('CompleteController', function(QuizData, ExtraData, $log, $location, $scope){
+angular.module('quizApp').controller('CompleteController', function(QuizData, ExtraData, $log, $routeParams, $location, $scope){
 
     var self = this;
     self.hasTopics = false;
@@ -30,13 +30,15 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     sessionStorage.removeItem("mode");
     self.showButtons = false;
-
+    self.id = $routeParams.quizId;
+    self.catId = $routeParams.catId;
 
     var renderReactComponent = function(){
+        var activityId = self.data ? self.data.currentActivityId : undefined;
         React.render(
             React.createElement(QLLeaderboard, {
                 leaderboard: self.leaderboard,
-                activityId: self.data.currentActivityId
+                activityId
             }),
             document.getElementById('reactContainer')
         );
@@ -114,14 +116,29 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     };
 
     self.data = QuizData.currentQuizResult();
-
+    console.log('self.data', self);
     self.topics = {};
-    ExtraData.getLeaderBoard(self.data.quizId)
-        .then(function(score){
-            console.log('we got score!', score);
-            self.leaderboard = score;
-            renderReactComponent();
-        });
+
+    var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
+    console.log('we got', localStorageQuiz);
+    self.isFeatured = localStorageQuiz.settings.featured;
+
+    if (self.isFeatured) {
+        ExtraData.getLeaderBoard(self.data.quizId)
+            .then(function(score){
+                self.leaderboard = score;
+                self.facebookLink = 'http://www.facebook.com/sharer/sharer.php?u=quizalize.com%2F%23quiz%2Fquiz-of-the-day;';
+                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.name + ', @Quizalizeapp and I got ' + self.totals.score + 'points. http://bit.ly/quizday1')}`;
+                renderReactComponent();
+            });
+    }
+    // QuizData.selectQuiz(self.catId, self.id, function(err, result) {
+    //     if (!err) {
+    //     }
+    // });
+
+
+
     QuizData.getTopics(function(data) {
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);

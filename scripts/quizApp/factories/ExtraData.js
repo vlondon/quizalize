@@ -1,3 +1,4 @@
+var settings = require('quizApp/config/settings');
 angular.module('quizApp')
     .factory('ExtraData', function($http, $q, $log){
 
@@ -19,7 +20,8 @@ angular.module('quizApp')
                     var scoreBoard = results.map( result => {
                         return {
                             score: result.score,
-                            name: result.profile.name || 'Anonymous'
+                            name: result.profile.name || 'Anonymous',
+                            uuid: result.uuid
                         };
                     });
                     return scoreBoard;
@@ -29,6 +31,7 @@ angular.module('quizApp')
                 var deferred = $q.defer();
 
                 var callback = function(err, response){
+                    console.log('we got ', response);
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -37,7 +40,7 @@ angular.module('quizApp')
                     }
                 };
 
-                zzish.getPublicContentResults(uuid, callback);
+                zzish.getPublicContentResults(settings.QUIZ_CONTENT_TYPE, uuid, callback);
 
                 return deferred.promise;
             }

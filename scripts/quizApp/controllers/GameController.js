@@ -13,10 +13,15 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     self.showSubText = false;
 
     var renderReactComponent = function(){
-        React.render(
+        React.render(React.createElement('div', {className: 'qofd-intro'},
+            React.createElement(CQQuizOfTheDay, {
+                quiz: self.currentQuiz,
+                showActions: false
+            }),
             React.createElement(QLLeaderboard, {
                 leaderboard: self.leaderboard
-            }),
+            })),
+
             document.getElementById('reactContainer')
         );
     };
@@ -31,6 +36,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
 
 
     var getLeaderBoard = function(quiz){
+        console.log('loading score for ', quiz.uuid);
         ExtraData.getLeaderBoard(quiz.uuid)
             .then(function(result){
                 self.leaderboard = result;

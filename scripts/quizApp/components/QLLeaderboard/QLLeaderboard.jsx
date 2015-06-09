@@ -20,35 +20,40 @@ var QLLeaderboard = React.createClass({
 
         props = props || this.props;
 
-        var getSelectedPosition = function(leaderboard, activityId){
-            var ownScore = leaderboard.filter(s => s.score === 200)[0];
-            console.log('ownScore', ownScore);
-            return leaderboard.indexOf(ownScore);
-        };
-
         var leaderboard = [];
         leaderboard = props.leaderboard.slice(0, props.limit);
 
-        var p = getSelectedPosition(leaderboard, 'asdf');
-        if (p !== -1) {
-            leaderboard[p].selected = true;
-        } else {
-            var ownScore = props.leaderboard.filter(s => s.score === 200)[0];
-            leaderboard.push({
-                score: '  ',
-                name: '…'
-            });
-            leaderboard.push({
-                score: ownScore.score,
-                name: ownScore.name,
-                selected: true
-            });
-            leaderboard.push({
-                score: '  ',
-                name: '…'
-            });
+        if (props.activityId) {
 
-            console.log('leaderboard', ownScore);
+            var getSelectedPosition = function(){
+                var ownScoreItem = leaderboard.filter(s => s.uuid === props.activityId)[0];
+                console.log('ownScore', ownScoreItem);
+                return leaderboard.indexOf(ownScoreItem);
+            };
+
+
+            var p = getSelectedPosition();
+            if (p !== -1) {
+                leaderboard[p].selected = true;
+            } else {
+                var ownScore = props.leaderboard.filter(s => s.uuid === props.activityId)[0];
+                console.log('ownScore', ownScore, props);
+                leaderboard.push({
+                    score: '  ',
+                    name: '…'
+                });
+                leaderboard.push({
+                    score: ownScore.score,
+                    name: ownScore.name,
+                    selected: true
+                });
+                leaderboard.push({
+                    score: '  ',
+                    name: '…'
+                });
+
+                console.log('leaderboard', ownScore);
+            }
         }
         return { leaderboard };
     },
