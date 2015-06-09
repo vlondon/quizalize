@@ -21,10 +21,14 @@ html(ng-app='quizApp')
            meta(property="og:url" content="http://test.quizalize.com/app#/play/public/#{session.quiz.uuid}")
         if session.quiz && session.quiz.settings && session.quiz.settings.description
             meta(property='og:description' content='#{session.quiz.settings.description}')
+        else
+            meta(property="og:description" content="Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.")
         //description will break in refactor
         meta(property='og:type' content='article')
         if session.quiz && session.quiz.settings && session.quiz.settings.imageUrl
             meta(property='og:image' content="#{session.quiz.settings.imageUrl}")
+        else
+            meta(property="og:image" content="http://www.quizalize.com/cquiz/img/Quizalize-meta.png")
         //imageUrl will break in refactor
         meta(name="apple-mobile-web-app-capable" content="yes")
         link(rel='apple-touch-icon', sizes='72x72', href='/img/icons/touch-icon-ipad-precomposed.png')

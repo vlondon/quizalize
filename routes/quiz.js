@@ -67,7 +67,7 @@ exports.indexQuiz =  function(req, res) {
         if (!err) {
             req.session.quiz = result;
         }
-        res.redirect('/app#/play/public/' + req.params.id);
+        res.redirect(301, '/app#/play/public/' + req.params.id);
     });
 };
 
