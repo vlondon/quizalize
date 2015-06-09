@@ -101,6 +101,8 @@ var CQQuizOfTheDay = React.createClass({
             </div>);
         }
 
+        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description || '';
+
         return (
             <div className="qd-container">
                 <div className="qd-description" style={background}>
@@ -111,9 +113,7 @@ var CQQuizOfTheDay = React.createClass({
 
                         <div className="qd-text">
                             <h3>{this.props.quiz.name}</h3>
-                            if (this.props.quiz.settings && this.props.quiz.settings.Description){
-                                <p>{this.props.quiz.settings.Description}</p>
-                            }
+                            <p>{description}</p>
                         </div>
 
                         {actions}
