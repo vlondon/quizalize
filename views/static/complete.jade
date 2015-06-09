@@ -271,7 +271,7 @@ style.
                   .complte-main-text
               .col-sm-12
                   #reactContainer
-                  .share-container
+                  .share-container(ng-if="quiz.isFeatured")
                       h2.share-score Share your score with your friends!
                       .share-cta
                         a.share.share-fb(href='http://www.facebook.com/sharer/sharer.php?u=quizalize.com%2F%23quiz%2Fquiz-of-the-day',target="_blank")

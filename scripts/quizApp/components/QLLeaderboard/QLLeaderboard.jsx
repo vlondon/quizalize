@@ -32,11 +32,11 @@ var QLLeaderboard = React.createClass({
             };
 
 
+            var ownScore = props.leaderboard.filter(s => s.uuid === props.activityId)[0];
             var p = getSelectedPosition();
             if (p !== -1) {
                 leaderboard[p].selected = true;
-            } else {
-                var ownScore = props.leaderboard.filter(s => s.uuid === props.activityId)[0];
+            } else if (ownScore) {
                 console.log('ownScore', ownScore, props);
                 leaderboard.push({
                     score: '  ',
@@ -71,7 +71,7 @@ var QLLeaderboard = React.createClass({
             <div className='ql-leaderboard'>
                 <div className="header">
                     <h3>
-                        Top 5 scores
+                        Top scores
                     </h3>
                 </div>
                 {this.state.leaderboard.map( (entry, index) => {

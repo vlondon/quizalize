@@ -52,7 +52,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         });
     };
 
-    addReactComponent();
+
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -116,20 +116,21 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     };
 
     self.data = QuizData.currentQuizResult();
-    console.log('self.data', self);
+
     self.topics = {};
 
     var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
-    console.log('we got', localStorageQuiz);
-    self.isFeatured = localStorageQuiz.settings.featured;
 
-    if (self.isFeatured) {
+    self.isFeatured = localStorageQuiz.settings.featured;
+    // self.isFeatured = false;
+
+    if (self.isFeatured === true) {
         ExtraData.getLeaderBoard(self.data.quizId)
             .then(function(score){
                 self.leaderboard = score;
                 self.facebookLink = 'http://www.facebook.com/sharer/sharer.php?u=quizalize.com%2F%23quiz%2Fquiz-of-the-day;';
                 self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.name + ', @Quizalizeapp and I got ' + self.totals.score + 'points. http://bit.ly/quizday1')}`;
-                renderReactComponent();
+                addReactComponent();
             });
     }
     // QuizData.selectQuiz(self.catId, self.id, function(err, result) {
