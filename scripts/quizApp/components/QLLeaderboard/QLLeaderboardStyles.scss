@@ -1,0 +1,49 @@
+@import './../shared/mixins';
+@import './../shared/variables';
+.ql-leaderboard {
+    text-align: left;
+    max-width: 300px;
+    margin: auto;
+
+    padding: 10px;
+    .header {
+        text-align: center;
+        border-bottom: 2px solid rgba(#000, .3);
+        padding: 20px 0 10px;
+    }
+    i {
+        float: right;
+    }
+    h3 {
+        display: inline;
+    }
+    .entry {
+        border-bottom: 1px solid rgba(#000, .2);
+        padding: 4px 0;
+        @include clearfix();
+        &:last-child {
+            border-bottom: 0;
+        };
+
+
+    }
+    .entry-selected {
+        font-weight: bold;
+        background: $brand-color-alt-3;
+    }
+
+    .score {
+        float: left;
+        width: 80px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        text-align: right;
+        padding-right: 20px;
+        min-height: 2px;
+
+    }
+
+    .name {
+        float: left;
+        /* width: 100%; */
+    }
+}

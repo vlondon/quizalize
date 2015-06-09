@@ -53,7 +53,7 @@ var CQQuestionList = React.createClass({
         if (this.props.questionIndex === this.props.quiz.questions.length){
 
             newQuestionEditor = (
-                <span className='new-question'>
+                <span className='cq-edit__quiz new-question'>
                     <div className="col-sm-6">
                         <h4>
                             <i>{this.props.questionIndex + 1}. Creating new question</i>
@@ -92,11 +92,11 @@ var CQQuestionList = React.createClass({
 
             questions = this.props.quiz.questions.map((item, index) => {
                 var editor;
-                var className = 'row';
+                var className = 'cq-edit__quiz row';
 
                 if (index === this.props.questionIndex) {
                     editor = questionEditor;
-                    className = 'row selected';
+                    className = 'cq-edit__quiz row selected';
                 }
                 return (
                     <div className={className} key={index}>

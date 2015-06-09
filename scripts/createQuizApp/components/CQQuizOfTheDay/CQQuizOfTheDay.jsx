@@ -67,6 +67,7 @@ var CQQuizOfTheDay = React.createClass({
         var playButton;
         var assignButton;
         var leaderboardButton;
+        var source;
 
         if (this.props.play) {
             takeoverButton = (<div className="qd-action-takeover" onClick={this.handlePlay}/>);
@@ -90,6 +91,11 @@ var CQQuizOfTheDay = React.createClass({
                     Global leaderboard
                 </button>
             );
+        }
+        if (this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
+            source = (<div className="qd-source">
+                source: {this.props.quiz.settings.imageAttribution}
+            </div>);
         }
 
         var actions;
@@ -122,9 +128,8 @@ var CQQuizOfTheDay = React.createClass({
                 <div className="qd-description" style={background}>
 
                     {takeoverButton}
-                    <div className="qd-source">
-                        source: {this.state.quiz.settings.imageAttribution}
-                    </div>
+                    {source}
+
                     <div className="qd-description-details">
 
                         <div className="qd-text">

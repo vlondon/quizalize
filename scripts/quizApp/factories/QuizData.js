@@ -1,4 +1,7 @@
 var randomise = require('quizApp/utils/randomise');
+var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
+var settings = require('quizApp/config/settings');
+var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     if(typeof zzish == 'undefined') {
@@ -117,12 +120,25 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     }
 
+    var getNumAlternvatives = function(currentQuestion) {
+        var numAlternatives = 0;
+        if (currentQuestion.alternatives) {
+            for (var i in currentQuestion.alternatives) {
+                if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i]!=="") {
+                    numAlternatives++;
+                }
+            }
+        }
+        return numAlternatives;
+    }
+
     var selectQuestionType = function(index) {
         var currentQuestion = currentQuiz.questions[index];
         var indexOfSpace = currentQuestion.answer.indexOf(" ");
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
-        if((currentQuestion && !!currentQuestion.alternatives) || patternToDected || length ==1 || indexOfSpace>=0 || length ==8) {
+        var numAlternatives = getNumAlternvatives(currentQuestion);
+        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
@@ -146,12 +162,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         initQuizResult();
     }
 
-    var searchThroughCategories= function(catId,quizId,callback) {
+    var searchThroughCategories = function(catId,quizId) {
         for (var i in categories[catId].quizzes) {
             var quiz = categories[catId].quizzes[i];
             if (quiz.uuid==quizId) {
                 setQuiz(quiz);
-                callback(null,currentQuiz);
+                return currentQuiz;
             }
         }
         for (var p in categories) {
@@ -159,10 +175,11 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var quiz = categories[p].quizzes[i];
                 if (quiz.uuid==quizId) {
                     setQuiz(quiz);
-                    callback(null,currentQuiz);
+                    return currentQuiz;
                 }
-            }    
+            }
         }
+        return null;
     }
 
     var randomFunctionNumber = function(seed,size) {
@@ -245,7 +262,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var getPublicContent = function(quizId,callback) {
-        zzish.getPublicContent(quizId,function (err,message) {
+        zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizId,function (err,message) {
             if (!err) {
                 currentQuiz = message;
             }
@@ -255,25 +272,32 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         })
     }
 
-    var selectQuiz = function(catId,quizId,isLoaded,callback) {
-        if (isLoaded && catId!="public") {
+    var selectQuiz = function(catId,quizId,callback) {
+        var quiz = null;
+        if (catId!="public") {
             if (categories[catId]==undefined) {
                 loadPlayerQuizzes(function() {
-                    searchThroughCategories(catId,quizId,callback);
+                    quiz = searchThroughCategories(catId,quizId);
+                    if (quiz!==null) {
+                        callback(null,quiz);
+                    }
                 })
             }
             else {
-                searchThroughCategories(catId,quizId,callback);
+                quiz = searchThroughCategories(catId,quizId);
+                if (quiz!==null) {
+                    callback(null,quiz);
+                }
             }
         }
         else if (catId.indexOf("share:")==0) {
-            zzish.getContent(catId.substring(6),quizId,function (err,result) {
+            zzish.getContent(catId.substring(6),QUIZ_CONTENT_TYPE,quizId,function (err,result) {
                 setQuiz(result);
                 callback(err,result);
                 $rootScope.$digest();
             });
         }
-        else {
+        if (quiz===null) {
             getPublicContent(quizId,callback);
         }
     }
@@ -331,7 +355,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getTopics: function(callback) {
             if (!topicsLoaded) {
-                zzish.listPublicContent(function(err, data) {
+                zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
 
                     if (!err) {
                         data.categories = data.categories.filter(c => c !== null);
@@ -369,7 +393,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             loadPlayerQuizzes(callback);
         },
         loadPublicQuizzes: function(callback){
-            zzish.listPublicContent(function(err, message){
+            zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, message){
                 if(!err) {
                     message.categories = message.categories.filter(c => c !== null);
                     message.contents = message.contents.filter(c => c !== null);
@@ -381,16 +405,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             });
         },
         loadQuiz: function(catId,quizId,callback) {
+            var cb = function(data){
+                callback(QuizFormat.process(data));
+            }
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
-                callback(currentQuiz);
+                cb(currentQuiz);
             }
             else {
                 //we have a problem
-                var loaded = true;
-                if (catId=="public" || catId.indexOf("share:")==0) {
-                    loaded = false;
-                }
-                selectQuiz(catId, quizId, loaded, callback);
+                selectQuiz(catId, quizId, cb);
             }
         },
         selectQuiz: selectQuiz,
@@ -453,7 +476,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getAlternatives: function(questionIndex){
             var question = currentQuiz.questions[questionIndex];
-            if(question.alternatives && question.alternatives.length>0){
+            var numAlternatives = getNumAlternvatives(question);
+            if(numAlternatives>0){
                 var options = [];
                 options.push(question.answer);
                 for(var i in question.alternatives) {
@@ -484,10 +508,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         answerQuestion: function(idx, response, answer, questionName, duration){
 
             var question = currentQuiz.questions[idx];
+            console.log('currentQuiz,', currentQuiz);
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
             var score = calculateScore(correct, duration);
-
             var parameters = {
                 definition: {
                     type: question.uuid,
@@ -513,10 +537,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (question.imageURL) {
                 parameters.attributes["image_url"] = question.imageURL;
             }
-            if (!!currentQuizResult.latexEnabled) {
+            if (!!question.latexEnabled) {
                 parameters.attributes["latex"] = true;
             }
+
             if (currentQuizResult.currentActivityId !== undefined) {
+                console.log('currentQuizResult.currentActivityId, parameters', currentQuizResult.currentActivityId, parameters);
                 zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
             }
 

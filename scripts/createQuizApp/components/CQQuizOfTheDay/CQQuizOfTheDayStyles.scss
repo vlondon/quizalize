@@ -1,8 +1,32 @@
 @import './../../../quizApp/components/shared/variables';
 @import './../../../quizApp/components/shared/mixins';
 
+
+.qofd-intro {
+    @include clearfix;
+    background: $brand-color-alt-3;
+    border-radius: 10px;
+
+    .qd-container,
+    .ql-leaderboard {
+        width: 100%;
+    }
+
+    .qd-container {
+        @include media($size-mobile) {
+            float: left;
+            width: 60%;
+        }
+    }
+
+    .ql-leaderboard {
+        @include media($size-mobile) {
+            float: left;
+            width: 40%;
+        }
+    }
+}
 .qd-container {
-    background: #FFF !important;
 
     .qd-description {
         min-height: 200px;

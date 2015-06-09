@@ -7,6 +7,7 @@ var TopicActions        = require('createQuizApp/actions/TopicActions');
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
+var QuizFormat          = require('createQuizApp/actions/format/QuizFormat');
 
 var _questionsTopicIdToTopic = function(quiz){
 
@@ -114,7 +115,7 @@ var QuizActions = {
 
 
         Promise.all([quizzesPromise, quizPromise, topicsPromise])
-            .then(function(value){
+            .then((value) => {
 
                 // // let's stitch quizzes to their topic
                 var loadedQuizzes = value[0];
@@ -138,12 +139,22 @@ var QuizActions = {
 
                 quiz.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
-                quiz.settings = quiz.settings || {};
 
-                AppDispatcher.dispatch({
-                    actionType: QuizConstants.QUIZ_LOADED,
-                    payload: _questionsTopicIdToTopic(quiz)
-                });
+                var conversion = QuizFormat.convert(quiz);
+                quiz = conversion.quiz;
+                console.log('conversion', conversion);
+                if (conversion.converted) {
+                    // the quiz must get saved because of
+                    // data issues
+                    this.newQuiz(quiz);
+                    console.log('lets save the quiz', this, quiz);
+                } else {
+                    console.log('dispatching!');
+                    AppDispatcher.dispatch({
+                        actionType: QuizConstants.QUIZ_LOADED,
+                        payload: _questionsTopicIdToTopic(quiz)
+                    });
+                }
 
             });
     },

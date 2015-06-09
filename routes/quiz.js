@@ -4,6 +4,7 @@ var email = require("../email");
 var querystring = require('querystring');
 var zzish = require("zzishsdk");
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = '##34dsadfasdf££FE';
+var QUIZ_CONTENT_TYPE = "quiz";
 
 function encrypt(text){
   var cipher = crypto.createCipher(algorithm,password)
@@ -58,8 +59,19 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    res.render('index', {zzishapi : getZzishParam()});
+    res.render('index', {zzishapi: getZzishParam()});
 };
+
+exports.indexQuiz =  function(req, res) {
+    zzish.getPublicContent('quiz', req.params.id, function(err, result) {
+        if (!err) {
+            req.session.quiz = result;
+        }
+        res.redirect('/app#/play/public/' + req.params.id);
+    });
+};
+
+
 
 exports.create =  function(req, res) {
     res.render('create',{zzishapi : getZzishParam()});
@@ -83,6 +95,9 @@ exports.landingpage4 =  function(req, res) {
 
 exports.landingpage5 =  function(req, res) {
     res.sendFile('cquiz/landing11.html',{ root: 'public' });
+};
+exports.brightonlanding =  function(req, res) {
+    res.sendFile('cquiz/brighton.html',{ root: 'public' });
 };
 
 exports.voucher =  function(req, res) {
@@ -170,28 +185,22 @@ exports.getProfileById = function(req,res) {
 
 
 exports.getPublicQuizzes = function(req, res){
-    zzish.listPublicContent(function(err, resp){
+    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, resp){
         res.send(resp);
     });
 };
 
 exports.getPublicQuiz = function(req, res){
-    zzish.getPublicContent(req.params.id, function(err, resp){
+    zzish.getPublicContent(QUIZ_CONTENT_TYPE,req.params.id, function(err, resp){
         res.send(resp);
     });
 };
 
-exports.getAssignedPublicQuizzes = function(req, res){
-    var profileId = req.params.profileId;
-    zzish.listAssignedPublicContent(profileId, function (err,resp) {
-        res.send(resp);
-    })
-};
 
 exports.getQuizzes = function(req,res) {
     var profileId = req.params.id;
     var ids = req.body.uuids;
-    zzish.getContents(profileId,ids,function(err,resp) {
+    zzish.getContents(profileId,QUIZ_CONTENT_TYPE,ids,function(err,resp) {
         res.send(resp);
     })
 }
@@ -201,7 +210,7 @@ exports.getMyQuizzes = function(req, res){
     var profileId = req.params.profileId;
     //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
-    zzish.listContent(profileId, function(err, resp){
+    zzish.listContent(profileId, QUIZ_CONTENT_TYPE,function(err, resp){
         res.send(resp);
     });
 };
@@ -247,7 +256,7 @@ exports.getQuiz = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;
 
-    zzish.getContent(profileId, id, function(err, resp){
+    zzish.getContent(profileId, QUIZ_CONTENT_TYPE,id, function(err, resp){
         if(!err){
             console.log("request for content, got: ", resp);
             res.send(resp);
@@ -262,7 +271,7 @@ exports.deleteQuiz = function(req,res){
     var profileId = req.params.profileId;
     var id= req.params.id;
 
-    zzish.deleteContent(profileId, id, function(err, resp){
+    zzish.deleteContent(profileId, QUIZ_CONTENT_TYPE,id, function(err, resp){
         res.send(err==undefined);
     });
 };
@@ -275,7 +284,7 @@ exports.postQuiz = function(req,res){
 
     console.log("postQuiz", "Body: ", req.body, "Params: ", req.params);
 
-    zzish.postContent(profileId, data, function(err, resp){
+    zzish.postContent(profileId, QUIZ_CONTENT_TYPE,data, function(err, resp){
         if(!err){
             res.status = 200
         }else{
@@ -296,7 +305,7 @@ exports.unpublishQuiz = function(req, res){
 
     console.log("Will unpublish", profileId, id, groupId);
 
-    zzish.unpublishContent(profileId, id, groupId, function(err, resp){
+    zzish.unpublishContent(profileId, QUIZ_CONTENT_TYPE,id, groupId, function(err, resp){
         if(!err){
             res.send({status: 200});
         } else {
@@ -314,7 +323,7 @@ exports.publishQuiz = function(req, res){
 
     console.log("Will publish", profileId, id, data);
 
-    zzish.publishContent(profileId, id, data, function(err, resp){
+    zzish.publishContent(profileId, QUIZ_CONTENT_TYPE,id, data, function(err, resp){
         if(!err){
             console.log("Got publish result", resp);
             res.status = 200;
@@ -351,7 +360,7 @@ exports.shareQuiz = function(req, res){
 };
 
 exports.getQuizByCode = function(req,res) {
-    zzish.getContentByCode(req.params.code,function (err,result) {
+    zzish.getContentByCode(QUIZ_CONTENT_TYPE,req.params.code,function (err,result) {
         res.send(result);
     })
 }
@@ -370,7 +379,7 @@ exports.help = function(req, res){
 };
 
 exports.getQuizResults = function(req,res) {
-    zzish.getContentResults(req.params.id,req.params.quizId,function (err,result) {
+    zzish.getContentResults(req.params.id,QUIZ_CONTENT_TYPE,req.params.quizId,function (err,result) {
         res.send(result);
     })    
 }

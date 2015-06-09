@@ -21,7 +21,7 @@ angular.module('quizApp')
             controller: "PublicController",
             controllerAs: "quizzes"
         })
-        .when('/play/:catId/:id/:action', {
+        .when('/play/:catId/:id', {
             templateUrl: "/quiz/view/intro",
             controller: "GameController",
             controllerAs: "quiz"
