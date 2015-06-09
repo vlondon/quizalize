@@ -128,6 +128,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 }
             }            
         }        
+        return numAlternatives;
     }
 
     var selectQuestionType = function(index) {
