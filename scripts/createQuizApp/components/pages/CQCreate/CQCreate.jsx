@@ -73,22 +73,10 @@ var CQCreate = React.createClass({
     componentDidMount: function() {
         // TODO Remove jQuery!!
         QuizStore.addChangeListener(this.onChange);
-
-        $(document).on('mouseenter', '[data-toggle="popover"]', function(){
-            $(this).popover('show');
-        });
-
-        $(document).on('mouseleave', '[data-toggle="popover"]', function(){
-            $(this).popover('hide');
-        });
-
-
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
-        $(document).off('mouseenter');
-        $(document).off('mouseleave');
     },
 
     handleChange: function(property, event) {

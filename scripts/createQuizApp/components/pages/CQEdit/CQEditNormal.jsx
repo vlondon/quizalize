@@ -19,7 +19,6 @@ var CQEditNormal = React.createClass({
                 question: '',
                 answer: '',
                 alternatives: []
-
             }
         };
     },
@@ -29,7 +28,10 @@ var CQEditNormal = React.createClass({
     },
 
     componentDidMount: function() {
+        this.focusNext(0);
         $('textarea').autogrow();
+        $('[data-toggle="popover"]').popover();
+
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -40,11 +42,13 @@ var CQEditNormal = React.createClass({
 
     getRefs: function(){
         return  [
+            this.refs.imageURL,
             this.refs.question,
             this.refs.answer,
             this.refs.alternatives0,
             this.refs.alternatives1,
             this.refs.alternatives2,
+            this.refs.answerExplanation,
             this.refs._topic
         ];
     },
@@ -74,6 +78,7 @@ var CQEditNormal = React.createClass({
 
         if (event.keyCode === 13) {
 
+
             if (index !== undefined){
                 ref = this.refs[property + index];
             } else {
@@ -81,28 +86,68 @@ var CQEditNormal = React.createClass({
             }
 
             var indexRef = refs.indexOf(ref);
+            var handleNext = (i)=>{
 
-            var nextRef = indexRef < (refs.length - 1) ? indexRef + 1 : 0;
+                var nextRef = i < (refs.length - 1) ? i + 1 : 0;
+                var nextElement = refs[nextRef];
+                var node = React.findDOMNode(nextElement);
 
-            var nextElement = refs[nextRef];
-            var node = React.findDOMNode(nextElement);
+                var gotoNext = ()=>{
+                    if (nextElement) {
+                        node.focus();
+                    } else {
+                        handleNext(nextRef);
+                    }
+                };
+                if (nextRef === 0) {
+                    if (this.canBeSaved()){
+                        this.handleSave();
+                    } else {
+                        gotoNext();
+                    }
+                } else {
+                    gotoNext();
+                }
 
 
-            node.focus();
-            // if (indexRef < (refs.length - 1)) {
-            //
-            // } else {
-            //     this.handleSave();
-            // }
+            };
 
+            this.focusNext(indexRef);
             event.preventDefault();
         }
 
     },
 
+    focusNext: function(i){
+        var refs = this.getRefs();
+
+        var nextRef = i < (refs.length - 1) ? i + 1 : 0;
+        var nextElement = refs[nextRef];
+        var node = React.findDOMNode(nextElement);
+
+        var gotoNext = ()=>{
+            if (nextElement) {
+                node.focus();
+            } else {
+                this.focusNext(nextRef);
+            }
+        };
+        if (nextRef === 0) {
+            if (this.canBeSaved()){
+                this.handleSave();
+            } else {
+                gotoNext();
+            }
+        } else {
+            gotoNext();
+        }
+
+
+    },
+
 
     handleChange: function(property, index, event) {
-
+        console.log('handle change??', event);
         var newQuestionState = assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
@@ -161,8 +206,7 @@ var CQEditNormal = React.createClass({
                                 value={this.state.question.imageURL}
                                 onChange={this.handleChange.bind(this, 'imageURL', undefined)}
                                 onKeyDown={this.handleNext.bind(this, 'imageURL', undefined)}
-                                id="imageUrl"
-                                ref='imageUrl'
+                                ref='imageURL'
                                 placeholder="e.g. http://www.quizalize.com/graph.png"
                                 autofocus="true"
                                 tabIndex="1"
@@ -184,8 +228,11 @@ var CQEditNormal = React.createClass({
                 <div className="quiz-extras">
 
                     <div className="math-mode">
-                        <div>Math mode</div>
-                        <label  className="switch">
+                        <div>
+                            Math mode &nbsp;
+                            <a data-toggle="popover" title="Math mode" data-content="Use maths mode to enter equations in questions and answers. <br><a target=_blank href='http://blog.zzish.com/post/119033343859/math-mode-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
+                        </div>
+                        <label className="switch">
                             <input type="checkbox" className="switch-input"
                                 checked={this.state.question.latexEnabled}
                                 onChange={this.handleCheckbox.bind(this, 'latexEnabled')}
@@ -196,7 +243,10 @@ var CQEditNormal = React.createClass({
                     </div>
 
                     <div className="image-mode">
-                        <div>Use Image</div>
+                        <div>
+                            Use Images &nbsp;
+                            <a data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. <a target=_blank href='http://blog.zzish.com/post/119032391314/using-images-in-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
+                        </div>
                         <label  className="switch">
                             <input type="checkbox" className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
                             <span className="switch-label" data-on="Yes" data-off="No"></span>
@@ -209,7 +259,10 @@ var CQEditNormal = React.createClass({
 
                 <div className='block clearfix'>
 
-                    <label className="left control-label">Question <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign">                         </a></label>
+                    <label className="left control-label">
+                        Question
+                        <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
+                    </label>
                     <div className="right">
 
                         <div className="entry-input">
@@ -329,7 +382,7 @@ var CQEditNormal = React.createClass({
 
                             <input
                                 value={this.state.question.answerExplanation}
-                                ref='_topic'
+                                ref='answerExplanation'
                                 onChange={this.handleChange.bind(this, 'answerExplanation', undefined)}
                                 onKeyDown={this.handleNext.bind(this, 'answerExplanation', undefined)}
                                 id="topic" type="text" placeholder="e.g. Barcelona has a population of 1,620,943" autofocus="true" tabIndex="6" className="form-control"/>
@@ -340,7 +393,7 @@ var CQEditNormal = React.createClass({
 
 
                 <div className="block clearfix">
-                    <label className="left control-label">Subtopic <a data-toggle="popover" title="Subtopic (Optional)" data-content="A subtopic is used to group similar questions together. E.g. “European Capital Cities”. Learn more" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="11" className="glyphicon glyphicon-question-sign"></a></label>
+                    <label className="left control-label">Subtopic <a data-toggle="popover" title="Subtopic (Optional)" data-content="Use sub-topics to group questions together and spot learning gaps more easily. &lt;a  target=_blank href='http://blog.zzish.com/post/118863520184/quizalize-classroom-quiz-response-system'&gt;Learn more&lt;/a&gt;" data-html="true" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="11" className="glyphicon glyphicon-question-sign"></a></label>
                     <div className="right">
                         <div className="entry-input-full-width">
 
