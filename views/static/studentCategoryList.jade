@@ -19,7 +19,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
         h1(ng-show="quizzes.user",style="color: white") Hi {{quizzes.name}}!
 
 
-    h3(ng-hide="quizzes.hasQuizzes",style="color: white") There are currently no quizzes available.
+    h3(ng-hide="quizzes.hasQuizzes",style="color: white") Loading quizzess...
     h3(ng-show="quizzes.hasQuizzes && !quizzes.user",style="color: white") Here's some quizzes to get you started - lots more quizzes on the way - or create your own!
     h3(ng-show="quizzes.hasQuizzes && quizzes.user",style="color: white") Here are your assigned quizzes
     br
