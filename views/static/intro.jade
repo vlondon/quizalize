@@ -1,3 +1,7 @@
+script.
+    var domain = document.referrer ? document.referrer.split('/')[2] : undefined; 
+    ga('send', 'event', 'quiz-of-the-day', 'banana', domain);
+
 nav.navbar.navbar-default.navbar-fixed-top
     .container-fluid
         .navbar-header
