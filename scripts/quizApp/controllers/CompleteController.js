@@ -121,15 +121,15 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
 
     var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
 
-    self.isFeatured = localStorageQuiz.settings.featured;
+    self.isFeatured = localStorageQuiz.settings!=null ? localStorageQuiz.settings.featured : false;
     // self.isFeatured = false;
 
     if (self.isFeatured === true) {
         ExtraData.getLeaderBoard(self.data.quizId)
             .then(function(score){
                 self.leaderboard = score;
-                self.facebookLink = 'http://www.facebook.com/sharer/sharer.php?u=quizalize.com%2F%23quiz%2Fquiz-of-the-day;';
-                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.name + ', @Quizalizeapp and I got ' + self.totals.score + 'points. http://bit.ly/quizday1')}`;
+                self.facebookLink = 'http://www.facebook.com/sharer/sharer.php?u=bit.ly/quizday1';
+                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.name + 'on @Quizalizeapp and I got ' + self.totals.score + ' points. http://bit.ly/quizday1')}`;
                 addReactComponent();
             });
     }
@@ -178,8 +178,11 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         if (self.previewMode) {
             window.close();
         }
-        else {
+        else if (QuizData.getUser()) {
             $location.path("/list");
+        }
+        else {
+            $location.path("/public");    
         }
     };
 });

@@ -1,8 +1,8 @@
 doctype html
 html(ng-app='quizApp')
     head
-        if session.quiz && session.quiz.name
-            title #{session.quiz.name} by Quizalize
+        if quiz && quiz.name
+            title #{quiz.name} by Quizalize
         else 
             title Quizalize
         meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
@@ -12,21 +12,21 @@ html(ng-app='quizApp')
         meta(name="twitter:card" content="summary_large_image")
         meta(name="twitter:site" content="@quizalizeapp")
         meta(name="twitter:creator" content="@quizalizeapp")
-        if session.quiz && session.quiz.name
-            meta(property='og:title' content='#{session.quiz.name}')
+        if quiz && quiz.name
+            meta(property='og:title' content='#{quiz.name}')
         else
             meta(property='og:title' content='Quizalize - Spot student learning gaps instantly')
         meta(property='og:site_name' content='Quizalize')
-        if session.quiz && session.quiz.uuid
-           meta(property="og:url" content="http://www.quizalize.com/app#/play/public/#{session.quiz.uuid}")
-        if session.quiz && session.quiz.settings && session.quiz.settings.description
-            meta(property='og:description' content='#{session.quiz.settings.description}')
+        if quiz && quiz.uuid
+           meta(property="og:url" content="http://www.quizalize.com/app?uuid=#{quiz.uuid}#/play/public/#{quiz.uuid}")
+        if quiz && quiz.settings && quiz.settings.description
+            meta(property='og:description' content='#{quiz.settings.description}')
         else
             meta(property="og:description" content="Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.")
         //description will break in refactor
         meta(property='og:type' content='article')
-        if session.quiz && session.quiz.settings && session.quiz.settings.imageUrl
-            meta(property='og:image' content="#{session.quiz.settings.imageUrl}")
+        if quiz && quiz.settings && quiz.settings.imageUrl
+            meta(property='og:image' content="#{quiz.settings.imageUrl}")
         else
             meta(property="og:image" content="http://www.quizalize.com/cquiz/img/Quizalize-meta.png")
         //imageUrl will break in refactor

@@ -40,7 +40,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
         ExtraData.getLeaderBoard(quiz.uuid)
             .then(function(result){
                 self.leaderboard = result;
-                renderReactComponent();
+                addReactComponent();
             });
 
     };
@@ -50,7 +50,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = QuizFormat.process(result);
-            getLeaderBoard(self.currentQuiz);
+            
             if (self.currentQuiz.settings) {
 
                 if (self.currentQuiz.settings['random']) {
@@ -70,7 +70,8 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                 }
                 console.log('self.currentQuiz.settings', self.currentQuiz);
                 if (self.currentQuiz.settings.featured) {
-                    addReactComponent();
+                    // addReactComponent();
+                    getLeaderBoard(self.currentQuiz);
                 }
                 console.log('self.currentQuiz, ', self.currentQuiz);
             }

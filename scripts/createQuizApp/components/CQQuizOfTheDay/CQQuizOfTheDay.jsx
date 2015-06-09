@@ -35,7 +35,7 @@ var CQQuizOfTheDay = React.createClass({
 
         var background = {};
 
-        if (this.props.quiz.settings.imageUrl) {
+        if (this.props.quiz.settings && this.props.quiz.settings.imageUrl) {
             background  = {
                 backgroundImage: `url(${this.props.quiz.settings.imageUrl})`
             };
@@ -70,7 +70,7 @@ var CQQuizOfTheDay = React.createClass({
                 </button>
             );
         }
-        if (this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
+        if (this.props.quiz.settings && this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
             source = (<div className="qd-source">
                 source: {this.props.quiz.settings.imageAttribution}
             </div>);
@@ -101,6 +101,8 @@ var CQQuizOfTheDay = React.createClass({
             </div>);
         }
 
+        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description : '';
+
         return (
             <div className="qd-container">
                 <div className="qd-description" style={background}>
@@ -111,7 +113,7 @@ var CQQuizOfTheDay = React.createClass({
 
                         <div className="qd-text">
                             <h3>{this.props.quiz.name}</h3>
-                            <p>{this.props.quiz.settings.Description}</p>
+                            <p>{description}</p>
                         </div>
 
                         {actions}

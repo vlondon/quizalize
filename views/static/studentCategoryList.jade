@@ -11,7 +11,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
         .navbar-collapse.collapse#navbar        
             ul.nav.navbar-nav.navbar-right
                 li
-                  a.btn.btn-info(ng-click="nctrl.logout()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Log out
+                  a.btn.btn-info(ng-show="nctrl.loggedIn",ng-click="nctrl.logout()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Log out
                 li
                     a.pull-right.btn.btn-info(href="/quiz",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Create a quiz in 60 seconds!                        
 .container
@@ -19,7 +19,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
         h1(ng-show="quizzes.user",style="color: white") Hi {{quizzes.name}}!
 
 
-    h3(ng-hide="quizzes.hasQuizzes",style="color: white") There are currently no quizzes available.
+    h3(ng-hide="quizzes.hasQuizzes",style="color: white") Loading quizzess...
     h3(ng-show="quizzes.hasQuizzes && !quizzes.user",style="color: white") Here's some quizzes to get you started - lots more quizzes on the way - or create your own!
     h3(ng-show="quizzes.hasQuizzes && quizzes.user",style="color: white") Here are your assigned quizzes
     br
