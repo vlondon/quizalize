@@ -178,8 +178,11 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         if (self.previewMode) {
             window.close();
         }
-        else {
+        else if (QuizData.getUser()) {
             $location.path("/list");
+        }
+        else {
+            $location.path("/public");    
         }
     };
 });

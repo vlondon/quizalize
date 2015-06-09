@@ -9,4 +9,6 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
     	QuizData.unsetUser();
     	$location.path("/");
     }
+
+    self.loggedIn = QuizData.getUser();
 });
