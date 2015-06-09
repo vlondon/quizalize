@@ -272,7 +272,6 @@ var QuizActions = {
 
         });
 
-
     },
 
     shareQuiz: function(quizId, quizName, emails, link){

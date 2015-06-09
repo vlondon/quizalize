@@ -4,7 +4,7 @@ var QuizActions     = require('createQuizApp/actions/QuizActions');
 var TopicStore      = require('createQuizApp/stores/TopicStore');
 var EventEmitter    = require('events').EventEmitter;
 var assign          = require('object-assign');
-
+var uuid            = require('node-uuid');
 
 var CHANGE_EVENT = 'change';
 
@@ -13,6 +13,24 @@ var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
 var init = false;
+
+var QuestionObject = function(quiz){
+
+    var question = {
+        alternatives: ['', '', ''],
+        question: '',
+        answer: '',
+        uuid: uuid.v4()
+    };
+    if (quiz && quiz.questions.length > 0) {
+        var lastQuestion = quiz.questions[quiz.questions.length - 1];
+        console.log('GENERATING NEW QUESTION', question, lastQuestion);
+        question.latexEnabled = lastQuestion.latexEnabled;
+        question.imageEnabled = lastQuestion.imageEnabled;
+    }
+
+    return question;
+};
 
 
 
@@ -24,6 +42,12 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuiz: function(quizId){
         return _fullQuizzes[quizId];
+    },
+
+    getQuestion: function(quizId, questionIndex){
+        var quiz = this.getQuiz(quizId);
+        var question = quiz.questions[questionIndex] || new QuestionObject(quiz);
+        return question;
     },
 
     getPublicQuizzes: function(){

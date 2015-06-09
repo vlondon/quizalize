@@ -4,12 +4,14 @@ var uuid = require('node-uuid');
 
 var CQLatexString = require('./CQLatexString');
 
+var QuizStore = require('createQuizApp/stores/QuizStore');
 // TODO: Rename to a better name to describe editing questions
 var CQEditNormal = React.createClass({
 
     propTypes: {
         onSave: React.PropTypes.func.isRequired,
-        quiz: React.PropTypes.object
+        quiz: React.PropTypes.object,
+        onChange: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -55,15 +57,9 @@ var CQEditNormal = React.createClass({
 
     getState: function(props) {
         props = props || this.props;
-
-        var question = props.quiz.questions[props.questionIndex];
+        var question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
         var newState = {
-            question: question || {
-                alternatives: ['', '', ''],
-                question: '',
-                answer: '',
-                uuid: uuid.v4()
-            }
+            question
         };
 
         console.log('newState', newState);
@@ -147,7 +143,6 @@ var CQEditNormal = React.createClass({
 
 
     handleChange: function(property, index, event) {
-        console.log('handle change??', event);
         var newQuestionState = assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
@@ -171,7 +166,6 @@ var CQEditNormal = React.createClass({
     },
 
     handleTopic: function(event){
-        console.log('were changing topic for', event.target.value);
         var canBeSaved = this.canBeSaved();
         this.setState({topic: event.target.value, canBeSaved});
     },
@@ -198,7 +192,10 @@ var CQEditNormal = React.createClass({
             imageLink = (
                 <div className='block clearfix'>
 
-                    <label className="left control-label">Image Link <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign">                         </a></label>
+                    <label className="left control-label">
+                        Image Link
+                        <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
+                    </label>
                     <div className="right">
 
                         <div className="entry-input-full-width">
@@ -310,7 +307,9 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                        Incorrect Answers <a data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. &lt;a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'&gt;Learn more&lt;/a&gt;" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="10" data-html="true" className="glyphicon glyphicon-question-sign"></a>
+                        Incorrect Answers
+                        <a data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. &lt;a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'&gt;Learn more&lt;/a&gt;" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="10" data-html="true" className="glyphicon glyphicon-question-sign"/>
+                        <div className="optional">Optional</div>
                     </label>
                     <div className="right no-left-margin">
 
@@ -376,6 +375,7 @@ var CQEditNormal = React.createClass({
                         role="button"
                         tabIndex="11"
                         className="glyphicon glyphicon-question-sign"></a>
+                        <div className="optional">Optional</div>
                     </label>
                     <div className="right">
                         <div className="entry-input-full-width">
@@ -393,7 +393,20 @@ var CQEditNormal = React.createClass({
 
 
                 <div className="block clearfix">
-                    <label className="left control-label">Subtopic <a data-toggle="popover" title="Subtopic (Optional)" data-content="Use sub-topics to group questions together and spot learning gaps more easily. &lt;a  target=_blank href='http://blog.zzish.com/post/118863520184/quizalize-classroom-quiz-response-system'&gt;Learn more&lt;/a&gt;" data-html="true" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="11" className="glyphicon glyphicon-question-sign"></a></label>
+                    <label className="left control-label">
+                        Subtopic
+                        <a data-toggle="popover"
+                            title="Subtopic (Optional)"
+                            data-content="Use sub-topics to group questions together and spot learning gaps more easily. &lt;a  target=_blank href='http://blog.zzish.com/post/118863520184/quizalize-classroom-quiz-response-system'&gt;Learn more&lt;/a&gt;"
+                            data-html="true"
+                            data-trigger="focus"
+                            data-placement="auto left"
+                            data-container="body"
+                            role="button"
+                            tabIndex="11"
+                            className="glyphicon glyphicon-question-sign"/>
+                        <div className="optional">Optional</div>
+                    </label>
                     <div className="right">
                         <div className="entry-input-full-width">
 
