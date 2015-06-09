@@ -35,12 +35,12 @@ function goToApp() {
 function showQuiz(id) {
     var check = localStorage.getItem("userId") || localStorage.getItem('token');
     var quizUrl = window.location.href = "/app#/play/public/" + id;
-    if (check) {
-        window.location.href = quizUrl;
-    }
-    else {
-        window.location.href = "/quiz/register?redirect=" + window.encodeURIComponent(quizUrl);
-    }
+    // if (check) {
+    // }
+    // else {
+        // window.location.href = "/quiz/register?redirect=" + window.encodeURIComponent(quizUrl);
+    // }
+    window.location.href = quizUrl;
 }
 
 

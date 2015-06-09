@@ -176,9 +176,31 @@ style.
     .cssFade.ng-hide {
         opacity: 0;
     }
-    
+    .share-cta,
     .share-score {
         text-align: center;
+    }
+    .share {
+        display: inline-block;
+        margin: 5px;
+        background: #2e60ff;
+        color: #FFF;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        border-radius: 100%;
+        line-height: 50px;
+    }
+    .share:hover,
+    .share:focus {
+        opacity: 0.5;
+        color: #FFF;
+    }
+    .share-fb {
+        background: #3b5998;
+    }
+    .share-tw {
+        background: #00aced;
     }
 
 .container
@@ -249,11 +271,13 @@ style.
                   .complte-main-text
               .col-sm-12
                   #reactContainer
-                  .share-score Share your score with your friends!
-                    .fa.fa-lg.fa-facebook
-                       a(href='facebook') Facebook
-                    .share-tw 
-                       a(href='Twitter') Twitter
+                  .share-container
+                      h2.share-score Share your score with your friends!
+                      .share-cta
+                        a.share.share-fb(href='http://www.facebook.com/sharer/sharer.php?u=quizalize.com%2F%23quiz%2Fquiz-of-the-day',target="_blank")
+                            .fa.fa-lg.fa-facebook
+                        a.share.share-tw(ng-href="{{quiz.twitterLink}}",target="_blank")
+                            .fa.fa-lg.fa-twitter
         .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
             .col-md-8.col-md-offset-2
                 .well

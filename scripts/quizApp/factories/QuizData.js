@@ -1,6 +1,7 @@
 var randomise = require('quizApp/utils/randomise');
 var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
-var QUIZ_CONTENT_TYPE = "quiz";
+var settings = require('quizApp/config/settings');
+var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     if(typeof zzish == 'undefined') {
@@ -126,8 +127,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i]!=="") {
                     numAlternatives++;
                 }
-            }            
-        }        
+            }
+        }
         return numAlternatives;
     }
 
