@@ -12,8 +12,6 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
             ul.nav.navbar-nav.navbar-right
                 li
                   a.btn.btn-info(ng-show="nctrl.loggedIn",ng-click="nctrl.logout()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Log out
-                li
-                    a.pull-right.btn.btn-info(href="/quiz",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Create a quiz in 60 seconds!                        
 .container
     .row
         h1(ng-show="quizzes.user",style="color: white") Hi {{quizzes.name}}!
