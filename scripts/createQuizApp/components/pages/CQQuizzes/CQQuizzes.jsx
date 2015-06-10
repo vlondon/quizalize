@@ -30,7 +30,6 @@ var CQQuizzes = React.createClass({
     },
 
     onChange: function(){
-        console.log('onChange', QuizStore);
         this.setState({quizzes: QuizStore.getQuizzes()});
     },
 

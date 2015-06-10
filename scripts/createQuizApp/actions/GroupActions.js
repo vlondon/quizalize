@@ -8,7 +8,7 @@ var assign              = require('object-assign');
 var GroupActions = {
 
     loadGroups: function(){
-
+        console.trace('GroupActions.loadGroups called');
         var groups = GroupApi.getGroups();
         var groupsContent = GroupApi.getGroupContents();
 
@@ -43,7 +43,6 @@ var GroupActions = {
 
     publishNewAssignment: function(quizId, groupName) {
 
-
         return new Promise((resolve, reject) => {
             GroupApi.publishNewAssignment(quizId, groupName)
                 .then((response) => {
@@ -74,9 +73,8 @@ var GroupActions = {
                         actionType: GroupConstants.ASSIGMENT_PUBLISHED,
                         payload: response
                     });
-                    resolve(response);
-                    console.log('we got response!', response);
                     this.loadGroups();
+                    resolve(response);
                 })
                 .catch(reject);
         });

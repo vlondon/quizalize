@@ -14,22 +14,14 @@ require('./CQPublicStyles');
 var CQPublic = React.createClass({
 
     getInitialState: function() {
-        return {
-            quizzes: []
-        };
+        return this.getState();
     },
 
     componentDidMount: function() {
-
-        QuizActions.loadPublicQuizzes();
-        // QuizActions.loadQuizzes();
-
         QuizStore.addChangeListener(this.onChange);
-
     },
 
     componentWillUnmount: function() {
-
         QuizStore.removeChangeListener(this.onChange);
     },
 

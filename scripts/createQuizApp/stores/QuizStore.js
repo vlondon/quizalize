@@ -12,7 +12,8 @@ var _quizzes = [];
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
-var init = false;
+var storeInit = false;
+var storeInitPublic = false;
 
 var QuestionObject = function(quiz){
 
@@ -24,7 +25,6 @@ var QuestionObject = function(quiz){
     };
     if (quiz && quiz.questions.length > 0) {
         var lastQuestion = quiz.questions[quiz.questions.length - 1];
-        console.log('GENERATING NEW QUESTION', question, lastQuestion);
         question.latexEnabled = lastQuestion.latexEnabled;
         question.imageEnabled = lastQuestion.imageEnabled;
     }
@@ -51,14 +51,16 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getPublicQuizzes: function(){
+        if (!storeInitPublic){
+            storeInitPublic = true;
+            QuizActions.loadPublicQuizzes();
+        }
         return _publicQuizzes;
     },
 
     getTopics: function() {
         return _topics;
     },
-
-
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -68,9 +70,9 @@ var QuizStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
-        if (!init) {
+        if (!storeInit) {
             QuizActions.loadQuizzes();
-            init = true;
+            storeInit = true;
         }
         this.on(CHANGE_EVENT, callback);
     },
@@ -86,7 +88,6 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-    // var text;
 
     switch(action.actionType) {
 
@@ -120,6 +121,12 @@ AppDispatcher.register(function(action) {
         case QuizConstants.QUIZ_ADDED:
             var quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
+            // I can't update quizzes yet because the category needs to be set up
+            // var i = _quizzes.filter(q=> q.uuid === quizAdded.uuid);
+            // if (i.length === 0){
+            //     _quizzes.push(quizAdded);
+            // }
+            QuizActions.loadQuizzes();
             QuizStore.emitChange();
             break;
 
