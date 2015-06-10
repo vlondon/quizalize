@@ -33,6 +33,29 @@ var CQPublicSort = React.createClass({
     },
 
     render: function() {
+        var root = [];
+        var processCategory = function(categories, level = 0) {
+
+            return (categories.map(category =>{
+                var child;
+
+                if (category.categories.length > 0) {
+                    console.log('resccurson!!', category.categories);
+                    child = processCategory(category.categories, level+1);
+                }
+                console.log('child', child);
+                return (
+                <li>
+                    {category.name}
+                    <ul>{child}</ul>
+
+                </li>);
+            }));
+
+
+        };
+
+        root = processCategory(this.state.topics);
         return (
             <div className={this.props.className}>
                 <div className="cq-public__listblock">
@@ -51,11 +74,8 @@ var CQPublicSort = React.createClass({
 
                     <h2>Subject</h2>
                     <ul>
-                        {this.state.topics.map(topic =>{
-                            return (<li>
-                                {topic.name}
-                            </li>);
-                        })}
+                        {root}
+
                     </ul>
                 </div>
 

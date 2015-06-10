@@ -13,6 +13,27 @@ var _topics = [];
 var _publicTopics = [];
 
 
+var sortPublicTopics = function(topics){
+    var originalTopics = topics.slice();
+    var processedTopics = [];
+
+    topics.forEach((parentTopic) => {
+        var childrenTopics = topics.filter(childs => childs.parentCategoryId === parentTopic.uuid );
+        console.log('childrenTopics', childrenTopics);
+        parentTopic.categories = childrenTopics;
+
+        // console.log('parentTopic', parentTopic);
+        // topics.splice(topicIndex, 1);
+
+    });
+    processedTopics = topics.filter(t => t.parentCategoryId === '-1');
+
+    console.log('topic to be sorted', processedTopics);
+
+    return processedTopics;
+};
+
+
 var TopicStore = assign({}, EventEmitter.prototype, {
 
 
@@ -21,7 +42,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     },
 
     getPublicTopics: function(){
-        return _publicTopics.filter(t => t.parentCategoryId === '-1' );
+        return _publicTopics;
     },
 
 
@@ -64,7 +85,7 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             break;
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
-            _publicTopics = action.payload;
+            _publicTopics = sortPublicTopics(action.payload);
             TopicStore.emitChange();
             break;
 
