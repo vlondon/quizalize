@@ -49,7 +49,6 @@ app.post('/create/profile', quiz.createProfile);
 
 app.get('/quiz/token/:token', quiz.getProfileByToken);
 app.get('/quiz/profile/:uuid', quiz.getProfileById);
-app.get('/quiz/code/:code', quiz.getQuizByCode);
 
 app.get('/quiz/*', quiz.create);
 app.get('/quiz', quiz.create);

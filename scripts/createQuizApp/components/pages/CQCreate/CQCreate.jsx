@@ -189,8 +189,8 @@ var CQCreate = React.createClass({
                                     <div className="col-sm-4"><br className="visible-xs"/>
                                     <button type="button"
                                         onClick={this.handleNewQuiz}
-                                        disabled={this.isSaving}
-                                        tabIndex="4" ng-disabled="ctrl.quiz.name==''" className="btn btn-primary btn-block">Save</button>
+                                        disabled={this.state.isSaving}
+                                        tabIndex="4" className="btn btn-primary btn-block">Save</button>
                                 </div>
                             </div>
                         </form>
