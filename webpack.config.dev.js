@@ -44,11 +44,11 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
+                loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version!sass?sourceMap&sourceMapContents=true'
             },
             {
                 test: /\.css$/,
-                loader: 'style!css!autoprefixer-loader?browsers=last 2 version'
+                loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
             }
         ]
     },

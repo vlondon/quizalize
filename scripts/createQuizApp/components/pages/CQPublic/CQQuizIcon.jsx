@@ -37,7 +37,7 @@ var CQQuizIcon = React.createClass({
         } else {
             randomIndex = Math.floor(Math.random() * colours.length);
         }
-        console.log('te', this.props.image);
+
 
         var color = kolor(colours[randomIndex]);
         var style = {

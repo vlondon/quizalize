@@ -1,7 +1,8 @@
 var React = require('react');
-
+var router = require('createQuizApp/config/router');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
+var CQHeaderDropdown = require('./CQHeaderDropdown');
 
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions = require('createQuizApp/actions/UserActions');
@@ -15,6 +16,7 @@ var CQHeader = React.createClass({
     },
 
     componentDidMount: function() {
+        console.log('get Current Path',router.getPath() );
         UserStore.addChangeListener(this.onChange);
     },
 
@@ -46,29 +48,26 @@ var CQHeader = React.createClass({
         if (this.state.isLoggedIn){
             buttons.push((
                 <li id="cq-quizzes" key='cq-quizzes'>
-                    <CQLink href="/quiz/quizzes" className="btn btn-info navbar-btn">
-                        Your quizzes
+                    <CQLink href="/quiz/quizzes" className="navbar-btn">
+                        <i className="fa fa-th-large"></i> Your quizzes
                     </CQLink>
                 </li>));
 
                 buttons.push((
                 <li id="cq-assignments" key='cq-assignments'>
-                    <CQLink href="/quiz/assignments" className="btn btn-info navbar-btn">
-                        Your classes
+                    <CQLink href="/quiz/assignments" className="navbar-btn">
+                        <i className="fa fa-users"></i> Your classes
+
                     </CQLink>
                 </li>
             ));
 
             loginButton = (
-                <li>
-                    <button onClick={this.handleLogout} type="button" className="btn btn-info navbar-btn">
-                        Log out
-                    </button>
-                </li>);
+                <CQHeaderDropdown/>);
         } else {
             loginButton = (
                 <li>
-                    <CQLink href="/quiz/login" className="btn btn-info navbar-btn">
+                    <CQLink href="/quiz/login" className="navbar-btn">
                         Login
                     </CQLink>
                 </li>);
@@ -80,9 +79,9 @@ var CQHeader = React.createClass({
 
 
         return (
-            <nav className="navbar navbar-default cq-header">
-                <div className="container-fluid">
-                    <div className="navbar-header">
+            <nav className="cq-header">
+                <div className="cq-header__container">
+                    <div className="cq-header__brand">
                         <a href="/quiz/">
                             <img src="/img/quizalize.png" className="cq-brand" alt=""/>
                             {this.state.user}
@@ -94,16 +93,12 @@ var CQHeader = React.createClass({
                             {buttons}
 
                             <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/public" className="btn btn-info navbar-btn">
-                                    Public quizzes
+                                <CQLink href="/quiz/public" className="navbar-btn">
+                                    <div className="fa fa-tags"></div> Public quizzes
                                 </CQLink>
                             </li>
 
-                            <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/help" className="btn btn-info navbar-btn">
-                                    ?
-                                </CQLink>
-                            </li>
+
 
                             {loginButton}
 

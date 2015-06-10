@@ -1,13 +1,13 @@
-var router          = require('./router');
-var pages           = require('./routes');
-var settings        = require('createQuizApp/config/settings');
+var router              = require('./router');
+var pages               = require('./routes');
+var settings            = require('createQuizApp/config/settings');
 var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
-var GroupActions     = require('createQuizApp/actions/GroupActions');
-var UserActions     = require('createQuizApp/actions/UserActions');
-var QuizActions     = require('createQuizApp/actions/QuizActions');
+var GroupActions        = require('createQuizApp/actions/GroupActions');
+var UserActions         = require('createQuizApp/actions/UserActions');
+var QuizActions         = require('createQuizApp/actions/QuizActions');
 
-var UserStore       = require('createQuizApp/stores/UserStore');
-var urlParams       = require('createQuizApp/utils/urlParams');
+var UserStore           = require('createQuizApp/stores/UserStore');
+var urlParams           = require('createQuizApp/utils/urlParams');
 
 var user = null;
 var routerReady = false;
@@ -42,8 +42,6 @@ router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.e
 router.on(pages.assignments.path, () => renderPage(pages.assignments) );
 router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
-
-
 
 
 var newUrl = function(requestedUrl){
