@@ -106,8 +106,11 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
             else if (QuizData.getClassCode()){
                 $location.path("/list");
             }
-            else {
+            else if (QuizData.getUser()){
                 $location.path("/quiz");
+            }
+            else {
+                $location.path("/app");
             }
             QuizData.cancelCurrentQuiz(function() {
 
