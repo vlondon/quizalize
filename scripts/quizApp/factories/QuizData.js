@@ -559,6 +559,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 answer: answer,
                 correct: correct,
                 score: score,
+                latexEnabled: question.latexEnabled,
                 roundedScore: Math.round(score),
                 seconds: Math.ceil(duration/1000),
                 topicId: question.topicId,
