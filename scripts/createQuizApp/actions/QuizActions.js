@@ -4,6 +4,7 @@ var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 var Promise             = require('es6-promise').Promise;
 var TopicStore          = require('createQuizApp/stores/TopicStore');
 var TopicActions        = require('createQuizApp/actions/TopicActions');
+var TopicConstants      = require('createQuizApp/constants/TopicConstants');
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
@@ -192,6 +193,11 @@ var QuizActions = {
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZZES_PUBLIC_LOADED,
                     payload: processQuizList(quizzes)
+                });
+
+                AppDispatcher.dispatch({
+                    actionType: TopicConstants.PUBLIC_TOPICS_LOADED,
+                    payload: quizzes.categories
                 });
             });
     },

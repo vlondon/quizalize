@@ -46,6 +46,7 @@
     @at-root #{&}__quizextra {
         text-align: center;
     }
+
     @at-root #{&}__quizcategory {
         display: inline-block;
         font-weight: 100;
@@ -57,4 +58,21 @@
         border-radius: 10px;
         margin: 2px;
     }
+
+    @at-root #{&}__sort {
+        float: left;
+        width: 300px;
+        min-height: 400px;
+        background: $brand-color-grey-lighter;
+    }
+
+
+    @at-root #{&}__list {
+        float: left;
+        width: calc(100% - 300px);
+    }
+
+
+
+
 }

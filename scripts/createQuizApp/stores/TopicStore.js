@@ -9,6 +9,9 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var _topics = [];
+// subjects come (for now) from the public quizzes
+var _publicTopics = [];
+
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
@@ -17,6 +20,9 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         return _topics;
     },
 
+    getPublicTopics: function(){
+        return _publicTopics.filter(t => t.parentCategoryId === '-1' );
+    },
 
 
     emitChange: function() {
@@ -54,6 +60,11 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
 
         case TopicConstants.TOPIC_ADDED:
             _topics.push(action.payload);
+            TopicStore.emitChange();
+            break;
+
+        case TopicConstants.PUBLIC_TOPICS_LOADED:
+            _publicTopics = action.payload;
             TopicStore.emitChange();
             break;
 
