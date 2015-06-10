@@ -1,6 +1,8 @@
 var settings = require('quizApp/config/settings');
-// var React = require('react');
+var React = require('react');
+var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 // var QLComplete = require('quizApp/components/QLComplete');
+
 
 var maxScore = settings.maxScore;
 var maxTime = settings.maxTime;
@@ -15,37 +17,42 @@ MathJax.Hub.Config({
       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
       processEscapes: true
-    },    
+    },
     "HTML-CSS": { availableFonts: ["TeX"] }
 });
-MathJax.Hub.Configured();   
+MathJax.Hub.Configured();
 
-angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', '$location', '$scope', function(QuizData, $log, $location, $scope){
+angular.module('quizApp').controller('CompleteController', function(QuizData, ExtraData, $log, $routeParams, $location, $scope){
+
     var self = this;
     self.hasTopics = false;
     self.teacherMode = sessionStorage.getItem("mode")=="teacher";
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     sessionStorage.removeItem("mode");
     self.showButtons = false;
+    self.id = $routeParams.quizId;
+    self.catId = $routeParams.catId;
 
-    // var renderReactComponent = function(){
-    //     React.render(
-    //         React.createElement(QLComplete, {
-    //             totals: self.totals
-    //         }),
-    //         document.getElementById('reactContainer')
-    //     );
-    // };
-    //
-    //
-    // var addReactComponent = function(){
-    //     setTimeout(renderReactComponent, 200);
-    //     $scope.$on('$destroy', function(){
-    //         React.unmountComponentAtNode(document.getElementById('reactContainer'));
-    //     });
-    // };
+    var renderReactComponent = function(){
+        var activityId = self.data ? self.data.currentActivityId : undefined;
+        React.render(
+            React.createElement(QLLeaderboard, {
+                leaderboard: self.leaderboard,
+                activityId
+            }),
+            document.getElementById('reactContainer')
+        );
+    };
 
-    // addReactComponent();
+
+    var addReactComponent = function(){
+        setTimeout(renderReactComponent, 200);
+        $scope.$on('$destroy', function(){
+            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+        });
+    };
+
+
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -109,31 +116,58 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
     };
 
     self.data = QuizData.currentQuizResult();
+
     self.topics = {};
+
+    var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
+
+    self.isFeatured = localStorageQuiz.settings!=null ? localStorageQuiz.settings.featured : false;
+    // self.isFeatured = false;
+
+    if (self.isFeatured === true) {
+        ExtraData.getLeaderBoard(self.data.quizId)
+            .then(function(score){
+                self.leaderboard = score;
+                self.facebookLink = 'http://www.facebook.com/sharer/sharer.php?u=http://bit.ly/quizbanana';
+                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.name + 'on @Quizalizeapp and I got ' + self.totals.score + ' points. http://bit.ly/quizbanana')}`;
+                addReactComponent();
+            });
+    }
+    // QuizData.selectQuiz(self.catId, self.id, function(err, result) {
+    //     if (!err) {
+    //     }
+    // });
+
+
+
     QuizData.getTopics(function(data) {
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);
-        if (self.data.latexEnabled) {
-            setTimeout(function() {                
-                var items = self.data.report;
-                for(var j in items){
-                    var item = items[j];
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.questionId)[0]]);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.questionId)[0]]);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.questionId)[0]]);
+        var needToHide = false;
+        var items = self.data.report;
+        var arrayToMath = [];
+        for(var j in items){
+            var item = items[j];
+            if (item.latexEnabled) {
+                arrayToMath.push(item.questionId);
+                needToHide = true;
+            }
+        }
+        if (needToHide) {
+            setTimeout(function() {
+                for (var i in arrayToMath) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion" + arrayToMath[i])[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response" + arrayToMath[i])[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse" + arrayToMath[i])[0]]);
                 }
-                MathJax.Hub.Queue(function () {
-                    $scope.$apply(function() {
-                        self.showButtons = true;
-                    });
+            }, 200);
+            MathJax.Hub.Queue(function () {
+                $scope.$apply(function() {
+                    self.showButtons = true;
                 });
-            },200);
-            self.showButtons = true;
+            });
         }
-        else {
-            self.showButtons = true;
-        }
-
+        self.showButtons = true;
         // renderReactComponent();
     });
 
@@ -148,8 +182,11 @@ angular.module('quizApp').controller('CompleteController', ['QuizData', '$log', 
         if (self.previewMode) {
             window.close();
         }
-        else {
+        else if (QuizData.getUser()) {
             $location.path("/list");
         }
+        else {
+            $location.path("/public");    
+        }
     };
-}]);
+});

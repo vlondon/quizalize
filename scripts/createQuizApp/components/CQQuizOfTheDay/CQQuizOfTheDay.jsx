@@ -35,7 +35,7 @@ var CQQuizOfTheDay = React.createClass({
 
         var background = {};
 
-        if (this.props.quiz.settings.imageUrl) {
+        if (this.props.quiz.settings && this.props.quiz.settings.imageUrl) {
             background  = {
                 backgroundImage: `url(${this.props.quiz.settings.imageUrl})`
             };
@@ -45,6 +45,7 @@ var CQQuizOfTheDay = React.createClass({
         var playButton;
         var assignButton;
         var leaderboardButton;
+        var source;
 
         if (this.props.play) {
             takeoverButton = (<div className="qd-action-takeover" onClick={this.handlePlay}/>);
@@ -68,6 +69,11 @@ var CQQuizOfTheDay = React.createClass({
                     Global leaderboard
                 </button>
             );
+        }
+        if (this.props.quiz.settings && this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
+            source = (<div className="qd-source">
+                source: {this.props.quiz.settings.imageAttribution}
+            </div>);
         }
 
         var actions;
@@ -95,19 +101,19 @@ var CQQuizOfTheDay = React.createClass({
             </div>);
         }
 
+        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description : '';
+
         return (
             <div className="qd-container">
                 <div className="qd-description" style={background}>
 
                     {takeoverButton}
-                    <div className="qd-source">
-                        source: {this.props.quiz.settings.imageAttribution}
-                    </div>
+                    {source}
                     <div className="qd-description-details">
 
                         <div className="qd-text">
                             <h3>{this.props.quiz.name}</h3>
-                            <p>{this.props.quiz.settings.Description}</p>
+                            <p>{description}</p>
                         </div>
 
                         {actions}

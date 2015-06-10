@@ -1,8 +1,9 @@
 var React = require('react');
 var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
+var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 
-angular.module('quizApp').controller('GameController', function(QuizData, $log, $location, $rootScope, $routeParams, $scope){
+angular.module('quizApp').controller('GameController', function(QuizData, ExtraData, $log, $location, $rootScope, $routeParams, $scope){
     var self = this;
 
     self.id = $routeParams.id;
@@ -12,11 +13,15 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
     self.showSubText = false;
 
     var renderReactComponent = function(){
-        React.render(
+        React.render(React.createElement('div', {className: 'qofd-intro'},
             React.createElement(CQQuizOfTheDay, {
                 quiz: self.currentQuiz,
                 showActions: false
             }),
+            React.createElement(QLLeaderboard, {
+                leaderboard: self.leaderboard
+            })),
+
             document.getElementById('reactContainer')
         );
     };
@@ -30,16 +35,29 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
     };
 
 
+    var getLeaderBoard = function(quiz){
+        console.log('loading score for ', quiz.uuid);
+        ExtraData.getLeaderBoard(quiz.uuid)
+            .then(function(result){
+                self.leaderboard = result;
+                addReactComponent();
+            });
+
+    };
+
 
 
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = QuizFormat.process(result);
+
             if (self.currentQuiz.settings) {
+
                 if (self.currentQuiz.settings['random']) {
                     self.randomText = " in random order.";
                     self.showSubText = true;
                 }
+
                 if (self.currentQuiz.settings['numQuestions']) {
                     self.numQuestions = self.currentQuiz.questions.length;
                     try {
@@ -50,9 +68,10 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
                     }
                     self.showSubText = true;
                 }
-
+                console.log('self.currentQuiz.settings', self.currentQuiz);
                 if (self.currentQuiz.settings.featured) {
-                    addReactComponent();
+                    // addReactComponent();
+                    getLeaderBoard(self.currentQuiz);
                 }
                 console.log('self.currentQuiz, ', self.currentQuiz);
             }
@@ -77,16 +96,25 @@ angular.module('quizApp').controller('GameController', function(QuizData, $log, 
     };
 
     self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz", "Are you sure you want to cancel '" + QuizData.currentQuiz().name + "'. You won't be able to continue this quiz.", function() {
-            if (sessionStorage.getItem("mode") === "teacher") {
-                window.location.href = "/quiz#/public";
+        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
+            if (sessionStorage.getItem("mode")=="teacher") {
+                window.location.href="/quiz/public";
             }
-            else if (sessionStorage.getItem("mode") === "preview") {
+            else if (sessionStorage.getItem("mode")=="preview") {
                 window.close();
             }
-            else {
+            else if (QuizData.getClassCode()){
                 $location.path("/list");
             }
+            else if (QuizData.getUser()){
+                $location.path("/quiz");
+            }
+            else {
+                $location.path("/app");
+            }
+            QuizData.cancelCurrentQuiz(function() {
+
+            });
         });
     };
 

@@ -78,7 +78,7 @@ app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
 
 app.get('/quizzes/public', quiz.getPublicQuizzes);
 app.get('/quizzes/public/:id', quiz.getPublicQuiz);
-app.get('/quizzes/:profileId/public/assigned', quiz.getAssignedPublicQuizzes);
+
 
 
 
@@ -105,6 +105,7 @@ app.get('/brighton', quiz.brightonlanding);
 app.get('/tool/', quiz.landingpage);
 app.get('/quiz/', quiz.create);
 app.get('/app/', quiz.index);
+app.get('/qapp/:id', quiz.indexQuiz);
 app.post('/quizHelp/', quiz.help);
 
 app.get('/quiz/service', quiz.service);

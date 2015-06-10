@@ -1,5 +1,7 @@
 var randomise = require('quizApp/utils/randomise');
 var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
+var settings = require('quizApp/config/settings');
+var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     if(typeof zzish == 'undefined') {
@@ -118,12 +120,25 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     }
 
+    var getNumAlternvatives = function(currentQuestion) {
+        var numAlternatives = 0;
+        if (currentQuestion.alternatives) {
+            for (var i in currentQuestion.alternatives) {
+                if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i]!=="") {
+                    numAlternatives++;
+                }
+            }
+        }
+        return numAlternatives;
+    }
+
     var selectQuestionType = function(index) {
         var currentQuestion = currentQuiz.questions[index];
         var indexOfSpace = currentQuestion.answer.indexOf(" ");
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
-        if((currentQuestion && !!currentQuestion.alternatives) || patternToDected || length ==1 || indexOfSpace>=0 || length ==8) {
+        var numAlternatives = getNumAlternvatives(currentQuestion);
+        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8 || length==1) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
@@ -247,7 +262,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var getPublicContent = function(quizId,callback) {
-        zzish.getPublicContent(quizId,function (err,message) {
+        zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizId,function (err,message) {
             if (!err) {
                 currentQuiz = message;
             }
@@ -276,7 +291,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
         else if (catId.indexOf("share:")==0) {
-            zzish.getContent(catId.substring(6),quizId,function (err,result) {
+            zzish.getContent(catId.substring(6),QUIZ_CONTENT_TYPE,quizId,function (err,result) {
                 setQuiz(result);
                 callback(err,result);
                 $rootScope.$digest();
@@ -340,7 +355,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getTopics: function(callback) {
             if (!topicsLoaded) {
-                zzish.listPublicContent(function(err, data) {
+                zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
 
                     if (!err) {
                         data.categories = data.categories.filter(c => c !== null);
@@ -378,7 +393,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             loadPlayerQuizzes(callback);
         },
         loadPublicQuizzes: function(callback){
-            zzish.listPublicContent(function(err, message){
+            zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, message){
                 if(!err) {
                     message.categories = message.categories.filter(c => c !== null);
                     message.contents = message.contents.filter(c => c !== null);
@@ -461,7 +476,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getAlternatives: function(questionIndex){
             var question = currentQuiz.questions[questionIndex];
-            if(question.alternatives && question.alternatives.length>0){
+            var numAlternatives = getNumAlternvatives(question);
+            if(numAlternatives>0){
                 var options = [];
                 options.push(question.answer);
                 for(var i in question.alternatives) {
@@ -543,6 +559,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 answer: answer,
                 correct: correct,
                 score: score,
+                latexEnabled: question.latexEnabled,
                 roundedScore: Math.round(score),
                 seconds: Math.ceil(duration/1000),
                 topicId: question.topicId,
