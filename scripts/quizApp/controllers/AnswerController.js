@@ -32,9 +32,9 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
             MathJax.Hub.Queue(function () {
                 $scope.$apply(function() {
                     self.showButtons = true;
-                });                        
-            });                
-        },200);     
+                });
+            });
+        },200);
     }
     else {
         self.showButtons = true;
@@ -43,13 +43,16 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
     self.cancel = function() {
         QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
             if (sessionStorage.getItem("mode")=="teacher") {
-                window.location.href="/quiz#/public";
+                window.location.href="/quiz/public";
             }
             else if (sessionStorage.getItem("mode")=="preview") {
                 window.close();
             }
-            else {
+            else if (QuizData.getClassCode()){
                 $location.path("/list");
+            }
+            else {
+                $location.path("/quiz");
             }
             QuizData.cancelCurrentQuiz(function() {
 

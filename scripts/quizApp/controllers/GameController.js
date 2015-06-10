@@ -50,7 +50,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = QuizFormat.process(result);
-            
+
             if (self.currentQuiz.settings) {
 
                 if (self.currentQuiz.settings['random']) {
@@ -96,16 +96,22 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     };
 
     self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz", "Are you sure you want to cancel '" + QuizData.currentQuiz().name + "'. You won't be able to continue this quiz.", function() {
-            if (sessionStorage.getItem("mode") === "teacher") {
-                window.location.href = "/quiz#/public";
+        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
+            if (sessionStorage.getItem("mode")=="teacher") {
+                window.location.href="/quiz/public";
             }
-            else if (sessionStorage.getItem("mode") === "preview") {
+            else if (sessionStorage.getItem("mode")=="preview") {
                 window.close();
             }
-            else {
+            else if (QuizData.getClassCode()){
                 $location.path("/list");
             }
+            else {
+                $location.path("/quiz");
+            }
+            QuizData.cancelCurrentQuiz(function() {
+
+            });
         });
     };
 
