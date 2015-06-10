@@ -167,9 +167,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
                 });
             });
         }
-        else {
-            self.showButtons = true;
-        }
+        self.showButtons = true;
         // renderReactComponent();
     });
 
