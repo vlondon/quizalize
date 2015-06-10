@@ -59,16 +59,23 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    res.render('index', {zzishapi: getZzishParam()});
+    var params = {zzishapi: getZzishParam()};
+    if (req.query.uuid!==undefined) {
+        zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {            
+            if (!err) {
+                params['quiz'] = result;
+            }
+            res.render('index', params);        
+        });    
+    }
+    else {
+        res.render('index', params);
+    }
+    
 };
 
 exports.indexQuiz =  function(req, res) {
-    zzish.getPublicContent('quiz', req.params.id, function(err, result) {
-        if (!err) {
-            req.session.quiz = result;
-        }
-        res.redirect('/app#/play/public/' + req.params.id);
-    });
+    res.redirect(301, '/app?uuid='+req.params.id+'#/play/public/' + req.params.id);
 };
 
 

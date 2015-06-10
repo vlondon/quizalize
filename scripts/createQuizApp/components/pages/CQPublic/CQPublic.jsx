@@ -47,7 +47,7 @@ var CQPublic = React.createClass({
     },
 
     handlePreview: function(quiz){
-        
+        sessionStorage.setItem('mode', 'teacher');
         window.location.href = `/app#/play/public/${quiz.uuid}`;
         // if (UserStore.getUser() === false) {
         // }

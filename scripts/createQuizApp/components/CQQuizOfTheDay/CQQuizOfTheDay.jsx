@@ -1,5 +1,5 @@
 var React = require('react');
-require('./CQQuizOfTheDayStyles');
+
 var CQQuizOfTheDay = React.createClass({
 
     propTypes: {
@@ -21,28 +21,6 @@ var CQQuizOfTheDay = React.createClass({
         };
     },
 
-    componentWillReceiveProps: function(nextProps) {
-        var quiz = {
-            settings: {}
-        };
-        if (nextProps.quiz.uuid) {
-            quiz = nextProps.quiz;
-        }
-        this.setState({quiz});
-    },
-
-    getInitialState: function() {
-        var quiz = {
-            settings: {}
-        };
-        if (this.props.quiz.uuid) {
-            quiz = this.props.quiz;
-        }
-        return {
-            quiz
-        };
-    },
-
     handlePlay: function(){
         this.props.play();
     },
@@ -57,9 +35,9 @@ var CQQuizOfTheDay = React.createClass({
 
         var background = {};
 
-        if (this.state.quiz.settings.imageUrl) {
+        if (this.props.quiz.settings && this.props.quiz.settings.imageUrl) {
             background  = {
-                backgroundImage: `url(${this.state.quiz.settings.imageUrl})`
+                backgroundImage: `url(${this.props.quiz.settings.imageUrl})`
             };
         }
 
@@ -92,7 +70,7 @@ var CQQuizOfTheDay = React.createClass({
                 </button>
             );
         }
-        if (this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
+        if (this.props.quiz.settings && this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
             source = (<div className="qd-source">
                 source: {this.props.quiz.settings.imageAttribution}
             </div>);
@@ -123,18 +101,19 @@ var CQQuizOfTheDay = React.createClass({
             </div>);
         }
 
+        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description : '';
+
         return (
             <div className="qd-container">
                 <div className="qd-description" style={background}>
 
                     {takeoverButton}
                     {source}
-
                     <div className="qd-description-details">
 
                         <div className="qd-text">
-                            <h3>{this.state.quiz.name}</h3>
-                            <p>{this.state.quiz.settings.Description}</p>
+                            <h3>{this.props.quiz.name}</h3>
+                            <p>{description}</p>
                         </div>
 
                         {actions}
