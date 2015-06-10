@@ -156,9 +156,9 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         if (needToHide) {
             setTimeout(function() {
                 for (var i in arrayToMath) {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+i)[0]]);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+i)[0]]);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+i)[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion" + arrayToMath[i])[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response" + arrayToMath[i])[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse" + arrayToMath[i])[0]]);
                 }
             }, 200);
             MathJax.Hub.Queue(function () {
@@ -167,9 +167,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
                 });
             });
         }
-        else {
-            self.showButtons = true;
-        }
+        self.showButtons = true;
         // renderReactComponent();
     });
 
