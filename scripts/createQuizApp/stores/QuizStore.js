@@ -44,14 +44,14 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizOfTheDay: function(){
         return findPublicQuiz('f2742669-b4ad-4da2-8ef5-0f6f9cf7d15b');
-        console.log('_publicQuizzes', _publicQuizzes);
-        if (_publicQuizzes.length === 0) {
-            return [];
-        } else {
-            var quizIndex = Math.round(Math.random() * _publicQuizzes.length);
-            console.log('quizoftheday', quizIndex, _publicQuizzes[quizIndex]);
-            return _publicQuizzes[quizIndex].quizzes[0];
-        }
+        // console.log('_publicQuizzes', _publicQuizzes);
+        // if (_publicQuizzes.length === 0) {
+        //     return [];
+        // } else {
+        //     var quizIndex = Math.round(Math.random() * _publicQuizzes.length);
+        //     console.log('quizoftheday', quizIndex, _publicQuizzes[quizIndex]);
+        //     return _publicQuizzes[quizIndex].quizzes[0];
+        // }
     },
 
     getTopics: function() {

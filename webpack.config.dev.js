@@ -20,7 +20,6 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
     ],
-    cache: true,
     output: {
         path: path.join(__dirname, 'public/js/'),
         filename: '[name].js',
@@ -58,5 +57,6 @@ module.exports = {
         modulesDirectories: ['node_modules', 'scripts']
     },
     devtool: '#source-map',
+    cache: true,
     watch: true
 };

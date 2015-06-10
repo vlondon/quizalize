@@ -1,1 +1,58 @@
+@import './../../../../quizApp/components/shared/variables';
+@import './../../../../quizApp/components/shared/mixins';
+.cq-public {
 
+    @at-root #{&}__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    @at-root #{&}__quiz {
+        display: inline-block;
+        vertical-align: bottom;
+        width: 150px;
+        height: 220px;
+        margin: 10px;
+    }
+
+    @at-root #{&}__quizicon {
+        border-radius: 10px;
+        overflow: hidden;
+        width: 120px;
+        height: 120px;
+        margin: auto;
+        margin-bottom: 10px;
+        background-size: cover;
+        background-position: center center;
+        img {
+            width: 100%;
+            /* background: red; */
+        }
+    }
+
+    @at-root #{&}__quizname {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    @at-root #{&}__quizdate {
+        font-weight: 100;
+        color: $brand-color-grey;
+    }
+
+    @at-root #{&}__quizextra {
+        text-align: center;
+    }
+    @at-root #{&}__quizcategory {
+        display: inline-block;
+        font-weight: 100;
+        color: $brand-color-grey;
+        font-size: 10px;
+        line-height: 10px;
+        border: 1px solid $brand-color-grey;
+        padding: 5px;
+        border-radius: 10px;
+        margin: 2px;
+    }
+}
