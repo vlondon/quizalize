@@ -39,7 +39,7 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getPublicQuizzes: function(){
-        return _publicQuizzes;
+        return _publicQuizzes.reverse();
     },
 
     getQuizOfTheDay: function(){

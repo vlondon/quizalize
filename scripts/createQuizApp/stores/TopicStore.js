@@ -14,23 +14,18 @@ var _publicTopics = [];
 
 
 var sortPublicTopics = function(topics){
-    var originalTopics = topics.slice();
+
     var processedTopics = [];
 
     topics.forEach((parentTopic) => {
         var childrenTopics = topics.filter(childs => childs.parentCategoryId === parentTopic.uuid );
-        console.log('childrenTopics', childrenTopics);
         parentTopic.categories = childrenTopics;
-
-        // console.log('parentTopic', parentTopic);
-        // topics.splice(topicIndex, 1);
-
     });
-    processedTopics = topics.filter(t => t.parentCategoryId === '-1');
 
-    console.log('topic to be sorted', processedTopics);
+    topics = topics.filter(t => t.parentCategoryId === '-1');
 
-    return processedTopics;
+
+    return topics;
 };
 
 

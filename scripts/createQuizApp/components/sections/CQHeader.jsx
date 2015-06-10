@@ -74,10 +74,6 @@ var CQHeader = React.createClass({
         }
 
 
-
-
-
-
         return (
             <nav className="cq-header">
                 <div className="cq-header__container">
@@ -98,10 +94,7 @@ var CQHeader = React.createClass({
                                 </CQLink>
                             </li>
 
-
-
                             {loginButton}
-
 
                         </ul>
                     </div>

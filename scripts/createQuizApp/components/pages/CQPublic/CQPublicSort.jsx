@@ -34,21 +34,23 @@ var CQPublicSort = React.createClass({
 
     render: function() {
         var root = [];
-        var processCategory = function(categories, level = 0) {
+        var processCategory = function(categories) {
 
             return (categories.map(category =>{
-                var child;
+                var child, list;
 
                 if (category.categories.length > 0) {
                     console.log('resccurson!!', category.categories);
-                    child = processCategory(category.categories, level+1);
+                    child = processCategory(category.categories);
                 }
-                console.log('child', child);
+
+                if (child){
+                    list = (<ul>{child}</ul>);
+                }
                 return (
                 <li>
                     {category.name}
-                    <ul>{child}</ul>
-
+                    {list}
                 </li>);
             }));
 
