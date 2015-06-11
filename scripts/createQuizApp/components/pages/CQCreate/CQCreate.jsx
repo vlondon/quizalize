@@ -45,7 +45,20 @@ var CQCreate = React.createClass({
                 QuizActions.loadQuiz(this.props.quizId);
             }
             quiz = {
-                settings: {}
+                meta: {
+                    name: "",
+                    subject: "",
+                    category: "",
+                    description: undefined,
+                    imageUrl: undefined,
+                    imageAttribution: undefined,
+                    live: false,
+                    featured: false,
+                    featureDate: undefined,
+                    numQuestions: undefined,
+                    random: false
+                },
+                payload: {}
             };
 
         }
@@ -82,17 +95,19 @@ var CQCreate = React.createClass({
     handleChange: function(property, event) {
 
         var newQuizState = assign({}, this.state.quiz);
-        newQuizState[property] = event.target.value;
+        newQuizState.meta[property] = event.target.value;
 
         this.setState({quiz: newQuizState});
     },
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        var newQuizSettings = assign(this.state.quiz.settings, newSettings);
-        quiz.settings = newQuizSettings;
+        console.log("Quiz",quiz.meta);
+        console.log("SEttings",newSettings);
+        var meta = assign(quiz.meta,newSettings);
+        console.log("after",quiz.meta);
+        quiz.meta = meta;
         this.setState({quiz});
-
     },
 
     handleMoreClick: function(){
@@ -129,10 +144,9 @@ var CQCreate = React.createClass({
                                         <div className="col-sm-9">
                                             <input id="subject"
                                                  type="text"
-                                                 value={this.state.quiz.subject}
+                                                 value={this.state.quiz.meta.subject}
                                                  onChange={this.handleChange.bind(this, 'subject')}
                                                  on-enter="ctrl.focusTopic();"
-                                                 ng-model="ctrl.quiz.subject"
                                                  placeholder="e.g. Geography (Optional)"
                                                  tabIndex="1"
                                                  className="form-control"/>
@@ -144,10 +158,9 @@ var CQCreate = React.createClass({
                                     <div className="col-sm-9">
                                         <input id="category"
                                             type="text"
-                                            value={this.state.quiz.category}
+                                            value={this.state.quiz.meta.category}
                                             onChange={this.handleChange.bind(this, 'category')}
                                             on-enter="ctrl.focusQuiz();"
-                                            ng-model="ctrl.quiz.category"
                                             placeholder="e.g. Earthquakes (Optional)"
                                             tabIndex="2"
                                             className="form-control"/>
@@ -157,10 +170,9 @@ var CQCreate = React.createClass({
                                     <div className="col-sm-9">
                                         <input id="question"
                                             type="text"
-                                            value={this.state.quiz.name}
+                                            value={this.state.quiz.meta.name}
                                             onChange={this.handleChange.bind(this, 'name')}
                                             on-enter="ctrl.createQuiz();"
-                                            ng-model="ctrl.quiz.name"
                                             placeholder="e.g. Plate Boundaries"
                                             autofocus="true"
                                             tabIndex="3"
@@ -186,7 +198,7 @@ var CQCreate = React.createClass({
                 </div>
 
                     </div>
-                    {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.settings}/> : undefined }
+                    {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.meta}/> : undefined }
                 </div>
             </CQPageTemplate>
         );

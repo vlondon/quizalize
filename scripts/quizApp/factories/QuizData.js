@@ -82,18 +82,18 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var quiz = result.contents[i];
             var cuuid = "undefined";
             var category = { name: "Other" };
-            if (quiz.categoryId!=undefined) {
-                cuuid = quiz.categoryId;
+            if (quiz.meta.categoryId!=undefined) {
+                cuuid = quiz.meta.categoryId;
                 if (result.categories!=undefined) {
                     for (var i in result.categories) {
-                        if (result.categories[i].uuid==quiz.categoryId) {
+                        if (result.categories[i].uuid==quiz.meta.categoryId) {
                             category = result.categories[i];
                         }
                     }
                 }
             }
             else {
-                quiz.categoryId = "unknown";
+                quiz.meta.categoryId = "unknown";
             }
             if (categories[cuuid]==undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
@@ -133,7 +133,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var selectQuestionType = function(index) {
-        var currentQuestion = currentQuiz.questions[index];
+        var currentQuestion = currentQuiz.payload.questions[index];
         var indexOfSpace = currentQuestion.answer.indexOf(" ");
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
@@ -150,7 +150,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var initQuizResult = function() {
-        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
+        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.payload.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
         localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
     }
@@ -158,8 +158,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var setQuiz = function(quiz) {
         currentQuiz = quiz;
         localStorage.setItem("currentQuiz",JSON.stringify(currentQuiz));
-        quiz.questions = spliceQuestions(quiz)
-        initQuizResult();
+        if (quiz.payload && quiz.payload.questions) {
+            quiz.payload.questions = spliceQuestions(quiz);
+            initQuizResult();
+        }
     }
 
     var searchThroughCategories = function(catId,quizId) {
@@ -221,42 +223,44 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     }
 
     var spliceQuestions = function(quiz) {
-        var settings = quiz.settings;
-        var questions = quiz.questions;
-        var seed = Math.floor((Math.random() * 100) + 1);
+        var settings = quiz.meta;
         var result = [];
-        if (settings && quiz.questions!=undefined && quiz.questions.length>1) {
-            if (settings['random']=="false") {
-                seed = quiz.updated;
-            }
-            var result2 = [];
-            if (settings['numQuestions']) {
-                var random = false;
-                try {
-                    var num = parseInt(settings['numQuestions']);
-                    var numToAdd = Math.min(num,questions.length);
-                    for (var i=0;i<numToAdd;i++) {
-                        var randomNumber = randomFunctionNumber(seed,questions.length);
-                        var x = questions.splice(randomNumber,1);
-                        result2.push(x[0]);
+        if (quiz.payload!==undefined) {
+            var questions = quiz.payload.questions;
+            var seed = Math.floor((Math.random() * 100) + 1);
+            if (settings && quiz.questions!=undefined && quiz.questions.length>1) {
+                if (settings['random']=="false") {
+                    seed = quiz.updated;
+                }
+                var result2 = [];
+                if (settings['numQuestions']) {
+                    var random = false;
+                    try {
+                        var num = parseInt(settings['numQuestions']);
+                        var numToAdd = Math.min(num,questions.length);
+                        for (var i=0;i<numToAdd;i++) {
+                            var randomNumber = randomFunctionNumber(seed,questions.length);
+                            var x = questions.splice(randomNumber,1);
+                            result2.push(x[0]);
+                        }
+                    }
+                    catch (err) {
+
                     }
                 }
-                catch (err) {
-
+                else {
+                    result2 = questions;
+                }
+                if (settings['random']=="true") {
+                    result = shuffle(result2);
+                }
+                else {
+                    result = result2;
                 }
             }
             else {
-                result2 = questions;
+                return questions;
             }
-            if (settings['random']=="true") {
-                result = shuffle(result2);
-            }
-            else {
-                result = result2;
-            }
-        }
-        else {
-            return questions;
         }
         return result;
     }
@@ -266,40 +270,75 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (!err) {
                 currentQuiz = message;
             }
-            setQuiz(message);
+            setQuiz(QuizFormat.process(message));
             callback(err, message);
             $rootScope.$digest();
         })
     }
 
-    var selectQuiz = function(catId,quizId,callback) {
-        var quiz = null;
-        if (catId!="public") {
-            if (categories[catId]==undefined) {
-                loadPlayerQuizzes(function() {
-                    quiz = searchThroughCategories(catId,quizId);
-                    if (quiz!==null) {
-                        callback(null,quiz);
-                    }
-                })
-            }
-            else {
-                quiz = searchThroughCategories(catId,quizId);
-                if (quiz!==null) {
-                    callback(null,quiz);
-                }
-            }
-        }
-        else if (catId.indexOf("share:")==0) {
-            zzish.getContent(catId.substring(6),QUIZ_CONTENT_TYPE,quizId,function (err,result) {
-                setQuiz(result);
-                callback(err,result);
-                $rootScope.$digest();
-            });
-        }
-        if (quiz===null) {
+
+    var selectQuiz = function(type,quizId,callback) {
+        if (type=="public") {
             getPublicContent(quizId,callback);
         }
+        else {
+            var quiz = searchThroughCategories(type,quizId);
+            if (quiz.meta && quiz.meta.privacy =="public") {
+                getPublicContent(quizId,callback);
+            }
+            else {
+                zzish.getContent(quiz.profileId,QUIZ_CONTENT_TYPE,quizId,function (err,result) {
+                     setQuiz(result);
+                     callback(err,QuizFormat.process(result));
+                     $rootScope.$digest();
+                });
+            }
+        }
+        // var quiz = null;
+        // if (catId!="public") {
+        //     if (categories[catId]==undefined) {
+        //         loadPlayerQuizzes(function() {
+        //             quiz = searchThroughCategories(catId,quizId);
+        //             if (quiz!==null && quiz.payload!=null) {
+        //                 callback(null,QuizFormat.process(quiz));
+        //             }
+        //         })
+        //     }
+        //     else {
+        //         quiz = searchThroughCategories(catId,quizId);
+        //         if (quiz!==null && quiz.payload!=null) {
+        //             callback(null,QuizFormat.process(quiz));
+        //         }
+        //     }
+        // }
+        // else if (catId.indexOf("share:")==0) {
+        //     zzish.getContent(catId.substring(6),QUIZ_CONTENT_TYPE,quizId,function (err,result) {
+        //         setQuiz(result);
+        //         callback(err,QuizFormat.process(result));
+        //         $rootScope.$digest();
+        //     });
+        // }
+        // if (quiz===null) {
+        //     if (catId=="public") {
+        //         getPublicContent(quizId,callback);
+        //     }
+        //     else {
+        //         zzish.getContent(catId.substring(6),QUIZ_CONTENT_TYPE,quizId,function (err,result) {
+        //             setQuiz(result);
+        //             callback(err,QuizFormat.process(result));
+        //             $rootScope.$digest();
+        //         });
+        //     }
+        // }
+        // else if (quiz.payload==null) {
+        //     console.log("Loading quiz");
+        //     zzish.getContent(catId,QUIZ_CONTENT_TYPE,quizId,function (err,result) {
+        //         setQuiz(result);
+        //         callback(err,QuizFormat.process(result));
+        //         $rootScope.$digest();
+        //     });
+        // }
+
     }
 
     var calculateScore = function(correct, duration){
@@ -355,16 +394,27 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getTopics: function(callback) {
             if (!topicsLoaded) {
-                zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
+                if (classCode) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
 
-                    if (!err) {
-                        data.categories = data.categories.filter(c => c !== null);
-                        data.contents = data.contents.filter(c => c !== null);
-                        processQuizCategories(data);
-                    }
-                    callback(topics);
-                    $rootScope.$digest();
-                });
+                        if (!err) {
+                            data.categories = data.categories.filter(c => c !== null);
+                            data.contents = data.contents.filter(c => c !== null);
+                            processQuizCategories(data);
+                        }
+                        callback(topics);
+                        $rootScope.$digest();
+                    });
+                }
+                else {
+                    zzish.registerUserWithGroup(userUuid, classCode, function(err,resp) {
+                        if (!err) {
+                            processQuizData(resp,false);
+                        }
+                        callback(err, resp);
+                        $rootScope.$digest();
+                    });
+                }
             }
             else {
                 return callback(topics);
@@ -443,9 +493,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 activityDefinition: {
                     type: currentQuiz.uuid,
                     name: currentQuiz.name,
-                    score: settings.maxScore * currentQuiz.questions.length,
-                    count: currentQuiz.questions.length,
-                    duration: ""+ currentQuiz.questions.length * settings.maxTime,
+                    score: settings.maxScore * currentQuiz.payload.questions.length,
+                    count: currentQuiz.payload.questions.length,
+                    duration: ""+ currentQuiz.payload.questions.length * settings.maxTime,
                 },
                 extensions: {
                     contentId: currentQuiz.uuid,
@@ -457,6 +507,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
             if (currentQuiz.publicAssigned==true && userUuid==null) {
                 userUuid = uuid.v4();
+            }
+            if (currentQuizResult==null) {
+                initQuizResult(currentQuiz);
             }
             currentQuizResult.currentActivityId = zzish.startActivityWithObjects(userUuid,parameters, function(err, message){
                 if (callback!=undefined){
@@ -472,10 +525,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             return initQuizResult(currentQuiz);
         },
         getQuestion: function(questionIndex,callback) {
-            callback(currentQuiz.questions[questionIndex]);
+            callback(currentQuiz.payload.questions[questionIndex]);
         },
         getAlternatives: function(questionIndex){
-            var question = currentQuiz.questions[questionIndex];
+            var question = currentQuiz.payload.questions[questionIndex];
             var numAlternatives = getNumAlternvatives(question);
             if(numAlternatives>0){
                 var options = [];
@@ -492,8 +545,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var answers = [];
                 var correct = question.answer;
 
-                for(var i in currentQuiz.questions){
-                    var q = currentQuiz.questions[i];
+                for(var i in currentQuiz.payload.questions){
+                    var q = currentQuiz.payload.questions[i];
                     if (q.question!=question.question) {
                         if(q.answer != correct){
                             answers.push(q.answer);
@@ -507,7 +560,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         answerQuestion: function(idx, response, answer, questionName, duration){
 
-            var question = currentQuiz.questions[idx];
+            var question = currentQuiz.payload.questions[idx];
             console.log('currentQuiz,', currentQuiz);
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
@@ -570,7 +623,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         generateNextQuestionUrl: function(questionId) {
             var q = questionId + 1;
-            if (currentQuiz.questions.length==q) {
+            if (currentQuiz.payload.questions.length==q) {
                 if (currentQuizResult.currentActivityId!=undefined) {
                     zzish.stopActivity(currentQuizResult.currentActivityId,{});
                 }

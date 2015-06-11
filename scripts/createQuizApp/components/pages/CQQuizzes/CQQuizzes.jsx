@@ -97,7 +97,7 @@ var CQQuizzes = React.createClass({
                                     return (
                                         <div ng-repeat="quiz in quizzes.quizzes track by $index" ng-style="padding-bottom: 10px" className="row">
                                             <div className="col-xs-3">
-                                                <h4>{quiz.name}</h4>
+                                                <h4>{quiz.meta.name}</h4>
                                             </div>
                                             <div className="col-xs-4">
                                                 <h4>

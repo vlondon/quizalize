@@ -267,26 +267,24 @@ exports.getQuiz = function(req, res){
 
 exports.deleteQuiz = function(req,res){
     var profileId = req.params.profileId;
-    var id= req.params.id;
+    var id = req.params.id;
 
-    zzish.deleteContent(profileId, QUIZ_CONTENT_TYPE,id, function(err, resp){
-        res.send(err==undefined);
+    zzish.deleteContent(profileId, QUIZ_CONTENT_TYPE, id, function(err, resp){
+        res.send(err == undefined);
     });
 };
 
-exports.postQuiz = function(req,res){
+exports.postQuiz = function(req, res){
     var profileId = req.params.profileId;
-    var id= req.params.id;
     var data = req.body;
-    data.profileId = profileId;;
 
-    console.log("postQuiz", "Body: ", req.body, "Params: ", req.params);
+    console.log("Console,",JSON.stringify(data.meta));
 
-    zzish.postContent(profileId, QUIZ_CONTENT_TYPE,data, function(err, resp){
-        if(!err){
-            res.status = 200
-        }else{
-            res.status = 400
+    zzish.postContent(profileId, QUIZ_CONTENT_TYPE, req.params.id, data.meta, data.payload, function(err, resp){
+        if (!err) {
+            res.status = 200;
+        } else{
+            res.status = 400;
         }
         res.send();
     });
