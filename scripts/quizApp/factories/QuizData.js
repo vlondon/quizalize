@@ -355,16 +355,27 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getTopics: function(callback) {
             if (!topicsLoaded) {
-                zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
+                if (classCode) {
+                    zzish.registerUserWithGroup(userUuid, classCode, function(err,resp) {
+                        if (!err) {
+                            processQuizData(resp,false);
+                        }
+                        callback(topics);
+                        $rootScope.$digest();
+                    });
+                }
+                else {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
 
-                    if (!err) {
-                        data.categories = data.categories.filter(c => c !== null);
-                        data.contents = data.contents.filter(c => c !== null);
-                        processQuizCategories(data);
-                    }
-                    callback(topics);
-                    $rootScope.$digest();
-                });
+                        if (!err) {
+                            data.categories = data.categories.filter(c => c !== null);
+                            data.contents = data.contents.filter(c => c !== null);
+                            processQuizCategories(data);
+                        }
+                        callback(topics);
+                        $rootScope.$digest();
+                    });
+                }
             }
             else {
                 return callback(topics);
