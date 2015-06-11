@@ -274,7 +274,7 @@ style.
                   .share-container(ng-if="quiz.isFeatured")
                       h2.share-score Share your score with your friends!
                       .share-cta
-                        a.share.share-fb(href='http://www.facebook.com/sharer/sharer.php?u=quizalize.com%2F%23quiz%2Fquiz-of-the-day',target="_blank")
+                        a.share.share-fb(href="{{quiz.facebookLink}}",target="_blank")
                             .fa.fa-lg.fa-facebook
                         a.share.share-tw(ng-href="{{quiz.twitterLink}}",target="_blank")
                             .fa.fa-lg.fa-twitter
