@@ -41,9 +41,16 @@ var GroupActions = {
             });
     },
 
-    publishNewAssignment: function(quizId, groupName) {
+    publishNewAssignment: function(quizId, groupName, settings) {
 
         return new Promise((resolve, reject) => {
+           var dataToSend = {
+                access: -1,
+                groupName
+            };
+
+            var data = assign({}, settings, dataToSend);
+
             GroupApi.publishNewAssignment(quizId, groupName)
                 .then((response) => {
                     AppDispatcher.dispatch({
@@ -65,7 +72,7 @@ var GroupActions = {
                 code
             };
 
-            var data = assign({}, dataToSend, settings);
+            var data = assign({}, settings, dataToSend);
 
             GroupApi.publishAssignment(quizId, data)
                 .then((response) => {

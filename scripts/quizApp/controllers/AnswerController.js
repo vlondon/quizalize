@@ -41,7 +41,7 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
     }
 
     self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
+        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().meta.name+"'. You won't be able to continue this quiz.",function() {
             if (sessionStorage.getItem("mode")=="teacher") {
                 window.location.href="/quiz/public";
             }

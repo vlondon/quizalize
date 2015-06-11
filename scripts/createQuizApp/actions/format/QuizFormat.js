@@ -4,7 +4,7 @@ var QuizFormat = {
     allQuestionsWithId: function(quiz){
         var converted = false;
 
-        quiz.questions.forEach( question => {
+        quiz.payload.questions.forEach( question => {
             if (!question.uuid) {
                 question.uuid = uuid.v4();
                 converted = true;
@@ -15,19 +15,27 @@ var QuizFormat = {
     },
 
     moveSettingsToQuestion: function(quiz) {
-
-        var converted = false;
-        if (quiz.questions === undefined) {
-            converted = true;
-            quiz.questions = [];
+        var converted = 0;
+        if (quiz.meta === undefined) {
+            quiz.meta = {};
+            converted = 1;
         }
-        quiz.questions = quiz.questions || [];
+        if (quiz.payload === undefined) {
+            quiz.payload = {};
+            converted = 2;
+        }
+        if (quiz.payload.questions === undefined) {
+            converted = 3;
+            quiz.payload.questions = [];
+        }
+        quiz.payload.questions = quiz.payload.questions || [];
+
         if (quiz.settings && quiz.settings.latexEnabled) {
             quiz.questions.forEach(question => {
                 question.latexEnabled = quiz.settings.latexEnabled || false;
                 delete quiz.settings.latexEnabled;
             });
-            converted = true;
+            converted = 4;
         }
 
         if (quiz.settings && quiz.settings.imageEnabled) {
@@ -36,16 +44,15 @@ var QuizFormat = {
                 delete quiz.settings.imageEnabled;
 
             });
-            converted = true;
+            converted = 5;
         }
 
 
         if (quiz.latexEnabled) {
-
             quiz.questions.forEach(question => {
                 question.latexEnabled = quiz.latexEnabled || false;
             });
-            converted = true;
+            converted = 6;
             delete quiz.latexEnabled;
         }
 
@@ -53,18 +60,33 @@ var QuizFormat = {
             quiz.questions.forEach(question => {
                 question.imageEnabled = quiz.imageEnabled || false;
             });
-            converted = true;
+            converted = 7;
             delete quiz.imageEnabled;
         }
-        quiz.questions.forEach(question => {
+        if (quiz.settings) {
+            for (var i in quiz.settings) {
+                quiz.meta[i] = quiz.settings[i];
+            }
+            converted = 8;
+            delete quiz.settings;
+        }
+        quiz.payload.questions.forEach(question => {
             if (question.imageUrl) {
                 delete question.imageUrl;
-                converted = true;
+                converted = 9;
             }
         });
-        if (converted) {
-            console.warn(`Quiz ${quiz.uuid} converted to new format`);
+        if (quiz.meta && quiz.meta.Description && !quiz.meta.description) {
+            quiz.meta.description = quiz.meta.Description;
+            converted = 10;
         }
+        if (quiz.name && !quiz.meta.name) {
+            quiz.meta.name = quiz.name;
+        }
+        if (converted) {
+            console.warn(`Quiz ${quiz.uuid} converted to new format ${converted}`);
+        }
+        converted = converted > 0;
         return { quiz, converted };
 
     },

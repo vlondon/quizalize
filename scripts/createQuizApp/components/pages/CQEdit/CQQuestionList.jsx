@@ -25,7 +25,7 @@ var CQQuestionList = React.createClass({
     },
 
     handleQuestion: function(question){
-        if (this.props.questionIndex !== this.props.quiz.questions.length){
+        if (this.props.questionIndex !== this.props.quiz.payload.questions.length){
             this.props.handleQuestion(question);
         }
     },
@@ -50,7 +50,7 @@ var CQQuestionList = React.createClass({
 
         var newQuestionEditor;
 
-        if (this.props.questionIndex === this.props.quiz.questions.length){
+        if (this.props.questionIndex === this.props.quiz.payload.questions.length){
 
             newQuestionEditor = (
                 <span className='cq-edit__quiz new-question'>
@@ -75,7 +75,7 @@ var CQQuestionList = React.createClass({
             addButton = (
                 <div className='new-question-cta'>
 
-                    <CQLink href={`/quiz/create/${this.props.quiz.uuid}/${this.props.quiz.questions.length}`}>
+                    <CQLink href={`/quiz/create/${this.props.quiz.uuid}/${this.props.quiz.payload.questions.length}`}>
                         <button type='button' style={{margin: '4px'}} className="btn btn-default">
                             <span className="glyphicon glyphicon-plus"></span>
                             &nbsp;Add a new question
@@ -88,9 +88,9 @@ var CQQuestionList = React.createClass({
             isNewQuestion = false;
         }
 
-        if (this.props.quiz.questions.length > 0) {
+        if (this.props.quiz.payload.questions.length > 0) {
 
-            questions = this.props.quiz.questions.map((item, index) => {
+            questions = this.props.quiz.payload.questions.map((item, index) => {
                 var editor;
                 var className = 'cq-edit__quiz row';
 

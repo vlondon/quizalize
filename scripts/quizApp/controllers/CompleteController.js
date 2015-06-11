@@ -121,7 +121,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
 
     var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
 
-    self.isFeatured = localStorageQuiz.settings!=null ? localStorageQuiz.settings.featured : false;
+    self.isFeatured = localStorageQuiz.meta!=null ? localStorageQuiz.meta.featured : false;
     // self.isFeatured = false;
 
     if (self.isFeatured === true) {
@@ -186,7 +186,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             $location.path("/list");
         }
         else {
-            $location.path("/public");    
+            $location.path("/public");
         }
     };
 });

@@ -1,23 +1,22 @@
 .container
     h2 Add this shared quiz to your class
-    p You have been shared the following quiz. 
-    
-    .row(style="padding-bottom: 10px")    
+    p You have been shared the following quiz.
+
+    .row(style="padding-bottom: 10px")
         .col-md-12
-            .quiz-topic-block                
+            .quiz-topic-block
                 a.quiz-link
                 br
                 br
                 .row.quiz-info-row
                     .col-xs-8
                         a.quiz-item
-                            .quiz-title {{share.quiz.name}}
+                            .quiz-title {{share.quiz.meta.name}}
                     .col-xs-2
-                        .row.quiz-info-row                        
+                        .row.quiz-info-row
                             button.btn.btn-info.btn-block(clickOnce ng-click="share.assignQuiz(share.quiz);") Set this quiz
-                    .col-xs-2                            
-                        .row.quiz-info-row                                                    
+                    .col-xs-2
+                        .row.quiz-info-row
                             a.btn.btn-info.btn-block(ng-href="{{share.quiz.link}}") Preview
-                                                        
 
-                                
+

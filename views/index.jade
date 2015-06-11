@@ -1,9 +1,9 @@
 doctype html
 html(ng-app='quizApp')
     head
-        if quiz && quiz.name
-            title #{quiz.name} by Quizalize
-        else 
+        if quiz && quiz.meta.name
+            title #{quiz.meta.name} by Quizalize
+        else
             title Quizalize
         meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
         meta(name='description', content='')
@@ -12,21 +12,21 @@ html(ng-app='quizApp')
         meta(name="twitter:card" content="summary_large_image")
         meta(name="twitter:site" content="@quizalizeapp")
         meta(name="twitter:creator" content="@quizalizeapp")
-        if quiz && quiz.name
-            meta(property='og:title' content='#{quiz.name}')
+        if quiz && quiz.meta.name
+            meta(property='og:title' content='#{quiz.meta.name}')
         else
             meta(property='og:title' content='Quizalize - Spot student learning gaps instantly')
         meta(property='og:site_name' content='Quizalize')
         if quiz && quiz.uuid
            meta(property="og:url" content="http://www.quizalize.com/app?uuid=#{quiz.uuid}#/play/public/#{quiz.uuid}")
-        if quiz && quiz.settings && quiz.settings.description
-            meta(property='og:description' content='#{quiz.settings.description}')
+        if quiz && quiz.meta && quiz.meta.description
+            meta(property='og:description' content='#{quiz.meta.description}')
         else
             meta(property="og:description" content="Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.")
         //description will break in refactor
         meta(property='og:type' content='article')
-        if quiz && quiz.settings && quiz.settings.imageUrl
-            meta(property='og:image' content="#{quiz.settings.imageUrl}")
+        if quiz && quiz.meta && quiz.meta.imageUrl
+            meta(property='og:image' content="#{quiz.meta.imageUrl}")
         else
             meta(property="og:image" content="http://www.quizalize.com/cquiz/img/Quizalize-meta.png")
         //imageUrl will break in refactor
@@ -44,13 +44,13 @@ html(ng-app='quizApp')
             var initToken = JSON.parse(!{JSON.stringify(zzishapi)});
 
         script(src='/js/vendor.js')
-        script(src='/lib/angular.min.js')  
-        script(src='/lib/angular-animate.min.js')  
-        script(src='/lib/angular-route.min.js')        
+        script(src='/lib/angular.min.js')
+        script(src='/lib/angular-animate.min.js')
+        script(src='/lib/angular-route.min.js')
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/uuid.js')
         script(src='#{session.zzishsdkurl}/zzish.js')
-        script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')        
+        script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')
         script(src='/js/quiz.js')
         script(src='/lib/bootstrap.js')
         script(src='/js/quizApp.js')
@@ -70,19 +70,19 @@ html(ng-app='quizApp')
                     lowerThan: 'transform',
                     languagePath: '/outdatedbrowser/lang/en.html'
                 })
-            })              
+            })
         link(href='/css/cq-bootstrap.min.css', rel='stylesheet')
         link(href='/css/quizalize.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Source+Code+Pro:500', rel='stylesheet', type='text/css')
         script(src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js")
         link(href='//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css', rel='stylesheet')
-            
-            
+
+
 
         style.
             .quiz-find-title {
                 margin-bottom: 40px;
-            } 
+            }
             .container.ng-enter {
                 -webkit-transition: .3s ease-out all; /* Safari/Chrome */
                 -moz-transition: .3s ease-out all; /* Firefox */

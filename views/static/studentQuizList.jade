@@ -9,7 +9,7 @@
                 .row(ng-repeat="quiz in quizzes.quizzes track by $index", style="padding-bottom: 10px")
                     .visible-sm.visible-md.visible-lg
                         .col-sm-8
-                            h4 {{quiz.name}} ({{quiz.questions.length}}
+                            h4 {{quiz.meta.name}} ({{quiz.questions.length}}
                                 ng-pluralize(count="quiz.questions.length", when="{1: ' question', other: ' questions'}")
                                 |)
                         .col-sm-4
@@ -17,12 +17,12 @@
                                 span.glyphicon.glyphicon-play
                     .visible-xs
                         .col-xs-12
-                            button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz($index);") {{quiz.name}} ({{quiz.questions.length}})
+                            button.btn.btn-info.btn-block(ng-click="quizzes.startQuiz($index);") {{quiz.meta.name}} ({{quiz.questions.length}})
 
 
         .col-sm-6.col-sm-offset-3(ng-hide="quizzes.quizzes.length && !quizzes.loading")
             .well
-                h3 No quizzes available. 
+                h3 No quizzes available.
                 p Your Teacher has not assigned/re-published any quizzes.
 
                 br

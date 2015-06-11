@@ -78,7 +78,7 @@ var CQPublic = React.createClass({
                                             <div className="row quiz-info-row" key={index}>
                                                 <div className="col-xs-8">
                                                     <a href="" className="quiz-item">
-                                                        <div className="quiz-title">{quiz.name}</div>
+                                                        <div className="quiz-title">{quiz.meta.name}</div>
                                                     </a>
                                                 </div>
                                                 <div className="col-xs-2">

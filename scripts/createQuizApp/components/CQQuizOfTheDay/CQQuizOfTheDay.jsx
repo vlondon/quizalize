@@ -14,7 +14,7 @@ var CQQuizOfTheDay = React.createClass({
     getDefaultProps: function() {
         return {
             quiz: {
-                settings: {}
+                meta: {}
             },
             results: [],
             showActions: true
@@ -35,9 +35,9 @@ var CQQuizOfTheDay = React.createClass({
 
         var background = {};
 
-        if (this.props.quiz.settings && this.props.quiz.settings.imageUrl) {
+        if (this.props.quiz.meta && this.props.quiz.meta.imageUrl) {
             background  = {
-                backgroundImage: `url(${this.props.quiz.settings.imageUrl})`
+                backgroundImage: `url(${this.props.quiz.meta.imageUrl})`
             };
         }
 
@@ -70,9 +70,9 @@ var CQQuizOfTheDay = React.createClass({
                 </button>
             );
         }
-        if (this.props.quiz.settings && this.props.quiz.settings.imageAttribution && this.props.quiz.settings.imageAttribution.length > 0){
+        if (this.props.quiz.meta && this.props.quiz.meta.imageAttribution && this.props.quiz.meta.imageAttribution.length > 0){
             source = (<div className="qd-source">
-                source: {this.props.quiz.settings.imageAttribution}
+                source: {this.props.quiz.meta.imageAttribution}
             </div>);
         }
 
@@ -101,7 +101,7 @@ var CQQuizOfTheDay = React.createClass({
             </div>);
         }
 
-        var description = (this.props.quiz.settings && this.props.quiz.settings.Description) ? this.props.quiz.settings.Description : '';
+        var description = (this.props.quiz.meta && this.props.quiz.meta.description) ? this.props.quiz.meta.description : '';
 
         return (
             <div className="qd-container">
@@ -112,7 +112,7 @@ var CQQuizOfTheDay = React.createClass({
                     <div className="qd-description-details">
 
                         <div className="qd-text">
-                            <h3>{this.props.quiz.name}</h3>
+                            <h3>{this.props.quiz.meta.name}</h3>
                             <p>{description}</p>
                         </div>
 

@@ -9,12 +9,12 @@ style.
 
 
 .container
-	h2 Results for {{ctrl.quiz.name}}  
+	h2 Results for {{ctrl.quiz.meta.name}}
 	p Here are the latest results for people who have played for this quiz
 	.row
 		.col-xs-1
 			p &nbsp;
-		.col-xs-2			
+		.col-xs-2
 			center
 				h2.dashboard-panel-info-title Total Plays
 				h1(style="font-size: 9vw;") {{ctrl.results.length}}
@@ -24,7 +24,7 @@ style.
 				h2.dashboard-panel-info-title Avg. Score
 				h1(ng-show="!ctrl.loading && ctrl.results.length==0",style="font-size: 7vw;") N/A
 			canvas(id="myChart2",width="300",height="300",class="chart chart-doughnut",data="data_score",labels="labels_score",colours="color_score",options="{fontSize: 20, colour: '#8d3b8e', showTooltips: false, dtype: 1}")
-				
+
 		.col-xs-2
 		.col-xs-2
 			center
@@ -34,7 +34,7 @@ style.
 		.col-xs-1
 			p &nbsp;
 	h4(ng-show="ctrl.loading") Loading ...
-	span(ng-show="!ctrl.loading") 
+	span(ng-show="!ctrl.loading")
 		h3(ng-show="ctrl.results.length==0") No Results
 		h3(ng-show="ctrl.results.length>0") Showing Top {{ctrl.quantityToShow}}
 			br
@@ -53,14 +53,14 @@ style.
 					label(class="switch")
 						input(type="checkbox",class="switch-input", ng-model="ctrl.completed", ng-change="ctrl.toggleCompleted()")
 						span(class="switch-label",data-on="Yes",data-off="No")
-						span(class="switch-handle")		
+						span(class="switch-handle")
 			.row(ng-repeat="player in ctrl.results | orderObjectBy:['-score'] | limitTo:ctrl.quantityToShow track by $index")
 				.col-xs-3
 					p &nbsp;
 				.col-xs-1(style="width:3%")
 					p {{$index+1}}.
 				.col-xs-3(data-toggle="tooltip" title="{{player.profile.name}}" data-placement="top")
-					p.quiz1.over {{player.profile.name}}					
-				.col-xs-5() 
-					div.progress-bar(ng-style="player.style", style="width: {{player.width}}%; padding: 5px; text-align: right; font-size: 15px") 
+					p.quiz1.over {{player.profile.name}}
+				.col-xs-5()
+					div.progress-bar(ng-style="player.style", style="width: {{player.width}}%; padding: 5px; text-align: right; font-size: 15px")
 						{{player.score}}

@@ -23,8 +23,8 @@ var QuestionObject = function(quiz){
         answer: '',
         uuid: uuid.v4()
     };
-    if (quiz && quiz.questions.length > 0) {
-        var lastQuestion = quiz.questions[quiz.questions.length - 1];
+    if (quiz && quiz.payload.questions.length > 0) {
+        var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
         question.latexEnabled = lastQuestion.latexEnabled;
         question.imageEnabled = lastQuestion.imageEnabled;
     }
@@ -40,13 +40,22 @@ var QuizStore = assign({}, EventEmitter.prototype, {
         return _quizzes;
     },
 
+    getQuizMeta: function(quizId) {
+        for (var i in _quizzes) {
+            if (_quizzes[i].uuid==quizId) {
+                return _quizzes[i];
+            }
+        }
+        return _fullQuizzes[quizId];
+    },
+
     getQuiz: function(quizId){
         return _fullQuizzes[quizId];
     },
 
     getQuestion: function(quizId, questionIndex){
         var quiz = this.getQuiz(quizId);
-        var question = quiz.questions[questionIndex] || new QuestionObject(quiz);
+        var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
         return question;
     },
 
