@@ -4,7 +4,7 @@ var QuizActions     = require('createQuizApp/actions/QuizActions');
 var TopicStore      = require('createQuizApp/stores/TopicStore');
 var EventEmitter    = require('events').EventEmitter;
 var assign          = require('object-assign');
-
+var uuid            = require('node-uuid');
 
 var CHANGE_EVENT = 'change';
 
@@ -12,7 +12,25 @@ var _quizzes = [];
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
-var init = false;
+var storeInit = false;
+var storeInitPublic = false;
+
+var QuestionObject = function(quiz){
+
+    var question = {
+        alternatives: ['', '', ''],
+        question: '',
+        answer: '',
+        uuid: uuid.v4()
+    };
+    if (quiz && quiz.questions.length > 0) {
+        var lastQuestion = quiz.questions[quiz.questions.length - 1];
+        question.latexEnabled = lastQuestion.latexEnabled;
+        question.imageEnabled = lastQuestion.imageEnabled;
+    }
+
+    return question;
+};
 
 var findPublicQuiz = function(quizId){
     var quizFound;
@@ -38,7 +56,19 @@ var QuizStore = assign({}, EventEmitter.prototype, {
         return _fullQuizzes[quizId];
     },
 
+    getQuestion: function(quizId, questionIndex){
+        var quiz = this.getQuiz(quizId);
+        var question = quiz.questions[questionIndex] || new QuestionObject(quiz);
+        return question;
+    },
+
     getPublicQuizzes: function(){
+
+        if (!storeInitPublic){
+            storeInitPublic = true;
+            QuizActions.loadPublicQuizzes();
+        }
+        // return _publicQuizzes;
         return _publicQuizzes.reverse();
     },
 
@@ -52,13 +82,12 @@ var QuizStore = assign({}, EventEmitter.prototype, {
         //     console.log('quizoftheday', quizIndex, _publicQuizzes[quizIndex]);
         //     return _publicQuizzes[quizIndex].quizzes[0];
         // }
+
     },
 
     getTopics: function() {
         return _topics;
     },
-
-
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -68,9 +97,9 @@ var QuizStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
-        if (!init) {
+        if (!storeInit) {
             QuizActions.loadQuizzes();
-            init = true;
+            storeInit = true;
         }
         this.on(CHANGE_EVENT, callback);
     },
@@ -86,7 +115,6 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-    // var text;
 
     switch(action.actionType) {
 
@@ -120,6 +148,12 @@ AppDispatcher.register(function(action) {
         case QuizConstants.QUIZ_ADDED:
             var quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
+            // I can't update quizzes yet because the category needs to be set up
+            // var i = _quizzes.filter(q=> q.uuid === quizAdded.uuid);
+            // if (i.length === 0){
+            //     _quizzes.push(quizAdded);
+            // }
+            QuizActions.loadQuizzes();
             QuizStore.emitChange();
             break;
 

@@ -1,12 +1,13 @@
 var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
 var UserConstants = require('createQuizApp/constants/UserConstants');
-// var UserActions = require('../actions/UserActions');
+var UserActions = require('createQuizApp/actions/UserActions');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 
 var CHANGE_EVENT = 'change';
 
+var storeInit = false;
 var _user;
 
 var UserStore = assign({}, EventEmitter.prototype, {
@@ -29,6 +30,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
+        if (!storeInit){
+            storeInit = true;
+            UserActions.request();
+        }
         this.on(CHANGE_EVENT, callback);
     },
 

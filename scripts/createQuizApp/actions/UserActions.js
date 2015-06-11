@@ -15,8 +15,8 @@ var handleRedirect = function(){
     return false;
 };
 var UserActions = {
-
     request: function() {
+        console.trace('UserActions.request called');
 
         UserApi.get()
             .then(function(user){

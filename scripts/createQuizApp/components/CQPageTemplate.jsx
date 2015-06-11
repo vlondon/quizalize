@@ -1,7 +1,6 @@
 var React           = require('react');
-var CQHeader   = require('./sections/CQHeader');
 
-// var FooterSection   = require('components/common/sections/FooterSection');
+var CQHeader   = require('./sections/CQHeader');
 
 var CQPageTemplate = React.createClass({
 
@@ -16,18 +15,11 @@ var CQPageTemplate = React.createClass({
     },
 
     componentDidMount: function() {
-        $(document).on('mouseenter', '[data-toggle="popover"]', function(){
-            $(this).popover('show');
-        });
-
-        $(document).on('mouseleave', '[data-toggle="popover"]', function(){
-            $(this).popover('hide');
-        });
+        // enable Bootstrap popovers
+        $('[data-toggle="popover"]').popover();
     },
 
     componentWillUnmount: function() {
-        $(document).off('mouseenter');
-        $(document).off('mouseleave');
     },
 
     getDefaultProps: function(){

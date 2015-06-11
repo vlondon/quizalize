@@ -71,7 +71,7 @@ var _questionsTopicToTopicId = function(quiz){
 var QuizActions = {
 
     loadQuizzes: function(){
-
+        console.trace('QuizActions.loadQuizzes called');
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
 
@@ -110,6 +110,7 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
+        console.trace('QuizActions.loadQuiz called', quizId);
         var quizzesPromise = QuizApi.getQuizzes();
         var quizPromise = QuizApi.getQuiz(quizId);
         var topicsPromise = QuizApi.getTopics();
@@ -173,7 +174,7 @@ var QuizActions = {
 
 
     loadPublicQuizzes: function(){
-
+        console.trace('QuizActions.loadPublicQuizzes called');
         var processQuizList = function(result){
             var categories = result.categories;
             var quizzes = result.contents;
@@ -227,7 +228,6 @@ var QuizActions = {
 
         return new Promise((resolve, reject) => {
 
-
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.categoryId = addOrCreateCategory();
 
@@ -242,7 +242,7 @@ var QuizActions = {
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
-                this.loadQuizzes();
+                // this.loadQuizzes();
                 resolve(quiz);
             }, ()=> {
                 reject();
@@ -250,7 +250,6 @@ var QuizActions = {
 
 
         });
-
 
     },
 

@@ -124,7 +124,6 @@ var options = {
 
         } else {
             console.error('something needs to change to handle this state', this, router);
-            //
             pages.pageNotFound.renderer();
 
         }
@@ -135,10 +134,6 @@ var options = {
 // Add user listener
 UserStore.addChangeListener(function(){
     user = UserStore.getUser();
-    if (user !== undefined){
-        GroupActions.loadGroups();
-        QuizActions.loadPublicQuizzes();
-    }
     if (routerReady !== true) {
         router.init();
         routerReady = true;
@@ -148,9 +143,8 @@ UserStore.addChangeListener(function(){
 
 });
 
-/// Initialize router
+// Initialize router
 router.configure(options);
 // Request user status
-UserActions.request();
 
 module.exports = router;

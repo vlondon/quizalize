@@ -5,7 +5,6 @@ var QuizConstants = require('createQuizApp/constants/QuizConstants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
-
 var CHANGE_EVENT = 'change';
 
 var _topics = [];
@@ -30,7 +29,6 @@ var sortPublicTopics = function(topics){
 
 
 var TopicStore = assign({}, EventEmitter.prototype, {
-
 
     getTopics: function() {
         return _topics;

@@ -21,9 +21,7 @@ var CQPublic = React.createClass({
     },
 
     componentDidMount: function() {
-        if (QuizStore.getPublicQuizzes().length === 0){
-            QuizActions.loadPublicQuizzes();
-        }
+
         QuizStore.addChangeListener(this.onChange);
     },
 
