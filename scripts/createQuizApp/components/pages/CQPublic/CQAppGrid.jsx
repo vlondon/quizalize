@@ -1,7 +1,7 @@
 var React = require('react');
 
 var AppStore = require('createQuizApp/stores/AppStore');
-var CQQuizIcon = require('./CQQuizIcon');
+var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 
 
 var CQAppGrid = React.createClass({

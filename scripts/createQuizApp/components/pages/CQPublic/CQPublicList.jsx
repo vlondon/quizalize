@@ -1,5 +1,5 @@
 var React = require('react');
-var CQQuizIcon = require('./CQQuizIcon');
+var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQPublicList = React.createClass({
 
     propTypes: {
@@ -27,7 +27,7 @@ var CQPublicList = React.createClass({
                         <li className="cq-public__quiz" key={key}>
 
 
-                            <CQQuizIcon className="cq-public__quizicon" name={quiz.name} image={quiz.settings.imageUrl}>
+                            <CQQuizIcon className="cq-public__quizicon" name={quiz.name} image={quiz.settings && quiz.settings.imageUrl}>
                                 <i className="zz-ic_quizalize"/>
                             </CQQuizIcon>
 
@@ -35,10 +35,8 @@ var CQPublicList = React.createClass({
                             <div className="cq-public__quiz-inner">
                                 <div className="cq-public__quizname">{quiz.name}</div><br/>
                                 <div className="cq-public__quizauthor">by <b>Quizalize Team</b></div>
-
-
-
                             </div>
+
                             <div className="cq-public__quizextra">
                                 {categoryName(quiz)}
                                 <span className="cq-public__quizcategory">7-11</span>

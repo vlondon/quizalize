@@ -9,14 +9,33 @@ var UserActions = require('createQuizApp/actions/UserActions');
 
 require('./CQHeaderStyles');
 
+var sections = {
+    quiz: [
+        'quizzes',
+        'create'
+    ],
+    classes: [
+        'assignments'
+    ],
+    public: [
+        'public'
+    ]
+};
+
 var CQHeader = React.createClass({
+
 
     getInitialState: function() {
         return this.getState();
     },
 
+    componentWillMount: function() {
+        console.log('get Current Path', router.getRoute());
+        this.setState({path: router.getRoute()});
+
+    },
+
     componentDidMount: function() {
-        console.log('get Current Path', router.getPath());
         UserStore.addChangeListener(this.onChange);
     },
 
@@ -41,17 +60,23 @@ var CQHeader = React.createClass({
         var buttons = [];
         var loginButton;
 
+        var isActive = key =>{
+            console.log('checking', key, 'against', sections[key], this.state.path[1]);
+            return sections[key] && sections[key].indexOf(this.state.path[1]) > -1;
+        };
+
         if (this.state.isLoggedIn){
             buttons.push((
                 <li id="cq-quizzes" key='cq-quizzes'>
-                    <CQLink href="/quiz/quizzes" className="navbar-btn">
+                    <CQLink href="/quiz/quizzes" className={isActive('quiz') ? 'navbar-btn active' : 'navbar-btn'}>
                         <i className="fa fa-th-large"></i> Your quizzes
                     </CQLink>
                 </li>));
 
                 buttons.push((
                 <li id="cq-assignments" key='cq-assignments'>
-                    <CQLink href="/quiz/assignments" className="navbar-btn">
+                    <CQLink href="/quiz/assignments"
+                        className={isActive('classes') ? 'navbar-btn active' : 'navbar-btn'}>
                         <i className="fa fa-users"></i> Your classes
 
                     </CQLink>
@@ -85,7 +110,7 @@ var CQHeader = React.createClass({
                             {buttons}
 
                             <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/public" className="navbar-btn">
+                                <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
                                     <div className="fa fa-tags"></div> Public quizzes
                                 </CQLink>
                             </li>

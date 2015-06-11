@@ -83,7 +83,7 @@ var QuizActions = {
                 var loadedQuizzes = value[0];
                 var loadedTopics = value[1];
 
-
+                
                 var processedQuizzes = loadedQuizzes.map(function(quiz){
                     var topic = loadedTopics.filter(function(t){
                         return t.uuid === quiz.categoryId;
