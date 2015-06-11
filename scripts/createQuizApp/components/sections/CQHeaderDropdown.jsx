@@ -30,7 +30,7 @@ var CQHeaderDropdown = React.createClass({
                         <li>
                             <CQLink href='/quiz'>Your Profile</CQLink>
                         </li>
-                        <li><a>Settings</a></li>
+                        <li><CQLink href='/quiz/settings'>Settings</CQLink></li>
                         <li><CQLink href="/quiz/help">Help</CQLink></li>
                         <li><a onClick={this.handleLogout}>Logout</a></li>
                     </ul>

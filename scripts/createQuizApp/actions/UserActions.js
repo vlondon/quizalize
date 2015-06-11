@@ -37,6 +37,10 @@ var UserActions = {
         });
     },
 
+    update: function(user){
+        console.log('about to update user', user);
+    },
+
 
     login: function(data) {
         return new Promise(function(resolve, reject){

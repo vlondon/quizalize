@@ -16,7 +16,7 @@ var CQHeader = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log('get Current Path',router.getPath() );
+        console.log('get Current Path', router.getPath());
         UserStore.addChangeListener(this.onChange);
     },
 
