@@ -5,7 +5,6 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
 var CQAssignments = React.createClass({
@@ -15,11 +14,8 @@ var CQAssignments = React.createClass({
     },
 
     componentDidMount: function() {
-
-        QuizActions.loadPublicQuizzes();
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-
     },
 
     componentWillUnmount: function() {

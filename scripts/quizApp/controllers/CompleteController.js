@@ -143,27 +143,31 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     QuizData.getTopics(function(data) {
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);
-        if (self.data.latexEnabled) {
+        var needToHide = false;
+        var items = self.data.report;
+        var arrayToMath = [];
+        for(var j in items){
+            var item = items[j];
+            if (item.latexEnabled) {
+                arrayToMath.push(item.questionId);
+                needToHide = true;
+            }
+        }
+        if (needToHide) {
             setTimeout(function() {
-                var items = self.data.report;
-                for(var j in items){
-                    var item = items[j];
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion"+item.questionId)[0]]);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response"+item.questionId)[0]]);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse"+item.questionId)[0]]);
+                for (var i in arrayToMath) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion" + arrayToMath[i])[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response" + arrayToMath[i])[0]]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse" + arrayToMath[i])[0]]);
                 }
-                MathJax.Hub.Queue(function () {
-                    $scope.$apply(function() {
-                        self.showButtons = true;
-                    });
+            }, 200);
+            MathJax.Hub.Queue(function () {
+                $scope.$apply(function() {
+                    self.showButtons = true;
                 });
-            },200);
-            self.showButtons = true;
+            });
         }
-        else {
-            self.showButtons = true;
-        }
-
+        self.showButtons = true;
         // renderReactComponent();
     });
 

@@ -70,7 +70,9 @@
         margin-bottom: 20px;
     }
     .description {
-        margin: 20px 60px;
+        @include media($size-mobile) {
+            margin: 20px 60px;;
+        }
         font-family: Georgia, "Times New Roman", Times, serif;
         animation: qlEnterTranslateY 300ms ease-out;
         animation-fill-mode: both;

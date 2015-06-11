@@ -2,8 +2,8 @@
 {
     /**
      * Auto-growing textareas; technique ripped from Facebook
-     * 
-     * 
+     *
+     *
      * http://github.com/jaz303/jquery-grab-bag/tree/master/javascripts/jquery.autogrow-textarea.js
      */
     $.fn.autogrow = function(options)
@@ -48,20 +48,20 @@
                                     .replace(/ {2,}/g, function(space){ return times('&nbsp;', space.length - 1) + ' ' });
 
 				// Did enter get pressed?  Resize in this keydown event so that the flicker doesn't occur.
-				if (event && event.data && event.data.event === 'keydown' && event.keyCode === 13) {
-					val += '<br />';
-				}
+				// if (event && event.data && event.data.event === 'keydown' && event.keyCode === 13) {
+				// 	val += '<br />';
+				// }
 
                 shadow.css('width', $self.width());
                 shadow.html(val + (noFlickerPad === 0 ? '...' : '')); // Append '...' to resize pre-emptively.
-                
+
                 var newHeight=Math.max(shadow.height() + noFlickerPad, minHeight);
                 if(settings.preGrowCallback!=null){
                   newHeight=settings.preGrowCallback($self,shadow,newHeight,minHeight);
                 }
-                
+
                 $self.height(newHeight);
-                
+
                 if(settings.postGrowCallback!=null){
                   settings.postGrowCallback($self);
                 }
