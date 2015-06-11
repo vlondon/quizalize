@@ -88,7 +88,7 @@ var CQDashboardQuizzes = React.createClass({
                         <CQLink href={`/quiz/create/${quiz.uuid}`}>
                             <div className="cq-dashboard__quizup">
                                 <h4 className="cq-dashboard__quizname">
-                                    <i className="cq-icon fa fa-th-large"></i>
+                                    <i className="cq-icon zz-ic_quizalize"></i>
                                     {quiz.name}
                                 </h4>
                             </div>
@@ -122,7 +122,11 @@ var CQDashboardQuizzes = React.createClass({
                     Create Quiz
                 </CQLink>
 
-                <h3>Quizzes</h3>
+                <h3>
+                    <CQLink href="/quiz/quizzes">
+                        <i className="zz-ic_quizalize"/> Your Quizzes
+                    </CQLink>
+                </h3>
                 {quizzes}
                 {empty}
             </div>

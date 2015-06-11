@@ -1,6 +1,6 @@
 ### Quiz object
 
-```json
+```js
 category: "Maths"
 categoryId: "7c2c3fda-7f24-4c14-af81-3358dd8091dd"
 name: "Maths Rulez!!1!"

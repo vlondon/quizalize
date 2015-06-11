@@ -4,6 +4,7 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQPublicList = require('./CQPublicList');
 var CQPublicSort = require('./CQPublicSort');
+var CQAppGrid = require('./CQAppGrid');
 
 var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
@@ -63,6 +64,7 @@ var CQPublic = React.createClass({
                     Check out our pre-made quizzes. We're adding new ones all
                     the time! If you have any suggestions, tell us! Otherwise, you can <CQLink href='/quiz/create'>create your own in 60 seconds</CQLink>.
                 </p>
+                <CQAppGrid/>
                 <CQPublicSort className="cq-public__sort"/>
                 <CQPublicList quizzes={this.state.quizzes} className="cq-public__list" />
             </CQPageTemplate>

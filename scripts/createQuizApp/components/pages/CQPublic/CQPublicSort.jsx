@@ -40,7 +40,6 @@ var CQPublicSort = React.createClass({
                 var child, list;
 
                 if (category.categories.length > 0) {
-                    console.log('resccurson!!', category.categories);
                     child = processCategory(category.categories);
                 }
 

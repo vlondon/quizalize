@@ -1,8 +1,10 @@
 @import './../../../../shared/scss/variables';
 @import './../../../../shared/scss/mixins';
+
 .cq-public {
 
-    $quizIcon: 140px;
+    $appIcon: 140px;
+    $quizIcon: 40px;
 
     @at-root #{&}__list {
         list-style: none;
@@ -10,19 +12,19 @@
         padding: 0;
     }
 
-    @at-root #{&}__quiz {
+    @at-root #{&}__app {
         display: inline-block;
         vertical-align: bottom;
-        width: $quizIcon + 30px;
-        height: $quizIcon + 100px;
+        width: $appIcon + 30px;
+        height: $appIcon + 100px;
         margin: 10px;
     }
 
-    @at-root #{&}__quizicon {
+    @at-root #{&}__appicon {
         border-radius: 10px;
         overflow: hidden;
-        width: $quizIcon;
-        height: $quizIcon;
+        width: $appIcon;
+        height: $appIcon;
         margin: auto;
         margin-bottom: 10px;
         background-size: cover;
@@ -32,10 +34,64 @@
             /* background: red; */
         }
     }
+    @at-root #{&}__appdetails {
+        text-align: center;
+    }
 
+
+    @at-root #{&}__appauthor {
+        line-height: 30px;
+    }
+    @at-root #{&}__appauthor--avatar {
+        display: inline-block;
+        vertical-align: bottom;
+        width: 30px;
+        height: 30px;
+        margin: 0 3px 0 0;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 100%;
+        border: 1px solid $brand-color-grey-lighter;
+    }
+
+
+    @at-root #{&}__quiz {
+        text-align: left;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        margin: 5px;
+        padding: 5px;
+        @include clearfix();
+    }
+
+    @at-root #{&}__quiz-inner {
+        text-align: left;
+        float: left;
+    }
+
+    @at-root #{&}__quizicon {
+        width: $quizIcon;
+        height: $quizIcon;
+        border-radius: 100%;
+        margin: 5px;
+        display: inline-block;
+        float: left;
+        font-size: $quizIcon - 10px;
+        text-align: center;
+        line-height: $quizIcon;
+        color: #FFF;
+        background-size: cover;
+        background-position: center center;
+        img { width: 100%; }
+
+    }
     @at-root #{&}__quizname {
         font-weight: bold;
-        text-align: center;
+        display: inline;
+        font-size: 18px;
+    }
+
+    @at-root #{&}__quizauthor {
+        display: inline;
     }
 
     @at-root #{&}__quizdate {
@@ -45,6 +101,8 @@
 
     @at-root #{&}__quizextra {
         text-align: center;
+        margin: 12px 0;
+        float: right;
     }
 
     @at-root #{&}__quizcategory {
@@ -71,8 +129,4 @@
         float: left;
         width: calc(100% - 300px);
     }
-
-
-
-
 }

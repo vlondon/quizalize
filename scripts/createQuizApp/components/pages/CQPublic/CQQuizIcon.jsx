@@ -1,5 +1,6 @@
 var React = require('react');
 var kolor = require('kolor');
+
 var colours = [
     '#E16EC3',
     '#D4434A',
@@ -26,7 +27,8 @@ var CQQuizIcon = React.createClass({
     propTypes: {
         className: React.PropTypes.string,
         name: React.PropTypes.string,
-        image: React.PropTypes.string
+        image: React.PropTypes.string,
+        children: React.PropTypes.ReactElement
     },
     render: function() {
         var randomIndex, image;
@@ -41,11 +43,13 @@ var CQQuizIcon = React.createClass({
 
         var color = kolor(colours[randomIndex]);
         var style = {
-            backgroundImage: `linear-gradient(${color.hex()}, ${color.lighten(-0.2).hex()})`
+            backgroundImage: `linear-gradient(${color.fadeOut(0.5)}, ${color.lighten(-0.2).fadeOut(0.5)})`
         };
 
         if (this.props.image){
             style.backgroundImage = `url(${this.props.image})`;
+        } else if (this.props.children) {
+            image = this.props.children;
         } else {
             image = (<img src="/img/ui-create/icon_base.png" alt=""/>);
         }

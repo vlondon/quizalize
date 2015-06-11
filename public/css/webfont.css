@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'zzish';
-	src:url('fonts/zzish.eot?-a5vksd');
-	src:url('fonts/zzish.eot?#iefix-a5vksd') format('embedded-opentype'),
-		url('fonts/zzish.ttf?-a5vksd') format('truetype'),
-		url('fonts/zzish.woff?-a5vksd') format('woff'),
-		url('fonts/zzish.svg?-a5vksd#zzish') format('svg');
+	src:url('/fonts/zzish.eot?-a5vksd');
+	src:url('/fonts/zzish.eot?#iefix-a5vksd') format('embedded-opentype'),
+		url('/fonts/zzish.ttf?-a5vksd') format('truetype'),
+		url('/fonts/zzish.woff?-a5vksd') format('woff'),
+		url('/fonts/zzish.svg?-a5vksd#zzish') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

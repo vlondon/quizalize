@@ -35,10 +35,6 @@ var CQHeader = React.createClass({
         };
     },
 
-    handleLogout: function () {
-        UserActions.logout();
-    },
-
 
     render: function() {
 

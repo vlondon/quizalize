@@ -1,5 +1,5 @@
 ### User Object
-```json
+```js
 {
     "uuid": "e5543518-14d8-456c-9414-cdcce79fc445",
     "revision": 0,
@@ -8,10 +8,10 @@
     "timestamp": null,
     "index": null,
     "attributes": {
-        "location": "String",
-        "school": "String",
-        "url": "String",
-        "name": "String"
+        "location": String,
+        "school": String,
+        "url": String,
+        "name": String
     },
     "name": "hello+login@blaipratdesaba.com",
     "avatar": null,

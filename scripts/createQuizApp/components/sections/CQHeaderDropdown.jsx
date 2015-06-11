@@ -1,5 +1,6 @@
 var React = require('react');
 var CQLink = require('createQuizApp/components/utils/CQLink');
+var UserActions = require('createQuizApp/actions/UserActions');
 
 var _timeout;
 var CQHeaderDropdown = React.createClass({
@@ -19,6 +20,11 @@ var CQHeaderDropdown = React.createClass({
         _timeout = setTimeout(()=>{
             this.setState({open: false});
         }, 200);
+    },
+
+
+    handleLogout: function () {
+        UserActions.logout();
     },
 
     render: function() {

@@ -49,7 +49,8 @@ var findPublicQuiz = function(quizId){
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        return _quizzes;
+        console.warn('quizzes', _quizzes);
+        return _quizzes.slice();
     },
 
     getQuiz: function(quizId){
@@ -117,7 +118,6 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
-
         case QuizConstants.QUIZZES_LOADED:
             _quizzes = action.payload.quizzes;
             _topics = action.payload.topics;
