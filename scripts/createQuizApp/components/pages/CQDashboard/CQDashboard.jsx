@@ -41,19 +41,20 @@ var CQDashboard = React.createClass({
     },
 
     render: function() {
+        // <div className="cq-dashboard__qofd">
+        //                        <h3>
+                                //     Quiz of the day
+                                // </h3>
+        //     <CQQuizOfTheDay/>
+        // </div>
         return (
             <CQPageTemplate>
                 <div className="cq-dashboard">
                     <CQDashboardProfile/>
                     <div className="cq-dashboard__dashboard">
-                        <h3>
-                            Quiz of the day
-                        </h3>
-                        <div className="cq-dashboard__qofd">
 
-                            <CQQuizOfTheDay/>
-                        </div>
                         <CQDashboardQuizzes/>
+
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 var React = require('react');
 var UserStore = require('createQuizApp/stores/UserStore');
+var CQLink = require('createQuizApp/components/utils/CQLink');
 var md5 = require('blueimp-md5');
 var CQDashboardProfile = React.createClass({
 
@@ -32,12 +33,14 @@ var CQDashboardProfile = React.createClass({
         return (
 
                 <div className="cq-dashboard__profile">
-                    <img src={this.state.profilePicture} alt="profile picture" className="cq-dashboard__profilepic"/>
-                    <h3>Blai Pratdesaba</h3>
-                    <ul className="cq-dashboard__details">
-                        <li>School of Life</li>
-                        <li>Billericay, Essex</li>
-                    </ul>
+                    <CQLink href="/quiz/settings">
+                        <img src={this.state.profilePicture} alt="profile picture" className="cq-dashboard__profilepic"/>
+                        <h3>{this.state.user.attributes.name}</h3>
+                        <ul className="cq-dashboard__details">
+                            <li>{this.state.user.attributes.school}</li>
+                            <li>{this.state.user.attributes.location}</li>
+                        </ul>
+                    </CQLink>
                 </div>
 
 

@@ -3,6 +3,7 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions = require('createQuizApp/actions/UserActions');
 var assign = require('object-assign');
+var router = require('createQuizApp/config/router');
 
 var CQSettings = React.createClass({
     getInitialState: function() {
@@ -14,7 +15,8 @@ var CQSettings = React.createClass({
     },
 
     handleSave: function(){
-        UserActions.update(this.state.user);
+        UserActions.update(this.state.user)
+            .then( ()=> router.setRoute('/quiz'));
     },
     handleChange: function(field, event){
         console.log('field', field, event);
@@ -53,7 +55,7 @@ var CQSettings = React.createClass({
 
                     <div className="cq-settings__profile-item">
                         <label htmlFor="url">URL</label>
-                        <input type="text" id="url"
+                        <input type="url" id="url"
                             onChange={this.handleChange.bind(this, 'url')}
                             value={this.state.user.attributes.url}/>
                     </div>

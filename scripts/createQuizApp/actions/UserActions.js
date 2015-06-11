@@ -38,7 +38,19 @@ var UserActions = {
     },
 
     update: function(user){
-        console.log('about to update user', user);
+        return new Promise(function(resolve, reject){
+
+            UserApi.post(user)
+                .then(()=>{
+                    console.log('about to update user', user);
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_DETAILS_UPDATED,
+                        payload: user
+                    });
+                    resolve(user);
+                })
+                .catch(reject);
+        });
     },
 
 

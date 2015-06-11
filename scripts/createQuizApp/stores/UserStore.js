@@ -52,6 +52,7 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case UserConstants.USER_DETAILS:
+        case UserConstants.USER_DETAILS_UPDATED:
         case UserConstants.USER_IS_LOGGED:
         case UserConstants.USER_PROFILE_UPDATED:
         case UserConstants.USER_REGISTERED:
