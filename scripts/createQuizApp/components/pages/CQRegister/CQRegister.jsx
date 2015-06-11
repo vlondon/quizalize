@@ -6,9 +6,9 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 
 
 var UserActions = require('createQuizApp/actions/UserActions');
-var swal = require('sweetalert/dist/sweetalert-dev');
 var urlParams  = require('createQuizApp/utils/urlParams');
-require('sweetalert/dev/sweetalert.scss');
+
+
 
 
 

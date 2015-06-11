@@ -7,8 +7,7 @@ var GroupStore = require('createQuizApp/stores/GroupStore');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 
-var swal = require('sweetalert/dist/sweetalert-dev');
-require('sweetalert/dev/sweetalert.scss');
+
 
 
 require('./CQQuizzesStyles');

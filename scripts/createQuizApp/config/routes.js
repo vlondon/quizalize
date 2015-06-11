@@ -17,6 +17,7 @@ var CQAssignments       = require('createQuizApp/components/pages/CQAssignments'
 var CQPublished         = require('createQuizApp/components/pages/CQPublished');
 var CQPublishedInfo     = require('createQuizApp/components/pages/CQPublishedInfo');
 var CQHelp              = require('createQuizApp/components/pages/CQHelp');
+var CQSettings          = require('createQuizApp/components/pages/CQSettings');
 
 
 
@@ -54,6 +55,16 @@ var pages = {
         renderer: function(){
             React.render(
                 React.createElement(CQHelp, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    settingsPage: {
+        path: '/quiz/settings',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQSettings, null),
                 document.getElementById('reactApp')
             );
         }

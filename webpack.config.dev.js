@@ -18,7 +18,8 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|es/)
     ],
     output: {
         path: path.join(__dirname, 'public/js/'),
@@ -29,7 +30,8 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel']
+                loaders: ['react-hot', 'babel'],
+                exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
@@ -38,9 +40,9 @@ module.exports = {
             },
 
             {
-                test: /\.es6.js$/,
+                test: /\.es6\.js$/,
                 loader: 'babel',
-                exclude: /(node_modules|bower_components)/
+                exclude: /(bower_components)/
             },
             {
                 test: /\.scss$/,
@@ -53,7 +55,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss'],
+        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
         modulesDirectories: ['node_modules', 'scripts']
     },
     devtool: '#source-map',

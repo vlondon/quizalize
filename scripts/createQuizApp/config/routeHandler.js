@@ -2,9 +2,6 @@ var router              = require('./router');
 var pages               = require('./routes');
 var settings            = require('createQuizApp/config/settings');
 var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
-var GroupActions        = require('createQuizApp/actions/GroupActions');
-var UserActions         = require('createQuizApp/actions/UserActions');
-var QuizActions         = require('createQuizApp/actions/QuizActions');
 
 var UserStore           = require('createQuizApp/stores/UserStore');
 var urlParams           = require('createQuizApp/utils/urlParams');
@@ -29,6 +26,7 @@ router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
 router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
+router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );

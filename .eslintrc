@@ -35,6 +35,7 @@
         "angular": true,
         "$": true,
         "Zzish": true,
-        "zzish": true         
+        "zzish": true,
+        "swal": true      
     }
 }
