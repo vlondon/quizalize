@@ -27,6 +27,19 @@ function decrypt(text){
 };
 
 
+exports.saveUser = function(req, res) {
+    var uuid = req.params.profileId;
+    zzish.saveUser(uuid, req.body, function(err, data){
+        if (!err && typeof data == 'object') {
+            res.status(200);
+        }
+        else {
+            res.status(err);
+        }
+        res.send(data);
+    });
+}
+
 exports.details = function(req, res) {
     var uuid = req.params.profileId;
     zzish.user(uuid, function(err, data){

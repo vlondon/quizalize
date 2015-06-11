@@ -43,6 +43,7 @@ app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 app.get('/user/:profileId', user.details);
+app.post('/user/:profileId', user.saveUser);
 
 
 
