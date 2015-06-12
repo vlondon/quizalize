@@ -203,6 +203,11 @@ exports.getPublicQuiz = function(req, res){
     });
 };
 
+exports.getAllQuizzes = function(req,res) {
+    zzish.listContent("", QUIZ_CONTENT_TYPE,function(err, resp){
+        res.send(resp);
+    });
+}
 
 exports.getMyQuizzes = function(req, res){
     var profileId = req.params.profileId;
