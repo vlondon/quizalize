@@ -101,11 +101,11 @@ var CQQuizzes = React.createClass({
                                             </div>
                                             <div className="col-xs-4">
                                                 <h4>
-                                                    <span ng-show="quiz.subject">
-                                                        {quiz.subject}
+                                                    <span>
+                                                        {quiz.meta.subject}
                                                     </span>
-                                                    <span ng-show="quiz.categoryId">
-                                                        {quiz.category.name}
+                                                    <span>
+                                                        {quiz.meta.category.name}
                                                     </span>
 
                                                 </h4>
