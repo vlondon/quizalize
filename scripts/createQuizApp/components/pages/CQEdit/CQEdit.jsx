@@ -10,6 +10,10 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
+var swal = require('sweetalert/dist/sweetalert-dev');
+require('sweetalert/dev/sweetalert.scss');
+
+
 require('./CQEditStyles');
 
 var CQEdit = React.createClass({
@@ -113,13 +117,22 @@ var CQEdit = React.createClass({
 
 
     handleRemoveQuestion: function(question){
-        var questionIndex = this.state.quiz.payload.questions.indexOf(question);
-        var quiz = assign({}, this.state.quiz);
-        quiz.payload.questions = this.state.quiz.payload.questions;
-        quiz.payload.questions.splice(questionIndex, 1);
-        console.log('about to remove question', quiz.payload.questions);
-        this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
-
+        swal({
+                title: 'Confirm Delete',
+                text: 'Are you sure you want to permanently delete this question?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }, (isConfirm) => {
+            if (isConfirm){
+                var questionIndex = this.state.quiz.payload.questions.indexOf(question);
+                var quiz = assign({}, this.state.quiz);
+                quiz.payload.questions = this.state.quiz.payload.questions;
+                quiz.payload.questions.splice(questionIndex, 1);
+                console.log('about to remove question', quiz.payload.questions);
+                this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
+            }
+        });
     },
 
 
