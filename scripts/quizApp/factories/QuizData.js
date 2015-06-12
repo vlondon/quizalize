@@ -158,8 +158,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var setQuiz = function(quiz) {
         currentQuiz = quiz;
         localStorage.setItem("currentQuiz",JSON.stringify(currentQuiz));
-        quiz.questions = spliceQuestions(quiz)
-        initQuizResult();
+        if (quiz.payload.questions) {
+            quiz.payload.questions = spliceQuestions(quiz)
+            initQuizResult();
+        }
     }
 
     var searchThroughCategories = function(catId,quizId) {

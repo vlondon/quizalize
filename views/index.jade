@@ -39,6 +39,11 @@ html(ng-app='quizApp')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         meta(name='apple-mobile-web-app-status-bar-style', content='black')
 
+        if quiz && quiz.meta.featured
+            script.
+                var domain = document.referrer ? document.referrer.split('/')[2] : undefined;
+                ga('send', 'event', 'quiz-of-the-day', '#{quiz.meta.name}', domain);
+
 
         script.
             var initToken = JSON.parse(!{JSON.stringify(zzishapi)});
