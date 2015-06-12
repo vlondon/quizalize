@@ -204,7 +204,7 @@ exports.getPublicQuiz = function(req, res){
 };
 
 exports.getAllQuizzes = function(req,res) {
-    zzish.listContent("", QUIZ_CONTENT_TYPE,function(err, resp){
+    zzish.listContent("AAA", QUIZ_CONTENT_TYPE,function(err, resp){
         res.send(resp);
     });
 }
