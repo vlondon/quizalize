@@ -90,7 +90,7 @@ var QuizActions = {
 
                     quiz.category = topic || {};
 
-                    return quiz;
+                    return QuizFormat.convert(quiz);
                 });
 
 
@@ -204,7 +204,7 @@ var QuizActions = {
                 if (category.homework) {
                     category.name = 'Quizzes (' + categoriesHash[cuuid].quizzes.length + ')';
                 }
-                categoriesHash[cuuid].quizzes.push(quiz);
+                categoriesHash[cuuid].quizzes.push(QuizFormat.convert(quiz));
             }
             for (var u in categoriesHash) {
                 categories.push(categoriesHash[u]);
