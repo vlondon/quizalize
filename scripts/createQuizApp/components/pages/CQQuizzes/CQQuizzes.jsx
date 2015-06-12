@@ -3,6 +3,7 @@ var React = require('react');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var GroupStore = require('createQuizApp/stores/GroupStore');
+var AppStore = require('createQuizApp/stores/AppStore');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
@@ -28,11 +29,13 @@ var CQQuizzes = React.createClass({
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+        AppStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         GroupStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
+        AppStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
@@ -41,7 +44,8 @@ var CQQuizzes = React.createClass({
 
     getState: function(){
         var quizzes = QuizStore.getQuizzes().sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
-        return { quizzes };
+        var apps = AppStore.getApps();
+        return { quizzes, apps };
     },
 
     handleDelete: function(quiz){
