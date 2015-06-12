@@ -5,6 +5,7 @@ var QuizStore = require('createQuizApp/stores/QuizStore');
 var GroupStore = require('createQuizApp/stores/GroupStore');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
+var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
@@ -14,8 +15,14 @@ require('./CQQuizzesStyles');
 
 var CQQuizzes = React.createClass({
 
+    propTypes: {
+        appMode: React.PropTypes.bool
+    },
+
     getInitialState: function() {
-        return this.getState();
+        var initialState =  this.getState();
+        initialState.selectedQuizzes = [];
+        return initialState;
     },
 
     componentDidMount: function() {
@@ -33,10 +40,7 @@ var CQQuizzes = React.createClass({
     },
 
     getState: function(){
-
-        var quizzes = QuizStore.getQuizzes();
-        quizzes = quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
-        console.log('quizzes', quizzes);
+        var quizzes = QuizStore.getQuizzes().sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         return { quizzes };
     },
 
@@ -78,83 +82,55 @@ var CQQuizzes = React.createClass({
         }
     },
 
+    handleSelect: function(selectedQuizzes){
+        this.setState({selectedQuizzes});
+    },
+
     render: function() {
 
-        var introCopy = this.state.quizzes.length === 0 ? 'Here are the quizzes you have created so far…' : 'Why don\'t you create a quiz for your class.';
+        var createApp;
+        var introCopy = this.state.quizzes.length > 0 ? 'Here are the quizzes you have created so far…' : 'Why don\'t you create a quiz for your class.';
+
+        if (this.props.appMode) {
+            createApp = (<CQViewCreateApp
+                selectedQuizzes={this.state.selectedQuizzes}
+                />);
+        }
         return (
             <CQPageTemplate className="container cq-quizzes">
                 <div className="container">
+                    <h2>Your apps</h2>
+
+                </div>
+                <div className="container">
+
+
                     <h2>Your Quizzes
                         <div className="pull-right">
-                            <CQLink href="/quiz/create" className="btn btn-primary btn-lg">
-                                Create a new quiz
+                            <CQLink href="/quiz/quizzes/app" className="btn btn-primary">
+                                <i className="fa fa-plus"></i> New app
+                            </CQLink> &nbsp;
+                            <CQLink href="/quiz/create" className="btn btn-primary">
+                                <i className="fa fa-plus"></i> New quiz
                             </CQLink>
                         </div>
                     </h2>
 
                     <p>{introCopy}</p>
 
+                    {createApp}
+
                     <CQViewQuizList
                         onQuizClick={this.handleClick}
                         showAuthor={false}
                         quizzes={this.state.quizzes}
+                        selectMode={this.props.appMode === true}
+                        onSelect={this.handleSelect}
                         actions={this.handleAction}>
 
                         <div className="cq-quizzes__buttonbar">
                             <div className="cq-quizzes__edit">
                                 <span className="fa fa-pencil"></span> Edit
-{/*=======
-                    <div ng-show="quizzes.hasOwnQuizzes" className="row">
-                        <div className="col-sm-12">
-                            <div className="row well">
-                                <div className="row">
-                                    <div className="col-xs-3"><strong>Quiz Title</strong></div>
-                                    <div className="col-xs-4"><strong>Subject/Topic</strong></div>
-                                    <div className="col-xs-5"></div>
-                                </div>
-
-                                {this.state.quizzes.map(function(quiz){
-                                    return (
-                                        <div ng-repeat="quiz in quizzes.quizzes track by $index" ng-style="padding-bottom: 10px" className="row">
-                                            <div className="col-xs-3">
-                                                <h4>{quiz.meta.name}</h4>
-                                            </div>
-                                            <div className="col-xs-4">
-                                                <h4>
-                                                    <span ng-show="quiz.subject">
-                                                        {quiz.subject}
-                                                    </span>
-                                                    <span ng-show="quiz.categoryId">
-                                                        {quiz.category.name}
-                                                    </span>
-
-                                                </h4>
-                                            </div>
-                                            <div className="col-xs-5" style={{'text-align': 'right'}}>
-
-                                                <CQLink href={`/quiz/create/${quiz.uuid}`}>
-                                                    <button type="button" className="btn btn-info">
-                                                        <span className="glyphicon glyphicon-pencil"></span>
-                                                    </button>
-                                                </CQLink>
-
-                                                <button onClick={this.handleDelete.bind(this, quiz)} ng-style="margin: 4px" className="btn btn-danger">
-                                                    <span className="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                                <CQLink href={`/quiz/published/${quiz.uuid}`}>
-                                                    <button className="btn btn-info">
-                                                        Set Quiz
-                                                    </button>
-                                                </CQLink>
-                                                <a style={{display: 'none' }} ng-click="quizzes.shareQuiz(quiz)" ng-style="margin: 4px" className="btn btn-info">Share</a>
-                                                <a ng-click="quizzes.showResults(quiz)" ng-style="margin: 4px" className="btn btn-info" style={{display: 'none'}}>
-                                                    Results
-                                                </a>
-                                            </div>
-                                        </div>
-                                    );
-                                }, this)}
->>>>>>> develop */}
                             </div>
                             <button className="cq-quizzes__button--assign" onClick={this.handleDelete}>
                                 <span className="fa fa-users"></span> Assign quiz to a Class

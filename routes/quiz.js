@@ -198,26 +198,19 @@ exports.getPublicQuizzes = function(req, res){
 };
 
 exports.getPublicQuiz = function(req, res){
-    zzish.getPublicContent(QUIZ_CONTENT_TYPE,req.params.id, function(err, resp){
+    zzish.getPublicContent(QUIZ_CONTENT_TYPE, req.params.id, function(err, resp){
         res.send(resp);
     });
 };
 
 
-exports.getMyQuizzes = function(req, res){
-    var profileId = req.params.profileId;
-    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
-    zzish.listContent(profileId, QUIZ_CONTENT_TYPE,function(err, resp){
-        res.send(resp);
-    });
-};
 
 exports.getMyTopics = function(req, res){
     var profileId = req.params.profileId;
     //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
-    zzish.listCategories(profileId, function(err, resp){
+    zzish.listCategories(profileId, function(err, resp) {
         res.send(resp);
     });
 };
@@ -228,9 +221,9 @@ exports.postTopic = function(req,res){
 
     zzish.postCategory(profileId, data, function(err, resp){
         if(!err){
-            res.status = 200
+            res.status = 200;
         }else{
-            res.status = 400
+            res.status = 400;
         }
         res.send();
     });
@@ -242,11 +235,20 @@ exports.deleteTopic = function(req,res){
 
     zzish.deleteCategory(profileId, id, function(err, resp){
         if(!err){
-            res.status = 200
+            res.status = 200;
         }else{
-            res.status = 400
+            res.status = 400;
         }
         res.send();
+    });
+};
+
+exports.getMyQuizzes = function(req, res){
+    var profileId = req.params.profileId;
+    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
+
+    zzish.listContent(profileId, QUIZ_CONTENT_TYPE, function(err, resp){
+        res.send(resp);
     });
 };
 

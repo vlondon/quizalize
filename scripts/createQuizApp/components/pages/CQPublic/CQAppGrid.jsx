@@ -10,7 +10,7 @@ var CQAppGrid = React.createClass({
     },
     getInitialState: function() {
         return {
-            apps: AppStore.getApps()
+            apps: AppStore.getPublicApps()
         };
     },
     render: function() {

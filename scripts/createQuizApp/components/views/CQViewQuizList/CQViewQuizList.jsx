@@ -8,6 +8,8 @@ var CQViewQuizList = React.createClass({
         showAuthor: React.PropTypes.bool,
         onQuizClick: React.PropTypes.func,
         onClick: React.PropTypes.func,
+        onSelect: React.PropTypes.func,
+        selectMode: React.PropTypes.bool,
         children: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.element,
@@ -15,24 +17,50 @@ var CQViewQuizList = React.createClass({
         ])
     },
 
+    getInitialState: function() {
+        return {
+            selectedQuizzes: []
+        };
+    },
+
     getDefaultProps: function() {
         return {
             quizzes: [],
             className: '',
             showAuthor: true,
-            onQuizClick: function(){}
+            onQuizClick: function(){},
+            onClick: function(){},
+            onSelect: function(){}
         };
     },
 
     handleClick: function(quiz){
-        this.props.onQuizClick(quiz);
+        if (this.props.selectMode) {
+            this.handleChange(quiz);
+        } else {
+            this.props.onQuizClick(quiz);
+        }
+    },
+
+    handleChange: function(quiz, event){
+        var selectedQuizzes = this.state.selectedQuizzes.slice();
+        var isSelected = selectedQuizzes.indexOf(quiz.uuid) === -1;
+        console.log('some quiz selected', isSelected);
+
+
+        if (isSelected === true){
+            selectedQuizzes.push(quiz.uuid);
+        } else {
+            selectedQuizzes.splice(selectedQuizzes.indexOf(quiz.uuid), 1);
+        }
+        this.setState({selectedQuizzes});
+        this.props.onSelect(selectedQuizzes);
     },
 
     render: function() {
+
         var author;
-
-
-
+        var select;
         var categoryName = function(quiz){
             if (quiz.category && quiz.category.name){
                 return (<span className="cq-viewquizlist__quizcategory">{quiz.category.name}</span>);
@@ -41,17 +69,32 @@ var CQViewQuizList = React.createClass({
         };
 
         var childActionHandler = function(child, quiz){
-            var clonedChildren = React.cloneElement(child, {
-                onClick: function(){
-                    console.log('copy clicked', quiz);
-                    this.props.onClick(quiz);
-                }
-            });
-            return clonedChildren;
+            if (child) {
+                var clonedChildren = React.cloneElement(child, {
+                    onClick: function(){
+                        console.log('copy clicked', quiz);
+                        this.props.onClick(quiz);
+                    }
+                });
+                return clonedChildren;
+            }
         };
 
         if (this.props.showAuthor) {
             author = (<div className="cq-viewquizlist__quizauthor">by <b>Quizalize Team</b></div>);
+        }
+
+        if (this.props.selectMode) {
+            select = (quiz) => {
+
+                var isChecked = () =>  this.state.selectedQuizzes.indexOf(quiz.uuid) > -1;
+
+                return (<input
+                    onChange={this.handleChange.bind(this, quiz)}
+                    checked={isChecked()}
+                    type="checkbox"
+                    className="cq-viewquizlist__checkbox"/>);
+            };
         }
 
         return (
@@ -60,6 +103,7 @@ var CQViewQuizList = React.createClass({
                     return (
                         <li className="cq-viewquizlist__quiz" key={key} onClick={this.handleClick.bind(this, quiz)}>
 
+                            {select(quiz)}
 
                             <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.meta.name} image={quiz.settings && quiz.settings.imageUrl}>
                                 <i className="zz-ic_quizalize"/>

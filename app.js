@@ -8,6 +8,7 @@ var bodyParser  = require('body-parser');
 var config      = require('./config');
 var email       = require('./email');
 var quiz        = require('./routes/quiz');
+var appContent  = require('./routes/appContent');
 var user        = require('./routes/user');
 var proxy       = require('express-http-proxy');
 
@@ -67,6 +68,12 @@ app.get('/create/:profileId/quizzes/', quiz.getMyQuizzes);
 app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
 app.post('/create/:profileId/quizzes/:id/delete', quiz.deleteQuiz);
 app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
+
+
+app.get('/create/:profileId/apps/', appContent.list);
+app.get('/create/:profileId/apps/:id', appContent.get);
+app.post('/create/:profileId/apps/:id/delete', appContent.delete);
+app.post('/create/:profileId/apps/:id', appContent.post);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
 app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);

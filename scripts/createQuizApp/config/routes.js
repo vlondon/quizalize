@@ -163,6 +163,16 @@ var pages = {
             );
         }
     },
+    createApp: {
+        path: '/quiz/quizzes/app',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQQuizzes, {appMode: true}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
 
     editQuiz: {
         path: '/quiz/edit/:quizId',

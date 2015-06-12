@@ -6,6 +6,9 @@ var CQPublicList = require('./CQPublicList');
 var CQPublicSort = require('./CQPublicSort');
 var CQAppGrid = require('./CQAppGrid');
 
+var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
+
+
 var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
@@ -67,7 +70,9 @@ var CQPublic = React.createClass({
 
                 <CQAppGrid/>
                 <CQPublicSort className="cq-public__sort"/>
-                <CQPublicList quizzes={this.state.quizzes} className="cq-public__list" />
+                <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">
+                    <span className='cq-public__button'>Free</span>
+                </CQViewQuizList>
 {/* =======
 //
 //                 {this.state.quizzes.map((category, categoryIndex) => {

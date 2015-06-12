@@ -30,7 +30,6 @@ var CQHeader = React.createClass({
     },
 
     componentWillMount: function() {
-        console.log('get Current Path', router.getRoute());
         this.setState({path: router.getRoute()});
 
     },
@@ -61,7 +60,6 @@ var CQHeader = React.createClass({
         var loginButton;
 
         var isActive = key =>{
-            console.log('checking', key, 'against', sections[key], this.state.path[1]);
             return sections[key] && sections[key].indexOf(this.state.path[1]) > -1;
         };
 

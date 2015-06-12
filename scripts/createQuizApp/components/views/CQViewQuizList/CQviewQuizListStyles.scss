@@ -1,8 +1,7 @@
 @import './../../../../shared/scss/variables';
 @import './../../../../shared/scss/mixins';
 
-body {
-}
+
 .cq-viewquizlist {
     $quizIcon: 40px;
     list-style: none;
@@ -14,6 +13,7 @@ body {
         border-bottom: 1px solid $brand-color-grey-lighter;
         padding: 5px;
         cursor: pointer;
+        width: 100%;
 
         &:hover {
             background: lighten($brand-color-grey-lighter, 10%);
@@ -24,6 +24,12 @@ body {
     @at-root #{&}__quiz-inner {
         text-align: left;
         float: left;
+    }
+
+    @at-root #{&}__checkbox {
+        display: block;
+        float: left;
+        margin-top: 20px;
     }
 
     @at-root #{&}__quizicon {
@@ -42,6 +48,7 @@ body {
         img { width: 100%; }
 
     }
+
     @at-root #{&}__quizname {
         font-weight: bold;
         display: inline;
