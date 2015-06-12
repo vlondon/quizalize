@@ -95,6 +95,8 @@ var CQViewQuizList = React.createClass({
                     type="checkbox"
                     className="cq-viewquizlist__checkbox"/>);
             };
+        } else {
+            select = function(){};
         }
 
         return (

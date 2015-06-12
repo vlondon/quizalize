@@ -1,0 +1,50 @@
+@import './../../../../shared/scss/variables';
+@import './../../../../shared/scss/mixins';
+
+.cq-appgrid {
+
+    $appIcon: 140px;
+    $quizIcon: 40px;
+
+    @at-root #{&}__app {
+        display: inline-block;
+        vertical-align: bottom;
+        width: $appIcon + 30px;
+        height: $appIcon + 100px;
+        margin: 10px;
+    }
+
+    @at-root #{&}__appicon {
+        border-radius: 10px;
+        overflow: hidden;
+        width: $appIcon;
+        height: $appIcon;
+        margin: auto;
+        margin-bottom: 10px;
+        background-size: cover;
+        background-position: center center;
+        img {
+            width: 100%;
+            /* background: red; */
+        }
+    }
+    @at-root #{&}__appdetails {
+        text-align: center;
+    }
+
+
+    @at-root #{&}__appauthor {
+        line-height: 30px;
+    }
+    @at-root #{&}__appauthor--avatar {
+        display: inline-block;
+        vertical-align: bottom;
+        width: 30px;
+        height: 30px;
+        margin: 0 3px 0 0;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 100%;
+        border: 1px solid $brand-color-grey-lighter;
+    }
+}

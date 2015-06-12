@@ -6,6 +6,7 @@ var GroupStore = require('createQuizApp/stores/GroupStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
+var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
 var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
@@ -104,7 +105,8 @@ var CQQuizzes = React.createClass({
             <CQPageTemplate className="container cq-quizzes">
                 <div className="container">
                     <h2>Your apps</h2>
-
+                    <CQViewAppGrid
+                        apps={this.state.apps}/>
                 </div>
                 <div className="container">
 
