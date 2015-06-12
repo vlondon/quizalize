@@ -103,6 +103,58 @@ var CQQuizzes = React.createClass({
                         <div className="cq-quizzes__buttonbar">
                             <div className="cq-quizzes__edit">
                                 <span className="fa fa-pencil"></span> Edit
+{/*=======
+                    <div ng-show="quizzes.hasOwnQuizzes" className="row">
+                        <div className="col-sm-12">
+                            <div className="row well">
+                                <div className="row">
+                                    <div className="col-xs-3"><strong>Quiz Title</strong></div>
+                                    <div className="col-xs-4"><strong>Subject/Topic</strong></div>
+                                    <div className="col-xs-5"></div>
+                                </div>
+
+                                {this.state.quizzes.map(function(quiz){
+                                    return (
+                                        <div ng-repeat="quiz in quizzes.quizzes track by $index" ng-style="padding-bottom: 10px" className="row">
+                                            <div className="col-xs-3">
+                                                <h4>{quiz.meta.name}</h4>
+                                            </div>
+                                            <div className="col-xs-4">
+                                                <h4>
+                                                    <span ng-show="quiz.subject">
+                                                        {quiz.subject}
+                                                    </span>
+                                                    <span ng-show="quiz.categoryId">
+                                                        {quiz.category.name}
+                                                    </span>
+
+                                                </h4>
+                                            </div>
+                                            <div className="col-xs-5" style={{'text-align': 'right'}}>
+
+                                                <CQLink href={`/quiz/create/${quiz.uuid}`}>
+                                                    <button type="button" className="btn btn-info">
+                                                        <span className="glyphicon glyphicon-pencil"></span>
+                                                    </button>
+                                                </CQLink>
+
+                                                <button onClick={this.handleDelete.bind(this, quiz)} ng-style="margin: 4px" className="btn btn-danger">
+                                                    <span className="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                                <CQLink href={`/quiz/published/${quiz.uuid}`}>
+                                                    <button className="btn btn-info">
+                                                        Set Quiz
+                                                    </button>
+                                                </CQLink>
+                                                <a style={{display: 'none' }} ng-click="quizzes.shareQuiz(quiz)" ng-style="margin: 4px" className="btn btn-info">Share</a>
+                                                <a ng-click="quizzes.showResults(quiz)" ng-style="margin: 4px" className="btn btn-info" style={{display: 'none'}}>
+                                                    Results
+                                                </a>
+                                            </div>
+                                        </div>
+                                    );
+                                }, this)}
+>>>>>>> develop */}
                             </div>
                             <button className="cq-quizzes__button--assign" onClick={this.handleDelete}>
                                 <span className="fa fa-users"></span> Assign quiz to a Class
@@ -117,7 +169,7 @@ var CQQuizzes = React.createClass({
 
                     </CQViewQuizList>
 
-                    
+
                 </div>
             </CQPageTemplate>
         );

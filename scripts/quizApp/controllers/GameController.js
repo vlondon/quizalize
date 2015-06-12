@@ -51,25 +51,25 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
         if (!err) {
             self.currentQuiz = QuizFormat.process(result);
 
-            if (self.currentQuiz.settings) {
+            if (self.currentQuiz.meta) {
 
-                if (self.currentQuiz.settings['random']) {
+                if (self.currentQuiz.meta['random']) {
                     self.randomText = " in random order.";
                     self.showSubText = true;
                 }
 
-                if (self.currentQuiz.settings['numQuestions']) {
+                if (self.currentQuiz.meta['numQuestions']) {
                     self.numQuestions = self.currentQuiz.questions.length;
                     try {
-                        self.numQuestions = Math.min(parseInt(self.currentQuiz.settings['numQuestions']),self.currentQuiz.questions.length);
+                        self.numQuestions = Math.min(parseInt(self.currentQuiz.meta['numQuestions']),self.currentQuiz.questions.length);
                     }
                     catch (e) {
 
                     }
                     self.showSubText = true;
                 }
-                console.log('self.currentQuiz.settings', self.currentQuiz);
-                if (self.currentQuiz.settings.featured) {
+                console.log('self.currentQuiz.meta', self.currentQuiz);
+                if (self.currentQuiz.meta.featured) {
                     // addReactComponent();
                     getLeaderBoard(self.currentQuiz);
                 }
@@ -96,7 +96,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     };
 
     self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().name+"'. You won't be able to continue this quiz.",function() {
+        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().meta.name+"'. You won't be able to continue this quiz.",function() {
             if (sessionStorage.getItem("mode")=="teacher") {
                 window.location.href="/quiz/public";
             }

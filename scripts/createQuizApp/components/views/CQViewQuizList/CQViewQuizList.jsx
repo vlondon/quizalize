@@ -7,6 +7,7 @@ var CQViewQuizList = React.createClass({
         className: React.PropTypes.string,
         showAuthor: React.PropTypes.bool,
         onQuizClick: React.PropTypes.func,
+        onClick: React.PropTypes.func,
         children: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.element,
@@ -60,7 +61,7 @@ var CQViewQuizList = React.createClass({
                         <li className="cq-viewquizlist__quiz" key={key} onClick={this.handleClick.bind(this, quiz)}>
 
 
-                            <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.name} image={quiz.settings && quiz.settings.imageUrl}>
+                            <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.meta.name} image={quiz.settings && quiz.settings.imageUrl}>
                                 <i className="zz-ic_quizalize"/>
                             </CQQuizIcon>
 

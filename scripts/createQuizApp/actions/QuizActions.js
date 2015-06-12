@@ -32,7 +32,7 @@ var _questionsTopicIdToTopic = function(quiz){
 
 var _questionsTopicToTopicId = function(quiz){
 
-    var questions = quiz.questions;
+    var questions = quiz.payload.questions;
     var topics = TopicStore.getTopics();
 
     var findTopicId = function(topicName){
@@ -208,7 +208,7 @@ var QuizActions = {
         var addOrCreateCategory = function(){
             var topicUuid;
             var topics = TopicStore.getTopics();
-            var topicFound = topics.filter( t => t.name === quiz.category )[0];
+            var topicFound = topics.filter( t => t.name === quiz.meta.category )[0];
 
             if (topicFound) {
                 topicUuid = topicFound.uuid;
@@ -216,7 +216,7 @@ var QuizActions = {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
                     subject: quiz.subject,
-                    name: quiz.category,
+                    name: quiz.meta.category,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false
@@ -229,7 +229,7 @@ var QuizActions = {
         return new Promise((resolve, reject) => {
 
             quiz.uuid = quiz.uuid || uuid.v4();
-            quiz.categoryId = addOrCreateCategory();
+            quiz.meta.categoryId = addOrCreateCategory();
 
             quiz = _questionsTopicToTopicId(quiz);
 
