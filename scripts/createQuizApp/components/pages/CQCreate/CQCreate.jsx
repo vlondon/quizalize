@@ -138,6 +138,19 @@ var CQCreate = React.createClass({
                                     </h2>
                                     <form role="form" className="form-horizontal">
                                         <div className="form-group">
+                                            <label className="col-sm-3 control-label">Quiz Title:<a data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="7" className="left-space glyphicon glyphicon-question-sign"></a></label>
+                                            <div className="col-sm-9">
+                                                <input id="question"
+                                                    type="text"
+                                                    value={this.state.quiz.meta.name}
+                                                    onChange={this.handleChange.bind(this, 'name')}
+                                                    on-enter="ctrl.createQuiz();"
+                                                    ng-model="ctrl.quiz.name"
+                                                    placeholder="e.g. Plate Boundaries"
+                                                    autofocus="true"
+                                                    tabIndex="3"
+                                                    className="form-control"/><br/>
+                                            </div>
                                             <label className="control-label col-sm-3">
                                                 Subject:    <a data-toggle="popover" title="Quiz Subject" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="5" className="left-space glyphicon glyphicon-question-sign"></a>
                                         </label>
@@ -165,18 +178,6 @@ var CQCreate = React.createClass({
                                             tabIndex="2"
                                             className="form-control"/>
                                         <br/>
-                                    </div>
-                                    <label className="col-sm-3 control-label">Quiz Title:<a data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="7" className="left-space glyphicon glyphicon-question-sign"></a></label>
-                                    <div className="col-sm-9">
-                                        <input id="question"
-                                            type="text"
-                                            value={this.state.quiz.meta.name}
-                                            onChange={this.handleChange.bind(this, 'name')}
-                                            on-enter="ctrl.createQuiz();"
-                                            placeholder="e.g. Plate Boundaries"
-                                            autofocus="true"
-                                            tabIndex="3"
-                                            className="form-control"/><br/>
                                     </div>
                                     <div className="col-sm-4 col-sm-offset-4">
                                         <button type="button"
