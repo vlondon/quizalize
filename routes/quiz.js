@@ -220,18 +220,21 @@ exports.getPublicQuiz = function(req, res){
 var QuizFormat = require('./../scripts/createQuizApp/actions/format/QuizFormat.js');
 exports.getAllQuizzes = function(req, res) {
     zzish.listContent("AAA", QUIZ_CONTENT_TYPE, function(err, resp){
-
+        console.log('typeof ', resp.payload);
         res.writeHead(200, { "Content-Type": "text/event-stream",
                          "Cache-control": "no-cache" });
 
         // quiz of the day
-        // var content = resp.filter(function(c){ return c.uuid === '7c84480c-3eaa-4f95-b3de-c151287878d7'; });
+        // var content = resp.payload.filter(function(c){ return c.uuid === '7c84480c-3eaa-4f95-b3de-c151287878d7'; });
 
         // old quiz a31ba612-be64-4881-8541-f1a861e823a1
         // 0a7f2305-391c-46af-a599-77a27740953a
         // var content = resp.filter(function(c){ return c.uuid === '0a7f2305-391c-46af-a599-77a27740953a'; });
 
-        var content = resp;
+
+        // quiz without profileId??? 0cfddf86-2d06-4145-b970-00357c58323b
+        // var content = resp.payload.filter(function(c){ return c.uuid === '0cfddf86-2d06-4145-b970-00357c58323b'; });
+        var content = resp.payload;
 
         var processContent = function processContent(array){
             var quiz = array.shift();
@@ -243,7 +246,7 @@ exports.getAllQuizzes = function(req, res) {
 
             }
 
-            // console.log('quiz before', quiz);
+            console.log('quiz before', quiz);
             var conversion = QuizFormat.convert(quiz);
             quiz = conversion.quiz;
 
@@ -259,7 +262,7 @@ exports.getAllQuizzes = function(req, res) {
 
                 //
                 // console.log('quiz after', quiz);
-                // //             res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + array.length + ') \n');
+                // res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.meta.profileId + '. (' + array.length + ') \n');
                 // cb();
 
                 request.post('http://localhost:3001/create/' + quiz.meta.profileId + '/quizzes/' + quiz.uuid)
@@ -280,9 +283,9 @@ exports.getAllQuizzes = function(req, res) {
 
 
         };
-
+        //
         processContent(content);
-        // content.forEach(function(quiz, index){
+        // // content.forEach(function(quiz, index){
         //
         // });
         // res.end('done');
