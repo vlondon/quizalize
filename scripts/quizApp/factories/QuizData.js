@@ -101,8 +101,16 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (categories[cuuid] == undefined) {
                 categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
             }
-            quiz.publicAssigned = privateMode;
-            categories[cuuid].quizzes.push(quiz);
+            if (privateMode) {
+                //public quizzes
+                quiz.publicAssigned = privateMode;
+                if (quiz.meta && quiz.meta.live) {
+                    categories[cuuid].quizzes.push(quiz);
+                }
+            }
+            else {
+                categories[cuuid].quizzes.push(quiz);
+            }
         }
 
         for (var i in result.categories) {

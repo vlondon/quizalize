@@ -197,6 +197,16 @@ exports.getProfileById = function(req,res) {
 
 exports.getPublicQuizzes = function(req, res){
     zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, resp){
+        if (resp.contents) {
+            var contents = [];
+            for (var i in resp.contents) {
+                var content = resp.contents[i];
+                if (content.meta && content.meta.live) {
+                    contents.push(content);
+                }
+            }
+            resp.contents = contents;
+        }
         res.send(resp);
     });
 };
