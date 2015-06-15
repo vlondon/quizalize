@@ -83,8 +83,10 @@ app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
 
 app.get('/create/:profileId/transaction/', transaction.list);
+app.get('/create/:profileId/transaction/process', transaction.process);
 app.get('/create/:profileId/transaction/:id', transaction.get);
 // app.post('/create/:profileId/transaction/:id/delete', appContent.delete);
+app.post('/create/:profileId/transaction', transaction.post);
 app.post('/create/:profileId/transaction/:id', transaction.post);
 
 

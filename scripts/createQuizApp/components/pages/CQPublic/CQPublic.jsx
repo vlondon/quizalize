@@ -10,6 +10,7 @@ var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
+var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
 
 var router = require('createQuizApp/config/router');
@@ -71,9 +72,11 @@ var CQPublic = React.createClass({
                         meta: {
                             type: 'quiz',
                             quizId: quiz.uuid,
+                            profileId: quiz.meta.profileId,
                             price: 0
                         }
                     };
+                    TransactionActions.saveNewTransaction(newTransaction);
 
                     swal({
                         title: 'Working…',
@@ -81,6 +84,7 @@ var CQPublic = React.createClass({
                         showConfirmButton: false
                     });
 
+                    console.log('storing transaction', newTransaction);
 
                 }, 300);
             }

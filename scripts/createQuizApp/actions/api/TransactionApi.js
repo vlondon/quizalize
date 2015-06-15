@@ -27,50 +27,27 @@ var AppApi = {
 
     },
 
-    create: function(app){
+    put: function(transaction){
         return new Promise(function(resolve, reject){
-
-
-            // reject();
 
             var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
                 reject();
             } else {
-                request.post(`/create/${uuid}/apps/${app.uuid}`)
-                .send(app)
-                .end(function(error, res){
-                    if (error) {
-                        reject();
-                    } else {
-                        resolve(res.body);
-                    }
-                });
-            }
-        });
-
-    },
-    uploadMedia: function(appId, file){
-        return new Promise(function(resolve, reject){
-            console.log('about to upload', file);
-            var uuid = localStorage.getItem('cqUuid');
-
-            if (!uuid) {
-                reject();
-            } else {
-                request
-                    .post(`/create/${uuid}/apps/${appId}/icon`)
-                    .attach('image', file, file.name)
-                    .end(function(err, res){
-                        if (err) {
+                var postUrl = (transaction.uuid) ? `/create/${uuid}/transaction/${transaction.uuid}` : `/create/${uuid}/transaction`;
+                request.post(postUrl)
+                    .send(transaction)
+                    .end(function(error, res){
+                        if (error) {
                             reject();
                         } else {
                             resolve(res.body);
                         }
-                    }, reject);
+                    });
             }
         });
+
     }
 };
 
