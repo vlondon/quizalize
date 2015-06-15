@@ -20,8 +20,8 @@ var _questionsTopicIdToTopic = function(quiz){
     };
 
 
-    if (quiz.questions && quiz.questions.length > 0){
-        quiz.questions = quiz.questions.map(question => {
+    if (quiz.payload.questions && quiz.payload.questions.length > 0){
+        quiz.payload.questions = quiz.payload.questions.map(question => {
             question._topic = findTopicName(question.topicId);
             return question;
         });
@@ -83,7 +83,7 @@ var QuizActions = {
                 var loadedQuizzes = value[0];
                 var loadedTopics = value[1];
 
-                
+
                 var processedQuizzes = loadedQuizzes.map(function(quiz){
                     var topic = loadedTopics.filter(function(t){
                         return t.uuid === quiz.categoryId;
@@ -126,20 +126,21 @@ var QuizActions = {
                 //
                 var getCategoryFormUuid = function(){
 
-                    if (!quiz.categoryId) {
-                        var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                        quiz.categoryId = fq.categoryId;
-                    }
+                    // if (!quiz.categoryId) {
+                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
+                    //     quiz.categoryId = fq.categoryId;
+                    // }
                     //
-                    if (quiz.categoryId) {
-                        var topicFound = topics.filter( t => t.uuid === quiz.categoryId )[0];
+                    if (quiz.meta.categoryId) {
+                        var topicFound = topics.filter( t => t.uuid === quiz.meta.categoryId )[0];
+                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
                         return topicFound ? topicFound.name : '';
                     }
                     return '';
 
                 };
 
-                quiz.category = getCategoryFormUuid();
+                quiz.meta.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
 
                 var conversion = QuizFormat.convert(quiz);
@@ -176,6 +177,7 @@ var QuizActions = {
     loadPublicQuizzes: function(){
         console.trace('QuizActions.loadPublicQuizzes called');
         var processQuizList = function(result){
+
             var categories = result.categories;
             var quizzes = result.contents;
             var findCategory = function(categoryId){
@@ -183,7 +185,46 @@ var QuizActions = {
             };
             quizzes.forEach(quiz => {
                 quiz = QuizFormat.process(quiz);
-                quiz.category = findCategory(quiz.categoryId);
+                quiz.category = findCategory(quiz.meta.categoryId);
+            });
+// =======
+//
+//             var categories = [];
+//             var categoriesHash = {};
+//             for (var i in result.contents) {
+//                 var quiz = result.contents[i];
+//                 var cuuid = 'undefined';
+//                 var category = { name: 'Other' };
+//                     if (quiz.categoryId !== undefined) {
+//                     cuuid = quiz.categoryId;
+//                     if (result.categories !== undefined) {
+//                         for (var o in result.categories) {
+//                             if (result.categories[o].uuid === quiz.categoryId) {
+//                                 category = result.categories[o];
+//                             }
+//                         }
+//                     }
+//                 }
+//                 if (categoriesHash[cuuid] === undefined) {
+//                     var order = parseInt(category.index, 10) || 0;
+//                     /*eslint camelcase: 0*/
+//                     categoriesHash[cuuid] = { category: category, quizzes: [], order_index: order};
+//                 }
+//                 // console.log('category<!--  -->.name', quiz, category.name);
+//                 if (category.name === '') {
+//                     category.homework = true;
+//                 }
+//                 if (category.homework) {
+//                     category.name = 'Quizzes (' + categoriesHash[cuuid].quizzes.length + ')';
+//                 }
+//                 categoriesHash[cuuid].quizzes.push(QuizFormat.convert(quiz));
+//             }
+//             for (var u in categoriesHash) {
+//                 categories.push(categoriesHash[u]);
+//             }
+//             categories.sort(function(a, b){
+//                 return a.order_index > b.order_index ? 1 : -1;
+// >>>>>>> develop
             });
 
             return quizzes;
@@ -215,7 +256,7 @@ var QuizActions = {
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.subject,
+                    subject: quiz.meta.subject,
                     name: quiz.meta.category,
                     parentCategoryId: '-1',
                     uuid: topicUuid,

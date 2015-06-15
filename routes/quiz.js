@@ -6,6 +6,10 @@ var zzish = require("zzishsdk");
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = '##34dsadfasdf££FE';
 var QUIZ_CONTENT_TYPE = "quiz";
 
+var request = require('superagent');
+
+
+
 function encrypt(text){
   var cipher = crypto.createCipher(algorithm,password)
   var crypted = cipher.update(text,'utf8','hex')
@@ -165,7 +169,7 @@ function getClassCode(uuid,message,res) {
 
 exports.getProfileByToken = function(req,res) {
     var token = req.params.token;
-    zzish.getCurrentUser(token,function(err,message) {
+    zzish.getCurrentUser(token, function(err,message) {
         if (!err) {
             getClassCode(message.uuid,message,res);
         }
@@ -193,6 +197,16 @@ exports.getProfileById = function(req,res) {
 
 exports.getPublicQuizzes = function(req, res){
     zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, resp){
+        if (resp.contents) {
+            var contents = [];
+            for (var i in resp.contents) {
+                var content = resp.contents[i];
+                if (content.meta && content.meta.live) {
+                    contents.push(content);
+                }
+            }
+            resp.contents = contents;
+        }
         res.send(resp);
     });
 };
@@ -203,6 +217,90 @@ exports.getPublicQuiz = function(req, res){
     });
 };
 
+var QuizFormat = require('./../scripts/createQuizApp/actions/format/QuizFormat.js');
+exports.getAllQuizzes = function(req, res) {
+    zzish.listContent("AAA", QUIZ_CONTENT_TYPE, function(err, resp){
+
+        res.writeHead(200, { "Content-Type": "text/event-stream",
+                         "Cache-control": "no-cache" });
+
+        // quiz of the day
+        // var content = resp.filter(function(c){ return c.uuid === '7c84480c-3eaa-4f95-b3de-c151287878d7'; });
+
+        // old quiz a31ba612-be64-4881-8541-f1a861e823a1
+        // 0a7f2305-391c-46af-a599-77a27740953a
+        // var content = resp.filter(function(c){ return c.uuid === '0a7f2305-391c-46af-a599-77a27740953a'; });
+
+        var content = resp;
+
+        var processContent = function processContent(array){
+            var quiz = array.shift();
+
+
+            if (quiz.payload){
+
+                quiz.payload = JSON.parse(quiz.payload);
+
+            }
+
+            // console.log('quiz before', quiz);
+            var conversion = QuizFormat.convert(quiz);
+            quiz = conversion.quiz;
+
+            var cb = function(){
+                if (array.length > 0) {
+                    processContent(array);
+                } else {
+                    res.end('done');
+                }
+            };
+            // console.log('conversion', conversion.converted);
+            if (conversion.converted) {
+
+                //
+                // console.log('quiz after', quiz);
+                // //             res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + array.length + ') \n');
+                // cb();
+
+                request.post('http://localhost:3001/create/' + quiz.profileId + '/quizzes/' + quiz.uuid)
+                    .send(quiz)
+                    .end(function(error){
+                        if (error) {
+                            res.write('Failed to save quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + (array.length - content.length) + '/' + content.length + ') \n');
+                        } else {
+                            res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + array.length + ') \n');
+                            // resolve(res.body);
+                        }
+                        cb();
+                    });
+            } else {
+                cb();
+            }
+
+
+
+        };
+
+        processContent(content);
+        // content.forEach(function(quiz, index){
+        //
+        // });
+        // res.end('done');
+        // setTimeout(function(){
+        //     res.write('test \n');
+        // }, 1000);
+        //
+        // setTimeout(function(){
+        //     res.write('test2 \n');
+        // }, 2000);
+        //
+        // setTimeout(function(){
+        //     res.end('test3 \n');
+        // }, 3000);
+
+        // res.send(resp);
+    });
+}
 
 
 
@@ -280,7 +378,7 @@ exports.postQuiz = function(req, res){
     var profileId = req.params.profileId;
     var data = req.body;
 
-    console.log("Console,",JSON.stringify(data.meta));
+    console.log("Console,", JSON.stringify(data.meta));
 
     zzish.postContent(profileId, QUIZ_CONTENT_TYPE, req.params.id, data.meta, data.payload, function(err, resp){
         if (!err) {

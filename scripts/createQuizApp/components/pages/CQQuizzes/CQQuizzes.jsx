@@ -137,6 +137,7 @@ var CQQuizzes = React.createClass({
                         <div className="cq-quizzes__buttonbar">
                             <div className="cq-quizzes__edit">
                                 <span className="fa fa-pencil"></span> Edit
+
                             </div>
                             <button className="cq-quizzes__button--assign" onClick={this.handleDelete}>
                                 <span className="fa fa-users"></span> Assign quiz to a Class

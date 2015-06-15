@@ -117,7 +117,7 @@ var CQPUblishedInfo = React.createClass({
                             </div>
                         </div>
                     </div><br/><br/>
-                    <div style={{display: 'none'}} ng-hide="ctrl.quiz.publicAssigned || (ctrl.quiz.profileId!=undefined &amp;&amp; ctrl.quiz.profileId!=ctrl.profileId)" className="row">
+                    <div style={{display: 'none'}} ng-hide="ctrl.quiz.publicAssigned || (ctrl.quiz.meta.profileId!=undefined &amp;&amp; ctrl.quiz.meta.profileId!=ctrl.profileId)" className="row">
                         <div className="col-sm-12">
                             <div ng-style="background: #D6EBFF; padding: 10px" className="border-block">
                                 <center>

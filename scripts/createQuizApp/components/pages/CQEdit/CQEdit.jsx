@@ -10,6 +10,10 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
+var swal = require('sweetalert/dist/sweetalert-dev');
+require('sweetalert/dev/sweetalert.scss');
+
+
 require('./CQEditStyles');
 
 var CQEdit = React.createClass({
@@ -113,20 +117,34 @@ var CQEdit = React.createClass({
 
 
     handleRemoveQuestion: function(question){
-        var questionIndex = this.state.quiz.payload.questions.indexOf(question);
-        var quiz = assign({}, this.state.quiz);
-        quiz.payload.questions = this.state.quiz.payload.questions;
-        quiz.payload.questions.splice(questionIndex, 1);
-        console.log('about to remove question', quiz.payload.questions);
-        this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
+        swal({
+                title: 'Confirm Delete',
+                text: 'Are you sure you want to permanently delete this question?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }, (isConfirm) => {
+            if (isConfirm){
+                var questionIndex = this.state.quiz.payload.questions.indexOf(question);
+                var quiz = assign({}, this.state.quiz);
+                quiz.payload.questions = this.state.quiz.payload.questions;
+                quiz.payload.questions.splice(questionIndex, 1);
+                console.log('about to remove question', quiz.payload.questions);
+                this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
+            }
+        });
+    },
 
+    handleFinished: function(){
+        router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
     },
 
 
     render: function() {
 
-
         if (this.state.quiz){
+            console.log('this.state', this.state.quiz);
+            var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
 
             return (
                 <CQPageTemplate className="container cq-edit">
@@ -160,18 +178,17 @@ var CQEdit = React.createClass({
                                                     <h2 ng-show="create.quiz.payload.questions.length&gt;1">Your questions</h2><br/>
                                                 </div>
                                                 <div ol-style="margin-top:21px" className="col-sm-2">
-                                                    <a href={`/app#/preview/${this.state.quiz.uuid}`} target="zzishgame" className="btn btn-block btn-info">
+                                                    <button disabled={!previewEnabled} href={`/app#/preview/${this.state.quiz.uuid}`} target="zzishgame" className="btn btn-block btn-info">
                                                         Preview
-                                                    </a>
+                                                    </button>
 
                                                     </div>
                                                 <div ol-style="margin-top:21px" className="col-sm-3">
-                                                    <CQLink href={`/quiz/published/${this.state.quiz.uuid}`}>
+                                                    <button disabled={!previewEnabled} className="btn btn-block btn-primary" onClick={this.handleFinished}>
 
-                                                        <button className="btn btn-block btn-primary">
-                                                            I'm Finished, let's play!
-                                                        </button>
-                                                    </CQLink>
+                                                        I'm Finished, let's play!
+
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
