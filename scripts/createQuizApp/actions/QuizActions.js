@@ -225,7 +225,7 @@ var QuizActions = {
 //             categories.sort(function(a, b){
 //                 return a.order_index > b.order_index ? 1 : -1;
 // >>>>>>> develop
-            });
+            // });
 
             return quizzes;
         };
