@@ -18,7 +18,7 @@ var CQviewQuizFilter = React.createClass({
 
     render: function() {
         return (
-            <div className='row'>
+            <div className='cq-quizfilter'>
                 <div className='col-md-1'>
                     Filter
                 </div>
@@ -29,7 +29,6 @@ var CQviewQuizFilter = React.createClass({
                 </div>
                 <div className="col-md-2">
                     Order by
-                    
                 </div>
             </div>
         );

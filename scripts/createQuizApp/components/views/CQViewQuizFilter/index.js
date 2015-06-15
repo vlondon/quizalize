@@ -1,4 +1,4 @@
 
-// require('./CQViewQuizListStyles');
+require('./CQViewQuizFilterStyles');
 
 module.exports = require('./CQViewQuizFilter');

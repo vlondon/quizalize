@@ -5,6 +5,8 @@ var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
 
+var moment = require('moment');
+
 var CQViewQuizList = React.createClass({
 
     propTypes: {
@@ -92,7 +94,13 @@ var CQViewQuizList = React.createClass({
     handleSearch: function(string){
         console.log('searching using', string);
         var quizzes = this.getQuizzesState();
-        quizzes = quizzes.filter(q => q.meta.name.toLowerCase().indexOf(string.toLowerCase()) !== -1);
+        console.log('quizzes to sort', quizzes);
+        quizzes = quizzes.filter(q =>{
+            if (q.meta.name) {
+                return q.meta.name.toLowerCase().indexOf(string.toLowerCase()) !== -1;
+            }
+            return false;
+        });
         this.setState({quizzes});
     },
 
@@ -137,6 +145,7 @@ var CQViewQuizList = React.createClass({
         } else {
             select = function(){};
         }
+        var categoryNameLabel = c => c ? c.name : '';
 
         return (
             <div>
@@ -160,7 +169,9 @@ var CQViewQuizList = React.createClass({
                                     {author}
 
                                     <div className="cq-viewquizlist__quizextra">
-                                        {quiz._category.name}
+                                        {categoryNameLabel(quiz._category)}
+                                        <br/>
+                                        Updated on {moment(quiz.meta.updated).fromNow()}
                                     </div>
                                 </div>
 
