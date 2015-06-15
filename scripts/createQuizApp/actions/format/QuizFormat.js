@@ -116,6 +116,8 @@ var QuizFormat = {
         if (quiz.payload.categoryId && !quiz.meta.categoryId) {
             quiz.meta.categoryId = quiz.payload.categoryId;
             delete quiz.payload.categoryId;
+            converted = '11a';
+            console.log('converted', converted);
         }
 
         // profile id should be in meta
@@ -126,32 +128,53 @@ var QuizFormat = {
             console.log('converted', 12);
         }
 
+        // profile id should be in meta
+        if (quiz.profileId && quiz.meta.profileId === undefined){
+            quiz.meta.profileId = quiz.profileId;
+            delete quiz.payload.profileId;
+            converted = '12a';
+            console.log('converted', converted);
+        }
+
         // subject id should be in meta
         if (quiz.payload.subject){
             quiz.meta.subject = quiz.payload.subject;
             delete quiz.payload.subject;
-            converted = 15;
-            console.log('converted', 15);
+            converted = 13;
+            console.log('converted', converted);
         }
 
         // category name should'nt be on the object
         if (quiz.payload.category) {
             delete quiz.payload.category;
-            converted = 13;
+            converted = 14;
             console.log('converted', converted);
         }
 
         if (quiz.payload.name) {
             delete quiz.payload.name;
-            console.log('converted', 14);
-            converted = 14;
+            converted = 15;
+            console.log('converted', converted);
         }
         // uuid should not be in payload
         if (quiz.payload.uuid) {
             delete quiz.payload.uuid;
-            converted = 15;
+            converted = 16;
             console.log('converted', converted);
         }
+
+
+        // if (quiz.name) {
+        //     delete quiz.name;
+        //     converted = 17;
+        //     console.log('converted', converted);
+        // }
+        // // uuid should not be in payload
+        // if (quiz.categoryId) {
+        //     delete quiz.categoryId;
+        //     converted = 18;
+        //     console.log('converted', converted);
+        // }
 
         if (converted) {
             console.warn('Quiz ' + quiz.uuid + ' converted to new format ' + converted);
