@@ -119,8 +119,10 @@ var CQViewQuizList = React.createClass({
             if (child) {
                 var clonedChildren = React.cloneElement(child, {
                     onClick: function(){
-                        console.log('copy clicked', quiz);
-                        this.props.onClick(quiz);
+                        console.log('copy clicked', child, quiz);
+                        if (child.props.onClick){
+                            child.props.onClick(quiz);
+                        }
                     }
                 });
                 return clonedChildren;

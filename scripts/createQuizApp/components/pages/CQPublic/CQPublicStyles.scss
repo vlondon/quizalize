@@ -129,4 +129,16 @@
         float: left;
         width: calc(100% - 300px);
     }
+
+    @at-root #{&}__button {
+        background: $brand-color-grey-lighter;
+        color: $brand-color-grey;
+        margin: 0;
+        padding: 5px;
+
+        &:hover {
+            background: $brand-color-grey;
+            color: $brand-color-grey-lighter;
+        }
+    }
 }

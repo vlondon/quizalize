@@ -9,6 +9,7 @@ var config      = require('./config');
 var email       = require('./email');
 var quiz        = require('./routes/quiz');
 var appContent  = require('./routes/appContent');
+var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
@@ -79,6 +80,13 @@ app.get('/create/:profileId/apps/:id', appContent.get);
 app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
+
+
+app.get('/create/:profileId/transaction/', transaction.list);
+app.get('/create/:profileId/transaction/:id', transaction.get);
+// app.post('/create/:profileId/transaction/:id/delete', appContent.delete);
+app.post('/create/:profileId/transaction/:id', transaction.post);
+
 
 app.get('/apps/', appContent.listPublicApps);
 // app.get('/create/:profileId/apps/:id', appContent.get);

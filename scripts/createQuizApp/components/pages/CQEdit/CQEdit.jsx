@@ -10,8 +10,7 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
-var swal = require('sweetalert/dist/sweetalert-dev');
-require('sweetalert/dev/sweetalert.scss');
+
 
 
 require('./CQEditStyles');

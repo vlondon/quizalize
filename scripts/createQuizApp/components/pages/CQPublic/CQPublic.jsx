@@ -8,11 +8,9 @@ var CQAppGrid = require('./CQAppGrid');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 
-
-var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
-var moment = require('moment');
+
 
 var router = require('createQuizApp/config/router');
 
@@ -56,6 +54,39 @@ var CQPublic = React.createClass({
         router.setRoute(`/quiz/published/${quiz.uuid}`);
     },
 
+    handleBuy: function(quiz){
+        console.log('buy quiz?', quiz);
+        swal({
+                title: 'Confirm Purchase',
+                text: `Are you sure you want purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                html: true
+            }, (isConfirm) => {
+            if (isConfirm){
+                setTimeout(()=>{
+
+                    var newTransaction = {
+                        meta: {
+                            type: 'quiz',
+                            quizId: quiz.uuid,
+                            price: 0
+                        }
+                    };
+
+                    swal({
+                        title: 'Working…',
+                        text: `We're processing your order`,
+                        showConfirmButton: false
+                    });
+
+
+                }, 300);
+            }
+        });
+    },
+
     render: function() {
 
         return (
@@ -71,7 +102,9 @@ var CQPublic = React.createClass({
                 <CQAppGrid/>
                 <CQPublicSort className="cq-public__sort"/>
                 <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">
-                    <span className='cq-public__button'>Free</span>
+                    <span className='cq-public__button' onClick={this.handleBuy}>
+                        Free
+                    </span>
                 </CQViewQuizList>
 {/* =======
 //
