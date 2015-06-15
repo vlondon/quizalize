@@ -2,10 +2,13 @@ var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
 var TopicConstants = require('createQuizApp/constants/TopicConstants');
 var QuizConstants = require('createQuizApp/constants/QuizConstants');
 
+var TopicActions = require('createQuizApp/actions/TopicActions');
+
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
+var storeInit = false;
 
 var _topics = [];
 // subjects come (for now) from the public quizzes
@@ -31,11 +34,19 @@ var sortPublicTopics = function(topics){
 var TopicStore = assign({}, EventEmitter.prototype, {
 
     getTopics: function() {
-        return _topics;
+        console.log('_topics', _topics);
+        return _topics.slice();
+    },
+
+    getTopicById: function(topicId){
+        var result = _publicTopics.filter(t => t.uuid === topicId);
+        return result.length === 1 ? result[0] : undefined;
     },
 
     getPublicTopics: function(){
-        return _publicTopics;
+        console.log('_publicTopics', _publicTopics);
+
+        return sortPublicTopics(_publicTopics.slice());
     },
 
 
@@ -47,7 +58,10 @@ var TopicStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
-
+        if (!storeInit){
+            storeInit = true;
+            TopicActions.loadPublicTopics();
+        }
         this.on(CHANGE_EVENT, callback);
     },
 
@@ -67,7 +81,6 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case QuizConstants.QUIZZES_LOADED:
         case TopicConstants.TOPICS_LOADED:
-
             _topics = action.payload.topics;
             TopicStore.emitChange();
             break;
@@ -78,7 +91,8 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             break;
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
-            _publicTopics = sortPublicTopics(action.payload);
+            storeInit = true;
+            _publicTopics = action.payload;
             TopicStore.emitChange();
             break;
 

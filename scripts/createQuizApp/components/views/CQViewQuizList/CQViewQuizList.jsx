@@ -1,5 +1,10 @@
 var React = require('react');
+
+var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
+var TopicStore = require('createQuizApp/stores/TopicStore');
+
+
 var CQViewQuizList = React.createClass({
 
     propTypes: {
@@ -18,9 +23,37 @@ var CQViewQuizList = React.createClass({
     },
 
     getInitialState: function() {
-        return {
-            selectedQuizzes: []
+        var initialState = {
+            selectedQuizzes: [],
+            search: {
+                string: '',
+            },
+            quizzes: this.getQuizzesState()
         };
+
+        return initialState;
+    },
+
+    componentDidMount: function() {
+        TopicStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        TopicStore.removeChangeListener(this.onChange);
+    },
+
+    getQuizzesState: function(){
+        var quizzes = this.props.quizzes.map(quiz => {
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+        });
+        return quizzes;
+    },
+
+    onChange: function(){
+        var quizzes = this.getQuizzesState();
+        console.log('new quizzes loaded', quizzes);
+        this.setState({quizzes});
     },
 
     getDefaultProps: function() {
@@ -42,10 +75,9 @@ var CQViewQuizList = React.createClass({
         }
     },
 
-    handleChange: function(quiz, event){
+    handleChange: function(quiz){
         var selectedQuizzes = this.state.selectedQuizzes.slice();
         var isSelected = selectedQuizzes.indexOf(quiz.uuid) === -1;
-        console.log('some quiz selected', isSelected);
 
 
         if (isSelected === true){
@@ -57,13 +89,20 @@ var CQViewQuizList = React.createClass({
         this.props.onSelect(selectedQuizzes);
     },
 
+    handleSearch: function(string){
+        console.log('searching using', string);
+        var quizzes = this.getQuizzesState();
+        quizzes = quizzes.filter(q => q.meta.name.toLowerCase().indexOf(string.toLowerCase()) !== -1);
+        this.setState({quizzes});
+    },
+
     render: function() {
 
         var author;
         var select;
         var categoryName = function(quiz){
-            if (quiz.category && quiz.category.name){
-                return (<span className="cq-viewquizlist__quizcategory">{quiz.category.name}</span>);
+            if (quiz.meta.category){
+                return (<span className="cq-viewquizlist__quizcategory">{quiz.meta.category}</span>);
             }
             return undefined;
         };
@@ -100,36 +139,41 @@ var CQViewQuizList = React.createClass({
         }
 
         return (
-            <ul className={`cq-viewquizlist ${this.props.className}`}>
-                {this.props.quizzes.map((quiz, key) => {
-                    return (
-                        <li className="cq-viewquizlist__quiz" key={key} onClick={this.handleClick.bind(this, quiz)}>
+            <div>
+                <CQViewQuizFilter
+                    onSearchInput={this.handleSearch}/>
+                <ul className={`cq-viewquizlist ${this.props.className}`}>
+                    {this.state.quizzes.map((quiz, key) => {
+                        return (
+                            <li className="cq-viewquizlist__quiz" key={key} onClick={this.handleClick.bind(this, quiz)}>
 
-                            {select(quiz)}
+                                {select(quiz)}
 
-                            <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.meta.name} image={quiz.settings && quiz.settings.imageUrl}>
-                                <i className="zz-ic_quizalize"/>
-                            </CQQuizIcon>
+                                <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.meta.name} image={quiz.meta.imageUrl}>
+                                    <i className="zz-ic_quizalize"/>
+                                </CQQuizIcon>
 
 
-                            <div className="cq-viewquizlist__quiz-inner">
-                                <div className="cq-viewquizlist__quizname">{quiz.name}</div><br/>
-                                {author}
+                                <div className="cq-viewquizlist__quiz-inner">
+                                    <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
+                                    {quiz.meta.subject}
+                                    {author}
 
-                                <div className="cq-viewquizlist__quizextra">
-                                    {categoryName(quiz)}
+                                    <div className="cq-viewquizlist__quizextra">
+                                        {quiz._category.name}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="cq-viewquizlist__extras">
+                                <div className="cq-viewquizlist__extras">
 
-                                {childActionHandler(this.props.children, quiz, key)}
-                            </div>
+                                    {childActionHandler(this.props.children, quiz, key)}
+                                </div>
 
-                        </li>
-                    );
-                })}
-            </ul>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
         );
     }
 
