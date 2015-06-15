@@ -105,7 +105,7 @@ var CQQuizzes = React.createClass({
                                                         {quiz.meta.subject}
                                                     </span>
                                                     <span>
-                                                        {quiz.meta.category.name}
+                                                        {quiz.category.name}
                                                     </span>
 
                                                 </h4>

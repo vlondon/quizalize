@@ -19,8 +19,8 @@ var _questionsTopicIdToTopic = function(quiz){
     };
 
 
-    if (quiz.questions && quiz.questions.length > 0){
-        quiz.questions = quiz.questions.map(question => {
+    if (quiz.payload.questions && quiz.payload.questions.length > 0){
+        quiz.payload.questions = quiz.payload.questions.map(question => {
             question._topic = findTopicName(question.topicId);
             return question;
         });
@@ -125,20 +125,21 @@ var QuizActions = {
                 //
                 var getCategoryFormUuid = function(){
 
-                    if (!quiz.categoryId) {
-                        var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                        quiz.categoryId = fq.categoryId;
-                    }
+                    // if (!quiz.categoryId) {
+                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
+                    //     quiz.categoryId = fq.categoryId;
+                    // }
                     //
-                    if (quiz.categoryId) {
-                        var topicFound = topics.filter( t => t.uuid === quiz.categoryId )[0];
+                    if (quiz.meta.categoryId) {
+                        var topicFound = topics.filter( t => t.uuid === quiz.meta.categoryId )[0];
+                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
                         return topicFound ? topicFound.name : '';
                     }
                     return '';
 
                 };
 
-                quiz.category = getCategoryFormUuid();
+                quiz.meta.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
 
                 var conversion = QuizFormat.convert(quiz);
@@ -236,7 +237,7 @@ var QuizActions = {
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.subject,
+                    subject: quiz.meta.subject,
                     name: quiz.meta.category,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
