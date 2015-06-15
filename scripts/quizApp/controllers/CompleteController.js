@@ -138,8 +138,6 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     //     }
     // });
 
-
-
     QuizData.getTopics(function(data) {
         self.alltopics = data;
         self.totals = calculateTotals(self.data.report);
@@ -169,7 +167,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         }
         self.showButtons = true;
         // renderReactComponent();
-    });
+    },self.previewMode);
 
 
     $log.debug("Complete Controller", self);

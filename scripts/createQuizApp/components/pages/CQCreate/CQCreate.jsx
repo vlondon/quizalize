@@ -102,10 +102,7 @@ var CQCreate = React.createClass({
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        console.log("Quiz",quiz.meta);
-        console.log("SEttings",newSettings);
         var meta = assign(quiz.meta,newSettings);
-        console.log("after",quiz.meta);
         quiz.meta = meta;
         this.setState({quiz});
     },

@@ -407,9 +407,17 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         getCategories: function() {
             return categories;
         },
-        getTopics: function(callback) {
+        getTopics: function(callback,preview) {
             if (!topicsLoaded) {
-                if (classCode) {
+                if (!!preview) {
+                    zzish.listCategories( sessionStorage.getItem("profileId"), function(err, data) {
+                        if (!err) {
+                            callback(data);
+                        }
+                        $rootScope.$digest();
+                    });
+                }
+                else if (!classCode) {
                     zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
 
                         if (!err) {
