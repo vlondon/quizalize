@@ -262,13 +262,13 @@ exports.getAllQuizzes = function(req, res) {
                 // //             res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + array.length + ') \n');
                 // cb();
 
-                request.post('http://localhost:3001/create/' + quiz.profileId + '/quizzes/' + quiz.uuid)
+                request.post('http://localhost:3001/create/' + quiz.meta.profileId + '/quizzes/' + quiz.uuid)
                     .send(quiz)
                     .end(function(error){
                         if (error) {
-                            res.write('Failed to save quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + (array.length - content.length) + '/' + content.length + ') \n');
+                            res.write('Failed to save quiz ' + quiz.uuid + ' from user ' + quiz.meta.profileId + '. (' + (array.length - content.length) + '/' + content.length + ') \n');
                         } else {
-                            res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.profileId + '. (' + array.length + ') \n');
+                            res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.meta.profileId + '. (' + array.length + ') \n');
                             // resolve(res.body);
                         }
                         cb();
