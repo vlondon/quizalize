@@ -3,7 +3,7 @@ var AppDispatcher           = require('createQuizApp/dispatcher/CQDispatcher');
 var TransactionApi          = require('createQuizApp/actions/api/TransactionApi');
 var TransactionConstants    = require('createQuizApp/constants/TransactionConstants');
 var Promise                 = require('es6-promise').Promise;
-
+var QuizActions             = require('createQuizApp/actions/QuizActions');
 
 
 var TransactionActions = {
@@ -26,10 +26,12 @@ var TransactionActions = {
             TransactionApi.put(transaction)
                 .then(function(){
                     console.log('transaction saved saved');
+                    QuizActions.loadQuizzes();
                     AppDispatcher.dispatch({
                         actionType: TransactionConstants.TRANSACTION_NEW,
                         payload: transaction
                     });
+                    resolve();
                 })
                 .catch(reject);
         });

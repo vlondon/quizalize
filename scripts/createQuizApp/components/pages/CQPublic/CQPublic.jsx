@@ -76,7 +76,6 @@ var CQPublic = React.createClass({
                             price: 0
                         }
                     };
-                    TransactionActions.saveNewTransaction(newTransaction);
 
                     swal({
                         title: 'Working…',
@@ -85,6 +84,17 @@ var CQPublic = React.createClass({
                     });
 
                     console.log('storing transaction', newTransaction);
+                    TransactionActions.saveNewTransaction(newTransaction)
+                        .then(function(){
+                            swal.close();
+                            setTimeout(()=>{
+                                swal({
+                                    title: 'Purchase complete!',
+                                    text: 'You will find the new content in your quizzes',
+                                    type: 'success'
+                                });
+                            }, 100);
+                        });
 
                 }, 300);
             }

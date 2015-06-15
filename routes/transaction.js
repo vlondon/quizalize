@@ -55,8 +55,15 @@ exports.post = function(req, res){
 
     saveTransaction(data, profileId)
         .then(function(){
-            res.status = 200;
-            res.send();
+            processTransactions(data, profileId)
+                .then(function(){
+                    res.status = 200;
+                    res.send();
+                })
+                .catch(function(){
+                    res.status = 400;
+                    res.send();
+                });
         })
         .catch(function(){
             res.status = 400;
@@ -66,16 +73,21 @@ exports.post = function(req, res){
 
 var saveTransaction = function(transaction, profileId){
     return new Promise(function(resolve, reject){
-        zzish.postContent(profileId, TRANSACTION_CONTENT_TYPE, transaction.uuid, transaction.meta, transaction.payload, function(err, resp){
-            if (!err) {
-                resolve();
+        zzish.postContent(
+            profileId,
+            TRANSACTION_CONTENT_TYPE,
+            transaction.uuid,
+            transaction.meta,
+            transaction.payload,
+            function(err, resp){
+                if (!err) {
+                    resolve();
+                } else {
+                    reject();
 
-            } else {
-                reject();
+                }
 
-            }
-
-        });
+            });
     });
 };
 
@@ -114,8 +126,10 @@ var processTransactions = function(transaction, profileId){
                 reject(err2);
             } else {
                 console.log('quiz', quiz);
-                resolve(cloneQuiz(quiz, profileId));
-                // res.send(resp2);
+                var clonedQuiz = cloneQuiz(quiz, profileId);
+                saveQuiz(clonedQuiz, profileId)
+                    .then(resolve)
+                    .catch(reject);
             }
             // we need to update the following fields
         });
