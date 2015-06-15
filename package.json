@@ -59,6 +59,7 @@
     "katex": "Khan/KaTeX",
     "kolor": "^1.1.6",
     "moment": "^2.10.3",
+    "multer": "^0.1.8",
     "node-sass": "^3.1.2",
     "node-uuid": "^1.4.3",
     "object-assign": "^2.0.0",

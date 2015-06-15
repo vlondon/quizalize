@@ -11,6 +11,7 @@ var quiz        = require('./routes/quiz');
 var appContent  = require('./routes/appContent');
 var user        = require('./routes/user');
 var proxy       = require('express-http-proxy');
+var multer      = require('multer');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -26,6 +27,7 @@ app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded());
+app.use(multer({dest: './uploads/'})); // Image uploads
 
 //The static pages:
 app.get('/quiz/view/:page', function(req, res){
@@ -76,6 +78,7 @@ app.get('/create/:profileId/apps/', appContent.list);
 app.get('/create/:profileId/apps/:id', appContent.get);
 app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 app.post('/create/:profileId/apps/:id', appContent.post);
+app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
 app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);

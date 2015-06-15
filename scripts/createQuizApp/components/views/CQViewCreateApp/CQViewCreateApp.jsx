@@ -1,8 +1,9 @@
 var React = require('react');
 var assign = require('object-assign');
-
-
 var AppActions = require('createQuizApp/actions/AppActions');
+
+
+var appPicture;
 
 var CQViewCreateApp = React.createClass({
 
@@ -12,6 +13,7 @@ var CQViewCreateApp = React.createClass({
 
     getInitialState: function() {
         return {
+            imageData: null,
             app: {
                 meta: {
                     name: undefined,
@@ -43,7 +45,12 @@ var CQViewCreateApp = React.createClass({
 
     handleSave: function(){
         console.log('about to save', this.state.app);
-        AppActions.saveNewApp(this.state.app);
+        AppActions.saveNewApp(this.state.app, appPicture);
+    },
+    // when a file is passed to the input field, retrieve the contents as a
+    // base64-encoded data URI and save it to the component's state
+    handleAppPicture: function(ev){
+        appPicture = ev.target.files[0];
     },
 
     render: function() {
@@ -70,9 +77,10 @@ var CQViewCreateApp = React.createClass({
 
                 <div className="cq-viewcreateapp__formelement">
                     <label htmlFor="iconURL">Icon image</label>
-                    <input type="text" id="iconURL"
-                        onChange={this.handleChange.bind(this, 'iconURL')}
-                        value={this.state.app.meta.iconURL}/>
+                    <input type="file"
+                        ref="profilePicture"
+                        accept="image/*"
+                        onChange={this.handleAppPicture}/>
 
                 </div>
 

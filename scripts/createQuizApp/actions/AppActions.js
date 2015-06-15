@@ -18,18 +18,48 @@ var AppActions = {
             });
     },
 
-    saveNewApp: function(app){
-        return new Promise(function(resolve, reject){
-            app.uuid = app.uuid || uuid.v4();
-            AppApi.putApp(app)
-                .then(function(){
-                    AppDispatcher.dispatch({
-                        actionType: AppConstants.APP_CREATED,
-                        payload: app
-                    });
-                })
-                .catch(reject);
-        });
+    saveNewApp: function(app, appIcon){
+        console.log('about to save', app, appIcon);
+
+        app.uuid = app.uuid || uuid.v4();
+
+        var handleSave = function(icon){
+            return new Promise(function(resolve, reject){
+
+                if (icon) {
+                    app.meta.iconURL = icon;
+                }
+                console.log('saving', app);
+                AppApi.putApp(app)
+                    .then(function(){
+                        console.log('app saved');
+                        AppDispatcher.dispatch({
+                            actionType: AppConstants.APP_CREATED,
+                            payload: app
+                        });
+                    })
+                    .catch(reject);
+            });
+        };
+
+        if (appIcon !== undefined){
+            return new Promise((resolve, reject) => {
+                this.appPicture(app.uuid, appIcon)
+                    .then(function(response){
+                        console.log('we got image uploaded?', response);
+                        return handleSave(response);
+                    })
+                    .then(resolve)
+                    .catch(reject);
+
+                });
+        } else {
+            return handleSave();
+        }
+    },
+
+    appPicture: function(appId, file){
+        return AppApi.uploadMedia(appId, file);
     }
 
 

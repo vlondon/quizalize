@@ -30,10 +30,10 @@ var CQViewAppGrid = React.createClass({
                 {this.props.apps.map((app, key) => {
                     return (
                         <li className="cq-appgrid__app" key={key}>
-                            <CQQuizIcon className="cq-appgrid__appicon" name={app.name} image={app.imageUrl}/>
+                            <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
                             <div className="cq-appgrid__appdetails">
-                                <div className="cq-appgrid__appname">{app.name}</div>
+                                <div className="cq-appgrid__appname">{app.meta.name}</div>
                             </div>
 
                         </li>

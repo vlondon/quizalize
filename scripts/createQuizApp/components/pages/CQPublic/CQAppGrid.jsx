@@ -30,12 +30,13 @@ var CQAppGrid = React.createClass({
         return (
             <ul className={`app-grid ${this.props.className}`}>
                 {this.state.apps.map((app, key) => {
+                    console.log('appp', app);
                     return (
                         <li className="cq-public__app" key={key}>
-                            <CQQuizIcon className="cq-public__appicon" name={app.name} image={app.imageUrl}/>
+                            <CQQuizIcon className="cq-public__appicon" name={app.meta.name} image={app.meta.imageUrl}/>
 
                             <div className="cq-public__appdetails">
-                                <div className="cq-public__appname">{app.name}</div>
+                                <div className="cq-public__appname">{app.meta.name}</div>
                                 <div className="cq-public__appauthor">
                                     <div>by</div>
                                     <div className="cq-public__appauthor--avatar" style={profilePicture(app.author.avatar)}/>

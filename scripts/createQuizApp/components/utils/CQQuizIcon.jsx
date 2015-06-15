@@ -30,6 +30,17 @@ var CQQuizIcon = React.createClass({
         image: React.PropTypes.string,
         children: React.PropTypes.ReactElement
     },
+
+    getInitialState: function() {
+        var image = this.props.image;
+
+        if (this.props.image && this.props.image.indexOf('http') === -1) {
+            image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
+        }
+        return {
+            image
+        };
+    },
     render: function() {
         var randomIndex, image;
         if (this.props.name){
@@ -41,13 +52,14 @@ var CQQuizIcon = React.createClass({
         }
 
 
+
         var color = kolor(colours[randomIndex]);
         var style = {
             backgroundImage: `linear-gradient(${color.fadeOut(0.5)}, ${color.lighten(-0.2).fadeOut(0.5)})`
         };
 
-        if (this.props.image){
-            style.backgroundImage = `url(${this.props.image})`;
+        if (this.state.image){
+            style.backgroundImage = `url(${this.state.image})`;
         } else if (this.props.children) {
             image = this.props.children;
         } else {
