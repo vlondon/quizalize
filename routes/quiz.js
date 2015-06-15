@@ -3,7 +3,7 @@ var config = require('../config.js');
 var email = require("../email");
 var querystring = require('querystring');
 var zzish = require("zzishsdk");
-var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = '##34dsadfasdf££FE';
+var crypto = require('crypto'), algorithm = 'aes-256-ctr', password = '##34dsadfasdf££FE';
 var QUIZ_CONTENT_TYPE = "quiz";
 
 var request = require('superagent');
@@ -378,6 +378,10 @@ exports.postQuiz = function(req, res){
     var profileId = req.params.profileId;
     var data = req.body;
 
+    if (data.meta.created === undefined){
+        data.meta.created = Date.now();
+    }
+    data.meta.updated = Date.now();
     console.log("Console,", JSON.stringify(data.meta));
 
     zzish.postContent(profileId, QUIZ_CONTENT_TYPE, req.params.id, data.meta, data.payload, function(err, resp){

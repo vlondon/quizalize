@@ -3,6 +3,7 @@ var assign = require('object-assign');
 var QuizFormat = {
 
     allQuestionsWithId: function allQuestionsWithId(quiz) {
+        console.info('Running quiz format');
         var converted = false;
 
         quiz.payload.questions.forEach(function (question) {
@@ -12,6 +13,13 @@ var QuizFormat = {
             }
         });
 
+        if (quiz.meta.created === undefined){
+            converted = true;
+        }
+
+        if (quiz.meta.updated === undefined){
+            converted = true;
+        }
         return { quiz: quiz, converted: converted };
     },
 
