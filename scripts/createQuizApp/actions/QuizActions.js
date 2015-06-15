@@ -90,7 +90,7 @@ var QuizActions = {
 
                     quiz.category = topic || {};
 
-                    return QuizFormat.convert(quiz);
+                    return QuizFormat.convert(quiz).quiz;
                 });
 
 
