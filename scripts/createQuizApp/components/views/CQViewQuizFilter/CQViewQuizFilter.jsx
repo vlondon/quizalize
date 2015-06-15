@@ -1,4 +1,6 @@
 var React = require('react');
+var TopicStore = require('createQuizApp/stores/TopicStore');
+
 
 var CQviewQuizFilter = React.createClass({
 
@@ -7,9 +9,26 @@ var CQviewQuizFilter = React.createClass({
     },
 
     getInitialState: function() {
-        return {
-            searchString: undefined
-        };
+        var initialState = this.getState();
+        initialState.searchString = undefined;
+        return initialState;
+    },
+
+    componentDidMount: function() {
+        TopicStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        TopicStore.removeChangeListener(this.onChange);
+    },
+
+    onChange: function(){
+        this.setState(this.getState());
+    },
+
+    getState: function(){
+        var topics = TopicStore.getPublicTopics();
+        return {topics};
     },
 
     handleSearch: function(ev){
@@ -28,7 +47,14 @@ var CQviewQuizFilter = React.createClass({
                         onChange={this.handleSearch}/>
                 </div>
                 <div className="col-md-2">
-                    Order by
+                    <select>
+                        {this.state.topics.map(topic=>{
+                            return (
+                                <option>{topic.name}</option>
+                            )
+                        })}
+                    </select>
+
                 </div>
             </div>
         );

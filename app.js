@@ -80,6 +80,14 @@ app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
+app.get('/apps/', appContent.listPublicApps);
+// app.get('/create/:profileId/apps/:id', appContent.get);
+// app.post('/create/:profileId/apps/:id/delete', appContent.delete);
+// app.post('/create/:profileId/apps/:id', appContent.post);
+// app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
+
+
+
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
 app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
 

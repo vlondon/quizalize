@@ -21,10 +21,7 @@ var CQPublicSort = React.createClass({
     },
 
     onChange: function(){
-
         this.setState(this.getState());
-
-
     },
 
     getState: function(){

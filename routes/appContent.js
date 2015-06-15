@@ -16,6 +16,22 @@ exports.list = function(req, res){
     });
 };
 
+exports.listPublicApps = function(req, res){
+    var profileId = '44ddfbd4-7bec-4691-8089-9bde07766111';
+    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
+    var now = Date.now();
+    var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
+    var mongoQuery = {
+        $gt: lastWeek
+    };
+
+    zzish.searchContent(profileId, 'quiz', {updated: mongoQuery}, function(err, resp){
+        res.send(resp);
+    });
+
+};
+
+
 exports.get = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;

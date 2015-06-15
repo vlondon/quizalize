@@ -196,7 +196,7 @@ exports.getProfileById = function(req,res) {
 
 
 exports.getPublicQuizzes = function(req, res){
-    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, resp){
+    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         if (resp.contents) {
             var contents = [];
             for (var i in resp.contents) {
