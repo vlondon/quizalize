@@ -410,15 +410,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         getTopics: function(callback,preview) {
             if (!topicsLoaded) {
                 if (!!preview) {
-                    zzish.listCategories( sessionStorage.getItem("profileId"), function(err, data) {
-                        if (!err) {
-                            callback(data);
-                        }
-                        $rootScope.$digest();
-                    });
+                    callback([]);
                 }
                 else if (!classCode) {
-                    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, data) {
 
                         if (!err) {
                             data.categories = data.categories.filter(c => c !== null);

@@ -11,6 +11,8 @@ var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 var swal = require('sweetalert/dist/sweetalert-dev');
+
+var Promise = require('es6-promise').Promise;
 require('sweetalert/dev/sweetalert.scss');
 
 
@@ -136,9 +138,15 @@ var CQEdit = React.createClass({
     },
 
     handleFinished: function(){
-        router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
+        });
     },
-
+  /*  handlePreview: function(){
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, '_blank');
+        });
+    },*/
 
     render: function() {
 
