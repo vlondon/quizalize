@@ -59,6 +59,8 @@ exports.post = function(req, res){
                 .then(function(){
                     res.status = 200;
                     res.send();
+                    transaction.meta.status = 'processed';
+                    saveTransaction(transaction, profileId);
                 })
                 .catch(function(){
                     res.status = 400;
@@ -147,21 +149,23 @@ exports.process = function(req, res){
             res.send(err, 500);
         } else {
             var transactions = resp;
-            var transaction = transactions[0];
-            if (transaction.meta.status === 'pending'){
 
-                processTransactions(transaction, profileId)
-                    .then(function(clonedQuiz){
-                        return saveQuiz(clonedQuiz, profileId);
-                    })
-                    .then(function(quiz){
-                        transaction.meta.status = 'processed';
-                        saveTransaction(transaction, profileId);
-                        res.send(quiz);
-                    });
-            } else {
-                res.send(transaction);
-            }
+            transactions.forEach(function(transaction){
+                if (transaction.meta.status === 'pending'){
+
+                    processTransactions(transaction, profileId)
+                        .then(function(clonedQuiz){
+                            return saveQuiz(clonedQuiz, profileId);
+                        })
+                        .then(function(quiz){
+                            transaction.meta.status = 'processed';
+                            saveTransaction(transaction, profileId);
+                            // res.send(quiz);
+                        });
+                } else {
+                    // res.send(transaction);
+                }
+            });
 
         }
     });
