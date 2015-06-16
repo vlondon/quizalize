@@ -6,13 +6,35 @@
     $appIcon: 190px;
     $quizIcon: 40px;
 
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
+
     @at-root #{&}__list {
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
+    @at-root #{&}__info {
+        color: #FFF;
+        h1, h2, h3 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    }
 
+    @at-root #{&}__price {
+        text-transform: uppercase;
+        text-size: 21px;
+        margin-bottom: 20px;
+        color: #FFF;
+    }
+
+    @at-root #{&}__description {
+        color: #FFF;
+        text-align: left;
+    }
 
 
     @at-root #{&}__quiz {
@@ -34,7 +56,7 @@
         border-radius: 100%;
         margin: 5px;
         display: inline-block;
-        float: left;
+
         font-size: $appIcon - 10px;
         text-align: center;
         line-height: $appIcon;
@@ -91,14 +113,23 @@
     }
 
     @at-root #{&}__button {
-        background: $brand-color-grey-lighter;
-        color: $brand-color-grey;
+
+        color: $brand-color-black;
         margin: 0;
         padding: 5px;
+        font-weight: bold;
+        text-size: 21px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 20px;
+        border: none;
+        background: #FFF;
+        box-shadow: 0px 2px  0 $brand-color-black;
 
+        &:focus,
         &:hover {
-            background: $brand-color-grey;
-            color: $brand-color-grey-lighter;
+            background: $brand-color-grey-lighter;
+            /* color: $brand-color-grey-lighter; */
         }
     }
 }

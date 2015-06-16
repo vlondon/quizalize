@@ -52,7 +52,6 @@ var CQQuizIcon = React.createClass({
             image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
         }
 
-        console.log('setting image', image);
         return {image};
 
     },

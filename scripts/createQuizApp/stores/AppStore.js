@@ -1,6 +1,7 @@
 var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
 var AppConstants = require('createQuizApp/constants/AppConstants');
 var AppActions = require('createQuizApp/actions/AppActions');
+var TopicStore = require('createQuizApp/stores/TopicStore');
 // var AnalyticsConstants = require('createQuizApp/constants/AnalyticsConstants');
 
 var EventEmitter = require('events').EventEmitter;
@@ -25,10 +26,16 @@ var AppStore = assign({}, EventEmitter.prototype, {
     },
 
     getAppInfo: function(appId){
-        var appInfo = _appInfo[appId];
-        if (appInfo === undefined){
+        if (_appInfo[appId] === undefined){
             AppActions.loadApp(appId);
             _appInfo[appId] = {};
+        }
+        var appInfo = _appInfo[appId];
+        if (appInfo._quizzes){
+            appInfo._quizzes = appInfo._quizzes.map(quiz => {
+                quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+                return quiz;
+            });
         }
         return _appInfo[appId];
     },

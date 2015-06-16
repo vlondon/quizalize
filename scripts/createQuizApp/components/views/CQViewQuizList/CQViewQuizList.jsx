@@ -91,6 +91,7 @@ var CQViewQuizList = React.createClass({
     },
 
     handleSearch: function(obj){
+        obj = obj || this.state.savedSearch;
         console.log('search/sort', obj);
         var quizzes = this.props.quizzes.slice();
         if (obj && obj.sort === 'name') {
@@ -116,7 +117,7 @@ var CQViewQuizList = React.createClass({
 
         // console.log('new Quizzes', quizzes);
 
-        this.setState({quizzes});
+        this.setState({quizzes, savedSearch: obj});
     },
 
     render: function() {

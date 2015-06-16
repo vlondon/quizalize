@@ -57,17 +57,14 @@ exports.getApps = function(req, res){
     if (categoryId) {
         mongoQuery.categoryId = categoryId;
     }
-    if (appId){
-        mongoQuery.uuid = appId;
-    }
+    // if (appId){
+    //     mongoQuery.uuid = appId;
+    // }
     console.log('searching ', mongoQuery);
 
-    // zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
-    //     res.send(resp);
-    // });
-
-    zzish.getPublicContent(APP_CONTENT_TYPE, appId, function(err, result) {
-        res.send(result);
+    zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
+        res.send(resp);
     });
+
 
 };

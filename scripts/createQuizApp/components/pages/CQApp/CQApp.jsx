@@ -1,5 +1,6 @@
 var React = require('react');
 var AppStore = require('createQuizApp/stores/AppStore');
+var TopicStore = require('createQuizApp/stores/TopicStore');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
@@ -18,10 +19,12 @@ var CQApp = React.createClass({
 
     componentDidMount: function() {
         AppStore.addChangeListener(this.onChange);
+        TopicStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         AppStore.removeChangeListener(this.onChange);
+        TopicStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
@@ -30,6 +33,13 @@ var CQApp = React.createClass({
 
     getState: function(){
         var appInfo = AppStore.getAppInfo(this.props.appId);
+
+        if (appInfo.meta && appInfo.meta.colour){
+            console.log('new background oclor', appInfo.meta.colour);
+            document.body.style.backgroundColor = appInfo.meta.colour;
+        };
+
+
         return {appInfo};
     },
 
@@ -47,11 +57,14 @@ var CQApp = React.createClass({
                         image={this.state.appInfo.meta.iconURL}/>
 
                     <div className="cq-app__info">
-                        <h3>{this.state.appInfo.meta.name}</h3>
+                        <h2>{this.state.appInfo.meta.name}</h2>
                         <div className="cq-app__price">Free</div>
                         <button className="cq-app__button">
                             Use for free
                         </button>
+
+                    </div>
+                    <div className="cq-app__description">
                         <p>{this.state.appInfo.meta.description}</p>
                     </div>
 

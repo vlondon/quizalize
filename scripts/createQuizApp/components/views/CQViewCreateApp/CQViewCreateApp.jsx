@@ -65,35 +65,57 @@ var CQViewCreateApp = React.createClass({
     render: function() {
         return (
             <div className="cq-viewcreateapp">
-                Creating app
+                <h3>
+                    Creating app
+                </h3>
 
-                <div className="cq-viewcreateapp__formelement">
+                <div className="cq-viewcreateapp__formelement form-group">
+
                     <label htmlFor="name">Name of your app</label>
                     <input type="text" id="name"
+                        className="form-control"
                         onChange={this.handleChange.bind(this, 'name')}
                         value={this.state.app.meta.name}/>
 
                 </div>
 
-                <div className="cq-viewcreateapp__formelement">
+                <div className="cq-viewcreateapp__formelement form-group">
+
+                    <label htmlFor="name">Colour of your app (hex value, including hash)</label>
+                    <input type="text" id="colour"
+                        className="form-control"
+                        onChange={this.handleChange.bind(this, 'colour')}
+                        value={this.state.app.meta.colour}/>
+
+                </div>
+
+                <div className="cq-viewcreateapp__formelement form-group">
                     <label htmlFor="description">Description</label>
-                    <input type="text" id="description"
+                    <textarea type="text" id="description"
+                        className="form-control"
+                        rows="5"
                         onChange={this.handleChange.bind(this, 'description')}
                         value={this.state.app.meta.description}/>
 
                 </div>
 
 
-                <div className="cq-viewcreateapp__formelement">
+                <div className="cq-viewcreateapp__formelement form-group">
                     <label htmlFor="iconURL">Icon image</label>
                     <input type="file"
+                        className="form-control"
                         ref="profilePicture"
                         accept="image/*"
                         onChange={this.handleAppPicture}/>
 
                 </div>
 
-                n. of selected Quizzes {this.props.selectedQuizzes.length}
+
+
+                <div className="cq-viewcreateapp__counter">
+
+                    n. of selected Quizzes <b>{this.props.selectedQuizzes.length}</b>
+                </div>
 
                 <button className="btn btn-default" onClick={this.handleSave}>
                     Save
