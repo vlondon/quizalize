@@ -187,7 +187,7 @@ var QuizActions = {
                     cuuid = quiz.meta.categoryId;
                     if (result.categories !== undefined) {
                         for (var o in result.categories) {
-                            if (result.categories[o].uuid === quiz.categoryId) {
+                            if (result.categories[o].uuid === quiz.meta.categoryId) {
                                 category = result.categories[o];
                             }
                         }
