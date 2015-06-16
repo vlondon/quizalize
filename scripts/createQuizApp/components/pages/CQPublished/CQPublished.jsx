@@ -36,12 +36,14 @@ var CQPublished = React.createClass({
         var isMoreVisible = this.state ? this.state.isMoreVisible : false;
         var quiz = this._getQuiz();
         var settings = quiz.meta;
+        var newClass = '';
 
         var newState = {
             groups,
             selectedClass,
             isMoreVisible,
-            settings
+            settings,
+            newClass
         };
 
         return newState;
@@ -133,6 +135,7 @@ var CQPublished = React.createClass({
     },
 
     handleClick: function(){
+
         var redirect = function(quizId, classId){
             console.log('should redirect!');
             router.setRoute(`/quiz/published/${quizId}/${classId}/info`);
@@ -187,6 +190,8 @@ var CQPublished = React.createClass({
             classNameForm = undefined;
         }
 
+        var playButtonEnabled = this.state.selectedClass !== 'new' ||  (this.state.selectedClass === 'new' && this.state.newClass.length > 0);
+
         return (
             <CQPageTemplate className="container cq-published">
                 <div className="row well">
@@ -233,7 +238,9 @@ var CQPublished = React.createClass({
                                     </button>
                                 </div>
                                 <div className="col-sm-3"><br className="visible-xs"/>
-                                <button type="button" onClick={this.handleClick}
+                                <button type="button"
+                                    disabled={!playButtonEnabled}
+                                    onClick={this.handleClick}
                                     className="btn btn-block btn-primary">
                                     Play
                                 </button>

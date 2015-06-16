@@ -128,7 +128,8 @@ var QuizApi = {
     putQuiz: function(quiz){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
-
+            console.log("PUTTING QUIZ");
+            quiz.meta.profileId = uuid;
             if (!uuid) {
                 reject();
             } else {

@@ -102,10 +102,7 @@ var CQCreate = React.createClass({
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        console.log("Quiz",quiz.meta);
-        console.log("SEttings",newSettings);
         var meta = assign(quiz.meta,newSettings);
-        console.log("after",quiz.meta);
         quiz.meta = meta;
         this.setState({quiz});
     },
@@ -148,7 +145,7 @@ var CQCreate = React.createClass({
                                                     ng-model="ctrl.quiz.name"
                                                     placeholder="e.g. Plate Boundaries"
                                                     autofocus="true"
-                                                    tabIndex="3"
+                                                    tabIndex="1"
                                                     className="form-control"/><br/>
                                             </div>
                                             <label className="control-label col-sm-3">
@@ -161,7 +158,7 @@ var CQCreate = React.createClass({
                                                  onChange={this.handleChange.bind(this, 'subject')}
                                                  on-enter="ctrl.focusTopic();"
                                                  placeholder="e.g. Geography (Optional)"
-                                                 tabIndex="1"
+                                                 tabIndex="2"
                                                  className="form-control"/>
                                             <br/>
                                         </div>
@@ -175,7 +172,7 @@ var CQCreate = React.createClass({
                                             onChange={this.handleChange.bind(this, 'category')}
                                             on-enter="ctrl.focusQuiz();"
                                             placeholder="e.g. Earthquakes (Optional)"
-                                            tabIndex="2"
+                                            tabIndex="3"
                                             className="form-control"/>
                                         <br/>
                                     </div>

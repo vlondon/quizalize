@@ -284,8 +284,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (!err) {
                 currentQuiz = message;
             }
-            console.log('yahayayaya');
-            setQuiz(QuizFormat.process(message));
+            setQuiz(message);
             callback(err, message);
             $rootScope.$digest();
         })
@@ -304,7 +303,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             else {
                 zzish.getContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quizId, function (err, result) {
                     setQuiz(result);
-                    callback(err, QuizFormat.process(result));
+                    callback(err,result);
                     $rootScope.$digest();
                 });
             }
@@ -407,10 +406,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         getCategories: function() {
             return categories;
         },
-        getTopics: function(callback) {
+        getTopics: function(callback,preview) {
             if (!topicsLoaded) {
-                if (classCode) {
-                    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, data) {
+                if (!!preview) {
+                    callback([]);
+                }
+                else if (!classCode) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, data) {
 
                         if (!err) {
                             data.categories = data.categories.filter(c => c !== null);
@@ -471,7 +473,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         loadQuiz: function(catId,quizId,callback) {
             var cb = function(data){
-                callback(QuizFormat.process(data));
+                callback(data);
             }
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 cb(currentQuiz);

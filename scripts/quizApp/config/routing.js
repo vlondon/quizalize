@@ -46,7 +46,7 @@ angular.module('quizApp')
             controller: "CompleteController",
             controllerAs: "quiz"
         })
-        .when('/preview/:id', {
+        .when('/preview/:profileId/:id', {
             templateUrl: "/quiz/view/intro",
             controller: "PreviewController",
             controllerAs: "quiz"
