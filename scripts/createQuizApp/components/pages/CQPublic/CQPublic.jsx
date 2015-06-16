@@ -110,21 +110,52 @@ var CQPublic = React.createClass({
 
     handleViewChange: function(options){
         console.log('options', options);
+        switch (options){
+            case 'all':
+                this.setState({
+                    showApps: true,
+                    showQuizzes: true
+                });
+                break;
+
+            case 'quizzes':
+                this.setState({
+                    showApps: false,
+                    showQuizzes: true
+                });
+                break;
+            case 'apps':
+                this.setState({
+                    showApps: true,
+                    showQuizzes: false
+                });
+        }
     },
 
     render: function() {
 
-        return (
-            <CQPageTemplate className="container cq-public">
+        var appGrid, quizList;
+        if (this.state.showApps) {
+            appGrid = (<CQAppGrid/>);
+        }
 
-                <CQViewQuizFilter onViewChange={this.handleViewChange}/>
-                <CQAppGrid/>
-
+        if (this.state.showQuizzes) {
+            quizList = (
                 <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">
                     <span className='cq-public__button' onClick={this.handleBuy}>
                         Free
                     </span>
                 </CQViewQuizList>
+            );
+        }
+        return (
+            <CQPageTemplate className="container cq-public">
+
+                <CQViewQuizFilter onViewChange={this.handleViewChange}/>
+
+                {appGrid}
+                {quizList}
+
             </CQPageTemplate>
         );
     }

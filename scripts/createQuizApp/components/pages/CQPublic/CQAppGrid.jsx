@@ -1,13 +1,15 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var AppStore = require('createQuizApp/stores/AppStore');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 
-
 var CQAppGrid = React.createClass({
+
     propTypes: {
         className: React.PropTypes.string
     },
+
     getInitialState: function() {
         return {
             apps: AppStore.getPublicApps()
@@ -25,6 +27,11 @@ var CQAppGrid = React.createClass({
     onChange: function(){
         var apps = AppStore.getPublicApps();
         this.setState({apps});
+    },
+
+    handleClick: function(app){
+        console.log('app clicked', app);
+        router.setRoute(`/quiz/app/${app.uuid}`);
     },
 
     render: function() {
@@ -46,7 +53,7 @@ var CQAppGrid = React.createClass({
                 {this.state.apps.map((app, key) => {
                     console.log('appp', app);
                     return (
-                        <li className="cq-appgrid__app" key={key}>
+                        <li className="cq-appgrid__app" key={key} onClick={this.handleClick.bind(this, app)}>
                             <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
                             <div className="cq-appgrid__appdetails">

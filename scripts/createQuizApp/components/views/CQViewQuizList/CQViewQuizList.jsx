@@ -123,12 +123,6 @@ var CQViewQuizList = React.createClass({
 
         var author;
         var select;
-        var categoryName = function(quiz){
-            if (quiz.meta.category){
-                return (<span className="cq-viewquizlist__quizcategory">{quiz.meta.category}</span>);
-            }
-            return undefined;
-        };
 
         var childActionHandler = function(child, quiz){
             if (child) {

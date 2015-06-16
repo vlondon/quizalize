@@ -18,7 +18,7 @@ var CQPublished         = require('createQuizApp/components/pages/CQPublished');
 var CQPublishedInfo     = require('createQuizApp/components/pages/CQPublishedInfo');
 var CQHelp              = require('createQuizApp/components/pages/CQHelp');
 var CQSettings          = require('createQuizApp/components/pages/CQSettings');
-
+var CQApp               = require('createQuizApp/components/pages/CQApp');
 
 
 var pages = {
@@ -240,6 +240,18 @@ var pages = {
         renderer: function(props){
             React.render(
                 React.createElement(CQPublishedInfo, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    app: {
+        path: '/quiz/app/:appId',
+        pathRegEx: /\/quiz\/app\/([\w\-]+)/,
+        needsLogin: undefined,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQApp, props),
                 document.getElementById('reactApp')
             );
         }
