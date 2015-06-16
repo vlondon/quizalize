@@ -11,6 +11,7 @@ var quiz        = require('./routes/quiz');
 var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
+var search      = require('./routes/search');
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 
@@ -97,6 +98,7 @@ app.get('/apps/', appContent.listPublicApps);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
 
+app.get('/search', search.get)
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
 app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
