@@ -88,6 +88,7 @@ var CQAssignments = React.createClass({
     },
 
     render: function() {
+
         return (
             <CQPageTemplate className="container">
                 <div className="container">
@@ -97,6 +98,16 @@ var CQAssignments = React.createClass({
                         <div className="col-sm-12">
                             <div className="row">
                                 {this.state.groups.map(classN => {
+                                    var noQuizzes;
+
+                                    if (this._getAssignments(classN.code).length === 0) {
+                                        noQuizzes = (<div className="row">
+                                            <div className="col-xs-12">
+                                                <p>You don't have any quizzes assigned to this class.</p>
+                                            </div>
+                                        </div>);
+                                    }
+
                                     return (
 
                                         <div ng-repeat="class in quizzes.classList track by $index" ng-style="padding-bottom: 10px" className="row well">
@@ -107,11 +118,7 @@ var CQAssignments = React.createClass({
                                                 <p ng-style="color: #2a7ed0; font-size: 16px">
                                                     Your Class Code: {classN.code}
                                                 </p><br/>
-                                                <div ng-show="!quizzes.groupContents[class.code] || quizzes.groupContents[class.code].contents.length==0" className="row">
-                                                    <div className="col-xs-12">
-                                                        <p>You don't have any quizzes assigned to this class.</p>
-                                                    </div>
-                                                </div>
+                                                {noQuizzes}
                                                 {this._getAssignments(classN.code).map(assignment =>{
                                                     return (
                                                         <div ng-repeat="content in quizzes.groupContents[class.code].contents track by $index" ng-style="padding-bottom: 10px" className="row">
