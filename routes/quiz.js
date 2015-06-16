@@ -196,7 +196,7 @@ exports.getProfileById = function(req,res) {
 
 
 exports.getPublicQuizzes = function(req, res){
-    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
+    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, resp){
         if (resp.contents) {
             var contents = [];
             for (var i in resp.contents) {
@@ -212,106 +212,26 @@ exports.getPublicQuizzes = function(req, res){
 };
 
 exports.getPublicQuiz = function(req, res){
-    zzish.getPublicContent(QUIZ_CONTENT_TYPE, req.params.id, function(err, resp){
+    zzish.getPublicContent(QUIZ_CONTENT_TYPE,req.params.id, function(err, resp){
         res.send(resp);
     });
 };
 
-var QuizFormat = require('./../scripts/createQuizApp/actions/format/QuizFormat.js');
-exports.getAllQuizzes = function(req, res) {
-    zzish.listContent("AAA", QUIZ_CONTENT_TYPE, function(err, resp){
-        console.log('typeof ', resp.payload);
-        res.writeHead(200, { "Content-Type": "text/event-stream",
-                         "Cache-control": "no-cache" });
 
-        // quiz of the day
-        var content = resp.payload.filter(function(c){ return c.uuid === '7c84480c-3eaa-4f95-b3de-c151287878d7'; });
+exports.getMyQuizzes = function(req, res){
+    var profileId = req.params.profileId;
+    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
-        // old quiz a31ba612-be64-4881-8541-f1a861e823a1
-        // 0a7f2305-391c-46af-a599-77a27740953a
-        // var content = resp.filter(function(c){ return c.uuid === '0a7f2305-391c-46af-a599-77a27740953a'; });
-
-
-        // quiz without profileId??? 0cfddf86-2d06-4145-b970-00357c58323b
-        // var content = resp.payload.filter(function(c){ return c.uuid === '0cfddf86-2d06-4145-b970-00357c58323b'; });
-        var content = resp.payload;
-
-        var processContent = function processContent(array){
-            var quiz = array.shift();
-
-
-            if (quiz.payload){
-
-                quiz.payload = JSON.parse(quiz.payload);
-
-            }
-
-
-            var conversion = QuizFormat.convert(quiz);
-            quiz = conversion.quiz;
-
-            var cb = function(){
-                if (array.length > 0) {
-                    processContent(array);
-                } else {
-                    res.end('done');
-                }
-            };
-            // console.log('conversion', conversion.converted);
-            if (conversion.converted) {
-
-                //
-                console.log('quiz after', quiz);
-                res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.meta.profileId + '. (' + array.length + ') \n');
-                cb();
-
-                // request.post('http://localhost:3001/create/' + quiz.meta.profileId + '/quizzes/' + quiz.uuid)
-                //     .send(quiz)
-                //     .end(function(error){
-                //         if (error) {
-                //             res.write('Failed to save quiz ' + quiz.uuid + ' from user ' + quiz.meta.profileId + '. (' + (array.length - content.length) + '/' + content.length + ') \n');
-                //         } else {
-                //             res.write('Converting quiz ' + quiz.uuid + ' from user ' + quiz.meta.profileId + '. (' + array.length + ') \n');
-                //             // resolve(res.body);
-                //         }
-                //         cb();
-                //     });
-            } else {
-                cb();
-            }
-
-
-
-        };
-        //
-        processContent(content);
-        // // content.forEach(function(quiz, index){
-        //
-        // });
-        // res.end('done');
-        // setTimeout(function(){
-        //     res.write('test \n');
-        // }, 1000);
-        //
-        // setTimeout(function(){
-        //     res.write('test2 \n');
-        // }, 2000);
-        //
-        // setTimeout(function(){
-        //     res.end('test3 \n');
-        // }, 3000);
-
-        // res.send(resp);
+    zzish.listContent(profileId, QUIZ_CONTENT_TYPE,function(err, resp){
+        res.send(resp);
     });
-}
-
-
+};
 
 exports.getMyTopics = function(req, res){
     var profileId = req.params.profileId;
     //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
 
-    zzish.listCategories(profileId, function(err, resp) {
+    zzish.listCategories(profileId, function(err, resp){
         res.send(resp);
     });
 };
@@ -322,9 +242,9 @@ exports.postTopic = function(req,res){
 
     zzish.postCategory(profileId, data, function(err, resp){
         if(!err){
-            res.status = 200;
+            res.status = 200
         }else{
-            res.status = 400;
+            res.status = 400
         }
         res.send();
     });
@@ -336,20 +256,11 @@ exports.deleteTopic = function(req,res){
 
     zzish.deleteCategory(profileId, id, function(err, resp){
         if(!err){
-            res.status = 200;
+            res.status = 200
         }else{
-            res.status = 400;
+            res.status = 400
         }
         res.send();
-    });
-};
-
-exports.getMyQuizzes = function(req, res){
-    var profileId = req.params.profileId;
-    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
-
-    zzish.listContent(profileId, QUIZ_CONTENT_TYPE, function(err, resp){
-        res.send(resp);
     });
 };
 
