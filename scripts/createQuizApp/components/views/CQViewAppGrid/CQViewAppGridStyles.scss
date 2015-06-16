@@ -3,8 +3,11 @@
 
 .cq-appgrid {
 
-    $appIcon: 140px;
+    $appIcon: 190px;
     $quizIcon: 40px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 
     @at-root #{&}__app {
         display: inline-block;
@@ -15,7 +18,7 @@
     }
 
     @at-root #{&}__appicon {
-        border-radius: 10px;
+        border-radius: 100%;
         overflow: hidden;
         width: $appIcon;
         height: $appIcon;
@@ -28,8 +31,23 @@
             /* background: red; */
         }
     }
+
+    @at-root #{&}__appname {
+        font-weight: bold;
+        font-size: 16px;
+    }
     @at-root #{&}__appdetails {
         text-align: center;
+    }
+
+    @at-root #{&}__appquizzes {
+        color: $brand-color-red-light;
+    }
+
+    @at-root #{&}__appprice {
+        text-transform: uppercase;
+        font-size: 13px;
+        color: $brand-color-grey-light;
     }
 
 

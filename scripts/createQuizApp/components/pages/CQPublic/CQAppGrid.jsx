@@ -37,28 +37,28 @@ var CQAppGrid = React.createClass({
 
         var categoryName = function(quiz){
             if (quiz.category && quiz.category.name){
-                return (<span className="cq-public__quizcategory">{quiz.category.name}</span>);
+                return (<span className="cq-appgrid__quizcategory">{quiz.category.name}</span>);
             }
             return undefined;
         };
         return (
-            <ul className={`app-grid ${this.props.className}`}>
+            <ul className={`cq-appgrid ${this.props.className}`}>
                 {this.state.apps.map((app, key) => {
                     console.log('appp', app);
                     return (
-                        <li className="cq-public__app" key={key}>
-                            <CQQuizIcon className="cq-public__appicon" name={app.meta.name} image={app.meta.iconURL}/>
+                        <li className="cq-appgrid__app" key={key}>
+                            <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
-                            <div className="cq-public__appdetails">
-                                <div className="cq-public__appname">{app.meta.name}</div>
-                                <div className="cq-public__appauthor">
-                                    <div>by</div>
-                                    <div className="cq-public__appauthor--avatar"/>
-
+                            <div className="cq-appgrid__appdetails">
+                                <div className="cq-appgrid__appname">
+                                    {app.meta.name}
+                                </div>
+                                <div className="cq-appgrid__appquizzes">
+                                    {app.meta.quizzes.length} Quizzes
                                 </div>
 
-                                <div className="cq-public__quizextra">
-                                    <span className="cq-public__quizcategory">7-11</span>
+                                <div className="cq-appgrid__appprice">
+                                    Free
                                 </div>
                             </div>
 

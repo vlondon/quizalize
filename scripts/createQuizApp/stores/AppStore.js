@@ -59,6 +59,9 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
 
         case AppConstants.APP_SEARCH_LOADED:
             _publicApps = action.payload;
+            _publicApps.forEach(function(app){
+                app.meta.quizzes = app.meta.quizzes.split(',');
+            });
             AppStore.emitChange();
             break;
         //
