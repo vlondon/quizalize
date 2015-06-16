@@ -8,6 +8,10 @@
     margin: 0;
     padding: 0;
 
+    small {
+        color: $brand-color-grey-light;
+    }
+
     @at-root #{&}__quiz {
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;

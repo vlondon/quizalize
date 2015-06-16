@@ -11,6 +11,8 @@ var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
+var AppActions = require('createQuizApp/actions/AppActions');
+var AppStore = require('createQuizApp/stores/AppStore');
 
 
 var router = require('createQuizApp/config/router');
@@ -24,12 +26,14 @@ var CQPublic = React.createClass({
     },
 
     componentDidMount: function() {
-
+        AppActions.searchApps();
         QuizStore.addChangeListener(this.onChange);
+        AppStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
+        AppStore.addChangeListener(this.onChange);
     },
 
     getState: function(){
@@ -114,59 +118,12 @@ var CQPublic = React.createClass({
                 </p>
 
                 <CQAppGrid/>
-                <CQPublicSort className="cq-public__sort"/>
+
                 <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">
                     <span className='cq-public__button' onClick={this.handleBuy}>
                         Free
                     </span>
                 </CQViewQuizList>
-{/* =======
-//
-//                 {this.state.quizzes.map((category, categoryIndex) => {
-//                     return (<div className="row" key={categoryIndex}>
-//                         <div className="col-md-12">
-//                             <div className="quiz-topic-block">
-//                                 <a href="" className="quiz-link">
-//                                     <h2 className="quiz-topic-title text-center">
-//                                         {category.category.name}
-//                                     </h2>
-//                                 </a>
-//                                 <div className="quiz-list collapse in">
-//                                     {category.quizzes.map((quiz, index)=>{
-//                                         return (
-//                                             <div className="row quiz-info-row" key={index}>
-//                                                 <div className="col-xs-8">
-//                                                     <a href="" className="quiz-item">
-//                                                         <div className="quiz-title">{quiz.meta.name}</div>
-//                                                     </a>
-//                                                 </div>
-//                                                 <div className="col-xs-2">
-//
-//                                                     <div className="row quiz-info-row">
-//
-//                                                         <button className="btn btn-info btn-block" onClick={this.handleSet.bind(this, quiz)}>
-//                                                             Set this quiz
-//                                                         </button>
-//                                                     </div>
-//                                                 </div>
-//                                                 <div className="col-xs-2">
-//
-//                                                     <div className="row quiz-info-row">
-//                                                         <button onClick={this.handlePreview.bind(this, quiz)} className="btn btn-info btn-block">Preview</button>
-//                                                     </div>
-//                                                 </div>
-//
-//                                             </div>
-//
-//                                         );
-//                                     })}
-//
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>);
-//                 })}
-// >>>>>>> develop */}
             </CQPageTemplate>
         );
     }

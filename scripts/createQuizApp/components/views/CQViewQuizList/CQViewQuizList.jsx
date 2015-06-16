@@ -1,6 +1,6 @@
 var React = require('react');
 
-var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
+var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLocalSort');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
@@ -27,9 +27,6 @@ var CQViewQuizList = React.createClass({
     getInitialState: function() {
         var initialState = {
             selectedQuizzes: [],
-            search: {
-                string: '',
-            },
             quizzes: this.getQuizzesState()
         };
 
@@ -45,11 +42,7 @@ var CQViewQuizList = React.createClass({
     },
 
     getQuizzesState: function(){
-        var quizzes = this.props.quizzes.map(quiz => {
-            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
-            return quiz;
-        });
-        return quizzes;
+        return this.props.quizzes;
     },
 
     onChange: function(){
@@ -91,16 +84,32 @@ var CQViewQuizList = React.createClass({
         this.props.onSelect(selectedQuizzes);
     },
 
-    handleSearch: function(string){
-        console.log('searching using', string);
-        var quizzes = this.getQuizzesState();
-        console.log('quizzes to sort', quizzes);
-        quizzes = quizzes.filter(q =>{
-            if (q.meta.name) {
-                return q.meta.name.toLowerCase().indexOf(string.toLowerCase()) !== -1;
-            }
-            return false;
-        });
+    handleSearch: function(obj){
+        console.log('search/sort', obj);
+        var quizzes = this.props.quizzes.slice();
+        if (obj.sort === 'name') {
+            console.log('sorting by name');
+            quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
+        } else if (obj.sort === 'time') {
+            console.log('sorting by date');
+            quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? 1 : -1);
+        }
+
+        if (obj.name.length > 0){
+            quizzes = quizzes.filter( q => {
+                var nameMatch = false;
+                var categoryMatch = false;
+                nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+                if (q._category) {
+                    categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+                }
+
+                return nameMatch || categoryMatch;
+            });
+        }
+
+        // console.log('new Quizzes', quizzes);
+
         this.setState({quizzes});
     },
 
@@ -130,7 +139,7 @@ var CQViewQuizList = React.createClass({
         };
 
         if (this.props.showAuthor) {
-            author = (<div className="cq-viewquizlist__quizauthor">by <b>Quizalize Team</b></div>);
+            author = (<div className="cq-viewquizlist__quizauthor"> by <b>Quizalize Team</b></div>);
         }
 
         if (this.props.selectMode) {
@@ -151,8 +160,7 @@ var CQViewQuizList = React.createClass({
 
         return (
             <div>
-                <CQViewQuizFilter
-                    onSearchInput={this.handleSearch}/>
+                <CQViewQuizLocalSort onSearch={this.handleSearch}/>
                 <ul className={`cq-viewquizlist ${this.props.className}`}>
                     {this.state.quizzes.map((quiz, key) => {
                         return (
@@ -173,7 +181,9 @@ var CQViewQuizList = React.createClass({
                                     <div className="cq-viewquizlist__quizextra">
                                         {categoryNameLabel(quiz._category)}
                                         <br/>
-                                        Updated on {moment(quiz.meta.updated).fromNow()}
+                                        <small>
+                                            Updated on {moment(quiz.meta.updated).fromNow()}
+                                        </small>
                                     </div>
                                 </div>
 

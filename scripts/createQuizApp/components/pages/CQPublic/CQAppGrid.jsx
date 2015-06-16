@@ -13,6 +13,20 @@ var CQAppGrid = React.createClass({
             apps: AppStore.getPublicApps()
         };
     },
+
+    componentDidMount: function() {
+        AppStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        AppStore.addChangeListener(this.onChange);
+    },
+
+    onChange: function(){
+        var apps = AppStore.getPublicApps();
+        this.setState({apps});
+    },
+
     render: function() {
 
         var profilePicture = function(picture){
@@ -33,14 +47,14 @@ var CQAppGrid = React.createClass({
                     console.log('appp', app);
                     return (
                         <li className="cq-public__app" key={key}>
-                            <CQQuizIcon className="cq-public__appicon" name={app.meta.name} image={app.meta.imageUrl}/>
+                            <CQQuizIcon className="cq-public__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
                             <div className="cq-public__appdetails">
                                 <div className="cq-public__appname">{app.meta.name}</div>
                                 <div className="cq-public__appauthor">
                                     <div>by</div>
-                                    <div className="cq-public__appauthor--avatar" style={profilePicture(app.author.avatar)}/>
-                                    <b>{app.author.name}</b>
+                                    <div className="cq-public__appauthor--avatar"/>
+
                                 </div>
 
                                 <div className="cq-public__quizextra">

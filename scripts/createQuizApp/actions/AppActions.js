@@ -5,6 +5,7 @@ var AppConstants        = require('createQuizApp/constants/AppConstants');
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
+var debounce            = require('createQuizApp/utils/debounce');
 
 var AppActions = {
 
@@ -60,7 +61,20 @@ var AppActions = {
 
     appPicture: function(appId, file){
         return AppApi.uploadMedia(appId, file);
-    }
+    },
+
+    searchApps: debounce((searchString = '', categoryId) => {
+
+        AppApi.searchApps(searchString, categoryId)
+            .then(function(apps){
+
+                AppDispatcher.dispatch({
+                    actionType: AppConstants.APP_SEARCH_LOADED,
+                    payload: apps
+                });
+
+            });
+    }, 300)
 
 
 };

@@ -42,6 +42,22 @@ var QuizApi = {
         });
     },
 
+    searchQuizzes: function(search = '', categoryId){
+        return new Promise(function(resolve, reject){
+            request.post(`/search/quizzes`)
+                .send({search, categoryId})
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
+
+                });
+
+        });
+    },
+
 
     getQuiz: function(quizId){
         return new Promise(function(resolve, reject){

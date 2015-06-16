@@ -1,8 +1,8 @@
 var React = require('react');
 var TopicStore = require('createQuizApp/stores/TopicStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
 
-var CQviewQuizFilter = React.createClass({
+
+var CQViewQuizLocalSort = React.createClass({
 
     propTypes: {
         onSearchInput: React.PropTypes.func
@@ -30,7 +30,7 @@ var CQviewQuizFilter = React.createClass({
         var topics = TopicStore.getPublicTopics();
         return {
             topics,
-            searchString: '',
+            sort: 'time',
             categorySelected: 'all'
         };
     },
@@ -46,44 +46,41 @@ var CQviewQuizFilter = React.createClass({
     handleChange: function(ev){
 
         this.setState({
-            categorySelected: ev.target.value
+            sort: ev.target.value
         }, this.performSearch);
 
     },
 
     performSearch: function(){
-        var category = this.state.categorySelected === 'all' ? undefined : this.state.categorySelected;
-        console.log('searchign for', this.state.searchString, category);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category);
-        
+
+
+        this.props.onSearch({
+            sort: this.state.sort,
+            name: this.state.searchString
+        });
+        // QuizActions.searchPublicQuizzes(this.state.searchString, category);
     },
 
     render: function() {
         return (
-            <div className='cq-quizfilter'>
-                <div className='col-md-1'>
-                    Filter
+            <div className='cq-quizlocalfilter'>
+                <div className=''>
+                    Sort by
+                    <select value={this.state.sort} onChange={this.handleChange}>
+                        <option value='time'>Time</option>
+                        <option value='name'>Name</option>
+                    </select>
                 </div>
-                <div className='col-md-2'>
+                <div className=''>
                     Search by name:
                     <input type="text" value={this.state.searchString}
                         onChange={this.handleSearch}/>
                 </div>
-                <div className="col-md-2">
-                    <select onChange={this.handleChange} value={this.state.categorySelected}>
-                        <option value='all'>All</option>
-                        {this.state.topics.map(topic=>{
-                            return (
-                                <option value={topic.uuid} key={topic.uuid}>{topic.name}</option>
-                            );
-                        })}
-                    </select>
 
-                </div>
             </div>
         );
     }
 
 });
 
-module.exports = CQviewQuizFilter;
+module.exports = CQViewQuizLocalSort;

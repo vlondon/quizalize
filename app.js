@@ -96,7 +96,8 @@ app.get('/apps/', appContent.listPublicApps);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
 
-app.get('/search', search.get)
+app.post('/search/quizzes', search.getQuizzes);
+app.post('/search/apps', search.getApps);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
 app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);

@@ -71,7 +71,23 @@ var AppApi = {
                     }, reject);
             }
         });
-    }
+    },
+
+    searchApps: function(search = '', categoryId){
+        return new Promise(function(resolve, reject){
+            request.post(`/search/apps`)
+                .send({search, categoryId})
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
+
+                });
+
+        });
+    },
 };
 
 module.exports = AppApi;

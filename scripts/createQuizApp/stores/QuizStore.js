@@ -1,10 +1,14 @@
 var AppDispatcher   = require('createQuizApp/dispatcher/CQDispatcher');
 var QuizConstants   = require('createQuizApp/constants/QuizConstants');
+var TopicConstants  = require('createQuizApp/constants/TopicConstants');
 var QuizActions     = require('createQuizApp/actions/QuizActions');
 var TopicStore      = require('createQuizApp/stores/TopicStore');
 var EventEmitter    = require('events').EventEmitter;
 var assign          = require('object-assign');
 var uuid            = require('node-uuid');
+
+
+
 
 var CHANGE_EVENT = 'change';
 
@@ -50,12 +54,18 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
         console.warn('quizzes', _quizzes);
-        return _quizzes.slice();
+        var quizzes = _quizzes.slice();
+        quizzes = quizzes.map(quiz => {
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+        });
+        quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
+        return quizzes;
     },
 
     getQuizMeta: function(quizId) {
         for (var i in _quizzes) {
-            if (_quizzes[i].uuid==quizId) {
+            if (_quizzes[i].uuid === quizId) {
                 return _quizzes[i];
             }
         }
@@ -73,13 +83,20 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getPublicQuizzes: function(){
-
         if (!storeInitPublic){
             storeInitPublic = true;
             QuizActions.loadPublicQuizzes();
         }
+        var publicQuizzes = _publicQuizzes.slice();
+        // find their category
+        publicQuizzes = publicQuizzes.map(quiz=>{
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+
+        });
+        console.log('getting public quizzes', publicQuizzes);
         // return _publicQuizzes;
-        return _publicQuizzes.reverse();
+        return publicQuizzes.reverse();
     },
 
     getQuizOfTheDay: function(){
@@ -166,6 +183,9 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
+        case TopicConstants.PUBLIC_TOPICS_LOADED:
+            QuizStore.emitChange();
+            break;
 
         default:
             // no op

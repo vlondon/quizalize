@@ -10,6 +10,12 @@ var CQViewAppGrid = React.createClass({
         apps: React.PropTypes.array
     },
 
+    getDefaultProps: function() {
+        return {
+            apps: []
+        };
+    },
+
 
     render: function() {
 

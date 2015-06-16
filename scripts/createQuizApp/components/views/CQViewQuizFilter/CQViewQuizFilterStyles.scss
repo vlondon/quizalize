@@ -2,5 +2,6 @@
 @import './../../../../shared/scss/mixins';
 
 .cq-quizfilter {
-    width: calc(100% - 300px);
+    width: 100%;
+    @include clearfix();
 }

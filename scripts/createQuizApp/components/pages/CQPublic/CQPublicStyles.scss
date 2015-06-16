@@ -126,8 +126,8 @@
 
 
     @at-root #{&}__list {
-        float: left;
-        width: calc(100% - 300px);
+        
+        width: 100%;
     }
 
     @at-root #{&}__button {

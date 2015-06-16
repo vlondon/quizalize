@@ -8,7 +8,8 @@ var TopicConstants      = require('createQuizApp/constants/TopicConstants');
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
-var QuizFormat          = require('createQuizApp/actions/format/QuizFormat');
+var debounce            = require('createQuizApp/utils/debounce');
+
 
 var _questionsTopicIdToTopic = function(quiz){
 
@@ -143,21 +144,10 @@ var QuizActions = {
                 quiz.meta.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
 
-                var conversion = QuizFormat.convert(quiz);
-                quiz = conversion.quiz;
-                console.log('conversion', conversion);
-                if (conversion.converted) {
-                    // the quiz must get saved because of
-                    // data issues
-                    this.newQuiz(quiz);
-                    console.log('lets save the quiz', this, quiz);
-                } else {
-                    console.log('dispatching!');
-                    AppDispatcher.dispatch({
-                        actionType: QuizConstants.QUIZ_LOADED,
-                        payload: _questionsTopicIdToTopic(quiz)
-                    });
-                }
+                AppDispatcher.dispatch({
+                    actionType: QuizConstants.QUIZ_LOADED,
+                    payload: _questionsTopicIdToTopic(quiz)
+                });
 
             });
     },
@@ -174,43 +164,38 @@ var QuizActions = {
     },
 
 
-    loadPublicQuizzes: function(){
+    loadPublicQuizzes: function(searchString = ''){
         console.trace('QuizActions.loadPublicQuizzes called');
-        var processQuizList = function(result){
 
-            var categories = result.categories;
-            var quizzes = result.contents;
-            var findCategory = function(categoryId){
-                return categories.filter(cat => cat.uuid === categoryId)[0];
-            };
-            quizzes.forEach(quiz => {
-                quiz = QuizFormat.process(quiz);
-                quiz.category = findCategory(quiz.meta.categoryId);
-            });
-
-
+        var processQuizList = function(quizzes){
             return quizzes;
         };
 
-        QuizApi.getPublicQuizzes()
+        QuizApi.searchQuizzes(searchString)
             .then(function(quizzes){
+
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZZES_PUBLIC_LOADED,
                     payload: processQuizList(quizzes)
                 });
 
-                AppDispatcher.dispatch({
-                    actionType: TopicConstants.PUBLIC_TOPICS_LOADED,
-                    payload: quizzes.categories
-                });
             });
     },
 
 
 
-    searchPublicQuizzes: function(){
+    searchPublicQuizzes: debounce((searchString = '', categoryId) => {
 
-    },
+        QuizApi.searchQuizzes(searchString, categoryId)
+            .then(function(quizzes){
+
+                AppDispatcher.dispatch({
+                    actionType: QuizConstants.QUIZZES_PUBLIC_LOADED,
+                    payload: quizzes
+                });
+
+            });
+    }, 300),
 
     newQuiz: function(quiz){
 

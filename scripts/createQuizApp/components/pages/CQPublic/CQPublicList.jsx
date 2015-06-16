@@ -33,8 +33,8 @@ var CQPublicList = React.createClass({
 
 
                             <div className="cq-public__quiz-inner">
-                                <div className="cq-public__quizname">{quiz.name}</div><br/>
-                                <div className="cq-public__quizauthor">by <b>Quizalize Team</b></div>
+                                <div className="cq-public__quizname">{quiz.name}</div> <br/>
+                                <div className="cq-public__quizauthor"> by <b>Quizalize Team</b></div>
                             </div>
 
                             <div className="cq-public__quizextra">

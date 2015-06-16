@@ -8,7 +8,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _publicApps = require('./AppData/Apps');
+var _publicApps = [];
 var _apps = [];
 
 var storeInit = false;
@@ -54,6 +54,11 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case AppConstants.APP_LIST_LOADED:
             _apps = action.payload;
+            AppStore.emitChange();
+            break;
+
+        case AppConstants.APP_SEARCH_LOADED:
+            _publicApps = action.payload;
             AppStore.emitChange();
             break;
         //
