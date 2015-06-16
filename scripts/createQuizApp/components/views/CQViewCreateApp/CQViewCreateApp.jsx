@@ -1,7 +1,7 @@
 var React = require('react');
 var assign = require('object-assign');
 var AppActions = require('createQuizApp/actions/AppActions');
-
+var QuizStore = require('createQuizApp/stores/QuizStore');
 
 var appPicture;
 
@@ -21,30 +21,39 @@ var CQViewCreateApp = React.createClass({
                     iconURL: undefined
                 },
                 payload: {
-                    quizzes: []
+                    quizzes: [],
+                    categories: []
                 }
             }
         };
     },
 
     componentWillReceiveProps: function(nextProps) {
-        console.log('updating state', nextProps);
         var app = assign({}, this.state.app);
         app.payload.quizzes = nextProps.selectedQuizzes;
+        var categories = nextProps.selectedQuizzes.map(q => {
+            var quizzes = QuizStore.getQuizzes();
+            var quiz = quizzes.filter(qu => qu.uuid === q)[0];
+
+            return quiz._category.uuid;
+        });
+
+        app.meta.categories = categories.join(',');
+        app.meta.quizzes = app.payload.quizzes.join(',');
+
         this.setState({app});
     },
 
     handleChange: function(field, event) {
-        console.log('field', field, event.target.value);
+
         var app = assign({}, this.state.app);
         app.meta[field] = event.target.value;
-
 
         this.setState({app});
     },
 
     handleSave: function(){
-        console.log('about to save', this.state.app);
+
         AppActions.saveNewApp(this.state.app, appPicture);
     },
     // when a file is passed to the input field, retrieve the contents as a

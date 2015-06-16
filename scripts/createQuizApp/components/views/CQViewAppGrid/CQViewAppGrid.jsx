@@ -1,5 +1,5 @@
 var React = require('react');
-
+var AppActions = require('createQuizApp/actions/AppActions');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 
 
@@ -7,13 +7,19 @@ var CQViewAppGrid = React.createClass({
 
     propTypes: {
         className: React.PropTypes.string,
-        apps: React.PropTypes.array
+        apps: React.PropTypes.array,
+        editMode: React.PropTypes.bool
     },
 
     getDefaultProps: function() {
         return {
-            apps: []
+            apps: [],
+            editMode: false
         };
+    },
+
+    handleDelete: function(app){
+        AppActions.deleteApp(app);
     },
 
 
@@ -25,12 +31,19 @@ var CQViewAppGrid = React.createClass({
             };
         };
 
-        var categoryName = function(quiz){
-            if (quiz.category && quiz.category.name){
-                return (<span className="cq-appgrid__quizcategory">{quiz.category.name}</span>);
-            }
-            return undefined;
-        };
+
+        var deleteButton = function(){};
+
+        if (this.props.editMode){
+            deleteButton = (app) =>{
+                return (
+                    <button className="btn btn-danger" onClick={this.handleDelete.bind(this, app)}>
+                        Delete
+                    </button>
+                );
+            };
+        }
+
         return (
             <ul className={`cq-appgrid  ${this.props.className}`}>
                 {this.props.apps.map((app, key) => {
@@ -41,7 +54,7 @@ var CQViewAppGrid = React.createClass({
                             <div className="cq-appgrid__appdetails">
                                 <div className="cq-appgrid__appname">{app.meta.name}</div>
                             </div>
-
+                            {deleteButton(app)}
                         </li>
                     );
                 })}

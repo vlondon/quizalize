@@ -106,6 +106,7 @@ var CQQuizzes = React.createClass({
                 <div className="container">
                     <h2>Your apps</h2>
                     <CQViewAppGrid
+                        editMode={true}
                         apps={this.state.apps}/>
                 </div>
                 <div className="container">

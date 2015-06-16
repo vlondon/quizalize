@@ -19,8 +19,13 @@ var AppActions = {
             });
     },
 
+    deleteApp: function(app){
+        AppApi.delete(app)
+            .then(()=> this.loadApps() );
+    },
+
     saveNewApp: function(app, appIcon){
-        console.log('about to save', app, appIcon);
+
 
         app.uuid = app.uuid || uuid.v4();
 
@@ -30,10 +35,8 @@ var AppActions = {
                 if (icon) {
                     app.meta.iconURL = icon;
                 }
-                console.log('saving', app);
                 AppApi.putApp(app)
                     .then(function(){
-                        console.log('app saved');
                         AppDispatcher.dispatch({
                             actionType: AppConstants.APP_CREATED,
                             payload: app

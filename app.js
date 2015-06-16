@@ -77,6 +77,7 @@ app.post('/create/:profileId/quizzes/:id', quiz.postQuiz);
 app.get('/create/:profileId/apps/', appContent.list);
 app.get('/create/:profileId/apps/:id', appContent.get);
 app.post('/create/:profileId/apps/:id/delete', appContent.delete);
+app.post('/create/:profileId/apps', appContent.post);
 app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 

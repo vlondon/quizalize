@@ -1,5 +1,5 @@
 //general zzish config
-var config = require('../config.js');
+var uuid                = require('node-uuid');
 var zzish = require("zzishsdk");
 var fs = require('fs');
 var APP_CONTENT_TYPE = "app";
@@ -60,7 +60,12 @@ exports.post = function(req, res){
     var profileId = req.params.profileId;
     var data = req.body;
 
-    console.log("Console,", JSON.stringify(data.meta));
+    data.uuid = data.uuid || uuid.v4();
+    data.meta.profileId = data.meta.profileId || profileId;
+    data.meta.created = data.meta.created || Date.now();
+
+    data.meta.updated = Date.now();
+    data.meta.quizzes = data.payload.quizzes.join(',');
 
     zzish.postContent(profileId, APP_CONTENT_TYPE, req.params.id, data.meta, data.payload, function(err, resp){
         if (!err) {

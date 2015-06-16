@@ -95,7 +95,7 @@ var CQViewQuizList = React.createClass({
             quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? 1 : -1);
         }
 
-        if (obj.name.length > 0){
+        if (obj.name && obj.name.length > 0){
             quizzes = quizzes.filter( q => {
                 var nameMatch = false;
                 var categoryMatch = false;
