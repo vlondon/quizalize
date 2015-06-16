@@ -37,9 +37,24 @@ var CQQuizIcon = React.createClass({
         if (this.props.image && this.props.image.indexOf('http') === -1) {
             image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
         }
-        return {
-            image
-        };
+        return this.getImage();
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        this.setState(this.getImage(nextProps));
+    },
+
+    getImage: function(props){
+        props = props || this.props;
+
+        var image = props.image;
+        if (props.image && props.image.indexOf('http') === -1) {
+            image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
+        }
+
+        console.log('setting image', image);
+        return {image};
+
     },
     render: function() {
         var randomIndex, image;

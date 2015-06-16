@@ -3,7 +3,9 @@ var uuid                = require('node-uuid');
 var zzish = require("zzishsdk");
 var fs = require('fs');
 var APP_CONTENT_TYPE = "app";
+var QUIZ_CONTENT_TYPE = "quiz";
 var AWS  = require('./../awssdk');
+var Promise = require('es6-promise').Promise;
 
 
 
@@ -46,6 +48,41 @@ exports.get = function(req, res){
         }
     });
 };
+
+exports.getPublic = function(req, res){
+    var id = req.params.id;
+
+    var getQuiz = function(quizId){
+        return new Promise(function(resolve, reject){
+            console.log('trying to load', quizId);
+            zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err, resp){
+                if (!err) {
+                    delete resp.payload;
+                    resolve(resp);
+                } else {
+                    reject();
+                }
+            });
+        });
+    };
+
+
+    zzish.getPublicContent(APP_CONTENT_TYPE, id, function(err, resp){
+        if(!err){
+            // res.send(resp);
+            var promises = resp.payload.quizzes.map(function(quiz){ return getQuiz(quiz); });
+            Promise.all(promises)
+                .then(function(values){
+                    resp._quizzes = values;
+                    res.send(resp);
+                });
+
+        }else{
+            res.status(400).send();
+        }
+    });
+};
+
 
 exports.delete = function(req,res){
     var profileId = req.params.profileId;

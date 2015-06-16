@@ -1,5 +1,4 @@
 var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-
 var AppApi              = require('createQuizApp/actions/api/AppApi');
 var AppConstants        = require('createQuizApp/constants/AppConstants');
 var Promise             = require('es6-promise').Promise;
@@ -15,6 +14,16 @@ var AppActions = {
                 AppDispatcher.dispatch({
                     actionType: AppConstants.APP_LIST_LOADED,
                     payload: apps
+                });
+            });
+    },
+
+    loadApp: function(appId){
+        AppApi.getInfo(appId)
+            .then(function(appInfo){
+                AppDispatcher.dispatch({
+                    actionType: AppConstants.APP_INFO_LOADED,
+                    payload: appInfo
                 });
             });
     },

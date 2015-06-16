@@ -43,15 +43,13 @@ exports.getApps = function(req, res){
 
     var searchString = req.body.search;
     var categoryId = req.body.categoryId;
+    var appId = req.body.appId;
 
     var now = Date.now();
     var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
     var mongoQuery = {
-        // updated: {
-        //     $gt: lastWeek
-        // },
-        name: {
-            $regex: searchString, $options: 'i'
+        updated: {
+            $gt: lastWeek
         }
 
     };
@@ -59,9 +57,17 @@ exports.getApps = function(req, res){
     if (categoryId) {
         mongoQuery.categoryId = categoryId;
     }
+    if (appId){
+        mongoQuery.uuid = appId;
+    }
+    console.log('searching ', mongoQuery);
 
-    zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
-        res.send(resp);
+    // zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
+    //     res.send(resp);
+    // });
+
+    zzish.getPublicContent(APP_CONTENT_TYPE, appId, function(err, result) {
+        res.send(result);
     });
 
 };

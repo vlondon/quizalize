@@ -27,6 +27,28 @@ var AppApi = {
 
     },
 
+    getInfo: function(appId){
+        return new Promise(function(resolve, reject){
+
+            // reject();
+
+            var uuid = localStorage.getItem('cqUuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.get(`/apps/${appId}`)
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+            }
+        });
+    },
+
     delete: function(app){
         return new Promise(function(resolve, reject){
             // reject();

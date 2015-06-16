@@ -10,6 +10,7 @@ var CHANGE_EVENT = 'change';
 
 var _publicApps = [];
 var _apps = [];
+var _appInfo = {};
 
 var storeInit = false;
 
@@ -21,6 +22,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
     getPublicApps: function() {
         return _publicApps;
+    },
+
+    getAppInfo: function(appId){
+        var appInfo = _appInfo[appId];
+        if (appInfo === undefined){
+            AppActions.loadApp(appId);
+            _appInfo[appId] = {};
+        }
+        return _appInfo[appId];
     },
 
     emitChange: function() {
@@ -65,9 +75,12 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
             AppStore.emitChange();
             break;
         //
+        case AppConstants.APP_INFO_LOADED:
+            _appInfo[action.payload.uuid] = action.payload;
+            AppStore.emitChange();
+            break;
         // case AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED:
         //     _analyticsEnabled = false;
-        //     AppStore.emitChange();
         //     break;
 
 

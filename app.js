@@ -91,6 +91,7 @@ app.post('/create/:profileId/transaction/:id', transaction.post);
 
 
 app.get('/apps/', appContent.listPublicApps);
+app.get('/apps/:id', appContent.getPublic);
 // app.get('/create/:profileId/apps/:id', appContent.get);
 // app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 // app.post('/create/:profileId/apps/:id', appContent.post);
