@@ -6,6 +6,74 @@ var Promise             = require('es6-promise').Promise;
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
 
+
+var saveTransaction = function(transaction, profileId){
+    return new Promise(function(resolve, reject){
+        zzish.postContent(
+            profileId,
+            TRANSACTION_CONTENT_TYPE,
+            transaction.uuid,
+            transaction.meta,
+            transaction.payload,
+            function(err, resp){
+                if (!err) {
+                    resolve(resp);
+                } else {
+                    reject();
+
+                }
+
+            });
+    });
+};
+
+var cloneQuiz = function(quiz, profileId) {
+    quiz.meta.originalQuizId = quiz.uuid;
+    quiz.meta.authorId = quiz.meta.profileId;
+    quiz.uuid = uuid.v4();
+    quiz.meta.created = Date.now();
+    quiz.meta.updated = Date.now();
+    quiz.meta.profileId = profileId;
+
+    delete quiz.meta.live;
+    delete quiz.meta.featured;
+    delete quiz.meta.featureDate;
+
+    return quiz;
+};
+
+var saveQuiz = function(quiz, profileId) {
+    return new Promise(function(resolve, reject){
+
+        zzish.postContent(profileId, QUIZ_CONTENT_TYPE, quiz.uuid, quiz.meta, quiz.payload, function(err, resp){
+            if (!err) {
+                resolve(resp);
+            } else{
+                reject(err);
+            }
+        });
+    });
+};
+
+var processTransactions = function(transaction, profileId){
+    return new Promise(function(resolve, reject){
+        zzish.getContent(transaction.meta.profileId, 'quiz', transaction.meta.quizId, function(err2, quiz){
+            if (err2) {
+                reject(err2);
+            } else {
+                console.log('quiz', quiz);
+                var clonedQuiz = cloneQuiz(quiz, profileId);
+                saveQuiz(clonedQuiz, profileId)
+                    .then(resolve)
+                    .catch(reject);
+            }
+            // we need to update the following fields
+        });
+    });
+};
+
+
+
 exports.list = function(req, res){
     var profileId = req.params.profileId;
 
@@ -58,8 +126,8 @@ exports.post = function(req, res){
                 .then(function(){
                     res.status = 200;
                     res.send();
-                    transaction.meta.status = 'processed';
-                    saveTransaction(transaction, profileId);
+                    data.meta.status = 'processed';
+                    saveTransaction(data, profileId);
                 })
                 .catch(function(){
                     res.status = 400;
@@ -72,70 +140,6 @@ exports.post = function(req, res){
         });
 };
 
-var saveTransaction = function(transaction, profileId){
-    return new Promise(function(resolve, reject){
-        zzish.postContent(
-            profileId,
-            TRANSACTION_CONTENT_TYPE,
-            transaction.uuid,
-            transaction.meta,
-            transaction.payload,
-            function(err, resp){
-                if (!err) {
-                    resolve();
-                } else {
-                    reject();
-
-                }
-
-            });
-    });
-};
-
-var cloneQuiz = function(quiz, profileId) {
-    quiz.meta.originalQuizId = quiz.uuid;
-    quiz.meta.authorId = quiz.meta.profileId;
-    quiz.uuid = uuid.v4();
-    quiz.meta.created = Date.now();
-    quiz.meta.updated = Date.now();
-    quiz.meta.profileId = profileId;
-
-    delete quiz.meta.live;
-    delete quiz.meta.featured;
-    delete quiz.meta.featureDate;
-
-    return quiz;
-};
-
-var saveQuiz = function(quiz, profileId) {
-    return new Promise(function(resolve, reject){
-
-        zzish.postContent(profileId, QUIZ_CONTENT_TYPE, quiz.uuid, quiz.meta, quiz.payload, function(err, resp){
-            if (!err) {
-                resolve(resp);
-            } else{
-                reject(err);
-            }
-        });
-    });
-}
-
-var processTransactions = function(transaction, profileId){
-    return new Promise(function(resolve, reject){
-        zzish.getContent(transaction.meta.profileId, 'quiz', transaction.meta.quizId, function(err2, quiz){
-            if (err2) {
-                reject(err2);
-            } else {
-                console.log('quiz', quiz);
-                var clonedQuiz = cloneQuiz(quiz, profileId);
-                saveQuiz(clonedQuiz, profileId)
-                    .then(resolve)
-                    .catch(reject);
-            }
-            // we need to update the following fields
-        });
-    });
-};
 
 
 exports.process = function(req, res){

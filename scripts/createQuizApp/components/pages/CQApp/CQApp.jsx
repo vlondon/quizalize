@@ -2,6 +2,8 @@ var React = require('react');
 var AppStore = require('createQuizApp/stores/AppStore');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
+var TransactionActions = require('createQuizApp/actions/TransactionActions');
+
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
@@ -25,6 +27,7 @@ var CQApp = React.createClass({
     componentWillUnmount: function() {
         AppStore.removeChangeListener(this.onChange);
         TopicStore.removeChangeListener(this.onChange);
+        document.body.style.backgroundColor = '';
     },
 
     onChange: function(){
@@ -35,12 +38,67 @@ var CQApp = React.createClass({
         var appInfo = AppStore.getAppInfo(this.props.appId);
 
         if (appInfo.meta && appInfo.meta.colour){
-            console.log('new background oclor', appInfo.meta.colour);
             document.body.style.backgroundColor = appInfo.meta.colour;
-        };
+        }
+
+        if (appInfo.meta && appInfo.meta._quizzes){
+            appInfo.meta._quizzes.sort((a, b)=> a.meta.name > b.meta.name ? 1 : -1 );
+            // appInfo.meta._quizzes.sort((a, b)=> a._category.name > b._category.name ? 1 : -1 );
+        }
 
 
         return {appInfo};
+    },
+
+    handleBuy: function(app){
+
+        swal({
+                title: 'Confirm Purchase',
+                text: `Are you sure you want purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                html: true
+            }, (isConfirm) => {
+
+            if (isConfirm){
+                setTimeout(()=>{
+
+                    var newTransaction = {
+                        meta: {
+                            type: 'app',
+                            quizId: app.uuid,
+                            profileId: app.meta.profileId,
+                            price: 0
+                        }
+                    };
+
+                    swal({
+                        title: 'Working…',
+                        text: `We're processing your order`,
+                        showConfirmButton: false
+                    });
+
+                    console.log('storing transaction', newTransaction);
+                    TransactionActions.saveNewTransaction(newTransaction)
+                        .then(function(){
+                            swal.close();
+                            setTimeout(()=>{
+                                swal({
+                                    title: 'Purchase complete!',
+                                    text: 'You will find the new content in your quizzes',
+                                    type: 'success'
+                                });
+                            }, 100);
+                        });
+
+                }, 300);
+            }
+        });
+
+
+
+
     },
 
 

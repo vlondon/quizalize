@@ -16,11 +16,24 @@ var CQViewQuizList = React.createClass({
         onClick: React.PropTypes.func,
         onSelect: React.PropTypes.func,
         selectMode: React.PropTypes.bool,
+        sortOptions: React.PropTypes.bool,
         children: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.element,
             React.PropTypes.arrayOf(React.PropTypes.element)
         ])
+    },
+
+    getDefaultProps: function() {
+        return {
+            quizzes: [],
+            className: '',
+            showAuthor: true,
+            sortOptions: false,
+            onQuizClick: function(){},
+            onClick: function(){},
+            onSelect: function(){}
+        };
     },
 
     getInitialState: function() {
@@ -41,9 +54,8 @@ var CQViewQuizList = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        console.info('will receive props', nextProps);
-        this.setState({quizzes: nextProps.quizzes});
-        this.handleSearch();
+
+        this.handleSearch(undefined, nextProps.quizzes);
     },
 
 
@@ -57,16 +69,7 @@ var CQViewQuizList = React.createClass({
         this.setState({quizzes});
     },
 
-    getDefaultProps: function() {
-        return {
-            quizzes: [],
-            className: '',
-            showAuthor: true,
-            onQuizClick: function(){},
-            onClick: function(){},
-            onSelect: function(){}
-        };
-    },
+
 
     handleClick: function(quiz){
         if (this.props.selectMode) {
@@ -90,30 +93,50 @@ var CQViewQuizList = React.createClass({
         this.props.onSelect(selectedQuizzes);
     },
 
-    handleSearch: function(obj){
+    handleSearch: function(obj, quizzes){
         obj = obj || this.state.savedSearch;
         console.log('search/sort', obj);
-        var quizzes = this.props.quizzes.slice();
+        quizzes = quizzes || this.props.quizzes.slice();
+
         if (obj && obj.sort === 'name') {
             console.log('sorting by name');
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
             console.log('sorting by date');
             quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? 1 : -1);
-        }
-
-        if (obj && obj.name && obj.name.length > 0){
-            quizzes = quizzes.filter( q => {
-                var nameMatch = false;
-                var categoryMatch = false;
-                nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-                if (q._category) {
-                    categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+        } else {
+            quizzes.sort((a, b) => {
+                if (a.meta.name === b.meta.name) {
+                    return 0;
                 }
-
-                return nameMatch || categoryMatch;
+                return a.meta.name > b.meta.name ? 1 : -1;
             });
+            quizzes.sort((a, b) => {
+                a = a._category.name.toLowerCase();
+                b = b._category.name.toLowerCase();
+                console.log('sorting', a, b, a > b, a === b);
+                if (a === b) {
+                    console.log('skipping');
+                    return 0;
+                }
+                return a > b ? 1 : -1;
+            });
+            console.log('quizzes', quizzes);
+            // quizzes.sort((a, b) => a._category.name > b._category.name ? 1 : -1);
         }
+
+        // if (obj && obj.name && obj.name.length > 0){
+        //     quizzes = quizzes.filter( q => {
+        //         var nameMatch = false;
+        //         var categoryMatch = false;
+        //         nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+        //         if (q._category) {
+        //             categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+        //         }
+        //
+        //         return nameMatch || categoryMatch;
+        //     });
+        // }
 
         // console.log('new Quizzes', quizzes);
 
@@ -124,6 +147,7 @@ var CQViewQuizList = React.createClass({
 
         var author;
         var select;
+        var sort;
 
         var childActionHandler = function(child, quiz){
             if (child) {
@@ -157,11 +181,15 @@ var CQViewQuizList = React.createClass({
         } else {
             select = function(){};
         }
+
         var categoryNameLabel = c => c ? c.name : '';
 
+        if (this.props.sortOptions) {
+            sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
+        }
         return (
             <div>
-                <CQViewQuizLocalSort onSearch={this.handleSearch}/>
+                {sort}
                 <ul className={`cq-viewquizlist ${this.props.className}`}>
                     {this.state.quizzes.map((quiz, key) => {
                         return (
@@ -183,7 +211,7 @@ var CQViewQuizList = React.createClass({
                                         {categoryNameLabel(quiz._category)}
                                         <br/>
                                         <small>
-                                            Updated on {moment(quiz.meta.updated).fromNow()}
+                                            Updated {moment(quiz.meta.updated).fromNow()}
                                         </small>
                                     </div>
                                 </div>

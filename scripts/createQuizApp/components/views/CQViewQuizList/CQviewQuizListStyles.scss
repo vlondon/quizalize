@@ -3,7 +3,7 @@
 
 
 .cq-viewquizlist {
-    $quizIcon: 40px;
+    $quizIcon: 60px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -16,11 +16,15 @@
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;
         padding: 5px;
-        cursor: pointer;
         width: 100%;
+        background: lighten($brand-color-grey-lighter, 5%);
+        margin-bottom: 5px;
 
+        &.interactive {
+            cursor: pointer;
+        }
         &:hover {
-            background: lighten($brand-color-grey-lighter, 10%);
+            /* background: lighten($brand-color-grey-lighter, 10%); */
         }
         @include clearfix();
     }
