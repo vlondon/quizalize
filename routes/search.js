@@ -7,6 +7,15 @@ var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
 
 
-exports.search = function(){
-    // zzish.searchPublicContent(function(){});
-}
+exports.get = function(req, res){
+
+    var now = Date.now();
+    var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
+    var mongoQuery = {
+        $gt: lastWeek
+    };
+
+    zzish.searchPublicContent(QUIZ_CONTENT_TYPE, {updated: mongoQuery}, function(err, resp){
+        res.send(resp);
+    });
+};
