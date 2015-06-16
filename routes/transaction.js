@@ -94,8 +94,8 @@ var saveTransaction = function(transaction, profileId){
 };
 
 var cloneQuiz = function(quiz, profileId) {
-    quiz.meta.originalQuiz = quiz.uuid;
-    quiz.meta.author = quiz.meta.profileId;
+    quiz.meta.originalQuizId = quiz.uuid;
+    quiz.meta.authorId = quiz.meta.profileId;
     quiz.uuid = uuid.v4();
     quiz.meta.created = Date.now();
     quiz.meta.updated = Date.now();
@@ -160,10 +160,10 @@ exports.process = function(req, res){
                         .then(function(quiz){
                             transaction.meta.status = 'processed';
                             saveTransaction(transaction, profileId);
-                            // res.send(quiz);
+                            // res.setond(quiz);
                         });
                 } else {
-                    // res.send(transaction);
+                    res.send(transaction);
                 }
             });
 
