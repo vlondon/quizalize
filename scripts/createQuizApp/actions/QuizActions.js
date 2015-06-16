@@ -19,8 +19,8 @@ var _questionsTopicIdToTopic = function(quiz){
     };
 
 
-    if (quiz.questions && quiz.questions.length > 0){
-        quiz.questions = quiz.questions.map(question => {
+    if (quiz.payload.questions && quiz.payload.questions.length > 0){
+        quiz.payload.questions = quiz.payload.questions.map(question => {
             question._topic = findTopicName(question.topicId);
             return question;
         });
@@ -31,7 +31,7 @@ var _questionsTopicIdToTopic = function(quiz){
 
 var _questionsTopicToTopicId = function(quiz){
 
-    var questions = quiz.questions;
+    var questions = quiz.payload.questions;
     var topics = TopicStore.getTopics();
 
     var findTopicId = function(topicName){
@@ -70,7 +70,7 @@ var _questionsTopicToTopicId = function(quiz){
 var QuizActions = {
 
     loadQuizzes: function(){
-
+        console.trace('QuizActions.loadQuizzes called');
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
 
@@ -109,6 +109,7 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
+        console.trace('QuizActions.loadQuiz called', quizId);
         var quizzesPromise = QuizApi.getQuizzes();
         var quizPromise = QuizApi.getQuiz(quizId);
         var topicsPromise = QuizApi.getTopics();
@@ -124,37 +125,38 @@ var QuizActions = {
                 //
                 var getCategoryFormUuid = function(){
 
-                    if (!quiz.categoryId) {
-                        var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                        quiz.categoryId = fq.categoryId;
-                    }
+                    // if (!quiz.categoryId) {
+                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
+                    //     quiz.categoryId = fq.categoryId;
+                    // }
                     //
-                    if (quiz.categoryId) {
-                        var topicFound = topics.filter( t => t.uuid === quiz.categoryId )[0];
+                    if (quiz.meta.categoryId) {
+                        var topicFound = topics.filter( t => t.uuid === quiz.meta.categoryId )[0];
+                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
                         return topicFound ? topicFound.name : '';
                     }
                     return '';
 
                 };
 
-                quiz.category = getCategoryFormUuid();
+                quiz.meta.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
 
-                var conversion = QuizFormat.convert(quiz);
-                quiz = conversion.quiz;
-                console.log('conversion', conversion);
-                if (conversion.converted) {
-                    // the quiz must get saved because of
-                    // data issues
-                    this.newQuiz(quiz);
-                    console.log('lets save the quiz', this, quiz);
-                } else {
-                    console.log('dispatching!');
+                // var conversion = QuizFormat.convert(quiz);
+                // quiz = conversion.quiz;
+                // console.log('conversion', conversion);
+                // if (conversion.converted) {
+                //     // the quiz must get saved because of
+                //     // data issues
+                //     this.newQuiz(quiz);
+                //     console.log('lets save the quiz', this, quiz);
+                // } else {
+                //     console.log('dispatching!');
                     AppDispatcher.dispatch({
                         actionType: QuizConstants.QUIZ_LOADED,
                         payload: _questionsTopicIdToTopic(quiz)
                     });
-                }
+                // }
 
             });
     },
@@ -172,7 +174,7 @@ var QuizActions = {
 
 
     loadPublicQuizzes: function(){
-
+        console.trace('QuizActions.loadPublicQuizzes called');
         var processQuizList = function(result){
 
             var categories = [];
@@ -228,15 +230,15 @@ var QuizActions = {
         var addOrCreateCategory = function(){
             var topicUuid;
             var topics = TopicStore.getTopics();
-            var topicFound = topics.filter( t => t.name === quiz.category )[0];
+            var topicFound = topics.filter( t => t.name === quiz.meta.category )[0];
 
             if (topicFound) {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.subject,
-                    name: quiz.category,
+                    subject: quiz.meta.subject,
+                    name: quiz.meta.category,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false
@@ -248,9 +250,8 @@ var QuizActions = {
 
         return new Promise((resolve, reject) => {
 
-
             quiz.uuid = quiz.uuid || uuid.v4();
-            quiz.categoryId = addOrCreateCategory();
+            quiz.meta.categoryId = addOrCreateCategory();
 
             quiz = _questionsTopicToTopicId(quiz);
 
@@ -263,7 +264,7 @@ var QuizActions = {
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
-                this.loadQuizzes();
+                // this.loadQuizzes();
                 resolve(quiz);
             }, ()=> {
                 reject();
@@ -271,7 +272,6 @@ var QuizActions = {
 
 
         });
-
 
     },
 

@@ -1,75 +1,193 @@
 var uuid = require('node-uuid');
+var assign = require('object-assign');
 var QuizFormat = {
 
-    allQuestionsWithId: function(quiz){
+    allQuestionsWithId: function allQuestionsWithId(quiz) {
+        console.info('Running quiz format');
         var converted = false;
 
-        quiz.questions.forEach( question => {
+        quiz.payload.questions.forEach(function (question) {
             if (!question.uuid) {
                 question.uuid = uuid.v4();
                 converted = true;
             }
         });
 
-        return { quiz, converted };
+        if (quiz.meta.created === undefined){
+            converted = true;
+        }
+
+        if (quiz.meta.updated === undefined){
+            converted = true;
+        }
+        return { quiz: quiz, converted: converted };
     },
 
-    moveSettingsToQuestion: function(quiz) {
+    moveSettingsToQuestion: function moveSettingsToQuestion(quiz) {
+        var converted = 0;
+        var newMeta;
 
-        var converted = false;
-        if (quiz.questions === undefined) {
-            converted = true;
-            quiz.questions = [];
+        if (quiz.meta === undefined) {
+            quiz.meta = {};
+            converted = 1;
+            console.log('converted', 1);
         }
-        quiz.questions = quiz.questions || [];
-        if (quiz.settings && quiz.settings.latexEnabled) {
-            quiz.questions.forEach(question => {
-                question.latexEnabled = quiz.settings.latexEnabled || false;
-                delete quiz.settings.latexEnabled;
+        if (quiz.payload === undefined || quiz.payload === null) {
+            quiz.payload = {};
+            converted = 2;
+            console.log('converted', 2);
+        }
+
+        if (quiz.payload.questions === undefined || quiz.payload.questions === null) {
+            converted = 3;
+            console.log('converted', 3);
+            quiz.payload.questions = [];
+        }
+        // quiz.payload.questions = quiz.payload.questions || [];
+
+        if (quiz.payload.settings && quiz.payload.settings.latexEnabled) {
+            quiz.payload.questions.forEach(function (question) {
+                question.latexEnabled = quiz.payload.settings.latexEnabled || false;
             });
-            converted = true;
+            delete quiz.payload.settings.latexEnabled;
+            converted = 4;
+            console.log('converted', 4);
         }
 
-        if (quiz.settings && quiz.settings.imageEnabled) {
-            quiz.questions.forEach(question => {
-                question.imageEnabled = quiz.settings.imageEnabled || false;
-                delete quiz.settings.imageEnabled;
-
+        if (quiz.payload.settings && quiz.payload.settings.imageEnabled) {
+            quiz.payload.questions.forEach(function (question) {
+                question.imageEnabled = quiz.payload.settings.imageEnabled || false;
             });
-            converted = true;
+            delete quiz.payload.settings.imageEnabled;
+            converted = 5;
+            console.log('converted', 5);
         }
 
-
-        if (quiz.latexEnabled) {
-
-            quiz.questions.forEach(question => {
-                question.latexEnabled = quiz.latexEnabled || false;
+        if (quiz.payload.latexEnabled !== undefined) {
+            quiz.payload.questions.forEach(function (question) {
+                question.latexEnabled = quiz.payload.latexEnabled || false;
             });
-            converted = true;
-            delete quiz.latexEnabled;
+            converted = 6;
+            console.log('converted', 6);
+            delete quiz.payload.latexEnabled;
         }
 
-        if (quiz.imageEnabled) {
-            quiz.questions.forEach(question => {
-                question.imageEnabled = quiz.imageEnabled || false;
+        if (quiz.payload.imageEnabled !== undefined) {
+            quiz.payload.questions.forEach(function (question) {
+                question.imageEnabled = quiz.payload.imageEnabled || false;
             });
-            converted = true;
-            delete quiz.imageEnabled;
+            converted = 7;
+            console.log('converted', 7);
+            delete quiz.payload.imageEnabled;
         }
-        quiz.questions.forEach(question => {
+        if (quiz.payload.settings) {
+            newMeta = assign({}, quiz.meta, quiz.payload.settings);
+            quiz.meta = newMeta;
+            converted = 8;
+            console.log('converted', 8);
+            delete quiz.payload.settings;
+        }
+
+
+        quiz.payload.questions.forEach(function (question) {
             if (question.imageUrl) {
                 delete question.imageUrl;
-                converted = true;
+                converted = 9;
+                console.log('converted', 9);
             }
         });
-        if (converted) {
-            console.warn(`Quiz ${quiz.uuid} converted to new format`);
-        }
-        return { quiz, converted };
 
+
+        if (quiz.meta.Description && !quiz.meta.description) {
+            quiz.meta.description = quiz.meta.Description;
+            converted = 10;
+            console.log('converted', 10);
+            delete quiz.meta.Description;
+        }
+        if (quiz.payload.name && !quiz.meta.name) {
+            quiz.meta.name = quiz.payload.name;
+            delete quiz.payload.name;
+            console.log('converted', 11);
+            converted = 11;
+        }
+
+
+
+        if (quiz.payload.categoryId && !quiz.meta.categoryId) {
+            quiz.meta.categoryId = quiz.payload.categoryId;
+            delete quiz.payload.categoryId;
+            converted = '11a';
+            console.log('converted', converted);
+        }
+
+        // profile id should be in meta
+        if (quiz.payload.profileId){
+            quiz.meta.profileId = quiz.payload.profileId;
+            delete quiz.payload.profileId;
+            converted = 12;
+            console.log('converted', 12);
+        }
+
+        // profile id should be in meta
+        if (quiz.profileId && quiz.meta.profileId === undefined){
+            quiz.meta.profileId = quiz.profileId;
+            delete quiz.payload.profileId;
+            converted = '12a';
+            console.log('converted', converted);
+        }
+
+        // subject id should be in meta
+        if (quiz.payload.subject){
+            quiz.meta.subject = quiz.payload.subject;
+            delete quiz.payload.subject;
+            converted = 13;
+            console.log('converted', converted);
+        }
+
+        // category name should'nt be on the object
+        if (quiz.payload.category) {
+            delete quiz.payload.category;
+            converted = 14;
+            console.log('converted', converted);
+        }
+
+        if (quiz.payload.name) {
+            delete quiz.payload.name;
+            converted = 15;
+            console.log('converted', converted);
+        }
+        // uuid should not be in payload
+        if (quiz.payload.uuid) {
+            delete quiz.payload.uuid;
+            converted = 16;
+            console.log('converted', converted);
+        }
+
+
+        // if (quiz.name) {
+        //     delete quiz.name;
+        //     converted = 17;
+        //     console.log('converted', converted);
+        // }
+        // // uuid should not be in payload
+        // if (quiz.categoryId) {
+        //     delete quiz.categoryId;
+        //     converted = 18;
+        //     console.log('converted', converted);
+        // }
+
+        if (converted) {
+            console.warn('Quiz ' + quiz.uuid + ' converted to new format ' + converted);
+        } else {
+            console.log('Quiz ' + quiz.uuid + ' is fine');
+        }
+
+        converted = converted > 0;
+
+        return { quiz: quiz, converted: converted };
     },
 
-    convert: function(quiz){
+    convert: function convert(quiz) {
         var converted;
         var result1 = this.moveSettingsToQuestion(quiz);
         var result2 = this.allQuestionsWithId(result1.quiz);
@@ -77,19 +195,20 @@ var QuizFormat = {
         converted = result1.converted || result2.converted;
 
         if (converted) {
-            console.error('There is an error on the data, resaving');
+            // console.error('There is an error on the data, resaving');
         }
         return {
             quiz: result2.quiz,
-            converted
+            converted: converted
         };
     },
 
-
-    process: function(quiz){
+    process: function process(quiz) {
         var result = this.moveSettingsToQuestion(quiz);
         return result.quiz;
     }
 };
 
 module.exports = QuizFormat;
+
+// console.error('There is an error on the data, resaving');

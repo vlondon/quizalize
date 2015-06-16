@@ -30,7 +30,6 @@ var CQQuizzes = React.createClass({
     },
 
     onChange: function(){
-        console.log('onChange', QuizStore);
         this.setState({quizzes: QuizStore.getQuizzes()});
     },
 
@@ -98,14 +97,14 @@ var CQQuizzes = React.createClass({
                                     return (
                                         <div ng-repeat="quiz in quizzes.quizzes track by $index" ng-style="padding-bottom: 10px" className="row">
                                             <div className="col-xs-3">
-                                                <h4>{quiz.name}</h4>
+                                                <h4>{quiz.meta.name}</h4>
                                             </div>
                                             <div className="col-xs-4">
                                                 <h4>
-                                                    <span ng-show="quiz.subject">
-                                                        {quiz.subject}
+                                                    <span>
+                                                        {quiz.meta.subject}
                                                     </span>
-                                                    <span ng-show="quiz.categoryId">
+                                                    <span>
                                                         {quiz.category.name}
                                                     </span>
 

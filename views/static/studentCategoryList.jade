@@ -8,7 +8,7 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-        .navbar-collapse.collapse#navbar        
+        .navbar-collapse.collapse#navbar
             ul.nav.navbar-nav.navbar-right
                 li
                   a.btn.btn-info(ng-show="nctrl.loggedIn",ng-click="nctrl.logout()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Log out
@@ -17,25 +17,25 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
         h1(ng-show="quizzes.user",style="color: white") Hi {{quizzes.name}}!
 
 
-    h3(ng-hide="quizzes.hasQuizzes",style="color: white") Loading quizzess...
+    h3(ng-hide="quizzes.hasQuizzes",style="color: white") Loading quizzes…
     h3(ng-show="quizzes.hasQuizzes && !quizzes.user",style="color: white") Here's some quizzes to get you started - lots more quizzes on the way - or create your own!
     h3(ng-show="quizzes.hasQuizzes && quizzes.user",style="color: white") Here are your assigned quizzes
     br
 
-    .row(ng-repeat="category in quizzes.categories | orderObjectBy:['order_index'] track by $index", style="padding-bottom: 10px; ")    
+    .row(ng-repeat="category in quizzes.categories | orderObjectBy:['order_index'] track by $index", style="padding-bottom: 10px; ")
         .col-md-12
-            .quiz-topic-block                
+            .quiz-topic-block
                 a.quiz-link(onclick="return false;" data-toggle="collapse" ng-href="#collapse{{category.category.uuid}}" aria-expanded="false" aria-controls="collapse1")
                     h2.quiz-topic-title.text-center {{category.category.name}}
                 .quiz-list.collapse.in(id="collapse{{category.category.uuid}}")
                     .row.quiz-info-row(ng-repeat="quiz in category.quizzes | orderObjectBy:['index'] track by $index",style="padding-right: 15px;")
                         .col-xs-9
                             a.quiz-item
-                                .quiz-title {{quiz.name}}
+                                .quiz-title {{quiz.meta.name}}
                         .col-xs-3
-                            .row.quiz-info-row                        
-                                a.btn.btn-info.btn-block(clickOnce ng-href="app#/play/{{quiz.categoryId}}/{{quiz.uuid}}") Play
-                                
+                            .row.quiz-info-row
+                                a.btn.btn-info.btn-block(clickOnce ng-href="app#/play/{{quiz.meta.categoryId}}/{{quiz.uuid}}") Play
+
 
     .col-sm-6.col-sm-offset-3(ng-show="quizzes.user")
         .well

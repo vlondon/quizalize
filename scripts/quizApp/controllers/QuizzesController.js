@@ -49,7 +49,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         self.token = localStorage.getItem("token");
     }
     if (self.token!=undefined) {
-        zzish.getCurrentUser(self.token,function(err,message) {
+        zzish.getCurrentUser(self.token, function(err,message) {
             if (!err) {
                 QuizData.setUser(message);
                 QuizData.registerUserWithGroup(message.attributes.groupCode,function() {

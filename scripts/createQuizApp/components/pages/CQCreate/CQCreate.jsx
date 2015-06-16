@@ -45,7 +45,20 @@ var CQCreate = React.createClass({
                 QuizActions.loadQuiz(this.props.quizId);
             }
             quiz = {
-                settings: {}
+                meta: {
+                    name: "",
+                    subject: "",
+                    category: "",
+                    description: undefined,
+                    imageUrl: undefined,
+                    imageAttribution: undefined,
+                    live: false,
+                    featured: false,
+                    featureDate: undefined,
+                    numQuestions: undefined,
+                    random: false
+                },
+                payload: {}
             };
 
         }
@@ -73,38 +86,25 @@ var CQCreate = React.createClass({
     componentDidMount: function() {
         // TODO Remove jQuery!!
         QuizStore.addChangeListener(this.onChange);
-
-        $(document).on('mouseenter', '[data-toggle="popover"]', function(){
-            $(this).popover('show');
-        });
-
-        $(document).on('mouseleave', '[data-toggle="popover"]', function(){
-            $(this).popover('hide');
-        });
-
-
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
-        $(document).off('mouseenter');
-        $(document).off('mouseleave');
     },
 
     handleChange: function(property, event) {
 
         var newQuizState = assign({}, this.state.quiz);
-        newQuizState[property] = event.target.value;
+        newQuizState.meta[property] = event.target.value;
 
         this.setState({quiz: newQuizState});
     },
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        var newQuizSettings = assign(this.state.quiz.settings, newSettings);
-        quiz.settings = newQuizSettings;
+        var meta = assign(quiz.meta,newSettings);
+        quiz.meta = meta;
         this.setState({quiz});
-
     },
 
     handleMoreClick: function(){
@@ -117,7 +117,7 @@ var CQCreate = React.createClass({
         this.setState({isSaving: true});
         QuizActions.newQuiz(this.state.quiz).then(function(quiz){
             console.log('we got new quiz', quiz);
-            router.setRoute(`/quiz/create/${quiz.uuid}`);
+            router.setRoute(`/quiz/create/${quiz.uuid}/0`);
         });
     },
 
@@ -139,13 +139,13 @@ var CQCreate = React.createClass({
                                             <div className="col-sm-9">
                                                 <input id="question"
                                                     type="text"
-                                                    value={this.state.quiz.name}
+                                                    value={this.state.quiz.meta.name}
                                                     onChange={this.handleChange.bind(this, 'name')}
                                                     on-enter="ctrl.createQuiz();"
                                                     ng-model="ctrl.quiz.name"
                                                     placeholder="e.g. Plate Boundaries"
                                                     autofocus="true"
-                                                    tabIndex="3"
+                                                    tabIndex="1"
                                                     className="form-control"/><br/>
                                             </div>
                                             <label className="control-label col-sm-3">
@@ -154,12 +154,11 @@ var CQCreate = React.createClass({
                                         <div className="col-sm-9">
                                             <input id="subject"
                                                  type="text"
-                                                 value={this.state.quiz.subject}
+                                                 value={this.state.quiz.meta.subject}
                                                  onChange={this.handleChange.bind(this, 'subject')}
                                                  on-enter="ctrl.focusTopic();"
-                                                 ng-model="ctrl.quiz.subject"
                                                  placeholder="e.g. Geography (Optional)"
-                                                 tabIndex="1"
+                                                 tabIndex="2"
                                                  className="form-control"/>
                                             <br/>
                                         </div>
@@ -169,16 +168,14 @@ var CQCreate = React.createClass({
                                     <div className="col-sm-9">
                                         <input id="category"
                                             type="text"
-                                            value={this.state.quiz.category}
+                                            value={this.state.quiz.meta.category}
                                             onChange={this.handleChange.bind(this, 'category')}
                                             on-enter="ctrl.focusQuiz();"
-                                            ng-model="ctrl.quiz.category"
                                             placeholder="e.g. Earthquakes (Optional)"
-                                            tabIndex="2"
+                                            tabIndex="3"
                                             className="form-control"/>
                                         <br/>
                                     </div>
-
                                     <div className="col-sm-4 col-sm-offset-4">
                                         <button type="button"
 
@@ -190,8 +187,8 @@ var CQCreate = React.createClass({
                                     <div className="col-sm-4"><br className="visible-xs"/>
                                     <button type="button"
                                         onClick={this.handleNewQuiz}
-                                        disabled={this.isSaving}
-                                        tabIndex="4" ng-disabled="ctrl.quiz.name==''" className="btn btn-primary btn-block">Save</button>
+                                        disabled={this.state.isSaving}
+                                        tabIndex="4" className="btn btn-primary btn-block">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -199,7 +196,7 @@ var CQCreate = React.createClass({
                 </div>
 
                     </div>
-                    {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.settings}/> : undefined }
+                    {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.meta}/> : undefined }
                 </div>
             </CQPageTemplate>
         );

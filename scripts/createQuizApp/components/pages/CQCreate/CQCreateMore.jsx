@@ -10,6 +10,11 @@ var removeUndefinedProps = function(obj) {
     return obj;
 };
 
+var convertToBoolean =  function(defaultSettings,field) {
+    if (defaultSettings[field]) {
+        defaultSettings[field]=defaultSettings[field]=="true" || defaultSettings[field];
+    }
+}
 
 var CQCreateMore = React.createClass({
 
@@ -37,8 +42,12 @@ var CQCreateMore = React.createClass({
         };
             // showanswers: false,
             // timer: true
-
+        console.log("My initial settings",this.props.settings);
         defaultSettings = assign({}, defaultSettings, this.props.settings);
+        convertToBoolean(defaultSettings,'live');
+        convertToBoolean(defaultSettings,'featured');
+        convertToBoolean(defaultSettings,'random');
+        console.log("My Aafter settings",defaultSettings);
         return defaultSettings;
 
     },
@@ -63,13 +72,13 @@ var CQCreateMore = React.createClass({
 
     render: function() {
         return (
-            <div ng-show="ctrl.showSettings" className="row well">
+            <div className="row well">
                 <h2>More Settings</h2>
                 <p>You can choose the default settings for your quiz here. You and teachers you share your quiz with can override these when they assign a quiz to a class. You can change these at any time by clicking on the settings button when editing your quiz.</p>
                 <div className="well">
                     <div className="form-group">
                         <div className="col-xs-12">
-                            <h3>Additional Quiz Details         </h3>
+                            <h3>Additional Quiz Details</h3>
                         </div>
                         <label className="control-label col-sm-9">
                             <h4>Description<a data-toggle="popover" title="Description" data-content="Enter a description so that players can understand why your quiz is about." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
@@ -79,7 +88,6 @@ var CQCreateMore = React.createClass({
                                 rows="5"
                                 value={this.state.description}
                                 onChange={this.handleChange.bind(this, 'description', 'text')}
-                                ng-model="ctrl.quiz.settings.Description"
                                 className="autogrow"/>
                         </div>
                         <label className="control-label col-sm-9">
@@ -88,19 +96,17 @@ var CQCreateMore = React.createClass({
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <input type="text"
                                 value={this.state.imageUrl}
-                                onChange={this.handleChange.bind(this, 'imageUrl', 'text')}
-                                ng-model="ctrl.quiz.settings.imageUrl"/>
+                                onChange={this.handleChange.bind(this, 'imageUrl', 'text')}/>
                         </div>
-                        <label ng-show="ctrl.quiz.settings.imageUrl" className="control-label col-sm-9">
+                        <label className="control-label col-sm-9">
                             <h4>Image Attribute<a data-toggle="popover" title="Image Attribute" data-content="Provide a reference of where this image was found" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
-                        <div ng-style="margin-top: 13px" ng-show="ctrl.quiz.settings.imageUrl" className="col-xs-3">
+                        <div ng-style="margin-top: 13px" className="col-xs-3">
                             <input type="text"
                                 value={this.state.imageAttribution}
-                                onChange={this.handleChange.bind(this, 'imageAttribution', 'text')}
-                                ng-model="ctrl.quiz.settings.imageAttribution"/>
+                                onChange={this.handleChange.bind(this, 'imageAttribution', 'text')}/>
                         </div>
-                        <label ng-show="ctrl.quiz.settings.imageUrl" className="control-label col-sm-9">
+                        <label className="control-label col-sm-9">
                             <h4>Public<a data-toggle="popover" title="Public" data-content="Make this quiz public" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
@@ -108,35 +114,33 @@ var CQCreateMore = React.createClass({
                                 <input type="checkbox"
                                     checked={this.state.live}
                                     onChange={this.handleChange.bind(this, 'live', 'checkbox')}
-                                    ng-model="ctrl.quiz.settings.live"
-                                    ng-change="ctrl.toggleLive()" className="switch-input"/>
+                                    className="switch-input"/>
                                 <span data-on="Live" data-off="No" className="switch-label"></span>
                                 <span className="switch-handle"></span>
                             </label>
                         </div>
 
-                        <div ng-style="margin-top: 13px" ng-show="ctrl.quiz.settings.live" className="col-xs-3">
+                        <div ng-style="margin-top: 13px" className="col-xs-3">
                             <label className="switch">
                                 <input type="checkbox"
                                     checked={this.state.featured}
                                     onChange={this.handleChange.bind(this, 'featured', 'checkbox')}
-                                    ng-model="ctrl.quiz.settings.featured"
                                     className="switch-input"/>
                                     <span data-on="Yes" data-off="No" className="switch-label"></span>
                                     <span className="switch-handle"></span>
                             </label>
                         </div>
 
-                        <label ng-show="ctrl.quiz.settings.live" className="control-label col-sm-9">
+                        <label className="control-label col-sm-9">
                             <h4>Feature this quiz<a data-toggle="popover" title="Featured Quiz" data-content="Choose this public quiz as your featured quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
 
 
-                        <div ng-style="margin-top: 13px" ng-show="ctrl.quiz.settings.featured" className="col-xs-3">
+                        <div ng-style="margin-top: 13px" className="col-xs-3">
                             <input type="date"
                                 value={this.state.featureDate}
                                 onChange={this.handleChange.bind(this, 'featureDate', 'text')}
-                                ng-model="ctrl.quiz.settings.featureDate"/>
+                                />
                         </div>
                     </div>
                     <div className="col-xs-12">
@@ -147,7 +151,7 @@ var CQCreateMore = React.createClass({
                             <h4>Number of questions to use when playing a quiz<a data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
                         <div ng-style="margin-top: 13px" className="col-xs-3">
-                            <select ng-model="ctrl.settings.numQuestions"
+                            <select
                                 value={this.state.numQuestions}
                                 onChange={this.handleChange.bind(this, 'numQuestions', 'text')}>
                                 <option value="">All</option>
@@ -163,7 +167,6 @@ var CQCreateMore = React.createClass({
                                 <input type="checkbox"
                                     checked={this.state.random}
                                     onChange={this.handleChange.bind(this, 'random', 'checkbox')}
-                                    ng-model="ctrl.settings.random"
                                     className="switch-input"/>
                                 <span data-on="Yes" data-off="No" className="switch-label"/>
                                 <span className="switch-handle"/>
@@ -177,7 +180,6 @@ var CQCreateMore = React.createClass({
                                 <input type="checkbox"
                                     checked={this.state.showanswers}
                                     onChange={this.handleChange.bind(this, 'showanswers', 'checkbox')}
-                                    ng-model="ctrl.settings.showanswers"
                                     className="switch-input"/>
                                 <span data-on="Yes" data-off="No" className="switch-label"></span><span className="switch-handle">            </span>
                             </label>
@@ -190,7 +192,6 @@ var CQCreateMore = React.createClass({
                                 <input type="checkbox"
                                     checked={this.state.timer}
                                     onChange={this.handleChange.bind(this, 'timer', 'checkbox')}
-                                    ng-model="ctrl.settings.timer"
                                     className="switch-input"/><span data-on="Yes" data-off="No" className="switch-label"></span><span className="switch-handle">            </span>
                             </label>
                         </div>

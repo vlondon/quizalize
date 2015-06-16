@@ -5,6 +5,7 @@ angular.module('quizApp').controller('PreviewController', function(QuizData, $lo
 
     QuizData.previewQuiz(self.id, function(quiz) {
         sessionStorage.setItem('mode', 'preview');
+        sessionStorage.setItem('profileId', $routeParams.profileId);
         self.currentQuiz = quiz;
     });
 

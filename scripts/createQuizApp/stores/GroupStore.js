@@ -1,13 +1,12 @@
 var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
 var GroupConstants = require('createQuizApp/constants/GroupConstants');
-
+var GroupActions = require('createQuizApp/actions/GroupActions');
 
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-
-
 var CHANGE_EVENT = 'change';
 
+var storeInit = false;
 var _groups = [];
 var _groupsContent = [];
 
@@ -29,7 +28,10 @@ var GroupStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
-
+        if (!storeInit) {
+            storeInit = true;
+            GroupActions.loadGroups();
+        }
         this.on(CHANGE_EVENT, callback);
     },
 

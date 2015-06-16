@@ -5,7 +5,6 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 
 var CQAssignments = React.createClass({
@@ -15,11 +14,8 @@ var CQAssignments = React.createClass({
     },
 
     componentDidMount: function() {
-
-        QuizActions.loadPublicQuizzes();
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-
     },
 
     componentWillUnmount: function() {
@@ -53,7 +49,7 @@ var CQAssignments = React.createClass({
                 });
 
             });
-            console.log('quiz found?',quizId,  quizFound);
+            console.log('quiz found?', quizId,  quizFound);
             return quizFound;
         };
         // console.log('checking', groupCode);
@@ -120,10 +116,10 @@ var CQAssignments = React.createClass({
                                                     return (
                                                         <div ng-repeat="content in quizzes.groupContents[class.code].contents track by $index" ng-style="padding-bottom: 10px" className="row">
                                                             <div className="col-xs-5">
-                                                                <h4>{assignment.name}</h4>
+                                                                <h4>{assignment.meta.name}</h4>
                                                             </div>
                                                             <div className="col-xs-3">
-                                                                <h4>{assignment.category ? assignment.category.name : ''}</h4>
+                                                                <h4>{assignment.meta.subject}</h4>
                                                             </div>
                                                             <div className="col-xs-2">
                                                                 <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>

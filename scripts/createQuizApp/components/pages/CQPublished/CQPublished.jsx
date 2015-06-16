@@ -4,7 +4,7 @@ var router = require('createQuizApp/config/router');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
-
+var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 var CQCreateMore = require('createQuizApp/components/pages/CQCreate/CQCreateMore');
@@ -20,11 +20,12 @@ var CQPublished = React.createClass({
     },
 
     componentDidMount: function() {
-
+        QuizStore.addChangeListener(this.onChangeQuiz);
         GroupStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
+        QuizStore.addChangeListener(this.onChangeQuiz);
         GroupStore.removeChangeListener(this.onChange);
     },
 
@@ -33,19 +34,61 @@ var CQPublished = React.createClass({
         var groups = GroupStore.getGroups();
         var selectedClass = (groups && groups.length > 0) ? groups[0].code : 'new';
         var isMoreVisible = this.state ? this.state.isMoreVisible : false;
-        var settings = this.state ? this.state.settings : {};
+        var quiz = this._getQuiz();
+        var settings = quiz.meta;
+        var newClass = '';
 
         var newState = {
             groups,
             selectedClass,
             isMoreVisible,
-            settings
+            settings,
+            newClass
         };
 
         return newState;
 
     },
 
+    _getQuiz: function(props){
+        props = props || this.props;
+
+        var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
+
+
+        if (quiz === undefined){
+            if (this.props.quizId) {
+                QuizActions.loadQuiz(this.props.quizId);
+            }
+            quiz = {
+                meta: {
+                    name: "",
+                    subject: "",
+                    category: "",
+                    description: undefined,
+                    imageUrl: undefined,
+                    imageAttribution: undefined,
+                    live: false,
+                    featured: false,
+                    featureDate: undefined,
+                    numQuestions: undefined,
+                    random: false
+                },
+                payload: {}
+            };
+
+        }
+
+
+        return quiz;
+    },
+
+    onChangeQuiz: function(){
+        var newState = this.getState();
+        var quiz = this._getQuiz();
+        newState.settings = quiz.meta;
+        this.setState(newState);
+    },
 
     onChange: function(){
         this.setState(this.getState());
@@ -92,6 +135,7 @@ var CQPublished = React.createClass({
     },
 
     handleClick: function(){
+
         var redirect = function(quizId, classId){
             console.log('should redirect!');
             router.setRoute(`/quiz/published/${quizId}/${classId}/info`);
@@ -146,6 +190,8 @@ var CQPublished = React.createClass({
             classNameForm = undefined;
         }
 
+        var playButtonEnabled = this.state.selectedClass !== 'new' ||  (this.state.selectedClass === 'new' && this.state.newClass.length > 0);
+
         return (
             <CQPageTemplate className="container cq-published">
                 <div className="row well">
@@ -192,7 +238,9 @@ var CQPublished = React.createClass({
                                     </button>
                                 </div>
                                 <div className="col-sm-3"><br className="visible-xs"/>
-                                <button type="button" onClick={this.handleClick}
+                                <button type="button"
+                                    disabled={!playButtonEnabled}
+                                    onClick={this.handleClick}
                                     className="btn btn-block btn-primary">
                                     Play
                                 </button>
