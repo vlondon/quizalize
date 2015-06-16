@@ -142,21 +142,21 @@ var QuizActions = {
                 quiz.meta.category = getCategoryFormUuid();
                 // settings property is assumed, so it should be present
 
-                var conversion = QuizFormat.convert(quiz);
-                quiz = conversion.quiz;
-                console.log('conversion', conversion);
-                if (conversion.converted) {
-                    // the quiz must get saved because of
-                    // data issues
-                    this.newQuiz(quiz);
-                    console.log('lets save the quiz', this, quiz);
-                } else {
-                    console.log('dispatching!');
+                // var conversion = QuizFormat.convert(quiz);
+                // quiz = conversion.quiz;
+                // console.log('conversion', conversion);
+                // if (conversion.converted) {
+                //     // the quiz must get saved because of
+                //     // data issues
+                //     this.newQuiz(quiz);
+                //     console.log('lets save the quiz', this, quiz);
+                // } else {
+                //     console.log('dispatching!');
                     AppDispatcher.dispatch({
                         actionType: QuizConstants.QUIZ_LOADED,
                         payload: _questionsTopicIdToTopic(quiz)
                     });
-                }
+                // }
 
             });
     },
