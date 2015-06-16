@@ -188,6 +188,11 @@ var QuizFormat = {
     },
 
     convert: function convert(quiz) {
+        return {
+            quiz: quiz,
+            converted: false
+        };
+
         var converted;
         var result1 = this.moveSettingsToQuestion(quiz);
         var result2 = this.allQuestionsWithId(result1.quiz);
@@ -204,6 +209,7 @@ var QuizFormat = {
     },
 
     process: function process(quiz) {
+        return quiz;
         var result = this.moveSettingsToQuestion(quiz);
         return result.quiz;
     }

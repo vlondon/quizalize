@@ -187,45 +187,7 @@ var QuizActions = {
                 quiz = QuizFormat.process(quiz);
                 quiz.category = findCategory(quiz.meta.categoryId);
             });
-// =======
-//
-//             var categories = [];
-//             var categoriesHash = {};
-//             for (var i in result.contents) {
-//                 var quiz = result.contents[i];
-//                 var cuuid = 'undefined';
-//                 var category = { name: 'Other' };
-//                     if (quiz.categoryId !== undefined) {
-//                     cuuid = quiz.categoryId;
-//                     if (result.categories !== undefined) {
-//                         for (var o in result.categories) {
-//                             if (result.categories[o].uuid === quiz.categoryId) {
-//                                 category = result.categories[o];
-//                             }
-//                         }
-//                     }
-//                 }
-//                 if (categoriesHash[cuuid] === undefined) {
-//                     var order = parseInt(category.index, 10) || 0;
-//                     /*eslint camelcase: 0*/
-//                     categoriesHash[cuuid] = { category: category, quizzes: [], order_index: order};
-//                 }
-//                 // console.log('category<!--  -->.name', quiz, category.name);
-//                 if (category.name === '') {
-//                     category.homework = true;
-//                 }
-//                 if (category.homework) {
-//                     category.name = 'Quizzes (' + categoriesHash[cuuid].quizzes.length + ')';
-//                 }
-//                 categoriesHash[cuuid].quizzes.push(QuizFormat.convert(quiz));
-//             }
-//             for (var u in categoriesHash) {
-//                 categories.push(categoriesHash[u]);
-//             }
-//             categories.sort(function(a, b){
-//                 return a.order_index > b.order_index ? 1 : -1;
-// >>>>>>> develop
-            // });
+
 
             return quizzes;
         };
@@ -242,6 +204,12 @@ var QuizActions = {
                     payload: quizzes.categories
                 });
             });
+    },
+
+
+
+    searchPublicQuizzes: function(){
+
     },
 
     newQuiz: function(quiz){
