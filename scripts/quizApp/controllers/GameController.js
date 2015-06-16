@@ -49,7 +49,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
 
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
-            self.currentQuiz = QuizFormat.process(result);
+            self.currentQuiz = result;
 
             if (self.currentQuiz.meta) {
 
