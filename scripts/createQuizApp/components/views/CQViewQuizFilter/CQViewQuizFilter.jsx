@@ -2,6 +2,8 @@ var React = require('react');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
+var CQDropdown = require('createQuizApp/components/utils/CQDropdown');
+
 var CQviewQuizFilter = React.createClass({
 
     propTypes: {
@@ -31,7 +33,8 @@ var CQviewQuizFilter = React.createClass({
         return {
             topics,
             searchString: '',
-            categorySelected: 'all'
+            categorySelected: 'all',
+            kindSelected: 'all'
         };
     },
 
@@ -43,43 +46,69 @@ var CQviewQuizFilter = React.createClass({
 
     },
 
-    handleChange: function(ev){
+    handleChange: function(category){
 
         this.setState({
-            categorySelected: ev.target.value
+            categorySelected: category
         }, this.performSearch);
 
     },
 
-    performSearch: function(){
-        var category = this.state.categorySelected === 'all' ? undefined : this.state.categorySelected;
-        console.log('searchign for', this.state.searchString, category);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category);
-        
+    handleKind: function(kind){
+        this.setState({
+            kindSelected: kind
+        });
+
+        this.props.onViewChange(kind.value);
     },
 
+    performSearch: function(){
+
+        var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
+        console.log('searchign for', this.state.searchString, category);
+        QuizActions.searchPublicQuizzes(this.state.searchString, category);
+
+    },
+
+
+
     render: function() {
+
+        var mappedTopics = [];
+        if (this.state.topics.length > 0) {
+            mappedTopics = this.state.topics.map(topic => {
+                return { value: topic.uuid, name: topic.name };
+            });
+
+        }
+
+        var quizzesAndTopics = [{
+            name: 'quizzes and apps',
+            value: 'all'
+        }, {
+            name: 'quizzes',
+            value: 'quizzes'
+        }, {
+            name: 'apps',
+            value: 'apps'
+        }];
+        mappedTopics.unshift({value: 'all', name: 'any topic'});
         return (
             <div className='cq-quizfilter'>
-                <div className='col-md-1'>
-                    Filter
-                </div>
-                <div className='col-md-2'>
-                    Search by name:
-                    <input type="text" value={this.state.searchString}
-                        onChange={this.handleSearch}/>
-                </div>
-                <div className="col-md-2">
-                    <select onChange={this.handleChange} value={this.state.categorySelected}>
-                        <option value='all'>All</option>
-                        {this.state.topics.map(topic=>{
-                            return (
-                                <option value={topic.uuid} key={topic.uuid}>{topic.name}</option>
-                            );
-                        })}
-                    </select>
+                <div className="cq-quizfilter__context">
+
+                    Classroom&nbsp;<CQDropdown
+                        selected={this.state.kindSelected}
+                        values={quizzesAndTopics}
+                        onChange={this.handleKind}/>&nbsp;for any age to assess&nbsp;
+                    <CQDropdown
+                        selected={this.state.categorySelected}
+                        values={mappedTopics}
+                        onChange={this.handleChange}/>
+
 
                 </div>
+
             </div>
         );
     }

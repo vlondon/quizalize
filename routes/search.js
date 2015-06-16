@@ -10,7 +10,7 @@ var APP_CONTENT_TYPE = 'app';
 
 exports.getQuizzes = function(req, res){
 
-    var searchString = req.body.search;
+    var searchString = req.body.search || '';
     var categoryId = req.body.categoryId;
 
     var now = Date.now();
@@ -25,6 +25,7 @@ exports.getQuizzes = function(req, res){
         }
 
     };
+    console.log('searching ', mongoQuery);
 
     if (categoryId) {
         mongoQuery.categoryId = categoryId;

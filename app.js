@@ -97,6 +97,7 @@ app.get('/apps/', appContent.listPublicApps);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
 
+app.get('/search/quizzes', search.getQuizzes);
 app.post('/search/quizzes', search.getQuizzes);
 app.post('/search/apps', search.getApps);
 

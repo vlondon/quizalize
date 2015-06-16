@@ -2,16 +2,15 @@ var React = require('react');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
-var CQPublicList = require('./CQPublicList');
-var CQPublicSort = require('./CQPublicSort');
+
 var CQAppGrid = require('./CQAppGrid');
-
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-
-var QuizStore  = require('createQuizApp/stores/QuizStore');
+var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var AppActions = require('createQuizApp/actions/AppActions');
+
+var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 
 
@@ -22,7 +21,10 @@ require('./CQPublicStyles');
 var CQPublic = React.createClass({
 
     getInitialState: function() {
-        return this.getState();
+        var newState =  this.getState();
+        newState.showApps = true;
+        newState.showQuizzes = true;
+        return newState;
     },
 
     componentDidMount: function() {
@@ -33,14 +35,14 @@ var CQPublic = React.createClass({
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
-        AppStore.addChangeListener(this.onChange);
+        AppStore.removeChangeListener(this.onChange);
     },
 
     getState: function(){
-
         var quizzes = QuizStore.getPublicQuizzes();
         var newState = { quizzes };
 
+        console.log('getting new state', quizzes);
         return newState;
 
     },
@@ -69,6 +71,7 @@ var CQPublic = React.createClass({
                 cancelButtonText: 'No',
                 html: true
             }, (isConfirm) => {
+
             if (isConfirm){
                 setTimeout(()=>{
 
@@ -105,18 +108,16 @@ var CQPublic = React.createClass({
         });
     },
 
+    handleViewChange: function(options){
+        console.log('options', options);
+    },
+
     render: function() {
 
         return (
             <CQPageTemplate className="container cq-public">
-                <h2>
-                    Choose a quiz for your class
-                </h2>
-                <p>
-                    Check out our pre-made quizzes. We're adding new ones all
-                    the time! If you have any suggestions, tell us! Otherwise, you can <CQLink href='/quiz/create'>create your own in 60 seconds</CQLink>.
-                </p>
 
+                <CQViewQuizFilter onViewChange={this.handleViewChange}/>
                 <CQAppGrid/>
 
                 <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">

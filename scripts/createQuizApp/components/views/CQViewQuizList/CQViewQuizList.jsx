@@ -4,7 +4,6 @@ var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLoca
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
-
 var moment = require('moment');
 
 var CQViewQuizList = React.createClass({
@@ -41,13 +40,20 @@ var CQViewQuizList = React.createClass({
         TopicStore.removeChangeListener(this.onChange);
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        console.info('will receive props', nextProps);
+        this.setState({quizzes: nextProps.quizzes});
+        this.handleSearch();
+    },
+
+
+
     getQuizzesState: function(){
         return this.props.quizzes;
     },
 
     onChange: function(){
         var quizzes = this.getQuizzesState();
-        console.log('new quizzes loaded', quizzes);
         this.setState({quizzes});
     },
 
@@ -87,15 +93,15 @@ var CQViewQuizList = React.createClass({
     handleSearch: function(obj){
         console.log('search/sort', obj);
         var quizzes = this.props.quizzes.slice();
-        if (obj.sort === 'name') {
+        if (obj && obj.sort === 'name') {
             console.log('sorting by name');
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
-        } else if (obj.sort === 'time') {
+        } else if (obj && obj.sort === 'time') {
             console.log('sorting by date');
             quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? 1 : -1);
         }
 
-        if (obj.name && obj.name.length > 0){
+        if (obj && obj.name && obj.name.length > 0){
             quizzes = quizzes.filter( q => {
                 var nameMatch = false;
                 var categoryMatch = false;
