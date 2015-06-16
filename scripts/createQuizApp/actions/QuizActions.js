@@ -183,8 +183,8 @@ var QuizActions = {
                 var quiz = result.contents[i];
                 var cuuid = 'undefined';
                 var category = { name: 'Other' };
-                    if (quiz.categoryId !== undefined) {
-                    cuuid = quiz.categoryId;
+                    if (quiz.meta.categoryId !== undefined) {
+                    cuuid = quiz.meta.categoryId;
                     if (result.categories !== undefined) {
                         for (var o in result.categories) {
                             if (result.categories[o].uuid === quiz.categoryId) {
