@@ -13,7 +13,7 @@
 }
 
 .cq-header {
-    background-image: linear-gradient(lighten($brand-color-red, 0%), darken($brand-color-red, 10%));
+    background: $brand-color-red;
     border-radius: 0;
 
     @at-root #{&}__container {

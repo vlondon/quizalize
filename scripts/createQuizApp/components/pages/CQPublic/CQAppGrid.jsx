@@ -62,7 +62,12 @@ var CQAppGrid = React.createClass({
                 </ul>
             );
         } else {
-
+            var howManyQuizzes = function(n){
+                if (n === 1){
+                    return n + ' Quiz';
+                }
+                return n + ' Quizzes';
+            };
             return (
                 <ul className={`cq-appgrid ${this.props.className}`}>
                     {this.state.apps.map((app, key) => {
@@ -75,7 +80,7 @@ var CQAppGrid = React.createClass({
                                         {app.meta.name}
                                     </div>
                                     <div className="cq-appgrid__appquizzes">
-                                        {app.meta.quizzes.length} Quizzes
+                                        {howManyQuizzes(app.meta.quizzes.length)}
                                     </div>
 
                                     <div className="cq-appgrid__appprice">

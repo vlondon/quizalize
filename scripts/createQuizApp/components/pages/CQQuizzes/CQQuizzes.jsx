@@ -171,7 +171,7 @@ var CQQuizzes = React.createClass({
             emptyQuizList = (
                 <div className="cq-quizzes__emptylist">
                     You don't have any quizzes yet on your account, <CQLink href="/quiz/create">why not you create your first one?</CQLink>
-                    <p>or</p>
+                    <p>or </p>
                     Browse the <CQLink href="/quiz/public">marketplace</CQLink> to get quizzes created by other users
                 </div>
             );
@@ -207,6 +207,7 @@ var CQQuizzes = React.createClass({
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
                         profileMode={true}
+                        sortOptions={this.state.isAdmin}
                         onAssign={this.handleAssign}
                         onEdit={this.handleEdit}
                         onDelete={this.handleDelete}

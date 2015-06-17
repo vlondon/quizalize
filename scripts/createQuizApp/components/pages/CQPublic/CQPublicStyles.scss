@@ -3,7 +3,6 @@
 
 .cq-public {
 
-    $appIcon: 190px;
     $quizIcon: 40px;
 
     .cq-viewquizlist__quiz {
@@ -92,7 +91,6 @@
 
 
     @at-root #{&}__list {
-
         width: 100%;
     }
 
