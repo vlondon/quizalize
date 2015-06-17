@@ -41,7 +41,7 @@ var CQViewQuizList = React.createClass({
     getInitialState: function() {
         var initialState = {
             selectedQuizzes: [],
-            quizzes: this.getQuizzesState()
+            quizzes: this.sort({}, this.getQuizzesState())
         };
 
         return initialState;
@@ -61,14 +61,14 @@ var CQViewQuizList = React.createClass({
     },
 
 
-
     getQuizzesState: function(){
         return this.props.quizzes;
     },
 
     onChange: function(){
         var quizzes = this.getQuizzesState();
-        this.setState({quizzes});
+
+        this.setState({quizzes: this.sort(undefined, quizzes)});
     },
 
 
@@ -95,7 +95,15 @@ var CQViewQuizList = React.createClass({
         this.props.onSelect(selectedQuizzes);
     },
 
-    handleSearch: function(obj, quizzes){
+    sort: function(obj, quizzes){
+        console.log('sorting', obj);
+
+        if (this.props.sortOptions && obj === undefined){
+            obj = {
+                sort: 'time'
+            };
+        }
+
         obj = obj || this.state.savedSearch;
 
         quizzes = quizzes || this.props.quizzes.slice();
@@ -103,32 +111,28 @@ var CQViewQuizList = React.createClass({
         if (obj && obj.sort === 'name') {
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
-            quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? 1 : -1);
+            quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? -1 : 1);
         } else {
             quizzes.sort((a, b) => {
-                if (a.meta.name === b.meta.name) {
-                    return 0;
+                if (a._category && a._category.name && b._category &&  b._category.name){
+                    var A = a._category.name.toLowerCase();
+                    var B = b._category.name.toLowerCase();
+
+                    if (A === B) {
+                        return a.meta.name > b.meta.name ? 1 : -1;
+                    }
+
+                    return A > B ? 1 : -1;
+                } else {
+                    return a.meta.name > b.meta.name ? 1 : -1;
                 }
-                return a.meta.name > b.meta.name ? 1 : -1;
+                return 0;
             });
 
-            if (quizzes.length > 0 && quizzes[0]._category){
-                quizzes.sort((a, b) => {
-                    if (a._category && a._category.name && b._category &&  b._category.name){
-                        a = a._category.name.toLowerCase();
-                        b = b._category.name.toLowerCase();
 
-                        if (a === b) {
+            console.log('quizzes', quizzes);
 
-                            return 0;
-                        }
-                        return a > b ? 1 : -1;
-                    }
-                    return 0;
-                });
-            }
 
-            // quizzes.sort((a, b) => a._category.name > b._category.name ? 1 : -1);
         }
 
         if (obj && obj.name && obj.name.length > 0){
@@ -144,8 +148,13 @@ var CQViewQuizList = React.createClass({
             });
         }
 
-        // console.log('new Quizzes', quizzes);
+        console.log('new Quizzes', quizzes);
+        return quizzes;
+    },
 
+    handleSearch: function(obj, quizzes){
+
+        quizzes = this.sort(obj, quizzes);
         this.setState({quizzes, savedSearch: obj});
     },
 
@@ -165,7 +174,7 @@ var CQViewQuizList = React.createClass({
     },
 
     render: function() {
-
+        console.trace("render");
         var author;
         var select;
         var sort;
@@ -242,7 +251,7 @@ var CQViewQuizList = React.createClass({
                 <ul className={`cq-viewquizlist ${this.props.className}`}>
                     {this.state.quizzes.map((quiz, key) => {
                         return (
-                            <li className="cq-viewquizlist__quiz" key={key} onClick={this.handleClick.bind(this, quiz)}>
+                            <li className="cq-viewquizlist__quiz" key={quiz.uuid} onClick={this.handleClick.bind(this, quiz)}>
 
                                 {select(quiz)}
 
