@@ -147,7 +147,7 @@ var CQPublic = React.createClass({
 
         if (this.state.showQuizzes) {
             quizList = (
-                <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">
+                <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list" sortBy="time">
                     <span className='cq-public__button' onClick={this.handlePreview}>
                         Preview
                     </span>

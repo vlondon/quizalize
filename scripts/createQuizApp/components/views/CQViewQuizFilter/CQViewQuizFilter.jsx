@@ -115,7 +115,7 @@ var CQviewQuizFilter = React.createClass({
                         </div>
                     </div>
 
-                    Classroom&nbsp;<CQDropdown
+                    Show classroom&nbsp;<CQDropdown
                         selected={this.state.kindSelected}
                         values={quizzesAndTopics}
                         onChange={this.handleKind}/>&nbsp;for any age to assess&nbsp;
