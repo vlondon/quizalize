@@ -18,6 +18,7 @@ var CQViewQuizList = React.createClass({
         selectMode: React.PropTypes.bool,
         profileMode: React.PropTypes.bool,
         sortOptions: React.PropTypes.bool,
+        sortBy: React.PropTypes.string,
         children: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.element,
@@ -41,7 +42,7 @@ var CQViewQuizList = React.createClass({
     getInitialState: function() {
         var initialState = {
             selectedQuizzes: [],
-            quizzes: this.sort({}, this.getQuizzesState())
+            quizzes: this.sort(undefined, this.getQuizzesState())
         };
 
         return initialState;
@@ -96,15 +97,15 @@ var CQViewQuizList = React.createClass({
     },
 
     sort: function(obj, quizzes){
-        console.log('sorting', obj);
 
-        if (this.props.sortOptions && obj === undefined){
+        if (this.props.sortBy && obj === undefined){
             obj = {
-                sort: 'time'
+                sort: this.props.sortBy
             };
         }
+        console.log('sorting', obj);
 
-        obj = obj || this.state.savedSearch;
+        // obj = obj || this.state.savedSearch || undefined;
 
         quizzes = quizzes || this.props.quizzes.slice();
 

@@ -139,7 +139,7 @@ var CQApp = React.createClass({
                     </div>
 
                     <div className="cq-app__quizlist">
-                        <CQViewQuizList quizzes={this.state.appInfo._quizzes}>
+                        <CQViewQuizList quizzes={this.state.appInfo._quizzes} sortBy="category">
                             <span className='cq-app__buttonextra' onClick={this.handlePreview}>
                                 Preview
                             </span>
