@@ -85,7 +85,7 @@ exports.indexQuiz =  function(req, res) {
 
 
 exports.create =  function(req, res) {
-    res.render('create',{zzishapi : getZzishParam()});
+    res.render('create', {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE});
 };
 
 exports.landingpage =  function(req, res) {

@@ -203,5 +203,5 @@ body
     script(src='/js/vendor.js')
     script(src='/js/quiz.js')
     script(src='/js/cqApp.js')
-        
-    script(src="http://localhost:7071/webpack-dev-server.js")
+    if (devServer=='true')
+        script(src="http://localhost:7071/webpack-dev-server.js")
