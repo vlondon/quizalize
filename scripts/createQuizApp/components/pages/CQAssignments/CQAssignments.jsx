@@ -77,7 +77,7 @@ var CQAssignments = React.createClass({
             <CQPageTemplate className="container">
                 <div className="container">
                     <h2>Your Assigned Quizzes</h2>
-                    <p>Here are the quizzes that each of your class can play</p>
+                    <p>Here are the quizzes which you have set to your classes</p>
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="row">

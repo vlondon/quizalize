@@ -153,10 +153,10 @@ var CQQuizzes = React.createClass({
                                             Welcome to <b>Quizalize</b>!
                                         </div>
 
-                                        It looks like you haven't created any quiz yet, but don't worry, you can start by doing the following
+                                        It looks like you haven't created any quizzes yet, but don't worry, you can start by doing the following
                                         <ol>
-                                            <li>Experience quizalize by playing our Quiz of the Day</li>
-                                            <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classrom. It only takes 60 seconds!.</li>
+                                            <li>Experience Quizalize by playing our Quiz of the Day</li>
+                                            <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classrom. It only takes 60 seconds!</li>
                                             <li>Browse our <CQLink href="/quiz/public">marketplace for content</CQLink> created by other Quizalize users.</li>
                                         </ol>
                                     </div>
@@ -170,7 +170,7 @@ var CQQuizzes = React.createClass({
 
             emptyQuizList = (
                 <div className="cq-quizzes__emptylist">
-                    You don't have any quiz yet on your account, <CQLink href="/quiz/create">why don't you create your first one?</CQLink>
+                    You don't have any quizzes yet on your account, <CQLink href="/quiz/create">why not you create your first one?</CQLink>
                     <p>or</p>
                     Browse the <CQLink href="/quiz/public">marketplace</CQLink> to get quizzes created by other users
                 </div>

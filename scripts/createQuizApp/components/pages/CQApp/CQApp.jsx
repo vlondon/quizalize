@@ -64,7 +64,7 @@ var CQApp = React.createClass({
 
         swal({
                 title: 'Confirm Purchase',
-                text: `Are you sure you want purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
+                text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',

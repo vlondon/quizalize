@@ -67,7 +67,7 @@ var CQPublic = React.createClass({
         console.log('buy quiz?', quiz);
         swal({
                 title: 'Confirm Purchase',
-                text: `Are you sure you want purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
+                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
