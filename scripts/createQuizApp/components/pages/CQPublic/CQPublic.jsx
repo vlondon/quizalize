@@ -28,7 +28,7 @@ var CQPublic = React.createClass({
     },
 
     componentDidMount: function() {
-        AppActions.searchApps();
+        AppActions.searchPublicApps();
         QuizStore.addChangeListener(this.onChange);
         AppStore.addChangeListener(this.onChange);
     },
@@ -99,6 +99,8 @@ var CQPublic = React.createClass({
                                     title: 'Purchase complete!',
                                     text: 'You will find the new content in your quizzes',
                                     type: 'success'
+                                }, ()=>{
+                                    router.setRoute('/quiz/quizzes');
                                 });
                             }, 100);
                         });

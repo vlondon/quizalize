@@ -109,7 +109,7 @@ var CQHeader = React.createClass({
 
                             <li id="cq-publicQuizzes">
                                 <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
-                                    <div className="fa fa-tags"></div> Public quizzes
+                                    <div className="fa fa-tags"></div> Marketplace
                                 </CQLink>
                             </li>
 

@@ -6,13 +6,19 @@
     $appIcon: 190px;
     $quizIcon: 40px;
 
+    .cq-viewquizlist__quiz {
+        width: calc(50% - 5px);
+        float: left;
+        margin-right: 5px;
+    }
+
     @at-root #{&}__list {
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
-    
+
 
 
     @at-root #{&}__quiz {

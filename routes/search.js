@@ -50,6 +50,9 @@ exports.getApps = function(req, res){
     var mongoQuery = {
         updated: {
             $gt: lastWeek
+        },
+        name: {
+            $regex: searchString, $options: 'i'
         }
 
     };

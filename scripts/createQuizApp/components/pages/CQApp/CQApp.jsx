@@ -50,11 +50,13 @@ var CQApp = React.createClass({
         return {appInfo};
     },
 
-    handleBuy: function(app){
+    handleBuy: function(){
+
+        var app = this.state.appInfo;
 
         swal({
                 title: 'Confirm Purchase',
-                text: `Are you sure you want purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
+                text: `Are you sure you want purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
@@ -67,7 +69,7 @@ var CQApp = React.createClass({
                     var newTransaction = {
                         meta: {
                             type: 'app',
-                            quizId: app.uuid,
+                            appId: app.uuid,
                             profileId: app.meta.profileId,
                             price: 0
                         }
@@ -117,7 +119,7 @@ var CQApp = React.createClass({
                     <div className="cq-app__info">
                         <h2>{this.state.appInfo.meta.name}</h2>
                         <div className="cq-app__price">Free</div>
-                        <button className="cq-app__button">
+                        <button className="cq-app__button" onClick={this.handleBuy}>
                             Use for free
                         </button>
 

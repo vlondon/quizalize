@@ -17,8 +17,6 @@ var _publicTopics = [];
 
 var sortPublicTopics = function(topics){
 
-    var processedTopics = [];
-
     topics.forEach((parentTopic) => {
         var childrenTopics = topics.filter(childs => childs.parentCategoryId === parentTopic.uuid );
         childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
@@ -27,8 +25,6 @@ var sortPublicTopics = function(topics){
 
     topics = topics.filter(t => t.parentCategoryId === '-1');
     topics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-    console.log('topics sorted', topics);
-
 
     return topics;
 };
@@ -92,7 +88,6 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
             storeInit = true;
-            console.trace('public topics loaded', action);
             _publicTopics = action.payload;
             TopicStore.emitChange();
             break;

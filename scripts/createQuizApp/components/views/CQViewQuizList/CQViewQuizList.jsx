@@ -16,6 +16,7 @@ var CQViewQuizList = React.createClass({
         onClick: React.PropTypes.func,
         onSelect: React.PropTypes.func,
         selectMode: React.PropTypes.bool,
+        profileMode: React.PropTypes.bool,
         sortOptions: React.PropTypes.bool,
         children: React.PropTypes.oneOfType([
             React.PropTypes.string,
@@ -30,6 +31,7 @@ var CQViewQuizList = React.createClass({
             className: '',
             showAuthor: true,
             sortOptions: false,
+            profileMode: false,
             onQuizClick: function(){},
             onClick: function(){},
             onSelect: function(){}
@@ -95,14 +97,12 @@ var CQViewQuizList = React.createClass({
 
     handleSearch: function(obj, quizzes){
         obj = obj || this.state.savedSearch;
-        console.log('search/sort', obj);
+
         quizzes = quizzes || this.props.quizzes.slice();
 
         if (obj && obj.sort === 'name') {
-            console.log('sorting by name');
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
-            console.log('sorting by date');
             quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? 1 : -1);
         } else {
             quizzes.sort((a, b) => {
@@ -111,36 +111,57 @@ var CQViewQuizList = React.createClass({
                 }
                 return a.meta.name > b.meta.name ? 1 : -1;
             });
-            quizzes.sort((a, b) => {
-                a = a._category.name.toLowerCase();
-                b = b._category.name.toLowerCase();
-                console.log('sorting', a, b, a > b, a === b);
-                if (a === b) {
-                    console.log('skipping');
+
+            if (quizzes.length > 0 && quizzes[0]._category){
+                quizzes.sort((a, b) => {
+                    if (a._category && a._category.name && b._category &&  b._category.name){
+                        a = a._category.name.toLowerCase();
+                        b = b._category.name.toLowerCase();
+
+                        if (a === b) {
+
+                            return 0;
+                        }
+                        return a > b ? 1 : -1;
+                    }
                     return 0;
-                }
-                return a > b ? 1 : -1;
-            });
-            console.log('quizzes', quizzes);
+                });
+            }
+
             // quizzes.sort((a, b) => a._category.name > b._category.name ? 1 : -1);
         }
 
-        // if (obj && obj.name && obj.name.length > 0){
-        //     quizzes = quizzes.filter( q => {
-        //         var nameMatch = false;
-        //         var categoryMatch = false;
-        //         nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-        //         if (q._category) {
-        //             categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-        //         }
-        //
-        //         return nameMatch || categoryMatch;
-        //     });
-        // }
+        if (obj && obj.name && obj.name.length > 0){
+            quizzes = quizzes.filter( q => {
+                var nameMatch = false;
+                var categoryMatch = false;
+                nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+                if (q._category) {
+                    categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+                }
+
+                return nameMatch || categoryMatch;
+            });
+        }
 
         // console.log('new Quizzes', quizzes);
 
         this.setState({quizzes, savedSearch: obj});
+    },
+
+    handleEdit: function(quiz, ev){
+        ev.stopPropagation();
+        this.props.onEdit(quiz);
+    },
+
+    handleAssign: function(quiz, ev){
+        ev.stopPropagation();
+        this.props.onAssign(quiz);
+    },
+
+    handleDelete: function(quiz, ev){
+        ev.stopPropagation();
+        this.props.onDelete(quiz);
     },
 
     render: function() {
@@ -148,12 +169,14 @@ var CQViewQuizList = React.createClass({
         var author;
         var select;
         var sort;
+        var profile = function(){};
 
         var childActionHandler = function(child, quiz){
             if (child) {
                 var clonedChildren = React.cloneElement(child, {
-                    onClick: function(){
-                        console.log('copy clicked', child, quiz);
+                    onClick: function(ev){
+                        ev.preventDefault();
+                        ev.stopPropagation();
                         if (child.props.onClick){
                             child.props.onClick(quiz);
                         }
@@ -162,6 +185,7 @@ var CQViewQuizList = React.createClass({
                 return clonedChildren;
             }
         };
+
 
         if (this.props.showAuthor) {
             author = (<div className="cq-viewquizlist__quizauthor"> by <b>Quizalize Team</b></div>);
@@ -187,6 +211,27 @@ var CQViewQuizList = React.createClass({
         if (this.props.sortOptions) {
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
+
+
+        if (this.props.profileMode){
+            profile = (quiz) => {
+                return (<div className="cq-quizzes__buttonbar" >
+                    <button className="cq-quizzes__button--edit" onClick={this.handleEdit.bind(this, quiz)}>
+                        <span className="fa fa-pencil"></span> Edit
+                    </button>
+
+                    <button className="cq-quizzes__button--assign" onClick={this.handleAssign.bind(this, quiz)}>
+                        <span className="fa fa-users"></span> Assign quiz to a Class
+                    </button>
+
+                    <button className="cq-quizzes__button--delete" onClick={this.handleDelete.bind(this, quiz)}>
+                        <span className="fa fa-trash-o"></span>
+                    </button>
+                </div>);
+            }
+
+        }
+
         return (
             <div>
                 {sort}
@@ -217,10 +262,10 @@ var CQViewQuizList = React.createClass({
                                 </div>
 
                                 <div className="cq-viewquizlist__extras">
-
+                                    {profile(quiz)}
                                     {childActionHandler(this.props.children, quiz, key)}
-                                </div>
 
+                                </div>
                             </li>
                         );
                     })}

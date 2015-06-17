@@ -56,19 +56,78 @@ var saveQuiz = function(quiz, profileId) {
 };
 
 var processTransactions = function(transaction, profileId){
-    return new Promise(function(resolve, reject){
-        zzish.getContent(transaction.meta.profileId, 'quiz', transaction.meta.quizId, function(err2, quiz){
-            if (err2) {
-                reject(err2);
-            } else {
-                console.log('quiz', quiz);
-                var clonedQuiz = cloneQuiz(quiz, profileId);
-                saveQuiz(clonedQuiz, profileId)
-                    .then(resolve)
-                    .catch(reject);
-            }
-            // we need to update the following fields
+
+    var getApp = function(appId){
+        return new Promise(function(resolve, reject){
+            zzish.getPublicContent(QUIZ_CONTENT_TYPE, appId, function(err, resp){
+                if (err) { reject(err); } else { resolve(resp); }
+            });
         });
+    };
+
+    var getQuiz = function(quizId, profileId){
+        return new Promise(function(resolve, reject){
+            console.log('trying to load', quizId);
+            // zzish.getContent(profileId, 'quiz', transaction.meta.quizId, function(err2, quiz){
+
+            zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err, resp){
+                if (!err) {
+                    // delete resp.payload;
+                    resolve(resp);
+                } else {
+                    reject();
+                }
+            });
+        });
+    };
+
+    return new Promise(function(resolve, reject){
+        // is a quiz or an app?
+
+        if (transaction.meta.type === 'app') {
+
+
+            // object consisteny, to be removed
+            transaction.meta.appId = transaction.meta.appId || transaction.meta.quizId;
+            delete transaction.meta.quizId;
+            console.log('about to save trasnaction', transaction);
+
+
+            // loading the app
+            getApp(transaction.meta.appId)
+                .then(function(appInfo){
+
+                    // loading the quizzes
+                    var quizzesIds = appInfo.payload.quizzes;
+                    var promises = quizzesIds.map(function(quizId){ return getQuiz(quizId); });
+                    Promise.all(promises)
+                        .then(function(quizzes){
+
+                            // cloning the quizzes
+                            var savePromises = [];
+                            quizzes.forEach(function(quiz){
+                                var clonedQuiz = cloneQuiz(quiz, profileId);
+
+                                // saving the quizzes and resolving
+                                savePromises.push(saveQuiz(clonedQuiz, profileId));
+                                Promise.all(savePromises)
+                                    .then(resolve);
+                            });
+                        });
+                    console.log('about to process', quizzes);
+                });
+
+
+        } else if (transaction.meta.type === 'quiz') {
+            getQuiz(transaction.meta.quizId)
+                .then(function(quiz){
+                    var clonedQuiz = cloneQuiz(quiz, profileId);
+                    saveQuiz(clonedQuiz, profileId)
+                        .then(resolve)
+                        .catch(reject);
+
+                });
+        }
     });
 };
 
@@ -143,7 +202,6 @@ exports.post = function(req, res){
 
 
 exports.process = function(req, res){
-    console.log('processing');
     var profileId = req.params.profileId;
 
     zzish.listContent(profileId, TRANSACTION_CONTENT_TYPE, function(err, resp){
@@ -157,16 +215,13 @@ exports.process = function(req, res){
                 if (transaction.meta.status === 'pending'){
 
                     processTransactions(transaction, profileId)
-                        .then(function(clonedQuiz){
-                            return saveQuiz(clonedQuiz, profileId);
-                        })
-                        .then(function(quiz){
+                        .then(function(){
                             transaction.meta.status = 'processed';
                             saveTransaction(transaction, profileId);
-                            // res.setond(quiz);
+                            res.send('processed');
                         });
                 } else {
-                    res.send(transaction);
+                    res.send('nothing to process');
                 }
             });
 

@@ -1,6 +1,7 @@
 var React = require('react');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
+var AppActions = require('createQuizApp/actions/AppActions');
 
 var CQDropdown = require('createQuizApp/components/utils/CQDropdown');
 
@@ -67,6 +68,7 @@ var CQviewQuizFilter = React.createClass({
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
         console.log('searchign for', this.state.searchString, category);
         QuizActions.searchPublicQuizzes(this.state.searchString, category);
+        AppActions.searchPublicApps(this.state.searchString, category);
 
     },
 
@@ -95,7 +97,23 @@ var CQviewQuizFilter = React.createClass({
         mappedTopics.unshift({value: 'all', name: 'any topic'});
         return (
             <div className='cq-quizfilter'>
+
+
                 <div className="cq-quizfilter__context">
+
+                    <div className="cq-quizfilter__search form-inline">
+                        <div className="form-group">
+                            <div className="input-group">
+
+                                <span className="input-group-addon">
+                                    <i className="fa fa-search"></i>
+                                </span>
+                                <input type="text" className="form-control"
+                                    onChange={this.handleSearch}
+                                    value={this.state.searchString}/>
+                            </div>
+                        </div>
+                    </div>
 
                     Classroom&nbsp;<CQDropdown
                         selected={this.state.kindSelected}
@@ -108,6 +126,8 @@ var CQviewQuizFilter = React.createClass({
 
 
                 </div>
+
+
 
             </div>
         );

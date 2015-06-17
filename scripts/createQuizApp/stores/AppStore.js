@@ -9,7 +9,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _publicApps = [];
+var _publicApps;
 var _apps = [];
 var _appInfo = {};
 

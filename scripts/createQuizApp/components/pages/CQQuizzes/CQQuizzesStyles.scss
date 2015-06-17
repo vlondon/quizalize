@@ -64,5 +64,9 @@
 
     }
 
+    @at-root #{&}__button--edit {
+        @include button($brand-color-blue);
+    }
+
 
 }

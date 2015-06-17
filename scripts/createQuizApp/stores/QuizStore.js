@@ -94,7 +94,7 @@ var QuizStore = assign({}, EventEmitter.prototype, {
             return quiz;
 
         });
-        console.log('getting public quizzes', publicQuizzes);
+
         // return _publicQuizzes;
         return publicQuizzes.reverse();
     },

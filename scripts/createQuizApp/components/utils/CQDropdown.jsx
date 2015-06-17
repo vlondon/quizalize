@@ -29,8 +29,8 @@ var CQDropdown = React.createClass({
         };
         return (
             <span className="cq-quizfilter__dropdown react-textselect">
-                {getNameFormId(this.state.selected)}
-                <select className="react-textselect-input" onChange={this.handleChange} value={this.state.selected}>
+                <label htmlFor="dropdown">{getNameFormId(this.state.selected)}</label>
+                <select id="dropdown" className="react-textselect-input" onChange={this.handleChange} value={this.state.selected}>
                     {this.props.values.map(val=>{
                         return (
                             <option value={val.value} key={val.value}>{val.name}</option>

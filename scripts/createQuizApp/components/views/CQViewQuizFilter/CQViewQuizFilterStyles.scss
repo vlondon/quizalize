@@ -10,7 +10,9 @@
         font-size: 26px;
         color: $brand-color-grey;
     }
-
+    @at-root #{&}__search {
+        float: right;
+    }
     .react-textselect {
         border-bottom: 1px solid rgba(0, 0, 0, .33);
         overflow: hidden;

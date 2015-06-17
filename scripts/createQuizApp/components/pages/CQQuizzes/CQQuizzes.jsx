@@ -52,6 +52,7 @@ var CQQuizzes = React.createClass({
     handleDelete: function(quiz){
         var found = false;
         var groupContents = GroupStore.getGroupsContent();
+        console.log('quiz', quiz);
 
         console.log('groupContents', quiz, groupContents);
         for (var i in groupContents) {
@@ -82,6 +83,19 @@ var CQQuizzes = React.createClass({
     },
 
     handleClick: function(quiz){
+        if (quiz){
+            router.setRoute(`/quiz/create/${quiz.uuid}`);
+        }
+    },
+
+    handleAssign: function(quiz){
+        if (quiz){
+            router.setRoute(`/quiz/published/${quiz.uuid}`);
+        }
+    },
+
+    handleEdit: function(quiz){
+        console.log('edit???', quiz);
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
@@ -133,21 +147,11 @@ var CQQuizzes = React.createClass({
                         quizzes={this.state.quizzes}
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
+                        profileMode={true}
+                        onAssign={this.handleAssign}
+                        onEdit={this.handleEdit}
+                        onDelete={this.handleDelete}
                         actions={this.handleAction}>
-
-                        <div className="cq-quizzes__buttonbar">
-                            <div className="cq-quizzes__edit">
-                                <span className="fa fa-pencil"></span> Edit
-
-                            </div>
-                            <button className="cq-quizzes__button--assign" onClick={this.handleDelete}>
-                                <span className="fa fa-users"></span> Assign quiz to a Class
-                            </button>
-
-                            <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
-                                <span className="fa fa-trash-o"></span>
-                            </button>
-                        </div>
 
 
 

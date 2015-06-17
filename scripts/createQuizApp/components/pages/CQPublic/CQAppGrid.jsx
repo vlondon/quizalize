@@ -3,6 +3,8 @@ var router = require('createQuizApp/config/router');
 
 var AppStore = require('createQuizApp/stores/AppStore');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
+var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 
 var CQAppGrid = React.createClass({
 
@@ -21,7 +23,7 @@ var CQAppGrid = React.createClass({
     },
 
     componentWillUnmount: function() {
-        AppStore.addChangeListener(this.onChange);
+        AppStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
@@ -36,44 +38,59 @@ var CQAppGrid = React.createClass({
 
     render: function() {
 
-        var profilePicture = function(picture){
-            return {
-                backgroundImage: `url(http://www.gravatar.com/avatar/${picture}?s=220&d=identicon)`
-            };
-        };
+        var emptyState = this.state.apps && this.state.apps.length === 0;
+        var loading = this.state.apps === undefined;
 
-        var categoryName = function(quiz){
-            if (quiz.category && quiz.category.name){
-                return (<span className="cq-appgrid__quizcategory">{quiz.category.name}</span>);
-            }
-            return undefined;
-        };
-        return (
-            <ul className={`cq-appgrid ${this.props.className}`}>
-                {this.state.apps.map((app, key) => {
-                    console.log('appp', app);
-                    return (
-                        <li className="cq-appgrid__app" key={key} onClick={this.handleClick.bind(this, app)}>
-                            <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
+        if (loading){
+            return (
+                <ul className={`cq-appgrid empty ${this.props.className}`}>
+                    <CQSpinner/>
+                </ul>
+            );
+        } else if (emptyState){
+            return (
+                <ul className={`cq-appgrid empty ${this.props.className}`}>
+                    <div className="cq-appgrid__appicon empty"></div>
+                    <h3>
+                        No apps have been found.
+                    </h3>
+                    <h4>
+                        <CQLink href="/quiz/create">
+                            Why don't you create a new one?
+                        </CQLink>
+                    </h4>
+                </ul>
+            );
+        } else {
 
-                            <div className="cq-appgrid__appdetails">
-                                <div className="cq-appgrid__appname">
-                                    {app.meta.name}
+            return (
+                <ul className={`cq-appgrid ${this.props.className}`}>
+                    {this.state.apps.map((app, key) => {
+                        return (
+                            <li className="cq-appgrid__app" key={key} onClick={this.handleClick.bind(this, app)}>
+                                <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
+
+                                <div className="cq-appgrid__appdetails">
+                                    <div className="cq-appgrid__appname">
+                                        {app.meta.name}
+                                    </div>
+                                    <div className="cq-appgrid__appquizzes">
+                                        {app.meta.quizzes.length} Quizzes
+                                    </div>
+
+                                    <div className="cq-appgrid__appprice">
+                                        Free
+                                    </div>
                                 </div>
-                                <div className="cq-appgrid__appquizzes">
-                                    {app.meta.quizzes.length} Quizzes
-                                </div>
 
-                                <div className="cq-appgrid__appprice">
-                                    Free
-                                </div>
-                            </div>
+                            </li>
+                        );
+                    })}
+                </ul>
+            );
+        }
 
-                        </li>
-                    );
-                })}
-            </ul>
-        );
+
     }
 
 });

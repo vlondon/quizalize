@@ -41,16 +41,6 @@ var CQAssignments = React.createClass({
                 return [];
             }
             var quizFound;
-            this.state.publicQuizzes.forEach(function(publicCategory){
-                publicCategory.quizzes.forEach(function(quiz){
-                    if (quiz.uuid === quizId){
-                        quizFound = quiz;
-                    }
-                });
-
-            });
-            console.log('quiz found?', quizId,  quizFound);
-            return quizFound;
         };
         // console.log('checking', groupCode);
         if (this.state.groupsContent && this.state.quizzes){
@@ -66,14 +56,8 @@ var CQAssignments = React.createClass({
             var quizzes = this.state.quizzes.filter(function(q){
                 return quizIds.indexOf(q.uuid) !== -1;
             });
-            var publicQuizzes = quizIds.map(q => selectPublicQuiz(q));
-            publicQuizzes = publicQuizzes.filter(q => q !== undefined);
-            // console.log('quizIds??', quizIds);
-            console.log('publicQuizzes??', groupCode, publicQuizzes);
 
-            var result = quizzes.concat(publicQuizzes);
-            console.log('result', result);
-            return result;
+            return quizzes;
         }
         return [];
     },

@@ -75,7 +75,7 @@ var AppActions = {
         return AppApi.uploadMedia(appId, file);
     },
 
-    searchApps: debounce((searchString = '', categoryId) => {
+    searchPublicApps: debounce((searchString = '', categoryId) => {
 
         AppApi.searchApps(searchString, categoryId)
             .then(function(apps){

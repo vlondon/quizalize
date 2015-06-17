@@ -248,7 +248,7 @@ var pages = {
     app: {
         path: '/quiz/app/:appId',
         pathRegEx: /\/quiz\/app\/([\w\-]+)/,
-        needsLogin: undefined,
+        needsLogin: true,
         renderer: function(props){
             React.render(
                 React.createElement(CQApp, props),

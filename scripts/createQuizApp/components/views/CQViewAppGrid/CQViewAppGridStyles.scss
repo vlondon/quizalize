@@ -5,7 +5,8 @@
 
     $appIcon: 190px;
     $quizIcon: 40px;
-    margin: 0;
+    min-height: 310px;
+    margin: 20px 0;
     padding: 0;
     text-align: center;
 
@@ -29,6 +30,10 @@
         img {
             width: 100%;
             /* background: red; */
+        }
+        &.empty {
+            margin-top: 10px;
+            background: #CCC;
         }
     }
 
