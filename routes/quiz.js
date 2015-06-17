@@ -63,7 +63,7 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    var params = {zzishapi: getZzishParam()};
+    var params = {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE};
     if (req.query.uuid!==undefined) {
         zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {
             if (!err) {

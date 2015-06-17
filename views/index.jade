@@ -220,3 +220,5 @@ html(ng-app='quizApp')
                         button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
 
         div(ng-view)
+        if (devServer=='true')
+            //- script(src="http://localhost:7071/webpack-dev-server.js")
