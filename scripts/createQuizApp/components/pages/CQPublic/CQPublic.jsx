@@ -52,8 +52,10 @@ var CQPublic = React.createClass({
     },
 
     handlePreview: function(quiz){
+        console.log('quiz', quiz);
         sessionStorage.setItem('mode', 'teacher');
-        window.location.href = `/app#/play/public/${quiz.uuid}`;
+        window.open(`/app#/play/public/${quiz.uuid}`);
+        // window.location.href = `/app#/play/public/${quiz.uuid}`;
 
     },
 
@@ -110,6 +112,8 @@ var CQPublic = React.createClass({
         });
     },
 
+
+
     handleViewChange: function(options){
         console.log('options', options);
         switch (options){
@@ -144,6 +148,9 @@ var CQPublic = React.createClass({
         if (this.state.showQuizzes) {
             quizList = (
                 <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list">
+                    <span className='cq-public__button' onClick={this.handlePreview}>
+                        Preview
+                    </span>
                     <span className='cq-public__button' onClick={this.handleBuy}>
                         Free
                     </span>

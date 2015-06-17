@@ -36,6 +36,12 @@ var CQApp = React.createClass({
         this.setState(this.getState());
     },
 
+    handlePreview: function(quiz){
+        console.log('quiz', quiz);
+        sessionStorage.setItem('mode', 'teacher');
+        window.open(`/app#/play/public/${quiz.uuid}`);
+    },
+
     getState: function(){
         var appInfo = AppStore.getAppInfo(this.props.appId);
 
@@ -133,7 +139,12 @@ var CQApp = React.createClass({
                     </div>
 
                     <div className="cq-app__quizlist">
-                        <CQViewQuizList quizzes={this.state.appInfo._quizzes}/>
+                        <CQViewQuizList quizzes={this.state.appInfo._quizzes}>
+                            <span className='cq-app__buttonextra' onClick={this.handlePreview}>
+                                Preview
+                            </span>
+                            <span></span>
+                        </CQViewQuizList>
                     </div>
                 </CQPageTemplate>
             );

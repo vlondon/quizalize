@@ -172,18 +172,22 @@ var CQViewQuizList = React.createClass({
         var profile = function(){};
 
         var childActionHandler = function(child, quiz){
-            if (child) {
-                var clonedChildren = React.cloneElement(child, {
-                    onClick: function(ev){
-                        ev.preventDefault();
-                        ev.stopPropagation();
-                        if (child.props.onClick){
-                            child.props.onClick(quiz);
+            if (child && child.length && child.length > 0) {
+                return child.map(function(c) {
+
+                    var clonedChildren = React.cloneElement(c, {
+                        onClick: function(ev){
+                            ev.preventDefault();
+                            ev.stopPropagation();
+                            if (c.props.onClick){
+                                c.props.onClick(quiz);
+                            }
                         }
-                    }
+                    });
+                    return clonedChildren;
                 });
-                return clonedChildren;
             }
+            return child;
         };
 
 

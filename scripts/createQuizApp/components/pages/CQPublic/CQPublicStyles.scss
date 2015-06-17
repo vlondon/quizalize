@@ -99,8 +99,9 @@
     @at-root #{&}__button {
         background: $brand-color-grey-lighter;
         color: $brand-color-grey;
-        margin: 0;
+        margin: 5px;
         padding: 5px;
+        cursor: pointer;
 
         &:hover {
             background: $brand-color-grey;
