@@ -228,7 +228,7 @@ var CQViewQuizList = React.createClass({
                         <span className="fa fa-trash-o"></span>
                     </button>
                 </div>);
-            }
+            };
 
         }
 

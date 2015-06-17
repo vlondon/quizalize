@@ -1,4 +1,5 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
@@ -14,7 +15,6 @@ var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 
 
-var router = require('createQuizApp/config/router');
 
 require('./CQPublicStyles');
 

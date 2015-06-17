@@ -1,14 +1,30 @@
 var React = require('react');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var UserActions = require('createQuizApp/actions/UserActions');
+var UserStore = require('createQuizApp/stores/UserStore');
 
 var _timeout;
 var CQHeaderDropdown = React.createClass({
 
     getInitialState: function() {
         return {
-            open: false
+            open: false,
+            user: UserStore.getUser()
         };
+    },
+
+    componentDidMount: function() {
+        UserStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        UserStore.removeChangeListener(this.onChange);
+    },
+
+    onChange: function(){
+        this.setState({
+            user: UserStore.getUser()
+        });
     },
 
     handleOver: function(){
@@ -29,13 +45,17 @@ var CQHeaderDropdown = React.createClass({
 
     render: function() {
         var dropdown;
+        var userName;
+        if (this.state.user && this.state.user.name){
+            userName = this.state.user.attributes.name || this.state.user.name;
+        }
+                        // <li>
+                        //     <CQLink href='/quiz'>Your Profile</CQLink>
+                        // </li>
         if (this.state.open) {
             dropdown = (
                 <div className="person-menu">
                     <ul>
-                        <li>
-                            <CQLink href='/quiz'>Your Profile</CQLink>
-                        </li>
                         <li><CQLink href='/quiz/settings'>Settings</CQLink></li>
                         <li><CQLink href="/quiz/help">Help</CQLink></li>
                         <li><a onClick={this.handleLogout}>Logout</a></li>
@@ -46,7 +66,7 @@ var CQHeaderDropdown = React.createClass({
         return (
             <li>
                 <div className="navbar-dropdown" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-                    Hi user! <i className="fa fa-caret-down"></i>
+                    Hi {userName}! <i className="fa fa-caret-down"></i>
                     {dropdown}
                 </div>
             </li>

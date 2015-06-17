@@ -48,17 +48,17 @@ var CQAppGrid = React.createClass({
                 </ul>
             );
         } else if (emptyState){
+            // <h4>
+            //     <CQLink href="/quiz/create">
+            //         Why don't you create a new one?
+            //     </CQLink>
+            // </h4>
             return (
                 <ul className={`cq-appgrid empty ${this.props.className}`}>
                     <div className="cq-appgrid__appicon empty"></div>
                     <h3>
                         No apps have been found.
                     </h3>
-                    <h4>
-                        <CQLink href="/quiz/create">
-                            Why don't you create a new one?
-                        </CQLink>
-                    </h4>
                 </ul>
             );
         } else {

@@ -1,6 +1,5 @@
 var React = require('react');
 
-
 var UserStore = require('createQuizApp/stores/UserStore');
 // var UserActions = require('createQuizApp/actions/UserActions');
 var CQLink          = require('createQuizApp/components/utils/CQLink');
@@ -47,16 +46,18 @@ var CQDashboard = React.createClass({
                                 // </h3>
         //     <CQQuizOfTheDay/>
         // </div>
+
+        // <div className="cq-dashboard">
+        //     <CQDashboardProfile/>
+        //     <div className="cq-dashboard__dashboard">
+        //
+        //         <CQDashboardQuizzes/>
+        //
+        //     </div>
+        // </div>
         return (
             <CQPageTemplate>
-                <div className="cq-dashboard">
-                    <CQDashboardProfile/>
-                    <div className="cq-dashboard__dashboard">
 
-                        <CQDashboardQuizzes/>
-
-                    </div>
-                </div>
 
                 <div className="container">
                     <h2>

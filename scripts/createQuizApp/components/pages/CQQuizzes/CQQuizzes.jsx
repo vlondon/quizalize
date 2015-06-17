@@ -4,6 +4,7 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var GroupStore = require('createQuizApp/stores/GroupStore');
 var AppStore = require('createQuizApp/stores/AppStore');
+var UserStore = require('createQuizApp/stores/UserStore');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
@@ -24,6 +25,9 @@ var CQQuizzes = React.createClass({
     getInitialState: function() {
         var initialState =  this.getState();
         initialState.selectedQuizzes = [];
+        initialState.isAdmin = UserStore.isAdmin();
+
+
         return initialState;
     },
 
@@ -108,29 +112,84 @@ var CQQuizzes = React.createClass({
     render: function() {
 
         var createApp;
-        var introCopy = this.state.quizzes.length > 0 ? 'Here are the quizzes you have created so far…' : 'Why don\'t you create a quiz for your class.';
+        var apps;
+        var newApp;
+        var emptyState;
+        var emptyQuizList;
+        var introCopy = this.state.quizzes.length > 0 ? 'Here are your quizzes' : '';
 
         if (this.props.appMode) {
             createApp = (<CQViewCreateApp
                 selectedQuizzes={this.state.selectedQuizzes}
                 />);
         }
+
+        if (this.state.isAdmin){
+            apps = (<div className="container">
+                <h2>Your apps</h2>
+                <CQViewAppGrid
+                    editMode={true}
+                    apps={this.state.apps}/>
+            </div>);
+            newApp = (<CQLink href="/quiz/quizzes/app" className="btn btn-primary">
+                <i className="fa fa-plus"></i> New app
+            </CQLink>);
+        }
+
+        if (this.state.quizzes.length === 0){
+            emptyState = (
+                <div className="row cq-quizzes__empty">
+
+                    <div className="row well">
+                        <div className="quiz-preview">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <div className="quizalize-icon">
+                                        <div className="zz-ic_quizalize"></div>
+                                    </div>
+
+                                    <div className="extra">
+                                        <div className="intro">
+                                            Welcome to <b>Quizalize</b>!
+                                        </div>
+
+                                        It looks like you haven't created any quiz yet, but don't worry, you can start by doing the following
+                                        <ol>
+                                            <li>Experience quizalize by playing our Quiz of the Day</li>
+                                            <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classrom. It only takes 60 seconds!.</li>
+                                            <li>Browse our <CQLink href="/quiz/public">marketplace for content</CQLink> created by other Quizalize users.</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            emptyQuizList = (
+                <div className="cq-quizzes__emptylist">
+                    You don't have any quiz yet on your account, <CQLink href="/quiz/create">why don't you create your first one?</CQLink>
+                    <p>or</p>
+                    Browse the <CQLink href="/quiz/public">marketplace</CQLink> to get quizzes created by other users
+                </div>
+            );
+        }
+
+
         return (
             <CQPageTemplate className="container cq-quizzes">
-                <div className="container">
-                    <h2>Your apps</h2>
-                    <CQViewAppGrid
-                        editMode={true}
-                        apps={this.state.apps}/>
-                </div>
-                <div className="container">
 
+                <div className="container">
+                    {emptyState}
+
+
+                    {apps}
 
                     <h2>Your Quizzes
                         <div className="pull-right">
-                            <CQLink href="/quiz/quizzes/app" className="btn btn-primary">
-                                <i className="fa fa-plus"></i> New app
-                            </CQLink> &nbsp;
+                            {newApp}&nbsp;
                             <CQLink href="/quiz/create" className="btn btn-primary">
                                 <i className="fa fa-plus"></i> New quiz
                             </CQLink>
@@ -151,12 +210,8 @@ var CQQuizzes = React.createClass({
                         onAssign={this.handleAssign}
                         onEdit={this.handleEdit}
                         onDelete={this.handleDelete}
-                        actions={this.handleAction}>
-
-
-
-                    </CQViewQuizList>
-
+                        actions={this.handleAction}/>
+                    {emptyQuizList}
 
                 </div>
             </CQPageTemplate>

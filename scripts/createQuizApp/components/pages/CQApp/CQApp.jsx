@@ -1,4 +1,6 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
+
 var AppStore = require('createQuizApp/stores/AppStore');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
@@ -90,6 +92,8 @@ var CQApp = React.createClass({
                                     title: 'Purchase complete!',
                                     text: 'You will find the new content in your quizzes',
                                     type: 'success'
+                                }, ()=>{
+                                    router.setRoute('/quiz/quizzes');
                                 });
                             }, 100);
                         });
