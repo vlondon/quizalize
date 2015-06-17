@@ -141,6 +141,16 @@ exports.faq = function(req, res){
 };
 
 
+exports.terms = function(req, res){
+    res.render('terms');
+};
+exports.privacypolicy = function(req, res){
+    res.render('privacypolicy');
+};
+exports.coppa = function(req, res){
+    res.render('coppa');
+};
+
 exports.createProfile = function(req, res){
     var id = req.body.uuid;
     var name = "";
