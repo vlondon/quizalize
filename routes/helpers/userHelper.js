@@ -8,15 +8,12 @@ exports.addUserToExtra = function(listOfContent){
 
     return new Promise(function(resolve, reject){
 
-        console.log('something ', _.isArray(listOfContent));
 
         listOfContent = _.isArray(listOfContent) ? listOfContent : [listOfContent];
 
         var listOfAuthors = _.uniq(listOfContent.map(function(item){
             return item.meta.profileId;
         }));
-
-
 
         zzish.getUsers(listOfAuthors, function(err, users){
             if (!err && typeof users === 'object') {

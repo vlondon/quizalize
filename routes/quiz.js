@@ -238,13 +238,14 @@ exports.getMyQuizzes = function(req, res){
     });
 };
 
-exports.getMyTopics = function(req, res){
+exports.getTopics = function(req, res){
     var profileId = req.params.profileId;
-    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
-
-    zzish.listCategories(profileId, function(err, resp){
-        res.send(resp);
+    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
+        res.send(resp.categories);
     });
+    // zzish.listCategories(profileId, function(err, resp){
+    //     res.send(resp);
+    // });
 };
 
 exports.postTopic = function(req,res){
