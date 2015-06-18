@@ -16,8 +16,6 @@ var AppStore = require('createQuizApp/stores/AppStore');
 
 
 
-require('./CQPublicStyles');
-
 var CQPublic = React.createClass({
 
     getInitialState: function() {

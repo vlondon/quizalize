@@ -12,7 +12,6 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 
 
 
-require('./CQEditStyles');
 
 var CQEdit = React.createClass({
 

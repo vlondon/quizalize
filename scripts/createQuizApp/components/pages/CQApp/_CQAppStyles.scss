@@ -1,15 +1,12 @@
-@import './../../../../shared/scss/variables';
-@import './../../../../shared/scss/mixins';
 
-.cq-public {
+.cq-app {
 
+    $appIcon: 190px;
     $quizIcon: 40px;
 
-    .cq-viewquizlist__quiz {
-        width: calc(50% - 5px);
-        float: left;
-        margin-right: 5px;
-    }
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
 
     @at-root #{&}__list {
         list-style: none;
@@ -17,7 +14,30 @@
         padding: 0;
     }
 
+    @at-root #{&}__info {
+        color: #FFF;
+        h1, h2, h3 {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+    }
 
+    @at-root #{&}__price {
+        text-transform: uppercase;
+        text-size: 21px;
+        margin-bottom: 30px;
+        color: #FFF;
+    }
+
+    @at-root #{&}__description {
+        color: #FFF;
+        text-align: left;
+        margin-bottom: 30px;
+    }
+
+    @at-root #{&}__quizlist {
+        small { display: none; }
+    }
 
 
     @at-root #{&}__quiz {
@@ -33,16 +53,16 @@
         float: left;
     }
 
-    @at-root #{&}__quizicon {
-        width: $quizIcon;
-        height: $quizIcon;
+    @at-root #{&}__icon {
+        width: $appIcon;
+        height: $appIcon;
         border-radius: 100%;
         margin: 5px;
         display: inline-block;
-        float: left;
-        font-size: $quizIcon - 10px;
+
+        font-size: $appIcon - 10px;
         text-align: center;
-        line-height: $quizIcon;
+        line-height: $appIcon;
         color: #FFF;
         background-size: cover;
         background-position: center center;
@@ -91,10 +111,37 @@
 
 
     @at-root #{&}__list {
+
         width: 100%;
     }
 
     @at-root #{&}__button {
+
+        color: $brand-color-black;
+        margin: 0;
+        padding: 5px;
+        font-weight: bold;
+        text-size: 21px;
+        margin-bottom: 30px;
+        padding: 10px;
+        border-radius: 20px;
+        border: none;
+        background: #FFF;
+        box-shadow: 0px 2px  0 $brand-color-black;
+
+        &:focus,
+        &:hover {
+            background: $brand-color-grey-lighter;
+            /* color: $brand-color-grey-lighter; */
+        }
+
+        &:active {
+            background: $brand-color-grey-light;
+            box-shadow: inset 0 2px 0 $brand-color-black;
+        }
+    }
+
+    @at-root #{&}__buttonextra {
         background: $brand-color-grey-lighter;
         color: $brand-color-grey;
         margin: 5px;

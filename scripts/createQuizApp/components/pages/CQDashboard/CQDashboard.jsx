@@ -11,7 +11,6 @@ var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay/CQQuizOfTh
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 
-require('./CQDashboardStyles');
 
 var CQDashboard = React.createClass({
 

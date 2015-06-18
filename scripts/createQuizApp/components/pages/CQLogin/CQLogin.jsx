@@ -6,10 +6,6 @@ var CQLink          = require('createQuizApp/components/utils/CQLink');
 
 var UserActions = require('createQuizApp/actions/UserActions');
 
-
-require('./CQLoginStyles');
-
-
 var CQLogin = React.createClass({
 
     getInitialState: function() {

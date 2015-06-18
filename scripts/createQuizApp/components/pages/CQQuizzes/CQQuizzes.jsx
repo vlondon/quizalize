@@ -14,7 +14,6 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var router = require('createQuizApp/config/router');
 
-require('./CQQuizzesStyles');
 
 var CQQuizzes = React.createClass({
 

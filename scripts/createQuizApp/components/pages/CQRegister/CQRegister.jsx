@@ -9,9 +9,6 @@ var UserActions = require('createQuizApp/actions/UserActions');
 var urlParams  = require('createQuizApp/utils/urlParams');
 
 
-
-
-
 var CQRegister = React.createClass({
 
     getInitialState: function() {

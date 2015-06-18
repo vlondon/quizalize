@@ -1,12 +1,3 @@
-@import './../../../../shared/scss/layout';
-@import './../../../../shared/scss/variables';
-@import './../../../../shared/scss/mixins';
-
-
-body {
-    background: #FFF;
-}
-
 .ql-container {
     @include ql-container;
 }
