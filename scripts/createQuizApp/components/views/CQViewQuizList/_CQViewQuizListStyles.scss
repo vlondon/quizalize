@@ -9,6 +9,7 @@
     }
 
     @at-root #{&}__quiz {
+        position: relative;
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;
         padding: 5px;
@@ -68,11 +69,7 @@
         color: $brand-color-grey;
     }
 
-    @at-root #{&}__quizextra {
-        /* text-align: center; */
-        /* margin: 12px 0; */
-        /* float: left; */
-    }
+
 
     @at-root #{&}__quizcategory {
         display: inline-block;
@@ -87,7 +84,8 @@
     }
 
     @at-root #{&}__extras {
-        float: right;
-        margin: 12px 0;
+        position: absolute;
+        right: 12px;
+        top: 12px;
     }
 }

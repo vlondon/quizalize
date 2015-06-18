@@ -2,6 +2,7 @@
 var uuid                = require('node-uuid');
 var zzish               = require("zzishsdk");
 var Promise             = require('es6-promise').Promise;
+var userHelper          = require('./helpers/userHelper');
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
@@ -25,14 +26,37 @@ exports.getQuizzes = function(req, res){
         }
 
     };
-    console.log('searching ', mongoQuery);
+
 
     if (categoryId) {
         mongoQuery.categoryId = categoryId;
     }
 
     zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, resp){
-        res.send(resp);
+
+        if (resp) {
+
+        var listOfAuthors = resp.map(function(quiz){
+            return quiz.meta.profileId;
+        });
+
+        userHelper.getUsersFromIds(listOfAuthors)
+            .then(function(authors){
+                resp.forEach(function(quiz){
+                    var authorId = quiz.meta.profileId;
+                    var author = authors.filter(function(a){ return a.uuid === authorId; })[0];
+                    quiz.extra = {
+                        author: author
+                    };
+                    console.log('listOfAuthors',  authors, author);
+                });
+                res.send(resp);
+            }).catch(function(error){
+                res.status(500).send(error);
+            });
+        } else {
+            res.status(500).send(err);
+        }
     });
 
 };

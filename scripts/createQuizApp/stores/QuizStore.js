@@ -85,7 +85,7 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     getPublicQuizzes: function(){
         if (!storeInitPublic){
             storeInitPublic = true;
-            QuizActions.loadPublicQuizzes();
+            QuizActions.searchPublicQuizzes();
         }
         var publicQuizzes = _publicQuizzes.slice();
         // find their category

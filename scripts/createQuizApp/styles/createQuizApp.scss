@@ -6,7 +6,17 @@
 // base
 @import './CQBaseStyles';
 
+
+// views
+@import './../components/views/CQViewAppGrid/CQViewAppGridStyles';
+@import './../components/views/CQViewCreateApp/CQViewCreateAppStyles';
+@import './../components/views/CQViewHeader/CQViewHeaderStyles';
+@import './../components/views/CQViewQuizFilter/CQViewQuizFilterStyles';
+@import './../components/views/CQViewQuizList/CQViewQuizListStyles';
+
+
 // components
+// components can override default styles from views
 @import './../components/CQQuizOfTheDay/CQQuizOfTheDayStyles';
 @import './../components/pages/CQApp/CQAppStyles';
 @import './../components/pages/CQAssignments/CQAssignmentsStyles';
@@ -24,10 +34,3 @@
 @import './../components/pages/CQRegister/CQRegisterStyles';
 @import './../components/pages/CQRestorePassword/CQRestorePasswordStyles';
 @import './../components/pages/CQSettings/CQSettingsStyles';
-
-// views
-@import './../components/views/CQViewAppGrid/CQViewAppGridStyles';
-@import './../components/views/CQViewCreateApp/CQViewCreateAppStyles';
-@import './../components/views/CQViewHeader/CQViewHeaderStyles';
-@import './../components/views/CQViewQuizFilter/CQViewQuizFilterStyles';
-@import './../components/views/CQViewQuizList/CQViewQuizListStyles';

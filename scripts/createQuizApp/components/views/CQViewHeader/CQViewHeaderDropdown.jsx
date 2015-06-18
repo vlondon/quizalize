@@ -45,13 +45,7 @@ var CQHeaderDropdown = React.createClass({
 
     render: function() {
         var dropdown;
-        var userName;
-        if (this.state.user && this.state.user.name){
-            userName = this.state.user.attributes.name || this.state.user.name;
-        }
-                        // <li>
-                        //     <CQLink href='/quiz'>Your Profile</CQLink>
-                        // </li>
+
         if (this.state.open) {
             dropdown = (
                 <div className="person-menu">
@@ -66,7 +60,7 @@ var CQHeaderDropdown = React.createClass({
         return (
             <li>
                 <div className="navbar-dropdown" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-                    Hi {userName}! <i className="fa fa-caret-down"></i>
+                    Hi {this.state.user.name}! <i className="fa fa-caret-down"></i>
                     {dropdown}
                 </div>
             </li>

@@ -30,6 +30,7 @@
     "express-http-proxy": "^0.6.0",
     "express-session": "^1.9.3",
     "jade": "1.8.2",
+    "lodash": "^3.9.3",
     "marked": "^0.3.2",
     "serve-favicon": "^2.1.5",
     "xmlhttprequest": "^1.7.0",

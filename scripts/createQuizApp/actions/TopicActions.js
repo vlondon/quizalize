@@ -19,12 +19,11 @@ var TopicActions = {
     },
 
     loadPublicTopics: function(){
-        QuizApi.getPublicQuizzes()
-            .then(function(quizzes){
-                console.log('we got', quizzes);
+        QuizApi.getTopics()
+            .then(function(topics){
                 AppDispatcher.dispatch({
                     actionType: TopicConstants.PUBLIC_TOPICS_LOADED,
-                    payload: quizzes.categories
+                    payload: topics
                 });
             });
     }

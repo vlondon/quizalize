@@ -72,7 +72,7 @@ var _questionsTopicToTopicId = function(quiz){
 var QuizActions = {
 
     loadQuizzes: function(){
-        console.trace('QuizActions.loadQuizzes called');
+
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
 
@@ -162,26 +162,6 @@ var QuizActions = {
                 });
             });
     },
-
-
-    loadPublicQuizzes: function(searchString = ''){
-        console.trace('QuizActions.loadPublicQuizzes called');
-
-        var processQuizList = function(quizzes){
-            return quizzes;
-        };
-
-        QuizApi.searchQuizzes(searchString)
-            .then(function(quizzes){
-
-                AppDispatcher.dispatch({
-                    actionType: QuizConstants.QUIZZES_PUBLIC_LOADED,
-                    payload: processQuizList(quizzes)
-                });
-
-            });
-    },
-
 
 
     searchPublicQuizzes: debounce((searchString = '', categoryId) => {
