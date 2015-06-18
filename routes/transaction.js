@@ -114,7 +114,7 @@ var processTransactions = function(transaction, profileId){
                                     .then(resolve);
                             });
                         });
-                    console.log('about to process', quizzes);
+                    
                 });
 
 

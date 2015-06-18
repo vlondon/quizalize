@@ -37,23 +37,17 @@ var CQApp = React.createClass({
     },
 
     handlePreview: function(quiz){
-        console.log('quiz', quiz);
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/play/public/${quiz.uuid}`);
     },
 
     getState: function(){
-        var appInfo = AppStore.getAppInfo(this.props.appId);
 
+        var appInfo = AppStore.getAppInfo(this.props.appId);
+        
         if (appInfo.meta && appInfo.meta.colour){
             document.body.style.backgroundColor = appInfo.meta.colour;
         }
-
-        if (appInfo.meta && appInfo.meta._quizzes){
-            appInfo.meta._quizzes.sort((a, b)=> a.meta.name > b.meta.name ? 1 : -1 );
-            // appInfo.meta._quizzes.sort((a, b)=> a._category.name > b._category.name ? 1 : -1 );
-        }
-
 
         return {appInfo};
     },
@@ -139,7 +133,7 @@ var CQApp = React.createClass({
                     </div>
 
                     <div className="cq-app__quizlist">
-                        <CQViewQuizList quizzes={this.state.appInfo._quizzes} sortBy="category">
+                        <CQViewQuizList quizzes={this.state.appInfo.extra.quizzes} sortBy="category">
                             <span className='cq-app__buttonextra' onClick={this.handlePreview}>
                                 Preview
                             </span>

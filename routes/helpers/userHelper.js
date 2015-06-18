@@ -1,40 +1,44 @@
 var _           = require('lodash');
 var Promise     = require('es6-promise').Promise;
 var zzish       = require('./../../zzish');
+var assign      = require('object-assign');
 
 
-exports.getUsersFromIds = function(arrayOfUserIds){
-
-    var queryUserId = function(userId){
-        return new Promise(function(resolve, reject){
-
-            zzish.user(userId, function(err, user){
-                if (!err && typeof user === 'object') {
-                    var userResponse = {};
-                    userResponse = user.attributes;
-                    userResponse.name = user.name;
-                    userResponse.uuid = userId;
-                    resolve(userResponse);
-                } else {
-                    reject();
-                }
-            });
-        });
-    };
+exports.addUserToExtra = function(listOfContent){
 
     return new Promise(function(resolve, reject){
 
-        var promises = [];
+        console.log('something ', _.isArray(listOfContent));
 
-        arrayOfUserIds = _.uniq(arrayOfUserIds);
+        listOfContent = _.isArray(listOfContent) ? listOfContent : [listOfContent];
 
-        arrayOfUserIds.forEach(function(userId) {
-            promises.push(queryUserId(userId));
+        var listOfAuthors = _.uniq(listOfContent.map(function(item){
+            return item.meta.profileId;
+        }));
+
+
+
+        zzish.getUsers(listOfAuthors, function(err, users){
+            if (!err && typeof users === 'object') {
+                var resolvedUsers = users.map(function(u){
+                    var user = assign({}, u.attributes);
+                    user.name = u.name;
+                    user.uuid = u.uuid;
+                    return user;
+                });
+
+                listOfContent.forEach(function(item){
+                    var author = resolvedUsers.filter(function(a){ return a.uuid === item.meta.profileId; })[0];
+                    item.extra = item.extra || {};
+                    item.extra.author = author;
+                });
+
+                resolve(listOfContent);
+
+            } else {
+                reject(err);
+            }
         });
-
-        Promise.all(promises)
-            .then(resolve)
-            .catch(reject);
 
     });
 };

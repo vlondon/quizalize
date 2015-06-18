@@ -1,7 +1,5 @@
 //general zzish config
-var uuid                = require('node-uuid');
 var zzish               = require("zzishsdk");
-var Promise             = require('es6-promise').Promise;
 var userHelper          = require('./helpers/userHelper');
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
@@ -36,24 +34,12 @@ exports.getQuizzes = function(req, res){
 
         if (resp) {
 
-        var listOfAuthors = resp.map(function(quiz){
-            return quiz.meta.profileId;
-        });
-
-        userHelper.getUsersFromIds(listOfAuthors)
-            .then(function(authors){
-                resp.forEach(function(quiz){
-                    var authorId = quiz.meta.profileId;
-                    var author = authors.filter(function(a){ return a.uuid === authorId; })[0];
-                    quiz.extra = {
-                        author: author
-                    };
-                    console.log('listOfAuthors',  authors, author);
+            userHelper.addUserToExtra(resp)
+                .then(function(listOfItems){
+                    res.send(listOfItems);
+                }).catch(function(error){
+                    res.status(500).send(error);
                 });
-                res.send(resp);
-            }).catch(function(error){
-                res.status(500).send(error);
-            });
         } else {
             res.status(500).send(err);
         }
@@ -65,7 +51,7 @@ exports.getQuizzes = function(req, res){
 
 exports.getApps = function(req, res){
 
-    var searchString = req.body.search;
+    var searchString = req.body.search || '';
     var categoryId = req.body.categoryId;
     var appId = req.body.appId;
 
@@ -90,7 +76,17 @@ exports.getApps = function(req, res){
     console.log('searching ', mongoQuery);
 
     zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
-        res.send(resp);
+        if (resp) {
+
+            userHelper.addUserToExtra(resp)
+                .then(function(listOfItems){
+                    res.send(listOfItems);
+                }).catch(function(error){
+                    res.status(500).send(error);
+                });
+        } else {
+            res.status(500).send(err);
+        }
     });
 
 

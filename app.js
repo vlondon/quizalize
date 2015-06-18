@@ -100,6 +100,7 @@ app.get('/apps/:id', appContent.getPublic);
 
 app.get('/search/quizzes', search.getQuizzes);
 app.post('/search/quizzes', search.getQuizzes);
+app.get('/search/apps', search.getApps);
 app.post('/search/apps', search.getApps);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);

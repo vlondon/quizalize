@@ -5,6 +5,7 @@ var fs = require('fs');
 var APP_CONTENT_TYPE = "app";
 var QUIZ_CONTENT_TYPE = "quiz";
 var AWS  = require('./../awssdk');
+var userHelper          = require('./helpers/userHelper');
 var Promise = require('es6-promise').Promise;
 
 
@@ -42,9 +43,10 @@ exports.get = function(req, res){
         if(!err){
             console.log("request for content, got: ", resp);
             res.send(resp);
+
         }else{
             console.log("request for content, error: ", err);
-            res.status = 400;
+            res.status(400).send(err);
         }
     });
 };
@@ -73,8 +75,17 @@ exports.getPublic = function(req, res){
             var promises = resp.payload.quizzes.map(function(quiz){ return getQuiz(quiz); });
             Promise.all(promises)
                 .then(function(values){
-                    resp._quizzes = values;
-                    res.send(resp);
+                    resp.extra = {
+                        quizzes: values
+                    };
+                    userHelper.addUserToExtra(resp)
+                        .then(function(respWithUser){
+                            res.send(respWithUser);
+                        })
+                        .catch(function(error){
+                            res.status(500).send(error);
+                        });
+                    // res.send(resp);
                 });
 
         }else{
