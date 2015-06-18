@@ -1,6 +1,7 @@
 var React = require('react');
 
 var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLocalSort');
+var CQViewQuizAuthor = require('createQuizApp/components/views/CQViewQuizAuthor');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
@@ -161,7 +162,7 @@ var CQViewQuizList = React.createClass({
 
 
     render: function() {
-        var author;
+        var author = function(){};
         var select;
         var sort;
 
@@ -186,7 +187,11 @@ var CQViewQuizList = React.createClass({
 
 
         if (this.props.showAuthor) {
-            author = (<div className="cq-viewquizlist__quizauthor"> by <b>Quizalize Team</b></div>);
+            author = function(quiz){
+                if (quiz.extra && quiz.extra.author) {
+                    return (<CQViewQuizAuthor author={quiz.extra.author}/>);
+                }
+            };
         }
 
         if (this.props.selectMode) {
@@ -212,7 +217,7 @@ var CQViewQuizList = React.createClass({
             <div>
                 {sort}
                 <ul className={`cq-viewquizlist ${this.props.className}`}>
-                    {this.state.quizzes.map((quiz, key) => {
+                    {this.state.quizzes.map((quiz) => {
                         return (
                             <li className="cq-viewquizlist__quiz" key={quiz.uuid} onClick={this.handleClick.bind(this, quiz)}>
 
@@ -225,8 +230,8 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {quiz.meta.subject}
-                                    {author}
+                                    {quiz.meta.subject} {author(quiz)}
+
 
                                     <div className="cq-viewquizlist__quizextra">
                                         {categoryNameLabel(quiz._category)}
@@ -238,7 +243,7 @@ var CQViewQuizList = React.createClass({
                                 </div>
 
                                 <div className="cq-viewquizlist__extras">
-                                    {childActionHandler(this.props.children, quiz, key)}
+                                    {childActionHandler(this.props.children, quiz)}
                                 </div>
                             </li>
                         );

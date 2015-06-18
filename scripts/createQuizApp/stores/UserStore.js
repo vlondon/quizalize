@@ -18,7 +18,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
     isAdmin: function(){
         console.log('_user', _user);
-        var admins = ['Samir', 'hello@blaipratdesaba.com'];
+        var admins = ['Samir', 'Blai'];
         return admins.indexOf(_user.name) !== -1;
     },
 

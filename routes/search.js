@@ -78,6 +78,9 @@ exports.getApps = function(req, res){
     zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
         if (resp) {
 
+            resp.sort(function(a, b){ return b.meta.updated - a.meta.updated; });
+
+            // res.send(resp);
             userHelper.addUserToExtra(resp)
                 .then(function(listOfItems){
                     res.send(listOfItems);

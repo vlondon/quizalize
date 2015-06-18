@@ -8,8 +8,8 @@ exports.addUserToExtra = function(listOfContent){
 
     return new Promise(function(resolve, reject){
 
-
-        listOfContent = _.isArray(listOfContent) ? listOfContent : [listOfContent];
+        var isArray = _.isArray(listOfContent);
+        listOfContent = isArray ? listOfContent : [listOfContent];
 
         var listOfAuthors = _.uniq(listOfContent.map(function(item){
             return item.meta.profileId;
@@ -29,7 +29,7 @@ exports.addUserToExtra = function(listOfContent){
                     item.extra = item.extra || {};
                     item.extra.author = author;
                 });
-
+                listOfContent = isArray ? listOfContent : listOfContent[0];
                 resolve(listOfContent);
 
             } else {

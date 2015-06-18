@@ -30,12 +30,13 @@ var CQViewCreateApp = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         var app = assign({}, this.state.app);
+
         app.payload.quizzes = nextProps.selectedQuizzes;
+
         var categories = nextProps.selectedQuizzes.map(q => {
             var quizzes = QuizStore.getQuizzes();
             var quiz = quizzes.filter(qu => qu.uuid === q)[0];
-
-            return quiz._category.uuid;
+            return quiz.meta.categoryId;
         });
 
         app.meta.categories = categories.join(',');

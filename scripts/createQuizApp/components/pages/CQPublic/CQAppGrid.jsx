@@ -70,9 +70,9 @@ var CQAppGrid = React.createClass({
             };
             return (
                 <ul className={`cq-appgrid ${this.props.className}`}>
-                    {this.state.apps.map((app, key) => {
+                    {this.state.apps.map((app) => {
                         return (
-                            <li className="cq-appgrid__app" key={key} onClick={this.handleClick.bind(this, app)}>
+                            <li className="cq-appgrid__app" key={app.uuid} onClick={this.handleClick.bind(this, app)}>
                                 <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
                                 <div className="cq-appgrid__appdetails">

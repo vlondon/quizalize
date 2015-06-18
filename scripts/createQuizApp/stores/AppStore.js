@@ -27,6 +27,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
     getAppInfo: function(appId){
         if (_appInfo[appId] === undefined){
+            console.log('loading app');
             AppActions.loadApp(appId);
             _appInfo[appId] = {};
         }
@@ -83,6 +84,7 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
             break;
         //
         case AppConstants.APP_INFO_LOADED:
+            console.log('app loaded', action);
             _appInfo[action.payload.uuid] = action.payload;
             AppStore.emitChange();
             break;
