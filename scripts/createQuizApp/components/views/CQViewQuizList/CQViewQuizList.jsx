@@ -10,6 +10,7 @@ var moment = require('moment');
 var CQViewQuizList = React.createClass({
 
     propTypes: {
+        isQuizInteractive: React.PropTypes.bool,
         quizzes: React.PropTypes.array,
         className: React.PropTypes.string,
         showAuthor: React.PropTypes.bool,
@@ -29,6 +30,7 @@ var CQViewQuizList = React.createClass({
 
     getDefaultProps: function() {
         return {
+            isQuizInteractive: false,
             quizzes: [],
             className: '',
             showAuthor: true,
@@ -103,7 +105,6 @@ var CQViewQuizList = React.createClass({
                 sort: this.props.sortBy
             };
         }
-        console.log('sorting', obj);
 
         // obj = obj || this.state.savedSearch || undefined;
 
@@ -129,11 +130,6 @@ var CQViewQuizList = React.createClass({
                 }
                 return 0;
             });
-
-
-            console.log('quizzes', quizzes);
-
-
         }
 
         if (obj && obj.name && obj.name.length > 0){
@@ -149,7 +145,6 @@ var CQViewQuizList = React.createClass({
             });
         }
 
-        console.log('new Quizzes', quizzes);
         return quizzes;
     },
 
@@ -219,7 +214,9 @@ var CQViewQuizList = React.createClass({
                 <ul className={`cq-viewquizlist ${this.props.className}`}>
                     {this.state.quizzes.map((quiz) => {
                         return (
-                            <li className="cq-viewquizlist__quiz" key={quiz.uuid} onClick={this.handleClick.bind(this, quiz)}>
+                            <li className={this.props.isQuizInteractive ? "cq-viewquizlist__quiz interactive" : "cq-viewquizlist__quiz" }
+                                key={quiz.uuid}
+                                onClick={this.handleClick.bind(this, quiz)}>
 
                                 {select(quiz)}
 

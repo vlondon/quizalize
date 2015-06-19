@@ -92,8 +92,8 @@
     }
 
     @at-root #{&}__button {
-        background: $brand-color-grey-lighter;
-        color: $brand-color-grey;
+        background: $brand-color-grey-light;
+        color: $brand-color-grey-dark;
         margin: 5px;
         padding: 5px;
         cursor: pointer;

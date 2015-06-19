@@ -7,6 +7,8 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQAppGrid = require('./CQAppGrid');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
+var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
+
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var AppActions = require('createQuizApp/actions/AppActions');
@@ -39,8 +41,6 @@ var CQPublic = React.createClass({
     getState: function(){
         var quizzes = QuizStore.getPublicQuizzes();
         var newState = { quizzes };
-
-        console.log('getting new state', quizzes);
         return newState;
 
     },
@@ -50,7 +50,6 @@ var CQPublic = React.createClass({
     },
 
     handlePreview: function(quiz){
-        console.log('quiz', quiz);
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/play/public/${quiz.uuid}`);
         // window.location.href = `/app#/play/public/${quiz.uuid}`;
@@ -62,58 +61,10 @@ var CQPublic = React.createClass({
     },
 
     handleBuy: function(quiz){
-        console.log('buy quiz?', quiz);
-        swal({
-                title: 'Confirm Purchase',
-                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                html: true
-            }, (isConfirm) => {
-
-            if (isConfirm){
-                setTimeout(()=>{
-
-                    var newTransaction = {
-                        meta: {
-                            type: 'quiz',
-                            quizId: quiz.uuid,
-                            profileId: quiz.meta.profileId,
-                            price: 0
-                        }
-                    };
-
-                    swal({
-                        title: 'Working…',
-                        text: `We're processing your order`,
-                        showConfirmButton: false
-                    });
-
-                    console.log('storing transaction', newTransaction);
-                    TransactionActions.saveNewTransaction(newTransaction)
-                        .then(function(){
-                            swal.close();
-                            setTimeout(()=>{
-                                swal({
-                                    title: 'Purchase complete!',
-                                    text: 'You will find the new content in your quizzes',
-                                    type: 'success'
-                                }, ()=>{
-                                    router.setRoute('/quiz/quizzes');
-                                });
-                            }, 100);
-                        });
-
-                }, 300);
-            }
-        });
+        TransactionActions.buyQuiz(quiz);
     },
 
-
-
     handleViewChange: function(options){
-        console.log('options', options);
         switch (options){
             case 'all':
                 this.setState({
@@ -136,16 +87,36 @@ var CQPublic = React.createClass({
         }
     },
 
+    handleDetails: function(quiz){
+        this.setState({quizDetails: quiz.uuid});
+    },
+
+    handleDetailsClose: function(){
+        this.setState({quizDetails: undefined});
+    },
+
     render: function() {
 
-        var appGrid, quizList;
+        var appGrid, quizList, quizDetails;
         if (this.state.showApps) {
             appGrid = (<CQAppGrid/>);
         }
 
+        if (this.state.quizDetails) {
+            quizDetails = (<CQViewQuizDetails
+                onClose={this.handleDetailsClose}
+                quizId={this.state.quizDetails}/>);
+        }
+
+
         if (this.state.showQuizzes) {
             quizList = (
-                <CQViewQuizList quizzes={this.state.quizzes} className="cq-public__list" sortBy="time">
+                <CQViewQuizList
+                    isQuizInteractive={true}
+                    onQuizClick={this.handleDetails}
+                    quizzes={this.state.quizzes}
+                    className="cq-public__list"
+                    sortBy="time">
                     <span className='cq-public__button' onClick={this.handlePreview}>
                         Preview
                     </span>
@@ -157,7 +128,7 @@ var CQPublic = React.createClass({
         }
         return (
             <CQPageTemplate className="container cq-public">
-
+                {quizDetails}
                 <CQViewQuizFilter onViewChange={this.handleViewChange}/>
 
                 {appGrid}

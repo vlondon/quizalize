@@ -53,7 +53,6 @@ var findPublicQuiz = function(quizId){
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        console.warn('quizzes', _quizzes);
         var quizzes = _quizzes.slice();
         quizzes = quizzes.map(quiz => {
             quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
@@ -73,7 +72,11 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getQuiz: function(quizId){
-        return _fullQuizzes[quizId];
+        var fullQuiz = _fullQuizzes[quizId];
+        if (fullQuiz === undefined){
+            QuizActions.loadQuiz(quizId);
+        }
+        return fullQuiz;
     },
 
     getQuestion: function(quizId, questionIndex){

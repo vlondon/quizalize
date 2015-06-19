@@ -3,6 +3,7 @@ var router = require('createQuizApp/config/router');
 
 var AppStore = require('createQuizApp/stores/AppStore');
 var TopicStore = require('createQuizApp/stores/TopicStore');
+var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
@@ -107,38 +108,58 @@ var CQApp = React.createClass({
 
     },
 
+    handleDetails: function(quiz){
+        this.setState({quizDetails: quiz.uuid});
+    },
+
+    handleDetailsClose: function(){
+        this.setState({quizDetails: undefined});
+    },
+
 
     render: function() {
+        var quizDetails;
+        if (this.state.quizDetails) {
+            quizDetails = (<CQViewQuizDetails
+                onClose={this.handleDetailsClose}
+                quizId={this.state.quizDetails}/>);
+        }
 
         if (this.state.appInfo && this.state.appInfo.meta){
 
             return (
-                <CQPageTemplate className="cq-app">
+                <CQPageTemplate>
+                    {quizDetails}
+                    <div className="cq-app">
+                        <CQQuizIcon
+                            className="cq-app__icon"
+                            name={this.state.appInfo.meta.name}
+                            image={this.state.appInfo.meta.iconURL}/>
 
-                    <CQQuizIcon
-                        className="cq-app__icon"
-                        name={this.state.appInfo.meta.name}
-                        image={this.state.appInfo.meta.iconURL}/>
+                        <div className="cq-app__info">
+                            <h2>{this.state.appInfo.meta.name}</h2>
+                            <div className="cq-app__price">Free</div>
+                            <button className="cq-app__button" onClick={this.handleBuy}>
+                                Use for free
+                            </button>
 
-                    <div className="cq-app__info">
-                        <h2>{this.state.appInfo.meta.name}</h2>
-                        <div className="cq-app__price">Free</div>
-                        <button className="cq-app__button" onClick={this.handleBuy}>
-                            Use for free
-                        </button>
+                        </div>
+                        <div className="cq-app__description">
+                            <p>{this.state.appInfo.meta.description}</p>
+                        </div>
 
-                    </div>
-                    <div className="cq-app__description">
-                        <p>{this.state.appInfo.meta.description}</p>
-                    </div>
-
-                    <div className="cq-app__quizlist">
-                        <CQViewQuizList quizzes={this.state.appInfo.extra.quizzes} sortBy="category">
-                            <span className='cq-app__buttonextra' onClick={this.handlePreview}>
-                                Preview
-                            </span>
-                            <span></span>
-                        </CQViewQuizList>
+                        <div className="cq-app__quizlist">
+                            <CQViewQuizList
+                                isQuizInteractive={true}
+                                onQuizClick={this.handleDetails}
+                                quizzes={this.state.appInfo.extra.quizzes}
+                                sortBy="category">
+                                <span className='cq-app__buttonextra' onClick={this.handlePreview}>
+                                    Preview
+                                </span>
+                                <span></span>
+                            </CQViewQuizList>
+                        </div>
                     </div>
                 </CQPageTemplate>
             );

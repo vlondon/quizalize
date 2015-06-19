@@ -17,8 +17,13 @@
         background: lighten($brand-color-grey-lighter, 5%);
         margin-bottom: 5px;
 
+
+
         &.interactive {
             cursor: pointer;
+            &:hover {
+                background: $brand-color-grey-lighter;
+            }
         }
         &:hover {
             /* background: lighten($brand-color-grey-lighter, 10%); */
