@@ -14,6 +14,7 @@ var user        = require('./routes/user');
 var search      = require('./routes/search');
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
+var compression = require('compression');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded());
 app.use(multer({dest: './uploads/'})); // Image uploads
+app.use(compression());
 
 //The static pages:
 app.get('/quiz/view/:page', function(req, res){
