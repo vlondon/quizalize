@@ -3,7 +3,7 @@ var React = require('react');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQEditNormal = require('./CQEditNormal');
 
-var CQLatexString = require('./CQLatexString');
+var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 
 var CQQuestionList = React.createClass({
     propTypes: {

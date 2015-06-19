@@ -2,6 +2,7 @@ var React = require('react');
 
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 var QuizStore = require('createQuizApp/stores/QuizStore');
+var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
 var timeouts = [];
@@ -93,7 +94,7 @@ var CQViewQuizDetails = React.createClass({
                                 {this.state.quiz.payload.questions.map( question => {
                                     return (
                                         <li key={question.uuid}>
-                                            {question.question}
+                                            <CQLatexString>{question.question}</CQLatexString>
                                         </li>
                                     );
                                 })}
