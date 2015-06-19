@@ -110,6 +110,9 @@ exports.landingpage5 =  function(req, res) {
 exports.brightonlanding =  function(req, res) {
     res.sendFile('cquiz/brighton.html',{ root: 'public' });
 };
+exports.maths =  function(req, res) {
+    res.sendFile('cquiz/maths.html', { root: 'public' });
+};
 
 exports.voucher =  function(req, res) {
     res.sendFile('cquiz/index4.html',{ root: 'public' });
