@@ -5,7 +5,7 @@ var CQDropdown = React.createClass({
     propTypes: {
         values: React.PropTypes.array.isRequired,
         onChange: React.PropTypes.func.isRequired,
-        selected: React.PropTypes.object
+        selected: React.PropTypes.string
     },
 
     getInitialState: function() {

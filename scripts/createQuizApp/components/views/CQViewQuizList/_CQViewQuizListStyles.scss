@@ -1,8 +1,13 @@
 .cq-viewquizlist {
+
     $quizIcon: 60px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+    ul {
+        @include clearfix();
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
 
     small {
         color: $brand-color-grey-light;
@@ -92,5 +97,10 @@
         position: absolute;
         right: 12px;
         top: 12px;
+    }
+
+    @at-root #{&}__pagination {
+        text-align: center;
+        margin: 20px;
     }
 }

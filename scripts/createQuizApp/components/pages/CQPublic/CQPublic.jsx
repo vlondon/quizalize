@@ -110,19 +110,26 @@ var CQPublic = React.createClass({
 
 
         if (this.state.showQuizzes) {
+
+            var numOfQuizzes = this.state.showApps ? 12 : 16;
+
             quizList = (
                 <CQViewQuizList
                     isQuizInteractive={true}
+                    isPaginated={true}
+                    
                     onQuizClick={this.handleDetails}
                     quizzes={this.state.quizzes}
                     className="cq-public__list"
                     sortBy="time">
+
                     <span className='cq-public__button' onClick={this.handlePreview}>
                         Preview
                     </span>
                     <span className='cq-public__button' onClick={this.handleBuy}>
                         Free
                     </span>
+
                 </CQViewQuizList>
             );
         }

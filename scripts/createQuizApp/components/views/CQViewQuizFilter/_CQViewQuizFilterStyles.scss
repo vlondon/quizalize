@@ -3,7 +3,7 @@
     @include clearfix();
 
     @at-root #{&}__context {
-        padding: 40px 20px;
+        padding: 40px 20px 20px;
         font-size: 20px;
         color: $brand-color-grey;
     }

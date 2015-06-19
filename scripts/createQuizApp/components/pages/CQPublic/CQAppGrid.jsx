@@ -6,16 +6,28 @@ var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 
+var CQPagination = require('createQuizApp/components/utils/CQPagination');
+
+
+
 var CQAppGrid = React.createClass({
 
     propTypes: {
-        className: React.PropTypes.string
+        className: React.PropTypes.string,
+        appsPerPage: React.PropTypes.number
+    },
+
+    getDefaultProps: function() {
+        return {
+            appsPerPage: 10,
+            className: ''
+        };
     },
 
     getInitialState: function() {
-        return {
-            apps: AppStore.getPublicApps()
-        };
+        var initialState = this.getState(undefined, 1);
+        console.log('initialState', initialState);
+        return initialState;
     },
 
     componentDidMount: function() {
@@ -26,14 +38,40 @@ var CQAppGrid = React.createClass({
         AppStore.removeChangeListener(this.onChange);
     },
 
-    onChange: function(){
+    getState: function(props, page){
         var apps = AppStore.getPublicApps();
-        this.setState({apps});
+        if (apps) {
+
+            page = page || this.state.page;
+            props = props || this.props;
+
+            var appIndexStart = (page - 1) * props.appsPerPage;
+            var appIndexEnd = appIndexStart + props.appsPerPage;
+            var appsToDisplay = apps.slice(appIndexStart, appIndexEnd);
+            var pages = Math.ceil(apps.length / props.appsPerPage);
+            console.log('apps', pages, appIndexStart, appIndexEnd);
+            return {
+                apps: appsToDisplay,
+                pages,
+                page
+            };
+        } else {
+            return {page: 1}
+        }
+    },
+
+    onChange: function(props, page){
+
+        this.setState(this.getState(props, page));
+
     },
 
     handleClick: function(app){
-        console.log('app clicked', app);
         router.setRoute(`/quiz/app/${app.uuid}`);
+    },
+
+    handlePagination: function(page){
+        this.onChange(this.props, page);
     },
 
     render: function() {
@@ -69,29 +107,36 @@ var CQAppGrid = React.createClass({
                 return n + ' Quizzes';
             };
             return (
-                <ul className={`cq-appgrid ${this.props.className}`}>
-                    {this.state.apps.map((app) => {
-                        return (
-                            <li className="cq-appgrid__app" key={app.uuid} onClick={this.handleClick.bind(this, app)}>
-                                <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
+                <div className={`cq-appgrid ${this.props.className}`}>
+                    <ul>
+                        {this.state.apps.map((app) => {
+                            return (
+                                <li className="cq-appgrid__app" key={app.uuid} onClick={this.handleClick.bind(this, app)}>
+                                    <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
-                                <div className="cq-appgrid__appdetails">
-                                    <div className="cq-appgrid__appname">
-                                        {app.meta.name}
-                                    </div>
-                                    <div className="cq-appgrid__appquizzes">
-                                        {howManyQuizzes(app.meta.quizzes.length)}
+                                    <div className="cq-appgrid__appdetails">
+                                        <div className="cq-appgrid__appname">
+                                            {app.meta.name}
+                                        </div>
+                                        <div className="cq-appgrid__appquizzes">
+                                            {howManyQuizzes(app.meta.quizzes.length)}
+                                        </div>
+
+                                        <div className="cq-appgrid__appprice">
+                                            Free
+                                        </div>
                                     </div>
 
-                                    <div className="cq-appgrid__appprice">
-                                        Free
-                                    </div>
-                                </div>
-
-                            </li>
-                        );
-                    })}
-                </ul>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <CQPagination
+                        className="cq-appgrid__pagination"
+                        onPagination={this.handlePagination}
+                        pages={this.state.pages}
+                        currentPage={this.state.page}/>
+                </div>
             );
         }
 

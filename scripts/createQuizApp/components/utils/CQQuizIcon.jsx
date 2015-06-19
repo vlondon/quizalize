@@ -28,7 +28,7 @@ var CQQuizIcon = React.createClass({
         className: React.PropTypes.string,
         name: React.PropTypes.string,
         image: React.PropTypes.string,
-        children: React.PropTypes.ReactElement
+        children: React.PropTypes.element
     },
 
     getInitialState: function() {
