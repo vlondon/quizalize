@@ -139,6 +139,7 @@ app.get('/', checkForMobile, quiz.landingpage5);
 app.get('/mobile', quiz.landingpage5);
 app.get('/ie', quiz.landingpage3);
 app.get('/ks4-gcse-maths', quiz.landingpage4);
+app.get('/maths', quiz.maths);
 app.get('/brighton', quiz.brightonlanding);
 
 
