@@ -124,6 +124,7 @@ app.get('/faq', quiz.faq);
 app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);
 app.get('/COPPA-policy', quiz.coppa);
+app.get('/landing', quiz.landing);
 
 /*
 

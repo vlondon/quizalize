@@ -139,6 +139,9 @@ exports.packages = function (req, res){
 exports.faq = function(req, res){
     res.render('faq');
 };
+exports.landing = function(req, res){
+    res.render('landing');
+};
 
 
 exports.terms = function(req, res){

@@ -23,6 +23,55 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
+            script.
+            function submitForm() {
+                $.ajax({
+                    url: "/quizHelp",
+                    method: "post",
+                    success: function(data,textstatus,jqXHR){
+                        $('#helpForm').slideUp();
+                        $("#helpSent").slideDown();
+                        },
+                        error: function(){
+                            console.log("Error Posting Form details");
+                            },
+                            data: {
+                                name: $('#ename').val(),
+                                email: $('#email').val(),
+                                message: $('#message').val()
+                            }
+                            });
+                return false;
+            }
+            function ask(type) {
+                if (type=="demo") {
+                    $("#message").val("I want a demo at my school");
+                }
+                else if (type =="question") {
+                    $("#message").val("");
+                }
+                else if (type=="order") {
+                    $("#message").val("I would like an information pack sent to my school");
+                }
+                else if (type=="wholeschool") {
+                    $("#message").val("I would like to sign up to the whole school package");
+                }
+                else if (type=="quiz-day") {
+                    $("#message").val("I would like to ask about a Quizalize day at my school");
+                }
+                else if (type=="cpd") {
+                    $("#message").val("I would like to ask about CPD training at my school");
+                }
+                else if (type=="referral") {
+                    $("#message").val("I would like to join the Quizalize referral program");
+                }
+                ask2("#sendForm")
+            }
+            function ask2(type) {
+                $('html, body').animate({
+                    scrollTop: $(type).offset().top
+                    }, 2000);
+            }
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         link(href='http://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
@@ -77,29 +126,4 @@ html(ng-app='createQuizApp')
                 font-weight: 700;
             }
 body
-    #navigation
-            .nav.navbar.navbar-custom.reduced_nav(role='navigation')
-                .container.red_nav
-                    .row
-                        .col-xs-2.site-logo-container
-                            .site-logo
-                                a(href="/")
-                                    img(src='/cquiz/img/logo 2.png')         
-                        .col-xs-10
-                            .navbar-header
-                                button.navbar-toggle(type='button', data-toggle='collapse', data-target='#menu')
-                                    i.fa.fa-bars
-                            #menu.collapse.navbar-collapse
-                                ul.nav.navbar-nav.navbar-right
-                                    li
-                                        a(href='/packages') Schools
-                                    li
-                                        a(onclick="ask('order')") Info pack               
-                                    li
-                                        a(onclick="ask('demo')") Book a demo               
-                                    li
-                                        a#StudentLogin(href='/app') Student Login             
-                                    li
-                                        a#LoginButton(href='/quiz/login') Teacher Login
-
     block body
