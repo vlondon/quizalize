@@ -283,13 +283,13 @@ exports.getQuiz = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;
 
-    zzish.getContent(profileId, QUIZ_CONTENT_TYPE,id, function(err, resp){
-        if(!err){
+    zzish.getPublicContent(QUIZ_CONTENT_TYPE, id, function(err, resp){
+        if (!err) {
             console.log("request for content, got: ", resp);
             res.send(resp);
-        }else{
+        } else {
             console.log("request for content, error: ", err);
-            res.status = 400;
+            res.status(400).send(err);
         }
     });
 };
@@ -380,16 +380,16 @@ exports.shareQuiz = function(req, res){
     var emailFrom = req.body.email;
     var link = req.body.link;
 
-    if (link==undefined) {
+    if (link == undefined) {
         link = "http://quizalize.com/quiz#/share/" + quiz.code;
     }
-    if (emails!=undefined) {
-        email.sendEmail('team@zzish.com',emails,'You have been shared a quiz!','Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
+    if (emails != undefined) {
+        email.sendEmail('team@zzish.com', emails, 'You have been shared a quiz!', 'Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
     }
 };
 
 exports.getQuizByCode = function(req,res) {
-    zzish.getContentByCode(QUIZ_CONTENT_TYPE,req.params.code,function (err,result) {
+    zzish.getContentByCode(QUIZ_CONTENT_TYPE, req.params.code, function (err,result) {
         res.send(result);
     })
 }

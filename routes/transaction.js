@@ -5,6 +5,7 @@ var Promise             = require('es6-promise').Promise;
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
+var APP_CONTENT_TYPE = 'app';
 
 
 var saveTransaction = function(transaction, profileId){
@@ -59,7 +60,7 @@ var processTransactions = function(transaction, profileId){
 
     var getApp = function(appId){
         return new Promise(function(resolve, reject){
-            zzish.getPublicContent(QUIZ_CONTENT_TYPE, appId, function(err, resp){
+            zzish.getPublicContent(APP_CONTENT_TYPE, appId, function(err, resp){
                 if (err) { reject(err); } else { resolve(resp); }
             });
         });
@@ -114,7 +115,7 @@ var processTransactions = function(transaction, profileId){
                                     .then(resolve);
                             });
                         });
-                    
+
                 });
 
 
