@@ -111,7 +111,6 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
-        console.trace('QuizActions.loadQuiz called', quizId);
         var quizzesPromise = QuizApi.getQuizzes();
         var quizPromise = QuizApi.getQuiz(quizId);
         var topicsPromise = QuizApi.getTopics();

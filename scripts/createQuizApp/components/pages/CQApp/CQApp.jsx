@@ -44,7 +44,6 @@ var CQApp = React.createClass({
 
     getState: function(){
         var appInfo = AppStore.getAppInfo(this.props.appId);
-        console.trace('getting info from app', appInfo);
 
         if (appInfo.meta && appInfo.meta.colour){
             document.body.style.backgroundColor = appInfo.meta.colour;

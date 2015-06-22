@@ -87,8 +87,6 @@ var QuizApi = {
         var promise;
         return function(){
 
-            console.trace('getTopicsCalled');
-
             promise = promise || new Promise(function(resolve, reject){
                 var uuid = localStorage.getItem('cqUuid');
 
