@@ -9,11 +9,21 @@ var CHANGE_EVENT = 'change';
 
 var storeInit = false;
 var _user;
+var _users = {};
 
 var UserStore = assign({}, EventEmitter.prototype, {
 
     getUser: function() {
         return _user;
+    },
+
+
+    getPublicUser: function(userId){
+        var user = _users[userId];
+        if (user === undefined){
+            UserActions.getPublicUser(userId);
+        }
+        return user;
     },
 
     isAdmin: function(){
@@ -77,6 +87,12 @@ AppDispatcher.register(function(action) {
             console.log('we got USER_LOGIN_ERROR', action);
             // _user = false;
             // UserStore.emitChange();
+            break;
+
+        case UserConstants.USER_PUBLIC_LOADED:
+            var user = action.payload;
+            _users[user.uuid] = user;
+            UserStore.emitChange();
             break;
 
 

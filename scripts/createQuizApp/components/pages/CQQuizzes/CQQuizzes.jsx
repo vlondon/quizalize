@@ -10,6 +10,8 @@ var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
 var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
 
+var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
+
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var router = require('createQuizApp/config/router');
@@ -25,8 +27,6 @@ var CQQuizzes = React.createClass({
         var initialState =  this.getState();
         initialState.selectedQuizzes = [];
         initialState.isAdmin = UserStore.isAdmin();
-
-
         return initialState;
     },
 
@@ -47,20 +47,24 @@ var CQQuizzes = React.createClass({
     },
 
     getState: function(){
-        var quizzes = QuizStore.getQuizzes().sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
+
+        var quizzes = QuizStore.getQuizzes();
         var apps = AppStore.getApps();
+        if (quizzes){
+            quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
+        }
         return { quizzes, apps };
     },
 
     handleDelete: function(quiz){
         var found = false;
         var groupContents = GroupStore.getGroupsContent();
-        console.log('quiz', quiz);
 
-        console.log('groupContents', quiz, groupContents);
+
+
         for (var i in groupContents) {
 
-            console.log('quiz found', groupContents[i].contentId, quiz.uuid, groupContents[i].contentId === quiz.uuid);
+
             if (groupContents[i].contentId === quiz.uuid) {
                 found = true;
                 swal('Cannot Delete', 'You cannot delete this quiz as you have this quiz assigned in class');
@@ -110,6 +114,15 @@ var CQQuizzes = React.createClass({
 
     render: function() {
 
+
+        if (this.state.quizzes === undefined || this.state.apps === undefined){
+            return (
+                <CQPageTemplate className="container cq-quizzes">
+                    <CQSpinner/>
+                </CQPageTemplate>
+            );
+        }
+
         var createApp;
         var apps;
         var newApp;
@@ -118,21 +131,27 @@ var CQQuizzes = React.createClass({
         var introCopy = this.state.quizzes.length > 0 ? 'Here are your quizzes' : '';
 
         if (this.props.appMode) {
-            createApp = (<CQViewCreateApp
-                selectedQuizzes={this.state.selectedQuizzes}
-                />);
+            createApp = (
+                <CQViewCreateApp
+                    selectedQuizzes={this.state.selectedQuizzes}
+                />
+            );
         }
 
         if (this.state.isAdmin){
-            apps = (<div className="container">
-                <h2>Your apps</h2>
-                <CQViewAppGrid
-                    editMode={true}
-                    apps={this.state.apps}/>
-            </div>);
-            newApp = (<CQLink href="/quiz/quizzes/app" className="btn btn-primary">
-                <i className="fa fa-plus"></i> New app
-            </CQLink>);
+            apps = (
+                <div className="container">
+                    <h2>Your apps</h2>
+                    <CQViewAppGrid
+                        editMode={true}
+                        apps={this.state.apps}/>
+                </div>
+            );
+            newApp = (
+                <CQLink href="/quiz/quizzes/app" className="btn btn-primary">
+                    <i className="fa fa-plus"></i> New app
+                </CQLink>
+            );
         }
 
         if (this.state.quizzes.length === 0){
@@ -205,7 +224,7 @@ var CQQuizzes = React.createClass({
                         quizzes={this.state.quizzes}
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
-                        
+                        sortBy='time'
                         sortOptions={this.state.isAdmin}
                         onAssign={this.handleAssign}
                         onEdit={this.handleEdit}

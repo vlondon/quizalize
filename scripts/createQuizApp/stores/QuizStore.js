@@ -12,7 +12,7 @@ var uuid            = require('node-uuid');
 
 var CHANGE_EVENT = 'change';
 
-var _quizzes = [];
+var _quizzes;
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
@@ -53,12 +53,14 @@ var findPublicQuiz = function(quizId){
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        var quizzes = _quizzes.slice();
-        quizzes = quizzes.map(quiz => {
-            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
-            return quiz;
-        });
-        quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
+        if (_quizzes){
+            var quizzes = _quizzes.slice();
+            quizzes = quizzes.map(quiz => {
+                quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+                return quiz;
+            });
+            quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
+        }
         return quizzes;
     },
 

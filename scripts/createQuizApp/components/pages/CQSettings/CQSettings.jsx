@@ -5,13 +5,19 @@ var UserActions = require('createQuizApp/actions/UserActions');
 var assign = require('object-assign');
 var router = require('createQuizApp/config/router');
 
+var facebookSDK = require('createQuizApp/config/facebookSDK');
+
 var CQSettings = React.createClass({
+
     getInitialState: function() {
         var user = UserStore.getUser();
 
         return {
             user
         };
+    },
+    componentDidMount: function() {
+        facebookSDK.load();
     },
 
     handleSave: function(){
@@ -32,6 +38,14 @@ var CQSettings = React.createClass({
         user.name = event.target.value;
         this.setState({user});
 
+    },
+
+    handleProfilePicture: function(){
+        facebookSDK.getProfilePicture()
+            .then((profilePictureUrl) => {
+                console.log('we got', profilePictureUrl);
+                this.setState({profilePicture: profilePictureUrl});
+            });
     },
 
     render: function() {
@@ -72,6 +86,13 @@ var CQSettings = React.createClass({
                             className="form-control"
                             onChange={this.handleChange.bind(this, 'url')}
                             value={this.state.user.attributes.url}/>
+                    </div>
+
+
+                    <div className="cq-settings__profile-item form-group">
+                        Profile picture
+                        {this.state.profilePicture ? <img src={this.state.profilePicture} alt=""/> : undefined }
+                        <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
                     </div>
 
 

@@ -87,6 +87,7 @@ var CQApp = React.createClass({
                     console.log('storing transaction', newTransaction);
                     TransactionActions.saveNewTransaction(newTransaction)
                         .then(function(){
+                            console.log('transaction finished');
                             swal.close();
                             setTimeout(()=>{
                                 swal({
@@ -96,7 +97,7 @@ var CQApp = React.createClass({
                                 }, ()=>{
                                     router.setRoute('/quiz/quizzes');
                                 });
-                            }, 100);
+                            }, 500);
                         });
 
                 }, 300);
