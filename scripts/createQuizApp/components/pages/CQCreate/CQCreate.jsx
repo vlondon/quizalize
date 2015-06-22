@@ -171,14 +171,12 @@ var CQCreate = React.createClass({
                                                     tabIndex="1"
                                                     className="form-control"/><br/>
                                             </div>
-                                            
+
                                             <label className="control-label col-sm-3">
                                             Unit/Topic:    <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="6" className="left-space glyphicon glyphicon-question-sign"></a>
                                     </label>
                                     <div className="col-sm-9">
-                                        <CQAutofill
-                                            value={this.state.quiz.meta.categoryId}
-                                            data={this.state.topicsAutofill}/>
+                                        <CQAutofill value={this.state.quiz.meta.categoryId}/>
                                         <br/>
                                     </div>
                                     <div className="col-sm-4 col-sm-offset-4">

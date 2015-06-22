@@ -1,6 +1,6 @@
 var React = require('react');
 
-var debounce = require('createQuizApp/utils/debounce');
+var TopicStore = require('createQuizApp/stores/TopicStore');
 
 var CQAutofill = React.createClass({
 
@@ -17,27 +17,60 @@ var CQAutofill = React.createClass({
     },
 
     getInitialState: function() {
+        var selectedTopic;
+
         return {
-            searchString: '',
-            selected: undefined
+            searchString: selectedTopic || '',
+            selected: undefined,
+            topis: TopicStore.getPublicTopics()
         };
     },
 
-    componentWillReceiveProps: function(nextProps) {
-        var data = nextProps.data;
-        var selectedTopic = data.filter(d=> d.id === nextProps.value)[0];
-        console.log('selectedTopic', selectedTopic);
+    componentDidMount: function() {
+        TopicStore.addChangeListener(this.onChange);
+    },
 
-        if (selectedTopic){
-            this.setState({
-                searchString: selectedTopic.name
+    componentWillUnmount: function() {
+        TopicStore.removeChangeListener(this.onChange);
+    },
+
+    onChange: function(){
+        var newState = {};
+        newState.topics = TopicStore.getPublicTopics();
+
+        newState.topicsAutofill = [];
+
+        var fillAutoFill = function(array, prefix){
+            array.forEach( el => {
+                // console.log('fi<!--  -->lling', el);
+
+                var name = prefix ? `${prefix} > ${el.name}` : el.name;
+                newState.topicsAutofill.push({
+                    name: name,
+                    id: el.uuid
+                });
+                if (el.categories && el.categories.length > 0){
+                    fillAutoFill(el.categories, name);
+                }
             });
-        }
+        };
+
+        fillAutoFill(newState.topics);
+
+
+        this.setState(newState);
+
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            value: nextProps.value
+        });
     },
 
     handleChange: function(ev){
 
-        if (this.props.data) {
+        if (this.state.topicsAutofill) {
             var searchString = ev.target.value;
             var searchArray = searchString.split(' ');
 
