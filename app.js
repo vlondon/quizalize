@@ -13,7 +13,7 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
-var marketplace      = require('./routes/marketplace');
+// var marketplace = require('./routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
@@ -102,7 +102,7 @@ app.get('/apps/:id', appContent.getPublic);
 // app.post('/create/:profileId/apps/:id', appContent.post);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
-app.get('/marketplace/quiz/:id', marketplace.getQuiz);
+// app.get('/marketplace/quiz/:id', marketplace.getQuiz);
 
 
 
