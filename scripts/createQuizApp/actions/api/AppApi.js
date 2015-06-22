@@ -1,4 +1,5 @@
 var request = require('superagent');
+var noCache = require('superagent-no-cache');
 var Promise = require('es6-promise').Promise;
 
 var AppApi = {
@@ -15,6 +16,7 @@ var AppApi = {
                 reject();
             } else {
                 request.get(`/create/${uuid}/apps/`)
+                .use(noCache)
                 .end(function(error, res){
                     if (error) {
                         reject();
@@ -38,6 +40,7 @@ var AppApi = {
                 reject();
             } else {
                 request.get(`/apps/${appId}`)
+                .use(noCache)
                 .end(function(error, res){
                     if (error) {
                         reject();
