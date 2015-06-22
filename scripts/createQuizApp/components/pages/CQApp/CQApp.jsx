@@ -95,10 +95,10 @@ var CQApp = React.createClass({
                                 }, ()=>{
                                     router.setRoute('/quiz/quizzes');
                                 });
-                            }, 100);
+                            }, 400);
                         });
 
-                }, 300);
+                }, 400);
             }
         });
 

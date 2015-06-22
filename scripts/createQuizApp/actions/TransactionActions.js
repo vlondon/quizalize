@@ -80,7 +80,7 @@ var TransactionActions = {
                                 }, ()=>{
                                     router.setRoute('/quiz/quizzes');
                                 });
-                            }, 100);
+                            }, 300);
                         });
 
                 }, 300);
