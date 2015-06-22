@@ -15,7 +15,7 @@ var AppActions = require('createQuizApp/actions/AppActions');
 
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
-
+var UserStore = require('createQuizApp/stores/UserStore');
 
 
 var CQPublic = React.createClass({
@@ -24,6 +24,7 @@ var CQPublic = React.createClass({
         var newState =  this.getState();
         newState.showApps = true;
         newState.showQuizzes = true;
+        newState.user = UserStore.getUser();
         return newState;
     },
 
@@ -61,7 +62,22 @@ var CQPublic = React.createClass({
     },
 
     handleBuy: function(quiz){
-        TransactionActions.buyQuiz(quiz);
+        if (!this.state.user) {
+            swal({
+                title: 'You need to be logged in',
+                text: `In order to buy this item you need to log into Quizalize`,
+                type: 'info',
+                confirmButtonText: 'Log in',
+                showCancelButton: true
+            }, function(isConfirm){
+                if (isConfirm){
+                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                }
+            });
+        } else {
+
+            TransactionActions.buyQuiz(quiz);
+        }
     },
 
     handleViewChange: function(options){
@@ -117,7 +133,7 @@ var CQPublic = React.createClass({
                 <CQViewQuizList
                     isQuizInteractive={true}
                     isPaginated={true}
-                    
+
                     onQuizClick={this.handleDetails}
                     quizzes={this.state.quizzes}
                     className="cq-public__list"
