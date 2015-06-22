@@ -1,3 +1,4 @@
+
 // set variables for environment
 var express     = require('express');
 var app         = express();
@@ -12,6 +13,8 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
+var marketplace      = require('./routes/marketplace');
+
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
@@ -98,6 +101,9 @@ app.get('/apps/:id', appContent.getPublic);
 // app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 // app.post('/create/:profileId/apps/:id', appContent.post);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
+
+app.get('/marketplace/quiz/:id', marketplace.getQuiz);
+
 
 
 app.get('/search/quizzes', search.getQuizzes);

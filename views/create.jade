@@ -46,6 +46,19 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
+            
+        script.
+            (function(f,b){
+                var c;
+                f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
+                f._hjSettings={hjid:45670, hjsv:4};
+                c=b.createElement("script");c.async=1;
+                c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
+                b.getElementsByTagName("head")[0].appendChild(c); 
+            })(window,document);
+
+            
+
         link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.structure.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.theme.min.css', rel='stylesheet')
