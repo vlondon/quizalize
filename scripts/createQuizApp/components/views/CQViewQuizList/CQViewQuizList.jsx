@@ -1,4 +1,5 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLocalSort');
 var CQViewQuizAuthor = require('createQuizApp/components/views/CQViewQuizAuthor');
@@ -7,7 +8,7 @@ var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
-
+var UserStore = require('createQuizApp/stores/UserStore');
 var moment = require('moment');
 
 var CQViewQuizList = React.createClass({
@@ -110,7 +111,22 @@ var CQViewQuizList = React.createClass({
         if (this.props.selectMode) {
             this.handleChange(quiz);
         } else {
-            this.props.onQuizClick(quiz);
+            var user = UserStore.getUser();
+            if (user === false){
+                swal({
+                    title: 'You need to be logged in',
+                    text: `In order to see more about this quiz you need to log into Quizalize`,
+                    type: 'info',
+                    confirmButtonText: 'Log in',
+                    showCancelButton: true
+                }, function(isConfirm){
+                    if (isConfirm){
+                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                    }
+                });
+            } else {
+                this.props.onQuizClick(quiz);
+            }
         }
     },
 

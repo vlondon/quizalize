@@ -50,6 +50,10 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
-        modulesDirectories: ['node_modules', 'scripts']
+        modulesDirectories: ['node_modules', 'scripts'],
+        alias: {
+            'ie': 'component-ie'
+        }
+
     }
 };
