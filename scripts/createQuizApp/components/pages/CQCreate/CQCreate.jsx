@@ -8,6 +8,9 @@ var CQCreateMore = require('./CQCreateMore');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 
 
+var TopicStore = require('createQuizApp/stores/TopicStore');
+
+
 var CQCreate = React.createClass({
 
     propTypes: {
@@ -84,12 +87,13 @@ var CQCreate = React.createClass({
     },
 
     componentDidMount: function() {
-        // TODO Remove jQuery!!
         QuizStore.addChangeListener(this.onChange);
+        TopicStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
+        TopicStore.removeChangeListener(this.onChange);
     },
 
     handleChange: function(property, event) {
@@ -102,7 +106,7 @@ var CQCreate = React.createClass({
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        var meta = assign(quiz.meta,newSettings);
+        var meta = assign(quiz.meta, newSettings);
         quiz.meta = meta;
         this.setState({quiz});
     },
