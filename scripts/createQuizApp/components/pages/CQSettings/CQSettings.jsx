@@ -89,7 +89,7 @@ var CQSettings = React.createClass({
                     </div>
 
 
-                    <div className="cq-settings__profile-item form-group">
+                    <div className="cq-settings__profile-item form-group" style={{display: 'none'}}>
                         Profile picture
                         {this.state.profilePicture ? <img src={this.state.profilePicture} alt=""/> : undefined }
                         <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>

@@ -60,11 +60,8 @@ exports.authenticate =  function(req, res) {
     zzish.authenticate(email, encrypt(password), function(err, data) {
         if (!err && typeof data === 'object') {
 
-            if (data.avatar !== null){
-                res.status(200).send(data);
-            } else {
-                data.avatar = crypto.createHash('md5').
-            }
+            res.status(200).send(data);
+            
         }
         else {
             res.status(err).send(data);
