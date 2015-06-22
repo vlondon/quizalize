@@ -19,7 +19,6 @@ var UserActions = {
 
 
     request: function() {
-        console.trace('UserActions.request called');
 
         UserApi.get()
             .then(function(user){
@@ -73,7 +72,7 @@ var UserActions = {
                 })
                 .catch(function(error){
                     reject(error);
-                    console.trace('error: ', error);
+
 
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_LOGIN_ERROR,
@@ -133,7 +132,7 @@ var UserActions = {
                 })
                 .catch(function(error){
                     reject(error);
-                    console.trace('error: ', error);
+
 
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_REGISTER_ERROR,

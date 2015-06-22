@@ -1,4 +1,5 @@
 var request = require('superagent');
+var noCache = require('superagent-no-cache');
 var Promise = require('es6-promise').Promise;
 
 var QuizApi = {
@@ -11,6 +12,7 @@ var QuizApi = {
                 reject();
             } else {
                 request.get(`/create/${uuid}/quizzes/`)
+                    .use(noCache)
                     .end(function(error, res){
                         if (error) {
                             reject();
@@ -49,6 +51,7 @@ var QuizApi = {
                 reject();
             } else {
                 request.get(`/create/${uuid}/quizzes/${quizId}`)
+                    .use(noCache)
                     .end(function(error, res){
                         if (error) {
                             reject();
@@ -87,8 +90,6 @@ var QuizApi = {
         var promise;
         return function(){
 
-            console.trace('getTopicsCalled');
-
             promise = promise || new Promise(function(resolve, reject){
                 var uuid = localStorage.getItem('cqUuid');
 
@@ -96,6 +97,7 @@ var QuizApi = {
                     reject();
                 } else {
                     request.get(`/create/${uuid}/topics/`)
+                        .use(noCache)
                         .end(function(error, res){
                             if (error) {
                                 reject();

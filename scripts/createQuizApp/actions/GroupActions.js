@@ -8,7 +8,7 @@ var assign              = require('object-assign');
 var GroupActions = {
 
     loadGroups: function(){
-        console.trace('GroupActions.loadGroups called');
+        
         var groups = GroupApi.getGroups();
         var groupsContent = GroupApi.getGroupContents();
 

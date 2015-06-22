@@ -10,7 +10,7 @@ var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-
+var UserStore = require('createQuizApp/stores/UserStore');
 
 var CQApp = React.createClass({
 
@@ -44,7 +44,6 @@ var CQApp = React.createClass({
 
     getState: function(){
         var appInfo = AppStore.getAppInfo(this.props.appId);
-        console.trace('getting info from app', appInfo);
 
         if (appInfo.meta && appInfo.meta.colour){
             document.body.style.backgroundColor = appInfo.meta.colour;
@@ -56,55 +55,70 @@ var CQApp = React.createClass({
     handleBuy: function(){
 
         var app = this.state.appInfo;
+        var user = UserStore.getUser();
+        if (user === false){
+            swal({
+                title: 'You need to be logged in',
+                text: `In order to buy this item you need to log into Quizalize`,
+                type: 'info',
+                confirmButtonText: 'Log in',
+                showCancelButton: true
+            }, function(isConfirm){
+                if (isConfirm){
+                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/app/' + app.uuid)}`);
+                }
+            });
+        } else {
 
-        swal({
-                title: 'Confirm Purchase',
-                text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                html: true
-            }, (isConfirm) => {
 
-            if (isConfirm){
-                setTimeout(()=>{
 
-                    var newTransaction = {
-                        meta: {
-                            type: 'app',
-                            appId: app.uuid,
-                            profileId: app.meta.profileId,
-                            price: 0
-                        }
-                    };
+            swal({
+                    title: 'Confirm Purchase',
+                    text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    html: true
+                }, (isConfirm) => {
 
-                    swal({
-                        title: 'Working…',
-                        text: `We're processing your order`,
-                        showConfirmButton: false
-                    });
+                if (isConfirm){
+                    setTimeout(()=>{
 
-                    console.log('storing transaction', newTransaction);
-                    TransactionActions.saveNewTransaction(newTransaction)
-                        .then(function(){
-                            console.log('transaction finished');
-                            swal.close();
-                            setTimeout(()=>{
-                                swal({
-                                    title: 'Purchase complete!',
-                                    text: 'You will find the new content in your quizzes',
-                                    type: 'success'
-                                }, ()=>{
-                                    router.setRoute('/quiz/quizzes');
-                                });
-                            }, 500);
+                        var newTransaction = {
+                            meta: {
+                                type: 'app',
+                                appId: app.uuid,
+                                profileId: app.meta.profileId,
+                                price: 0
+                            }
+                        };
+
+                        swal({
+                            title: 'Working…',
+                            text: `We're processing your order`,
+                            showConfirmButton: false
                         });
 
-                }, 300);
-            }
-        });
+                        console.log('storing transaction', newTransaction);
+                        TransactionActions.saveNewTransaction(newTransaction)
+                            .then(function(){
+                                swal.close();
+                                setTimeout(()=>{
+                                    swal({
+                                        title: 'Purchase complete!',
+                                        text: 'You will find the new content in your quizzes',
+                                        type: 'success'
+                                    }, ()=>{
+                                        router.setRoute('/quiz/quizzes');
+                                    });
+                                }, 400);
+                            });
 
+                    }, 400);
+                }
+            });
 
+        }
 
 
     },
