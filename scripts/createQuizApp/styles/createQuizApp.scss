@@ -7,6 +7,9 @@
 @import './CQBaseStyles';
 
 
+
+
+
 // views
 @import './../components/views/CQViewAppGrid/CQViewAppGridStyles';
 @import './../components/views/CQViewCreateApp/CQViewCreateAppStyles';
@@ -35,3 +38,7 @@
 @import './../components/pages/CQRegister/CQRegisterStyles';
 @import './../components/pages/CQRestorePassword/CQRestorePasswordStyles';
 @import './../components/pages/CQSettings/CQSettingsStyles';
+
+// utils
+@import './../components/utils/CQAutofillStyles';
+@import './../components/utils/CQSpinnerStyles';

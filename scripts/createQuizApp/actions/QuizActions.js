@@ -111,41 +111,15 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
-        var quizzesPromise = QuizApi.getQuizzes();
+
         var quizPromise = QuizApi.getQuiz(quizId);
-        var topicsPromise = QuizApi.getTopics();
 
-
-        Promise.all([quizzesPromise, quizPromise, topicsPromise])
-            .then((value) => {
-
+        quizPromise
+            .then((quiz) => {
                 // // let's stitch quizzes to their topic
-                var loadedQuizzes = value[0];
-                var quiz = value[1];
-                var topics = value[2];
-                //
-                var getCategoryFormUuid = function(){
-
-                    // if (!quiz.categoryId) {
-                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                    //     quiz.categoryId = fq.categoryId;
-                    // }
-                    //
-                    if (quiz.meta.categoryId) {
-                        var topicFound = topics.filter( t => t.uuid === quiz.meta.categoryId )[0];
-                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
-                        return topicFound ? topicFound.name : '';
-                    }
-                    return '';
-
-                };
-
-                quiz.meta.category = getCategoryFormUuid();
-                // settings property is assumed, so it should be present
-
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
             });

@@ -5,6 +5,7 @@ var Promise = require('es6-promise').Promise;
 var QuizApi = {
 
     getQuizzes: function(){
+        console.trace('getting quizzes');
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
 
@@ -43,26 +44,30 @@ var QuizApi = {
     },
 
 
-    getQuiz: function(quizId){
-        return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+    getQuiz: (function(){
+        var promises = {};
+        return function(quizId){
+            promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
 
-            if (!uuid) {
-                reject();
-            } else {
-                request.get(`/create/${uuid}/quizzes/${quizId}`)
-                    .use(noCache)
-                    .end(function(error, res){
-                        if (error) {
-                            reject();
-                        } else {
-                            resolve(res.body);
-                        }
+                if (!uuid) {
+                    reject();
+                } else {
+                    request.get(`/create/${uuid}/quizzes/${quizId}`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
 
-                    });
-            }
-        });
-    },
+                        });
+                }
+            });
+            return promises[quizId];
+        };
+    })(),
 
     deleteQuiz: function(quizId){
         return new Promise(function(resolve, reject){
