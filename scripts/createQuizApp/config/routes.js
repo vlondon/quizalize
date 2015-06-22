@@ -12,6 +12,7 @@ var CQRestorePassword   = require('createQuizApp/components/pages/CQRestorePassw
 var CQRedirect          = require('createQuizApp/components/pages/CQRedirect');
 var CQQuizzes           = require('createQuizApp/components/pages/CQQuizzes');
 var CQCreate            = require('createQuizApp/components/pages/CQCreate');
+var CQReview            = require('createQuizApp/components/pages/CQReview');
 var CQEdit              = require('createQuizApp/components/pages/CQEdit');
 var CQAssignments       = require('createQuizApp/components/pages/CQAssignments');
 var CQPublished         = require('createQuizApp/components/pages/CQPublished');
@@ -185,6 +186,19 @@ var pages = {
             );
         }
     },
+
+    reviewQuiz: {
+        path: '/quiz/review/:quizId',
+        pathRegEx: /\/quiz\/review\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQReview, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
 
     edit: {
         path: '/quiz/create/:quizId',

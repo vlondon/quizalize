@@ -4,7 +4,7 @@ var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLoca
 var CQViewQuizAuthor = require('createQuizApp/components/views/CQViewQuizAuthor');
 var CQPagination = require('createQuizApp/components/utils/CQPagination');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-
+var router = require('createQuizApp/config/router');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
@@ -19,6 +19,7 @@ var CQViewQuizList = React.createClass({
         quizzes: React.PropTypes.array,
         className: React.PropTypes.string,
         showAuthor: React.PropTypes.bool,
+        showReviewButton: React.PropTypes.bool,
         onQuizClick: React.PropTypes.func,
         onClick: React.PropTypes.func,
         onSelect: React.PropTypes.func,
@@ -41,6 +42,7 @@ var CQViewQuizList = React.createClass({
             className: '',
             quizzesPerPage: 16,
             showAuthor: true,
+            showReviewButton: false,
             sortOptions: false,
             onQuizClick: function(){},
             onClick: function(){},
@@ -111,6 +113,13 @@ var CQViewQuizList = React.createClass({
             this.handleChange(quiz);
         } else {
             this.props.onQuizClick(quiz);
+        }
+    },
+
+    handleReview: function(quiz){
+        console.log('review???', quiz);
+        if (quiz){
+            router.setRoute(`/quiz/review/${quiz.uuid}`);
         }
     },
 
@@ -192,6 +201,7 @@ var CQViewQuizList = React.createClass({
 
     render: function() {
         var author = function(){};
+        var reviewButton = function(){};
         var select;
         var sort;
 
@@ -220,6 +230,17 @@ var CQViewQuizList = React.createClass({
                 if (quiz.extra && quiz.extra.author) {
                     return (<CQViewQuizAuthor author={quiz.extra.author}/>);
                 }
+            };
+        }
+
+        if (this.props.showReviewButton) {
+            reviewButton = (quiz) => {
+                console.log('this', this);
+                 if (quiz.meta && quiz.meta.originalQuizId) {
+                    return (
+                        <button className="cq-quizzes__button--review" onClick={this.handleReview.bind(this, quiz)}><span className="fa fa-check-square-o"></span> Review</button>
+                    );
+                 }
             };
         }
 
@@ -274,6 +295,7 @@ var CQViewQuizList = React.createClass({
                                 </div>
 
                                 <div className="cq-viewquizlist__extras">
+                                    {reviewButton(quiz)}
                                     {childActionHandler(this.props.children, quiz)}
                                 </div>
                             </li>

@@ -151,6 +151,32 @@ var QuizActions = {
             });
     },
 
+
+    saveReview: function(purchased){
+
+        return new Promise(function(resolve, reject){
+
+            var savePurchased = QuizApi.putQuiz(purchased);
+            var getOriginal = QuizApi.getQuiz(purchased.meta.originalQuizId);
+            console.log("Savingg View");
+
+            Promise.all([savePurchased, getOriginal])
+                .then((value) => {
+                    var quiz = value[1];
+
+                    quiz.payload.reviews = quiz.payload.reviews ||  {};
+
+                    quiz.payload.reviews[purchased.uuid] = {
+                        review: purchased.meta.review,
+                        comment: purchased.meta.comment
+                    };
+
+                    QuizApi.putQuiz(quiz);
+                    resolve();
+                }).catch(reject);
+        });
+    },
+
     deleteQuiz: function(quizId){
         QuizApi.deleteQuiz(quizId)
             .then(function(){
@@ -175,6 +201,7 @@ var QuizActions = {
 
             });
     }, 300),
+
 
     newQuiz: function(quiz){
 

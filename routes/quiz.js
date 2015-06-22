@@ -360,7 +360,10 @@ exports.publishQuiz = function(req, res){
             link = replaceAll("/","-----",link);
             link = replaceAll("\\\\","=====",link);
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + link +"/live";
-            resp.shareLink = resp.qcode;
+            if (resp.content.meta && resp.content.meta.originalQuizId) {
+                getReviewForPurchasedQuiz(resp.content);
+            }
+            resp.shareLink = resp.content.meta.code;
         } else {
             var errorMessage = resp;
             resp = {};
@@ -386,6 +389,21 @@ exports.shareQuiz = function(req, res){
     if (emails != undefined) {
         email.sendEmail('team@zzish.com', emails, 'You have been shared a quiz!', 'Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
     }
+};
+
+var getReviewForPurchasedQuiz = function(quiz){
+    zzish.getUser(quiz.profileId,null,function(err,user) {
+        if (user && user.email) {
+            //var code = encrypt
+            if (!quiz.meta.askedForReview) {
+                quiz.meta.askedForReview = true;
+                zzish.postContent(quiz.profileId, QUIZ_CONTENT_TYPE, quiz.uuid,quiz.meta, quiz.content, function(err,message) {
+                    var link = "http://www.quizalize.com/quiz/review/" + quiz.uuid;
+                    email.sendEmail('team@zzish.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'Hi there,\n\nThanks for using the Quiz "' + quiz.meta.name + '" in your class. We want to make sure we\'re always promoting the best quality content in our marketplace. Can you fill out a quick survey to tell us what you think. Your review will help content creators keep their quizzes at the highest level. Click on the following link to review this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
+                });
+            }
+        }
+    });
 };
 
 exports.getQuizByCode = function(req,res) {

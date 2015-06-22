@@ -1,0 +1,10 @@
+.cq-review {
+    background: red;
+    @at-root #{&}__star {
+      margin-top: 8px;
+      font-size: 30px;
+    }
+}
+
+
+
