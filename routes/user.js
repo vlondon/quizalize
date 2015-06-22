@@ -28,9 +28,9 @@ function decrypt(text){
 
 
 exports.saveUser = function(req, res) {
-    var uuid = req.params.profileId;
-    zzish.saveUser(uuid, req.body, function(err, data){
-        if (!err && typeof data == 'object') {
+    var userId = req.params.profileId;
+    zzish.saveUser(userId, req.body, function(err, data){
+        if (!err && typeof data === 'object') {
             res.status(200);
         }
         else {
@@ -38,7 +38,7 @@ exports.saveUser = function(req, res) {
         }
         res.send(data);
     });
-}
+};
 
 exports.details = function(req, res) {
     var uuid = req.params.profileId;
@@ -51,27 +51,31 @@ exports.details = function(req, res) {
         }
         res.send(data);
     });
-}
+};
 
 exports.authenticate =  function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
     //at least password or code is required
-    zzish.authenticate(email, encrypt(password), function(err,data) {
-        if (!err && typeof data == 'object') {
-            res.status(200);
+    zzish.authenticate(email, encrypt(password), function(err, data) {
+        if (!err && typeof data === 'object') {
+
+            if (data.avatar !== null){
+                res.status(200).send(data);
+            } else {
+                data.avatar = crypto.createHash('md5').
+            }
         }
         else {
-            res.status(err);
+            res.status(err).send(data);
         }
-        res.send(data);
     });
 };
 
 exports.register =  function(req, res) {
     var email1 = req.body.email;
     var password = req.body.password;
-    zzish.registerUser(email1,encrypt(password),function(err,data) {
+    zzish.registerUser(email1, encrypt(password), function(err,data) {
         if (!err) {
             res.status(200);
             var registerEmail = "Hi there\n\nQuizalize is an easy and fast way to create, share and set pupils quizzes. You can create your subject specific quizzes which can then be shared with other teachers as well as set as work for particular classes or pupils. Most importantly it saves you time from all that lengthy paperwork by providing a website that allows you to store and amend quizzes to suit you and your pupils needs. \n\nQuizalize plugs into the Zzish Learning Hub, which provides one dashboard with live data being recorded from pupils in the classroom.\n\nThe Quizalize Team\nwww.quizalize.com";
@@ -164,5 +168,5 @@ exports.groupContents = function(req,res) {
             res.status(err);
         }
         res.send(resp);
-    })
+    });
 }
