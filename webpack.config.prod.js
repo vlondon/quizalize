@@ -12,7 +12,10 @@ module.exports = {
         cqApp: 'createQuizApp/CQApp.js',
         vendor: ['fastclick', 'react', 'superagent', 'object-assign']
     },
-    plugins: [ new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js') ],
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|es/)
+    ],
     output: {
         path: __dirname,
         filename: '[name].js'
@@ -21,25 +24,36 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loader: 'babel-loader'
+                loaders: ['react-hot', 'babel'],
+                exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                loader: 'babel',
                 exclude: /(node_modules|bower_components)/
+            },
+
+            {
+                test: /\.es6\.js$/,
+                loader: 'babel',
+                exclude: /(bower_components)/
             },
             {
                 test: /\.scss$/,
-                loader: 'style!css!autoprefixer-loader?browsers=last 2 version!sass'
+                loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version!sass?sourceMap&sourceMapContents=true'
             },
             {
                 test: /\.css$/,
-                loader: 'style!css!autoprefixer-loader?browsers=last 2 version'
+                loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
             }
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss'],
-        modulesDirectories: ['node_modules', 'scripts']
+        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
+        modulesDirectories: ['node_modules', 'scripts'],
+        alias: {
+            'ie': 'component-ie'
+        }
+
     }
 };

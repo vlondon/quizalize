@@ -16,7 +16,6 @@ var handleRedirect = function(){
 };
 var UserActions = {
     request: function() {
-        console.trace('UserActions.request called');
 
         UserApi.get()
             .then(function(user){
@@ -37,6 +36,22 @@ var UserActions = {
         });
     },
 
+    update: function(user){
+        return new Promise(function(resolve, reject){
+
+            UserApi.post(user)
+                .then(()=>{
+                    console.log('about to update user', user);
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_DETAILS_UPDATED,
+                        payload: user
+                    });
+                    resolve(user);
+                })
+                .catch(reject);
+        });
+    },
+
 
     login: function(data) {
         return new Promise(function(resolve, reject){
@@ -54,7 +69,7 @@ var UserActions = {
                 })
                 .catch(function(error){
                     reject(error);
-                    console.trace('error: ', error);
+
 
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_LOGIN_ERROR,
@@ -114,7 +129,7 @@ var UserActions = {
                 })
                 .catch(function(error){
                     reject(error);
-                    console.trace('error: ', error);
+
 
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_REGISTER_ERROR,

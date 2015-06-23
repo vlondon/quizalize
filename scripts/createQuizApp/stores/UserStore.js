@@ -16,6 +16,12 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return _user;
     },
 
+    isAdmin: function(){
+        console.log('_user', _user);
+        var admins = ['Samir', 'Blai'];
+        return admins.indexOf(_user.name) !== -1;
+    },
+
 
     putUser: function(){
 
@@ -52,6 +58,7 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case UserConstants.USER_DETAILS:
+        case UserConstants.USER_DETAILS_UPDATED:
         case UserConstants.USER_IS_LOGGED:
         case UserConstants.USER_PROFILE_UPDATED:
         case UserConstants.USER_REGISTERED:

@@ -5,12 +5,6 @@ var CQLoginForm     = require('createQuizApp/components/pages/shared/CQLoginForm
 var CQLink          = require('createQuizApp/components/utils/CQLink');
 
 var UserActions = require('createQuizApp/actions/UserActions');
-var swal = require('sweetalert/dist/sweetalert-dev');
-require('sweetalert/dev/sweetalert.scss');
-
-
-require('./CQLoginStyles');
-
 
 var CQLogin = React.createClass({
 

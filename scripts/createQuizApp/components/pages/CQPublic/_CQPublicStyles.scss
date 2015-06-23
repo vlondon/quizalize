@@ -1,0 +1,106 @@
+.cq-public {
+
+    $quizIcon: 40px;
+
+    .cq-viewquizlist__quiz {
+        width: calc(50% - 5px);
+        float: left;
+        margin-right: 5px;
+    }
+
+    @at-root #{&}__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+
+    @at-root #{&}__quiz {
+        text-align: left;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        margin: 5px;
+        padding: 5px;
+        @include clearfix();
+    }
+
+    @at-root #{&}__quiz-inner {
+        text-align: left;
+        float: left;
+    }
+
+    @at-root #{&}__quizicon {
+        width: $quizIcon;
+        height: $quizIcon;
+        border-radius: 100%;
+        margin: 5px;
+        display: inline-block;
+        float: left;
+        font-size: $quizIcon - 10px;
+        text-align: center;
+        line-height: $quizIcon;
+        color: #FFF;
+        background-size: cover;
+        background-position: center center;
+        img { width: 100%; }
+
+    }
+    @at-root #{&}__quizname {
+        font-weight: bold;
+        display: inline;
+        font-size: 18px;
+    }
+
+    @at-root #{&}__quizauthor {
+        display: inline;
+    }
+
+    @at-root #{&}__quizdate {
+        font-weight: 100;
+        color: $brand-color-grey;
+    }
+
+    @at-root #{&}__quizextra {
+        text-align: center;
+        margin: 12px 0;
+        float: right;
+    }
+
+    @at-root #{&}__quizcategory {
+        display: inline-block;
+        font-weight: 100;
+        color: $brand-color-grey;
+        font-size: 10px;
+        line-height: 10px;
+        border: 1px solid $brand-color-grey;
+        padding: 5px;
+        border-radius: 10px;
+        margin: 2px;
+    }
+
+    @at-root #{&}__sort {
+        float: left;
+        width: 300px;
+        min-height: 400px;
+        background: $brand-color-grey-lighter;
+    }
+
+
+    @at-root #{&}__list {
+        width: 100%;
+    }
+
+    @at-root #{&}__button {
+        background: $brand-color-grey-light;
+        color: $brand-color-grey-dark;
+        margin: 5px;
+        padding: 5px;
+        cursor: pointer;
+
+        &:hover {
+            background: $brand-color-grey;
+            color: $brand-color-grey-lighter;
+        }
+    }
+}

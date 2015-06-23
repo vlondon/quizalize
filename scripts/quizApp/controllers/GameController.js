@@ -1,5 +1,5 @@
 var React = require('react');
-var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
+
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
 var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 

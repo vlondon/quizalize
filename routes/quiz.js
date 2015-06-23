@@ -63,7 +63,7 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    var params = {zzishapi: getZzishParam()};
+    var params = {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE};
     if (req.query.uuid!==undefined) {
         zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {
             if (!err) {
@@ -85,7 +85,7 @@ exports.indexQuiz =  function(req, res) {
 
 
 exports.create =  function(req, res) {
-    res.render('create',{zzishapi : getZzishParam()});
+    res.render('create', {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE});
 };
 
 exports.landingpage =  function(req, res) {
@@ -144,6 +144,16 @@ exports.faq = function(req, res){
 };
 
 
+exports.terms = function(req, res){
+    res.render('terms');
+};
+exports.privacypolicy = function(req, res){
+    res.render('privacypolicy');
+};
+exports.coppa = function(req, res){
+    res.render('coppa');
+};
+
 exports.createProfile = function(req, res){
     var id = req.body.uuid;
     var name = "";
@@ -199,7 +209,8 @@ exports.getProfileById = function(req,res) {
 
 
 exports.getPublicQuizzes = function(req, res){
-    zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, resp){
+    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
+        console.log('Quiz categories?', resp.categories);
         if (resp.contents) {
             var contents = [];
             for (var i in resp.contents) {
@@ -230,10 +241,14 @@ exports.getMyQuizzes = function(req, res){
     });
 };
 
-exports.getMyTopics = function(req, res){
-    var profileId = req.params.profileId;
-    //res.send([{name: "Zzish Quiz", uuid: "ZQ"}]);
+exports.getTopics = function(req, res){
+    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
+        res.send(resp.categories);
+    });
+};
 
+exports.getUserTopics = function(req, res){
+    var profileId = req.params.profileId;
     zzish.listCategories(profileId, function(err, resp){
         res.send(resp);
     });
@@ -271,13 +286,13 @@ exports.getQuiz = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;
 
-    zzish.getContent(profileId, QUIZ_CONTENT_TYPE,id, function(err, resp){
-        if(!err){
+    zzish.getPublicContent(QUIZ_CONTENT_TYPE, id, function(err, resp){
+        if (!err) {
             console.log("request for content, got: ", resp);
             res.send(resp);
-        }else{
+        } else {
             console.log("request for content, error: ", err);
-            res.status = 400;
+            res.status(400).send(err);
         }
     });
 };
@@ -348,7 +363,10 @@ exports.publishQuiz = function(req, res){
             link = replaceAll("/","-----",link);
             link = replaceAll("\\\\","=====",link);
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + link +"/live";
-            resp.shareLink = resp.qcode;
+            if (resp.content.meta && resp.content.meta.originalQuizId) {
+                getReviewForPurchasedQuiz(resp.content);
+            }
+            resp.shareLink = resp.content.meta.code;
         } else {
             var errorMessage = resp;
             resp = {};
@@ -368,16 +386,31 @@ exports.shareQuiz = function(req, res){
     var emailFrom = req.body.email;
     var link = req.body.link;
 
-    if (link==undefined) {
+    if (link == undefined) {
         link = "http://quizalize.com/quiz#/share/" + quiz.code;
     }
-    if (emails!=undefined) {
-        email.sendEmail('team@zzish.com',emails,'You have been shared a quiz!','Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
+    if (emails != undefined) {
+        email.sendEmail('team@zzish.com', emails, 'You have been shared a quiz!', 'Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
     }
 };
 
+var getReviewForPurchasedQuiz = function(quiz){
+    zzish.getUser(quiz.profileId,null,function(err,user) {
+        if (user && user.email) {
+            //var code = encrypt
+            if (!quiz.meta.askedForReview) {
+                quiz.meta.askedForReview = true;
+                zzish.postContent(quiz.profileId, QUIZ_CONTENT_TYPE, quiz.uuid,quiz.meta, quiz.content, function(err,message) {
+                    var link = "http://www.quizalize.com/quiz/review/" + quiz.uuid;
+                    email.sendEmail('team@zzish.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'Hi there,\n\nThanks for using the Quiz "' + quiz.meta.name + '" in your class. We want to make sure we\'re always promoting the best quality content in our marketplace. Can you fill out a quick survey to tell us what you think. Your review will help content creators keep their quizzes at the highest level. Click on the following link to review this quiz:\n\n' + link + '\n\nBest wishes,\n\nThe Quizalize team.');
+                });
+            }
+        }
+    });
+};
+
 exports.getQuizByCode = function(req,res) {
-    zzish.getContentByCode(QUIZ_CONTENT_TYPE,req.params.code,function (err,result) {
+    zzish.getContentByCode(QUIZ_CONTENT_TYPE, req.params.code, function (err,result) {
         res.send(result);
     })
 }

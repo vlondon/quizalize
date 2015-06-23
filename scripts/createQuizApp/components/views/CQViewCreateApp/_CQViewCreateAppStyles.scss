@@ -1,0 +1,9 @@
+.cq-viewcreateapp {
+    background: $brand-color-grey-lighter;
+    padding: 5px;
+
+    @at-root #{&}__formelement {
+        margin: 20px;
+    }
+
+}

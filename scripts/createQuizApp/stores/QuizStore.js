@@ -1,10 +1,14 @@
 var AppDispatcher   = require('createQuizApp/dispatcher/CQDispatcher');
 var QuizConstants   = require('createQuizApp/constants/QuizConstants');
+var TopicConstants  = require('createQuizApp/constants/TopicConstants');
 var QuizActions     = require('createQuizApp/actions/QuizActions');
 var TopicStore      = require('createQuizApp/stores/TopicStore');
 var EventEmitter    = require('events').EventEmitter;
 var assign          = require('object-assign');
 var uuid            = require('node-uuid');
+
+
+
 
 var CHANGE_EVENT = 'change';
 
@@ -32,17 +36,35 @@ var QuestionObject = function(quiz){
     return question;
 };
 
+var findPublicQuiz = function(quizId){
+    var quizFound;
+    _publicQuizzes.forEach(category =>{
+        category.quizzes.forEach(quiz =>{
+            if (quiz.uuid === quizId) {
+                quizFound = quiz;
+            }
+        });
+    });
+
+    return quizFound;
+};
 
 
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        return _quizzes;
+        var quizzes = _quizzes.slice();
+        quizzes = quizzes.map(quiz => {
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+        });
+        quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
+        return quizzes;
     },
 
     getQuizMeta: function(quizId) {
         for (var i in _quizzes) {
-            if (_quizzes[i].uuid==quizId) {
+            if (_quizzes[i].uuid === quizId) {
                 return _quizzes[i];
             }
         }
@@ -50,7 +72,11 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getQuiz: function(quizId){
-        return _fullQuizzes[quizId];
+        var fullQuiz = _fullQuizzes[quizId];
+        if (fullQuiz === undefined){
+            QuizActions.loadQuiz(quizId);
+        }
+        return fullQuiz;
     },
 
     getQuestion: function(quizId, questionIndex){
@@ -62,9 +88,31 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     getPublicQuizzes: function(){
         if (!storeInitPublic){
             storeInitPublic = true;
-            QuizActions.loadPublicQuizzes();
+            QuizActions.searchPublicQuizzes();
         }
-        return _publicQuizzes;
+        var publicQuizzes = _publicQuizzes.slice();
+        // find their category
+        publicQuizzes = publicQuizzes.map(quiz=>{
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+
+        });
+
+        // return _publicQuizzes;
+        return publicQuizzes.reverse();
+    },
+
+    getQuizOfTheDay: function(){
+        return findPublicQuiz('f2742669-b4ad-4da2-8ef5-0f6f9cf7d15b');
+        // console.log('_publicQuizzes', _publicQuizzes);
+        // if (_publicQuizzes.length === 0) {
+        //     return [];
+        // } else {
+        //     var quizIndex = Math.round(Math.random() * _publicQuizzes.length);
+        //     console.log('quizoftheday', quizIndex, _publicQuizzes[quizIndex]);
+        //     return _publicQuizzes[quizIndex].quizzes[0];
+        // }
+
     },
 
     getTopics: function() {
@@ -99,7 +147,6 @@ var QuizStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
-
         case QuizConstants.QUIZZES_LOADED:
             _quizzes = action.payload.quizzes;
             _topics = action.payload.topics;
@@ -139,6 +186,9 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
+        case TopicConstants.PUBLIC_TOPICS_LOADED:
+            QuizStore.emitChange();
+            break;
 
         default:
             // no op

@@ -1,14 +1,24 @@
 ### Quiz object
 
 ```json
-category: "Maths"
-categoryId: "7c2c3fda-7f24-4c14-af81-3358dd8091dd"
-name: "Maths Rulez!!1!"
-profileId: "e5543518-14d8-456c-9414-cdcce79fc445"
-questions: Array[]
-subject: "Subject: Maths"
-uuid: "5aa96a91-d336-45a2-938c-875db842ce"
-settings: Object{}
+{
+   "uuid": "a31ba612-be64-4881-8541-f1a861e823a1",
+   "meta": {
+       "live": true,
+       "featured": false,
+       "random": false,
+       "description": "Test your knowledge of rivers with this fun quiz of the day!",
+       "imageUrl": "http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Clouds%2C_rivers_and_mountains.jpg/1024px-Clouds%2C_rivers_and_mountains.jpg",
+       "imageAttribution": "HabibullahQureshi",
+       "name": "Rivers - Quiz of the Day",
+       "categoryId": "ae786b5c-084f-438f-88d0-a0f40d07026b",
+       "profileId": "44ddfbd4-7bec-4691-8089-9bde07766111",
+       "subject": "Rivers",
+       "created": 1434452252731,
+       "updated": 1434452252731,
+       "code": "cg592"
+   }
+}
 ```
 
 

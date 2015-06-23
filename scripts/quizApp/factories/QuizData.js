@@ -1,20 +1,18 @@
 var randomise = require('quizApp/utils/randomise');
-var QuizFormat = require('createQuizApp/actions/format/QuizFormat');
 var settings = require('quizApp/config/settings');
 var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
-    if(typeof zzish == 'undefined') {
+    if(typeof zzish === 'undefined') {
         $log.error("Require zzish.js to use zzish");
     }
 
-    var settings = require('quizApp/config/settings');
 
     zzish.init(initToken);
 
     var userUuid = localStorage.getItem("uuid");
     var userName =  localStorage.getItem("userName");
-    zzish.getUser(userUuid,userName);
+    zzish.getUser(userUuid, userName);
 
     var classCode = localStorage.getItem("classCode");
     var categories = {};
@@ -42,8 +40,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         else {
             userUuid = user.uuid;
             userName = user.name;
-            localStorage.setItem("uuid",userUuid);
-            localStorage.setItem("userName",userName);
+            localStorage.setItem("uuid", userUuid);
+            localStorage.setItem("userName", userName);
         }
     }
 

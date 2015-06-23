@@ -7,8 +7,7 @@ var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
-var swal = require('sweetalert/dist/sweetalert-dev');
-require('sweetalert/dev/sweetalert.scss');
+
 
 
 var CQPUblishedInfo = React.createClass({

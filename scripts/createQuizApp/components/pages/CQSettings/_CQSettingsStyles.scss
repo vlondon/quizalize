@@ -1,0 +1,13 @@
+@import './../../../../shared/scss/variables';
+@import './../../../../shared/scss/mixins';
+
+.cq-settings {
+    margin-top: 20px;
+    padding: 10px;
+    max-width: 600px;
+    background: $brand-color-grey-lighter;
+
+    @at-root #{&}__save {
+        text-align: center;
+    }
+}

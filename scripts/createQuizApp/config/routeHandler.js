@@ -1,12 +1,10 @@
-var router          = require('./router');
-var pages           = require('./routes');
-var settings        = require('createQuizApp/config/settings');
+var router              = require('./router');
+var pages               = require('./routes');
+var settings            = require('createQuizApp/config/settings');
 var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
-var GroupActions     = require('createQuizApp/actions/GroupActions');
 
-var UserStore       = require('createQuizApp/stores/UserStore');
-var UserActions     = require('createQuizApp/actions/UserActions');
-var urlParams       = require('createQuizApp/utils/urlParams');
+var UserStore           = require('createQuizApp/stores/UserStore');
+var urlParams           = require('createQuizApp/utils/urlParams');
 
 var user = null;
 var routerReady = false;
@@ -28,21 +26,23 @@ router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
 router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
+router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
 router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
+router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
 router.on(pages.create.path, () => renderPage(pages.create) );
+router.on(pages.createApp.path, () => renderPage(pages.createApp) );
 router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) );
 router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
 router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
 router.on(pages.assignments.path, () => renderPage(pages.assignments) );
 router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
-
-
+router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
 
 
 var newUrl = function(requestedUrl){

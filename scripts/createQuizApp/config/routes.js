@@ -12,12 +12,14 @@ var CQRestorePassword   = require('createQuizApp/components/pages/CQRestorePassw
 var CQRedirect          = require('createQuizApp/components/pages/CQRedirect');
 var CQQuizzes           = require('createQuizApp/components/pages/CQQuizzes');
 var CQCreate            = require('createQuizApp/components/pages/CQCreate');
+var CQReview            = require('createQuizApp/components/pages/CQReview');
 var CQEdit              = require('createQuizApp/components/pages/CQEdit');
 var CQAssignments       = require('createQuizApp/components/pages/CQAssignments');
 var CQPublished         = require('createQuizApp/components/pages/CQPublished');
 var CQPublishedInfo     = require('createQuizApp/components/pages/CQPublishedInfo');
 var CQHelp              = require('createQuizApp/components/pages/CQHelp');
-
+var CQSettings          = require('createQuizApp/components/pages/CQSettings');
+var CQApp               = require('createQuizApp/components/pages/CQApp');
 
 
 var pages = {
@@ -54,6 +56,16 @@ var pages = {
         renderer: function(){
             React.render(
                 React.createElement(CQHelp, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    settingsPage: {
+        path: '/quiz/settings',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQSettings, null),
                 document.getElementById('reactApp')
             );
         }
@@ -152,6 +164,16 @@ var pages = {
             );
         }
     },
+    createApp: {
+        path: '/quiz/quizzes/app',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQQuizzes, {appMode: true}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
 
     editQuiz: {
         path: '/quiz/edit/:quizId',
@@ -164,6 +186,19 @@ var pages = {
             );
         }
     },
+
+    reviewQuiz: {
+        path: '/quiz/review/:quizId',
+        pathRegEx: /\/quiz\/review\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQReview, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
 
     edit: {
         path: '/quiz/create/:quizId',
@@ -219,6 +254,18 @@ var pages = {
         renderer: function(props){
             React.render(
                 React.createElement(CQPublishedInfo, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    app: {
+        path: '/quiz/app/:appId',
+        pathRegEx: /\/quiz\/app\/([\w\-]+)/,
+        needsLogin: undefined,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQApp, props),
                 document.getElementById('reactApp')
             );
         }

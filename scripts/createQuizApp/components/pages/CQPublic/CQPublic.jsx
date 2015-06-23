@@ -1,35 +1,47 @@
 var React = require('react');
-
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-
-var UserStore  = require('createQuizApp/stores/UserStore');
-
 var router = require('createQuizApp/config/router');
 
-require('./CQPublicStyles');
+var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+var CQLink = require('createQuizApp/components/utils/CQLink');
+
+var CQAppGrid = require('./CQAppGrid');
+var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
+var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
+var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
+
+
+var TransactionActions = require('createQuizApp/actions/TransactionActions');
+var AppActions = require('createQuizApp/actions/AppActions');
+
+var QuizStore  = require('createQuizApp/stores/QuizStore');
+var AppStore = require('createQuizApp/stores/AppStore');
+var UserStore = require('createQuizApp/stores/UserStore');
+
 
 var CQPublic = React.createClass({
 
     getInitialState: function() {
-        return this.getState();
+        var newState =  this.getState();
+        newState.showApps = true;
+        newState.showQuizzes = true;
+        newState.user = UserStore.getUser();
+        return newState;
     },
 
     componentDidMount: function() {
+        AppActions.searchPublicApps();
         QuizStore.addChangeListener(this.onChange);
+        AppStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         QuizStore.removeChangeListener(this.onChange);
+        AppStore.removeChangeListener(this.onChange);
     },
 
     getState: function(){
-
         var quizzes = QuizStore.getPublicQuizzes();
         var newState = { quizzes };
-
         return newState;
 
     },
@@ -40,73 +52,111 @@ var CQPublic = React.createClass({
 
     handlePreview: function(quiz){
         sessionStorage.setItem('mode', 'teacher');
-        window.location.href = `/app#/play/public/${quiz.uuid}`;
-        // if (UserStore.getUser() === false) {
-        // }
-        // else {
-        //     router.setRoute(this.props.href);
-        //     $location.path("/playh/preview/" + quiz.uuid);
-        // }
+        window.open(`/app#/play/public/${quiz.uuid}`);
+        // window.location.href = `/app#/play/public/${quiz.uuid}`;
+
     },
 
     handleSet: function(quiz){
         router.setRoute(`/quiz/published/${quiz.uuid}`);
     },
 
+    handleBuy: function(quiz){
+        if (!this.state.user) {
+            swal({
+                title: 'You need to be logged in',
+                text: `In order to buy this item you need to log into Quizalize`,
+                type: 'info',
+                confirmButtonText: 'Log in',
+                showCancelButton: true
+            }, function(isConfirm){
+                if (isConfirm){
+                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                }
+            });
+        } else {
+
+            TransactionActions.buyQuiz(quiz);
+        }
+    },
+
+    handleViewChange: function(options){
+        switch (options){
+            case 'all':
+                this.setState({
+                    showApps: true,
+                    showQuizzes: true
+                });
+                break;
+
+            case 'quizzes':
+                this.setState({
+                    showApps: false,
+                    showQuizzes: true
+                });
+                break;
+            case 'apps':
+                this.setState({
+                    showApps: true,
+                    showQuizzes: false
+                });
+        }
+    },
+
+    handleDetails: function(quiz){
+        this.setState({quizDetails: quiz.uuid});
+    },
+
+    handleDetailsClose: function(){
+        this.setState({quizDetails: undefined});
+    },
+
     render: function() {
+
+        var appGrid, quizList, quizDetails;
+        if (this.state.showApps) {
+            appGrid = (<CQAppGrid/>);
+        }
+
+        if (this.state.quizDetails) {
+            quizDetails = (<CQViewQuizDetails
+                onClose={this.handleDetailsClose}
+                quizId={this.state.quizDetails}/>);
+        }
+
+
+        if (this.state.showQuizzes) {
+
+            var numOfQuizzes = this.state.showApps ? 12 : 16;
+
+            quizList = (
+                <CQViewQuizList
+                    isQuizInteractive={true}
+                    isPaginated={true}
+
+                    onQuizClick={this.handleDetails}
+                    quizzes={this.state.quizzes}
+                    className="cq-public__list"
+                    sortBy="time">
+
+                    <span className='cq-public__button' onClick={this.handlePreview}>
+                        Preview
+                    </span>
+                    <span className='cq-public__button' onClick={this.handleBuy}>
+                        Free
+                    </span>
+
+                </CQViewQuizList>
+            );
+        }
         return (
-            <CQPageTemplate className="container">
-                <h2>
-                    Choose a quiz for your class
-                </h2>
-                <p>
-                    Check out our pre-made quizzes. We're adding new ones all the time! If you have any suggestions, tell us! Otherwise, you can <a href='/quiz/create'>Create your own in 60 seconds</a>.
-                </p>
+            <CQPageTemplate className="container cq-public">
+                {quizDetails}
+                <CQViewQuizFilter onViewChange={this.handleViewChange}/>
 
-                {this.state.quizzes.map((category, categoryIndex) => {
-                    return (<div className="row" key={categoryIndex}>
-                        <div className="col-md-12">
-                            <div className="quiz-topic-block">
-                                <a href="" className="quiz-link">
-                                    <h2 className="quiz-topic-title text-center">
-                                        {category.category.name}
-                                    </h2>
-                                </a>
-                                <div className="quiz-list collapse in">
-                                    {category.quizzes.map((quiz, index)=>{
-                                        return (
-                                            <div className="row quiz-info-row" key={index}>
-                                                <div className="col-xs-8">
-                                                    <a href="" className="quiz-item">
-                                                        <div className="quiz-title">{quiz.meta.name}</div>
-                                                    </a>
-                                                </div>
-                                                <div className="col-xs-2">
+                {appGrid}
+                {quizList}
 
-                                                    <div className="row quiz-info-row">
-
-                                                        <button className="btn btn-info btn-block" onClick={this.handleSet.bind(this, quiz)}>
-                                                            Set this quiz
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xs-2">
-
-                                                    <div className="row quiz-info-row">
-                                                        <button onClick={this.handlePreview.bind(this, quiz)} className="btn btn-info btn-block">Preview</button>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                        );
-                                    })}
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>);
-                })}
             </CQPageTemplate>
         );
     }

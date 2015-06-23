@@ -2,7 +2,7 @@ var React = require('react');
 var assign = require('object-assign');
 var uuid = require('node-uuid');
 
-var CQLatexString = require('./CQLatexString');
+var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 
 var QuizStore = require('createQuizApp/stores/QuizStore');
 // TODO: Rename to a better name to describe editing questions

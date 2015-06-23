@@ -1,6 +1,6 @@
-@import './../../../quizApp/components/shared/variables';
-@import './../../../quizApp/components/shared/mixins';
-
+@import './../../../shared/scss/variables';
+@import './../../../shared/scss/mixins';
+@import './../../../shared/scss/layout';
 
 .qofd-intro {
     @include clearfix;
@@ -10,6 +10,9 @@
     .qd-container,
     .ql-leaderboard {
         width: 100%;
+    }
+    .ql-leaderboard-video{
+        width:100%;
     }
 
     .qd-container {
@@ -25,11 +28,13 @@
             width: 40%;
         }
     }
+
 }
+
 .qd-container {
 
     .qd-description {
-        min-height: 300px;
+        min-height: 350px;
         background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
         background-size: cover;
         background-position: center center;
@@ -145,5 +150,22 @@
             color: #00ABE3;
         }
     }
+    .embed-container {
+        margin-top:0px;
+        position: relative; 
+        padding-bottom: 56.25%; 
+        height: 0; 
+        overflow: hidden; 
+        max-width: 100%; 
+        padding-bottom: -100px;
+    }
+    .embed-container iframe, .embed-container object, .embed-container embed { 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+    }
 
 }
+

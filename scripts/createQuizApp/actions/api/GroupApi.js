@@ -1,6 +1,6 @@
 var request = require('superagent');
+var noCache = require('superagent-no-cache');
 var Promise = require('es6-promise').Promise;
-
 
 var GroupApi = {
 
@@ -12,6 +12,7 @@ var GroupApi = {
                 reject();
             } else {
                 request.get(`/users/${uuid}/groups`)
+                    .use(noCache)
                     .end(function(error, res){
                         if (error) {
                             reject();
@@ -33,6 +34,7 @@ var GroupApi = {
                 reject();
             } else {
                 request.get(`/users/${uuid}/groups/contents`)
+                    .use(noCache)
                     .end(function(error, res){
                         if (error) {
                             reject();

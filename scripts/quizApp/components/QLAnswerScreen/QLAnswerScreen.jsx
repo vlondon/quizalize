@@ -1,5 +1,4 @@
 var React = require('react');
-var TeX = require('react-components/js/tex.jsx');
 var QLLatex = require('quizApp/components/QLLatex');
 
 var toSeconds = function(ms){

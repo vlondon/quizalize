@@ -6,9 +6,6 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 
 var UserActions = require('createQuizApp/actions/UserActions');
 
-var swal = require('sweetalert/dist/sweetalert-dev');
-
-require('sweetalert/dev/sweetalert.scss');
 
 var CQRestorePassword = React.createClass({
 
@@ -33,7 +30,7 @@ var CQRestorePassword = React.createClass({
                     timer: 3000,
                     showConfirmButton: false
                 });
-                
+
             })
             .catch(function(){
                 console.log('nay');

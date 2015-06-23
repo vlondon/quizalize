@@ -1,6 +1,6 @@
 var React           = require('react');
-var CQHeader        = require('./sections/CQHeader');
 
+var CQViewHeader   = require('./views/CQViewHeader');
 
 var CQPageTemplate = React.createClass({
 
@@ -33,7 +33,7 @@ var CQPageTemplate = React.createClass({
         return (
             <div>
                 <div className={this.props.wrapperMainClassName + ' ' + this.props.wrapperStyleClassName}>
-                    <CQHeader/>
+                    <CQViewHeader/>
                     <div className={this.props.className}>
                         {this.props.children}
                     </div>

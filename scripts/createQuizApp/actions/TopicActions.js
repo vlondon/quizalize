@@ -16,8 +16,29 @@ var TopicActions = {
             payload: topic
         });
         return putTopic;
-    }
+    },
 
+    loadPublicTopics: function(){
+        QuizApi.getTopics()
+            .then(function(topics){
+                AppDispatcher.dispatch({
+                    actionType: TopicConstants.PUBLIC_TOPICS_LOADED,
+                    payload: topics
+                });
+            });
+    },
+
+
+    loadPrivateTopics: function(){
+        console.info("loadPrivateTopicsloadPrivateTopicsloadPrivateTopics");
+        QuizApi.getUserTopics()
+            .then(function(topics){
+                AppDispatcher.dispatch({
+                    actionType: TopicConstants.TOPICS_LOADED,
+                    payload: topics
+                });
+            });
+    }
 };
 
 
