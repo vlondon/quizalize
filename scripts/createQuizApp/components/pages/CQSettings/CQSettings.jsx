@@ -60,6 +60,7 @@ var CQSettings = React.createClass({
                         <label htmlFor="name">Name</label>
                         <input type="text" id="name"
                             className="form-control"
+                            placeholder = "e.g. Mr Smith"
                             onChange={this.handleNameChange}
                             value={this.state.user.name}/>
                     </div>
@@ -68,6 +69,7 @@ var CQSettings = React.createClass({
                         <label htmlFor="school">School name / company</label>
                         <input type="text" id="school"
                             className="form-control"
+                            placeholder = "e.g. City School Academy"
                             onChange={this.handleChange.bind(this, 'school')}
                             value={this.state.user.attributes.school}/>
                     </div>
@@ -76,16 +78,9 @@ var CQSettings = React.createClass({
                         <label htmlFor="location">Location</label>
                         <input type="text" id="location"
                             className="form-control"
+                            placeholder = "e.g. London"
                             onChange={this.handleChange.bind(this, 'location')}
                             value={this.state.user.attributes.location}/>
-                    </div>
-
-                    <div className="cq-settings__profile-item form-group">
-                        <label htmlFor="url">URL</label>
-                        <input type="url" id="url"
-                            className="form-control"
-                            onChange={this.handleChange.bind(this, 'url')}
-                            value={this.state.user.attributes.url}/>
                     </div>
 
 
@@ -97,7 +92,7 @@ var CQSettings = React.createClass({
 
 
                     <div className="cq-settings__save">
-                        <button className="btn btn-danger" onClick={this.handleSave}>Save</button>
+                        <button className="btn btn-danger" onClick={this.handleSave}>Save Profile</button>
                     </div>
 
 
@@ -105,6 +100,15 @@ var CQSettings = React.createClass({
             </CQPageTemplate>
         );
     }
+
+
+                    //<div className="cq-settings__profile-item form-group">
+                    //    <label htmlFor="url">URL</label>
+                    //    <input type="url" id="url"
+                    //        className="form-control"
+                    //        onChange={this.handleChange.bind(this, 'url')}
+                    //        value={this.state.user.attributes.url}/>
+                    //</div>
 
 });
 
