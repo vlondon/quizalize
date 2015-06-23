@@ -22,7 +22,7 @@ var CQAutofill = React.createClass({
         return {
             searchString: selectedTopic || '',
             selected: undefined,
-            topis: TopicStore.getPublicTopics()
+            topics: TopicStore.getPublicTopics()
         };
     },
 
@@ -36,9 +36,10 @@ var CQAutofill = React.createClass({
 
     onChange: function(){
         var newState = {};
-        newState.topics = TopicStore.getPublicTopics();
+        newState.topics = TopicStore.getAllTopics();
 
         newState.topicsAutofill = [];
+
 
         var fillAutoFill = function(array, prefix){
             array.forEach( el => {
@@ -57,14 +58,20 @@ var CQAutofill = React.createClass({
 
         fillAutoFill(newState.topics);
 
-
+        console.log('newState.topicsAutofill', newState.topicsAutofill);
         this.setState(newState);
 
     },
 
     componentWillReceiveProps: function(nextProps) {
+
+        var topic = TopicStore.getTopicById(nextProps.value);
+        var searchString = topic ? topic.name : '';
+        console.log('props', topic);
+        //
         this.setState({
-            value: nextProps.value
+        //     value: nextProps.value,
+            searchString
         });
     },
 
@@ -75,12 +82,17 @@ var CQAutofill = React.createClass({
             var searchArray = searchString.split(' ');
 
             var findOcurrences = function(data, string){
-                var o = data.filter(d => d.name.toLowerCase().indexOf(string.toLowerCase()) !== -1);
-                return o;
+                var checkData = function(d){
+                    if (!d.name){ return false; }
+                    return d.name.toLowerCase().indexOf(string.toLowerCase()) !== -1;
+                };
+
+                return data.filter(d => checkData(d));
             };
 
-            var occurrences = this.props.data.slice();
+            var occurrences = this.state.topicsAutofill.slice();
             searchArray.forEach( s => occurrences = findOcurrences(occurrences, s) );
+
             occurrences = occurrences.length > this.props.limit ? occurrences.slice(0, this.props.limit) : occurrences;
 
             this.setState({
@@ -92,6 +104,8 @@ var CQAutofill = React.createClass({
 
     handleClick: function(option){
         console.log('option', option);
+
+
         this.setState({
             selected: option,
             searchString: option.name
@@ -140,7 +154,7 @@ var CQAutofill = React.createClass({
     },
 
     handleFocus: function(ev){
-        console.log('input focused');
+
         this.setState({
             selected: undefined
         });
