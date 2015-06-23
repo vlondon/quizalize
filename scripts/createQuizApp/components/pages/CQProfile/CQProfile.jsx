@@ -4,7 +4,6 @@ var router = require('createQuizApp/config/router');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 
-var CQAppGrid = require('./CQAppGrid');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
 var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
@@ -18,11 +17,14 @@ var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 
 
-var CQPublic = React.createClass({
+var CQProfile = React.createClass({
+
+    propTypes: {
+        profileId: React.PropTypes.string
+    },
 
     getInitialState: function() {
         var newState =  this.getState();
-        newState.showApps = true;
         newState.showQuizzes = true;
         newState.user = UserStore.getUser();
         return newState;
@@ -40,7 +42,7 @@ var CQPublic = React.createClass({
     },
 
     getState: function(){
-        var quizzes = QuizStore.getPublicQuizzes();
+        var quizzes = QuizStore.getPublicProfileQuizzes(this.props.profileId);
         var newState = { quizzes };
         return newState;
 
@@ -81,26 +83,7 @@ var CQPublic = React.createClass({
     },
 
     handleViewChange: function(options){
-        switch (options){
-            case 'all':
-                this.setState({
-                    showApps: true,
-                    showQuizzes: true
-                });
-                break;
 
-            case 'quizzes':
-                this.setState({
-                    showApps: false,
-                    showQuizzes: true
-                });
-                break;
-            case 'apps':
-                this.setState({
-                    showApps: true,
-                    showQuizzes: false
-                });
-        }
     },
 
     handleDetails: function(quiz){
@@ -113,10 +96,7 @@ var CQPublic = React.createClass({
 
     render: function() {
 
-        var appGrid, quizList, quizDetails;
-        if (this.state.showApps) {
-            appGrid = (<CQAppGrid/>);
-        }
+        var quizList, quizDetails,profilePage;
 
         if (this.state.quizDetails) {
             quizDetails = (<CQViewQuizDetails
@@ -151,10 +131,10 @@ var CQPublic = React.createClass({
         }
         return (
             <CQPageTemplate className="container cq-public">
+                {profilePage}
                 {quizDetails}
-                <CQViewQuizFilter appEnabled={true} onViewChange={this.handleViewChange} allTopics={true}/>
+                <CQViewQuizFilter appEnabled={false} onViewChange={this.handleViewChange} allTopics={false} quizzes={this.state.quizzes} profileId={this.state.profileId}/>
 
-                {appGrid}
                 {quizList}
 
             </CQPageTemplate>
@@ -163,4 +143,4 @@ var CQPublic = React.createClass({
 
 });
 
-module.exports = CQPublic;
+module.exports = CQProfile;

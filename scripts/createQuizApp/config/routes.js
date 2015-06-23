@@ -4,6 +4,7 @@ var router          = require('./router');
 
 var CQDashboard         = require('createQuizApp/components/pages/CQDashboard');
 var CQPublic            = require('createQuizApp/components/pages/CQPublic');
+var CQProfile            = require('createQuizApp/components/pages/CQProfile');
 var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/components/pages/CQLogin');
 var CQRegister          = require('createQuizApp/components/pages/CQRegister');
@@ -58,6 +59,18 @@ var pages = {
         renderer: function(props){
             React.render(
                 React.createElement(CQDashboard, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    profilePage: {
+        path: '/quiz/qprofile/:profileId',
+        pathRegEx: /\/quiz\/qprofile\/([\w\-]+)/,
+        needsLogin: undefined,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQProfile, props),
                 document.getElementById('reactApp')
             );
         }

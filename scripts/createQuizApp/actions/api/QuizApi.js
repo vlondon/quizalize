@@ -26,10 +26,10 @@ var QuizApi = {
         });
     },
 
-    searchQuizzes: function(search = '', categoryId){
+    searchQuizzes: function(search = '', categoryId,profileId){
         return new Promise(function(resolve, reject){
             request.post(`/search/quizzes`)
-                .send({search, categoryId})
+                .send({search, categoryId,profileId})
                 .end(function(error, res){
                     if (error) {
                         reject();

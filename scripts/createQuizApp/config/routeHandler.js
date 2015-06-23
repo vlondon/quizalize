@@ -42,6 +42,7 @@ router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.e
 router.on(pages.assignments.path, () => renderPage(pages.assignments) );
 router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
+router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
 router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
 
 

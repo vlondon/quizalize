@@ -11,6 +11,7 @@ exports.getQuizzes = function(req, res){
 
     var searchString = req.body.search || '';
     var categoryId = req.body.categoryId;
+    var profileId = req.body.profileId;
 
     var now = Date.now();
     var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
@@ -28,6 +29,10 @@ exports.getQuizzes = function(req, res){
 
     if (categoryId) {
         mongoQuery.categoryId = categoryId;
+    }
+    if (profileId) {
+        mongoQuery.profileId = profileId;
+        //mongoQuery.published = true;
     }
 
     zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, resp){

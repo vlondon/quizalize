@@ -104,6 +104,23 @@ var QuizStore = assign({}, EventEmitter.prototype, {
         return publicQuizzes.reverse();
     },
 
+    getPublicProfileQuizzes: function(profileId){
+        if (!storeInitPublic){
+            storeInitPublic = true;
+            QuizActions.searchPublicQuizzes('','',profileId);
+        }
+        var publicQuizzes = _publicQuizzes.slice();
+        // find their category
+        publicQuizzes = publicQuizzes.map(quiz=>{
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+
+        });
+
+        // return _publicQuizzes;
+        return publicQuizzes.reverse();
+    },
+
     getQuizOfTheDay: function(){
         return findPublicQuiz('f2742669-b4ad-4da2-8ef5-0f6f9cf7d15b');
         // console.log('_publicQuizzes', _publicQuizzes);

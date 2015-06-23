@@ -8,7 +8,11 @@ var CQDropdown = require('createQuizApp/components/utils/CQDropdown');
 var CQviewQuizFilter = React.createClass({
 
     propTypes: {
-        onSearchInput: React.PropTypes.func
+        onSearchInput: React.PropTypes.func,
+        appEnabled: React.PropTypes.bool,
+        allTopics: React.PropTypes.bool,
+        profileId: React.PropTypes.string,
+        quizzes: React.PropTypes.array
     },
 
     getInitialState: function() {
@@ -66,8 +70,8 @@ var CQviewQuizFilter = React.createClass({
     performSearch: function(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
-        console.log('searchign for', this.state.searchString, category);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category);
+        console.log('searchign for', this.state.searchString, category,this.state.profileId);
+        QuizActions.searchPublicQuizzes(this.state.searchString, category,this.state.profileId);
         AppActions.searchPublicApps(this.state.searchString, category);
 
     },
@@ -84,16 +88,68 @@ var CQviewQuizFilter = React.createClass({
 
         }
 
+        // var quizzesAndTopics = [];
+        // if (this.props.appEnabled=="true") {
+        //     quizzesAndTopics = [{
+        //         name: 'quizzes and apps',
+        //         value: 'all'
+        //     }, {
+        //         name: 'quizzes',
+        //         value: 'quizzes'
+        //     }, {
+        //         name: 'apps',
+        //         value: 'apps'
+        //     }];
+        // }
+        // else {
+        //     quizzesAndTopics = [{
+        //         name: 'quizzes',
+        //         value: 'quizzes'
+        //     }];
+        // }
+
         var quizzesAndTopics = [{
-            name: 'quizzes and apps',
-            value: 'all'
-        }, {
-            name: 'quizzes',
-            value: 'quizzes'
-        }, {
-            name: 'apps',
-            value: 'apps'
-        }];
+                name: 'quizzes and apps',
+                value: 'all'
+            }, {
+                name: 'quizzes',
+                value: 'quizzes'
+            }, {
+                name: 'apps',
+                value: 'apps'
+            }, {
+                name: 'apps1',
+                value: 'apps2'
+            }];
+
+        var quizDropDown = () => {
+            if (!this.props.appEnabled)
+            {
+                return (
+                <div>Show classroom quizzes for any age to assess&nbsp;
+                    <CQDropdown
+                        selected={this.state.categorySelected}
+                        values={mappedTopics}
+                        onChange={this.handleChange}/>
+                </div>
+                )
+            }
+            else {
+                return (
+                    <div>Show classroom&nbsp;
+                        <CQDropdown
+                            selected={this.state.kindSelected}
+                            values={quizzesAndTopics}
+                            onChange={this.handleKind}/>&nbsp;for any age to assess&nbsp;
+                        <CQDropdown
+                            selected={this.state.categorySelected}
+                            values={mappedTopics}
+                            onChange={this.handleChange}/>
+                    </div>
+                )
+            }
+        }
+
         mappedTopics.unshift({value: 'all', name: 'any topic'});
         return (
             <div className='cq-quizfilter'>
@@ -114,19 +170,9 @@ var CQviewQuizFilter = React.createClass({
                             </div>
                         </div>
                     </div>
-
-                    Show classroom&nbsp;<CQDropdown
-                        selected={this.state.kindSelected}
-                        values={quizzesAndTopics}
-                        onChange={this.handleKind}/>&nbsp;for any age to assess&nbsp;
-                    <CQDropdown
-                        selected={this.state.categorySelected}
-                        values={mappedTopics}
-                        onChange={this.handleChange}/>
-
+                    {quizDropDown()}
 
                 </div>
-
 
 
             </div>
