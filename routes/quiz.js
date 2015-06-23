@@ -364,7 +364,7 @@ exports.publishQuiz = function(req, res){
             link = replaceAll("\\\\","=====",link);
             resp.link = config.webUrl + "/learning-hub/tclassroom/" + link +"/live";
             if (resp.content.meta && resp.content.meta.originalQuizId) {
-                getReviewForPurchasedQuiz(resp.content);
+                //getReviewForPurchasedQuiz(resp.content);
             }
             resp.shareLink = resp.content.meta.code;
         } else {
