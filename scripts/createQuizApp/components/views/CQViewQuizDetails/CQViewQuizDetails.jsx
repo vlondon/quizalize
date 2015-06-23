@@ -81,6 +81,11 @@ var CQViewQuizDetails = React.createClass({
                         <p>
                             {this.state.quiz.meta.description}
                         </p>
+                        <p>
+                        <i>
+                            {this.state.quiz.payload.questions.length} questions.
+                        </i>
+                        </p>
 
                         <button className="cq-quizdetails__button" onClick={this.handleBuy}>
                             Use it - it's free!
@@ -91,10 +96,10 @@ var CQViewQuizDetails = React.createClass({
                         <div className="cq-quizdetails__questions">
                             <ul>
 
-                                {this.state.quiz.payload.questions.map( question => {
+                                {this.state.quiz.payload.questions.map( (question,index) => {
                                     return (
-                                        <li key={question.uuid}>
-                                            <CQLatexString>{question.question}</CQLatexString>
+                                        <li className="cq-quizdetails__question" key={question.uuid}>
+                                            {index+1}. <CQLatexString>{question.question}</CQLatexString>
                                         </li>
                                     );
                                 })}
