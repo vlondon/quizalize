@@ -242,13 +242,16 @@ exports.getMyQuizzes = function(req, res){
 };
 
 exports.getTopics = function(req, res){
-    var profileId = req.params.profileId;
     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         res.send(resp.categories);
     });
-    // zzish.listCategories(profileId, function(err, resp){
-    //     res.send(resp);
-    // });
+};
+
+exports.getUserTopics = function(req, res){
+    var profileId = req.params.profileId;
+    zzish.listCategories(profileId, function(err, resp){
+        res.send(resp);
+    });
 };
 
 exports.postTopic = function(req,res){

@@ -28,6 +28,16 @@ var TopicActions = {
             });
     }
 
+
+    loadPrivateTopics: function(){
+        QuizApi.getUserTopics()
+            .then(function(topics){
+                AppDispatcher.dispatch({
+                    actionType: TopicConstants.TOPICS_LOADED,
+                    payload: topics
+                });
+            });
+    }
 };
 
 

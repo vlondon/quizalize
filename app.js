@@ -69,7 +69,8 @@ app.get('/quiz', quiz.create);
 app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
 
 
-app.get('/create/:profileId/topics/', quiz.getTopics);
+app.get('/create/:profileId/topics/', quiz.getUserTopics);
+app.get('/create/topics/', quiz.getTopics);
 app.post('/create/:profileId/topics/', quiz.postTopic);
 app.post('/create/:profileId/topics/:id/delete', quiz.deleteTopic);
 

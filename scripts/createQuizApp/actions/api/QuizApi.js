@@ -96,6 +96,33 @@ var QuizApi = {
                 if (!uuid) {
                     reject();
                 } else {
+                    request.get(`/create/topics/`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+
+                        });
+                }
+            });
+            return promise;
+
+        };
+    })(),
+
+    getUserTopics: (function(){
+        var promise;
+        return function(){
+
+            promise = promise || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
+
+                if (!uuid) {
+                    reject();
+                } else {
                     request.get(`/create/${uuid}/topics/`)
                         .use(noCache)
                         .end(function(error, res){
