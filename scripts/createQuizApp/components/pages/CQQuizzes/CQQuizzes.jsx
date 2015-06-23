@@ -202,7 +202,7 @@ var CQQuizzes = React.createClass({
                     <CQViewQuizList
                         onQuizClick={this.handleClick}
                         showAuthor={false}
-                        showReviewButton={true}
+                        showReviewButton={false}
                         quizzes={this.state.quizzes}
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
