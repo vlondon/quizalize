@@ -22,10 +22,9 @@ var CQReview = React.createClass({
 
 
         var initialState = {
-            quiz: this._getQuiz()
+            quiz: this._getQuiz(),
+            isValid: false
         };
-
-        console.log('do we have props', this.props);
 
         return initialState;
 
@@ -93,10 +92,13 @@ var CQReview = React.createClass({
     },
 
     updateStars: function(num) {
-        console.log('updateStars',num);
+        console.log('updateStars', num);
         var newQuizState = assign({}, this.state.quiz);
-        newQuizState.meta['review'] = num;
-        //this.setState({quiz: newQuizState});
+        newQuizState.meta.review = num;
+        this.setState({
+            quiz: newQuizState,
+            isValid: true
+        });
     },
 
     handleSaveReview: function(){
@@ -112,15 +114,15 @@ var CQReview = React.createClass({
     },
 
     render: function() {
+
             var star = (num) => {
-                console.log("Num",num,this.state.quiz.meta.reviews)
-                if (num<this.state.quiz.meta.review || !this.state.quiz.meta.review) {
-                    return (<span onClick={this.updateStars(num)} className="fa fa-star-o cq-review__star"></span>);
+                console.log('Num', num, this.state.quiz.meta.reviews);
+                if (num > this.state.quiz.meta.review || this.state.quiz.meta.review === undefined) {
+                    return (<span onClick={this.updateStars.bind(this, num)} className="fa fa-star-o cq-review__star"></span>);
+                } else {
+                    return (<span onClick={this.updateStars.bind(this, num)} className="fa fa-star cq-review__star--selected"></span>);
                 }
-                else {
-                    return (<span onClick={this.updateStars(num)} className="fa fa-star cq-review__star"></span>);
-                }
-            }
+            };
 
             return (
                 <CQPageTemplate className="container cq-review">
@@ -164,7 +166,7 @@ var CQReview = React.createClass({
                                     </form>
                                     <button type="button"
                                         onClick={this.handleSaveReview}
-                                        disabled={this.state.isSaving}
+                                        disabled={this.state.isSaving || !this.state.isValid}
                                         tabIndex="3" className="btn btn-primary btn-block">Submit Review</button>
                                 </div>
                             </div>

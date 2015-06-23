@@ -1,10 +1,18 @@
 .cq-review {
-    background: red;
+
+
+
+    @at-root #{&}__star--selected {
+        margin-top: 8px;
+        font-size: 30px;
+        cursor: pointer;
+        color: $brand-color-red;
+    }
+
     @at-root #{&}__star {
-      margin-top: 8px;
-      font-size: 30px;
+        margin-top: 8px;
+        font-size: 30px;
+        cursor: pointer;
+        color: $brand-color-grey;
     }
 }
-
-
-
