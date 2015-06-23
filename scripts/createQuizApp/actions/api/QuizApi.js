@@ -50,6 +50,7 @@ var QuizApi = {
             promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
                 var uuid = localStorage.getItem('cqUuid');
 
+
                 if (!uuid) {
                     reject();
                 } else {
@@ -61,7 +62,6 @@ var QuizApi = {
                             } else {
                                 resolve(res.body);
                             }
-
                         });
                 }
             });
@@ -92,6 +92,33 @@ var QuizApi = {
 
 
     getTopics: (function(){
+        var promise;
+        return function(){
+
+            promise = promise || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
+
+                if (!uuid) {
+                    reject();
+                } else {
+                    request.get(`/create/topics/`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+
+                        });
+                }
+            });
+            return promise;
+
+        };
+    })(),
+
+    getUserTopics: (function(){
         var promise;
         return function(){
 

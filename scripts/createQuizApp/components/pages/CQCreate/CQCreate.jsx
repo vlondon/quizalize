@@ -10,6 +10,8 @@ var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
 
+var TopicStore = require('createQuizApp/stores/TopicStore');
+var TopicActions = require('createQuizApp/actions/TopicActions');
 
 var CQCreate = React.createClass({
 
@@ -22,12 +24,14 @@ var CQCreate = React.createClass({
         };
     },
 
+
     getInitialState: function() {
 
         var initialState = {
             isMoreVisible: false,
             title: 'Create a Quiz',
             isSaving: false,
+            category: undefined,
             quiz: this._getQuiz()
         };
 
@@ -47,7 +51,6 @@ var CQCreate = React.createClass({
                 meta: {
                     name: "",
                     subject: "",
-                    category: "",
                     description: undefined,
                     imageUrl: undefined,
                     imageAttribution: undefined,
@@ -72,6 +75,7 @@ var CQCreate = React.createClass({
 
         var quiz = this._getQuiz();
         newState.quiz = quiz;
+
         newState.topics = TopicStore.getPublicTopics();
 
         newState.topicsAutofill = [];
@@ -93,6 +97,9 @@ var CQCreate = React.createClass({
 
         fillAutoFill(newState.topics);
 
+        newState.category = TopicStore.getTopicById(quiz.meta.categoryId);
+
+
         if (this.props.quizId !== undefined){
             newState.title = 'Edit a quiz';
         }
@@ -102,10 +109,13 @@ var CQCreate = React.createClass({
 
     componentDidMount: function() {
         QuizStore.addChangeListener(this.onChange);
+        TopicActions.loadPrivateTopics();
+
         TopicStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
+        TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
         TopicStore.removeChangeListener(this.onChange);
     },

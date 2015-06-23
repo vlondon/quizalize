@@ -13,10 +13,10 @@ exports.getQuizzes = function(req, res){
     var categoryId = req.body.categoryId;
 
     var now = Date.now();
-    var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
+    var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
     var mongoQuery = {
         updated: {
-            $gt: lastWeek
+            $gt: lastYear
         },
         live: true,
         name: {
@@ -56,10 +56,10 @@ exports.getApps = function(req, res){
     var appId = req.body.appId;
 
     var now = Date.now();
-    var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
+    var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
     var mongoQuery = {
         updated: {
-            $gt: lastWeek
+            $gt: lastYear
         },
         name: {
             $regex: searchString, $options: 'i'

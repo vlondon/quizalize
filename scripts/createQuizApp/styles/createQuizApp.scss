@@ -21,7 +21,6 @@
 
 // components
 // components can override default styles from views
-@import './../components/CQQuizOfTheDay/CQQuizOfTheDayStyles';
 @import './../components/pages/CQApp/CQAppStyles';
 @import './../components/pages/CQAssignments/CQAssignmentsStyles';
 @import './../components/pages/CQCreate/CQCreateStyles';
@@ -38,6 +37,8 @@
 @import './../components/pages/CQRegister/CQRegisterStyles';
 @import './../components/pages/CQRestorePassword/CQRestorePasswordStyles';
 @import './../components/pages/CQSettings/CQSettingsStyles';
+@import './../components/pages/CQReview/CQReviewStyles';
+
 
 // utils
 @import './../components/utils/CQAutofillStyles';

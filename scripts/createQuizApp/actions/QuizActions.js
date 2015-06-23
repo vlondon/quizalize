@@ -13,10 +13,9 @@ var debounce            = require('createQuizApp/utils/debounce');
 
 var _questionsTopicIdToTopic = function(quiz){
 
-    var topics = TopicStore.getTopics();
 
     var findTopicName = function(topicId){
-        var topic = topics.filter( t => t.uuid === topicId)[0];
+        var topic = TopicStore.getTopicById(topicId);
         return topic ? topic.name : undefined;
     };
 
@@ -34,11 +33,10 @@ var _questionsTopicIdToTopic = function(quiz){
 var _questionsTopicToTopicId = function(quiz){
 
     var questions = quiz.payload.questions;
-    var topics = TopicStore.getTopics();
 
     var findTopicId = function(topicName){
-        var topic = topics.filter( t => t.title === topicName)[0];
-
+        var topic = TopicStore.getTopicByName(topicName);
+        console.info('findTopicId', topicName, topic);
         if (topic === undefined){
             // we create a new topic and save it
             topic = {
@@ -117,12 +115,59 @@ var QuizActions = {
         quizPromise
             .then((quiz) => {
                 // // let's stitch quizzes to their topic
+                
+                //
+                var getCategoryFormUuid = function(){
+
+                    // if (!quiz.categoryId) {
+                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
+                    //     quiz.categoryId = fq.categoryId;
+                    // }
+                    //
+                    if (quiz.meta.categoryId) {
+                        var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
+                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
+                        return topicFound ? topicFound.name : '';
+                    }
+                    return '';
+
+                };
+
+                quiz.meta.category = getCategoryFormUuid();
+                // settings property is assumed, so it should be present
+
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
                     payload: quiz
                 });
 
             });
+    },
+
+
+    saveReview: function(purchased){
+
+        return new Promise(function(resolve, reject){
+
+            var savePurchased = QuizApi.putQuiz(purchased);
+            var getOriginal = QuizApi.getQuiz(purchased.meta.originalQuizId);
+            console.log("Savingg View");
+
+            Promise.all([savePurchased, getOriginal])
+                .then((value) => {
+                    var quiz = value[1];
+
+                    quiz.payload.reviews = quiz.payload.reviews ||  {};
+
+                    quiz.payload.reviews[purchased.uuid] = {
+                        review: purchased.meta.review,
+                        comment: purchased.meta.comment
+                    };
+
+                    QuizApi.putQuiz(quiz);
+                    resolve();
+                }).catch(reject);
+        });
     },
 
     deleteQuiz: function(quizId){
@@ -149,6 +194,7 @@ var QuizActions = {
 
             });
     }, 300),
+
 
     newQuiz: function(quiz){
 

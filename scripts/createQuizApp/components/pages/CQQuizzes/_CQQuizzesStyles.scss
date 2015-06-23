@@ -63,7 +63,7 @@
         }
     }
 
-    
+
     @at-root #{&}__button--delete {
         @include button($brand-color-red);
 
@@ -78,5 +78,8 @@
         @include button($brand-color-blue);
     }
 
+    @at-root #{&}__button--review {
+        @include button($brand-color-blue);
+    }
 
 }

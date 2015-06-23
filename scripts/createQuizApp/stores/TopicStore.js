@@ -38,7 +38,18 @@ var TopicStore = assign({}, EventEmitter.prototype, {
 
     getTopicById: function(topicId){
         var result = _publicTopics.filter(t => t.uuid === topicId);
+        if (result.length === 0){
+            result = _topics.filter(t => t.uuid === topicId);
+        }
         return result.length === 1 ? result[0] : undefined;
+    },
+
+    getTopicByName: function(topicName){
+        var result = _publicTopics.filter(t => t.name === topicName);
+        if (result.length === 0){
+            result = _topics.filter(t => {console.log("t.name", t.name, topicName, t.name === topicName); return t.name === topicName; });
+        }
+        return result.length > 0 ? result[0] : undefined;
     },
 
     getPublicTopics: function(){
@@ -75,9 +86,9 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
+
         case QuizConstants.QUIZZES_LOADED:
-        case TopicConstants.TOPICS_LOADED:
-            _topics = action.payload.topics;
+            _publicTopics = action.payload.topics;
             TopicStore.emitChange();
             break;
 
@@ -92,6 +103,9 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             TopicStore.emitChange();
             break;
 
+        case TopicConstants.TOPICS_LOADED:
+            _topics = action.payload;
+            break;
         default:
             // no op
     }
