@@ -13,10 +13,9 @@ var debounce            = require('createQuizApp/utils/debounce');
 
 var _questionsTopicIdToTopic = function(quiz){
 
-    var topics = TopicStore.getTopics();
 
     var findTopicName = function(topicId){
-        var topic = topics.filter( t => t.uuid === topicId)[0];
+        var topic = TopicStore.getTopicById(topicId);
         return topic ? topic.name : undefined;
     };
 
@@ -34,11 +33,10 @@ var _questionsTopicIdToTopic = function(quiz){
 var _questionsTopicToTopicId = function(quiz){
 
     var questions = quiz.payload.questions;
-    var topics = TopicStore.getTopics();
 
     var findTopicId = function(topicName){
-        var topic = topics.filter( t => t.title === topicName)[0];
-
+        var topic = TopicStore.getTopicByName(topicName);
+        console.info('findTopicId', topicName, topic);
         if (topic === undefined){
             // we create a new topic and save it
             topic = {
@@ -132,7 +130,7 @@ var QuizActions = {
                     // }
                     //
                     if (quiz.meta.categoryId) {
-                        var topicFound = topics.filter( t => t.uuid === quiz.meta.categoryId )[0];
+                        var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
                         console.log('looking for meta', quiz.meta.categoryId, topicFound);
                         return topicFound ? topicFound.name : '';
                     }
