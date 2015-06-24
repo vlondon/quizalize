@@ -1,7 +1,8 @@
 var zzish = require("zzishsdk");
 var config = require('./config');
+var logger = require('./logger');
 
-if (config.log) console.log("Loading Zzish with ", config.zzishInit);
+logger.info("Loading Zzish with ", config.zzishInit);
 
 // load aws config
 function getZzishParam() {

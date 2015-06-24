@@ -2,7 +2,6 @@ var React           = require('react');
 var router          = require('./router');
 // var settings        = require('utils/settings');
 
-var CQDashboard         = require('createQuizApp/components/pages/CQDashboard');
 var CQPublic            = require('createQuizApp/components/pages/CQPublic');
 var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/components/pages/CQLogin');

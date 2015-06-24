@@ -1,6 +1,7 @@
 //general zzish config
 var zzish               = require("zzishsdk");
 var userHelper          = require('./helpers/userHelper');
+var logger              = require('../logger');
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
@@ -73,7 +74,7 @@ exports.getApps = function(req, res){
     // if (appId){
     //     mongoQuery.uuid = appId;
     // }
-    console.log('searching ', mongoQuery);
+    logger.trace('searching ', mongoQuery);
 
     zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
         if (resp) {
