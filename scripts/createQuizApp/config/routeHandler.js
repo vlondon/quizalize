@@ -45,7 +45,7 @@ router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
 router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
 router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
-router.on(pages.sharedQuizPage.path, (profileId,quizCode) => renderPage(pages.sharedQuizPage, {profileId,quizCode}) );
+router.on(pages.sharedQuizPage.path, (profileId, quizCode) => renderPage(pages.sharedQuizPage, {profileId, quizCode}) );
 
 
 var newUrl = function(requestedUrl){

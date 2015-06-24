@@ -1,10 +1,9 @@
 var React           = require('react');
-var router          = require('./router');
 // var settings        = require('utils/settings');
 
 var CQDashboard         = require('createQuizApp/components/pages/CQDashboard');
 var CQPublic            = require('createQuizApp/components/pages/CQPublic');
-var CQProfile            = require('createQuizApp/components/pages/CQProfile');
+var CQProfile           = require('createQuizApp/components/pages/CQProfile');
 var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/components/pages/CQLogin');
 var CQRegister          = require('createQuizApp/components/pages/CQRegister');
@@ -66,8 +65,8 @@ var pages = {
     },
 
     profilePage: {
-        path: '/quiz/qprofile/:profileId',
-        pathRegEx: /\/quiz\/qprofile\/([\w\-]+)/,
+        path: '/quiz/user/:profileId',
+        pathRegEx: /\/quiz\/user\/([\w\-]+)/,
         needsLogin: undefined,
         renderer: function(props){
             React.render(
@@ -78,8 +77,8 @@ var pages = {
     },
 
     sharedQuizPage: {
-        path: '/quiz/:profileId/s/:quizCode',
-        pathRegEx: /\/quiz\/([\w\-]+)\/s\/([\w\-]+)/,
+        path: '/quiz/user/:profileId/:quizCode',
+        pathRegEx: /\/quiz\/\/user\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: undefined,
         renderer: function(props){
             React.render(
