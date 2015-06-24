@@ -34,6 +34,7 @@ router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
 router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
+router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
 router.on(pages.create.path, () => renderPage(pages.create) );
 router.on(pages.createApp.path, () => renderPage(pages.createApp) );
 router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) );
@@ -44,6 +45,7 @@ router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
 router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
 router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
+router.on(pages.sharedQuizPage.path, (profileId,quizCode) => renderPage(pages.sharedQuizPage, {profileId,quizCode}) );
 
 
 var newUrl = function(requestedUrl){

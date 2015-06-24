@@ -221,6 +221,7 @@ var CQQuizzes = React.createClass({
                     <CQViewQuizList
                         onQuizClick={this.handleClick}
                         showAuthor={false}
+                        showReviewButton={false}
                         quizzes={this.state.quizzes}
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
@@ -230,7 +231,6 @@ var CQQuizzes = React.createClass({
                         onEdit={this.handleEdit}
                         onDelete={this.handleDelete}
                         actions={this.handleAction}>
-
 
                             <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
                                 <span className="fa fa-pencil"></span> Edit

@@ -7,6 +7,8 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQCreateMore = require('./CQCreateMore');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 
+var TopicStore = require('createQuizApp/stores/TopicStore');
+var TopicActions = require('createQuizApp/actions/TopicActions');
 
 var CQCreate = React.createClass({
 
@@ -19,6 +21,7 @@ var CQCreate = React.createClass({
         };
     },
 
+
     getInitialState: function() {
         console.log('do we have props', this.props);
 
@@ -26,6 +29,7 @@ var CQCreate = React.createClass({
             isMoreVisible: false,
             title: 'Create a Quiz',
             isSaving: false,
+            category: undefined,
             quiz: this._getQuiz()
         };
 
@@ -48,7 +52,6 @@ var CQCreate = React.createClass({
                 meta: {
                     name: "",
                     subject: "",
-                    category: "",
                     description: undefined,
                     imageUrl: undefined,
                     imageAttribution: undefined,
@@ -73,8 +76,7 @@ var CQCreate = React.createClass({
 
         var quiz = this._getQuiz();
         newState.quiz = quiz;
-
-
+        newState.category = TopicStore.getTopicById(quiz.meta.categoryId);
 
         if (this.props.quizId !== undefined){
             newState.title = 'Edit a quiz';
@@ -86,9 +88,12 @@ var CQCreate = React.createClass({
     componentDidMount: function() {
         // TODO Remove jQuery!!
         QuizStore.addChangeListener(this.onChange);
+        TopicActions.loadPrivateTopics();
+        TopicStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
+        TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
     },
 
@@ -102,7 +107,7 @@ var CQCreate = React.createClass({
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        var meta = assign(quiz.meta,newSettings);
+        var meta = assign(quiz.meta, newSettings);
         quiz.meta = meta;
         this.setState({quiz});
     },

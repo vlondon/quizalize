@@ -43,13 +43,17 @@ var CQApp = React.createClass({
     },
 
     getState: function(){
-        var appInfo = AppStore.getAppInfo(this.props.appId);
+        if (this.props.appId) {
+            var appInfo = AppStore.getAppInfo(this.props.appId);
 
-        if (appInfo.meta && appInfo.meta.colour){
-            document.body.style.backgroundColor = appInfo.meta.colour;
+            if (appInfo.meta && appInfo.meta.colour){
+                document.body.style.backgroundColor = appInfo.meta.colour;
+            }
+            return {appInfo};
         }
-
-        return {appInfo};
+        else {
+            return {};
+        }
     },
 
     handleBuy: function(){

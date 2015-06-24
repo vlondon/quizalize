@@ -10,6 +10,7 @@ var CQViewQuizDetails = React.createClass({
 
     propTypes: {
         quizId: React.PropTypes.string.isRequired,
+        quizCode: React.PropTypes.string,
         onClose: React.PropTypes.func.isRequired
     },
 
@@ -69,6 +70,16 @@ var CQViewQuizDetails = React.createClass({
     render: function() {
 
         var quizInfo;
+        var tagLine = () => {
+            this.state.quiz.meta.price = 3;
+            if (this.state.quiz.meta.price && this.state.quiz.meta.price>0 && this.props.quizCode!=this.state.quiz.meta.code) {
+                return(<span>£{this.state.quiz.meta.price.toFixed(2)} - Buy Now!</span>);
+            }
+            else {
+                return(<span>Use it - it's free!</span>);
+            }
+        }
+
 
         if (this.state.quiz){
             quizInfo = (
@@ -88,7 +99,7 @@ var CQViewQuizDetails = React.createClass({
                         </p>
 
                         <button className="cq-quizdetails__button" onClick={this.handleBuy}>
-                            Use it - it's free!
+                            {tagLine()}
                         </button>
                     </div>
 

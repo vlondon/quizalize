@@ -104,10 +104,10 @@ var QuizStore = assign({}, EventEmitter.prototype, {
         return publicQuizzes.reverse();
     },
 
-    getPublicProfileQuizzes: function(profileId){
+    getPublicProfileQuizzes: function(profileCode){
         if (!storeInitPublic){
             storeInitPublic = true;
-            QuizActions.searchPublicQuizzes('','',profileId);
+            QuizActions.searchPublicQuizzes('','',profileCode);
         }
         var publicQuizzes = _publicQuizzes.slice();
         // find their category

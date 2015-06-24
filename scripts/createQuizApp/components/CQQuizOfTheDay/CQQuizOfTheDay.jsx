@@ -34,11 +34,20 @@ var CQQuizOfTheDay = React.createClass({
     render: function() {
 
         var background = {};
+        var youtubeVideo;
 
         if (this.props.quiz.meta && this.props.quiz.meta.imageUrl) {
-            background  = {
+            if(this.props.quiz.meta.imageUrl.indexOf('youtube') >= 0){
+                youtubeVideo = (
+                <div className='embed-container'>
+                    <iframe src={this.props.quiz.meta.imageUrl} frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen allowFullScreen="true"></iframe>
+                </div>                );
+            }
+            else{
+                background  = {
                 backgroundImage: `url(${this.props.quiz.meta.imageUrl})`
             };
+            }
         }
 
         var takeoverButton;
@@ -106,7 +115,8 @@ var CQQuizOfTheDay = React.createClass({
         return (
             <div className="qd-container">
                 <div className="qd-description" style={background}>
-
+                
+                    {youtubeVideo}
                     {takeoverButton}
                     {source}
                     <div className="qd-description-details">

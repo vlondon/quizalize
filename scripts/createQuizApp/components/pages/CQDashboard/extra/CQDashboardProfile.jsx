@@ -42,6 +42,7 @@ var CQDashboardProfile = React.createClass({
 
     render: function() {
         var profile;
+
         if (this.state.user){
             profile = (
                 <div>

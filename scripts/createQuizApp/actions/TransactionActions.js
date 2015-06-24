@@ -41,10 +41,16 @@ var TransactionActions = {
     },
 
 
-    buyQuiz: function(quiz) {
+    buyQuiz: function(quiz,free) {
+        var price = 0;
+        var priceTag = "free";
+        if ((quiz.meta.price && quiz.meta.price!=0) && !free) {
+            price = quiz.meta.price;
+            priceTag = "£" + quiz.meta.price.toFixed(2);
+        }
         swal({
                 title: 'Confirm Purchase',
-                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
+                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>${priceTag}</b>`,
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
@@ -59,7 +65,7 @@ var TransactionActions = {
                             type: 'quiz',
                             quizId: quiz.uuid,
                             profileId: quiz.meta.profileId,
-                            price: 0
+                            price: price
                         }
                     };
 

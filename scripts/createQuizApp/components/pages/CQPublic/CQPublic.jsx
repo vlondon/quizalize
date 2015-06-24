@@ -113,7 +113,7 @@ var CQPublic = React.createClass({
 
     render: function() {
 
-        var appGrid, quizList, quizDetails;
+        var appGrid, quizList, quizDetails,quizPrice;
         if (this.state.showApps) {
             appGrid = (<CQAppGrid/>);
         }
@@ -124,8 +124,7 @@ var CQPublic = React.createClass({
                 quizId={this.state.quizDetails}/>);
         }
 
-
-        if (this.state.showQuizzes) {
+         if (this.state.showQuizzes) {
 
             var numOfQuizzes = this.state.showApps ? 12 : 16;
 
@@ -138,13 +137,6 @@ var CQPublic = React.createClass({
                     quizzes={this.state.quizzes}
                     className="cq-public__list"
                     sortBy="time">
-
-                    <span className='cq-public__button' onClick={this.handlePreview}>
-                        Preview
-                    </span>
-                    <span className='cq-public__button' onClick={this.handleBuy}>
-                        Free
-                    </span>
 
                 </CQViewQuizList>
             );

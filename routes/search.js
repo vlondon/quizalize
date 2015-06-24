@@ -6,35 +6,7 @@ var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
 var APP_CONTENT_TYPE = 'app';
 
-
-exports.getQuizzes = function(req, res){
-
-    var searchString = req.body.search || '';
-    var categoryId = req.body.categoryId;
-    var profileId = req.body.profileId;
-
-    var now = Date.now();
-    var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
-    var mongoQuery = {
-        updated: {
-            $gt: lastWeek
-        },
-        live: true,
-        name: {
-            $regex: searchString, $options: 'i'
-        }
-
-    };
-
-
-    if (categoryId) {
-        mongoQuery.categoryId = categoryId;
-    }
-    if (profileId) {
-        mongoQuery.profileId = profileId;
-        //mongoQuery.published = true;
-    }
-
+var performQuery = function(mongoQuery,res) {
     zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, resp){
 
         if (resp) {
@@ -49,7 +21,42 @@ exports.getQuizzes = function(req, res){
             res.status(500).send(err);
         }
     });
+}
 
+
+exports.getQuizzes = function(req, res){
+
+    var searchString = req.body.search || '';
+    var categoryId = req.body.categoryId;
+    var profileCode = req.body.profileCode;
+
+    var now = Date.now();
+    var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
+    var mongoQuery = {
+        updated: {
+            $gt: lastYear
+        },
+        live: true,
+        name: {
+            $regex: searchString, $options: 'i'
+        }
+
+    };
+
+
+    if (categoryId) {
+        mongoQuery.categoryId = categoryId;
+    }
+    if (profileCode) {
+        zzish.getUserByCode(profileCode,function(err,resp) {
+            mongoQuery.profileId = resp.uuid;
+            performQuery(mongoQuery,res);
+        })
+    }
+    else {
+        performQuery(mongoQuery,res);
+        //mongoQuery.published = true;
+    }
 };
 
 
@@ -61,10 +68,10 @@ exports.getApps = function(req, res){
     var appId = req.body.appId;
 
     var now = Date.now();
-    var lastWeek = now - 7 * 24 * 60 * 60 * 1000;
+    var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
     var mongoQuery = {
         updated: {
-            $gt: lastWeek
+            $gt: lastYear
         },
         name: {
             $regex: searchString, $options: 'i'

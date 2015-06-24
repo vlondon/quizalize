@@ -11,7 +11,7 @@ var CQviewQuizFilter = React.createClass({
         onSearchInput: React.PropTypes.func,
         appEnabled: React.PropTypes.bool,
         allTopics: React.PropTypes.bool,
-        profileId: React.PropTypes.string,
+        profileCode: React.PropTypes.string,
         quizzes: React.PropTypes.array
     },
 
@@ -70,8 +70,8 @@ var CQviewQuizFilter = React.createClass({
     performSearch: function(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
-        console.log('searchign for', this.state.searchString, category,this.state.profileId);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category,this.state.profileId);
+        console.log('searchign for', this.state.searchString, category,this.state.profileCode);
+        QuizActions.searchPublicQuizzes(this.state.searchString, category,this.state.profileCode);
         AppActions.searchPublicApps(this.state.searchString, category);
 
     },
@@ -81,11 +81,29 @@ var CQviewQuizFilter = React.createClass({
     render: function() {
 
         var mappedTopics = [];
-        if (this.state.topics.length > 0) {
-            mappedTopics = this.state.topics.map(topic => {
-                return { value: topic.uuid, name: topic.name };
-            });
-
+        if (this.props.allTopics || !this.props.quizzes) {
+            if (this.state.topics.length > 0) {
+                mappedTopics = this.state.topics.map(topic => {
+                    return { value: topic.uuid, name: topic.name };
+                });
+            }
+        }
+        else {
+            if (this.state.topics.length > 0) {
+                var currentTopics = this.props.quizzes.map(quiz => {
+                    return { topicId: quiz.meta.categoryId };
+                });
+                var currentTopicsHash = {};
+                for (var i in currentTopics) {
+                    currentTopicsHash[currentTopics[i].topicId] = "";
+                }
+                mappedTopics = this.state.topics.map(topic => {
+                    return { value: topic.uuid, name: topic.name };
+                });
+                mappedTopics = mappedTopics.filter(topic => {
+                    return currentTopicsHash[topic.value];
+                });
+            }
         }
 
         // var quizzesAndTopics = [];
@@ -122,35 +140,39 @@ var CQviewQuizFilter = React.createClass({
                 value: 'apps2'
             }];
 
+
         var quizDropDown = () => {
             if (!this.props.appEnabled)
             {
                 return (
-                <div>Show classroom quizzes for any age to assess&nbsp;
-                    <CQDropdown
-                        selected={this.state.categorySelected}
-                        values={mappedTopics}
-                        onChange={this.handleChange}/>
-                </div>
+                <span>Show classroom quizzes for any age</span>
                 )
             }
-            else {
+            else if (mappedTopics.length>0) {
                 return (
                     <div>Show classroom&nbsp;
                         <CQDropdown
                             selected={this.state.kindSelected}
                             values={quizzesAndTopics}
-                            onChange={this.handleKind}/>&nbsp;for any age to assess&nbsp;
-                        <CQDropdown
-                            selected={this.state.categorySelected}
-                            values={mappedTopics}
-                            onChange={this.handleChange}/>
+                            onChange={this.handleKind}/>&nbsp;for any age
                     </div>
                 )
             }
         }
 
         mappedTopics.unshift({value: 'all', name: 'any topic'});
+        var topicsDropDown = () => {
+            if (mappedTopics.length>1)
+            {
+                return (
+                    <CQDropdown
+                        selected={this.state.categorySelected}
+                        values={mappedTopics}
+                        onChange={this.handleChange}/>
+                )
+            }
+        }
+
         return (
             <div className='cq-quizfilter'>
 
@@ -171,6 +193,7 @@ var CQviewQuizFilter = React.createClass({
                         </div>
                     </div>
                     {quizDropDown()}
+                    {topicsDropDown()}
 
                 </div>
 
