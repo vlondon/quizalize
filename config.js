@@ -1,6 +1,5 @@
-/* eslint camelcase:0 */
+/*eslint camelcase: 0 */
 var config = {};
-
 
 //Logging on
 config.log = true;

@@ -3,6 +3,8 @@ var uuid                = require('node-uuid');
 var zzish               = require("zzishsdk");
 var Promise             = require('es6-promise').Promise;
 var stripeHelper        = require('./helpers/stripeHelper');
+var logger              = require('../logger');
+
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
@@ -92,7 +94,7 @@ var processTransactions = function(transaction, profileId){
 
     var getQuiz = function(quizId){
         return new Promise(function(resolve, reject){
-            console.log('trying to load', quizId);
+            logger.trace('trying to load', quizId);
             // zzish.getContent(profileId, 'quiz', transaction.meta.quizId, function(err2, quiz){
 
             zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err, resp){
@@ -116,7 +118,7 @@ var processTransactions = function(transaction, profileId){
             // object consisteny, to be removed
             transaction.meta.appId = transaction.meta.appId || transaction.meta.quizId;
             delete transaction.meta.quizId;
-            console.log('about to save trasnaction', transaction);
+            logger.info('about to save trasnaction', transaction);
 
 
             // loading the app
@@ -180,10 +182,10 @@ exports.get = function(req, res){
 
     zzish.getContent(profileId, TRANSACTION_CONTENT_TYPE, id, function(err, resp){
         if(!err){
-            console.log("request for content, got: ", resp);
+            logger.trace("request for content, got: ", resp);
             res.send(resp);
         }else{
-            console.log("request for content, error: ", err);
+            logger.error("request for content, error: ", err);
             res.status = 400;
         }
     });
