@@ -91,13 +91,12 @@ var CQCreateMore = React.createClass({
                         <div ng-style="margin-top: 13px" className="col-xs-3">
                             <select
                                 value={this.state.numQuestions}
-                                onChange={this.handleChange.bind(this, 'numQuestions', 'text')}>
+                                onChange={this.handleChange.bind(this, 'price', 'text')}>
                                 {prices.map(function(price, index){
                                     return (
                                         <option value={price} key={index}>{price}</option>
                                     );
                                 })}
-                                                                <option value="20">20</option>
                             </select>
                         </div>
 
