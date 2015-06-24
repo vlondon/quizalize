@@ -74,7 +74,7 @@ var CQQuizIcon = React.createClass({
 
         var detectYoutubeThumbnail = function(img){
             console.log("imgmggmmg", img);
-            return img.indexOf("youtube") === -1 ? img : 'http://img.youtube.com/vi/' + img.split('/')[4] + "/0.jpg";
+            return img.indexOf("youtube") === -1 ? img : '//img.youtube.com/vi/' + img.split('/')[4] + "/0.jpg";
         };
         if (this.state.image){
             style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
