@@ -23,12 +23,12 @@
 
 @keyframes cqQuizDetailsBackdropOpen {
     from {opacity: 0;}
-    to: {opacity: 1;}
+    to {opacity: 1;}
 }
 
 @keyframes cqQuizDetailsBackdropClose {
     from {opacity: 1;}
-    to: {opacity: 0;}
+    to {opacity: 0;}
 }
 
 .cq-quizdetails.closed {

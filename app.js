@@ -172,7 +172,7 @@ if (process.env.ZZISH_DEVMODE === 'true'){
 app.use(express.static('public'));
 
 // Set server port
-app.listen(process.env.port || 3001);
+app.listen(process.env.PORT || 3001);
 console.log('Server is running, with configuration:', config);
 email.pingDevelopers();
 
