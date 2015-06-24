@@ -1,6 +1,9 @@
 var React = require('react');
 var assign = require('object-assign');
 
+var TransactionStore = require('createQuizApp/stores/TransactionStore');
+var prices = TransactionStore.getPrices();
+
 var removeUndefinedProps = function(obj) {
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop) && obj[prop] === undefined) {
@@ -80,6 +83,25 @@ var CQCreateMore = React.createClass({
                         <div className="col-xs-12">
                             <h3>Additional Quiz Details</h3>
                         </div>
+
+
+                        <label className="control-label col-sm-9">
+                            <h4>Price<a data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                        </label>
+                        <div ng-style="margin-top: 13px" className="col-xs-3">
+                            <select
+                                value={this.state.numQuestions}
+                                onChange={this.handleChange.bind(this, 'numQuestions', 'text')}>
+                                {prices.map(function(price, index){
+                                    return (
+                                        <option value={price} key={index}>{price}</option>
+                                    );
+                                })}
+                                                                <option value="20">20</option>
+                            </select>
+                        </div>
+
+
                         <label className="control-label col-sm-9">
                             <h4>Description<a data-toggle="popover" title="Description" data-content="Enter a description so that players can understand why your quiz is about." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>
