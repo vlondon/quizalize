@@ -10,7 +10,6 @@ var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetail
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
-
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
@@ -42,23 +41,19 @@ var CQProfile = React.createClass({
     },
 
     getState: function(){
-        var newState = {};
         var quizzes = QuizStore.getPublicProfileQuizzes(this.props.profileCode);
         var profileId;
-        if (quizzes) {
-            var quiz;
 
-            for (var i in quizzes) {
-                if (quizzes[i].meta.cod === this.props.quizCode) {
-                    quiz = quizzes[i];
-                }
-                profileId = quizzes[i].meta.profileId;
-            }
+        if (quizzes) {
+            var quiz = quizzes.filter( f => f.meta.code === this.props.quizCode )[0];
+            profileId = quiz ?  quiz.meta.profileId : undefined;
         }
+
         if (profileId) {
             var puser = UserStore.getPublicUser(profileId);
         }
-        newState = { puser, quizzes};
+        var newState = { puser, quizzes };
+
         if (quiz && this.props.quizCode) {
             newState.quizDetails = quiz.uuid;
         }

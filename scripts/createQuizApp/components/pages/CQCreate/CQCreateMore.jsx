@@ -10,11 +10,11 @@ var removeUndefinedProps = function(obj) {
     return obj;
 };
 
-var convertToBoolean =  function(defaultSettings,field) {
+var convertToBoolean =  function(defaultSettings, field) {
     if (defaultSettings[field]) {
-        defaultSettings[field]=defaultSettings[field]=="true" || defaultSettings[field];
+        defaultSettings[field] = defaultSettings[field] === "true" || defaultSettings[field];
     }
-}
+};
 
 var CQCreateMore = React.createClass({
 
@@ -42,12 +42,12 @@ var CQCreateMore = React.createClass({
         };
             // showanswers: false,
             // timer: true
-        console.log("My initial settings",this.props.settings);
+        console.log("My initial settings", this.props.settings);
         defaultSettings = assign({}, defaultSettings, this.props.settings);
-        convertToBoolean(defaultSettings,'live');
-        convertToBoolean(defaultSettings,'featured');
-        convertToBoolean(defaultSettings,'random');
-        console.log("My Aafter settings",defaultSettings);
+        convertToBoolean(defaultSettings, 'live');
+        convertToBoolean(defaultSettings, 'featured');
+        convertToBoolean(defaultSettings, 'random');
+        console.log("My Aafter settings", defaultSettings);
         return defaultSettings;
 
     },
