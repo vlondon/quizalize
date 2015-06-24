@@ -36,7 +36,7 @@ var pages = {
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQDashboard, null),
+                React.createElement(CQProfile, null),
                 document.getElementById('reactApp')
             );
         }
@@ -46,7 +46,7 @@ var pages = {
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQDashboard, null),
+                React.createElement(CQProfile, null),
                 document.getElementById('reactApp')
             );
         }
