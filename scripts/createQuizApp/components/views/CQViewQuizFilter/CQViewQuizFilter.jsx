@@ -9,6 +9,7 @@ var CQviewQuizFilter = React.createClass({
 
     propTypes: {
         onSearchInput: React.PropTypes.func,
+        onViewChange: React.PropTypes.func,
         appEnabled: React.PropTypes.bool,
         allTopics: React.PropTypes.bool,
         profileId: React.PropTypes.string,
@@ -70,8 +71,8 @@ var CQviewQuizFilter = React.createClass({
     performSearch: function(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
-        console.log('searchign for', this.state.searchString, category,this.state.profileId);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category,this.state.profileId);
+        console.log('searchign for', this.state.searchString, category, this.state.profileId);
+        QuizActions.searchPublicQuizzes(this.state.searchString, category, this.state.profileId);
         AppActions.searchPublicApps(this.state.searchString, category);
 
     },
@@ -145,33 +146,33 @@ var CQviewQuizFilter = React.createClass({
             if (!this.props.appEnabled)
             {
                 return (
-                <span>Show classroom quizzes for any age</span>
-                )
+                    <span>Show classroom quizzes for any age</span>
+                );
             }
-            else if (mappedTopics.length>0) {
+            else if (mappedTopics.length > 0) {
                 return (
-                    <div>Show classroom&nbsp;
+                    <span>Show classroom&nbsp;
                         <CQDropdown
                             selected={this.state.kindSelected}
                             values={quizzesAndTopics}
                             onChange={this.handleKind}/>&nbsp;for any age
-                    </div>
-                )
+                    </span>
+                );
             }
-        }
+        };
 
         mappedTopics.unshift({value: 'all', name: 'any topic'});
         var topicsDropDown = () => {
-            if (mappedTopics.length>1)
+            if (mappedTopics.length > 1)
             {
                 return (
                     <CQDropdown
                         selected={this.state.categorySelected}
                         values={mappedTopics}
                         onChange={this.handleChange}/>
-                )
+                );
             }
-        }
+        };
 
         return (
             <div className='cq-quizfilter'>
