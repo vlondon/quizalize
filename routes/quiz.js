@@ -259,7 +259,7 @@ exports.getMyQuizzes = function(req, res){
 exports.getTopics = function(req, res){
     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         if (!handleError(err, res)) {
-            res.send(resp);
+            res.send(resp.categories);
         }
     });
 };

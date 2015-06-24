@@ -53,7 +53,9 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     },
 
     getPublicTopics: function(){
-        return sortPublicTopics(_publicTopics.slice());
+        console.log('_publicTopics', _publicTopics);
+        var publicTopics = _publicTopics ? sortPublicTopics(_publicTopics.slice()) : [];
+        return publicTopics;
     },
 
 
