@@ -21,7 +21,6 @@ var CQHelp              = require('createQuizApp/components/pages/CQHelp');
 var CQSettings          = require('createQuizApp/components/pages/CQSettings');
 var CQApp               = require('createQuizApp/components/pages/CQApp');
 
-
 var pages = {
     pathParams: {
         quizId: /([\w\-]+)/,
@@ -41,6 +40,7 @@ var pages = {
             );
         }
     },
+
     mainPageWithSlash: {
         path: '/quiz/',
         needsLogin: undefined,
@@ -52,13 +52,12 @@ var pages = {
         }
     },
 
-    authorPage: {
-        path: '/quiz/author/:authorId',
-        pathRegEx: /\/quiz\/author\/([\w\-]+)/,
-        needsLogin: undefined,
+    ownProfilePage: {
+        path: '/quiz/user',
+        needsLogin: true,
         renderer: function(props){
             React.render(
-                React.createElement(CQDashboard, props),
+                React.createElement(CQProfile, props),
                 document.getElementById('reactApp')
             );
         }

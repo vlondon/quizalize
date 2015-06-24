@@ -45,12 +45,12 @@ var CQHeaderDropdown = React.createClass({
 
     render: function() {
         var dropdown;
-                        // <li><CQLink href='/quiz/settings'>Profile</CQLink></li>
 
         if (this.state.open) {
             dropdown = (
                 <div className="person-menu">
                     <ul>
+                        <li><CQLink href='/quiz/user'>Profile</CQLink></li>
                         <li><CQLink href='/quiz/settings'>Settings</CQLink></li>
                         <li><CQLink href="/quiz/help">Help</CQLink></li>
                         <li><a onClick={this.handleLogout}>Logout</a></li>
