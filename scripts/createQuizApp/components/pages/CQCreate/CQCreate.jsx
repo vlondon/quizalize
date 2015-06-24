@@ -6,6 +6,9 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQCreateMore = require('./CQCreateMore');
 var QuizStore = require('createQuizApp/stores/QuizStore');
+var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
+
+var TopicStore = require('createQuizApp/stores/TopicStore');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
 var TopicActions = require('createQuizApp/actions/TopicActions');
@@ -23,7 +26,6 @@ var CQCreate = React.createClass({
 
 
     getInitialState: function() {
-        console.log('do we have props', this.props);
 
         var initialState = {
             isMoreVisible: false,
@@ -32,7 +34,6 @@ var CQCreate = React.createClass({
             category: undefined,
             quiz: this._getQuiz()
         };
-
 
         return initialState;
 
@@ -45,9 +46,7 @@ var CQCreate = React.createClass({
 
 
         if (quiz === undefined){
-            if (this.props.quizId) {
-                QuizActions.loadQuiz(this.props.quizId);
-            }
+
             quiz = {
                 meta: {
                     name: "",
@@ -76,7 +75,30 @@ var CQCreate = React.createClass({
 
         var quiz = this._getQuiz();
         newState.quiz = quiz;
+
+        newState.topics = TopicStore.getPublicTopics();
+
+        newState.topicsAutofill = [];
+
+        var fillAutoFill = function(array, prefix){
+            array.forEach( el => {
+                // console.log('fi<!--  -->lling', el);
+
+                var name = prefix ? `${prefix} > ${el.name}` : el.name;
+                newState.topicsAutofill.push({
+                    name: name,
+                    id: el.uuid
+                });
+                if (el.categories && el.categories.length > 0){
+                    fillAutoFill(el.categories, name);
+                }
+            });
+        };
+
+        fillAutoFill(newState.topics);
+
         newState.category = TopicStore.getTopicById(quiz.meta.categoryId);
+
 
         if (this.props.quizId !== undefined){
             newState.title = 'Edit a quiz';
@@ -86,15 +108,16 @@ var CQCreate = React.createClass({
     },
 
     componentDidMount: function() {
-        // TODO Remove jQuery!!
         QuizStore.addChangeListener(this.onChange);
         TopicActions.loadPrivateTopics();
+
         TopicStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
+        TopicStore.removeChangeListener(this.onChange);
     },
 
     handleChange: function(property, event) {
@@ -126,6 +149,11 @@ var CQCreate = React.createClass({
         });
     },
 
+    handleTopic: function(){
+        console.log('handling topic');
+        return ['aa', 'ab', 'ac', 'ad'];
+    },
+
     render: function() {
 
 
@@ -153,32 +181,12 @@ var CQCreate = React.createClass({
                                                     tabIndex="1"
                                                     className="form-control"/><br/>
                                             </div>
+
                                             <label className="control-label col-sm-3">
-                                                Subject:    <a data-toggle="popover" title="Quiz Subject" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="5" className="left-space glyphicon glyphicon-question-sign"></a>
-                                        </label>
-                                        <div className="col-sm-9">
-                                            <input id="subject"
-                                                 type="text"
-                                                 value={this.state.quiz.meta.subject}
-                                                 onChange={this.handleChange.bind(this, 'subject')}
-                                                 on-enter="ctrl.focusTopic();"
-                                                 placeholder="e.g. Geography (Optional)"
-                                                 tabIndex="2"
-                                                 className="form-control"/>
-                                            <br/>
-                                        </div>
-                                        <label className="control-label col-sm-3">
                                             Unit/Topic:    <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="6" className="left-space glyphicon glyphicon-question-sign"></a>
                                     </label>
                                     <div className="col-sm-9">
-                                        <input id="category"
-                                            type="text"
-                                            value={this.state.quiz.meta.category}
-                                            onChange={this.handleChange.bind(this, 'category')}
-                                            on-enter="ctrl.focusQuiz();"
-                                            placeholder="e.g. Earthquakes (Optional)"
-                                            tabIndex="3"
-                                            className="form-control"/>
+                                        <CQAutofill value={this.state.quiz.meta.categoryId}/>
                                         <br/>
                                     </div>
                                     <div className="col-sm-4 col-sm-offset-4">

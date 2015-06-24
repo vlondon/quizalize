@@ -109,18 +109,13 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
-        var quizzesPromise = QuizApi.getQuizzes();
+
         var quizPromise = QuizApi.getQuiz(quizId);
-        var topicsPromise = QuizApi.getTopics();
 
-
-        Promise.all([quizzesPromise, quizPromise, topicsPromise])
-            .then((value) => {
-
+        quizPromise
+            .then((quiz) => {
                 // // let's stitch quizzes to their topic
-                var loadedQuizzes = value[0];
-                var quiz = value[1];
-                var topics = value[2];
+                
                 //
                 var getCategoryFormUuid = function(){
 
@@ -143,7 +138,7 @@ var QuizActions = {
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
             });

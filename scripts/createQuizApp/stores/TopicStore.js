@@ -44,6 +44,10 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         return result.length === 1 ? result[0] : undefined;
     },
 
+    getAllTopics: function(){
+        return _topics.slice().concat(_publicTopics.slice());
+    },
+
     getTopicByName: function(topicName){
         var result = _publicTopics.filter(t => t.name === topicName);
         if (result.length === 0){
