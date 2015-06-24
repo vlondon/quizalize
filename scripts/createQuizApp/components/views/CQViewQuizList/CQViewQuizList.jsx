@@ -5,11 +5,11 @@ var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLoca
 var CQViewQuizAuthor = require('createQuizApp/components/views/CQViewQuizAuthor');
 var CQPagination = require('createQuizApp/components/utils/CQPagination');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-var router = require('createQuizApp/config/router');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 var moment = require('moment');
+var priceFormat = require('createQuizApp/utils/priceFormat');
 
 var CQViewQuizList = React.createClass({
 
@@ -84,13 +84,13 @@ var CQViewQuizList = React.createClass({
                 page = page || this.state.page;
 
                 var quizzesIndexStart = (page - 1) * props.quizzesPerPage;
-                console.log('page', quizzesIndexStart, page, 'props.quizzesPerPage', quizzesIndexEnd);
+
 
 
                 var quizzesIndexEnd = quizzesIndexStart + props.quizzesPerPage;
                 var quizzesToDisplay = quizzes.slice(quizzesIndexStart, quizzesIndexEnd);
                 var pages = Math.ceil(quizzes.length / props.quizzesPerPage);
-                console.log('quizzess', quizzes, pages, quizzesIndexStart, quizzesIndexEnd, quizzesToDisplay);
+                
                 return {
                     quizzes: quizzesToDisplay,
                     pages,
@@ -280,9 +280,9 @@ var CQViewQuizList = React.createClass({
 
 
         var quizPrice = (quiz) => {
-            if (quiz.meta.price && quiz.meta.price && quiz.meta.code!==this.props.quizCode) return (<span>£{quiz.meta.price.toFixed(2)}</span>);
+            if (quiz.meta.price && quiz.meta.price && quiz.meta.code !== this.props.quizCode) return (<span>{priceFormat(quiz.meta.price)}</span>);
             else return (<span>Free</span>);
-        }
+        };
 
         return (
             <div className={`cq-viewquizlist ${this.props.className}`}>
@@ -317,6 +317,7 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__extras">
                                     {reviewButton(quiz)}
+                                    {childActionHandler(this.props.children, quiz)}
                                     <span className='cq-public__button' onClick={this.handlePreview}>
                                         Preview
                                     </span>

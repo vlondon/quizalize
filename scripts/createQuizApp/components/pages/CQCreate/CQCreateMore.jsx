@@ -64,7 +64,7 @@ var CQCreateMore = React.createClass({
         var newState = assign({}, this.state);
 
         if (type === 'text'){
-            newState[property] = event.target.value;
+            newState[property] = (property === 'price') ? Number(event.target.value) :  event.target.value;
         } else {
             newState[property] = event.target.checked;
         }

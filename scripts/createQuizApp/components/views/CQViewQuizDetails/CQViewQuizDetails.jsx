@@ -6,6 +6,7 @@ var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
 var timeouts = [];
+var priceFormat = require('createQuizApp/utils/priceFormat');
 var CQViewQuizDetails = React.createClass({
 
     propTypes: {
@@ -71,14 +72,14 @@ var CQViewQuizDetails = React.createClass({
 
         var quizInfo;
         var tagLine = () => {
-            this.state.quiz.meta.price = 3;
-            if (this.state.quiz.meta.price && this.state.quiz.meta.price>0 && this.props.quizCode!=this.state.quiz.meta.code) {
-                return(<span>£{this.state.quiz.meta.price.toFixed(2)} - Buy Now!</span>);
+            // this.state.quiz.meta.price = 3;
+            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0 && this.props.quizCode !== this.state.quiz.meta.code) {
+                return (<span>{priceFormat(this.state.quiz.meta.price)} - Buy Now!</span>);
             }
             else {
-                return(<span>Use it - it's free!</span>);
+                return (<span>Use it - it's free!</span>);
             }
-        }
+        };
 
 
         if (this.state.quiz){
@@ -107,10 +108,10 @@ var CQViewQuizDetails = React.createClass({
                         <div className="cq-quizdetails__questions">
                             <ul>
 
-                                {this.state.quiz.payload.questions.map( (question,index) => {
+                                {this.state.quiz.payload.questions.map( (question, index) => {
                                     return (
                                         <li className="cq-quizdetails__question" key={question.uuid}>
-                                            {index+1}. <CQLatexString>{question.question}</CQLatexString>
+                                            {index + 1}. <CQLatexString>{question.question}</CQLatexString>
                                         </li>
                                     );
                                 })}

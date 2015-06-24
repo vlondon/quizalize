@@ -2,6 +2,7 @@
 var uuid                = require('node-uuid');
 var zzish               = require("zzishsdk");
 var Promise             = require('es6-promise').Promise;
+var stripeHelper        = require('./helpers/stripeHelper');
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
@@ -56,6 +57,29 @@ var saveQuiz = function(quiz, profileId) {
     });
 };
 
+var chargeForTransaction = function(transaction){
+    return new Promise(function(resolve, reject){
+        if (transaction._token) {
+            transaction.payload = transaction.payload || {};
+            transaction.payload.token = transaction._token;
+            var stripeToken = transaction._token.id;
+            stripeHelper.processPayment(transaction, stripeToken)
+                .then(function(charge){
+                    console.log('stripe response', charge);
+                    transaction.payload.charge = charge;
+                    if (charge.paid){
+                        resolve();
+                    } else {
+                        reject('Stripe error');
+                    }
+
+                }).catch(reject);
+        } else {
+            reject();
+        }
+    });
+};
+
 var processTransactions = function(transaction, profileId){
 
     var getApp = function(appId){
@@ -66,7 +90,7 @@ var processTransactions = function(transaction, profileId){
         });
     };
 
-    var getQuiz = function(quizId, profileId){
+    var getQuiz = function(quizId){
         return new Promise(function(resolve, reject){
             console.log('trying to load', quizId);
             // zzish.getContent(profileId, 'quiz', transaction.meta.quizId, function(err2, quiz){
@@ -83,11 +107,12 @@ var processTransactions = function(transaction, profileId){
     };
 
     return new Promise(function(resolve, reject){
+        // process payment
+
+
         // is a quiz or an app?
 
         if (transaction.meta.type === 'app') {
-
-
             // object consisteny, to be removed
             transaction.meta.appId = transaction.meta.appId || transaction.meta.quizId;
             delete transaction.meta.quizId;
@@ -129,6 +154,7 @@ var processTransactions = function(transaction, profileId){
 
                 });
         }
+
     });
 };
 
@@ -138,6 +164,9 @@ exports.list = function(req, res){
     var profileId = req.params.profileId;
 
     zzish.listContent(profileId, TRANSACTION_CONTENT_TYPE, function(err, resp){
+        if (err) {
+            res.status(500).send(err);
+        }
         res.send(resp);
     });
 
@@ -170,29 +199,48 @@ exports.delete = function(req, res){
 };
 
 exports.post = function(req, res){
+
     var profileId = req.params.profileId;
     var data = req.body;
     data.uuid = data.uuid || uuid.v4();
-
 
     // setting transaction to pending
     data.meta.status = 'pending';
     data.payload = data.payload || {};
 
+    var saveProcessedTransaction = function(){
+        res.status = 200;
+        res.send();
+        data.meta.status = 'processed';
+        saveTransaction(data, profileId);
+    };
+
+    var errorHandler = function(error){
+        res.status(500).send(error);
+    };
 
     saveTransaction(data, profileId)
         .then(function(){
-            processTransactions(data, profileId)
-                .then(function(){
-                    res.status = 200;
-                    res.send();
-                    data.meta.status = 'processed';
-                    saveTransaction(data, profileId);
-                })
-                .catch(function(){
-                    res.status = 400;
-                    res.send();
-                });
+            if (data.meta.price && data.meta.price > 0){
+                console.log('charginng for transaction');
+                chargeForTransaction(data)
+                    .then(function(){
+                        console.log('processing transaction');
+                        processTransactions(data, profileId)
+                            .then(saveProcessedTransaction)
+                            .catch(function(){
+                                res.status = 400;
+                                res.send();
+                            });
+                    }).catch(errorHandler);
+            } else {
+                processTransactions(data, profileId)
+                    .then(saveProcessedTransaction)
+                    .catch(function(){
+                        res.status = 400;
+                        res.send();
+                    });
+            }
         })
         .catch(function(){
             res.status = 400;
