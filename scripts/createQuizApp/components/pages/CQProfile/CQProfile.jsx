@@ -17,7 +17,7 @@ var UserStore = require('createQuizApp/stores/UserStore');
 var CQProfile = React.createClass({
 
     propTypes: {
-        profileCode: React.PropTypes.string,
+        profileId: React.PropTypes.string,
         quizCode: React.PropTypes.string
     },
 
@@ -41,16 +41,14 @@ var CQProfile = React.createClass({
     },
 
     getState: function(){
-        var quizzes = QuizStore.getPublicProfileQuizzes(this.props.profileCode);
-        var profileId;
+        var quizzes = QuizStore.getPublicProfileQuizzes(this.props.profileId);
 
         if (quizzes) {
             var quiz = quizzes.filter( f => f.meta.code === this.props.quizCode )[0];
-            profileId = quiz ?  quiz.meta.profileId : undefined;
         }
 
-        if (profileId) {
-            var puser = UserStore.getPublicUser(profileId);
+        if (this.props.profileId) {
+            var puser = UserStore.getPublicUser(this.props.profileId);
         }
         var newState = { puser, quizzes };
 
@@ -77,7 +75,6 @@ var CQProfile = React.createClass({
     },
 
     handleBuy: function(quiz){
-        var profileCode = this.props.profileCode;
         var quizCode = this.props.quizCode;
         if (!this.state.user) {
             swal({
@@ -88,9 +85,9 @@ var CQProfile = React.createClass({
                 showCancelButton: true
             }, function(isConfirm){
                 if (isConfirm){
-                    var url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/qprofile/' + profileCode)}`;
+                    var url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + profileId)}`;
                     if (quizCode) {
-                        url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/' + profileCode + '/s/' + quizCode)}`;
+                        url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + profileId + '/' + quizCode)}`;
                     }
                     router.setRoute(url);
                 }
@@ -139,7 +136,7 @@ var CQProfile = React.createClass({
             <CQPageTemplate className="container cq-public">
                 <CQDashboardProfile user={this.state.puser}/>
                 {quizDetails}
-                <CQViewQuizFilter appEnabled={false} onViewChange={this.handleViewChange} allTopics={false} quizzes={this.state.quizzes} profileCode={this.state.profileCode}/>
+                <CQViewQuizFilter appEnabled={false} onViewChange={this.handleViewChange} allTopics={false} quizzes={this.state.quizzes} profileId={this.state.profileId}/>
 
                 {quizList}
 

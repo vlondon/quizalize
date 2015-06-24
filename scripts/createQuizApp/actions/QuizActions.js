@@ -187,9 +187,9 @@ var QuizActions = {
     },
 
 
-    searchPublicQuizzes: debounce((searchString = '', categoryId,profileCode) => {
+    searchPublicQuizzes: debounce((searchString = '', categoryId,profileId) => {
 
-        QuizApi.searchQuizzes(searchString, categoryId,profileCode)
+        QuizApi.searchQuizzes(searchString, categoryId,profileId)
             .then(function(quizzes){
 
                 AppDispatcher.dispatch({

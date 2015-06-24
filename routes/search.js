@@ -28,7 +28,7 @@ exports.getQuizzes = function(req, res){
 
     var searchString = req.body.search || '';
     var categoryId = req.body.categoryId;
-    var profileCode = req.body.profileCode;
+    var profileId = req.body.profileId;
 
     var now = Date.now();
     var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
@@ -47,16 +47,11 @@ exports.getQuizzes = function(req, res){
     if (categoryId) {
         mongoQuery.categoryId = categoryId;
     }
-    if (profileCode) {
-        zzish.getUserByCode(profileCode,function(err,resp) {
-            mongoQuery.profileId = resp.uuid;
-            performQuery(mongoQuery,res);
-        })
+    if (profileId) {
+        mongoQuery.profileId = profileId;
     }
-    else {
-        performQuery(mongoQuery,res);
-        //mongoQuery.published = true;
-    }
+    performQuery(mongoQuery,res);
+    //mongoQuery.published = true;
 };
 
 

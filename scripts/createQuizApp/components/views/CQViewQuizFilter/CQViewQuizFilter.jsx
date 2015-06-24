@@ -11,7 +11,7 @@ var CQviewQuizFilter = React.createClass({
         onSearchInput: React.PropTypes.func,
         appEnabled: React.PropTypes.bool,
         allTopics: React.PropTypes.bool,
-        profileCode: React.PropTypes.string,
+        profileId: React.PropTypes.string,
         quizzes: React.PropTypes.array
     },
 
@@ -70,8 +70,8 @@ var CQviewQuizFilter = React.createClass({
     performSearch: function(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
-        console.log('searchign for', this.state.searchString, category,this.state.profileCode);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category,this.state.profileCode);
+        console.log('searchign for', this.state.searchString, category,this.state.profileId);
+        QuizActions.searchPublicQuizzes(this.state.searchString, category,this.state.profileId);
         AppActions.searchPublicApps(this.state.searchString, category);
 
     },
