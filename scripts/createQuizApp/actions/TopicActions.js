@@ -30,7 +30,6 @@ var TopicActions = {
 
 
     loadPrivateTopics: function(){
-        console.info("loadPrivateTopicsloadPrivateTopicsloadPrivateTopics");
         QuizApi.getUserTopics()
             .then(function(topics){
                 AppDispatcher.dispatch({

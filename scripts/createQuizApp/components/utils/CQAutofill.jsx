@@ -40,10 +40,9 @@ var CQAutofill = React.createClass({
 
         newState.topicsAutofill = [];
 
-
         var fillAutoFill = function(array, prefix){
             array.forEach( el => {
-                // console.log('fi<!--  -->lling', el);
+
 
                 var name = prefix ? `${prefix} > ${el.name}` : el.name;
                 newState.topicsAutofill.push({
@@ -58,7 +57,6 @@ var CQAutofill = React.createClass({
 
         fillAutoFill(newState.topics);
 
-        console.log('newState.topicsAutofill', newState.topicsAutofill);
         this.setState(newState);
 
     },
@@ -67,10 +65,8 @@ var CQAutofill = React.createClass({
 
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
-        console.log('props', topic);
-        //
+
         this.setState({
-        //     value: nextProps.value,
             searchString
         });
     },
@@ -103,8 +99,6 @@ var CQAutofill = React.createClass({
     },
 
     handleClick: function(option){
-        console.log('option', option);
-
 
         this.setState({
             selected: option,
@@ -154,14 +148,14 @@ var CQAutofill = React.createClass({
     },
 
     handleFocus: function(ev){
-
+        console.log('handleFocus');
+        this.handleChange(ev);
         this.setState({
             selected: undefined
         });
 
         var domNode = React.findDOMNode(ev.target);
         domNode.select();
-        console.log('adf', domNode);
     },
 
     render: function() {
