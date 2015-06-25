@@ -201,7 +201,6 @@ AppDispatcher.register(function(action) {
             // if (i.length === 0){
             //     _quizzes.push(quizAdded);
             // }
-            
             QuizStore.emitChange();
             break;
 

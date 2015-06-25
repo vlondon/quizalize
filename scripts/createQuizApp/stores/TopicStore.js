@@ -26,7 +26,13 @@ var _allTopics;
 var _temporaryTopic;
 
 
-var createTopicTree = function(){
+var createTopicTree = function(data){
+    subjectHash = {};
+    data.psubjects.forEach((subject) => {
+        subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
+    })
+    _topicTree = data.pcategories;
+    _dtopics = data.categories;
     _topicTree.forEach((parentTopic) => {
         var childrenTopics = _topicTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
         childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
@@ -47,9 +53,9 @@ var createTopicTree = function(){
     _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
 };
 
-var createUserTopicTree = function(){
+var createUserTopicTree = function(data){
     _topicUserTree = [];
-    _topicUserTree = _topics.filter(t => t.parentCategoryId === '-1');
+    _topicUserTree = data.filter(t => t.parentCategoryId === '-1');
     _topicUserTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
 };
 
@@ -82,9 +88,6 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         }
         else {
             var result = getAllTopics().filter(t => t.uuid === topicId);
-            if (result.length === 0){
-                result = _topics.filter(t => t.uuid === topicId);
-            }
             return result.length === 1 ? result[0] : undefined;
         }
     },
@@ -153,7 +156,8 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.actionType) {
 
         case QuizConstants.QUIZZES_LOADED:
-            _publicTopics = action.payload.topics;
+            createTopicTree(action.payload.topics);
+            createUserTopicTree(action.payload.utopics);
             TopicStore.emitChange();
             break;
 
@@ -164,19 +168,12 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
             storeInit = true;
-            subjectHash = {};
-            action.payload.psubjects.forEach((subject) => {
-                subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
-            })
-            _topicTree = action.payload.pcategories;
-            _dtopics = action.payload.categories;
-            createTopicTree();
+            createTopicTree(action.payload);
             TopicStore.emitChange();
             break;
 
         case TopicConstants.TOPICS_LOADED:
-            _topics = action.payload;
-            createUserTopicTree();
+            createUserTopicTree(action.payload);
             break;
         case TopicConstants.TEMPORARY_TOPIC_ADDED:
             _temporaryTopic = action.payload;
