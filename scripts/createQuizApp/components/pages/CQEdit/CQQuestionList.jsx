@@ -10,13 +10,24 @@ var CQQuestionList = React.createClass({
         handleSave: React.PropTypes.func.isRequired,
         questionIndex: React.PropTypes.number,
         handleQuestion: React.PropTypes.func,
-        handleRemoveQuestion: React.PropTypes.func
+        handleRemoveQuestion: React.PropTypes.func,
+        setSaveMode: React.PropTypes.func
     },
 
     getDefaultProps: function() {
         return {
             questions: []
         };
+    },
+
+    getInitialState: function() {
+        return {
+            canAddQuestion: true
+        };
+    },
+    setSaveMode: function(canBeSaved){
+        this.props.setSaveMode(canBeSaved);
+        this.setState({canAddQuestion: canBeSaved});
     },
 
     handleSave: function(){
@@ -42,6 +53,7 @@ var CQQuestionList = React.createClass({
 
         var questionEditor = (
             <CQEditNormal
+                setSaveMode={this.setSaveMode}
                 quiz={this.props.quiz}
                 questionIndex={this.props.questionIndex}
                 onChange={this.handleQuestion}
@@ -111,7 +123,7 @@ var CQQuestionList = React.createClass({
                 {newQuestionEditor}
                 <div className='new-question-cta'>
 
-                    <button type='button' className="btn btn-default" onClick={this.handleSave}>
+                    <button type='button' className="btn btn-default" disabled={!this.state.canAddQuestion} onClick={this.handleSave}>
                         <span className="glyphicon glyphicon-plus"></span> Add a new question
                     </button>
 

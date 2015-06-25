@@ -11,7 +11,8 @@ var CQEditNormal = React.createClass({
     propTypes: {
         onSave: React.PropTypes.func.isRequired,
         quiz: React.PropTypes.object,
-        onChange: React.PropTypes.func
+        onChange: React.PropTypes.func,
+        setSaveMode: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -20,6 +21,8 @@ var CQEditNormal = React.createClass({
                 uuid: uuid.v4(),
                 question: '',
                 answer: '',
+                latexEnabled: false,
+                imageEnabled: false,
                 alternatives: []
             }
         };
@@ -33,6 +36,7 @@ var CQEditNormal = React.createClass({
         this.focusNext(0);
         $('textarea').autogrow();
         $('[data-toggle="popover"]').popover();
+        this.props.onChange(this.state.question);
 
     },
 
@@ -162,7 +166,9 @@ var CQEditNormal = React.createClass({
 
     canBeSaved: function(newQuestionState){
         newQuestionState = newQuestionState || this.state.question;
-        return newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
+        var canBeSaved = newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
+        this.props.setSaveMode(canBeSaved);
+        return canBeSaved;
     },
 
     handleTopic: function(event){
@@ -179,7 +185,11 @@ var CQEditNormal = React.createClass({
         var question = assign({}, this.state.question);
         question[property] = !this.state.question[property];
         var canBeSaved = this.canBeSaved(question);
+        console.log('property', property, question[property]);
+        console.info('can be saved?', canBeSaved);
+
         this.setState({question, canBeSaved});
+        this.props.onChange(question);
     },
 
 

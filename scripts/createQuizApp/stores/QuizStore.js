@@ -25,12 +25,14 @@ var QuestionObject = function(quiz){
         alternatives: ['', '', ''],
         question: '',
         answer: '',
+        latexEnabled: false,
+        imageEnabled: false,
         uuid: uuid.v4()
     };
     if (quiz && quiz.payload.questions.length > 0) {
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
-        question.latexEnabled = lastQuestion.latexEnabled;
-        question.imageEnabled = lastQuestion.imageEnabled;
+        question.latexEnabled = lastQuestion.latexEnabled || false;
+        question.imageEnabled = lastQuestion.imageEnabled || false;
     }
 
     return question;
@@ -107,7 +109,7 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     getPublicProfileQuizzes: function(profileId){
         if (!storeInitPublic){
             storeInitPublic = true;
-            QuizActions.searchPublicQuizzes('','',profileId);
+            QuizActions.searchPublicQuizzes('', '', profileId);
         }
         var publicQuizzes = _publicQuizzes.slice();
         // find their category
@@ -201,7 +203,7 @@ AppDispatcher.register(function(action) {
             // if (i.length === 0){
             //     _quizzes.push(quizAdded);
             // }
-            
+
             QuizStore.emitChange();
             break;
 

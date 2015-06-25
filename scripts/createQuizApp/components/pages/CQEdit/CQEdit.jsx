@@ -24,7 +24,8 @@ var CQEdit = React.createClass({
 
         return {
             mode: 'Create',
-            pristine: true
+            pristine: true,
+            saveEnabled: true
         };
     },
 
@@ -75,7 +76,7 @@ var CQEdit = React.createClass({
 
             // Check if the questionIndex is in range
             if (newState.questionIndex > newState.quiz.payload.questions.length){
-        
+
                 setTimeout(function(){
                     router.setRoute(`/quiz/create/${newState.quiz.uuid}`);
                 }, 550);
@@ -104,16 +105,10 @@ var CQEdit = React.createClass({
 
     handleSaveNewQuestion: function(newQuestion){
 
-        // var quiz = this.state.quiz;
-        // quiz.payload.questions[this.state.questionIndex] = newQuestion;
-        // var questionIndex = quiz.payload.questions.length;
-
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${this.state.quiz.payload.questions.length}`);
         });
-        // ?this.setState({quiz, questionIndex}, ()=>{
 
-        // });
     },
 
 
@@ -155,6 +150,10 @@ var CQEdit = React.createClass({
         });
     },*/
 
+    enableDisableSave: function(saveEnabled){
+        this.setState({saveEnabled});
+    },
+
     render: function() {
 
         if (this.state.quiz){
@@ -181,6 +180,7 @@ var CQEdit = React.createClass({
                         questionIndex={this.state.questionIndex}
                         handleQuestion={this.handleQuestion}
                         handleRemoveQuestion={this.handleRemoveQuestion}
+                        setSaveMode={this.enableDisableSave}
                         handleSave={this.handleSaveNewQuestion}/>
 
                     <div className="cq-edit__footer">
@@ -195,7 +195,7 @@ var CQEdit = React.createClass({
                             </a>
 
                             <button
-                                disabled={!previewEnabled || this.state.pristine}
+                                disabled={!previewEnabled || this.state.pristine || !this.state.saveEnabled}
                                 className="btn btn-primary"
                                 onClick={this.handleSaveButton}>
                                 Save
