@@ -4,7 +4,7 @@ var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 var Promise             = require('es6-promise').Promise;
 var TopicStore          = require('createQuizApp/stores/TopicStore');
 var TopicActions        = require('createQuizApp/actions/TopicActions');
-var TopicConstants      = require('createQuizApp/constants/TopicConstants');
+
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
@@ -86,16 +86,17 @@ var QuizActions = {
 
 
                 var processedQuizzes = loadedQuizzes.map(function(quiz){
-                    var topic = loadedTopics.pcategories.filter(function(t){
+                    var topic;
+                    topic = loadedTopics.pcategories.filter(function(t){
                         return t.uuid === quiz.meta.categoryId;
                     })[0];
                     if (!topic) {
-                        var topic = loadedTopics.categories.filter(function(t){
+                        topic = loadedTopics.categories.filter(function(t){
                             return t.uuid === quiz.meta.categoryId;
                         })[0];
                     }
                     if (!topic) {
-                        var topic = loadedUserTopics.filter(function(t){
+                        topic = loadedUserTopics.filter(function(t){
                             return t.uuid === quiz.meta.categoryId;
                         })[0];
                     }
@@ -213,10 +214,10 @@ var QuizActions = {
 
         var addOrCreateCategory = function(){
             var topicUuid;
-            var topics = TopicStore.getTopics();
+
             var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
 
-            if (topicFound && topicFound.uuid!="-1") {
+            if (topicFound && topicFound.uuid !== "-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();

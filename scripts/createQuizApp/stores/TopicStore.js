@@ -30,7 +30,7 @@ var createTopicTree = function(data){
     subjectHash = {};
     data.psubjects.forEach((subject) => {
         subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
-    })
+    });
     _topicTree = data.pcategories;
     _dtopics = data.categories;
     _topicTree.forEach((parentTopic) => {
@@ -40,16 +40,16 @@ var createTopicTree = function(data){
         if (parentTopic.subjectId) {
             parentTopic.name = subjectHash[parentTopic.subjectId].name + " > " + parentTopic.name;
         }
-    })
+    });
 
     _dtopics.forEach((parentTopic) => {
         var childrenTopics = _dtopics.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
         childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
         parentTopic.categories = childrenTopics;
-    })
+    });
 
     var customDevTopics = _dtopics.filter(t => t.parentCategoryId === '-1');
-    _topicTree.push.apply(_topicTree,customDevTopics);
+    _topicTree.push.apply(_topicTree, customDevTopics);
     _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
 };
 
@@ -66,7 +66,7 @@ var getAllTopics = function() {
         }
     }
     return _allTopics;
-}
+};
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
@@ -83,7 +83,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     },
 
     getTopicById: function(topicId){
-        if (topicId=="-1") {
+        if (topicId === "-1") {
             return _temporaryTopic;
         }
         else {
@@ -177,6 +177,7 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             break;
         case TopicConstants.TEMPORARY_TOPIC_ADDED:
             _temporaryTopic = action.payload;
+            break;
         default:
             // no op
     }
