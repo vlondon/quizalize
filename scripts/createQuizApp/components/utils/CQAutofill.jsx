@@ -1,13 +1,15 @@
 var React = require('react');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
+var TopicActions = require('createQuizApp/actions/TopicActions');
 
 var CQAutofill = React.createClass({
 
     propTypes: {
         tabIndex: React.PropTypes.number,
         limit: React.PropTypes.number,
-        data: React.PropTypes.any
+        data: React.PropTypes.any,
+        onChange: React.PropTypes.func.isRequired
     },
 
     getDefaultProps: function() {
@@ -36,6 +38,7 @@ var CQAutofill = React.createClass({
 
     onChange: function(){
         var newState = {};
+        console.log('onChange');
         newState.topics = TopicStore.getAllTopics();
 
         newState.topicsAutofill = [];
@@ -56,16 +59,15 @@ var CQAutofill = React.createClass({
         };
 
         fillAutoFill(newState.topics);
-
         this.setState(newState);
 
     },
 
     componentWillReceiveProps: function(nextProps) {
-
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
 
+        console.log('nextProps!!', nextProps, topic, searchString);
         this.setState({
             searchString
         });
@@ -99,11 +101,12 @@ var CQAutofill = React.createClass({
     },
 
     handleClick: function(option){
-
+        console.log('option clicked', option);
         this.setState({
             selected: option,
             searchString: option.name
         });
+        this.props.onChange(option.id);
     },
 
     searchList: function(){
@@ -129,9 +132,13 @@ var CQAutofill = React.createClass({
         if (this.state.occurrences){
             if (this.state.occurrences.length==0) {
                 var option = {
-                    id: -1,
+                    id: "-1",
                     name: this.state.searchString
                 }
+                TopicActions.createTemporaryTopic({
+                    uuid: "-1",
+                    name: this.state.searchString
+                })
                 list = [(
                     <li key={option.id} className="cq-autofill__option" onClick={this.handleClick.bind(this, option)}>
                         {this.state.searchString}
@@ -163,7 +170,6 @@ var CQAutofill = React.createClass({
     },
 
     handleFocus: function(ev){
-        console.log('handleFocus');
         this.handleChange(ev);
         this.setState({
             selected: undefined

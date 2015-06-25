@@ -17,8 +17,6 @@ var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 
-
-
 var CQPublic = React.createClass({
 
     getInitialState: function() {

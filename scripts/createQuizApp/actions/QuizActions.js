@@ -115,7 +115,7 @@ var QuizActions = {
         quizPromise
             .then((quiz) => {
                 // // let's stitch quizzes to their topic
-                
+
                 //
                 var getCategoryFormUuid = function(){
 
@@ -201,15 +201,14 @@ var QuizActions = {
         var addOrCreateCategory = function(){
             var topicUuid;
             var topics = TopicStore.getTopics();
-            var topicFound = topics.filter( t => t.name === quiz.meta.category )[0];
+            var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
 
-            if (topicFound) {
+            if (topicFound && topicFound.uuid!="-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.meta.subject,
-                    name: quiz.meta.category,
+                    name: topicFound.name,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false

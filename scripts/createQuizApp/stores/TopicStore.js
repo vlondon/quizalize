@@ -23,6 +23,8 @@ var _topicTree;
 var _topicUserTree;
 var _allTopics;
 
+var _temporaryTopic;
+
 
 var createTopicTree = function(){
     _topicTree.forEach((parentTopic) => {
@@ -75,19 +77,49 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     },
 
     getTopicById: function(topicId){
-        var result = getAllTopics().filter(t => t.uuid === topicId);
-        if (result.length === 0){
-            result = _topics.filter(t => t.uuid === topicId);
+        if (topicId=="-1") {
+            return _temporaryTopic;
         }
-        return result.length === 1 ? result[0] : undefined;
+        else {
+            var result = getAllTopics().filter(t => t.uuid === topicId);
+            if (result.length === 0){
+                result = _topics.filter(t => t.uuid === topicId);
+            }
+            return result.length === 1 ? result[0] : undefined;
+        }
     },
 
     getTopicByName: function(topicName){
         var result = getAllTopics().filter(t => t.name === topicName);
         if (result.length === 0){
-            result = _topics.filter(t => {console.log("t.name", t.name, topicName, t.name === topicName); return t.name === topicName; });
+            result = _topics.filter(t => t.name === topicName );
         }
         return result.length > 0 ? result[0] : undefined;
+    },
+
+    getFullTopicName: function(topicId){
+        var topicList = function(array, prefix){
+            var result = [];
+            array.forEach( el => {
+
+                var name = prefix ? `${prefix} > ${el.name}` : el.name;
+
+                result.push({
+                    name: name,
+                    id: el.uuid
+                });
+
+                if (el.categories && el.categories.length > 0){
+                    topicList(el.categories, name);
+                }
+
+            });
+            return result;
+        };
+
+        var list = topicList(this.getAllTopics());
+        var topic = list.filter(t => t.id === topicId);
+        return topic ? topic[0] : undefined;
     },
 
     emitChange: function() {
@@ -146,6 +178,8 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             _topics = action.payload;
             createUserTopicTree();
             break;
+        case TopicConstants.TEMPORARY_TOPIC_ADDED:
+            _temporaryTopic = action.payload;
         default:
             // no op
     }
