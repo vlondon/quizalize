@@ -115,7 +115,7 @@ var QuizActions = {
         quizPromise
             .then((quiz) => {
                 // // let's stitch quizzes to their topic
-                
+
                 //
                 var getCategoryFormUuid = function(){
 
@@ -182,9 +182,9 @@ var QuizActions = {
     },
 
 
-    searchPublicQuizzes: debounce((searchString = '', categoryId,profileId) => {
+    searchPublicQuizzes: debounce((searchString = '', categoryId, profileId) => {
 
-        QuizApi.searchQuizzes(searchString, categoryId,profileId)
+        QuizApi.searchQuizzes(searchString, categoryId, profileId)
             .then(function(quizzes){
 
                 AppDispatcher.dispatch({
