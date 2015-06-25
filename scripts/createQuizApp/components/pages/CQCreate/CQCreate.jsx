@@ -76,7 +76,7 @@ var CQCreate = React.createClass({
         var quiz = this._getQuiz();
         newState.quiz = quiz;
 
-        newState.topics = TopicStore.getPublicTopics();
+        newState.topics = TopicStore.getAllTopics();
 
         newState.topicsAutofill = [];
 
@@ -99,6 +99,7 @@ var CQCreate = React.createClass({
 
         newState.category = TopicStore.getTopicById(quiz.meta.categoryId);
 
+        console.log("Category",newState.category,quiz.meta.categoryId);
 
         if (this.props.quizId !== undefined){
             newState.title = 'Edit a quiz';
@@ -186,7 +187,7 @@ var CQCreate = React.createClass({
                                             Unit/Topic:    <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="6" className="left-space glyphicon glyphicon-question-sign"></a>
                                     </label>
                                     <div className="col-sm-9">
-                                        <CQAutofill value={this.state.quiz.meta.categoryId}/>
+                                        <CQAutofill value={this.state.quiz.meta.categoryId} tabIndex="2"/>
                                         <br/>
                                     </div>
                                     <div className="col-sm-4 col-sm-offset-4">
