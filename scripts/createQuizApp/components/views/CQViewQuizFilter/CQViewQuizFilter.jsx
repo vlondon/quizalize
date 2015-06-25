@@ -71,8 +71,8 @@ var CQviewQuizFilter = React.createClass({
     performSearch: function(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
-        console.log('searchign for', this.state.searchString, category, this.state.profileId);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category, this.state.profileId);
+        console.log('searchign for', this.state.searchString, category, this.props.profileId);
+        QuizActions.searchPublicQuizzes(this.state.searchString, category, this.props.profileId);
         AppActions.searchPublicApps(this.state.searchString, category);
 
     },
@@ -82,7 +82,7 @@ var CQviewQuizFilter = React.createClass({
     render: function() {
 
         var mappedTopics = [];
-        if (this.props.allTopics || !this.props.quizzes) {
+        if (this.props.allTopics) {
             if (this.state.topics.length > 0) {
                 mappedTopics = this.state.topics.map(topic => {
                     return { value: topic.uuid, name: topic.name };
@@ -90,13 +90,14 @@ var CQviewQuizFilter = React.createClass({
             }
         }
         else {
+
             if (this.state.topics.length > 0) {
                 var currentTopics = this.props.quizzes.map(quiz => {
                     return { topicId: quiz.meta.categoryId };
                 });
                 var currentTopicsHash = {};
                 for (var i in currentTopics) {
-                    currentTopicsHash[currentTopics[i].topicId] = "";
+                    currentTopicsHash[currentTopics[i].topicId] = "A";
                 }
                 mappedTopics = this.state.topics.map(topic => {
                     return { value: topic.uuid, name: topic.name };
@@ -149,7 +150,7 @@ var CQviewQuizFilter = React.createClass({
                     <span>Show classroom quizzes for any age</span>
                 );
             }
-            else if (mappedTopics.length > 0) {
+            else {
                 return (
                     <span>Show classroom&nbsp;
                         <CQDropdown

@@ -74,7 +74,7 @@ var CQCreate = React.createClass({
         var quiz = this._getQuiz();
         newState.quiz = quiz;
 
-        newState.topics = TopicStore.getPublicTopics();
+        newState.topics = TopicStore.getAllTopics();
 
         newState.topicsAutofill = [];
 

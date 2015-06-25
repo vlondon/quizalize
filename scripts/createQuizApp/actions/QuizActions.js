@@ -73,20 +73,32 @@ var QuizActions = {
 
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
+        var ptopics = QuizApi.getUserTopics();
 
 
-        Promise.all([quizzes, topics])
+        Promise.all([quizzes, topics, ptopics])
             .then(value => {
 
                 // let's stitch quizzes to their topic
                 var loadedQuizzes = value[0];
                 var loadedTopics = value[1];
+                var loadedUserTopics = value[2];
 
 
                 var processedQuizzes = loadedQuizzes.map(function(quiz){
-                    var topic = loadedTopics.filter(function(t){
-                        return t.uuid === quiz.categoryId;
+                    var topic = loadedTopics.pcategories.filter(function(t){
+                        return t.uuid === quiz.meta.categoryId;
                     })[0];
+                    if (!topic) {
+                        var topic = loadedTopics.categories.filter(function(t){
+                            return t.uuid === quiz.meta.categoryId;
+                        })[0];
+                    }
+                    if (!topic) {
+                        var topic = loadedUserTopics.filter(function(t){
+                            return t.uuid === quiz.meta.categoryId;
+                        })[0];
+                    }
 
                     quiz.category = topic || {};
 
@@ -100,7 +112,8 @@ var QuizActions = {
                     actionType: QuizConstants.QUIZZES_LOADED,
                     payload: {
                         quizzes: processedQuizzes,
-                        topics: loadedTopics
+                        topics: loadedTopics,
+                        utopics: loadedUserTopics
                     }
                 });
             });
@@ -201,15 +214,14 @@ var QuizActions = {
         var addOrCreateCategory = function(){
             var topicUuid;
             var topics = TopicStore.getTopics();
-            var topicFound = topics.filter( t => t.name === quiz.meta.category )[0];
+            var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
 
-            if (topicFound) {
+            if (topicFound && topicFound.uuid!="-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.meta.subject,
-                    name: quiz.meta.category,
+                    name: topicFound.name,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false

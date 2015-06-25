@@ -1,6 +1,7 @@
 var React = require('react');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
+var TopicActions = require('createQuizApp/actions/TopicActions');
 
 var CQAutofill = React.createClass({
 
@@ -23,7 +24,7 @@ var CQAutofill = React.createClass({
         return {
             searchString: selectedTopic || '',
             selected: undefined,
-            topics: TopicStore.getPublicTopics()
+            topics: TopicStore.getAllTopics()
         };
     },
 
@@ -66,7 +67,7 @@ var CQAutofill = React.createClass({
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
 
-        console.log('nextProps!!', nextProps, topic);
+        console.log('nextProps!!', nextProps, topic, searchString);
         this.setState({
             searchString
         });
@@ -129,16 +130,35 @@ var CQAutofill = React.createClass({
 
         var list;
         if (this.state.occurrences){
-
-            list = this.state.occurrences.map( o => {
-                return (
-                    <li key={o.id} className="cq-autofill__option" onClick={this.handleClick.bind(this, o)}>
-                        {formatString(o.name, o.id)}
+            if (this.state.occurrences.length==0) {
+                var option = {
+                    id: "-1",
+                    name: this.state.searchString
+                }
+                TopicActions.createTemporaryTopic({
+                    uuid: "-1",
+                    name: this.state.searchString
+                })
+                list = [(
+                    <li key={option.id} className="cq-autofill__option" onClick={this.handleClick.bind(this, option)}>
+                        {this.state.searchString}
                     </li>
-                );
-            });
-        } else {
-            list = [];
+                )
+                ];
+                }
+            else {
+                list = this.state.occurrences.map( o => {
+                    return (
+                        <li key={o.id} className="cq-autofill__option" onClick={this.handleClick.bind(this, o)}>
+                            {formatString(o.name, o.id)}
+                        </li>
+                    );
+                });
+
+            }
+        }
+        else {
+            return [];
         }
 
 

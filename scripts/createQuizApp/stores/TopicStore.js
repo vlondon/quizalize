@@ -10,46 +10,90 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var storeInit = false;
 
-var _topics = [];
-// subjects come (for now) from the public quizzes
-var _publicTopics = [];
+//these are the user defined topics (topics + subtopics)
+var _topics;
+//these are the developer defined topics (topics + subtopics)
+var _dtopics;
+
+//public subjects
+var subjectHash;
+
+//these are publicTopics + custom topics (not subtopics)
+var _topicTree;
+var _topicUserTree;
+var _allTopics;
+
+var _temporaryTopic;
 
 
-var sortPublicTopics = function(topics){
-
-    topics.forEach((parentTopic) => {
-        var childrenTopics = topics.filter(childs => childs.parentCategoryId === parentTopic.uuid );
+var createTopicTree = function(data){
+    subjectHash = {};
+    data.psubjects.forEach((subject) => {
+        subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
+    })
+    _topicTree = data.pcategories;
+    _dtopics = data.categories;
+    _topicTree.forEach((parentTopic) => {
+        var childrenTopics = _topicTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
         childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
         parentTopic.categories = childrenTopics;
-    });
+        if (parentTopic.subjectId) {
+            parentTopic.name = subjectHash[parentTopic.subjectId].name + " > " + parentTopic.name;
+        }
+    })
 
-    topics = topics.filter(t => t.parentCategoryId === '-1');
-    topics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+    _dtopics.forEach((parentTopic) => {
+        var childrenTopics = _dtopics.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
+        childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        parentTopic.categories = childrenTopics;
+    })
 
-    return topics;
+    var customDevTopics = _dtopics.filter(t => t.parentCategoryId === '-1');
+    _topicTree.push.apply(_topicTree,customDevTopics);
+    _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
 };
 
+var createUserTopicTree = function(data){
+    _topicUserTree = [];
+    _topicUserTree = data.filter(t => t.parentCategoryId === '-1');
+    _topicUserTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+};
+
+var getAllTopics = function() {
+    if (!_allTopics) {
+        if (_topicUserTree) {
+            _allTopics = _topicUserTree.slice().concat(_topicTree.slice());
+        }
+    }
+    return _allTopics;
+}
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
+    getAllTopics: function(){
+        return getAllTopics();
+    },
+
     getTopics: function() {
-        return _topics.slice();
+        return _topicUserTree.slice();
+    },
+
+    getPublicTopics: function(){
+        return _topicTree.slice();
     },
 
     getTopicById: function(topicId){
-        var result = _publicTopics.filter(t => t.uuid === topicId);
-        if (result.length === 0){
-            result = _topics.filter(t => t.uuid === topicId);
+        if (topicId=="-1") {
+            return _temporaryTopic;
         }
-        return result.length === 1 ? result[0] : undefined;
-    },
-
-    getAllTopics: function(){
-        return _topics.slice().concat(_publicTopics.slice());
+        else {
+            var result = getAllTopics().filter(t => t.uuid === topicId);
+            return result.length === 1 ? result[0] : undefined;
+        }
     },
 
     getTopicByName: function(topicName){
-        var result = _publicTopics.filter(t => t.name === topicName);
+        var result = getAllTopics().filter(t => t.name === topicName);
         if (result.length === 0){
             result = _topics.filter(t => t.name === topicName );
         }
@@ -80,12 +124,6 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         var topic = list.filter(t => t.id === topicId);
         return topic ? topic[0] : undefined;
     },
-
-    getPublicTopics: function(){
-        var publicTopics = _publicTopics ? sortPublicTopics(_publicTopics.slice()) : [];
-        return publicTopics;
-    },
-
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -118,7 +156,8 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.actionType) {
 
         case QuizConstants.QUIZZES_LOADED:
-            _publicTopics = action.payload.topics;
+            createTopicTree(action.payload.topics);
+            createUserTopicTree(action.payload.utopics);
             TopicStore.emitChange();
             break;
 
@@ -129,13 +168,15 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
             storeInit = true;
-            _publicTopics = action.payload;
+            createTopicTree(action.payload);
             TopicStore.emitChange();
             break;
 
         case TopicConstants.TOPICS_LOADED:
-            _topics = action.payload;
+            createUserTopicTree(action.payload);
             break;
+        case TopicConstants.TEMPORARY_TOPIC_ADDED:
+            _temporaryTopic = action.payload;
         default:
             // no op
     }
