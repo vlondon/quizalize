@@ -129,7 +129,6 @@ var CQViewQuizList = React.createClass({
     },
 
     handleReview: function(quiz){
-        console.log('review???', quiz);
         if (quiz){
             router.setRoute(`/quiz/review/${quiz.uuid}`);
         }
@@ -231,7 +230,6 @@ var CQViewQuizList = React.createClass({
                         },
                         quiz: quiz
                     });
-                    console.log('clonedChildren', c.props, clonedChildren.props);
                     return clonedChildren;
                 });
             }
@@ -249,7 +247,6 @@ var CQViewQuizList = React.createClass({
 
         if (this.props.showReviewButton) {
             reviewButton = (quiz) => {
-                console.log('this', this);
                  if (quiz.meta && quiz.meta.originalQuizId) {
                     return (
                         <button className="cq-quizzes__button--review" onClick={this.handleReview.bind(this, quiz)}><span className="fa fa-check-square-o"></span> Review</button>

@@ -51,13 +51,37 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     getTopicByName: function(topicName){
         var result = _publicTopics.filter(t => t.name === topicName);
         if (result.length === 0){
-            result = _topics.filter(t => {console.log("t.name", t.name, topicName, t.name === topicName); return t.name === topicName; });
+            result = _topics.filter(t => t.name === topicName );
         }
         return result.length > 0 ? result[0] : undefined;
     },
 
+    getFullTopicName: function(topicId){
+        var topicList = function(array, prefix){
+            var result = [];
+            array.forEach( el => {
+
+                var name = prefix ? `${prefix} > ${el.name}` : el.name;
+
+                result.push({
+                    name: name,
+                    id: el.uuid
+                });
+
+                if (el.categories && el.categories.length > 0){
+                    topicList(el.categories, name);
+                }
+
+            });
+            return result;
+        };
+
+        var list = topicList(this.getAllTopics());
+        var topic = list.filter(t => t.id === topicId);
+        return topic ? topic[0] : undefined;
+    },
+
     getPublicTopics: function(){
-        console.log('_publicTopics', _publicTopics);
         var publicTopics = _publicTopics ? sortPublicTopics(_publicTopics.slice()) : [];
         return publicTopics;
     },

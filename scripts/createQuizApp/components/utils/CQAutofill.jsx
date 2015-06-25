@@ -7,7 +7,8 @@ var CQAutofill = React.createClass({
     propTypes: {
         tabIndex: React.PropTypes.number,
         limit: React.PropTypes.number,
-        data: React.PropTypes.any
+        data: React.PropTypes.any,
+        onChange: React.PropTypes.func.isRequired
     },
 
     getDefaultProps: function() {
@@ -36,6 +37,7 @@ var CQAutofill = React.createClass({
 
     onChange: function(){
         var newState = {};
+        console.log('onChange');
         newState.topics = TopicStore.getAllTopics();
 
         newState.topicsAutofill = [];
@@ -56,16 +58,15 @@ var CQAutofill = React.createClass({
         };
 
         fillAutoFill(newState.topics);
-
         this.setState(newState);
 
     },
 
     componentWillReceiveProps: function(nextProps) {
-
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
 
+        console.log('nextProps!!', nextProps, topic);
         this.setState({
             searchString
         });
@@ -99,11 +100,12 @@ var CQAutofill = React.createClass({
     },
 
     handleClick: function(option){
-
+        console.log('option clicked', option);
         this.setState({
             selected: option,
             searchString: option.name
         });
+        this.props.onChange(option.id);
     },
 
     searchList: function(){
@@ -148,7 +150,6 @@ var CQAutofill = React.createClass({
     },
 
     handleFocus: function(ev){
-        console.log('handleFocus');
         this.handleChange(ev);
         this.setState({
             selected: undefined
