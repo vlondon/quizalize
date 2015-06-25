@@ -3,9 +3,8 @@ var assign = require('object-assign');
 var router = require('createQuizApp/config/router');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-
 var CQQuestionList = require('./CQQuestionList');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+
 
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
@@ -24,13 +23,15 @@ var CQEdit = React.createClass({
     getInitialState: function() {
 
         return {
-            mode: 'Create'
+            mode: 'Create',
+            pristine: true
         };
     },
 
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
+        console.log('quiz??????', quiz);
         return quiz;
     },
 
@@ -58,9 +59,6 @@ var CQEdit = React.createClass({
         props = props || this.props;
         // TODO: we need to load the quiz without having to worry about
         // if the quiz store have finished loading
-        if (QuizStore.getQuizzes().length !== 0 && QuizStore.getQuiz(props.quizId) === undefined) {
-            QuizActions.loadQuiz(this.props.quizId);
-        }
 
         var newState = {
             quiz: this._getQuiz(props)
@@ -77,7 +75,7 @@ var CQEdit = React.createClass({
 
             // Check if the questionIndex is in range
             if (newState.questionIndex > newState.quiz.payload.questions.length){
-                console.warn('Index out of range', newState.quiz.questions);
+        
                 setTimeout(function(){
                     router.setRoute(`/quiz/create/${newState.quiz.uuid}`);
                 }, 550);
@@ -87,7 +85,7 @@ var CQEdit = React.createClass({
     },
 
     handleQuestion: function(question){
-        console.log('saving quiestion?????', question);
+
         var updatedQuiz = assign({}, this.state.quiz);
 
         var index = this.state.questionIndex;
@@ -98,26 +96,30 @@ var CQEdit = React.createClass({
 
 
         updatedQuiz.payload.questions[index] = question;
-        this.setState({quiz: updatedQuiz});
-    },
-
-    handleSave: function(newQuestion){
-        console.log('about to save', newQuestion);
-        var quiz = this.state.quiz;
-        quiz.payload.questions[this.state.questionIndex] = newQuestion;
-        var questionIndex = quiz.payload.questions.length;
-
-        this.setState({quiz, questionIndex}, ()=>{
-            QuizActions.newQuiz(this.state.quiz).then( ()=> {
-                router.setRoute(`/quiz/create/${quiz.uuid}/${quiz.payload.questions.length}`);
-            });
-
+        this.setState({
+            quiz: updatedQuiz,
+            pristine: false
         });
     },
 
+    handleSaveNewQuestion: function(newQuestion){
+
+        // var quiz = this.state.quiz;
+        // quiz.payload.questions[this.state.questionIndex] = newQuestion;
+        // var questionIndex = quiz.payload.questions.length;
+
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${this.state.quiz.payload.questions.length}`);
+        });
+        // ?this.setState({quiz, questionIndex}, ()=>{
+
+        // });
+    },
 
 
-    handleRemoveQuestion: function(question){
+
+    handleRemoveQuestion: function(question, event){
+        event.stopPropagation();
         swal({
                 title: 'Confirm Delete',
                 text: 'Are you sure you want to permanently delete this question?',
@@ -141,6 +143,12 @@ var CQEdit = React.createClass({
             router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
         });
     },
+
+    handleSaveButton: function(){
+        QuizActions.newQuiz(this.state.quiz).then(()=>{
+            this.setState({pristine: true});
+        });
+    },
   /*  handlePreview: function(){
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, '_blank');
@@ -150,75 +158,67 @@ var CQEdit = React.createClass({
     render: function() {
 
         if (this.state.quiz){
-            console.log('this.state', this.state.quiz);
+
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
 
             return (
                 <CQPageTemplate className="container cq-edit">
-                    <div className="container">
-                        <div className="row ">
-                            <div className="col-xs-12">
-                                <div >
+
+                    <div className="cq-edit__header">
+                        <h3>Now editing quiz&nbsp;
+                            <span style={{color: 'red'}}>{this.state.quiz.meta.name}</span>
+                        </h3>
+                        <p className="small">
+                            Speed Tip: We found clicking is a pain - just hit enter to step through quickly
+                        </p>
+                    </div>
 
 
+                    <h4>Your questions</h4>
 
-                                    <h3>Now editing quiz &nbsp;
-                                        <span style={{color: 'red'}}>{this.state.quiz.meta.name}</span>
-                                        <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
-                                            <button ng-click="create.editQuiz();" style={{margin: '8px'}} className="btn btn-sm btn-info">
-                                                <span className="glyphicon glyphicon-cog"> </span>
-                                            </button>
-                                        </CQLink>
-                                    </h3>
-                                    <p className="small">
-                                        Speed Tip: We found clicking is a pain - just hit enter to step through quickly
-                                    </p>
+                    <CQQuestionList
+                        quiz={this.state.quiz}
+                        questionIndex={this.state.questionIndex}
+                        handleQuestion={this.handleQuestion}
+                        handleRemoveQuestion={this.handleRemoveQuestion}
+                        handleSave={this.handleSaveNewQuestion}/>
 
+                    <div className="cq-edit__footer">
+                        <div className="cq-edit__footer-inner">
 
+                            <a
+                                disabled={!previewEnabled}
+                                href={`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`}
+                                target="zzishgame"
+                                className="btn btn-info">
+                                Preview
+                            </a>
 
-                                </div>
+                            <button
+                                disabled={!previewEnabled || this.state.pristine}
+                                className="btn btn-primary"
+                                onClick={this.handleSaveButton}>
+                                Save
+                            </button>
 
-                                    <div className="row">
-                                        <div className="col-xs-12">
-                                            <div className="row">
-                                                <div className="col-sm-7">
-                                                    <h2 ng-show="create.quiz.payload.questions.length&gt;1">Your questions</h2><br/>
-                                                </div>
-                                                <div ol-style="margin-top:21px" className="col-sm-2">
-                                                    <a disabled={!previewEnabled} href={`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`} target="zzishgame" className="btn btn-block btn-info">
-                                                        Preview
-                                                    </a>
-
-                                                    </div>
-                                                <div ol-style="margin-top:21px" className="col-sm-3">
-                                                    <button disabled={!previewEnabled} className="btn btn-block btn-primary" onClick={this.handleFinished}>
-
-                                                        I'm Finished, let's play!
-
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <CQQuestionList
-                                        quiz={this.state.quiz}
-                                        questionIndex={this.state.questionIndex}
-                                        handleQuestion={this.handleQuestion}
-                                        handleRemoveQuestion={this.handleRemoveQuestion}
-                                        handleSave={this.handleSave}/>
-                                </div>
-                            </div>
+                            <button
+                                disabled={!previewEnabled}
+                                className="btn btn-primary"
+                                onClick={this.handleFinished}>
+                                I'm Finished, let's play!
+                            </button>
 
                         </div>
-                    </CQPageTemplate>
+                    </div>
+
+                </CQPageTemplate>
                 );
-            } else {
-                // add a loading animation
-                return (<div>Loading</div>);
-            }
+        } else {
+            // add a loading animation
+            return (<div>Loading</div>);
         }
+    }
 
-    });
+});
 
-    module.exports = CQEdit;
+module.exports = CQEdit;

@@ -420,15 +420,7 @@ var CQEditNormal = React.createClass({
                     </div>
                 </div>
 
-                <div className="block clearfix">
-                    <div className="save">
 
-                        <button type="button" className="btn btn-primary btn-block" disabled={!this.state.canBeSaved} onClick={this.handleSave}>
-                            Save and add a new Question
-                        </button>
-
-                    </div>
-                </div>
 
             </div>
 );

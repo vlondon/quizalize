@@ -1,6 +1,5 @@
 var React = require('react');
-
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var router = require('createQuizApp/config/router');
 var CQEditNormal = require('./CQEditNormal');
 
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
@@ -20,25 +19,26 @@ var CQQuestionList = React.createClass({
         };
     },
 
-    handleSave: function(data){
-        this.props.handleSave(data);
+    handleSave: function(){
+        this.props.handleSave();
     },
 
     handleQuestion: function(question){
-        if (this.props.questionIndex !== this.props.quiz.payload.questions.length){
-            this.props.handleQuestion(question);
-        }
+        this.props.handleQuestion(question);
     },
 
-    handleRemove: function(question){
-        this.props.handleRemoveQuestion(question);
+    handleRemove: function(question, event){
+        this.props.handleRemoveQuestion(question, event);
+    },
+
+    handleEdit: function(index){
+        router.setRoute(`/quiz/create/${this.props.quiz.uuid}/${index}`);
     },
 
     render: function() {
 
         var questions;
-        var isNewQuestion;
-        var addButton;
+        var newQuestionEditor;
 
         var questionEditor = (
             <CQEditNormal
@@ -48,16 +48,13 @@ var CQQuestionList = React.createClass({
                 onSave={this.handleSave}/>
             );
 
-        var newQuestionEditor;
 
         if (this.props.questionIndex === this.props.quiz.payload.questions.length){
 
             newQuestionEditor = (
-                <span className='cq-edit__quiz new-question'>
+                <div className='cq-edit__quiz cq-edit__quiz--selected'>
                     <div className="col-sm-6">
-                        <h4>
-                            <i>{this.props.questionIndex + 1}. Creating new question</i>
-                        </h4>
+                        <i>{this.props.questionIndex + 1}. Creating new question</i>
                     </div>
                     <div className="col-sm-4">
                         <h4 className="text-info">
@@ -67,57 +64,33 @@ var CQQuestionList = React.createClass({
 
                     <div className="clearfix"></div>
                     {questionEditor}
-                </span>
-            );
-            isNewQuestion = true;
-        } else {
-
-            addButton = (
-                <div className='new-question-cta'>
-
-                    <CQLink href={`/quiz/create/${this.props.quiz.uuid}/${this.props.quiz.payload.questions.length}`}>
-                        <button type='button' style={{margin: '4px'}} className="btn btn-default">
-                            <span className="glyphicon glyphicon-plus"></span>
-                            &nbsp;Add a new question
-                        </button>
-                    </CQLink>
-
                 </div>
             );
+
+        } else {
             newQuestionEditor = (<div/>);
-            isNewQuestion = false;
         }
 
         if (this.props.quiz.payload.questions.length > 0) {
 
             questions = this.props.quiz.payload.questions.map((item, index) => {
-                var editor;
-                var className = 'cq-edit__quiz row';
+                var editor = index === this.props.questionIndex ? questionEditor : undefined;
+                var className = index === this.props.questionIndex ? 'cq-edit__quiz cq-edit__quiz--selected' : 'cq-edit__quiz cq-edit__quiz--unselected';
 
-                if (index === this.props.questionIndex) {
-                    editor = questionEditor;
-                    className = 'cq-edit__quiz row selected';
-                }
+
                 return (
-                    <div className={className} key={index}>
-                        <div className="col-sm-6">
-                            <h4>
-                                {index + 1}. <CQLatexString>{item.question}</CQLatexString>
-                            </h4>
+                    <div className={className} key={index} onClick={this.handleEdit.bind(this, index)}>
+                        <div className="col-sm-6 cq-edit__listquestion">
+                            <span className="label label-primary">Q</span>&nbsp;
+                            <CQLatexString>{item.question}</CQLatexString>
                         </div>
-                        <div className="col-sm-4">
-                            <h4 className="text-info">
-                                <CQLatexString>{item.answer}</CQLatexString>
-                            </h4>
+                        <div className="col-sm-4 cq-edit__listanswer">
+                            <span className="label label-warning">A</span>&nbsp;
+                            <CQLatexString>{item.answer}</CQLatexString>
                         </div>
                         <div className="col-sm-2 icons">
-                            <CQLink href={`/quiz/create/${this.props.quiz.uuid}/${index}`}>
 
-                                <button type='button' style={{margin: '4px'}} className="btn btn-info">
-                                    <span className="glyphicon glyphicon-pencil"></span>
-                                </button>
-                            </CQLink>
-                            <button type='button' className="btn btn-danger" onClick={this.handleRemove.bind(this, item)}>
+                            <button type='button' className="btn btn-danger btn-xs" onClick={this.handleRemove.bind(this, item)}>
                                 <span className="glyphicon glyphicon-remove"></span>
                             </button>
 
@@ -133,18 +106,15 @@ var CQQuestionList = React.createClass({
 
 
         return (
-            <div className="row ql-question-list">
-                <div className="col-xs-12 ">
-                    <div className="well">
-                        {questions}
+            <div className="ql-question-list">
+                {questions}
+                {newQuestionEditor}
+                <div className='new-question-cta'>
 
-                        <div className={isNewQuestion ? 'row selected' : 'row'}>
+                    <button type='button' className="btn btn-default" onClick={this.handleSave}>
+                        <span className="glyphicon glyphicon-plus"></span> Add a new question
+                    </button>
 
-                            {addButton}
-                            {newQuestionEditor}
-                        </div>
-
-                    </div>
                 </div>
             </div>
         );

@@ -1,5 +1,5 @@
 .cq-create {
-    background: $brand-color-grey-lighter;
+    /* background: $brand-color-grey-lighter; */
     margin-top: 20px;
     padding: 20px;
     max-width: 600px;
@@ -8,10 +8,15 @@
     .form-cotrol {
         height: auto;
     }
+    label {
+        color: $brand-color-grey;
+    }
 
     @at-root #{&}__header {
         text-align: center;
-        color: $brand-color-red;
+        font-weight: bold;
+        padding-bottom: 40px;
+        /* color: $brand-color-red; */
     }
 
     @at-root #{&}__cancel {
