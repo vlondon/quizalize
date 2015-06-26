@@ -14,6 +14,8 @@ html(ng-app='createQuizApp')
         meta(name='twitter:site', content='@quizalizeapp')
         meta(name='twitter:creator', content='@quizalizeapp')
         title('Quizalize')
+        script(src='/js/vendor.js')
+        script(src='/js/home.js')
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/bootstrap.js')
         script.
@@ -24,7 +26,8 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
-        script(src='/cquiz/js/quizalize-homepage.js')
+            
+            
             
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')

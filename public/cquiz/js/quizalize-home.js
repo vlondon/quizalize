@@ -21,7 +21,8 @@ function submitForm() {
 function ask2(type) {
     $('html, body').animate({
         scrollTop: $(type).offset().top
-        }, 2000);
+        },
+    2000);
 }
 
 
