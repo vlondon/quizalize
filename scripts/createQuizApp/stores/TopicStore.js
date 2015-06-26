@@ -10,8 +10,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var storeInit = false;
 
-//these are the developer defined topics (topics + subtopics)
-var _dtopics;
+var _alltopics;
 
 //public subjects
 var subjectHash;
@@ -19,9 +18,6 @@ var subjectHash;
 //these are publicTopics + custom topics (not subtopics)
 var _topicTree;
 var _topicUserTree;
-var _subTopicUserTree;
-var _allTopics;
-
 var _temporaryTopic;
 
 
@@ -32,7 +28,7 @@ var createTopicTree = function(data){
             subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
         });
         _topicTree = data.pcategories.slice();
-        _dtopics = data.categories.slice();
+        var _dtopics = data.categories.slice();
         _topicTree.forEach((parentTopic) => {
             var childrenTopics = _topicTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
             childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
