@@ -73,7 +73,7 @@ function parseData(input, params) {
 }
 
 
-exports.sendEmailTemplate = function(from, toArray, subject, doc, params, htmlParams) {
+exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams) {
 	fs.stat(__dirname + '/emails/html/' + doc + ".txt", function(err) {
 		if (!err) {
 			fs.readFile(__dirname + '/emails/html/' + doc + ".txt", 'utf-8', function(err1, contents) {
