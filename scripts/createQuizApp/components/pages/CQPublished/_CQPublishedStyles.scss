@@ -9,6 +9,36 @@
     }
 }
 .cq-published {
+
+    @at-root #{&}__header {
+        text-align: center;
+        font-weight: bold;
+        padding-bottom: 40px;
+        /* color: $brand-color-red; */
+        h1, h2, h3 {
+            font-weight: bold;
+        }
+    }
+
+
+    @at-root #{&}__assign {
+        background: #BB27DD;
+        max-width: 600px;
+        border-radius: 25px;
+        min-height: 50px;
+        margin: auto;
+        font-size: 18px;
+
+        font-weight: bold;
+        color: #FFF;
+        padding: 10px 25px;
+        box-shadow: 0 5px 10px rgba($brand-color-black, .4);
+
+
+        input {
+            color: $brand-color-grey;
+        }
+    }
     .inactive {
         opacity: 0.6;
     }
