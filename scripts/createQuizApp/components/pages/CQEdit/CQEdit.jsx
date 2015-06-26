@@ -104,7 +104,7 @@ var CQEdit = React.createClass({
     },
 
     handleSaveNewQuestion: function(newQuestion){
-
+        console.log('newQuestion', newQuestion);
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${this.state.quiz.payload.questions.length}`);
         });
@@ -205,7 +205,7 @@ var CQEdit = React.createClass({
                                 disabled={!previewEnabled}
                                 className="btn btn-primary"
                                 onClick={this.handleFinished}>
-                                I'm Finished, let's play!
+                                Let's finish!
                             </button>
 
                         </div>

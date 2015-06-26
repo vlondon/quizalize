@@ -108,7 +108,8 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     },
 
     getPublicTopics: function(){
-        return _topicTree.slice();
+        console.log('_topictree', _topicTree);
+        return _topicTree ? _topicTree.slice() : [];
     },
 
     getTopicById: function(topicId){
