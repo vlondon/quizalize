@@ -2,7 +2,6 @@ var React = require('react');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 
-require('./CQNotFoundStyles');
 
 var CQNotFound = React.createClass({
 

@@ -7,7 +7,6 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var UserActions = require('createQuizApp/actions/UserActions');
 
 
-
 var CQRestorePassword = React.createClass({
 
     getInitialState: function() {

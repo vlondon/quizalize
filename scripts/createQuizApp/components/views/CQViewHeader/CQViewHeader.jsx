@@ -2,12 +2,11 @@ var React = require('react');
 var router = require('createQuizApp/config/router');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
-var CQHeaderDropdown = require('./CQHeaderDropdown');
+var CQViewHeaderDropdown = require('./CQViewHeaderDropdown');
 
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions = require('createQuizApp/actions/UserActions');
 
-require('./CQHeaderStyles');
 
 var sections = {
     quiz: [
@@ -22,7 +21,7 @@ var sections = {
     ]
 };
 
-var CQHeader = React.createClass({
+var CQViewHeader = React.createClass({
 
 
     getInitialState: function() {
@@ -82,7 +81,7 @@ var CQHeader = React.createClass({
             ));
 
             loginButton = (
-                <CQHeaderDropdown/>);
+                <CQViewHeaderDropdown/>);
         } else {
             loginButton = (
                 <li>
@@ -126,4 +125,4 @@ var CQHeader = React.createClass({
 
 });
 
-module.exports = CQHeader;
+module.exports = CQViewHeader;

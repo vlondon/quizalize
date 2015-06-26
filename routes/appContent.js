@@ -1,12 +1,13 @@
 //general zzish config
 var uuid                = require('node-uuid');
-var zzish = require("zzishsdk");
-var fs = require('fs');
-var APP_CONTENT_TYPE = "app";
-var QUIZ_CONTENT_TYPE = "quiz";
-var AWS  = require('./../awssdk');
-var Promise = require('es6-promise').Promise;
-
+var zzish               = require("zzishsdk");
+var fs                  = require('fs');
+var APP_CONTENT_TYPE    = "app";
+var QUIZ_CONTENT_TYPE   = "quiz";
+var AWS                 = require('./../awssdk');
+var userHelper          = require('./helpers/userHelper');
+var Promise             = require('es6-promise').Promise;
+var logger              = require('../logger');
 
 
 exports.list = function(req, res){
@@ -40,11 +41,12 @@ exports.get = function(req, res){
 
     zzish.getContent(profileId, APP_CONTENT_TYPE, id, function(err, resp){
         if(!err){
-            console.log("request for content, got: ", resp);
+            logger.trace("request for content, got: ", resp);
             res.send(resp);
+
         }else{
-            console.log("request for content, error: ", err);
-            res.status = 400;
+            logger.error("request for content, error: ", err);
+            res.status(400).send(err);
         }
     });
 };
@@ -54,7 +56,7 @@ exports.getPublic = function(req, res){
 
     var getQuiz = function(quizId){
         return new Promise(function(resolve, reject){
-            console.log('trying to load', quizId);
+            logger.trace('trying to load', quizId);
             zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err, resp){
                 if (!err) {
                     delete resp.payload;
@@ -73,8 +75,17 @@ exports.getPublic = function(req, res){
             var promises = resp.payload.quizzes.map(function(quiz){ return getQuiz(quiz); });
             Promise.all(promises)
                 .then(function(values){
-                    resp._quizzes = values;
-                    res.send(resp);
+                    resp.extra = {
+                        quizzes: values
+                    };
+                    userHelper.addUserToExtra(resp)
+                        .then(function(respWithUser){
+                            res.send(respWithUser);
+                        })
+                        .catch(function(error){
+                            res.status(500).send(error);
+                        });
+                    // res.send(resp);
                 });
 
         }else{
@@ -137,10 +148,10 @@ exports.postIcon = function(req, res){
 
             s3.putObject(params, function (perr, data) {
                 if (perr) {
-                    console.log('Error uploading data: ', perr);
+                    logger.error('Error uploading data: ', perr);
                     res.json(false);
                 } else {
-                    console.log('Successfully uploaded data to myBucket/myKey', data);
+                    logger.trace('Successfully uploaded data to myBucket/myKey', data);
                     res.json(params.Key);
                 }
                 fs.unlink(path);

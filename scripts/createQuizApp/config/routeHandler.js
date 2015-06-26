@@ -33,6 +33,7 @@ router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
 router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
+router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
 router.on(pages.create.path, () => renderPage(pages.create) );
 router.on(pages.createApp.path, () => renderPage(pages.createApp) );
 router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) );

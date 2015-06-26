@@ -4,11 +4,7 @@ var router = require('createQuizApp/config/router');
 var CQLink = React.createClass({
 
     propTypes: {
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element,
-            React.PropTypes.arrayOf(React.PropTypes.element)
-        ]),
+        children: React.PropTypes.any,
         href: React.PropTypes.string,
         className: React.PropTypes.string
     },

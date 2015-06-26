@@ -7,7 +7,7 @@
 var webpack = require('webpack');
 var path = require('path');
 
-console.log("path.join(__dirname, 'public/js/'),''", path.join(__dirname, 'public/js/'));
+
 module.exports = {
     entry: {
         quiz: 'quiz.js',
@@ -56,7 +56,10 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
-        modulesDirectories: ['node_modules', 'scripts']
+        modulesDirectories: ['node_modules', 'scripts'],
+        alias: {
+            'ie': 'component-ie'
+        }
     },
     devtool: '#source-map',
     cache: true,

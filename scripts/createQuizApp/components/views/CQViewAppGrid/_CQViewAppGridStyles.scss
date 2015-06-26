@@ -1,14 +1,13 @@
-@import './../../../../shared/scss/variables';
-@import './../../../../shared/scss/mixins';
 
 .cq-appgrid {
 
     $appIcon: 160px;
     $quizIcon: 40px;
-    min-height: 310px;
-    margin: 20px 0;
+    min-height: 660px;
+    margin: 0;
     padding: 0;
     text-align: center;
+    position: relative;
 
     @at-root #{&}__app {
         display: inline-block;
@@ -70,4 +69,12 @@
         border-radius: 100%;
         border: 1px solid $brand-color-grey-lighter;
     }
+
+    @at-root #{&}__pagination {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        text-align: center;
+    }
+
 }

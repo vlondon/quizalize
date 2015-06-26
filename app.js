@@ -5,6 +5,8 @@ var path        = require('path');
 var favicon     = require('serve-favicon');
 var session     = require('express-session');
 var bodyParser  = require('body-parser');
+var logger      = require('./logger');
+
 var config      = require('./config');
 var email       = require('./email');
 var quiz        = require('./routes/quiz');
@@ -12,24 +14,43 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
+// var marketplace = require('./routes/marketplace');
+
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
+var compression = require('compression');
+
+
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(favicon(__dirname + '/public/favcq.png'));
-app.use(session({ secret: 'zzishdvsheep', cookie: {maxAge: 1000 * 60 * 60}}));            // Session support
+app.use(favicon(path.join(__dirname, '/public/favcq.png')));
+app.use(
+    session(
+        {
+            secret: 'zzishdvsheep',
+            cookie: { maxAge: 1000 * 60 * 60 },
+            resave: true,
+            saveUninitialized: true
+        }
+    )
+);            // Session support
+
 app.use(function(req, res, next){
     res.locals.session = req.session;
     res.locals.session.zzishsdkurl = config.zzishsdkurl;
     next();
 });
+
+
 app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({dest: './uploads/'})); // Image uploads
+app.use(compression());
 
 //The static pages:
 app.get('/quiz/view/:page', function(req, res){
@@ -64,7 +85,8 @@ app.get('/quiz', quiz.create);
 app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
 
 
-app.get('/create/:profileId/topics/', quiz.getMyTopics);
+app.get('/create/:profileId/topics/', quiz.getUserTopics);
+app.get('/create/topics/', quiz.getTopics);
 app.post('/create/:profileId/topics/', quiz.postTopic);
 app.post('/create/:profileId/topics/:id/delete', quiz.deleteTopic);
 
@@ -97,9 +119,13 @@ app.get('/apps/:id', appContent.getPublic);
 // app.post('/create/:profileId/apps/:id', appContent.post);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
+// app.get('/marketplace/quiz/:id', marketplace.getQuiz);
+
+
 
 app.get('/search/quizzes', search.getQuizzes);
 app.post('/search/quizzes', search.getQuizzes);
+app.get('/search/apps', search.getApps);
 app.post('/search/apps', search.getApps);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
@@ -137,6 +163,7 @@ app.get('/', checkForMobile, quiz.landingpage5);
 app.get('/mobile', quiz.landingpage5);
 app.get('/ie', quiz.landingpage3);
 app.get('/ks4-gcse-maths', quiz.landingpage4);
+app.get('/maths', quiz.maths);
 app.get('/brighton', quiz.brightonlanding);
 
 
@@ -153,7 +180,7 @@ app.get('/quiz/find-a-quiz', quiz.quizFinder);
 if (process.env.ZZISH_DEVMODE === 'true'){
     app.get('/js/*', proxy('http://localhost:7071', {
         forwardPath: function(req) {
-            console.log('froward path', require('url').parse(req.url).path);
+            logger.debug('froward path', require('url').parse(req.url).path);
             return require('url').parse(req.url).path;
         }
     }));
@@ -163,8 +190,8 @@ if (process.env.ZZISH_DEVMODE === 'true'){
 app.use(express.static('public'));
 
 // Set server port
-app.listen(process.env.port || 3001);
-console.log('Server is running, with configuration:', config);
+app.listen(process.env.PORT || 3001);
+logger.info('Server is running, with configuration:', config);
 email.pingDevelopers();
 
 // returns true if the caller is a mobile phone (not tablet)
@@ -178,8 +205,8 @@ function isCallerMobile(req) {
 
 function isIE(req) {
     var ua = req.headers['user-agent'].toLowerCase(),
-    isIE = /MSIE 8.0/i.test(ua) || /MSIE 9.0/i.test(ua)
-    return isIE;
+        isIECheck = /MSIE 8.0/i.test(ua) || /MSIE 9.0/i.test(ua);
+    return isIECheck;
 }
 
 
@@ -189,10 +216,10 @@ function checkForMobile(req, res, next) {
     var isMobile = isCallerMobile(req);
 
     if (isMobile) {
-        console.log("Going mobile");
+        logger.info("Going mobile");
         res.redirect('/mobile');
     } else if (isIE(req)) {
-        console.log("Going IE");
+        logger.info("Going IE");
         res.redirect('/ie');
     } else {
         // if we didn't detect mobile, call the next method, which will eventually call the desktop route

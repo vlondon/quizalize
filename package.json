@@ -1,6 +1,6 @@
 {
   "name": "quizalize",
-  "version": "0.2.0",
+  "version": "0.3.2",
   "description": "Quizalize Quizzes",
   "main": "app.js",
   "scripts": {
@@ -26,10 +26,13 @@
   "dependencies": {
     "aws-sdk": "^2.0.19",
     "body-parser": "^1.10",
+    "compression": "^1.5.0",
     "express": "^4.10.3",
     "express-http-proxy": "^0.6.0",
     "express-session": "^1.9.3",
     "jade": "1.8.2",
+    "lodash": "^3.9.3",
+    "log4js": "^0.6.26",
     "marked": "^0.3.2",
     "serve-favicon": "^2.1.5",
     "xmlhttprequest": "^1.7.0",
@@ -47,8 +50,8 @@
     "del": "^1.1.1",
     "director": "^1.2.8",
     "es6-promise": "^2.1.1",
-    "eslint": "0.21.2",
-    "eslint-plugin-react": "2.3.0",
+    "eslint": "0.23.0",
+    "eslint-plugin-react": "2.5.2",
     "fastclick": "^1.0.6",
     "flux": "^2.0.3",
     "gulp": "^3.8.11",
@@ -56,7 +59,7 @@
     "gulp-ng-annotate": "^0.5.3",
     "gulp-uglify": "^1.2.0",
     "gulp-webpack": "^1.3.2",
-    "katex": "Khan/KaTeX",
+    "katex": "^0.4.3",
     "kolor": "^1.1.6",
     "moment": "^2.10.3",
     "multer": "^0.1.8",
@@ -69,7 +72,8 @@
     "sass-loader": "^1.0.2",
     "style-loader": "^0.10.2",
     "superagent": "^1.2.0",
-    "webpack": "^1.8.4",
-    "webpack-dev-server": "^1.8.2"
+    "superagent-no-cache": "^0.1.0",
+    "webpack": "^1.9.11",
+    "webpack-dev-server": "^1.9.0"
   }
 }

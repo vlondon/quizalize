@@ -26,6 +26,14 @@ var CQSettings = React.createClass({
 
     },
 
+    handleNameChange: function(event){
+
+        var user = assign({}, this.state.user);
+        user.name = event.target.value;
+        this.setState({user});
+
+    },
+
     render: function() {
         return (
             <CQPageTemplate className="container cq-settings">
@@ -38,8 +46,8 @@ var CQSettings = React.createClass({
                         <label htmlFor="name">Name</label>
                         <input type="text" id="name"
                             className="form-control"
-                            onChange={this.handleChange.bind(this, 'name')}
-                            value={this.state.user.attributes.name}/>
+                            onChange={this.handleNameChange}
+                            value={this.state.user.name}/>
                     </div>
 
                     <div className="cq-settings__profile-item form-group">

@@ -2,7 +2,7 @@ doctype html
 html(ng-app='createQuizApp')
     head
         title Create Quizalize Quiz
-        meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1')
+        meta(name='viewport', content='width=1024, maximum-scale=1')
         meta(name='description', content='')
         meta(charset='UTF-8')
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
@@ -14,7 +14,7 @@ html(ng-app='createQuizApp')
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/uuid.js')
         script(src='/lib/bootstrap.js')
-        script(src='//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.0.1/sweetalert.min.js')
+        script(src='/lib/sweetalert.min.js')
 
         <!--[if lt IE 9]>
         script(src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js")
@@ -34,7 +34,7 @@ html(ng-app='createQuizApp')
         link(href='/css/webfont.css', rel='stylesheet')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         link(href='//fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
-        link(href='//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.0.1/sweetalert.min.css' rel='stylesheet')
+        link(href='/css/sweetalert.min.css' rel='stylesheet')
 
 
 
@@ -46,6 +46,19 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
+            
+        script.
+            (function(f,b){
+                var c;
+                f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
+                f._hjSettings={hjid:45670, hjsv:4};
+                c=b.createElement("script");c.async=1;
+                c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
+                b.getElementsByTagName("head")[0].appendChild(c); 
+            })(window,document);
+
+            
+
         link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.structure.min.css', rel='stylesheet')
         link(href='/css/jquery-ui.theme.min.css', rel='stylesheet')

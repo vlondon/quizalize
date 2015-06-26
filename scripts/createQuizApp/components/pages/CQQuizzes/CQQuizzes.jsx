@@ -14,7 +14,6 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var router = require('createQuizApp/config/router');
 
-require('./CQQuizzesStyles');
 
 var CQQuizzes = React.createClass({
 
@@ -203,15 +202,30 @@ var CQQuizzes = React.createClass({
                     <CQViewQuizList
                         onQuizClick={this.handleClick}
                         showAuthor={false}
+                        showReviewButton={false}
                         quizzes={this.state.quizzes}
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
-                        profileMode={true}
+
                         sortOptions={this.state.isAdmin}
                         onAssign={this.handleAssign}
                         onEdit={this.handleEdit}
                         onDelete={this.handleDelete}
-                        actions={this.handleAction}/>
+                        actions={this.handleAction}>
+
+                            <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
+                                <span className="fa fa-pencil"></span> Edit
+                            </button>
+
+                            <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
+                                <span className="fa fa-users"></span> Assign quiz to a Class
+                            </button>
+
+                            <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
+                                <span className="fa fa-trash-o"></span>
+                            </button>
+
+                    </CQViewQuizList>
                     {emptyQuizList}
 
                 </div>

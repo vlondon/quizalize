@@ -10,9 +10,9 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
+var TopicStore = require('createQuizApp/stores/TopicStore');
+var TopicActions = require('createQuizApp/actions/TopicActions');
 
-
-require('./CQEditStyles');
 
 var CQEdit = React.createClass({
 
@@ -37,6 +37,8 @@ var CQEdit = React.createClass({
     componentDidMount: function() {
 
         // QuizActions.loadQuizzes();
+        TopicActions.loadPrivateTopics();
+        TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
         this.onChange();
 
@@ -44,6 +46,7 @@ var CQEdit = React.createClass({
     },
 
     componentWillUnmount: function() {
+        TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
     },
 

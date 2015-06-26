@@ -28,7 +28,7 @@ var CQQuizIcon = React.createClass({
         className: React.PropTypes.string,
         name: React.PropTypes.string,
         image: React.PropTypes.string,
-        children: React.PropTypes.ReactElement
+        children: React.PropTypes.element
     },
 
     getInitialState: function() {
@@ -72,8 +72,12 @@ var CQQuizIcon = React.createClass({
             backgroundImage: `linear-gradient(${color.fadeOut(0.5)}, ${color.lighten(-0.2).fadeOut(0.5)})`
         };
 
+        var detectYoutubeThumbnail = function(img){
+            console.log("imgmggmmg", img);
+            return img.indexOf("youtube") === -1 ? img : '//img.youtube.com/vi/' + img.split('/')[4] + "/0.jpg";
+        };
         if (this.state.image){
-            style.backgroundImage = `url(${this.state.image})`;
+            style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
         } else if (this.props.children) {
             image = this.props.children;
         } else {

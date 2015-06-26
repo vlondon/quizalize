@@ -1,6 +1,3 @@
-@import './../../../../shared/scss/variables';
-@import './../../../../shared/scss/mixins';
-
 .cq-quizzes {
 
     @at-root #{&}__buttonbar {
@@ -66,35 +63,7 @@
         }
     }
 
-    @mixin button($color) {
-        background: none repeat scroll 0 0 transparent;
-        background: rgba($color, 0);
-        border: 1px solid $brand-color-grey-light;
-        min-width: 50px;
-        height: 30px;
-        color: $brand-color-grey;
-        border-radius: 5px;
-        border-spacing: 0;
 
-        text-align: center;
-        font-size: 16px;
-        font-weight: normal;
-        line-height: 1.42rem;
-        list-style: none outside none;
-        margin: 0 5px;
-        padding: 5px 10px;
-
-        text-decoration: none;
-        text-indent: 0;
-        outline: none;
-
-        &:hover,
-        &:focus {
-            background: darken($color, 0%);
-            border-color: $color;
-            color: #FFF;
-        }
-    }
     @at-root #{&}__button--delete {
         @include button($brand-color-red);
 
@@ -109,5 +78,8 @@
         @include button($brand-color-blue);
     }
 
+    @at-root #{&}__button--review {
+        @include button($brand-color-blue);
+    }
 
 }

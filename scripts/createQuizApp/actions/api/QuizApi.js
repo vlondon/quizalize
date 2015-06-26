@@ -1,4 +1,5 @@
 var request = require('superagent');
+var noCache = require('superagent-no-cache');
 var Promise = require('es6-promise').Promise;
 
 var QuizApi = {
@@ -11,6 +12,7 @@ var QuizApi = {
                 reject();
             } else {
                 request.get(`/create/${uuid}/quizzes/`)
+                    .use(noCache)
                     .end(function(error, res){
                         if (error) {
                             reject();
@@ -20,24 +22,6 @@ var QuizApi = {
 
                     });
             }
-
-        });
-    },
-
-    getPublicQuizzes: function(){
-        return new Promise(function(resolve, reject){
-            request.get(`/quizzes/public`)
-                .end(function(error, res){
-                    if (error) {
-                        reject();
-                    } else {
-                        console.log('res', res.body);
-                        res.body.categories = res.body.categories.filter(c => c !== null);
-                        res.body.contents = res.body.contents.filter(c => c !== null);
-                        resolve(res.body);
-                    }
-
-                });
 
         });
     },
@@ -67,6 +51,7 @@ var QuizApi = {
                 reject();
             } else {
                 request.get(`/create/${uuid}/quizzes/${quizId}`)
+                    .use(noCache)
                     .end(function(error, res){
                         if (error) {
                             reject();
@@ -101,25 +86,59 @@ var QuizApi = {
     },
 
 
-    getTopics: function(){
-        return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+    getTopics: (function(){
+        var promise;
+        return function(){
 
-            if (!uuid) {
-                reject();
-            } else {
-                request.get(`/create/${uuid}/topics/`)
-                    .end(function(error, res){
-                        if (error) {
-                            reject();
-                        } else {
-                            resolve(res.body);
-                        }
+            promise = promise || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
 
-                    });
-            }
-        });
-    },
+                if (!uuid) {
+                    reject();
+                } else {
+                    request.get(`/create/topics/`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+
+                        });
+                }
+            });
+            return promise;
+
+        };
+    })(),
+
+    getUserTopics: (function(){
+        var promise;
+        return function(){
+
+            promise = promise || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
+
+                if (!uuid) {
+                    reject();
+                } else {
+                    request.get(`/create/${uuid}/topics/`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+
+                        });
+                }
+            });
+            return promise;
+
+        };
+    })(),
 
     putTopic: function(topic){
         return new Promise(function(resolve, reject){
