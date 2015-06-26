@@ -7,7 +7,7 @@ var commandPressed = false;
 }); */
 var onKeyUp = function(ev){
     // cmd 91
-    if (ev.keyCode === 91){
+    if ([93, 91, 17, 224].indexOf(ev.keyCode) !== -1 ){
         console.log("event", ev.keyCode);
         commandPressed = false;
     }
@@ -15,7 +15,7 @@ var onKeyUp = function(ev){
 };
 var onKeyDown = function(ev){
     // cmd 91
-    if (ev.keyCode === 91){
+    if ([93, 91, 17, 224].indexOf(ev.keyCode) !== -1 ){
         console.log("event", ev.keyCode);
         commandPressed = true;
     }
@@ -63,9 +63,10 @@ var CQLink = React.createClass({
         if (commandPressed === true){
             window.open(this.props.href);
         }
-         else
+        else {
 
-        router.setRoute(this.props.href);
+            router.setRoute(this.props.href);
+        }
     },
 
     render: function(){
