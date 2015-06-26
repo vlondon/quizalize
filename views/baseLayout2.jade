@@ -24,57 +24,9 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
-        script.
-            function submitForm() {
-                $.ajax({
-                    url: "/quizHelp",
-                    method: "post",
-                    success: function(data,textstatus,jqXHR){
-                        $('#helpForm').slideUp();
-                        $("#helpSent").slideDown();
-                        },
-                        error: function(){
-                            console.log("Error Posting Form details");
-                            },
-                            data: {
-                                name: $('#ename').val(),
-                                email: $('#email').val(),
-                                message: $('#message').val()
-                            }
-                            });
-                return false;
-            }
-            function ask(type) {
-                if (type=="demo") {
-                    $("#message").val("I want a demo at my school");
-                }
-                else if (type =="question") {
-                    $("#message").val("");
-                }
-                else if (type=="order") {
-                    $("#message").val("I would like an information pack sent to my school");
-                }
-                else if (type=="wholeschool") {
-                    $("#message").val("I would like to sign up to the whole school package");
-                }
-                else if (type=="quiz-day") {
-                    $("#message").val("I would like to ask about a Quizalize day at my school");
-                }
-                else if (type=="cpd") {
-                    $("#message").val("I would like to ask about CPD training at my school");
-                }
-                else if (type=="referral") {
-                    $("#message").val("I would like to join the Quizalize referral program");
-                }
-                ask2("#sendForm")
-            }
-            function ask2(type) {
-                $('html, body').animate({
-                    scrollTop: $(type).offset().top
-                    }, 2000);
-            }
+        script(src='/cquiz/js/quizalize-homepage.js')
+            
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-        link(href='//fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
         link(href='/cquiz/css/bootstrap.min.css', rel='stylesheet', type='text/css')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
@@ -87,44 +39,5 @@ html(ng-app='createQuizApp')
         link(href='/cquiz/css/style.css', rel='stylesheet')
         link(href='/cquiz/color/default.css', rel='stylesheet')
         block header
-        style.
-            body{
-            }
-            .container.ng-enter {
-                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
-                -moz-transition: .3s ease-out all; /* Firefox */
-                -o-transition: .3s ease-out all; /* Opera */
-                transition: .3s ease-out all; /* IE10+ and Future Browsers */
-            }
-
-            .container.ng-enter {
-                opacity: 0;
-            }
-
-            .container.ng-enter.ng-enter-active {
-                opacity: 1;
-            }
-
-            .container.ng-leave {
-                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
-                -moz-transition: .3s ease-out all; /* Firefox */
-                -o-transition: .3s ease-out all; /* Opera */
-                transition: .3s ease-out all; /* IE10+ and Future Browsers */
-            }
-
-            .container.ng-leave {
-                opacity: 1;
-            }
-
-            .container.ng-leave.ng-leave-active {
-                opacity: 0;
-            }
-
-            h1:hover,h2:hover{
-                color: #444;
-            }
-            .quizQuestion, h2.quizQuestion, h3.quizQuestion {
-                font-weight: 700;
-            }
 body
     block body

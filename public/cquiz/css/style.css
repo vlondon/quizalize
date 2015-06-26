@@ -1,7 +1,3 @@
-/* ==== Google font ==== */
-@import url(//fonts.googleapis.com/css?family=Roboto:400,300,700,900);
-@import url('//fonts.googleapis.com/css?family=Ek+Mukta:400,600,700');
-
 
 body {
 	width: 100%;
@@ -74,7 +70,7 @@ a:focus {
 }
 
 
-.site-logo img{ 
+.site-logo img{
 	height: 45px;
 	margin-bottom: 10px;
 	margin-top:10px;
@@ -92,7 +88,7 @@ a:focus {
 	box-sizing:border-box;
 	/* border-bottom: 1px solid #eee; */
 	box-shadow:0px 0px 20px rgba(0, 0, 0, 0.1);
-	position:top;
+	position: fixed;
 
 }
 
@@ -142,7 +138,7 @@ a:focus {
 }
 
 .navbar-custom ul.nav ul.dropdown-menu {
-	border-radius: 0;	
+	border-radius: 0;
 	margin-top: 21px;
 	border-top: none;
 }
@@ -408,16 +404,16 @@ section#intro {
 
 	margin-bottom: 60px;
 	margin-top:240px;
-	color: #d24a4a; 
+	color: #d24a4a;
 	font-weight: 300;
 	font-size: 48px;
 	/* text-shadow: 2px 2px 10px white; */
 	text-shadow: 2px 2px 2px white;
 }
-.cta3-title{ 
+.cta3-title{
 	margin-bottom: 340px;
 	margin-top:-70px;
-	color: #d24a4a; 
+	color: #d24a4a;
 	font-weight: 300;
 	font-size: 48px;
 	/* text-shadow: 2px 2px 10px white; */
@@ -477,7 +473,7 @@ section#intro {
 	color: white;
 	font-size: 35px;
 	font-weight: 300;
-	margin-bottom: 30px;	
+	margin-bottom: 30px;
 }
 .cta5 {
 	padding: 20px 60px;
@@ -486,7 +482,7 @@ section#intro {
 	color: white;
 	font-size: 28px;
 	font-weight: 300;
-	margin-bottom: 30px;	
+	margin-bottom: 30px;
 }
 
 .cta3:hover {
@@ -543,7 +539,7 @@ section#intro {
 
 	background-size: cover;
 	background-position: center;
-	overflow: hidden; 
+	overflow: hidden;
 }
 .item-inner__fixed {
 	height: 400px;
@@ -656,7 +652,7 @@ section#intro {
 
 .service-icon {
 	margin-bottom: 20px;
-}	
+}
 
 
 /* ===========================
@@ -675,7 +671,7 @@ section#intro {
 	display: block;
 	width: 100%;
 	height: auto;
-}	
+}
 
 /* ===========================
 --- Contact
@@ -741,7 +737,7 @@ form#contact-form input:focus,form#contact-form select:focus,form#contact-form t
 }
 
 
-.box-social .social-facebook a { 
+.box-social .social-facebook a {
 	display: block;
 	background: #3873ae;
 }
@@ -857,7 +853,7 @@ footer {
 footer {
 	text-align: center;
 	padding: 50px 0 ;
-	
+
 }
 
 footer p {
@@ -1023,7 +1019,7 @@ a.btn:focus{
 	.navbar {
 		/* padding: 20px 0; */
 		width:100%;
-		
+
 		margin-bottom: -10px;
 		border-bottom: 0;
 		letter-spacing: 1px;
@@ -1041,7 +1037,7 @@ a.btn:focus{
 	.navbar-custom.top-nav-collapse {
 		border-bottom: 1px solid rgba(255,255,255,.3);
 	}
-	
+
 	.intro {
 		height: 100%;
 		padding: 0;
@@ -1050,7 +1046,7 @@ a.btn:focus{
 	.brand-heading {
 		font-size: 100px;
 	}
-	
+
 
 	.intro-text {
 		font-size: 25px;
@@ -1080,31 +1076,31 @@ a.btn:focus{
 	.navbar-header button {
 		background: #111;
 	}
-	
+
 	.navbar-header button.navbar-toggle {
 		padding: 4px 15px;
 		font-size: 14px;
 		color: #fff;
 	}
-	
+
 	.navbar-custom .nav {
 		background: #444;
 	}
-	
+
 	.service-box {
 
 		margin-bottom: 50px;
 
 	}
-	
+
 	.team-wrap {
 		margin-bottom: 30px;
 	}
-	
+
 	form#contact-form {
 		margin-bottom: 50px;
 	}
-	
+
 	.xs-marginbot-20 {
 		margin-bottom: 20px;
 	}
@@ -1118,20 +1114,20 @@ a.btn:focus{
 	.navbar-custom .nav.navbar-nav {
 		background-color: rgba(255,255,255,.4);
 	}
-	
+
 	.navbar.navbar-custom.navbar-fixed-top {
 		margin-bottom: 30px;
 	}
 }
 
-// Custom 
+// Custom
 
 /* Carousel */
 .carousel_div {
 	min-height:260px;
 }
 
-#quote-carousel 
+#quote-carousel
 {
 	padding: 0 10px 30px 10px;
 	margin-top: 10px;
@@ -1148,17 +1144,17 @@ a.btn:focus{
 	margin-top: 80px;
 }
 /* Previous button  */
-#quote-carousel .carousel-control.left 
+#quote-carousel .carousel-control.left
 {
 	left: -12px;
 }
 /* Next button  */
-#quote-carousel .carousel-control.right 
+#quote-carousel .carousel-control.right
 {
 	right: -12px !important;
 }
 /* Changes the position of the indicators */
-#quote-carousel .carousel-indicators 
+#quote-carousel .carousel-indicators
 {
 	right: 50%;
 	top: auto;
@@ -1167,11 +1163,11 @@ a.btn:focus{
 	visibility: hidden;
 }
 /* Changes the color of the indicators */
-#quote-carousel .carousel-indicators li 
+#quote-carousel .carousel-indicators li
 {
 	background: #c0c0c0;
 }
-#quote-carousel .carousel-indicators .active 
+#quote-carousel .carousel-indicators .active
 {
 	background: #333333;
 }
@@ -1184,7 +1180,7 @@ a.btn:focus{
 /* End carousel */
 
 .item blockquote {
-	border-left: none; 
+	border-left: none;
 	margin: 0;
 }
 
@@ -1207,8 +1203,8 @@ a.btn:focus{
 
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) { 
-	#quote-carousel 
+@media (min-width: 768px) {
+	#quote-carousel
 	{
 		margin-bottom: 0;
 		padding: 0 40px 30px 40px;
@@ -1218,13 +1214,13 @@ a.btn:focus{
 }
 
 /* Small devices (tablets, up to 768px) */
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
 
 	/* Make the indicators larger for easier clicking with fingers/thumb on mobile */
 	#quote-carousel {
 		min-height:310px; font-size:15px; margin-top:-30px; margin-bottom:-30px;}
 		#quote-carousel .carousel-indicators {
-			bottom: -20px !important;  
+			bottom: -20px !important;
 
 		}
 		#quote-carousel .carousel-control {visibility:hidden;}
@@ -1281,11 +1277,11 @@ a.btn:focus{
 	margin-left:85px;
 	padding: 5px;
 	text-align:center;
-	
 
-	
+
+
 	margin: 0 auto;
-	
+
 
 }
 
@@ -1364,7 +1360,7 @@ a.btn:focus{
 }
 .social .fa-facebook { /* round facebook icon*/
 	background: #4060A5;
-	
+
 
 }
 
@@ -1461,7 +1457,7 @@ a.btn:focus{
 #play-but2{display:none; }
 /* packages and services */
 .packages{
-	margin-top: 40px; 
+	margin-top: 40px;
 	margin-bottom:40px;
 }
 .red-box {
@@ -1489,7 +1485,7 @@ a.btn:focus{
 .red-box-front:hover {
 	background-color: #D71324;
 }
-.red-box h3, h2 {	
+.red-box h3, h2 {
 	color:white;
 	line-height: 100px;
 
@@ -1521,7 +1517,7 @@ a.btn:focus{
 }
 .red-box button:hover {
 	background-color:#D71324;
-	
+
 }
 .package-image {
 	border-radius: 50%;
@@ -1560,7 +1556,7 @@ a.btn:focus{
 }
 
 .ex-topics {
-	padding-top:20px; 
+	padding-top:20px;
 	padding-bottom:15px;
 }
 
@@ -1657,15 +1653,15 @@ a.btn:focus{
 }
 .embed-container {
 	margin-top:40px;
-	position: relative; 
-	padding-bottom: 56.25%; 
-	height: 0; overflow: 
-	hidden; 
-	max-width: 100%; 
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0; overflow:
+	hidden;
+	max-width: 100%;
 }
 
-.embed-container iframe, .embed-container object, .embed-container embed { 
-	position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+.embed-container iframe, .embed-container object, .embed-container embed {
+	position: absolute; top: 0; left: 0; width: 100%; height: 100%;
 }
 .quizalize-explainer {
 	margin-top:20px;
@@ -1678,7 +1674,7 @@ a.btn:focus{
 #play-but2{display:none; }
 /* packages and services */
 .packages{
-	margin-top: 40px; 
+	margin-top: 40px;
 	margin-bottom:40px;
 }
 .red-box {
@@ -1699,7 +1695,7 @@ a.btn:focus{
 	-moz-border-radius: 15px;
 
 }
-.red-box h3, h2 {	
+.red-box h3, h2 {
 	color:white;
 	line-height: 100px;
 
@@ -1758,7 +1754,7 @@ a.btn:focus{
 	margin-top:10px;
 }
 .ex-topics {
-	padding-top:20px; 
+	padding-top:20px;
 	padding-bottom:15px;
 }
 #quiz-day { margin-top:100px;
@@ -1799,7 +1795,7 @@ a.btn:focus{
 
 
 @media (max-width:667px){
-	.cta3-title{ 
+	.cta3-title{
 		margin-bottom: 280px;
 		margin-top:-80px;
 	}
@@ -1848,8 +1844,8 @@ a.btn:focus{
 	}
 
 	.btn-s {
-		font-size:10px; 
-		width:60px; 
+		font-size:10px;
+		width:60px;
 		margin-left:5px;
 	}
 
@@ -1888,7 +1884,7 @@ a.btn:focus{
 		font-size:10px;
 	}
 
-	
+
 }
 
 
