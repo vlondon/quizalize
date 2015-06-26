@@ -11,54 +11,48 @@ var UserStore           = require('createQuizApp/stores/UserStore');
 var debounce            = require('createQuizApp/utils/debounce');
 
 
-var _questionsTopicIdToTopic = function(quiz){
+// var _questionsTopicIdToTopic = function(quiz){
 
 
-    var findTopicName = function(topicId){
-        var topic = TopicStore.getTopicById(topicId);
-        return topic ? topic.name : undefined;
-    };
+//     var findTopicName = function(topicId){
+//         var topic = TopicStore.getTopicById(topicId);
+//         return topic ? topic.name : undefined;
+//     };
 
 
-    if (quiz.payload.questions && quiz.payload.questions.length > 0){
-        quiz.payload.questions = quiz.payload.questions.map(question => {
-            question._topic = findTopicName(question.topicId);
-            return question;
-        });
-    }
+//     // if (quiz.payload.questions && quiz.payload.questions.length > 0){
+//     //     quiz.payload.questions = quiz.payload.questions.map(question => {
+//     //         question._topic = findTopicName(question.topicId);
+//     //         return question;
+//     //     });
+//     // }
 
-    return quiz;
-};
+//     return quiz;
+// };
 
-var _questionsTopicToTopicId = function(quiz){
+var createNewTopicsForQuiz = function(quiz){
 
     var questions = quiz.payload.questions;
 
-    var findTopicId = function(topicName){
-        var topic = TopicStore.getTopicByName(topicName);
-        console.info('findTopicId', topicName, topic);
-        if (topic === undefined){
-            // we create a new topic and save it
-            topic = {
-                uuid: uuid.v4(),
-                name: topicName,
-                subContent: true,
-                parentCategoryId: quiz.categoryId
-            };
-            TopicActions.createTopic(topic);
-        }
-
-        return topic ? topic.uuid : uuid.v4();
+    var createTopicForQuestion = function(question){
+        var topic = TopicStore.getTopicById(question.topicId);
+        console.log("Creating new topic for",topic);
+        // we create a new topic and save it
+        topic = {
+            uuid: uuid.v4(),
+            name: topic.name,
+            subContent: true,
+            parentCategoryId: quiz.meta.categoryId
+        };
+        TopicActions.createTopic(topic);
+        return topic.uuid;
     };
 
     if (questions && questions.length > 0) {
         questions = questions.map(function(question){
-            if (question._topic){
-                question.topicId = findTopicId(question._topic);
+            if (question.topicId === "-1") {
+                question.topicId = createTopicForQuestion(question);
             }
-
-            delete question._topic;
-
             return question;
         });
     }
@@ -237,14 +231,14 @@ var QuizActions = {
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.meta.categoryId = addOrCreateCategory();
 
-            quiz = _questionsTopicToTopicId(quiz);
+            quiz = createNewTopicsForQuiz(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
 
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new

@@ -5,6 +5,9 @@ var uuid = require('node-uuid');
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 
 var QuizStore = require('createQuizApp/stores/QuizStore');
+var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
+var TopicStore = require('createQuizApp/stores/TopicStore');
+
 // TODO: Rename to a better name to describe editing questions
 var CQEditNormal = React.createClass({
 
@@ -171,10 +174,17 @@ var CQEditNormal = React.createClass({
         return canBeSaved;
     },
 
-    handleTopic: function(event){
-        var canBeSaved = this.canBeSaved();
-        this.setState({topic: event.target.value, canBeSaved});
+    handleTopic: function(topicId){
+        var newQuestionState = assign({}, this.state.question);
+        newQuestionState.topicId = topicId;
+        this.props.onChange(newQuestionState);
     },
+
+
+    // handleTopic: function(event){
+    //     var canBeSaved = this.canBeSaved();
+    //     this.setState({topic: event.target.value, canBeSaved});
+    // },
 
     handleSave: function(){
         this.props.onSave(this.state.question);
@@ -192,7 +202,9 @@ var CQEditNormal = React.createClass({
         this.props.onChange(question);
     },
 
-
+    handleGetTopics: function() {
+        return TopicStore.getAllTopics(this.props.quiz.meta.categoryId);
+    },
 
     render: function() {
 
@@ -419,13 +431,12 @@ var CQEditNormal = React.createClass({
                     </label>
                     <div className="right">
                         <div className="entry-input-full-width">
-
-                            <input
-                                value={this.state.question._topic}
-                                ref='_topic'
-                                onChange={this.handleChange.bind(this, '_topic', undefined)}
-                                onKeyDown={this.handleNext.bind(this, '_topic', undefined)}
-                                id="topic" type="text" placeholder="e.g. European Capital Cities" autofocus="true" tabIndex="6" className="form-control"/>
+                            <CQAutofill
+                                value={this.state.question.topicId}
+                                onChange={this.handleTopic}
+                                data={this.handleGetTopics}
+                                placeholder="e.g. European Capital Cities"
+                                tabIndex="6"/>
                         </div>
                     </div>
                 </div>

@@ -10,8 +10,6 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var storeInit = false;
 
-//these are the user defined topics (topics + subtopics)
-var _topics;
 //these are the developer defined topics (topics + subtopics)
 var _dtopics;
 
@@ -21,57 +19,88 @@ var subjectHash;
 //these are publicTopics + custom topics (not subtopics)
 var _topicTree;
 var _topicUserTree;
+var _subTopicUserTree;
 var _allTopics;
 
 var _temporaryTopic;
 
 
 var createTopicTree = function(data){
-    subjectHash = {};
-    data.psubjects.forEach((subject) => {
-        subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
-    });
-    _topicTree = data.pcategories;
-    _dtopics = data.categories;
-    _topicTree.forEach((parentTopic) => {
-        var childrenTopics = _topicTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
-        childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-        parentTopic.categories = childrenTopics;
-        if (parentTopic.subjectId) {
-            parentTopic.name = subjectHash[parentTopic.subjectId].name + " > " + parentTopic.name;
-        }
-    });
+    if (!_topicTree) {
+        subjectHash = {};
+        data.psubjects.slice().forEach((subject) => {
+            subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
+        });
+        _topicTree = data.pcategories.slice();
+        _dtopics = data.categories.slice();
+        _topicTree.forEach((parentTopic) => {
+            var childrenTopics = _topicTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
+            childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+            parentTopic.categories = childrenTopics;
+        });
+        _dtopics.forEach((parentTopic) => {
+            var childrenTopics = _dtopics.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
+            childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+            parentTopic.categories = childrenTopics;
+        });
 
-    _dtopics.forEach((parentTopic) => {
-        var childrenTopics = _dtopics.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
-        childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-        parentTopic.categories = childrenTopics;
-    });
-
-    var customDevTopics = _dtopics.filter(t => t.parentCategoryId === '-1');
-    _topicTree.push.apply(_topicTree, customDevTopics);
-    _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        _topicTree.push.apply(_topicTree, _dtopics);
+        _topicTree = _topicTree.filter(t => t.parentCategoryId === '-1' || t.parentCategoryId === null);
+        _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        _topicTree.forEach((parentTopic) => {
+            if (parentTopic.subjectId) {
+                parentTopic.name = subjectHash[parentTopic.subjectId].name + " > " + parentTopic.name;
+            }
+        });
+    }
 };
 
 var createUserTopicTree = function(data){
-    _topicUserTree = [];
-    _topicUserTree = data.filter(t => t.parentCategoryId === '-1');
+    _topicUserTree = data.slice();
+    _topicUserTree.forEach((parentTopic) => {
+        var childrenTopics = _topicUserTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid));
+        childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        parentTopic.categories = childrenTopics;
+    });
+    _topicTree.forEach((parentTopic) => {
+        var childrenTopics = _topicUserTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid));
+        parentTopic.categories.push.apply(parentTopic.categories,childrenTopics);
+        parentTopic.categories.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+    });
+
+    _topicUserTree = _topicUserTree.filter(t => t.parentCategoryId === '-1');
     _topicUserTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
 };
 
-var getAllTopics = function() {
-    if (!_allTopics) {
-        if (_topicUserTree) {
-            _allTopics = _topicUserTree.slice().concat(_topicTree.slice());
-        }
+var addUserTopic = function(topic) {
+    if (topic.parentCategoryId === "-1") {
+        topic.categories = [];
+        _topicUserTree.push(topic);
     }
-    return _allTopics;
+    else {
+        var parentTopic = _topicUserTree.filter(t => (t.uuid === topic.parentCategoryId));
+        parentTopic.topics = topic;
+    }
+}
+
+var getAllTopics = function() {
+    if (_topicUserTree) {
+        return _topicUserTree.slice().concat(_topicTree.slice());
+    }
+    else {
+        return _topicTree.slice();
+    }
 };
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
-    getAllTopics: function(){
-        return getAllTopics();
+    getAllTopics: function(parentCategoryId){
+        if (parentCategoryId === undefined) {
+            return getAllTopics();
+        }
+        else {
+            return getAllTopics().filter(function(t) {return t.uuid === parentCategoryId;})[0].categories;
+        }
     },
 
     getTopics: function() {
@@ -90,14 +119,6 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             var result = getAllTopics().filter(t => t.uuid === topicId);
             return result.length === 1 ? result[0] : undefined;
         }
-    },
-
-    getTopicByName: function(topicName){
-        var result = getAllTopics().filter(t => t.name === topicName);
-        if (result.length === 0){
-            result = _topics.filter(t => t.name === topicName );
-        }
-        return result.length > 0 ? result[0] : undefined;
     },
 
     getFullTopicName: function(topicId){
@@ -162,7 +183,7 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             break;
 
         case TopicConstants.TOPIC_ADDED:
-            _topics.push(action.payload);
+            addUserTopic(action.payload);
             TopicStore.emitChange();
             break;
 

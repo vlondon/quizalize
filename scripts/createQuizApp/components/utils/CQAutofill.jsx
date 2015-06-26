@@ -8,8 +8,9 @@ var CQAutofill = React.createClass({
     propTypes: {
         tabIndex: React.PropTypes.number,
         limit: React.PropTypes.number,
-        data: React.PropTypes.any,
-        onChange: React.PropTypes.func.isRequired
+        placeholder: React.PropTypes.string,
+        data: React.PropTypes.func,
+        onChange: React.PropTypes.func.isRequired,
     },
 
     getDefaultProps: function() {
@@ -24,7 +25,7 @@ var CQAutofill = React.createClass({
         return {
             searchString: selectedTopic || '',
             selected: undefined,
-            topics: TopicStore.getAllTopics()
+            topics: []
         };
     },
 
@@ -39,7 +40,7 @@ var CQAutofill = React.createClass({
     onChange: function(){
         var newState = {};
         console.log('onChange');
-        newState.topics = TopicStore.getAllTopics();
+        newState.topics = this.props.data();
 
         newState.topicsAutofill = [];
 
@@ -67,7 +68,7 @@ var CQAutofill = React.createClass({
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
 
-        console.log('nextProps!!', nextProps, topic, searchString);
+        //console.info('nextProps!!', nextProps, topic, searchString);
         this.setState({
             searchString
         });
@@ -101,7 +102,7 @@ var CQAutofill = React.createClass({
     },
 
     handleClick: function(option){
-        console.log('option clicked', option);
+        //console.info('option clicked', option);
         this.setState({
             selected: option,
             searchString: option.name
@@ -188,7 +189,7 @@ var CQAutofill = React.createClass({
                     value={this.state.searchString}
                     onFocus={this.handleFocus}
                     onChange={this.handleChange}
-                    placeholder="e.g. Earthquakes (Optional)"
+                    placeholder={this.props.placeholder}
                     tabIndex={this.props.tabIndex}
                     className="form-control"/>
 
