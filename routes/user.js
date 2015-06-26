@@ -63,10 +63,10 @@ exports.authenticate =  function(req, res) {
 
     zzish.authenticate(userEmail, encrypt(userPassword), function(err, data) {
         if (!err && typeof data === 'object') {
-            res.status(200);
+            res.status(200).send(data);
         }
         else {
-            res.status(err).send(data);
+            res.status(500).send(err);
         }
     });
 };

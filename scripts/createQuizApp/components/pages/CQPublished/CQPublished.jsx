@@ -1,11 +1,17 @@
 var React = require('react');
 var router = require('createQuizApp/config/router');
+
+var CQViewClassList = require('createQuizApp/components/views/CQViewClassList');
 var CQLink = require('createQuizApp/components/utils/CQLink');
+
+
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
+
+
 
 var CQPublished = React.createClass({
 
@@ -160,27 +166,6 @@ var CQPublished = React.createClass({
 
     render: function() {
 
-
-        var classNameForm;
-
-        if (this.state.selectedClass === 'new'){
-            classNameForm = (
-                <div className="col-sm-12 input">
-                    <label className="control-label">Class name</label>
-                    <input type="text"
-                        className="form-control"
-                        onChange={this.handleNewClassInput}
-                        value={this.state.newClass}
-                    />
-
-                </div>
-            );
-        } else {
-            classNameForm = undefined;
-        }
-
-        var playButtonEnabled = this.state.selectedClass !== 'new' ||  (this.state.selectedClass === 'new' && this.state.newClass.length > 0);
-
         return (
             <CQPageTemplate className="cq-published">
 
@@ -197,7 +182,7 @@ var CQPublished = React.createClass({
                     </p>
                 </div>
 
-
+                <CQViewClassList/>
                 <div className="cq-published__assign">
                     Set as a class game (or homework)…
                     <ul className="list-unstyled">
