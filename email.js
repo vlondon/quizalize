@@ -73,14 +73,7 @@ function parseData(input, params) {
 }
 
 
-exports.sendDocumentEmail = function(req, res) {
-	var doc = req.body.doc;
-	var email = req.body.email;
-	var from = req.body.from;
-	var params = req.body.params;
-	var htmlParams =  req.body.htmlParams || params;
-	var subject = req.body.subject;
-
+exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams) {
 	fs.stat(__dirname + '/emails/html/' + doc + ".txt", function(err) {
 		if (!err) {
 			fs.readFile(__dirname + '/emails/html/' + doc + ".txt", 'utf-8', function(err1, contents) {
@@ -98,4 +91,15 @@ exports.sendDocumentEmail = function(req, res) {
 			});
 		}
 	});
+}
+
+exports.sendDocumentEmail = function(req, res) {
+	var doc = req.body.doc;
+	var email = req.body.email;
+	var from = req.body.from;
+	var params = req.body.params;
+	var htmlParams =  req.body.htmlParams || params;
+	var subject = req.body.subject;
+
+	exports.sendEmailTemplate(from,email,subject,doc,params,htmlParams);
 };
