@@ -2,6 +2,8 @@ var React = require('react');
 var router = require('createQuizApp/config/router');
 
 var CQViewClassList = require('createQuizApp/components/views/CQViewClassList');
+var CQViewQuizMarketplaceOptions = require('createQuizApp/components/views/CQViewQuizMarketplaceOptions');
+
 var CQLink = require('createQuizApp/components/utils/CQLink');
 
 
@@ -183,6 +185,8 @@ var CQPublished = React.createClass({
                 </div>
 
                 <CQViewClassList
+                    quizId={this.props.quizId}/>
+                <CQViewQuizMarketplaceOptions
                     quizId={this.props.quizId}/>
 
 

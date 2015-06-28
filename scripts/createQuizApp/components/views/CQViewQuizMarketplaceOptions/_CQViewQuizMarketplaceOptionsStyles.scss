@@ -1,5 +1,5 @@
-.cq-quizmarketplace {
-    /* background: #BB27DD; */
+.cq-viewclass {
+    background: #BB27DD;
     max-width: 600px;
     border-radius: 25px;
     min-height: 50px;
@@ -7,9 +7,9 @@
     font-size: 18px;
 
     font-weight: bold;
-    /* color: #FFF; */
+    color: #FFF;
     padding: 10px 25px;
-    /* box-shadow: 0 5px 10px rgba($brand-color-black, .4); */
+    box-shadow: 0 5px 10px rgba($brand-color-black, .4);
 
 
     input {
