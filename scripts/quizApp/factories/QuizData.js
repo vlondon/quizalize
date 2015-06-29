@@ -413,7 +413,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, data) {
 
                         if (!err) {
-                            data.categories = data.categories.filter(c => c !== null);
+                            data.categories = data.pcategories.filter(c => c !== null).concat(data.categories.filter(c => c !== null));
                             data.contents = data.contents.filter(c => c !== null);
                             processQuizCategories(data);
                         }

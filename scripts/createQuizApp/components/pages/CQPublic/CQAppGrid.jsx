@@ -91,7 +91,7 @@ var CQAppGrid = React.createClass({
 
     handleClick: function(app){
         if (app.uuid === 'new'){
-            router.setRoute(`quiz/apps`);
+            router.setRoute(`apps`);
         } else {
             router.setRoute(`/quiz/app/${app.uuid}`);
         }
