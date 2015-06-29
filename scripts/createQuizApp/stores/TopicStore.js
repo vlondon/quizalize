@@ -26,6 +26,7 @@ var createTopicTree = function(data){
     if (!_topicTree) {
         subjectHash = {};
         _allSubjects = data.psubjects.slice();
+        _allSubjects.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
         data.psubjects.slice().forEach((subject) => {
             subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
         });
