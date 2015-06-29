@@ -22,7 +22,9 @@ var UserStore = assign({}, EventEmitter.prototype, {
         var user = _users[userId];
         if (user === undefined){
             UserActions.getPublicUser(userId);
+            _users[userId] = null;
         }
+        console.log('retrieving user iid', userId, user);
         return user;
     },
 
@@ -90,6 +92,7 @@ AppDispatcher.register(function(action) {
             break;
 
         case UserConstants.USER_PUBLIC_LOADED:
+            console.log('UserConstants.USER_PUBLIC_LOADED', action);
             var user = action.payload;
             _users[user.uuid] = user;
             UserStore.emitChange();

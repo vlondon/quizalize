@@ -1,0 +1,29 @@
+.cq-profile {
+    @include clearfix();
+    margin-top: 40px;
+    position: relative;
+    @at-root #{&}__left {
+        width: 100%;
+
+        @include media($size-mobile) {
+            position: absolute;
+            left: 0;
+            width: 210px;
+            float: left;
+            display: block;
+        }
+    }
+
+    @at-root #{&}__right {
+        width: 100%;
+
+        @include media($size-mobile) {
+            width: auto;
+            margin-left: 220px;
+        }
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+}

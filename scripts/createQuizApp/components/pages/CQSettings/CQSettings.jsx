@@ -1,5 +1,6 @@
 var React = require('react');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions = require('createQuizApp/actions/UserActions');
 var assign = require('object-assign');
@@ -11,7 +12,6 @@ var CQSettings = React.createClass({
 
     getInitialState: function() {
         var user = UserStore.getUser();
-
         return {
             user
         };
@@ -44,7 +44,11 @@ var CQSettings = React.createClass({
         facebookSDK.getProfilePicture()
             .then((profilePictureUrl) => {
                 console.log('we got', profilePictureUrl);
-                this.setState({profilePicture: profilePictureUrl});
+                var user = assign({}, this.state.user);
+                user.avatar = profilePictureUrl;
+                this.setState({user}, ()=>{
+                    UserActions.update(this.state.user);
+                });
             });
     },
 
@@ -75,6 +79,14 @@ var CQSettings = React.createClass({
                     </div>
 
                     <div className="cq-settings__profile-item form-group">
+                       <label htmlFor="url">URL</label>
+                       <input type="url" id="url"
+                           className="form-control"
+                           onChange={this.handleChange.bind(this, 'url')}
+                           value={this.state.user.attributes.url}/>
+                    </div>
+
+                    <div className="cq-settings__profile-item form-group">
                         <label htmlFor="location">Location</label>
                         <input type="text" id="location"
                             className="form-control"
@@ -84,9 +96,16 @@ var CQSettings = React.createClass({
                     </div>
 
 
-                    <div className="cq-settings__profile-item form-group" style={{display: 'none'}}>
-                        Profile picture
-                        {this.state.profilePicture ? <img src={this.state.profilePicture} alt=""/> : undefined }
+                    <div className="cq-settings__profile-item cq-settings__profilepicture form-group">
+                        <label>Profile picture</label>
+                        <div className="cq-settings__picture">
+
+                            <CQViewProfilePicture
+                                width="150"
+                                height="150"
+                                name={this.state.user.name}
+                                picture={this.state.user.avatar}/>
+                        </div>
                         <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
                     </div>
 
@@ -96,19 +115,12 @@ var CQSettings = React.createClass({
                     </div>
 
 
+
                 </div>
             </CQPageTemplate>
         );
     }
 
-
-                    //<div className="cq-settings__profile-item form-group">
-                    //    <label htmlFor="url">URL</label>
-                    //    <input type="url" id="url"
-                    //        className="form-control"
-                    //        onChange={this.handleChange.bind(this, 'url')}
-                    //        value={this.state.user.attributes.url}/>
-                    //</div>
 
 });
 

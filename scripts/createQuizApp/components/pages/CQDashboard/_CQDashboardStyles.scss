@@ -17,6 +17,13 @@
         }
     }
 
+    @at-root #{&}__profilepicture {
+
+        float: left;
+        /* background: rgba(green, .5); */
+        padding: 10px;
+    }
+
     @at-root #{&}__dashboard {
         width: 100%;
         /* background: rgba(red, .5); */

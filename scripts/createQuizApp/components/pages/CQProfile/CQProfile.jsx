@@ -119,8 +119,6 @@ var CQProfile = React.createClass({
 
         if (this.state.showQuizzes) {
 
-
-
             quizList = (
                 <CQViewQuizList
                     isQuizInteractive={true}
@@ -133,12 +131,17 @@ var CQProfile = React.createClass({
             );
         }
         return (
-            <CQPageTemplate className="container cq-public">
-                <CQDashboardProfile user={this.state.puser}/>
-                {quizDetails}
-                <CQViewQuizFilter appEnabled={false} onViewChange={this.handleViewChange} allTopics={false} quizzes={this.state.quizzes} profileId={this.state.profileId}/>
+            <CQPageTemplate className="container cq-profile">
+                <div className="cq-profile__left">
+                    <CQDashboardProfile user={this.state.puser}/>
+                </div>
+                <div className="cq-profile__right">
+                    <h3>Viewing public quizzes from {this.state.puser.name}</h3>
+                    {quizDetails}
+                    <CQViewQuizFilter appEnabled={false} onViewChange={this.handleViewChange} allTopics={false} quizzes={this.state.quizzes} profileId={this.state.profileId}/>
+                    {quizList}
+                </div>
 
-                {quizList}
 
             </CQPageTemplate>
         );
