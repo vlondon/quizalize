@@ -178,6 +178,7 @@ var CQEditNormal = React.createClass({
     handleTopic: function(topicId){
         var newQuestionState = assign({}, this.state.question);
         newQuestionState.topicId = topicId;
+        console.log('we got new topic', topicId, newQuestionState);
         this.props.onChange(newQuestionState);
     },
 

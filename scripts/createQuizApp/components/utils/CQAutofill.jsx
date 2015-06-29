@@ -23,12 +23,15 @@ var CQAutofill = React.createClass({
     getInitialState: function() {
 
         var initialState = this.getState();
+
         if (this.props.value) {
-            initialState.searchString = TopicStore.getTopicById(this.props.value).name;
+            var topic = TopicStore.getTopicById(this.props.value);
+            initialState.searchString = topic ? topic.name : '';
         }
         else {
             initialState.searchString = initialState.searchString || '';
         }
+
         initialState.selected = initialState.selected || undefined;
 
         return initialState;
@@ -83,7 +86,6 @@ var CQAutofill = React.createClass({
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
 
-        //console.info('nextProps!!', nextProps, topic, searchString);
         this.setState({
             searchString
         });
@@ -133,7 +135,7 @@ var CQAutofill = React.createClass({
     },
 
     handleClick: function(option){
-        console.info('option clicked', option.name);
+
         if (option) {
             this.setState({
                 selected: option,
