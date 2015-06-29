@@ -36,7 +36,7 @@ var createNewTopicsForQuiz = function(quiz){
 
     var createTopicForQuestion = function(question){
         var topic = TopicStore.getTopicById(question.topicId);
-        console.log("Creating new topic for",topic);
+        console.log("Creating new topic for", topic);
         // we create a new topic and save it
         topic = {
             uuid: uuid.v4(),
@@ -122,16 +122,10 @@ var QuizActions = {
 
         quizPromise
             .then((quiz) => {
-                // // let's stitch quizzes to their topic
 
-                //
                 var getCategoryFormUuid = function(){
 
-                    // if (!quiz.categoryId) {
-                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                    //     quiz.categoryId = fq.categoryId;
-                    // }
-                    //
+
                     if (quiz.meta.categoryId) {
                         var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
                         console.log('looking for meta', quiz.meta.categoryId, topicFound);

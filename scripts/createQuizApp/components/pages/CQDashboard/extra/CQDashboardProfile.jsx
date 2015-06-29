@@ -60,13 +60,19 @@ var CQDashboardProfile = React.createClass({
                     <h3>{this.state.user.name}</h3>
 
                     <div>
+                        <small>
+                            School
+                        </small>
                         <a href={this.state.user.attributes.url}
                             target="_blank"
                             rel="nofollow">
                             {this.state.user.attributes.school}
                         </a>
                     </div>
-                    <div>{this.state.user.attributes.location}</div>
+                    <div>
+                        <small>City</small>
+                        {this.state.user.attributes.location}
+                    </div>
 
                 </div>
             );

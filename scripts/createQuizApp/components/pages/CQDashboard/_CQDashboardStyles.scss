@@ -1,5 +1,16 @@
-.ql-container {
-    @include ql-container;
+.cq-dashboard__profile {
+    width: 100%;
+    float: left;
+    /* background: rgba(green, .5); */
+    padding: 10px;
+    small {
+        display: block;
+        color: $brand-color-grey;
+        margin-top: 10px;
+    }
+    @include media($size-mobile) {
+        width: 25%;
+    }
 }
 
 .cq-dashboard {
@@ -7,15 +18,7 @@
     @include clearfix;
 
 
-    @at-root #{&}__profile {
-        width: 100%;
-        float: left;
-        /* background: rgba(green, .5); */
-        padding: 10px;
-        @include media($size-mobile) {
-            width: 25%;
-        }
-    }
+
 
     @at-root #{&}__profilepicture {
 

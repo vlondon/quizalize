@@ -28,6 +28,7 @@ var QuizApi = {
     },
 
     searchQuizzes: function(search = '', categoryId, profileId){
+        console.log('searchQuizzes');
         return new Promise(function(resolve, reject){
             request.post(`/search/quizzes`)
                 .send({search, categoryId, profileId})
