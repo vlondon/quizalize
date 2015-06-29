@@ -175,7 +175,7 @@ var CQQuizzes = React.createClass({
 
                                         It looks like you haven't created any quizzes yet, but don't worry, you can start by doing the following
                                         <ol>
-                                            <li>Experience Quizalize by playing our Quiz of the Day</li>
+                                            <li>Read or print out our <a target="_blank" href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">quick start guide</a></li>
                                             <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classrom. It only takes 60 seconds!</li>
                                             <li>Browse our <CQLink href="/quiz/public">marketplace for content</CQLink> created by other Quizalize users.</li>
                                         </ol>

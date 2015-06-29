@@ -208,7 +208,7 @@ var CQCreate = React.createClass({
                                 value={this.state.quiz.meta.categoryId}
                                 onChange={this.handleTopic}
                                 data={TopicStore.getAllTopics}
-                                placeholder="e.g. Earthquakes (Optional)"
+                                placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
                                 tabIndex="2"/>
                             <br/>
                         </div>

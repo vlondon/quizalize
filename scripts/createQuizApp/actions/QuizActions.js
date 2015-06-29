@@ -4,7 +4,7 @@ var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 var Promise             = require('es6-promise').Promise;
 var TopicStore          = require('createQuizApp/stores/TopicStore');
 var TopicActions        = require('createQuizApp/actions/TopicActions');
-
+var router                  = require('createQuizApp/config/router');
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
@@ -202,15 +202,25 @@ var QuizActions = {
 
         var addOrCreateCategory = function(){
             var topicUuid;
-
+            var name = "";
             var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
+            if (quiz.meta.categoryId === undefined) {
+                topicFound = TopicStore.getTopicByName("");
+                if (!topicFound) {
+                    //we have an empty topic
+                    topicFound = {
+                        uuid: "-1",
+                        name: ""
+                    };
+                }
+            }
 
             if (topicFound && topicFound.uuid !== "-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    name: topicFound.name,
+                    name: name,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false

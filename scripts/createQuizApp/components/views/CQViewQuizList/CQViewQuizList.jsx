@@ -235,12 +235,6 @@ var CQViewQuizList = React.createClass({
         router.setRoute(`/quiz/create`);
     },
 
-    handlePublish: function(quiz){
-        if (quiz){
-            router.setRoute(`/quiz/published/${quiz.uuid}#publish`);
-        }
-    },
-
     render: function() {
         var author = function(){};
         var reviewButton = function(){};

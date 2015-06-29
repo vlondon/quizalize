@@ -130,7 +130,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
                 self.leaderboard = score;
                 self.facebookLink = `http://www.facebook.com/sharer/sharer.php?u=http://quizalize.com/qapp/${self.data.quizId}`;
                 self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.meta.name + ' on @Quizalizeapp and I got ' + self.totals.score + ' points. http://www.quizalize.com/qapp/' + self.data.quizId)}`;
-                addReactComponent();
+                //addReactComponent();
             });
     }
     // QuizData.selectQuiz(self.catId, self.id, function(err, result) {
