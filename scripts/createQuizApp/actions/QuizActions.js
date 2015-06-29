@@ -202,15 +202,25 @@ var QuizActions = {
 
         var addOrCreateCategory = function(){
             var topicUuid;
-
+            var name = "";
             var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
+            if (quiz.meta.categoryId === undefined) {
+                topicFound = TopicStore.getTopicByName("");
+                if (!topicFound) {
+                    //we have an empty topic
+                    topicFound = {
+                        uuid: "-1",
+                        name: ""
+                    };
+                }
+            }
 
             if (topicFound && topicFound.uuid !== "-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    name: topicFound.name,
+                    name: name,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false

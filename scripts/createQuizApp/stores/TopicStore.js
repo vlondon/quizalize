@@ -45,12 +45,13 @@ var createTopicTree = function(data){
         _topicTree.push.apply(_topicTree, _dtopics);
         _alltopics.push.apply(_alltopics, data.pcategories.slice(), data.categories.slice());
         _topicTree = _topicTree.filter(t => t.parentCategoryId === '-1' || t.parentCategoryId === null);
-        _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+
         _topicTree.forEach((parentTopic) => {
             if (parentTopic.subjectId) {
                 parentTopic.name = subjectHash[parentTopic.subjectId].name + " > " + parentTopic.name;
             }
         });
+        _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
     }
 };
 
@@ -103,7 +104,12 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             return getAllTopics();
         }
         else {
-            return getAllTopics().filter(function(t) { return t.uuid === parentCategoryId; })[0].categories;
+            var allTopics = getAllTopics();
+            allTopics = allTopics.filter(function(t) { return t.uuid === parentCategoryId; });
+            if (allTopics.length>0) {
+                return allTopics[0].categories;
+            }
+            return [];
         }
     },
 
@@ -127,6 +133,16 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         }
         else {
             var result = _alltopics.filter(t => t.uuid === topicId);
+            return result.length === 1 ? result[0] : undefined;
+        }
+    },
+
+    getTopicByName: function(topicName){
+        if (_temporaryTopic && _temporaryTopic.name === topicName) {
+            return _temporaryTopic;
+        }
+        else {
+            var result = _alltopics.filter(t => t.name === topicName);
             return result.length === 1 ? result[0] : undefined;
         }
     },
