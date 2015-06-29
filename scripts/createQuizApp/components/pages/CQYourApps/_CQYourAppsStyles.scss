@@ -1,0 +1,16 @@
+.cq-yourapps {
+
+    @at-root #{&}__header {
+        @include cq-header;
+    }
+
+    @at-root #{&}__body {
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+
+        p {
+            margin-top: 30px;
+        }
+    }
+}

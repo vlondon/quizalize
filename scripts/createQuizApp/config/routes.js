@@ -16,7 +16,6 @@ var CQEdit              = require('createQuizApp/components/pages/CQEdit');
 var CQAssignments       = require('createQuizApp/components/pages/CQAssignments');
 var CQPublished         = require('createQuizApp/components/pages/CQPublished');
 var CQPublishedInfo     = require('createQuizApp/components/pages/CQPublishedInfo');
-var CQHelp              = require('createQuizApp/components/pages/CQHelp');
 var CQSettings          = require('createQuizApp/components/pages/CQSettings');
 var CQApp               = require('createQuizApp/components/pages/CQApp');
 var CQYourApps          = require('createQuizApp/components/pages/CQYourApps');
@@ -87,16 +86,6 @@ var pages = {
         }
     },
 
-    helpPage: {
-        path: '/quiz/help',
-        needsLogin: undefined,
-        renderer: function(){
-            React.render(
-                React.createElement(CQHelp, null),
-                document.getElementById('reactApp')
-            );
-        }
-    },
     settingsPage: {
         path: '/quiz/settings',
         needsLogin: true,
@@ -107,6 +96,7 @@ var pages = {
             );
         }
     },
+
     publicPage: {
         path: '/quiz/public',
         needsLogin: undefined,

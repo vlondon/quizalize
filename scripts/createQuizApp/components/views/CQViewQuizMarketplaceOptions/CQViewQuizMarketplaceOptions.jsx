@@ -44,7 +44,6 @@ var CQViewQuizMarketplaceOptions = React.createClass({
     },
 
     handleChange: function(ev){
-        console.log('ev.target.value,', ev.target.value);
         var price = Number(ev.target.value);
         this.setState({price});
     },
@@ -60,7 +59,6 @@ var CQViewQuizMarketplaceOptions = React.createClass({
             QuizActions.publishQuiz(this.state.quiz, settings);
         }
 
-        //QuizActions.publishQuiz()
     },
 
 

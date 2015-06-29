@@ -200,22 +200,25 @@ var CQQuizzes = React.createClass({
         return (
             <CQPageTemplate className="container cq-quizzes">
 
-                <div className="container">
+                <div>
                     {emptyState}
 
 
                     {apps}
-
-                    <h2>Your Quizzes
-                        <div className="pull-right">
-                            {newApp}&nbsp;
-                            <CQLink href="/quiz/create" className="btn btn-primary">
-                                <i className="fa fa-plus"></i> New quiz
-                            </CQLink>
-                        </div>
+                    <h2 className='cq-quizzes__header'>
+                        <i className="fa fa-th-large"/> Your Quizzes
                     </h2>
 
-                    <p>{introCopy}</p>
+                    <div className="cq-quizzes__actions">
+                        {newApp}&nbsp;
+                        <CQLink href="/quiz/create" className="btn btn-primary">
+                            <i className="fa fa-plus"></i> New quiz
+                        </CQLink>
+                    </div>
+
+                    <p>
+                        {introCopy}
+                    </p>
 
                     {createApp}
 

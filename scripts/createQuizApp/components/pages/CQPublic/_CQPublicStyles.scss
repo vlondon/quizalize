@@ -9,10 +9,9 @@
     }
 
     @at-root #{&}__header {
-        color: $brand-color-grey;
-        padding-bottom: 8px;
-        border-bottom: 1px solid $brand-color-grey-lighter;
+        @include cq-header;
     }
+
     @at-root #{&}__list {
         list-style: none;
         margin: 0;

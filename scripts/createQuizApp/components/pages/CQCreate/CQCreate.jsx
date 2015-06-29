@@ -121,7 +121,6 @@ var CQCreate = React.createClass({
     componentWillUnmount: function() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-        TopicStore.removeChangeListener(this.onChange);
     },
 
     handleChange: function(property, event) {

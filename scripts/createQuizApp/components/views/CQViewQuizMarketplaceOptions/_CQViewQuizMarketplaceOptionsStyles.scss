@@ -1,4 +1,5 @@
 .cq-quizmarketplace {
+
     background: $brand-color-grey-lighter;
     max-width: 600px;
     border-radius: 25px;
@@ -21,7 +22,6 @@
         display: inline-block;
         text-align: center;
         line-height: 40px;
-
     }
 
     input[type='radio']{
@@ -31,6 +31,7 @@
     input {
         color: $brand-color-grey;
     }
+
     label {
         font-weight: normal;
         cursor: pointer;

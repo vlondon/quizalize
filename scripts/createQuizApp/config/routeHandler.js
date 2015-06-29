@@ -26,7 +26,7 @@ router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
 
-router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
+
 router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
