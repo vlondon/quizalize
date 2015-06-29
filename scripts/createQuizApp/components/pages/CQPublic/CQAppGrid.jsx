@@ -53,11 +53,9 @@ var CQAppGrid = React.createClass({
                     quizzes: []
                 }
             };
-            console.log('apps aaaa', apps);
             if (apps.filter(a => a.uuid === 'new').length === 0){
                 apps.push(appPlaceholder);
             }
-
             return apps;
 
         };

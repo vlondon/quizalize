@@ -10,7 +10,6 @@ var CQViewQuizAuthor = React.createClass({
     },
 
     render: function() {
-        console.log('author', this.props.author);
         return (
             <span className="cq-viewquizlist__quizauthor">
                 <CQLink href={`/quiz/user/${this.props.author.uuid}`} stopPropagation={true}>

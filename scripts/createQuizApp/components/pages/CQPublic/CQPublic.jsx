@@ -143,6 +143,7 @@ var CQPublic = React.createClass({
                         isPaginated={true}
                         onQuizClick={this.handleDetails}
                         quizzes={this.state.quizzes}
+                        showCta={true}
                         className="cq-public__list"
                         sortBy="time">
 
