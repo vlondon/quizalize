@@ -8,7 +8,6 @@ var CQPublishQuiz = React.createClass({
     },
 
     handleIgnore: function(ev) {
-        console.log("IGNORE");
         ev.preventDefault();
         ev.stopPropogation();
     },

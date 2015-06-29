@@ -1,9 +1,12 @@
 .cq-create {
     /* background: $brand-color-grey-lighter; */
-    margin-top: 20px;
-    padding: 20px;
-    max-width: 600px;
-    margin: 20px auto;
+
+    @at-root #{&}__body {
+        margin-top: 20px;
+        padding: 20px;
+        max-width: 600px;
+        margin: 20px auto;
+    }
 
     .form-cotrol {
         height: auto;
@@ -30,4 +33,11 @@
         font-size: 24px;
 
     }
+
+    @at-root #{&}__moresettings {
+        margin-top: 40px;
+
+    }
+
+
 }

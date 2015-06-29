@@ -65,32 +65,35 @@ var CQViewQuizMarketplaceOptions = React.createClass({
         return (
             <div className='cq-quizmarketplace'>
                 <h3>
-                    Set pricing and marketplace options
+                    <span className="cq-quizmarketplace__icon">
+                        <i className="fa fa-tags"></i>
+                    </span> Set pricing and marketplace options
+
                 </h3>
-                <div name="publish">
+                <div className="cq-quizmarketplace__list">
                     <p>
                         We’ll make your hard work available to teachers around the world in the Marketplace - set your price
                     </p>
 
-                    <ul>
-                        {this.state.prices.map( (price, key) =>{
-                            var selected = this.state.price === price;
-                            return (
-                                <li>
-                                    <input
-                                        type="radio"
-                                        name="price"
-                                        id={`price-${key}`}
-                                        value={price}
-                                        onChange={this.handleChange}
-                                        checked={selected}/>
-                                    <label htmlFor={`price-${key}`}>
-                                        &nbsp;{priceFormat(price)}
-                                    </label>
-                                </li>
-                            );
-                        })}
-                    </ul>
+
+                    {this.state.prices.map( (price, key) =>{
+                        var selected = this.state.price === price;
+                        return (
+                            <div>
+                                <input
+                                    type="radio"
+                                    name="price"
+                                    id={`price-${key}`}
+                                    value={price}
+                                    onChange={this.handleChange}
+                                    checked={selected}/>
+                                <label htmlFor={`price-${key}`}>
+                                    &nbsp;{priceFormat(price)}
+                                </label>
+                            </div>
+                        );
+                    })}
+
                     <button className="btn btn-default"
                         onClick={this.handleDone}>
                         Publish to Marketplace
