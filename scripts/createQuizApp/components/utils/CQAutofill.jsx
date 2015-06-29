@@ -73,7 +73,6 @@ var CQAutofill = React.createClass({
             selected = newState.topicsAutofill.filter(t => t.id === this.props.value)[0];
         }
         newState.searchString = selected ? selected.name : undefined;
-        console.log('onChange', this.props.value, newState);
         return newState;
     },
 
