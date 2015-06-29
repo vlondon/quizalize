@@ -35,7 +35,7 @@ var CQviewQuizFilter = React.createClass({
     },
 
     getState: function(){
-        var topics = TopicStore.getPublicTopics();
+        var topics = TopicStore.getPublicSubjects();
         return {
             topics,
             searchString: '',
