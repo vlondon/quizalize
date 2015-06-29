@@ -168,6 +168,12 @@ var CQPublished = React.createClass({
 
     render: function() {
 
+        var publishQuiz = () => {
+            if (!this.state.settings.publishing && !this.state.settings.originalQuizId) {
+                return (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>)
+            }
+        }
+
         return (
             <CQPageTemplate className="cq-published">
 
@@ -186,8 +192,7 @@ var CQPublished = React.createClass({
 
                 <CQViewClassList
                     quizId={this.props.quizId}/>
-                <CQViewQuizMarketplaceOptions
-                    quizId={this.props.quizId}/>
+                    {publishQuiz()}
 
 
             </CQPageTemplate>
