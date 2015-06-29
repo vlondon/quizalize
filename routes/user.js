@@ -107,7 +107,7 @@ exports.completeRegistration = function(req, res) {
     zzish.updatePassword(userId, encrypt(req.body.password), function(err, resp) {
         logger.trace("Result from Verifying User", err, resp);
         if (!err) {
-            zzish.user(uuid, function(err2, resp2) {
+            zzish.user(userId, function(err2, resp2) {
                 if (!handleError(err2, res)){
                     res.send(resp2);
                 }
