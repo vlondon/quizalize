@@ -213,8 +213,11 @@ AppDispatcher.register(function(action) {
         case QuizConstants.QUIZ_META_UPDATED:
             var quizToBeUpdated = action.payload;
             var quizFromArray = _quizzes.filter(q => q.uuid === quizToBeUpdated.uuid)[0];
-            console.log('updating meta for ', quizFromArray, quizToBeUpdated);
-            _quizzes[_quizzes.indexOf(quizFromArray)] = quizToBeUpdated;
+            if (quizFromArray){
+                _quizzes[_quizzes.indexOf(quizFromArray)] = quizToBeUpdated;
+            }
+
+
             QuizStore.emitChange();
             break;
 
