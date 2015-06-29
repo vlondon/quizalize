@@ -1,0 +1,17 @@
+{
+  "name": "Quizalize Student",
+  "description": "Play quizzes your teacher has assigned you or any public quiz.",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "icons": {
+    "128": "icon.png"
+  },
+  "app": {
+    "urls": [
+      "http://www.quizalize.com/app"
+    ],
+    "launch": {
+      "web_url": "http://www.quizalize.com/app"
+    }
+  }
+}
