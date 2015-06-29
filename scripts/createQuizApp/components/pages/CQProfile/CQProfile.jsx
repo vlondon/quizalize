@@ -146,7 +146,6 @@ var CQProfile = React.createClass({
                 <div className="cq-profile__right">
                     <h3>Viewing public quizzes from {this.state.puser && this.state.puser.name}</h3>
                     {quizDetails}
-                    <CQViewQuizFilter appEnabled={false} onViewChange={this.handleViewChange} allTopics={false} quizzes={this.state.quizzes} profileId={this.state.profileId}/>
                     {quizList}
                 </div>
 
