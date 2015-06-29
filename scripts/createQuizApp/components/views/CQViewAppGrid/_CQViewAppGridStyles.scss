@@ -9,6 +9,14 @@
     text-align: center;
     position: relative;
 
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    &.cq-appgrid__n5 {
+        min-height: 330px;
+    }
     @at-root #{&}__app {
         display: inline-block;
         vertical-align: bottom;
