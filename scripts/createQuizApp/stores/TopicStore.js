@@ -42,8 +42,8 @@ var createUserTopicTree = function(data){
 
         _topicUserTree = _topicUserTree.filter(t => t.parentCategoryId === '-1');
         _topicUserTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-        console.warn('_topicUserTree 2', _topicUserTree);
-        _alltopics.push(data.slice());
+        _alltopics = _alltopics.concat(data);
+        console.warn('_topicUserTree 2', _alltopics, data);
     }
 };
 
@@ -86,14 +86,26 @@ var createTopicTree = function(data){
 
 
 var addUserTopic = function(topic) {
+    debugger;
+    _alltopics.push(topic);
     if (topic.parentCategoryId === "-1") {
         topic.categories = [];
         _topicUserTree.push(topic);
+
     }
     else {
         var parentTopic = _topicUserTree.filter(t => (t.uuid === topic.parentCategoryId));
-        parentTopic.topics = topic;
+        if (parentTopic.length === 0) {
+            parentTopic = _topicTree.filter(t => (t.uuid === topic.parentCategoryId));
+        }
+        console.log('parentTopic', parentTopic);
+        if (parentTopic[0]){
+
+            parentTopic[0].categories.push(topic);
+            parentTopic[0].categories.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        }
     }
+
 };
 
 var getAllTopics = function() {
@@ -141,7 +153,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         }
         else {
             var result = getAllTopics().filter(t => t.uuid === topicId);
-            console.log('result', getAllTopics(), topicId, result);
+            console.log('result', getAllTopics().length, getAllTopics()[453], topicId, result);
             return result.length === 1 ? result[0] : undefined;
         }
     },

@@ -83,6 +83,7 @@ var CQAutofill = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
+
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
 

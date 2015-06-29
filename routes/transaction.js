@@ -39,7 +39,9 @@ var cloneQuiz = function(quiz, profileId) {
     quiz.meta.updated = Date.now();
     quiz.meta.profileId = profileId;
 
+
     delete quiz.meta.live;
+    delete quiz.meta.published;
     delete quiz.meta.featured;
     delete quiz.meta.featureDate;
 
