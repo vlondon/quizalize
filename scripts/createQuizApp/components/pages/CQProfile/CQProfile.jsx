@@ -24,14 +24,16 @@ var CQProfile = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         this.setState(this.getState(nextProps));
-        QuizActions.searchPublicQuizzes('', '', nextProps.profileId);
+        var profileId = nextProps.profileId || UserStore.getUser().uuid;
+        QuizActions.searchPublicQuizzes('', '', profileId);
     },
 
     getInitialState: function() {
         var newState =  this.getState();
         newState.showQuizzes = true;
         newState.user = UserStore.getUser();
-        QuizActions.searchPublicQuizzes('', '', this.props.profileId);
+        var profileId = this.props.profileId || UserStore.getUser().uuid;
+        QuizActions.searchPublicQuizzes('', '', profileId);
         return newState;
     },
 
@@ -49,14 +51,18 @@ var CQProfile = React.createClass({
 
     getState: function(props){
         props = props || this.props;
-        var quizzes = QuizStore.getPublicProfileQuizzes(props.profileId);
+        var profileId = props.profileId || UserStore.getUser().uuid;
+        console.log('profileId', profileId);
+        var quizzes = QuizStore.getPublicProfileQuizzes(profileId);
 
         if (quizzes) {
             var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
         }
-
+        var puser;
         if (props.profileId) {
-            var puser = UserStore.getPublicUser(props.profileId);
+            puser = UserStore.getPublicUser(props.profileId);
+        } else {
+            puser = UserStore.getUser();
         }
         var newState = { puser, quizzes };
 

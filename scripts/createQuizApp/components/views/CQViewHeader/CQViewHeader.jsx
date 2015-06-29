@@ -9,6 +9,9 @@ var UserActions = require('createQuizApp/actions/UserActions');
 
 
 var sections = {
+    apps: [
+        'apps'
+    ],
     quiz: [
         'quizzes',
         'create'
@@ -71,6 +74,13 @@ var CQViewHeader = React.createClass({
                 </li>));
 
                 buttons.push((
+                    <li id="cq-apps" key='cq-apps'>
+                        <CQLink href="/quiz/apps" className={isActive('apps') ? 'navbar-btn active' : 'navbar-btn'}>
+                            <i className="fa fa-archive"></i> Your apps
+                        </CQLink>
+                    </li>));
+
+            buttons.push((
                 <li id="cq-assignments" key='cq-assignments'>
                     <CQLink href="/quiz/assignments"
                         className={isActive('classes') ? 'navbar-btn active' : 'navbar-btn'}>
