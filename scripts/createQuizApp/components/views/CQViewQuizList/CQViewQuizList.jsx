@@ -188,7 +188,7 @@ var CQViewQuizList = React.createClass({
 
         if (obj && obj.name && obj.name.length > 0){
             quizzes = quizzes.filter( q => {
-                var nameMatch = false;
+                var nameMatch = fafhndlse;
                 var categoryMatch = false;
                 nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
                 if (q._category) {
@@ -212,11 +212,6 @@ var CQViewQuizList = React.createClass({
         if (quiz){
             router.setRoute(`/quiz/published/${quiz.uuid}#publish`);
         }
-    },
-
-    handleIgnore: function(ev) {
-        console.log("IGNORE");
-        ev.preventDefault();
     },
 
     render: function() {
@@ -284,23 +279,7 @@ var CQViewQuizList = React.createClass({
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
 
-        var publishButton = (quiz) => {
-            if (quiz.meta.publishing === "pending") {
-                return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
-                    <span className="fa fa-shopping-cart"></span> Published Pending
-                </button>);
-            }
-            else if (quiz.meta.publishing === "published") {
-                return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
-                    <span className="fa fa-shopping-cart"></span> Published to Marketplace
-                </button>);
-            }
-            else {
-                return (<button className="cq-quizzes__button--publish" onClick={this.handlePublish}>
-                    <span className="fa fa-shopping-cart"></span> Publish to Marketplace
-                </button>);
-            }
-        };
+
 
 
         return (

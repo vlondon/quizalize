@@ -180,7 +180,7 @@ var CQPublished = React.createClass({
                         Your quiz is ready
                     </h3>
                     <p>
-                        Too soon? <CQLink href="/quiz/create/{this.props.quizId}" >Continue building</CQLink>
+                        Too soon? <CQLink href={`/quiz/create/${this.props.quizId}`} >Continue building</CQLink>
                     </p>
                 </div>
 

@@ -11,6 +11,7 @@ var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
 var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
 
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
+var CQPublishQuiz = require('createQuizApp/components/utils/CQPublishQuiz');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
@@ -90,6 +91,7 @@ var CQQuizzes = React.createClass({
     },
 
     handleClick: function(quiz){
+        console.log("quiz handleCLICK", quiz);
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
@@ -230,6 +232,8 @@ var CQQuizzes = React.createClass({
                         onEdit={this.handleEdit}
                         onDelete={this.handleDelete}
                         actions={this.handleAction}>
+
+                            <CQPublishQuiz className="cq-quizzes__button--publish"/>
 
                             <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
                                 <span className="fa fa-pencil"></span> Edit

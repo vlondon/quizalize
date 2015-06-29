@@ -52,11 +52,11 @@ var CQViewQuizMarketplaceOptions = React.createClass({
 
 
     handleDone: function(ev){
-        console.log("Publish at ",this.state.price, " for ",this.props.quizId);
+        console.log("Publish at ", this.state.price, " for ", this.props.quizId);
         var settings = {
             price: this.state.price
         }
-        TransactionActions.publishQuiz(this.state.quiz,settings)
+        TransactionActions.publishQuiz(this.state.quiz, settings);
         //QuizActions.publishQuiz()
     },
 

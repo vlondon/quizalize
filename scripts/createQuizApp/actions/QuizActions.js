@@ -236,7 +236,7 @@ var QuizActions = {
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
-                // this.loadQuizzes();
+                this.loadQuizzes();
                 resolve(quiz);
             }, ()=> {
                 reject();
