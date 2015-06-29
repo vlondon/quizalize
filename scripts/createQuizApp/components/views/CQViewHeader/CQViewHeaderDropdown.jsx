@@ -52,7 +52,7 @@ var CQHeaderDropdown = React.createClass({
                     <ul>
                         <li><CQLink href={`/quiz/user/${this.state.user.uuid}`}>Profile</CQLink></li>
                         <li><CQLink href='/quiz/settings'>Settings</CQLink></li>
-                        <li><a target=_blank href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">Help</a></li>
+                        <li><a target="_blank" href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">Help</a></li>
                         <li><a onClick={this.handleLogout}>Logout</a></li>
                     </ul>
                 </div>
