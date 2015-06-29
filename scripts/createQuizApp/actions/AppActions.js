@@ -1,5 +1,6 @@
 var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
 var AppApi              = require('createQuizApp/actions/api/AppApi');
+var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 var AppConstants        = require('createQuizApp/constants/AppConstants');
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
@@ -75,17 +76,39 @@ var AppActions = {
         return AppApi.uploadMedia(appId, file);
     },
 
-    searchPublicApps: debounce((searchString = '', categoryId) => {
+    searchPublicApps: debounce((searchString = '', categoryId, profileId) => {
 
-        AppApi.searchApps(searchString, categoryId)
-            .then(function(apps){
+        QuizApi.searchQuizzes(searchString, categoryId, profileId)
+            .then(function(quizzes){
 
-                AppDispatcher.dispatch({
-                    actionType: AppConstants.APP_SEARCH_LOADED,
-                    payload: apps
+            AppApi.searchApps('', '')
+                .then(function(apps){
+
+                    apps = apps.filter(app => {
+                        var found =false;
+                        quizzes.forEach(quiz => {
+                            if (app.meta.quizzes.indexOf(quiz.uuid)>=0) {
+                                found = true;
+                            }
+                        })
+                        return found;
+                    });
+
+
+                    // apps = apps.filter(function(app) {
+                    //     console.log("Going through app",app);
+                    //     return false;
+                    // });
+
+                    AppDispatcher.dispatch({
+                        actionType: AppConstants.APP_SEARCH_LOADED,
+                        payload: apps
+                    });
+
                 });
 
             });
+
     }, 300)
 
 
