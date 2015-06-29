@@ -133,7 +133,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             return _temporaryTopic;
         }
         else {
-            var result = _alltopics.filter(t => t.uuid === topicId);
+            var result = getAllTopics().filter(t => t.uuid === topicId);
             return result.length === 1 ? result[0] : undefined;
         }
     },
@@ -143,7 +143,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             return _temporaryTopic;
         }
         else {
-            var result = _alltopics.filter(t => t.name === topicName);
+            var result = getAllTopics().filter(t => t.name === topicName);
             return result.length === 1 ? result[0] : undefined;
         }
     },

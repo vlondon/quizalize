@@ -400,13 +400,13 @@ exports.publishToMarketplace = function(req,res) {
     var quiz = req.body;
 
     zzish.postContent(profileId, QUIZ_CONTENT_TYPE, id, quiz.meta, quiz.content, function(err2, message) {
-        zzish.getUser(quiz.profileId, null, function(err, user) {
+        zzish.getUser(profileId, null, function(err, user) {
             var name = "there";
             if (user.name) name = user.name;
             var params = {
                 name: name
             }
-            email.sendEmailTemplate('team@zzish.com', user.email, 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate('team@zzish.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
             res.send();
         });
     });

@@ -23,7 +23,12 @@ var CQAutofill = React.createClass({
     getInitialState: function() {
 
         var initialState = this.getState();
-        initialState.searchString = initialState.searchString || '';
+        if (this.props.value) {
+            initialState.searchString = TopicStore.getTopicById(this.props.value).name;
+        }
+        else {
+            initialState.searchString = initialState.searchString || '';
+        }
         initialState.selected = initialState.selected || undefined;
 
         return initialState;
@@ -85,7 +90,6 @@ var CQAutofill = React.createClass({
     },
 
     handleChange: function(ev){
-
         if (this.state.topicsAutofill) {
             var searchString = ev.target.value;
             var searchArray = searchString.split(' ');
@@ -108,16 +112,41 @@ var CQAutofill = React.createClass({
                 searchString,
                 occurrences
             });
+
+            if (occurrences.length === 0) {
+                if (searchString.length > 0) {
+                    var option = {
+                        id: "-1",
+                        name: searchString
+                    };
+                    TopicActions.createTemporaryTopic({
+                        uuid: "-1",
+                        name: searchString
+                    });
+                    this.handleClick(option);
+                }
+                else {
+                    this.handleClick();
+                }
+            }
         }
     },
 
     handleClick: function(option){
-        //console.info('option clicked', option);
-        this.setState({
-            selected: option,
-            searchString: option.name
-        });
-        this.props.onChange(option.id);
+        console.info('option clicked', option.name);
+        if (option) {
+            this.setState({
+                selected: option,
+                searchString: option.name
+            });
+            this.props.onChange(option.id);
+        }
+        else {
+            this.setState({
+                selected: null,
+                searchString: ""
+            });
+        }
     },
 
     searchList: function(){
@@ -146,10 +175,6 @@ var CQAutofill = React.createClass({
                     id: "-1",
                     name: this.state.searchString
                 };
-                TopicActions.createTemporaryTopic({
-                    uuid: "-1",
-                    name: this.state.searchString
-                });
                 list = [(
                     <li key={option.id} className="cq-autofill__option" onClick={this.handleClick.bind(this, option)}>
                         {this.state.searchString}

@@ -37,7 +37,7 @@ exports.getQuizzes = function(req, res){
         updated: {
             $gt: lastYear
         },
-        live: true,
+        published: "published",
         name: {
             $regex: searchString, $options: 'i'
         }
