@@ -80,14 +80,13 @@ exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlPara
 				var htmlText = contents;
 				fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err2, contents2) {
 					var txtText = contents2;
+					if (!htmlParams) htmlParams = params;
 					exports.sendActualEmail(from, email, subject, parseData(htmlText, htmlParams), parseData(txtText, params));
-					res.send("Done");
 				});
 			});
 		} else {
 			fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
 				exports.sendActualEmail(from, email, subject, parseData(contents, params), parseData(contents, params));
-				res.send("Done");
 			});
 		}
 	});

@@ -7,7 +7,7 @@
 
 <p>Three things you can do straight away:</p>
 <ul>
-    <li>Read or print out our quick start guide</li>
+    <li><a href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">Read or print out our quick start guide</a></li>
     <li><a href="http://quizalize.com/quiz/create">Create your first quiz ... don't worry it's super simple!</a></li>
     <li><a href="http://quizalize.com/quiz/public">Browse the Quizalize Marketplace and choose a quiz to assign to your class</a></li>
 </ul>
@@ -16,4 +16,5 @@
 
 <p>If you have any questions at all, please do get in touch as we'd love to hear from you and we're always happy to help. Just drop Charles or Vini an email at team@zzish.com.</p>
 
-<h5>The Zzish Team.</h5>
+<h5>The Quizalize Team.</h5>
+<a href="http://www.quizalize.com">www.quizalize.com</a>

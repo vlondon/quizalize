@@ -56,7 +56,7 @@ var CQViewQuizMarketplaceOptions = React.createClass({
         var settings = {
             price: this.state.price
         }
-        TransactionActions.publishQuiz(this.state.quiz, settings);
+        QuizActions.publishQuiz(this.state.quiz, settings);
         //QuizActions.publishQuiz()
     },
 

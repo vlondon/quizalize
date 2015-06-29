@@ -118,21 +118,7 @@ var TransactionActions = {
                 }, 300);
             }
         });
-    },
-
-    publishQuiz: function(quiz, settings) {
-        quiz.meta.price = settings.price;
-        quiz.meta.publishing = "pending";
-        QuizActions.newQuiz(quiz);
-        swal({
-            title: 'Thanks!',
-            text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,
-            type: 'success'
-        }, ()=>{
-            router.setRoute(`/quiz/quizzes`);
-        });
     }
-
 };
 
 module.exports = TransactionActions;

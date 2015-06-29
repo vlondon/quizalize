@@ -64,7 +64,6 @@ app.get('/quiz/create', quiz.create);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
-app.post('/users/register', user.registerEmail);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
@@ -134,6 +133,7 @@ app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
+app.post('/create/:profileId/quizzes/:id/publishToMarketplace', quiz.publishToMarketplace);
 app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
 
 
