@@ -177,10 +177,10 @@ var CQPublished = React.createClass({
                         All done…
                     </h1>
                     <h3>
-                        Your quiz is ready for your class
+                        Your quiz is ready
                     </h3>
                     <p>
-                        Too soon? <CQLink>Continue building</CQLink>
+                        Too soon? <CQLink href="/quiz/create/{this.props.quizId}" >Continue building</CQLink>
                     </p>
                 </div>
 
@@ -190,27 +190,25 @@ var CQPublished = React.createClass({
                     quizId={this.props.quizId}/>
 
 
-
-                <div className="pricing">
-                    Set pricing and marketplace options
-                </div>
-                <div className="share">
-                    Share with colleagues (they use it free...)
-                </div>
-                <div className="preview">
-                    Preview
-                </div>
-                <div className="back">
-                    Go back and make changes
-                </div>
-                <div className="btn btn-default">
-                    Close and go to my page
-                </div>
-
             </CQPageTemplate>
         );
     }
 
 });
+                // <div className="pricing">
+                //     Set pricing and marketplace options
+                // </div>
+                // <div className="share">
+                //     Share with colleagues (they use it free...)
+                // </div>
+                // <div className="preview">
+                //     Preview
+                // </div>
+                // <div className="back">
+                //     Go back and make changes
+                // </div>
+                // <div className="btn btn-default">
+                //     Close and go to my page
+                // </div>
 
 module.exports = CQPublished;

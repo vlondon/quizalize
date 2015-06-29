@@ -383,7 +383,7 @@ exports.publishQuiz = function(req, res){
             if (resp.content.meta && resp.content.meta.originalQuizId) {
                 //getReviewForPurchasedQuiz(resp.content, res);
             }
-            resp.shareLink = resp.content.meta.code;
+            //resp.shareLink = resp.content.meta.code;
         } else {
             var errorMessage = resp;
             resp = {};

@@ -97,7 +97,7 @@ var CQQuizzes = React.createClass({
 
     handleAssign: function(quiz){
         if (quiz){
-            router.setRoute(`/quiz/published/${quiz.uuid}`);
+            router.setRoute(`/quiz/published/${quiz.uuid}#assign`);
         }
     },
 
@@ -195,7 +195,6 @@ var CQQuizzes = React.createClass({
             );
         }
 
-
         return (
             <CQPageTemplate className="container cq-quizzes">
 
@@ -237,7 +236,7 @@ var CQQuizzes = React.createClass({
                             </button>
 
                             <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
-                                <span className="fa fa-users"></span> Assign quiz to a Class
+                                <span className="fa fa-users"></span> Use quiz in class
                             </button>
 
                             <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>

@@ -59,21 +59,33 @@ var CQViewClassList = React.createClass({
 
     },
 
-
-
     handleClick: function(classCode, ev){
-        var isAssigning = ev.target.checked;
-        var groupsUsed = this.state.groupsUsed;
-        if (isAssigning){
-            GroupActions.publishAssignment(this.props.quizId, classCode);
-            groupsUsed.push(classCode);
-        } else {
-            GroupActions.unpublishAssignment(this.props.quizId, classCode);
-            groupsUsed.splice(groupsUsed.indexOf(classCode), 1);
-        }
+        var groupsUsed = [classCode];
         this.setState({groupsUsed});
+    },
 
-        console.log('classCode', classCode, ev.target.checked);
+
+    // handleClick: function(classCode, ev){
+    //     // console.log("Here?",classCode,ev);
+    //     // var isAssigning = ev.target.checked;
+    //     // var groupsUsed = this.state.groupsUsed;
+    //     // if (isAssigning){
+    //     //     GroupActions.publishAssignment(this.props.quizId, classCode);
+    //     //     groupsUsed.push(classCode);
+    //     // } else {
+    //     //     GroupActions.unpublishAssignment(this.props.quizId, classCode);
+    //     //     groupsUsed.splice(groupsUsed.indexOf(classCode), 1);
+    //     // }
+    //     // this.setState({groupsUsed});
+
+    //     // console.log('classCode', classCode, ev.target.checked);
+    // },
+
+    handleDone: function() {
+        GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
+            .then((response) =>{
+                router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
+            });
     },
 
     handleClassName: function(ev){
@@ -89,7 +101,10 @@ var CQViewClassList = React.createClass({
 
         var className = this.state.newClassName;
         if (className.length > 3) {
-            GroupActions.publishNewAssignment(this.props.quizId, className);
+            GroupActions.publishNewAssignment(this.props.quizId, className)
+                .then((response) =>{
+                    router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
+                });
             this.setState({
                 newClassName: '',
                 canSaveNewClass: false
@@ -101,40 +116,42 @@ var CQViewClassList = React.createClass({
         return (
             <div className='cq-viewclass'>
                 Set as a class game (or homework)…
-                <ul className="list-unstyled">
-                    {this._showGroupsList().map( (classN) => {
-                        var checked = this.state.groupsUsed.indexOf(classN.value) !== -1;
-                        return (
-                            <li key={classN.value}>
-                                <input type="checkbox"
-                                    id={classN.value}
-                                    onClick={this.handleClick.bind(this, classN.value)}
-                                    checked={checked}/>
-                                <label htmlFor={classN.value}>
-                                    &nbsp;{classN.label}
-                                </label>
-                            </li>
-                        );
-                    })}
-                </ul>
-                <form className="form-inline" onSubmit={this.handleNewClass}>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={this.state.newClassName}
-                        onChange={this.handleClassName}
-                        placeholder="Enter a new class name"/>
+                <div name="assign">
+                    <ul className="list-unstyled">
+                        {this._showGroupsList().map( (classN) => {
+                            return (
+                                <li key={classN.value}>
+                                    <input type="radio"
+                                        name="classSelection"
+                                        onClick={this.handleClick.bind(this, classN.value)}
+                                        />
+                                    <label htmlFor={classN.value}>
+                                        &nbsp;{classN.label}
+                                    </label>
+                                </li>
+                            );
+                        })}
+                    </ul>
                     <button className="btn btn-default"
-                        type="submit"
-                        disabled={!this.state.canSaveNewClass}>
-                        New class
+                        onClick={this.handleDone}>
+                        Done - Use this class
                     </button>
-                </form>
-                <br/>
-                <button className="btn btn-default"
-                    onClick={this.handleClick}>
-                    Done - Go to your dashboard
-                </button>
+                    <br/>
+                    <br/>
+                    <form className="form-inline" onSubmit={this.handleNewClass}>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={this.state.newClassName}
+                            onChange={this.handleClassName}
+                            placeholder="Enter a new class name"/>
+                        <button className="btn btn-default"
+                            type="submit"
+                            disabled={!this.state.canSaveNewClass}>
+                            Create and use in class
+                        </button>
+                    </form>
+                </div>
             </div>
         );
     }
