@@ -570,7 +570,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 }
                 var options = randomise(answers).slice(0,3);
                 options.push(correct);
-                return options;
+                return randomise(options);
             }
         },
         answerQuestion: function(idx, response, answer, questionName, duration){
