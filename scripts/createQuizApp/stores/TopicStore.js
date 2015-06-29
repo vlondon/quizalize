@@ -14,6 +14,7 @@ var _alltopics = [];
 
 //public subjects
 var subjectHash;
+var _allSubjects;
 
 //these are publicTopics + custom topics (not subtopics)
 var _topicTree;
@@ -24,6 +25,7 @@ var _temporaryTopic;
 var createTopicTree = function(data){
     if (!_topicTree) {
         subjectHash = {};
+        _allSubjects = data.psubjects.slice();
         data.psubjects.slice().forEach((subject) => {
             subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
         });
@@ -112,6 +114,11 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     getPublicTopics: function(){
         console.log('_topictree', _topicTree);
         return _topicTree ? _topicTree.slice() : [];
+    },
+
+    getPublicSubjects: function(){
+        console.log('_allSubjects', _allSubjects);
+        return _allSubjects ? _allSubjects.slice() : [];
     },
 
     getTopicById: function(topicId){

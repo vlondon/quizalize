@@ -46,7 +46,7 @@ exports.getQuizzes = function(req, res){
 
 
     if (categoryId) {
-        mongoQuery.categoryId = categoryId;
+        mongoQuery.subjectId = categoryId;
     }
     if (profileId) {
         mongoQuery.profileId = profileId;

@@ -162,7 +162,7 @@ var CQviewQuizFilter = React.createClass({
             }
         };
 
-        mappedTopics.unshift({value: 'all', name: 'any topic'});
+        mappedTopics.unshift({value: 'all', name: 'any subject'});
         var topicsDropDown = () => {
             if (mappedTopics.length > 1)
             {
