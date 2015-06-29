@@ -1,0 +1,38 @@
+.cq-quizmarketplace {
+    background: $brand-color-grey-lighter;
+    max-width: 600px;
+    border-radius: 25px;
+    min-height: 50px;
+    margin: 0 auto 40px;
+    font-size: 18px;
+    padding: 10px 25px 30px;
+    box-shadow: 0 5px 10px rgba($brand-color-black, .4);
+
+    @at-root #{&}__list {
+        margin-left: 50px;
+    }
+
+    @at-root #{&}__icon {
+        color: $brand-color-grey-lighter;
+        background: $brand-color-black;
+        border-radius: 100%;
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        text-align: center;
+        line-height: 40px;
+
+    }
+
+    input[type='radio']{
+        margin-right: 10px;
+    }
+
+    input {
+        color: $brand-color-grey;
+    }
+    label {
+        font-weight: normal;
+        cursor: pointer;
+    }
+}

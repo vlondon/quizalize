@@ -10,54 +10,151 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var storeInit = false;
 
-var _topics = [];
-// subjects come (for now) from the public quizzes
-var _publicTopics = [];
+var _alltopics = [];
+
+//public subjects
+var subjectHash;
+var _allSubjects;
+
+//these are publicTopics + custom topics (not subtopics)
+var _topicTree;
+var _topicUserTree;
+var _temporaryTopic;
 
 
-var sortPublicTopics = function(topics){
+var createTopicTree = function(data){
+    if (!_topicTree) {
+        subjectHash = {};
+        _allSubjects = data.psubjects.slice();
+        data.psubjects.slice().forEach((subject) => {
+            subjectHash[subject.uuid] = {uuid: subject.uuid, name: subject.name};
+        });
+        _topicTree = data.pcategories.slice();
+        var _dtopics = data.categories.slice();
+        _topicTree.forEach((parentTopic) => {
+            var childrenTopics = _topicTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
+            childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+            parentTopic.categories = childrenTopics;
+        });
+        _dtopics.forEach((parentTopic) => {
+            var childrenTopics = _dtopics.filter(childs => (childs.parentCategoryId === parentTopic.uuid && !childs.subContent));
+            childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+            parentTopic.categories = childrenTopics;
+        });
 
-    topics.forEach((parentTopic) => {
-        var childrenTopics = topics.filter(childs => childs.parentCategoryId === parentTopic.uuid );
-        childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-        parentTopic.categories = childrenTopics;
-    });
-
-    topics = topics.filter(t => t.parentCategoryId === '-1');
-    topics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-
-    return topics;
+        _topicTree.push.apply(_topicTree, _dtopics);
+        _alltopics.push.apply(_alltopics, data.pcategories.slice(), data.categories.slice());
+        _topicTree = _topicTree.filter(t => t.parentCategoryId === '-1' || t.parentCategoryId === null);
+        _topicTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        _topicTree.forEach((parentTopic) => {
+            if (parentTopic.subjectId) {
+                parentTopic.name = subjectHash[parentTopic.subjectId].name + " > " + parentTopic.name;
+            }
+        });
+    }
 };
 
+var createUserTopicTree = function(data){
+    if (!_topicUserTree) {
+        _topicUserTree = data.slice();
+        _topicUserTree.forEach((parentTopic) => {
+            var childrenTopics = _topicUserTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid));
+            childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+            parentTopic.categories = childrenTopics;
+        });
+        if (_topicTree) {
+            _topicTree.forEach((parentTopic) => {
+                var childrenTopics = _topicUserTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid));
+                parentTopic.categories.push.apply(parentTopic.categories, childrenTopics);
+                parentTopic.categories.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+            });
+        }
+
+        _topicUserTree = _topicUserTree.filter(t => t.parentCategoryId === '-1');
+        _topicUserTree.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+        _alltopics.push.apply(_alltopics, data.slice());
+    }
+};
+
+var addUserTopic = function(topic) {
+    if (topic.parentCategoryId === "-1") {
+        topic.categories = [];
+        _topicUserTree.push(topic);
+    }
+    else {
+        var parentTopic = _topicUserTree.filter(t => (t.uuid === topic.parentCategoryId));
+        parentTopic.topics = topic;
+    }
+};
+
+var getAllTopics = function() {
+    if (_topicUserTree) {
+        return _topicUserTree.slice().concat(_topicTree.slice());
+    }
+    else {
+        return _topicTree ? _topicTree.slice() : [];
+    }
+};
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
+    getAllTopics: function(parentCategoryId){
+        if (parentCategoryId === undefined) {
+            return getAllTopics();
+        }
+        else {
+            return getAllTopics().filter(function(t) { return t.uuid === parentCategoryId; })[0].categories;
+        }
+    },
+
     getTopics: function() {
-        return _topics.slice();
-    },
-
-    getTopicById: function(topicId){
-        var result = _publicTopics.filter(t => t.uuid === topicId);
-        if (result.length === 0){
-            result = _topics.filter(t => t.uuid === topicId);
-        }
-        return result.length === 1 ? result[0] : undefined;
-    },
-
-    getTopicByName: function(topicName){
-        var result = _publicTopics.filter(t => t.name === topicName);
-        if (result.length === 0){
-            result = _topics.filter(t => {console.log("t.name", t.name, topicName, t.name === topicName); return t.name === topicName; });
-        }
-        return result.length > 0 ? result[0] : undefined;
+        return _topicUserTree.slice();
     },
 
     getPublicTopics: function(){
-        console.log('_publicTopics', _publicTopics);
-        var publicTopics = _publicTopics ? sortPublicTopics(_publicTopics.slice()) : [];
-        return publicTopics;
+        console.log('_topictree', _topicTree);
+        return _topicTree ? _topicTree.slice() : [];
     },
 
+    getPublicSubjects: function(){
+        console.log('_allSubjects', _allSubjects);
+        return _allSubjects ? _allSubjects.slice() : [];
+    },
+
+    getTopicById: function(topicId){
+        if (topicId === "-1") {
+            return _temporaryTopic;
+        }
+        else {
+            var result = _alltopics.filter(t => t.uuid === topicId);
+            return result.length === 1 ? result[0] : undefined;
+        }
+    },
+
+    getFullTopicName: function(topicId){
+        var topicList = function(array, prefix){
+            var result = [];
+            array.forEach( el => {
+
+                var name = prefix ? `${prefix} > ${el.name}` : el.name;
+
+                result.push({
+                    name: name,
+                    id: el.uuid
+                });
+
+                if (el.categories && el.categories.length > 0){
+                    topicList(el.categories, name);
+                }
+
+            });
+            return result;
+        };
+
+        var list = topicList(this.getAllTopics());
+        var topic = list.filter(t => t.id === topicId);
+        return topic ? topic[0] : undefined;
+    },
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -90,23 +187,27 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.actionType) {
 
         case QuizConstants.QUIZZES_LOADED:
-            _publicTopics = action.payload.topics;
+            createTopicTree(action.payload.topics);
+            createUserTopicTree(action.payload.utopics);
             TopicStore.emitChange();
             break;
 
         case TopicConstants.TOPIC_ADDED:
-            _topics.push(action.payload);
+            addUserTopic(action.payload);
             TopicStore.emitChange();
             break;
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
             storeInit = true;
-            _publicTopics = action.payload;
+            createTopicTree(action.payload);
             TopicStore.emitChange();
             break;
 
         case TopicConstants.TOPICS_LOADED:
-            _topics = action.payload;
+            createUserTopicTree(action.payload);
+            break;
+        case TopicConstants.TEMPORARY_TOPIC_ADDED:
+            _temporaryTopic = action.payload;
             break;
         default:
             // no op

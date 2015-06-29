@@ -5,7 +5,6 @@ var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLoca
 var CQViewQuizAuthor = require('createQuizApp/components/views/CQViewQuizAuthor');
 var CQPagination = require('createQuizApp/components/utils/CQPagination');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-var router = require('createQuizApp/config/router');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
 var UserStore = require('createQuizApp/stores/UserStore');
@@ -20,7 +19,9 @@ var CQViewQuizList = React.createClass({
         quizzes: React.PropTypes.array,
         className: React.PropTypes.string,
         showAuthor: React.PropTypes.bool,
+        showCta: React.PropTypes.bool,
         showReviewButton: React.PropTypes.bool,
+        quizCode: React.PropTypes.string,
         onQuizClick: React.PropTypes.func,
         onClick: React.PropTypes.func,
         onSelect: React.PropTypes.func,
@@ -44,6 +45,7 @@ var CQViewQuizList = React.createClass({
             quizzesPerPage: 16,
             showAuthor: true,
             showReviewButton: false,
+            showCta: false,
             sortOptions: false,
             onQuizClick: function(){},
             onClick: function(){},
@@ -56,8 +58,6 @@ var CQViewQuizList = React.createClass({
         var initialState = this.getState(undefined, 1);
         initialState.selectedQuizzes = [];
         initialState.page = 1;
-
-
         return initialState;
     },
 
@@ -75,9 +75,28 @@ var CQViewQuizList = React.createClass({
 
     getState: function(props, page){
         props = props || this.props;
+
+        var quizCta = function(quizzes){
+            var quizPlaceholder = {
+                uuid: 'new',
+                meta: {
+                    name: 'Create your own Quiz',
+                    updated: 0
+                }
+            };
+            if (quizzes.filter(a => a.uuid === 'new').length === 0){
+                quizzes.push(quizPlaceholder);
+            }
+            return quizzes;
+
+        };
+
+
         var quizzes = props.quizzes;
         if (quizzes) {
-
+            if (this.props.showCta){
+                quizzes = quizCta(quizzes);
+            }
             if (this.props.isPaginated) {
 
                 quizzes = this.sort(undefined, quizzes);
@@ -85,13 +104,11 @@ var CQViewQuizList = React.createClass({
                 page = page || this.state.page;
 
                 var quizzesIndexStart = (page - 1) * props.quizzesPerPage;
-                console.log('page', quizzesIndexStart, page, 'props.quizzesPerPage', quizzesIndexEnd);
-
 
                 var quizzesIndexEnd = quizzesIndexStart + props.quizzesPerPage;
                 var quizzesToDisplay = quizzes.slice(quizzesIndexStart, quizzesIndexEnd);
                 var pages = Math.ceil(quizzes.length / props.quizzesPerPage);
-                console.log('quizzess', quizzes, pages, quizzesIndexStart, quizzesIndexEnd, quizzesToDisplay);
+
                 return {
                     quizzes: quizzesToDisplay,
                     pages,
@@ -133,7 +150,6 @@ var CQViewQuizList = React.createClass({
     },
 
     handleReview: function(quiz){
-        console.log('review???', quiz);
         if (quiz){
             router.setRoute(`/quiz/review/${quiz.uuid}`);
         }
@@ -165,6 +181,8 @@ var CQViewQuizList = React.createClass({
             };
         }
 
+
+
         // obj = obj || this.state.savedSearch || undefined;
 
         quizzes = quizzes || this.props.quizzes.slice();
@@ -172,7 +190,7 @@ var CQViewQuizList = React.createClass({
         if (obj && obj.sort === 'name') {
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
-            quizzes.sort((a, b) => a.meta.updated > b.meta.updated ? -1 : 1);
+            quizzes.sort((a, b) =>  a.meta.updated > b.meta.updated ? -1 : 1);
         } else {
             quizzes.sort((a, b) => {
                 if (a._category && a._category.name && b._category &&  b._category.name){
@@ -193,7 +211,7 @@ var CQViewQuizList = React.createClass({
 
         if (obj && obj.name && obj.name.length > 0){
             quizzes = quizzes.filter( q => {
-                var nameMatch = false;
+                var nameMatch;
                 var categoryMatch = false;
                 nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
                 if (q._category) {
@@ -213,11 +231,20 @@ var CQViewQuizList = React.createClass({
         this.setState({quizzes, savedSearch: obj});
     },
 
+    handleNewQuiz: function(){
+        router.setRoute(`/quiz/create`);
+    },
 
+    handlePublish: function(quiz){
+        if (quiz){
+            router.setRoute(`/quiz/published/${quiz.uuid}#publish`);
+        }
+    },
 
     render: function() {
         var author = function(){};
         var reviewButton = function(){};
+        var publishButton = function(){};
         var select;
         var sort;
 
@@ -232,7 +259,8 @@ var CQViewQuizList = React.createClass({
                             if (c.props.onClick){
                                 c.props.onClick(quiz);
                             }
-                        }
+                        },
+                        quiz: quiz
                     });
                     return clonedChildren;
                 });
@@ -251,7 +279,6 @@ var CQViewQuizList = React.createClass({
 
         if (this.props.showReviewButton) {
             reviewButton = (quiz) => {
-                console.log('this', this);
                  if (quiz.meta && quiz.meta.originalQuizId) {
                     return (
                         <button className="cq-quizzes__button--review" onClick={this.handleReview.bind(this, quiz)}><span className="fa fa-check-square-o"></span> Review</button>
@@ -279,11 +306,26 @@ var CQViewQuizList = React.createClass({
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
 
+
+
+
         return (
             <div className={`cq-viewquizlist ${this.props.className}`}>
                 {sort}
                 <ul>
                     {this.state.quizzes.map((quiz) => {
+                        if (quiz.uuid === 'new'){
+                            return (
+                                <li className={this.props.isQuizInteractive ? "cq-viewquizlist__quiz interactive" : "cq-viewquizlist__quiz" }
+                                    key={quiz.uuid}
+                                    onClick={this.handleNewQuiz}>
+                                    <div className="cq-viewquizlist__quiz-cta">
+                                        <h2><i className="fa fa-plus"></i> Create your own quiz</h2>
+                                    </div>
+
+                                </li>
+                            );
+                        }
                         return (
                             <li className={this.props.isQuizInteractive ? "cq-viewquizlist__quiz interactive" : "cq-viewquizlist__quiz" }
                                 key={quiz.uuid}
@@ -312,6 +354,7 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__extras">
                                     {reviewButton(quiz)}
+                                    {publishButton(quiz)}
                                     {childActionHandler(this.props.children, quiz)}
                                 </div>
                             </li>

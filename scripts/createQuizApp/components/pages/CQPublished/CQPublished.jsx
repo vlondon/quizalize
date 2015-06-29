@@ -1,13 +1,19 @@
 var React = require('react');
 var router = require('createQuizApp/config/router');
 
+var CQViewClassList = require('createQuizApp/components/views/CQViewClassList');
+var CQViewQuizMarketplaceOptions = require('createQuizApp/components/views/CQViewQuizMarketplaceOptions');
+
+var CQLink = require('createQuizApp/components/utils/CQLink');
+
+
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
-var CQCreateMore = require('createQuizApp/components/pages/CQCreate/CQCreateMore');
+
 
 var CQPublished = React.createClass({
 
@@ -121,16 +127,7 @@ var CQPublished = React.createClass({
             return {value: g.code, label: g.name};
         });
 
-
-        groupList.unshift({
-            value: 'new',
-            label: 'Create a new class…',
-            disabled: false
-        });
-
-
         return groupList;
-
 
     },
 
@@ -171,92 +168,47 @@ var CQPublished = React.createClass({
 
     render: function() {
 
-
-        var classNameForm;
-
-        if (this.state.selectedClass === 'new'){
-            classNameForm = (
-                <div className="col-sm-12 input">
-                    <label className="control-label">Class name</label>
-                    <input type="text"
-                        className="form-control"
-                        onChange={this.handleNewClassInput}
-                        value={this.state.newClass}
-                    />
-
-                </div>
-            );
-        } else {
-            classNameForm = undefined;
-        }
-
-        var playButtonEnabled = this.state.selectedClass !== 'new' ||  (this.state.selectedClass === 'new' && this.state.newClass.length > 0);
-
         return (
-            <CQPageTemplate className="container cq-published">
-                <div className="row well">
+            <CQPageTemplate className="cq-published">
 
-                        <div ng-show="!ctrl.publishing &amp;&amp; !ctrl.published" className="col-sm-8 col-sm-offset-2">
-                            <h1 className="text-center">Which class should take this quiz?
-                                <div role="form" className="form-horizontal"></div>
-                            </h1>
-                            <p>You can have more than one class with Quizalize. Type in the name of a class should take this quiz. If you type in a new name, you will create a new class. </p>
-                            <div className="form-group">
-                                <div className="row">
+                <div className="cq-published__header">
 
-                                    <div className="col-sm-12 input">
-                                        <label className="control-label">Select a class name</label>
-
-                                        <select
-                                            className="form-control"
-                                            value={this.state.selectedClass}
-                                            onChange={this.handleChange}>
-
-                                            {this._showGroupsList().map( (classN) => {
-                                                return (
-                                                    <option
-                                                        value={classN.value}
-                                                        key={classN.value}
-                                                        disabled={classN.disabled}>
-                                                        {classN.label}
-                                                    </option>
-                                                );
-                                            })}
-
-                                        </select>
-                                    </div>
-
-                                    {classNameForm}
-
-                                </div>
-                                <div className="col-sm-3 col-sm-offset-3">
-                                    <button type="button"
-
-                                        onClick={this.handleMoreClick}
-                                        className={this.state.isMoreVisible ? 'btn btn-block btn-info' : 'btn btn-block'}>
-                                        More Settings
-                                    </button>
-                                </div>
-                                <div className="col-sm-3"><br className="visible-xs"/>
-                                <button type="button"
-                                    disabled={!playButtonEnabled}
-                                    onClick={this.handleClick}
-                                    className="btn btn-block btn-primary">
-                                    Play
-                                </button>
-                            </div>
-                            <div className="col-xs-12">
-                                <center></center>
-                            </div>
-                        </div>
-
-                    </div>
+                    <h1>
+                        All done…
+                    </h1>
+                    <h3>
+                        Your quiz is ready
+                    </h3>
+                    <p>
+                        Too soon? <CQLink href={`/quiz/create/${this.props.quizId}`} >Continue building</CQLink>
+                    </p>
                 </div>
-                {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.settings}/> : undefined }
+
+                <CQViewClassList
+                    quizId={this.props.quizId}/>
+                <CQViewQuizMarketplaceOptions
+                    quizId={this.props.quizId}/>
+
+
             </CQPageTemplate>
         );
     }
 
 });
+                // <div className="pricing">
+                //     Set pricing and marketplace options
+                // </div>
+                // <div className="share">
+                //     Share with colleagues (they use it free...)
+                // </div>
+                // <div className="preview">
+                //     Preview
+                // </div>
+                // <div className="back">
+                //     Go back and make changes
+                // </div>
+                // <div className="btn btn-default">
+                //     Close and go to my page
+                // </div>
 
 module.exports = CQPublished;

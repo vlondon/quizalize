@@ -78,6 +78,10 @@
         @include button($brand-color-blue);
     }
 
+    @at-root #{&}__button--publish {
+        @include button($brand-color-blue);
+    }
+
     @at-root #{&}__button--review {
         @include button($brand-color-blue);
     }

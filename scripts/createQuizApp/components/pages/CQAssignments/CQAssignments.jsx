@@ -68,7 +68,7 @@ var CQAssignments = React.createClass({
 
     handleUnpublish: function(quizId, groupCode){
         console.log('about to unpublish', quizId, groupCode);
-        GroupActions.unpublishQuiz(quizId, groupCode);
+        GroupActions.unpublishAssignment(quizId, groupCode);
     },
 
     render: function() {

@@ -14,6 +14,8 @@ config.aws_config = {
 	"region": process.env.AWS_REGION
 };
 
+config.stripeSecret = process.env.STRIPE_SECRET;
+
 //Zzish INit (Either QATOKEN OR an object with lots of params)
 config.zzishInit = process.env.ZZISHINIT;
 

@@ -1,8 +1,12 @@
 var React = require('react');
 var UserStore = require('createQuizApp/stores/UserStore');
 var CQLink = require('createQuizApp/components/utils/CQLink');
-var md5 = require('blueimp-md5');
+var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
 var CQDashboardProfile = React.createClass({
+
+    propTypes: {
+        user: React.PropTypes.object
+    },
 
     getInitialState: function() {
         return this.getState();
@@ -15,32 +19,67 @@ var CQDashboardProfile = React.createClass({
     componentWillUnmount: function() {
         UserStore.removeChangeListener(this.onChange);
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState(this.getState(nextProps));
+    },
 
     onChange: function(){
         this.setState(this.getState());
     },
 
-    getState: function(){
-        var user = UserStore.getUser();
+    getState: function(props){
 
-        return {
-            user,
-            profilePicture: `http://www.gravatar.com/avatar/${md5(user.name.trim())}?s=220&d=identicon`
-        };
+        props = props || this.props;
+
+        if (props && props.user){
+            var user = props.user;
+            return {
+                user
+            };
+        }
+
+        return {};
+
     },
 
     render: function() {
-        return (
+        var profile;
 
+        if (this.state.user){
+            profile = (
+                <div>
+                    <div className="cq-dashboard__profilepicture">
+
+                        <CQViewProfilePicture
+                            width="200"
+                            height="200"
+                            name={this.state.user.name}
+
+                            picture={this.state.user.avatar}/>
+                    </div>
+                    <h3>{this.state.user.name}</h3>
+
+                    <div>
+                        <small>
+                            School
+                        </small>
+                        <a href={this.state.user.attributes.url}
+                            target="_blank"
+                            rel="nofollow">
+                            {this.state.user.attributes.school}
+                        </a>
+                    </div>
+                    <div>
+                        <small>City</small>
+                        {this.state.user.attributes.location}
+                    </div>
+
+                </div>
+            );
+        }
+        return (
                 <div className="cq-dashboard__profile">
-                    <CQLink href="/quiz/settings">
-                        <img src={this.state.profilePicture} alt="profile picture" className="cq-dashboard__profilepic"/>
-                        <h3>{this.state.user.attributes.name}</h3>
-                        <ul className="cq-dashboard__details">
-                            <li>{this.state.user.attributes.school}</li>
-                            <li>{this.state.user.attributes.location}</li>
-                        </ul>
-                    </CQLink>
+                    {profile}
                 </div>
 
 

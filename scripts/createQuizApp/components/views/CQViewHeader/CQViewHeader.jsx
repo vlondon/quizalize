@@ -96,10 +96,10 @@ var CQViewHeader = React.createClass({
             <nav className="cq-header">
                 <div className="cq-header__container">
                     <div className="cq-header__brand">
-                        <a href="/quiz/">
+                        <CQLink href="/quiz/quizzes">
                             <img src="/img/quizalize.png" className="cq-brand" alt=""/>
                             {this.state.user}
-                        </a>
+                        </CQLink>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav navbar-right">

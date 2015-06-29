@@ -35,6 +35,7 @@
     "log4js": "^0.6.26",
     "marked": "^0.3.2",
     "serve-favicon": "^2.1.5",
+    "stripe": "^3.5.0",
     "xmlhttprequest": "^1.7.0",
     "zzishsdk": "latest"
   },
@@ -67,6 +68,7 @@
     "node-uuid": "^1.4.3",
     "object-assign": "^2.0.0",
     "react": "^0.13.3",
+    "react-autosuggest": "^1.15.0",
     "react-components": "^0.2.0",
     "react-hot-loader": "^1.2.7",
     "sass-loader": "^1.0.2",

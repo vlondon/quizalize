@@ -6,12 +6,14 @@ var CQLink = React.createClass({
     propTypes: {
         children: React.PropTypes.any,
         href: React.PropTypes.string,
-        className: React.PropTypes.string
+        className: React.PropTypes.string,
+        stopPropagation: React.PropTypes.bool
     },
 
     getDefaultProps: function() {
         return {
-            href: ''
+            href: '',
+            stopPropagation: false
         };
     },
 
@@ -25,6 +27,9 @@ var CQLink = React.createClass({
 
     handleClick: function(ev){
         ev.preventDefault();
+        if (this.props.stopPropagation){
+            ev.stopPropagation();
+        }
         router.setRoute(this.props.href);
     },
 

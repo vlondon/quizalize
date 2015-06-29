@@ -1,5 +1,4 @@
 var React = require('react');
-require('./CQSpinnerStyles');
 var CQSpinner = React.createClass({
 
     render: function() {

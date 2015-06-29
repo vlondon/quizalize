@@ -1,6 +1,9 @@
 var React = require('react');
 var assign = require('object-assign');
 
+var TransactionStore = require('createQuizApp/stores/TransactionStore');
+var prices = TransactionStore.getPrices();
+
 var removeUndefinedProps = function(obj) {
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop) && obj[prop] === undefined) {
@@ -10,11 +13,11 @@ var removeUndefinedProps = function(obj) {
     return obj;
 };
 
-var convertToBoolean =  function(defaultSettings,field) {
+var convertToBoolean =  function(defaultSettings, field) {
     if (defaultSettings[field]) {
-        defaultSettings[field]=defaultSettings[field]=="true" || defaultSettings[field];
+        defaultSettings[field] = defaultSettings[field] === "true" || defaultSettings[field];
     }
-}
+};
 
 var CQCreateMore = React.createClass({
 
@@ -42,12 +45,12 @@ var CQCreateMore = React.createClass({
         };
             // showanswers: false,
             // timer: true
-        console.log("My initial settings",this.props.settings);
+        console.log("My initial settings", this.props.settings);
         defaultSettings = assign({}, defaultSettings, this.props.settings);
-        convertToBoolean(defaultSettings,'live');
-        convertToBoolean(defaultSettings,'featured');
-        convertToBoolean(defaultSettings,'random');
-        console.log("My Aafter settings",defaultSettings);
+        convertToBoolean(defaultSettings, 'live');
+        convertToBoolean(defaultSettings, 'featured');
+        convertToBoolean(defaultSettings, 'random');
+        console.log("My Aafter settings", defaultSettings);
         return defaultSettings;
 
     },
@@ -61,7 +64,7 @@ var CQCreateMore = React.createClass({
         var newState = assign({}, this.state);
 
         if (type === 'text'){
-            newState[property] = event.target.value;
+            newState[property] = (property === 'price') ? Number(event.target.value) :  event.target.value;
         } else {
             newState[property] = event.target.checked;
         }
@@ -80,6 +83,24 @@ var CQCreateMore = React.createClass({
                         <div className="col-xs-12">
                             <h3>Additional Quiz Details</h3>
                         </div>
+
+
+                        <label className="control-label col-sm-9">
+                            <h4>Price<a data-toggle="popover" title="Number of questions in quiz" data-content="You may want to create a pool of 50 questions and only ask 10 questions per quiz" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
+                        </label>
+                        <div ng-style="margin-top: 13px" className="col-xs-3">
+                            <select
+                                value={this.state.numQuestions}
+                                onChange={this.handleChange.bind(this, 'price', 'text')}>
+                                {prices.map(function(price, index){
+                                    return (
+                                        <option value={price} key={index}>{price}</option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+
+
                         <label className="control-label col-sm-9">
                             <h4>Description<a data-toggle="popover" title="Description" data-content="Enter a description so that players can understand why your quiz is about." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="0" className="left-space glyphicon glyphicon-question-sign"></a></h4>
                         </label>

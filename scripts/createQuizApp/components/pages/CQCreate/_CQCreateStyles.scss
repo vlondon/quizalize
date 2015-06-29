@@ -1,1 +1,43 @@
+.cq-create {
+    /* background: $brand-color-grey-lighter; */
 
+    @at-root #{&}__body {
+        margin-top: 20px;
+        padding: 20px;
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
+    .form-cotrol {
+        height: auto;
+    }
+    label {
+        color: $brand-color-grey;
+    }
+
+    @at-root #{&}__header {
+        text-align: center;
+        font-weight: bold;
+        padding-bottom: 40px;
+        /* color: $brand-color-red; */
+    }
+
+    @at-root #{&}__cancel {
+        text-align: center;
+        padding-top: 10px;
+        text-align: center;
+        display: block;
+    }
+
+    @at-root #{&}__inputname {
+        font-size: 24px;
+
+    }
+
+    @at-root #{&}__moresettings {
+        margin-top: 40px;
+
+    }
+
+
+}

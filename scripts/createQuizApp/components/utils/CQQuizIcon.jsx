@@ -32,11 +32,6 @@ var CQQuizIcon = React.createClass({
     },
 
     getInitialState: function() {
-        var image = this.props.image;
-
-        if (this.props.image && this.props.image.indexOf('http') === -1) {
-            image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
-        }
         return this.getImage();
     },
 
@@ -73,9 +68,9 @@ var CQQuizIcon = React.createClass({
         };
 
         var detectYoutubeThumbnail = function(img){
-            console.log("imgmggmmg", img);
             return img.indexOf("youtube") === -1 ? img : '//img.youtube.com/vi/' + img.split('/')[4] + "/0.jpg";
         };
+
         if (this.state.image){
             style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
         } else if (this.props.children) {

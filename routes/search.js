@@ -7,11 +7,29 @@ var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
 var APP_CONTENT_TYPE = 'app';
 
+var performQuery = function(mongoQuery,res) {
+    zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, resp){
+
+        if (resp) {
+
+            userHelper.addUserToExtra(resp)
+                .then(function(listOfItems){
+                    res.send(listOfItems);
+                }).catch(function(error){
+                    res.status(500).send(error);
+                });
+        } else {
+            res.status(500).send(err);
+        }
+    });
+}
+
 
 exports.getQuizzes = function(req, res){
 
     var searchString = req.body.search || '';
     var categoryId = req.body.categoryId;
+    var profileId = req.body.profileId;
 
     var now = Date.now();
     var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
@@ -28,24 +46,13 @@ exports.getQuizzes = function(req, res){
 
 
     if (categoryId) {
-        mongoQuery.categoryId = categoryId;
+        mongoQuery.subjectId = categoryId;
     }
-
-    zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, resp){
-
-        if (resp) {
-
-            userHelper.addUserToExtra(resp)
-                .then(function(listOfItems){
-                    res.send(listOfItems);
-                }).catch(function(error){
-                    res.status(500).send(error);
-                });
-        } else {
-            res.status(500).send(err);
-        }
-    });
-
+    if (profileId) {
+        mongoQuery.profileId = profileId;
+    }
+    performQuery(mongoQuery,res);
+    //mongoQuery.published = true;
 };
 
 

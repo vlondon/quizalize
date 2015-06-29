@@ -31,7 +31,7 @@ var CQPageTemplate = React.createClass({
 
     render: function () {
         return (
-            <div>
+            <div className='cq'>
                 <div className={this.props.wrapperMainClassName + ' ' + this.props.wrapperStyleClassName}>
                     <CQViewHeader/>
                     <div className={this.props.className}>

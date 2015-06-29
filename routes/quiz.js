@@ -259,7 +259,7 @@ exports.getMyQuizzes = function(req, res){
 exports.getTopics = function(req, res){
     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         if (!handleError(err, res)) {
-            res.send(resp.categories);
+            res.send(resp);
         }
     });
 };
@@ -383,7 +383,7 @@ exports.publishQuiz = function(req, res){
             if (resp.content.meta && resp.content.meta.originalQuizId) {
                 //getReviewForPurchasedQuiz(resp.content, res);
             }
-            resp.shareLink = resp.content.meta.code;
+            //resp.shareLink = resp.content.meta.code;
         } else {
             var errorMessage = resp;
             resp = {};
@@ -393,6 +393,24 @@ exports.publishQuiz = function(req, res){
         res.send(resp);
     });
 };
+
+exports.publishToMarketplace = function(req,res) {
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    var quiz = req.body;
+
+    zzish.postContent(profileId, QUIZ_CONTENT_TYPE, id, quiz.meta, quiz.content, function(err2, message) {
+        zzish.getUser(quiz.profileId, null, function(err, user) {
+            var name = "there";
+            if (user.name) name = user.name;
+            var params = {
+                name: name
+            }
+            email.sendEmailTemplate('team@zzish.com', user.email, 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            res.send();
+        });
+    });
+}
 
 //we need to have a class code now
 exports.shareQuiz = function(req, res){
@@ -406,7 +424,12 @@ exports.shareQuiz = function(req, res){
         link = "http://quizalize.com/quiz#/share/" + quiz.code;
     }
     if (emails !== undefined) {
-        email.sendEmail('team@zzish.com', emails, 'You have been shared a quiz!', 'Hi there, you have been shared the quiz ' + quiz + ' by ' + emailFrom + '. Click on the following link to access this quiz:\n\n' + link + '\n\nBest wishes, \n\nThe Quizalize team.');
+        var params = {
+            quiz: quiz.meta.name,
+            from: emailFrom,
+            link: link
+        }
+        email.sendEmailTemplate('team@zzish.com', emails, 'You have been shared a quiz!', 'shared', params);
     }
     res.send(true);
 };
@@ -420,8 +443,11 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                     quiz.meta.askedForReview = true;
                     zzish.postContent(quiz.profileId, QUIZ_CONTENT_TYPE, quiz.uuid, quiz.meta, quiz.content, function(err2, message) {
                         if (!handleError(err2, res)) {
-                            var link = "http://www.quizalize.com/quiz/review/" + quiz.uuid;
-                            email.sendEmail('team@zzish.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'Hi there, \n\nThanks for using the Quiz "' + quiz.meta.name + '" in your class. We want to make sure we\'re always promoting the best quality content in our marketplace. Can you fill out a quick survey to tell us what you think. Your review will help content creators keep their quizzes at the highest level. Click on the following link to review this quiz:\n\n' + link + '\n\nBest wishes, \n\nThe Quizalize team.');
+                            var params = {
+                                name: quiz.meta.name,
+                                link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
+                            }
+                            email.sendEmailTemplate('team@zzish.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
                 }
@@ -446,8 +472,16 @@ exports.help = function(req, res){
     if (req.body.name !== undefined && req.body.name !== "") {
         name = "Hi " + req.body.name + "\n\n";
     }
-    email.sendEmail('team@zzish.com', [req.body.email], 'Quizalize Help', name + 'Thanks very much for getting in touch with us.  This is an automatically generated email to let you know we have received your message and will be in touch with you soon.\n\nBest wishes, \n\nThe Quizalize team.');
-	email.sendEmail('admin@zzish.com', ['developers@zzish.com'], 'Help From Classroom Quiz', "Name: " + req.body.name + "\n\nBody" + req.body.message + "\n\nEmail\n\n" + req.body.email);
+    var params = {
+        name: name
+    }
+    email.sendEmailTemplate('team@zzish.com', [req.body.email], 'Quizalize Help', 'help', params);
+    var params2 = {
+        name: req.body.name,
+        message: req.body.message,
+        email: req.body.email
+    }
+    email.sendEmailTemplate('admin@zzish.com', ['developers@zzish.com'], 'Help from Quizalize', 'dhelp', params2);
     res.send(true);
 };
 

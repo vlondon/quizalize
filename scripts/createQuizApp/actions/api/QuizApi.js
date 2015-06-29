@@ -5,6 +5,7 @@ var Promise = require('es6-promise').Promise;
 var QuizApi = {
 
     getQuizzes: function(){
+        console.trace('getting quizzes');
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
 
@@ -26,10 +27,11 @@ var QuizApi = {
         });
     },
 
-    searchQuizzes: function(search = '', categoryId){
+    searchQuizzes: function(search = '', categoryId, profileId){
+        console.log('searchQuizzes');
         return new Promise(function(resolve, reject){
             request.post(`/search/quizzes`)
-                .send({search, categoryId})
+                .send({search, categoryId, profileId})
                 .end(function(error, res){
                     if (error) {
                         reject();
@@ -43,26 +45,30 @@ var QuizApi = {
     },
 
 
-    getQuiz: function(quizId){
-        return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+    getQuiz: (function(){
+        var promises = {};
+        return function(quizId){
+            promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
 
-            if (!uuid) {
-                reject();
-            } else {
-                request.get(`/create/${uuid}/quizzes/${quizId}`)
-                    .use(noCache)
-                    .end(function(error, res){
-                        if (error) {
-                            reject();
-                        } else {
-                            resolve(res.body);
-                        }
 
-                    });
-            }
-        });
-    },
+                if (!uuid) {
+                    reject();
+                } else {
+                    request.get(`/create/${uuid}/quizzes/${quizId}`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+                        });
+                }
+            });
+            return promises[quizId];
+        };
+    })(),
 
     deleteQuiz: function(quizId){
         return new Promise(function(resolve, reject){
@@ -190,6 +196,25 @@ var QuizApi = {
             } else {
                 request.post(`/create/${uuid}/quizzes/${quizId}/share`)
                     .send(data)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+            }
+        });
+    },
+    publishQuiz: function(quiz) {
+        return new Promise(function(resolve, reject){
+            var uuid = localStorage.getItem('cqUuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.post(`/create/${uuid}/quizzes/${quiz.uuid}/publishToMarketplace`)
+                    .send(quiz)
                     .end(function(error, res){
                         if (error) {
                             reject();

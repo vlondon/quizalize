@@ -25,6 +25,7 @@ Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathPara
 router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
+
 router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
 router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
@@ -42,7 +43,10 @@ router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.e
 router.on(pages.assignments.path, () => renderPage(pages.assignments) );
 router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
+router.on(pages.ownProfilePage.path, () => renderPage(pages.ownProfilePage) );
+router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
 router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
+router.on(pages.sharedQuizPage.path, (profileId, quizCode) => renderPage(pages.sharedQuizPage, {profileId, quizCode}) );
 
 
 var newUrl = function(requestedUrl){

@@ -6,10 +6,12 @@ var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
 var timeouts = [];
+var priceFormat = require('createQuizApp/utils/priceFormat');
 var CQViewQuizDetails = React.createClass({
 
     propTypes: {
         quizId: React.PropTypes.string.isRequired,
+        quizCode: React.PropTypes.string,
         onClose: React.PropTypes.func.isRequired
     },
 
@@ -69,6 +71,16 @@ var CQViewQuizDetails = React.createClass({
     render: function() {
 
         var quizInfo;
+        var tagLine = () => {
+            // this.state.quiz.meta.price = 3;
+            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0 && this.props.quizCode !== this.state.quiz.meta.code) {
+                return (<span>{priceFormat(this.state.quiz.meta.price)} - Buy Now!</span>);
+            }
+            else {
+                return (<span>Use it - it's free!</span>);
+            }
+        };
+
 
         if (this.state.quiz){
             quizInfo = (
@@ -81,9 +93,14 @@ var CQViewQuizDetails = React.createClass({
                         <p>
                             {this.state.quiz.meta.description}
                         </p>
+                        <p>
+                        <i>
+                            {this.state.quiz.payload.questions.length} questions.
+                        </i>
+                        </p>
 
                         <button className="cq-quizdetails__button" onClick={this.handleBuy}>
-                            Use it - it's free!
+                            {tagLine()}
                         </button>
                     </div>
 
@@ -91,10 +108,10 @@ var CQViewQuizDetails = React.createClass({
                         <div className="cq-quizdetails__questions">
                             <ul>
 
-                                {this.state.quiz.payload.questions.map( question => {
+                                {this.state.quiz.payload.questions.map( (question, index) => {
                                     return (
-                                        <li key={question.uuid}>
-                                            <CQLatexString>{question.question}</CQLatexString>
+                                        <li className="cq-quizdetails__question" key={question.uuid}>
+                                            {index + 1}. <CQLatexString>{question.question}</CQLatexString>
                                         </li>
                                     );
                                 })}

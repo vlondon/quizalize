@@ -1,8 +1,8 @@
 var React           = require('react');
-var router          = require('./router');
 // var settings        = require('utils/settings');
 
 var CQPublic            = require('createQuizApp/components/pages/CQPublic');
+var CQProfile           = require('createQuizApp/components/pages/CQProfile');
 var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
 var CQLogin             = require('createQuizApp/components/pages/CQLogin');
 var CQRegister          = require('createQuizApp/components/pages/CQRegister');
@@ -20,10 +20,10 @@ var CQHelp              = require('createQuizApp/components/pages/CQHelp');
 var CQSettings          = require('createQuizApp/components/pages/CQSettings');
 var CQApp               = require('createQuizApp/components/pages/CQApp');
 
-
 var pages = {
     pathParams: {
         quizId: /([\w\-]+)/,
+        authorId: /([\w\-]+)/,
         questionIndex: /([\w\-]+)/,
         classCode: /([\w\-]+)/,
         redirectURL: /([\w\-]+)/,
@@ -34,21 +34,58 @@ var pages = {
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQDashboard, null),
+                React.createElement(CQProfile, null),
                 document.getElementById('reactApp')
             );
         }
     },
+
     mainPageWithSlash: {
         path: '/quiz/',
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQDashboard, null),
+                React.createElement(CQProfile, null),
                 document.getElementById('reactApp')
             );
         }
     },
+
+    ownProfilePage: {
+        path: '/quiz/user',
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQProfile, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    profilePage: {
+        path: '/quiz/user/:profileId',
+        pathRegEx: /\/quiz\/user\/([\w\-]+)/,
+        needsLogin: undefined,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQProfile, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    sharedQuizPage: {
+        path: '/quiz/user/:profileId/:quizCode',
+        pathRegEx: /\/quiz\/\/user\/([\w\-]+)\/([\w\-]+)/,
+        needsLogin: undefined,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQProfile, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
     helpPage: {
         path: '/quiz/help',
         needsLogin: undefined,
