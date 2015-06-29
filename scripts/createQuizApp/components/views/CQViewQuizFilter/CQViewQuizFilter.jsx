@@ -137,9 +137,6 @@ var CQviewQuizFilter = React.createClass({
             }, {
                 name: 'apps',
                 value: 'apps'
-            }, {
-                name: 'apps1',
-                value: 'apps2'
             }];
 
 

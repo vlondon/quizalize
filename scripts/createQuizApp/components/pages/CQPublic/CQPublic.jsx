@@ -114,32 +114,46 @@ var CQPublic = React.createClass({
     render: function() {
 
         var appGrid, quizList, quizDetails;
-
-        appGrid = this.state.showApps ? <CQAppGrid/> : undefined;
+        var appsPerPage = this.state.showQuizzes ? 5 : 10;
 
         if (this.state.quizDetails) {
             quizDetails = (<CQViewQuizDetails
                 onClose={this.handleDetailsClose}
                 quizId={this.state.quizDetails}/>);
         }
-
+        if (this.state.showApps ){
+            appGrid = (
+                <div>
+                    <h3 className='cq-public__header'>
+                        <i className="fa fa-archive"/> Apps
+                    </h3>
+                    <CQAppGrid appsPerPage={appsPerPage}/>
+                </div>
+            );
+        }
          if (this.state.showQuizzes) {
 
             quizList = (
-                <CQViewQuizList
-                    isQuizInteractive={true}
-                    isPaginated={true}
-                    onQuizClick={this.handleDetails}
-                    quizzes={this.state.quizzes}
-                    className="cq-public__list"
-                    sortBy="time">
+                <div>
+                    <h3 className='cq-public__header'>
+                        <i className="fa fa-th-large"/> Quizzes
+                    </h3>
+                    <CQViewQuizList
+                        isQuizInteractive={true}
+                        isPaginated={true}
+                        onQuizClick={this.handleDetails}
+                        quizzes={this.state.quizzes}
+                        showCta={true}
+                        className="cq-public__list"
+                        sortBy="time">
 
-                    <span className='cq-public__button' onClick={this.handlePreview}>
-                        Preview
-                    </span>
-                    <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
+                        <span className='cq-public__button' onClick={this.handlePreview}>
+                            Preview
+                        </span>
+                        <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
 
-                </CQViewQuizList>
+                    </CQViewQuizList>
+                </div>
             );
         }
         return (
