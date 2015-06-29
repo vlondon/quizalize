@@ -63,7 +63,7 @@ var createUserTopicTree = function(data){
         if (_topicTree) {
             _topicTree.forEach((parentTopic) => {
                 var childrenTopics = _topicUserTree.filter(childs => (childs.parentCategoryId === parentTopic.uuid));
-                parentTopic.categories.push.apply(parentTopic.categories,childrenTopics);
+                parentTopic.categories.push.apply(parentTopic.categories, childrenTopics);
                 parentTopic.categories.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
             });
         }
@@ -83,14 +83,14 @@ var addUserTopic = function(topic) {
         var parentTopic = _topicUserTree.filter(t => (t.uuid === topic.parentCategoryId));
         parentTopic.topics = topic;
     }
-}
+};
 
 var getAllTopics = function() {
     if (_topicUserTree) {
         return _topicUserTree.slice().concat(_topicTree.slice());
     }
     else {
-        return _topicTree.slice();
+        return _topicTree ? _topicTree.slice() : [];
     }
 };
 
@@ -101,7 +101,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             return getAllTopics();
         }
         else {
-            return getAllTopics().filter(function(t) {return t.uuid === parentCategoryId;})[0].categories;
+            return getAllTopics().filter(function(t) { return t.uuid === parentCategoryId; })[0].categories;
         }
     },
 

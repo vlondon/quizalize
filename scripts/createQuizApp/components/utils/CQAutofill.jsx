@@ -10,6 +10,7 @@ var CQAutofill = React.createClass({
         limit: React.PropTypes.number,
         placeholder: React.PropTypes.string,
         data: React.PropTypes.func,
+        value: React.PropTypes.string,
         onChange: React.PropTypes.func.isRequired
     },
 
@@ -39,17 +40,14 @@ var CQAutofill = React.createClass({
 
     getState: function(){
         var newState = {};
-        console.log('onChange');
-        newState.topics = this.props.data();
-
-        newState.topicsAutofill = [];
 
         var fillAutoFill = function(array, prefix){
+            var result = [];
             array.forEach( el => {
 
 
                 var name = prefix ? `${prefix} > ${el.name}` : el.name;
-                newState.topicsAutofill.push({
+                result.push({
                     name: name,
                     id: el.uuid
                 });
@@ -57,9 +55,18 @@ var CQAutofill = React.createClass({
                     fillAutoFill(el.categories, name);
                 }
             });
-        };
 
-        fillAutoFill(newState.topics);
+            return result;
+        };
+        newState.topics = this.props.data();
+        newState.topicsAutofill = fillAutoFill(newState.topics);
+
+        var selected;
+        if (this.props.value){
+            selected = newState.topicsAutofill.filter(t => t.id === this.props.value)[0];
+        }
+        newState.searchString = selected ? selected.name : undefined;
+        console.log('onChange', this.props.value, newState);
         return newState;
     },
 
@@ -116,7 +123,7 @@ var CQAutofill = React.createClass({
 
     searchList: function(){
 
-        if (this.state.searchString.length < 1 || this.state.selected !== undefined) {
+        if ((this.state.searchString && this.state.searchString.length < 1) || this.state.selected !== undefined) {
             return null;
         }
 
