@@ -12,6 +12,12 @@ var CQPublishQuiz = React.createClass({
         ev.stopPropogation();
     },
 
+    handlePublish: function(quiz){
+        if (quiz){
+            router.setRoute(`/quiz/published/${quiz.uuid}#publish`);
+        }
+    },
+
     render: function() {
         var publishButton = () => {
             if (!this.props.quiz.meta.originalQuizId) {
