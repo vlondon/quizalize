@@ -58,6 +58,7 @@ var CQEditNormal = React.createClass({
     getState: function(props) {
         props = props || this.props;
         var question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
+        question.alternatives = question.alternatives || [];
         var newState = {
             question
         };
