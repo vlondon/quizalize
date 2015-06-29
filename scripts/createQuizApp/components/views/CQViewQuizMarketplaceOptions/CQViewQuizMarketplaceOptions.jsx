@@ -1,8 +1,7 @@
 var React = require('react');
 
 var TransactionStore = require('createQuizApp/stores/TransactionStore');
-var TransactionActions = require('createQuizApp/actions/TransactionActions');
-var router = require('createQuizApp/config/router');
+
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
@@ -18,11 +17,21 @@ var CQViewQuizMarketplaceOptions = React.createClass({
         return this.getState();
     },
 
+    componentDidMount: function() {
+        QuizStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        QuizStore.removeChangeListener(this.onChange);
+    },
+    onChange: function(){
+        this.setState({quiz: this._getQuiz()});
+    },
     getState: function(){
         return {
             quiz: this._getQuiz(),
             prices: TransactionStore.getPrices(),
-            price: 0.79
+            price: 0
         };
     },
 
@@ -31,16 +40,6 @@ var CQViewQuizMarketplaceOptions = React.createClass({
 
         var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
 
-
-        if (quiz === undefined){
-            if (this.props.quizId) {
-                QuizActions.loadQuiz(this.props.quizId);
-            }
-            quiz = {
-                meta: {},
-                payload: {}
-            };
-        }
         return quiz;
     },
 
@@ -52,11 +51,15 @@ var CQViewQuizMarketplaceOptions = React.createClass({
 
 
     handleDone: function(ev){
-        console.log("Publish at ", this.state.price, " for ", this.props.quizId);
+
         var settings = {
             price: this.state.price
+        };
+
+        if (this.state.quiz) {
+            QuizActions.publishQuiz(this.state.quiz, settings);
         }
-        QuizActions.publishQuiz(this.state.quiz, settings);
+
         //QuizActions.publishQuiz()
     },
 
@@ -79,7 +82,7 @@ var CQViewQuizMarketplaceOptions = React.createClass({
                     {this.state.prices.map( (price, key) =>{
                         var selected = this.state.price === price;
                         return (
-                            <div>
+                            <div key={key}>
                                 <input
                                     type="radio"
                                     name="price"

@@ -14,11 +14,12 @@ var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 
-
 var CQPublished = React.createClass({
 
     propTypes: {
-        quizId: React.PropTypes.string.isRequired
+        quizId: React.PropTypes.string.isRequired,
+        assign: React.PropTypes.bool,
+        publish: React.PropTypes.bool
     },
 
     getInitialState: function() {
@@ -31,7 +32,7 @@ var CQPublished = React.createClass({
     },
 
     componentWillUnmount: function() {
-        QuizStore.addChangeListener(this.onChangeQuiz);
+        QuizStore.removeChangeListener(this.onChangeQuiz);
         GroupStore.removeChangeListener(this.onChange);
     },
 
@@ -168,12 +169,24 @@ var CQPublished = React.createClass({
 
     render: function() {
 
-        var publishQuiz = () => {
-            if (!this.state.settings.publishing && !this.state.settings.originalQuizId) {
-                return (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>)
-            }
+        var classList;
+        var publishQuiz;
+
+        classList = (
+            <CQViewClassList
+                quizId={this.props.quizId}/>
+        );
+        if (!this.state.settings.publishing && !this.state.settings.originalQuizId) {
+            publishQuiz = (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>);
+        }
+        if (this.props.assign === true) {
+            console.log('yahah');
+            publishQuiz = undefined;
         }
 
+        if (this.props.publish === true){
+            classList = undefined;
+        }
         return (
             <CQPageTemplate className="cq-published">
 
@@ -190,9 +203,9 @@ var CQPublished = React.createClass({
                     </p>
                 </div>
 
-                <CQViewClassList
-                    quizId={this.props.quizId}/>
-                    {publishQuiz()}
+
+                {classList}
+                {publishQuiz}
 
 
             </CQPageTemplate>

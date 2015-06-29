@@ -135,7 +135,7 @@ var CQViewClassList = React.createClass({
                                         name="classSelection"
                                         id={classN.value}
                                         checked={this.state.groupsUsed.indexOf(classN.value) !== -1}
-                                        onClick={this.handleClick.bind(this, classN.value)}
+                                        onChange={this.handleClick.bind(this, classN.value)}
                                         />
                                     <label htmlFor={classN.value}>
                                         &nbsp;{classN.label}

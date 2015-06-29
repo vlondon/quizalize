@@ -1,4 +1,5 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var CQPublishQuiz = React.createClass({
 
@@ -12,9 +13,10 @@ var CQPublishQuiz = React.createClass({
         ev.stopPropogation();
     },
 
-    handlePublish: function(quiz){
+    handlePublish: function(){
+        var quiz = this.props.quiz;
         if (quiz){
-            router.setRoute(`/quiz/published/${quiz.uuid}#publish`);
+            router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
         }
     },
 

@@ -296,6 +296,33 @@ var pages = {
         }
     },
 
+    publishedAssign: {
+        path: '/quiz/published/:quizId/assign',
+        pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
+        needsLogin: true,
+        renderer: function(props){
+            props.assign = true;
+            React.render(
+                React.createElement(CQPublished, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    publishedPricing: {
+        path: '/quiz/published/:quizId/publish',
+        pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
+        needsLogin: true,
+        renderer: function(props){
+            props.publish = true;
+            React.render(
+                React.createElement(CQPublished, props),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+
     publishedInfo: {
         path: '/quiz/published/:quizId/:classCode/info',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/([\w\-]+)\/info/,
