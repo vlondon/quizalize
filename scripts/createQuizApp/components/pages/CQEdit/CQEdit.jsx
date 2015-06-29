@@ -32,7 +32,6 @@ var CQEdit = React.createClass({
     _getQuiz: function(props){
         props = props || this.props;
         var quiz = QuizStore.getQuiz(props.quizId);
-        console.log('quiz??????', quiz);
         return quiz;
     },
 
@@ -104,14 +103,10 @@ var CQEdit = React.createClass({
     },
 
     handleSaveNewQuestion: function(newQuestion){
-        console.log('newQuestion', newQuestion);
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${this.state.quiz.payload.questions.length}`);
         });
-
     },
-
-
 
     handleRemoveQuestion: function(question, event){
         event.stopPropagation();

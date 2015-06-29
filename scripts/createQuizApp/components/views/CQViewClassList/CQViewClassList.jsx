@@ -14,6 +14,7 @@ var CQViewClassList = React.createClass({
         var initialState = this.getState();
         initialState.newClassName = '';
         initialState.canSaveNewClass = false;
+        initialState.groupsUsed = [];
         return initialState;
     },
     componentDidMount: function() {
@@ -62,7 +63,10 @@ var CQViewClassList = React.createClass({
 
     handleClick: function(classCode, ev){
         var groupsUsed = [classCode];
-        this.setState({groupsUsed});
+        var newClassName = '';
+        var canSaveNewClass = false;
+
+        this.setState({ groupsUsed, newClassName, canSaveNewClass });
     },
 
 
@@ -93,7 +97,8 @@ var CQViewClassList = React.createClass({
         console.log('handleClassName', ev.target.value);
         this.setState({
             newClassName: ev.target.value,
-            canSaveNewClass: ev.target.value.length > 3
+            canSaveNewClass: ev.target.value.length > 3,
+            groupsUsed: []
         });
     },
 
@@ -116,14 +121,20 @@ var CQViewClassList = React.createClass({
     render: function() {
         return (
             <div className='cq-viewclass'>
-                Set as a class game (or homework)…
-                <div name="assign">
+                <h3>
+                    <span className="cq-viewclass__icon">
+                        <i className="fa fa-users"></i>
+                    </span> Set as a class game (or homework)…
+                </h3>
+                <div className="cq-viewclass__list">
                     <ul className="list-unstyled">
                         {this._showGroupsList().map( (classN) => {
                             return (
                                 <li key={classN.value}>
                                     <input type="radio"
                                         name="classSelection"
+                                        id={classN.value}
+                                        checked={this.state.groupsUsed.indexOf(classN.value) !== -1}
                                         onClick={this.handleClick.bind(this, classN.value)}
                                         />
                                     <label htmlFor={classN.value}>
@@ -133,25 +144,27 @@ var CQViewClassList = React.createClass({
                             );
                         })}
                     </ul>
-                    <button className="btn btn-default"
+                    <button className="btn btn-primary cq-viewclass__done"
+                        disabled={this.state.groupsUsed.length === 0}
                         onClick={this.handleDone}>
                         Done - Use this class
                     </button>
-                    <br/>
-                    <br/>
-                    <form className="form-inline" onSubmit={this.handleNewClass}>
+
+                    <form className="form-inline cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
                             type="text"
                             className="form-control"
                             value={this.state.newClassName}
                             onChange={this.handleClassName}
                             placeholder="Enter a new class name"/>
-                        <button className="btn btn-default"
+                        <button className={this.state.canSaveNewClass ? "btn btn-primary" : "btn btn-default"}
                             type="submit"
                             disabled={!this.state.canSaveNewClass}>
                             Create and use in class
                         </button>
                     </form>
+
+
                 </div>
             </div>
         );
