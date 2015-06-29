@@ -55,6 +55,7 @@ var findPublicQuiz = function(quizId){
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
+        console.log('_quizzes', _quizzes);
         if (_quizzes){
             var quizzes = _quizzes.slice();
             quizzes = quizzes.map(quiz => {
@@ -174,6 +175,8 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
+
+
         case QuizConstants.QUIZ_LOADED:
             AppDispatcher.waitFor([
                 TopicStore.dispatchToken
@@ -207,8 +210,18 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
-        case TopicConstants.PUBLIC_TOPICS_LOADED:
+        case QuizConstants.QUIZ_META_UPDATED:
+            var quizToBeUpdated = action.payload;
+            var quizFromArray = _quizzes.filter(q => q.uuid === quizToBeUpdated.uuid)[0];
+            if (quizFromArray){
+                _quizzes[_quizzes.indexOf(quizFromArray)] = quizToBeUpdated;
+            }
+
+
             QuizStore.emitChange();
+            break;
+
+        case TopicConstants.PUBLIC_TOPICS_LOADED:
             break;
 
         default:

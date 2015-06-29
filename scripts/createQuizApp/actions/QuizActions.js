@@ -298,6 +298,12 @@ var QuizActions = {
         }, ()=>{
             router.setRoute(`/quiz/quizzes`);
         });
+
+        AppDispatcher.dispatch({
+            actionType: QuizConstants.QUIZ_META_UPDATED,
+            payload: quiz
+        });
+
     }
 
 

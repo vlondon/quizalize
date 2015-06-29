@@ -1,4 +1,5 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var QuizActions = require('createQuizApp/actions/QuizActions');
 var QuizStore = require('createQuizApp/stores/QuizStore');
@@ -15,7 +16,6 @@ var CQPublishQuiz = require('createQuizApp/components/utils/CQPublishQuiz');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQLink = require('createQuizApp/components/utils/CQLink');
-var router = require('createQuizApp/config/router');
 
 
 var CQQuizzes = React.createClass({
@@ -99,7 +99,7 @@ var CQQuizzes = React.createClass({
 
     handleAssign: function(quiz){
         if (quiz){
-            router.setRoute(`/quiz/published/${quiz.uuid}#assign`);
+            router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
         }
     },
 
