@@ -21,11 +21,10 @@ var CQAutofill = React.createClass({
     },
 
     getInitialState: function() {
-        var selectedTopic;
 
         var initialState = this.getState();
-        initialState.searchString = selectedTopic || '';
-        initialState.selected = undefined;
+        initialState.searchString = initialState.searchString || '';
+        initialState.selected = initialState.selected || undefined;
 
         return initialState;
     },
