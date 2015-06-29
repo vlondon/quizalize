@@ -39,5 +39,8 @@ exports.addUserToExtra = function(listOfContent){
                 }
             });
         }
+        else {
+            resolve(listOfContent);
+        }
     });
 };
