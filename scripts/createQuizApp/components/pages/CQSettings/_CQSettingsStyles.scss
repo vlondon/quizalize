@@ -7,7 +7,12 @@
     max-width: 600px;
     background: $brand-color-grey-lighter;
 
+
     @at-root #{&}__save {
         text-align: center;
     }
+
+    /* @at-root #{&}__profilepicture {
+        text-align: center;
+    } */
 }

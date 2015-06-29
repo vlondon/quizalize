@@ -1,6 +1,7 @@
 var React = require('react');
 var UserStore = require('createQuizApp/stores/UserStore');
 var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
 var CQDashboardProfile = React.createClass({
 
     propTypes: {
@@ -27,8 +28,9 @@ var CQDashboardProfile = React.createClass({
     },
 
     getState: function(props){
+
         props = props || this.props;
-        console.log('get state', props);
+
         if (props && props.user){
             var user = props.user;
             return {
@@ -46,12 +48,32 @@ var CQDashboardProfile = React.createClass({
         if (this.state.user){
             profile = (
                 <div>
-                    <img src={this.state.profilePicture} alt="profile picture" className="cq-dashboard__profilepic"/>
+                    <div className="cq-dashboard__profilepicture">
+
+                        <CQViewProfilePicture
+                            width="200"
+                            height="200"
+                            name={this.state.user.name}
+
+                            picture={this.state.user.avatar}/>
+                    </div>
                     <h3>{this.state.user.name}</h3>
-                    <ul className="cq-dashboard__details">
-                        <li>{this.state.user.attributes.school}</li>
-                        <li>{this.state.user.attributes.location}</li>
-                    </ul>
+
+                    <div>
+                        <small>
+                            School
+                        </small>
+                        <a href={this.state.user.attributes.url}
+                            target="_blank"
+                            rel="nofollow">
+                            {this.state.user.attributes.school}
+                        </a>
+                    </div>
+                    <div>
+                        <small>City</small>
+                        {this.state.user.attributes.location}
+                    </div>
+
                 </div>
             );
         }

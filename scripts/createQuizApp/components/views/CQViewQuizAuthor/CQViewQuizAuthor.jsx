@@ -1,5 +1,8 @@
 var React = require('react');
 
+var CQLink = require('createQuizApp/components/utils/CQLink');
+
+
 var CQViewQuizAuthor = React.createClass({
 
     propTypes: {
@@ -7,9 +10,13 @@ var CQViewQuizAuthor = React.createClass({
     },
 
     render: function() {
+        console.log('author', this.props.author);
         return (
             <span className="cq-viewquizlist__quizauthor">
-                by <b>{this.props.author.name}</b>
+                <CQLink href={`/quiz/user/${this.props.author.uuid}`} stopPropagation={true}>
+
+                    by <b>{this.props.author.name}</b>
+                </CQLink>
             </span>
         );
     }

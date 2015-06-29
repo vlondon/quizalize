@@ -4,7 +4,7 @@ var router = require('createQuizApp/config/router');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQQuestionList = require('./CQQuestionList');
-
+var CQLink = require('createQuizApp/components/utils/CQLink');
 
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
@@ -166,6 +166,11 @@ var CQEdit = React.createClass({
                     <div className="cq-edit__header">
                         <h3>Now editing quiz&nbsp;
                             <span style={{color: 'red'}}>{this.state.quiz.meta.name}</span>
+                            <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
+                                <button className="btn btn-sm btn-info">
+                                    <span className="glyphicon glyphicon-cog"> </span>
+                                </button>
+                            </CQLink>
                         </h3>
                         <p className="small">
                             Speed Tip: We found clicking is a pain - just hit enter to step through quickly

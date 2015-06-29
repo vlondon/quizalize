@@ -2,11 +2,11 @@ var React = require('react');
 
 var UserStore = require('createQuizApp/stores/UserStore');
 // var UserActions = require('createQuizApp/actions/UserActions');
-var CQLink          = require('createQuizApp/components/utils/CQLink');
+
 var CQDashboardProfile = require('./extra/CQDashboardProfile');
 var CQDashboardQuizzes = require('./extra/CQDashboardQuizzes');
 
-var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay/CQQuizOfTheDayWithInfo');
+
 
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
