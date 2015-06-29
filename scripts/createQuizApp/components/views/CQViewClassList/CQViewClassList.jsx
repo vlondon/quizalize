@@ -1,11 +1,19 @@
 var React = require('react');
 
 var GroupStore  = require('createQuizApp/stores/GroupStore');
-
+var GroupActions = require('createQuizApp/actions/GroupActions');
 
 var CQViewClassList = React.createClass({
+
+    propTypes: {
+        quizId: React.PropTypes.string.isRequired
+    },
+
     getInitialState: function() {
-        return this.getState();
+        var initialState = this.getState();
+        initialState.newClassName = '';
+        initialState.canSaveNewClass = false;
+        return initialState;
     },
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
@@ -15,13 +23,23 @@ var CQViewClassList = React.createClass({
         GroupStore.removeChangeListener(this.onChange);
     },
 
+    onChange: function(){
+        this.setState(this.getState());
+    },
+
     getState: function(){
-
         var groups = GroupStore.getGroups();
+        var groupsContent = GroupStore.getGroupsContent();
+        console.log('groupsContent', groups, groupsContent);
+        // group code
+        var groupsUsed = groups
+            .filter( g => {
+                var content = groupsContent.filter(c => c.contentId === this.props.quizId && c.groupCode === g.code);
+                return content.length > 0;
+            })
+            .map(g => g.code);
 
-
-        return { groups };
-
+        return { groups, groupsUsed };
     },
 
     _showGroupsList: function(){
@@ -41,24 +59,77 @@ var CQViewClassList = React.createClass({
 
     },
 
+
+
+    handleClick: function(classCode, ev){
+        var isAssigning = ev.target.checked;
+        var groupsUsed = this.state.groupsUsed;
+        if (isAssigning){
+            GroupActions.publishAssignment(this.props.quizId, classCode);
+            groupsUsed.push(classCode);
+        } else {
+            GroupActions.unpublishAssignment(this.props.quizId, classCode);
+            groupsUsed.splice(groupsUsed.indexOf(classCode), 1);
+        }
+        this.setState({groupsUsed});
+
+        console.log('classCode', classCode, ev.target.checked);
+    },
+
+    handleClassName: function(ev){
+        console.log('handleClassName', ev.target.value);
+        this.setState({
+            newClassName: ev.target.value,
+            canSaveNewClass: ev.target.value.length > 3
+        });
+    },
+
+    handleNewClass: function(ev){
+        ev.preventDefault();
+
+        var className = this.state.newClassName;
+        if (className.length > 3) {
+            GroupActions.publishNewAssignment(this.props.quizId, className);
+            this.setState({
+                newClassName: '',
+                canSaveNewClass: false
+            });
+        }
+    },
+
     render: function() {
         return (
-            <div>
+            <div className='cq-viewclass'>
                 Set as a class game (or homework)…
                 <ul className="list-unstyled">
                     {this._showGroupsList().map( (classN) => {
+                        var checked = this.state.groupsUsed.indexOf(classN.value) !== -1;
                         return (
                             <li key={classN.value}>
-                                <input type="checkbox" id={classN.value}/>
+                                <input type="checkbox"
+                                    id={classN.value}
+                                    onClick={this.handleClick.bind(this, classN.value)}
+                                    checked={checked}/>
                                 <label htmlFor={classN.value}>
                                     &nbsp;{classN.label}
                                 </label>
-
                             </li>
                         );
                     })}
                 </ul>
-                <input type="text" placeholder="Enter a new class name"/>
+                <form className="form-inline" onSubmit={this.handleNewClass}>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={this.state.newClassName}
+                        onChange={this.handleClassName}
+                        placeholder="Enter a new class name"/>
+                    <button className="btn btn-default"
+                        type="submit"
+                        disabled={!this.state.canSaveNewClass}>
+                        New class
+                    </button>
+                </form>
                 <br/>
                 <button className="btn btn-default"
                     onClick={this.handleClick}>

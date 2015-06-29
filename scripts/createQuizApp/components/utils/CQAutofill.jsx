@@ -10,7 +10,7 @@ var CQAutofill = React.createClass({
         limit: React.PropTypes.number,
         placeholder: React.PropTypes.string,
         data: React.PropTypes.func,
-        onChange: React.PropTypes.func.isRequired,
+        onChange: React.PropTypes.func.isRequired
     },
 
     getDefaultProps: function() {
@@ -22,11 +22,11 @@ var CQAutofill = React.createClass({
     getInitialState: function() {
         var selectedTopic;
 
-        return {
-            searchString: selectedTopic || '',
-            selected: undefined,
-            topics: []
-        };
+        var initialState = this.getState();
+        initialState.searchString = selectedTopic || '';
+        initialState.selected = undefined;
+
+        return initialState;
     },
 
     componentDidMount: function() {
@@ -37,7 +37,7 @@ var CQAutofill = React.createClass({
         TopicStore.removeChangeListener(this.onChange);
     },
 
-    onChange: function(){
+    getState: function(){
         var newState = {};
         console.log('onChange');
         newState.topics = this.props.data();
@@ -60,7 +60,11 @@ var CQAutofill = React.createClass({
         };
 
         fillAutoFill(newState.topics);
-        this.setState(newState);
+        return newState;
+    },
+
+    onChange: function(){
+        this.setState(this.getState());
 
     },
 
@@ -131,15 +135,15 @@ var CQAutofill = React.createClass({
 
         var list;
         if (this.state.occurrences){
-            if (this.state.occurrences.length==0) {
+            if (this.state.occurrences.length === 0) {
                 var option = {
                     id: "-1",
                     name: this.state.searchString
-                }
+                };
                 TopicActions.createTemporaryTopic({
                     uuid: "-1",
                     name: this.state.searchString
-                })
+                });
                 list = [(
                     <li key={option.id} className="cq-autofill__option" onClick={this.handleClick.bind(this, option)}>
                         {this.state.searchString}
