@@ -3,10 +3,14 @@ var assign = require('object-assign');
 
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
+var QuizStore = require('createQuizApp/stores/QuizStore');
+
+var priceFormat = require('createQuizApp/utils/priceFormat');
 
 var CQViewCreateAppTemplate = React.createClass({
 
     propTypes: {
+        icon: React.PropTypes.object,
         app: React.PropTypes.object
     },
 
@@ -26,13 +30,16 @@ var CQViewCreateAppTemplate = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         var appInfo = assign({}, this.state.appInfo, nextProps.app);
-        this.setState({ appInfo });
+        var quizzes = nextProps.quizzes.map(qId => QuizStore.getQuizMeta(qId));
+        this.setState({ appInfo, quizzes });
     },
 
     render: function() {
         var style = {
             background: this.state.appInfo.meta.colour
         };
+
+        var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price)}`;
         return (
 
             <div style={style} className="cq-apptemplate">
@@ -40,13 +47,14 @@ var CQViewCreateAppTemplate = React.createClass({
                     <CQQuizIcon
                         className="cq-app__icon"
                         name={this.state.appInfo.meta.name}
-                        image={this.state.appInfo.meta.iconURL}/>
+                        image={this.state.appInfo.meta.iconURL}
+                        imageData={this.props.icon}/>
 
                     <div className="cq-app__info">
                         <h2>{this.state.appInfo.meta.name}</h2>
-                        <div className="cq-app__price">Free</div>
+                        <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price)}</div>
                         <button className="cq-app__button" onClick={this.handleBuy}>
-                            Use for free
+                            {buySentence}
                         </button>
 
                     </div>
@@ -58,7 +66,7 @@ var CQViewCreateAppTemplate = React.createClass({
                         <CQViewQuizList
                             isQuizInteractive={true}
                             onQuizClick={this.handleDetails}
-                            quizzes={this.state.appInfo.extra.quizzes}
+                            quizzes={this.state.quizzes}
                             sortBy="category">
                             <span className='cq-app__buttonextra' onClick={this.handlePreview}>
                                 Preview

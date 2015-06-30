@@ -8,6 +8,9 @@ var appPicture;
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewCreateAppTemplate = require('./CQViewCreateAppTemplate');
 
+var TransactionStore = require('createQuizApp/stores/TransactionStore');
+var priceFormat = require('createQuizApp/utils/priceFormat');
+
 var CQViewCreateApp = React.createClass({
 
     propTypes: {
@@ -18,13 +21,15 @@ var CQViewCreateApp = React.createClass({
         return {
             imageData: null,
             selectedQuizzes: [],
+            prices: TransactionStore.getPrices(),
             quizzes: QuizStore.getQuizzes(),
 
             app: {
                 meta: {
                     name: undefined,
                     description: undefined,
-                    iconURL: undefined
+                    iconURL: undefined,
+                    price: 0
                 },
                 payload: {
                     quizzes: [],
@@ -118,12 +123,22 @@ var CQViewCreateApp = React.createClass({
 
                     <div className="cq-viewcreateapp__formelement form-group">
 
-                        <label htmlFor="name">Colour of your app (hex value, including hash)</label>
+                        <label htmlFor="name">Colour of your app</label>
                         <CQViewAppColourPicker onChange={this.handleChange.bind(this, 'colour')}/>
-                        <input type="text" id="colour"
-                            className="form-control"
-                            onChange={this.handleChange.bind(this, 'colour')}
-                            value={this.state.app.meta.colour}/>
+
+
+                    </div>
+
+                    <div className="cq-viewcreateapp__formelement form-group">
+
+                        <label htmlFor="price">Price</label>
+                        <select name="" id="price" className="form-control" onChange={this.handleChange.bind(this, 'price')}>
+                            {this.state.prices.map(price=> {
+                                return (
+                                    <option value={price}>{priceFormat(price)}</option>
+                                );
+                            })}
+                        </select>
 
                     </div>
 
@@ -168,7 +183,10 @@ var CQViewCreateApp = React.createClass({
                     </button>
                 </div>
                 <div className="cq-viewcreateapp__right">
-                    <CQViewCreateAppTemplate app={this.state.app} icon={this.state.imageData}/>
+                    <CQViewCreateAppTemplate
+                        app={this.state.app}
+                        icon={this.state.imageData}
+                        quizzes={this.state.selectedQuizzes}/>
                 </div>
             </div>
         );
