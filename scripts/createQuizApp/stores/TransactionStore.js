@@ -9,7 +9,17 @@ var _prices = [
     0,
     0.79,
     1.49,
-    2.99
+    2.29,
+    2.99,
+    3.99,
+    4.49,
+    4.99,
+    5.99,
+    6.99,
+    7.99,
+    8.49,
+    8.99,
+    9.99
 ];
 
 var TransactionStore = assign({}, EventEmitter.prototype, {

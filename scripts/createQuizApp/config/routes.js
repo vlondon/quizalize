@@ -171,6 +171,18 @@ var pages = {
         }
     },
 
+    yourAppsCreate: {
+        path: '/quiz/apps/new',
+        needsLogin: true,
+        renderer: function(){
+            var newApp = true;
+            React.render(
+                React.createElement(CQYourApps, {newApp}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
     quizzes: {
         path: '/quiz/quizzes',
         needsLogin: true,

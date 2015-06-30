@@ -226,7 +226,6 @@ var CQViewQuizList = React.createClass({
     },
 
     handleSearch: function(obj, quizzes){
-
         quizzes = this.sort(obj, quizzes);
         this.setState({quizzes, savedSearch: obj});
     },

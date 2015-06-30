@@ -34,6 +34,7 @@ router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
 router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
 router.on(pages.yourApps.path, () => renderPage(pages.yourApps) );
+router.on(pages.yourAppsCreate.path, () => renderPage(pages.yourAppsCreate) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
 router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
 router.on(pages.create.path, () => renderPage(pages.create) );
