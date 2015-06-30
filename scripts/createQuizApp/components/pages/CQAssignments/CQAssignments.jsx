@@ -110,7 +110,7 @@ var CQAssignments = React.createClass({
                                                                 <h4>{assignment.meta.name}</h4>
                                                             </div>
                                                             <div className="col-xs-3">
-                                                                <h4>{assignment.meta.subject} {assignment._category && assignment._category.name}</h4>
+                                                                <h4>{assignment._category && assignment._category.name}</h4>
                                                             </div>
                                                             <div className="col-xs-2">
                                                                 <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
