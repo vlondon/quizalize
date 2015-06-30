@@ -41,7 +41,6 @@ var TransactionActions = {
                 TransactionApi.put(transaction)
                     .then(function(){
                         console.log('transaction saved saved');
-                        QuizActions.loadQuizzes();
                         AppDispatcher.dispatch({
                             actionType: TransactionConstants.TRANSACTION_NEW,
                             payload: transaction

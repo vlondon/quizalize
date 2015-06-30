@@ -11,9 +11,6 @@ var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetail
 var CQViewQuizPrice = require('createQuizApp/components/utils/CQViewQuizPrice');
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
-var AppActions = require('createQuizApp/actions/AppActions');
-
-var QuizActions  = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
@@ -21,8 +18,6 @@ var UserStore = require('createQuizApp/stores/UserStore');
 var CQPublic = React.createClass({
 
     getInitialState: function() {
-
-        QuizActions.searchPublicQuizzes();
         return {
             quizzes: QuizStore.getPublicQuizzes(),
             user: UserStore.getUser(),
@@ -33,7 +28,6 @@ var CQPublic = React.createClass({
     },
 
     componentDidMount: function() {
-        AppActions.searchPublicApps();
         QuizStore.addChangeListener(this.onChange);
         AppStore.addChangeListener(this.onChange);
     },

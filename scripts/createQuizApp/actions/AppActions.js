@@ -85,12 +85,12 @@ var AppActions = {
                 .then(function(apps){
 
                     apps = apps.filter(app => {
-                        var found =false;
+                        var found = false;
                         quizzes.forEach(quiz => {
-                            if (app.meta.quizzes.indexOf(quiz.uuid)>=0) {
+                            if (app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
                                 found = true;
                             }
-                        })
+                        });
                         return found;
                     });
 
@@ -99,6 +99,8 @@ var AppActions = {
                     //     console.log("Going through app",app);
                     //     return false;
                     // });
+
+                    console.log("GOT SOME APPS",apps);
 
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,

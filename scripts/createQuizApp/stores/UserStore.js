@@ -24,7 +24,6 @@ var UserStore = assign({}, EventEmitter.prototype, {
             UserActions.getPublicUser(userId);
             _users[userId] = null;
         }
-        console.log('retrieving user iid', userId, user);
         return user;
     },
 

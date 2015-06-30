@@ -110,9 +110,13 @@ var CQAutofill = React.createClass({
 
             occurrences = occurrences.length > this.props.limit ? occurrences.slice(0, this.props.limit) : occurrences;
 
+            var selected = this.getState().selected;
+            // if (selected.uuid === "-1") selected = null;
+
             this.setState({
                 searchString,
-                occurrences
+                occurrences,
+                selected
             });
 
             if (occurrences.length === 0) {
@@ -126,9 +130,6 @@ var CQAutofill = React.createClass({
                         name: searchString
                     });
                     this.handleClick(option);
-                }
-                else {
-                    this.handleClick();
                 }
             }
         }

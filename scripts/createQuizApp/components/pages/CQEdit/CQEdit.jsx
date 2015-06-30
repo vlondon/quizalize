@@ -36,14 +36,9 @@ var CQEdit = React.createClass({
     },
 
     componentDidMount: function() {
-
-        // QuizActions.loadQuizzes();
-        TopicActions.loadPrivateTopics();
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
         this.onChange();
-
-
     },
 
     componentWillUnmount: function() {

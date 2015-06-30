@@ -517,8 +517,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     groupCode: classCode
                 }
             }
-            if (currentQuiz.categoryId) {
-                parameters.extensions.categoryId = currentQuiz.categoryId;
+            if (currentQuiz.meta.categoryId) {
+                parameters.extensions.categoryId = currentQuiz.meta.categoryId;
             }
             if (currentQuiz.publicAssigned==true && userUuid==null) {
                 userUuid = uuid.v4();

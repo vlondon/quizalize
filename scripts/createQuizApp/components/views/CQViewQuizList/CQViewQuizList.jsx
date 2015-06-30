@@ -214,8 +214,8 @@ var CQViewQuizList = React.createClass({
                 var nameMatch;
                 var categoryMatch = false;
                 nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-                if (q._category) {
-                    categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+                if (q.meta.categoryId) {
+                    categoryMatch = TopicStore.getTopicName(q.meta.categoryId).toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
                 }
 
                 return nameMatch || categoryMatch;
@@ -293,8 +293,6 @@ var CQViewQuizList = React.createClass({
             select = function(){};
         }
 
-        var categoryNameLabel = c => c ? c.name : '';
-
         if (this.props.sortOptions) {
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
@@ -333,11 +331,10 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {quiz.meta.categoryId && TopicStore.getTopicById(quiz.meta.categoryId) && TopicStore.getTopicById(quiz.meta.categoryId).name} {author(quiz)}
+                                    {TopicStore.getTopicName(quiz.meta.categoryId)} {author(quiz)}
 
 
                                     <div className="cq-viewquizlist__quizextra">
-                                        {categoryNameLabel(quiz._category)}
                                         <br/>
                                         <small>
                                             Updated {moment(quiz.meta.updated).fromNow()}

@@ -79,7 +79,7 @@ var CQCreate = React.createClass({
         var quiz = this._getQuiz();
         newState.quiz = quiz;
 
-        newState.topics = TopicStore.getAllTopics();
+        newState.topics = TopicStore.getTopicTree();
 
         newState.topicsAutofill = [];
 
@@ -113,8 +113,6 @@ var CQCreate = React.createClass({
     componentDidMount: function() {
         $('[data-toggle="popover"]').popover();
         QuizStore.addChangeListener(this.onChange);
-        TopicActions.loadPrivateTopics();
-
         TopicStore.addChangeListener(this.onChange);
     },
 
@@ -206,7 +204,7 @@ var CQCreate = React.createClass({
                             <CQAutofill
                                 value={this.state.quiz.meta.categoryId}
                                 onChange={this.handleTopic}
-                                data={TopicStore.getAllTopics}
+                                data={TopicStore.getTopicTree}
                                 placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
                                 tabIndex="2"/>
                             <br/>

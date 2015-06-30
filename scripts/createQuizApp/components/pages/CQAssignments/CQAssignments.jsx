@@ -6,6 +6,7 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
+var TopicStore = require('createQuizApp/stores/TopicStore');
 
 var CQAssignments = React.createClass({
 
@@ -110,7 +111,7 @@ var CQAssignments = React.createClass({
                                                                 <h4>{assignment.meta.name}</h4>
                                                             </div>
                                                             <div className="col-xs-3">
-                                                                <h4>{assignment._category && assignment._category.name}</h4>
+                                                                <h4>{TopicStore.getTopicName(assignment.meta.categoryId)}</h4>
                                                             </div>
                                                             <div className="col-xs-2">
                                                                 <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
