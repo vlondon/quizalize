@@ -1,7 +1,8 @@
 var aws = require('aws-sdk');
 var config = require('./config');
+var logger = require('./logger');
 
-if (config.log) console.log("Loading AWS with ",config.aws_config	);
+logger.info("Loading AWS with ", config.aws_config);
 
 // load aws config
 aws.config = new aws.Config(config.aws_config);

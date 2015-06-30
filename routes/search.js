@@ -1,35 +1,13 @@
 //general zzish config
 var zzish               = require("zzishsdk");
 var userHelper          = require('./helpers/userHelper');
+var logger              = require('../logger');
 
 var TRANSACTION_CONTENT_TYPE = "transaction";
 var QUIZ_CONTENT_TYPE = 'quiz';
 var APP_CONTENT_TYPE = 'app';
 
-
-exports.getQuizzes = function(req, res){
-
-    var searchString = req.body.search || '';
-    var categoryId = req.body.categoryId;
-
-    var now = Date.now();
-    var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
-    var mongoQuery = {
-        updated: {
-            $gt: lastYear
-        },
-        live: true,
-        name: {
-            $regex: searchString, $options: 'i'
-        }
-
-    };
-
-
-    if (categoryId) {
-        mongoQuery.categoryId = categoryId;
-    }
-
+var performQuery = function(mongoQuery,res) {
     zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, resp){
 
         if (resp) {
@@ -44,7 +22,37 @@ exports.getQuizzes = function(req, res){
             res.status(500).send(err);
         }
     });
+}
 
+
+exports.getQuizzes = function(req, res){
+
+    var searchString = req.body.search || '';
+    var categoryId = req.body.categoryId;
+    var profileId = req.body.profileId;
+
+    var now = Date.now();
+    var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
+    var mongoQuery = {
+        updated: {
+            $gt: lastYear
+        },
+        published: "published",
+        name: {
+            $regex: searchString, $options: 'i'
+        }
+
+    };
+
+
+    if (categoryId) {
+        mongoQuery.subjectId = categoryId;
+    }
+    if (profileId) {
+        mongoQuery.profileId = profileId;
+    }
+    performQuery(mongoQuery,res);
+    //mongoQuery.published = true;
 };
 
 
@@ -73,7 +81,7 @@ exports.getApps = function(req, res){
     // if (appId){
     //     mongoQuery.uuid = appId;
     // }
-    console.log('searching ', mongoQuery);
+    logger.trace('searching ', mongoQuery);
 
     zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, resp){
         if (resp) {

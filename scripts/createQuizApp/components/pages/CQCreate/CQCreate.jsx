@@ -5,9 +5,15 @@ var router = require('createQuizApp/config/router');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQCreateMore = require('./CQCreateMore');
+
+
+var CQLink = require('createQuizApp/components/utils/CQLink');
 var QuizStore = require('createQuizApp/stores/QuizStore');
+var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
+var UserStore = require('createQuizApp/stores/UserStore');
+
 var TopicActions = require('createQuizApp/actions/TopicActions');
 
 var CQCreate = React.createClass({
@@ -23,16 +29,15 @@ var CQCreate = React.createClass({
 
 
     getInitialState: function() {
-        console.log('do we have props', this.props);
 
         var initialState = {
             isMoreVisible: false,
             title: 'Create a Quiz',
             isSaving: false,
             category: undefined,
-            quiz: this._getQuiz()
+            quiz: this._getQuiz(),
+            user: UserStore.getUser()
         };
-
 
         return initialState;
 
@@ -45,13 +50,10 @@ var CQCreate = React.createClass({
 
 
         if (quiz === undefined){
-            if (this.props.quizId) {
-                QuizActions.loadQuiz(this.props.quizId);
-            }
+
             quiz = {
                 meta: {
                     name: "",
-                    subject: "",
                     description: undefined,
                     imageUrl: undefined,
                     imageAttribution: undefined,
@@ -76,7 +78,30 @@ var CQCreate = React.createClass({
 
         var quiz = this._getQuiz();
         newState.quiz = quiz;
+
+        newState.topics = TopicStore.getAllTopics();
+
+        newState.topicsAutofill = [];
+
+        var fillAutoFill = function(array, prefix){
+            array.forEach( el => {
+                // console.log('fi<!--  -->lling', el);
+
+                var name = prefix ? `${prefix} > ${el.name}` : el.name;
+                newState.topicsAutofill.push({
+                    name: name,
+                    id: el.uuid
+                });
+                if (el.categories && el.categories.length > 0){
+                    fillAutoFill(el.categories, name);
+                }
+            });
+        };
+
+        fillAutoFill(newState.topics);
+
         newState.category = TopicStore.getTopicById(quiz.meta.categoryId);
+
 
         if (this.props.quizId !== undefined){
             newState.title = 'Edit a quiz';
@@ -86,9 +111,10 @@ var CQCreate = React.createClass({
     },
 
     componentDidMount: function() {
-        // TODO Remove jQuery!!
+        $('[data-toggle="popover"]').popover();
         QuizStore.addChangeListener(this.onChange);
         TopicActions.loadPrivateTopics();
+
         TopicStore.addChangeListener(this.onChange);
     },
 
@@ -126,83 +152,89 @@ var CQCreate = React.createClass({
         });
     },
 
+    handleTopic: function(topicId){
+        var newQuizState = assign({}, this.state.quiz);
+        newQuizState.meta.categoryId = topicId;
+        console.log('new topic', newQuizState);
+        this.setState({quiz: newQuizState});
+    },
+
     render: function() {
 
+        var moreSettings;
+        if (UserStore.isAdmin()){
+            moreSettings = (<button type="button"
+                onClick={this.handleMoreClick}
+                className={this.state.isMoreVisible ? 'btn btn-block btn-info cq-create__moresettings' : 'btn btn-block cq-create__moresettings'}>
+                More Settings
+            </button>);
+        }
 
-            return (
-                <CQPageTemplate className="container">
-                    <div className="container">
-                        <div className="row well">
-                            <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-                                <div className="well">
-                                    <h2>
-                                        {this.state.title}
-                                    </h2>
-                                    <form role="form" className="form-horizontal">
-                                        <div className="form-group">
-                                            <label className="col-sm-3 control-label">Quiz Title:<a data-toggle="popover" title="Quiz Title" data-content="Give your quiz a unique name so you can easily identify it." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="7" className="left-space glyphicon glyphicon-question-sign"></a></label>
-                                            <div className="col-sm-9">
-                                                <input id="question"
-                                                    type="text"
-                                                    value={this.state.quiz.meta.name}
-                                                    onChange={this.handleChange.bind(this, 'name')}
-                                                    on-enter="ctrl.createQuiz();"
-                                                    ng-model="ctrl.quiz.name"
-                                                    placeholder="e.g. Plate Boundaries"
-                                                    autofocus="true"
-                                                    tabIndex="1"
-                                                    className="form-control"/><br/>
-                                            </div>
-                                            <label className="control-label col-sm-3">
-                                                Subject:    <a data-toggle="popover" title="Quiz Subject" data-content="You can provide an optional subject to help organize your quizzes into different subject areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="5" className="left-space glyphicon glyphicon-question-sign"></a>
-                                        </label>
-                                        <div className="col-sm-9">
-                                            <input id="subject"
-                                                 type="text"
-                                                 value={this.state.quiz.meta.subject}
-                                                 onChange={this.handleChange.bind(this, 'subject')}
-                                                 on-enter="ctrl.focusTopic();"
-                                                 placeholder="e.g. Geography (Optional)"
-                                                 tabIndex="2"
-                                                 className="form-control"/>
-                                            <br/>
-                                        </div>
-                                        <label className="control-label col-sm-3">
-                                            Unit/Topic:    <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="6" className="left-space glyphicon glyphicon-question-sign"></a>
-                                    </label>
-                                    <div className="col-sm-9">
-                                        <input id="category"
-                                            type="text"
-                                            value={this.state.quiz.meta.category}
-                                            onChange={this.handleChange.bind(this, 'category')}
-                                            on-enter="ctrl.focusQuiz();"
-                                            placeholder="e.g. Earthquakes (Optional)"
-                                            tabIndex="3"
-                                            className="form-control"/>
-                                        <br/>
-                                    </div>
-                                    <div className="col-sm-4 col-sm-offset-4">
-                                        <button type="button"
+        return (
+            <CQPageTemplate className="container cq-create">
+                <div className="cq-create__body">
 
-                                            onClick={this.handleMoreClick}
-                                            className={this.state.isMoreVisible ? 'btn btn-block btn-info' : 'btn btn-block'}>
-                                            More Settings
-                                        </button>
-                                    </div>
-                                    <div className="col-sm-4"><br className="visible-xs"/>
-                                    <button type="button"
-                                        onClick={this.handleNewQuiz}
-                                        disabled={this.state.isSaving}
-                                        tabIndex="4" className="btn btn-primary btn-block">Save</button>
-                                </div>
-                            </div>
-                        </form>
+                    <h2 className="cq-create__header">
+                        {this.state.title}
+                    </h2>
+
+                    <div className="">
+                        <label className="">
+                            Let's start by giving the quiz a name
+
+                        </label>
+                        <div className="">
+                            <input id="question"
+                                type="text"
+                                value={this.state.quiz.meta.name}
+                                onChange={this.handleChange.bind(this, 'name')}
+                                on-enter="ctrl.createQuiz();"
+                                ng-model="ctrl.quiz.name"
+                                placeholder="e.g. Plate Boundaries"
+                                autofocus="true"
+                                tabIndex="1"
+                                maxLength="200"
+                                className="form-control cq-create__inputname"/>
+                            <br/>
+                        </div>
+
+                        <label className="">
+                            Unit/Topic:
+                            <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="3" className="left-space glyphicon glyphicon-question-sign"></a>
+                        </label>
+                        <div className="">
+                            <CQAutofill
+                                value={this.state.quiz.meta.categoryId}
+                                onChange={this.handleTopic}
+                                data={TopicStore.getAllTopics}
+                                placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
+                                tabIndex="2"/>
+                            <br/>
+                        </div>
+
+
+                        <div className="cq-create__cta">
+
+                            <button
+                                type="button"
+                                onClick={this.handleNewQuiz}
+                                disabled={this.state.isSaving}
+                                tabIndex="4"
+                                className="btn btn-primary btn-block">
+                                Go!
+                            </button>
+
+
+                            <CQLink href="/quiz/quizzes" className="cq-create__cancel">
+                                Cancel and go back to your quizzes
+                            </CQLink>
+
+                            {moreSettings}
+
+                        </div>
                     </div>
                 </div>
-
-                    </div>
-                    {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.meta}/> : undefined }
-                </div>
+                {this.state.isMoreVisible ? <CQCreateMore onSettings={this.handleSettings} settings={this.state.quiz.meta}/> : undefined }
             </CQPageTemplate>
         );
 

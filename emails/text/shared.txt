@@ -1,0 +1,10 @@
+Hi there,
+
+you have been shared the quiz %quiz% by %from%. Click on the following link to access this quiz:
+
+%link%
+
+Best wishes,
+
+The Quizalize team
+www.quizalize.com

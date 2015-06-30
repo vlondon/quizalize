@@ -1,0 +1,9 @@
+<p>%name%</p>
+
+<p>Thanks very much for getting in touch with us.  This is an automatically generated email to let you know we have received your message and will be in touch with you soon.</p>
+
+<p>Best Wishes</p>
+
+<h5>The Quizalize Team.</h5>
+<a href="http://www.quizalize.com">www.quizalize.com</a>
+

@@ -12,7 +12,7 @@ var uuid            = require('node-uuid');
 
 var CHANGE_EVENT = 'change';
 
-var _quizzes = [];
+var _quizzes;
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
@@ -25,12 +25,14 @@ var QuestionObject = function(quiz){
         alternatives: ['', '', ''],
         question: '',
         answer: '',
+        latexEnabled: false,
+        imageEnabled: false,
         uuid: uuid.v4()
     };
     if (quiz && quiz.payload.questions.length > 0) {
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
-        question.latexEnabled = lastQuestion.latexEnabled;
-        question.imageEnabled = lastQuestion.imageEnabled;
+        question.latexEnabled = lastQuestion.latexEnabled || false;
+        question.imageEnabled = lastQuestion.imageEnabled || false;
     }
 
     return question;
@@ -53,12 +55,15 @@ var findPublicQuiz = function(quizId){
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        var quizzes = _quizzes.slice();
-        quizzes = quizzes.map(quiz => {
-            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
-            return quiz;
-        });
-        quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
+        console.log('_quizzes', _quizzes);
+        if (_quizzes){
+            var quizzes = _quizzes.slice();
+            quizzes = quizzes.map(quiz => {
+                quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+                return quiz;
+            });
+            quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
+        }
         return quizzes;
     },
 
@@ -89,6 +94,23 @@ var QuizStore = assign({}, EventEmitter.prototype, {
         if (!storeInitPublic){
             storeInitPublic = true;
             QuizActions.searchPublicQuizzes();
+        }
+        var publicQuizzes = _publicQuizzes.slice();
+        // find their category
+        publicQuizzes = publicQuizzes.map(quiz=>{
+            quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
+            return quiz;
+
+        });
+
+        // return _publicQuizzes;
+        return publicQuizzes.reverse();
+    },
+
+    getPublicProfileQuizzes: function(profileId){
+        if (!storeInitPublic){
+            storeInitPublic = true;
+            QuizActions.searchPublicQuizzes('', '', profileId);
         }
         var publicQuizzes = _publicQuizzes.slice();
         // find their category
@@ -153,6 +175,8 @@ AppDispatcher.register(function(action) {
             QuizStore.emitChange();
             break;
 
+
+
         case QuizConstants.QUIZ_LOADED:
             AppDispatcher.waitFor([
                 TopicStore.dispatchToken
@@ -182,12 +206,22 @@ AppDispatcher.register(function(action) {
             // if (i.length === 0){
             //     _quizzes.push(quizAdded);
             // }
-            QuizActions.loadQuizzes();
+
+            QuizStore.emitChange();
+            break;
+
+        case QuizConstants.QUIZ_META_UPDATED:
+            var quizToBeUpdated = action.payload;
+            var quizFromArray = _quizzes.filter(q => q.uuid === quizToBeUpdated.uuid)[0];
+            if (quizFromArray){
+                _quizzes[_quizzes.indexOf(quizFromArray)] = quizToBeUpdated;
+            }
+
+
             QuizStore.emitChange();
             break;
 
         case TopicConstants.PUBLIC_TOPICS_LOADED:
-            QuizStore.emitChange();
             break;
 
         default:

@@ -4,61 +4,55 @@ var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 var Promise             = require('es6-promise').Promise;
 var TopicStore          = require('createQuizApp/stores/TopicStore');
 var TopicActions        = require('createQuizApp/actions/TopicActions');
-var TopicConstants      = require('createQuizApp/constants/TopicConstants');
+var router                  = require('createQuizApp/config/router');
 var uuid                = require('node-uuid');
 var UserStore           = require('createQuizApp/stores/UserStore');
 
 var debounce            = require('createQuizApp/utils/debounce');
 
 
-var _questionsTopicIdToTopic = function(quiz){
+// var _questionsTopicIdToTopic = function(quiz){
 
 
-    var findTopicName = function(topicId){
-        var topic = TopicStore.getTopicById(topicId);
-        return topic ? topic.name : undefined;
-    };
+//     var findTopicName = function(topicId){
+//         var topic = TopicStore.getTopicById(topicId);
+//         return topic ? topic.name : undefined;
+//     };
 
 
-    if (quiz.payload.questions && quiz.payload.questions.length > 0){
-        quiz.payload.questions = quiz.payload.questions.map(question => {
-            question._topic = findTopicName(question.topicId);
-            return question;
-        });
-    }
+//     // if (quiz.payload.questions && quiz.payload.questions.length > 0){
+//     //     quiz.payload.questions = quiz.payload.questions.map(question => {
+//     //         question._topic = findTopicName(question.topicId);
+//     //         return question;
+//     //     });
+//     // }
 
-    return quiz;
-};
+//     return quiz;
+// };
 
-var _questionsTopicToTopicId = function(quiz){
+var createNewTopicsForQuiz = function(quiz){
 
     var questions = quiz.payload.questions;
 
-    var findTopicId = function(topicName){
-        var topic = TopicStore.getTopicByName(topicName);
-        console.info('findTopicId', topicName, topic);
-        if (topic === undefined){
-            // we create a new topic and save it
-            topic = {
-                uuid: uuid.v4(),
-                name: topicName,
-                subContent: true,
-                parentCategoryId: quiz.categoryId
-            };
-            TopicActions.createTopic(topic);
-        }
-
-        return topic ? topic.uuid : uuid.v4();
+    var createTopicForQuestion = function(question){
+        var topic = TopicStore.getTopicById(question.topicId);
+        console.log("Creating new topic for", topic);
+        // we create a new topic and save it
+        topic = {
+            uuid: uuid.v4(),
+            name: topic.name,
+            subContent: true,
+            parentCategoryId: quiz.meta.categoryId
+        };
+        TopicActions.createTopic(topic);
+        return topic.uuid;
     };
 
     if (questions && questions.length > 0) {
         questions = questions.map(function(question){
-            if (question._topic){
-                question.topicId = findTopicId(question._topic);
+            if (question.topicId === "-1") {
+                question.topicId = createTopicForQuestion(question);
             }
-
-            delete question._topic;
-
             return question;
         });
     }
@@ -73,20 +67,33 @@ var QuizActions = {
 
         var quizzes = QuizApi.getQuizzes();
         var topics = QuizApi.getTopics();
+        var ptopics = QuizApi.getUserTopics();
 
 
-        Promise.all([quizzes, topics])
+        Promise.all([quizzes, topics, ptopics])
             .then(value => {
 
                 // let's stitch quizzes to their topic
                 var loadedQuizzes = value[0];
                 var loadedTopics = value[1];
+                var loadedUserTopics = value[2];
 
 
                 var processedQuizzes = loadedQuizzes.map(function(quiz){
-                    var topic = loadedTopics.filter(function(t){
-                        return t.uuid === quiz.categoryId;
+                    var topic;
+                    topic = loadedTopics.pcategories.filter(function(t){
+                        return t.uuid === quiz.meta.categoryId;
                     })[0];
+                    if (!topic) {
+                        topic = loadedTopics.categories.filter(function(t){
+                            return t.uuid === quiz.meta.categoryId;
+                        })[0];
+                    }
+                    if (!topic) {
+                        topic = loadedUserTopics.filter(function(t){
+                            return t.uuid === quiz.meta.categoryId;
+                        })[0];
+                    }
 
                     quiz.category = topic || {};
 
@@ -100,7 +107,8 @@ var QuizActions = {
                     actionType: QuizConstants.QUIZZES_LOADED,
                     payload: {
                         quizzes: processedQuizzes,
-                        topics: loadedTopics
+                        topics: loadedTopics,
+                        utopics: loadedUserTopics
                     }
                 });
             });
@@ -109,26 +117,15 @@ var QuizActions = {
 
 
     loadQuiz: function(quizId){
-        var quizzesPromise = QuizApi.getQuizzes();
+
         var quizPromise = QuizApi.getQuiz(quizId);
-        var topicsPromise = QuizApi.getTopics();
 
+        quizPromise
+            .then((quiz) => {
 
-        Promise.all([quizzesPromise, quizPromise, topicsPromise])
-            .then((value) => {
-
-                // // let's stitch quizzes to their topic
-                var loadedQuizzes = value[0];
-                var quiz = value[1];
-                var topics = value[2];
-                //
                 var getCategoryFormUuid = function(){
 
-                    // if (!quiz.categoryId) {
-                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                    //     quiz.categoryId = fq.categoryId;
-                    // }
-                    //
+
                     if (quiz.meta.categoryId) {
                         var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
                         console.log('looking for meta', quiz.meta.categoryId, topicFound);
@@ -143,7 +140,7 @@ var QuizActions = {
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
             });
@@ -187,9 +184,9 @@ var QuizActions = {
     },
 
 
-    searchPublicQuizzes: debounce((searchString = '', categoryId) => {
+    searchPublicQuizzes: debounce((searchString = '', categoryId, profileId) => {
 
-        QuizApi.searchQuizzes(searchString, categoryId)
+        QuizApi.searchQuizzes(searchString, categoryId, profileId)
             .then(function(quizzes){
 
                 AppDispatcher.dispatch({
@@ -205,16 +202,23 @@ var QuizActions = {
 
         var addOrCreateCategory = function(){
             var topicUuid;
-            var topics = TopicStore.getTopics();
-            var topicFound = topics.filter( t => t.name === quiz.meta.category )[0];
-
-            if (topicFound) {
+            var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
+            if (quiz.meta.categoryId === undefined) {
+                topicFound = TopicStore.getTopicByName("");
+                if (!topicFound) {
+                    //we have an empty topic
+                    topicFound = {
+                        uuid: "-1",
+                        name: ""
+                    };
+                }
+            }
+            if (topicFound && topicFound.uuid !== "-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.meta.subject,
-                    name: quiz.meta.category,
+                    name: topicFound.name,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false
@@ -229,18 +233,18 @@ var QuizActions = {
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.meta.categoryId = addOrCreateCategory();
 
-            quiz = _questionsTopicToTopicId(quiz);
+            quiz = createNewTopicsForQuiz(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
 
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
-                // this.loadQuizzes();
+                this.loadQuizzes();
                 resolve(quiz);
             }, ()=> {
                 reject();
@@ -279,7 +283,30 @@ var QuizActions = {
 
         QuizApi.shareQuiz(quizId, data);
 
+    },
+
+
+
+    publishQuiz: function(quiz, settings) {
+        quiz.meta.price = settings.price;
+        quiz.meta.published = "pending";
+        QuizApi.publishQuiz(quiz);
+        swal({
+            title: 'Thanks!',
+            text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,
+            type: 'success'
+        }, ()=>{
+            router.setRoute(`/quiz/quizzes`);
+        });
+
+        AppDispatcher.dispatch({
+            actionType: QuizConstants.QUIZ_META_UPDATED,
+            payload: quiz
+        });
+
     }
+
+
 
 };
 

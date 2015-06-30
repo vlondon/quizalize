@@ -25,13 +25,15 @@ Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathPara
 router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
 router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
 router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
-router.on(pages.helpPage.path, () => renderPage(pages.helpPage) );
+
+
 router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
 router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
 router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
 router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
 router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
+router.on(pages.yourApps.path, () => renderPage(pages.yourApps) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
 router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
 router.on(pages.create.path, () => renderPage(pages.create) );
@@ -41,8 +43,13 @@ router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
 router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
 router.on(pages.assignments.path, () => renderPage(pages.assignments) );
 router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
+router.on(pages.publishedAssign.path, (quizId) => renderPage(pages.publishedAssign, {quizId}) );
+router.on(pages.publishedPricing.path, (quizId) => renderPage(pages.publishedPricing, {quizId}) );
 router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
+router.on(pages.ownProfilePage.path, () => renderPage(pages.ownProfilePage) );
+router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
 router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
+router.on(pages.sharedQuizPage.path, (profileId, quizCode) => renderPage(pages.sharedQuizPage, {profileId, quizCode}) );
 
 
 var newUrl = function(requestedUrl){

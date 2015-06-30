@@ -7,10 +7,16 @@
 @import './CQBaseStyles';
 
 
+
+
+
 // views
 @import './../components/views/CQViewAppGrid/CQViewAppGridStyles';
+@import './../components/views/CQViewClassList/CQViewClassListStyles';
+@import './../components/views/CQViewQuizMarketplaceOptions/CQViewQuizMarketplaceOptionsStyles';
 @import './../components/views/CQViewCreateApp/CQViewCreateAppStyles';
 @import './../components/views/CQViewHeader/CQViewHeaderStyles';
+@import './../components/views/CQViewProfilePicture/CQViewProfilePictureStyles';
 @import './../components/views/CQViewQuizDetails/CQViewQuizDetailsStyles';
 @import './../components/views/CQViewQuizFilter/CQViewQuizFilterStyles';
 @import './../components/views/CQViewQuizList/CQViewQuizListStyles';
@@ -25,6 +31,7 @@
 @import './../components/pages/CQEdit/CQEditStyles';
 @import './../components/pages/CQLogin/CQLoginStyles';
 @import './../components/pages/CQNotFound/CQNotFoundStyles';
+@import './../components/pages/CQProfile/CQProfileStyles';
 @import './../components/pages/CQPublic/CQPublicStyles';
 @import './../components/pages/CQPublished/CQPublishedStyles';
 @import './../components/pages/CQPublishedInfo/CQPublishedInfoStyles';
@@ -35,3 +42,9 @@
 @import './../components/pages/CQRestorePassword/CQRestorePasswordStyles';
 @import './../components/pages/CQSettings/CQSettingsStyles';
 @import './../components/pages/CQReview/CQReviewStyles';
+@import './../components/pages/CQYourApps/CQYourAppsStyles';
+
+
+// utils
+@import './../components/utils/CQAutofillStyles';
+@import './../components/utils/CQSpinnerStyles';

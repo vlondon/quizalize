@@ -1,4 +1,62 @@
 .cq-edit {
+    margin-bottom: 80px;
+
+    .btn {
+        margin-left: 5px;
+    }
+    @at-root #{&}__header {
+        font-weight: bold;
+        text-align: center;
+        h1, h2, h3, h4 {
+            font-weight: bold;
+        }
+    }
+
+    @at-root #{&}__footer {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding: 0;
+        background: rgba($brand-color-black, .2);
+
+    }
+
+    @at-root #{&}__footer-inner {
+        max-width: 1170px;
+        margin: auto;
+        padding: 10px;
+        text-align: right;
+    }
+
+
+    @at-root #{&}__quiz {
+        background: $brand-color-grey-lighter;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        padding: 5px 0;
+        cursor: pointer;
+    }
+
+    @at-root #{&}__quiz--unselected {
+        &:hover {
+            background: $brand-color-grey-light;
+        }
+    }
+
+    @at-root #{&}__quiz--selected {
+        border-radius: 5px;
+        /* padding: 10px 0; */
+        font-weight: bold;
+        background: $brand-color-grey;
+        color: #FFF;
+        .icons { display: none; }
+    }
+
+    @at-root #{&}__listquestion{
+        font-weight: bold;
+    }
+
     .create-question {
         position: relative;
     }
@@ -19,6 +77,8 @@
         a { color: #FFF; }
     }
     .new-question {
+        padding: 20px 0;
+        @include clearfix();
         i {
             color: #999;
         }
@@ -34,9 +94,7 @@
         opacity: 0.6;
         margin-right: 20px;
     }
-    .glyphicon {
-        margin-left: 4px;
-    }
+
 }
 .ql-question-list {
     .no-questions {
@@ -46,10 +104,13 @@
             margin: 20px auto;
         }
     }
-    .selected {
+
+    .create-question {
         background: #FFF;
+        margin: 20px;
         border-radius: 5px;
-        .icons { display: none; }
+        font-weight: normal;
+        color: $brand-color-black;
     }
     .icons {
         text-align: right;

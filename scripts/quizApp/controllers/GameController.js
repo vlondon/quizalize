@@ -71,7 +71,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                 console.log('self.currentQuiz.meta', self.currentQuiz);
                 if (self.currentQuiz.meta.featured) {
                     // addReactComponent();
-                    getLeaderBoard(self.currentQuiz);
+                    //getLeaderBoard(self.currentQuiz);
                 }
                 console.log('self.currentQuiz, ', self.currentQuiz);
             }

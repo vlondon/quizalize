@@ -1,1 +1,5 @@
-
+.cq-classes {
+    @at-root #{&}__header {
+        @include cq-header();
+    }
+}

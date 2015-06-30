@@ -6,6 +6,7 @@ var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 
+var CQAppCreate = require('./CQAppCreate');
 var CQPagination = require('createQuizApp/components/utils/CQPagination');
 
 
@@ -26,8 +27,11 @@ var CQAppGrid = React.createClass({
 
     getInitialState: function() {
         var initialState = this.getState(undefined, 1);
-        console.log('initialState', initialState);
         return initialState;
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        this.setState(this.getState(nextProps));
     },
 
     componentDidMount: function() {
@@ -39,9 +43,28 @@ var CQAppGrid = React.createClass({
     },
 
     getState: function(props, page){
-        var apps = AppStore.getPublicApps();
-        if (apps) {
 
+
+        var appCreate = function(apps){
+            var appPlaceholder = {
+                uuid: 'new',
+                meta: {
+                    name: 'Create your own App',
+                    quizzes: []
+                }
+            };
+            if (apps.filter(a => a.uuid === 'new').length === 0){
+                apps.push(appPlaceholder);
+            }
+            return apps;
+
+        };
+
+        var apps = AppStore.getPublicApps();
+        console.log("apps", apps);
+
+        if (apps) {
+            apps = appCreate(apps);
             page = page || this.state.page;
             props = props || this.props;
 
@@ -49,14 +72,14 @@ var CQAppGrid = React.createClass({
             var appIndexEnd = appIndexStart + props.appsPerPage;
             var appsToDisplay = apps.slice(appIndexStart, appIndexEnd);
             var pages = Math.ceil(apps.length / props.appsPerPage);
-            console.log('apps', pages, appIndexStart, appIndexEnd);
+
             return {
                 apps: appsToDisplay,
                 pages,
                 page
             };
         } else {
-            return {page: 1}
+            return { page: 1 };
         }
     },
 
@@ -67,7 +90,11 @@ var CQAppGrid = React.createClass({
     },
 
     handleClick: function(app){
-        router.setRoute(`/quiz/app/${app.uuid}`);
+        if (app.uuid === 'new'){
+            router.setRoute(`apps`);
+        } else {
+            router.setRoute(`/quiz/app/${app.uuid}`);
+        }
     },
 
     handlePagination: function(page){
@@ -101,13 +128,16 @@ var CQAppGrid = React.createClass({
             );
         } else {
             var howManyQuizzes = function(n){
+                if (n === 0) {
+                    return undefined;
+                }
                 if (n === 1){
                     return n + ' Quiz';
                 }
                 return n + ' Quizzes';
             };
             return (
-                <div className={`cq-appgrid ${this.props.className}`}>
+                <div className={`cq-appgrid ${this.props.className} cq-appgrid__n${this.props.appsPerPage}`}>
                     <ul>
                         {this.state.apps.map((app) => {
                             return (
@@ -123,7 +153,7 @@ var CQAppGrid = React.createClass({
                                         </div>
 
                                         <div className="cq-appgrid__appprice">
-                                            Free
+                                            {app.uuid !== 'new' ? 'Free' : ''}
                                         </div>
                                     </div>
 

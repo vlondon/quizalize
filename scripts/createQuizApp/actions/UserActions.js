@@ -14,7 +14,10 @@ var handleRedirect = function(){
     }
     return false;
 };
+
 var UserActions = {
+
+
     request: function() {
 
         UserApi.get()
@@ -165,6 +168,22 @@ var UserActions = {
                 })
                 .catch(reject);
         });
+    },
+
+    getPublicUser: function(userId){
+        return new Promise(function(resolve, reject){
+            UserApi.getPublic(userId)
+                .then(function(user){
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_PUBLIC_LOADED,
+                        payload: user
+                    });
+                    console.log('will load', userId, user);
+                    resolve(user);
+                })
+                .catch(reject);
+        });
+
     }
 };
 

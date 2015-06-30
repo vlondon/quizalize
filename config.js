@@ -1,5 +1,5 @@
+/*eslint camelcase: 0 */
 var config = {};
-
 
 //Logging on
 config.log = true;
@@ -9,10 +9,12 @@ config.zzishsdkurl = process.env.ZZISH_SDK_URL;
 
 config.aws_enabled = true;
 config.aws_config = {
-	"accessKeyId" : process.env.AWS_ACCESS_KEY,
+	"accessKeyId": process.env.AWS_ACCESS_KEY,
 	"secretAccessKey": process.env.AWS_SECRET,
 	"region": process.env.AWS_REGION
 };
+
+config.stripeSecret = process.env.STRIPE_SECRET;
 
 //Zzish INit (Either QATOKEN OR an object with lots of params)
 config.zzishInit = process.env.ZZISHINIT;
