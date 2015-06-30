@@ -1,5 +1,6 @@
 var AppDispatcher   = require('createQuizApp/dispatcher/CQDispatcher');
 var QuizConstants   = require('createQuizApp/constants/QuizConstants');
+var TransactionConstants   = require('createQuizApp/constants/TransactionConstants');
 var QuizActions     = require('createQuizApp/actions/QuizActions');
 var TopicStore      = require('createQuizApp/stores/TopicStore');
 var EventEmitter    = require('events').EventEmitter;
@@ -42,12 +43,8 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getQuizMeta: function(quizId) {
-        for (var i in _quizzes) {
-            if (_quizzes[i].uuid === quizId) {
-                return _quizzes[i];
-            }
-        }
-        return _fullQuizzes[quizId];
+        var result = _quizzes.filter(t => t.uuid === quizId);
+        return result.length === 1 ? result.slice()[0] : _fullQuizzes[quizId];
     },
 
     getQuiz: function(quizId){
@@ -149,14 +146,9 @@ AppDispatcher.register(function(action) {
         case QuizConstants.QUIZ_ADDED:
             var quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
-            // I can't update quizzes yet because the category needs to be set up
-            // var i = _quizzes.filter(q=> q.uuid === quizAdded.uuid);
-            // if (i.length === 0){
-            //     _quizzes.push(quizAdded);
-            // }
-
             QuizStore.emitChange();
             break;
+
 
         case QuizConstants.QUIZ_META_UPDATED:
             var quizToBeUpdated = action.payload;

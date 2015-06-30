@@ -16,6 +16,7 @@ var purchaseComplete = function(){
         text: 'You will find the new content in your quizzes',
         type: 'success'
     }, ()=>{
+        QuizActions.loadQuizzes();
         router.setRoute('/quiz/quizzes');
     });
 };
@@ -112,7 +113,6 @@ var TransactionActions = {
                     });
 
                     TransactionActions.saveNewTransaction(newTransaction);
-
 
                 }, 300);
             }
