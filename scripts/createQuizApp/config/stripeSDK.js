@@ -18,7 +18,7 @@ var stripeCheckout = function(amount, email){
         console.log('loading stripe', amount, email);
         loadStripeAsync('https://checkout.stripe.com/checkout.js', function(){
             var handler = StripeCheckout.configure({
-                key: 'pk_test_iC97Xi9XU18XStOuiK9R84bt',
+                key: window.publicConfig.stripeKey,
                 amount: amount * 100,
                 email: email,
                 currency: 'GBP',

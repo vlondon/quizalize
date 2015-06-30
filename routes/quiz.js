@@ -20,6 +20,11 @@ var handleError = function(err, res){
     return err;
 };
 
+var publicConfig = {
+    stripeKey: config.stripeKey,
+    zzishInit: config.zzishInit
+};
+
 function encrypt(text){
     var cipher = crypto.createCipher(algorithm, password);
     var crypted = cipher.update(text, 'utf8', 'hex');
@@ -73,7 +78,13 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    var params = {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE};
+
+    var params = {
+        zzishapi: getZzishParam(),
+        devServer: process.env.ZZISH_DEVMODE,
+        publicConfig: publicConfig
+    };
+
     if (req.query.uuid !== undefined) {
         zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {
 
@@ -93,10 +104,12 @@ exports.indexQuiz =  function(req, res) {
     res.redirect(301, '/app?uuid=' + req.params.id + '#/play/public/' + req.params.id);
 };
 
-
-
 exports.create =  function(req, res) {
-    res.render('create', {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE});
+    res.render('create', {
+        zzishapi: getZzishParam(),
+        devServer: process.env.ZZISH_DEVMODE,
+        publicConfig: publicConfig
+    });
 };
 
 exports.landingpage =  function(req, res) {
@@ -405,7 +418,7 @@ exports.publishToMarketplace = function(req,res) {
             if (user.name) name = user.name;
             var params = {
                 name: name
-            }
+            };
             email.sendEmailTemplate('team@zzish.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
             res.send();
         });
