@@ -223,10 +223,10 @@ var CQQuizzes = React.createClass({
                     {createApp}
 
                     <CQViewQuizList
+                        quizzes={this.state.quizzes}
                         onQuizClick={this.handleClick}
                         showAuthor={false}
                         showReviewButton={false}
-                        quizzes={this.state.quizzes}
                         selectMode={this.props.appMode === true}
                         onSelect={this.handleSelect}
                         sortBy='time'
