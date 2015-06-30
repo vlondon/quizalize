@@ -4,9 +4,14 @@ var AppStore = require('createQuizApp/stores/AppStore');
 
 var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
 var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
-
+var CQLink = require('createQuizApp/components/utils/CQLink');
 
 var CQYourAppsCreate = React.createClass({
+
+    propTypes: {
+        newApp: React.PropTypes.bool
+    },
+
     getInitialState: function() {
         return {
             apps: AppStore.getApps(),
@@ -14,20 +19,33 @@ var CQYourAppsCreate = React.createClass({
         };
     },
 
+    componentWillMount: function() {
+        AppStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        AppStore.removeChangeListener(this.onChange);
+    },
+
+    onChange: function(){
+        this.setState({
+            apps: AppStore.getApps()
+        });
+    },
+
     render: function() {
 
-
+        var create = this.props.newApp === true ? <CQViewCreateApp selectedQuizzes={this.state.selectedQuizzes}/> : undefined;
 
         return (
             <div>
-                <div className="btn btn-primary">
+                <CQLink href="/quiz/apps/new" className="btn btn-primary">
                     <i className="fa fa-plus"></i> New app
-                </div>
+                </CQLink>
 
-                <CQViewCreateApp
-                    selectedQuizzes={this.state.selectedQuizzes}
-                />
+                {create}
                 <CQViewAppGrid
+
                     editMode={true}
                     apps={this.state.apps}/>
 

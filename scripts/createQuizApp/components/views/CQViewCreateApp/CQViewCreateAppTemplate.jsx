@@ -17,6 +17,7 @@ var CQViewCreateAppTemplate = React.createClass({
 
     getInitialState: function() {
         return {
+            fixed: false,
             appInfo: {
                 meta: {
 
@@ -26,6 +27,32 @@ var CQViewCreateAppTemplate = React.createClass({
                 }
             }
         };
+    },
+
+    handleScroll: function(event){
+        var dom = React.findDOMNode(this.refs.cqApptemplate);
+        var positionTop = dom.getBoundingClientRect().top;
+        if (positionTop < 0){
+            this.setState({
+                fixed: true,
+                distance: -positionTop
+            });
+        } else if (positionTop > 0 && this.state.fixed === true){
+            this.setState({
+                fixed: false
+            });
+        }
+        console.log('position', positionTop, this.state);
+
+    },
+
+    componentWillMount: function() {
+        document.addEventListener('scroll', this.handleScroll);
+
+    },
+
+    componentWillUnmount: function() {
+        document.removeEventListener('scroll', this.handleScroll);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -38,41 +65,49 @@ var CQViewCreateAppTemplate = React.createClass({
         var style = {
             background: this.state.appInfo.meta.colour
         };
+        if (this.state.fixed) {
+            style.position = 'relative';
+            style.top = this.state.distance;
+        } else {
+            style.position = 'relative';
 
+        }
         var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price)}`;
         return (
+            <div>
+                <div ref="cqApptemplate"></div>
+                <div style={style} className="cq-apptemplate" >
+                    <div className="cq-app">
+                        <CQQuizIcon
+                            className="cq-app__icon"
+                            name={this.state.appInfo.meta.name}
+                            image={this.state.appInfo.meta.iconURL}
+                            imageData={this.props.icon}/>
 
-            <div style={style} className="cq-apptemplate">
-                <div className="cq-app">
-                    <CQQuizIcon
-                        className="cq-app__icon"
-                        name={this.state.appInfo.meta.name}
-                        image={this.state.appInfo.meta.iconURL}
-                        imageData={this.props.icon}/>
+                        <div className="cq-app__info">
+                            <h2>{this.state.appInfo.meta.name}</h2>
+                            <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price)}</div>
+                            <button className="cq-app__button" onClick={this.handleBuy}>
+                                {buySentence}
+                            </button>
 
-                    <div className="cq-app__info">
-                        <h2>{this.state.appInfo.meta.name}</h2>
-                        <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price)}</div>
-                        <button className="cq-app__button" onClick={this.handleBuy}>
-                            {buySentence}
-                        </button>
+                        </div>
+                        <div className="cq-app__description">
+                            <p>{this.state.appInfo.meta.description}</p>
+                        </div>
 
-                    </div>
-                    <div className="cq-app__description">
-                        <p>{this.state.appInfo.meta.description}</p>
-                    </div>
-
-                    <div className="cq-app__quizlist">
-                        <CQViewQuizList
-                            isQuizInteractive={true}
-                            onQuizClick={this.handleDetails}
-                            quizzes={this.state.quizzes}
-                            sortBy="category">
-                            <span className='cq-app__buttonextra' onClick={this.handlePreview}>
-                                Preview
-                            </span>
-                            <span></span>
-                        </CQViewQuizList>
+                        <div className="cq-app__quizlist">
+                            <CQViewQuizList
+                                isQuizInteractive={true}
+                                onQuizClick={this.handleDetails}
+                                quizzes={this.state.quizzes}
+                                sortBy="category">
+                                <span className='cq-app__buttonextra' onClick={this.handlePreview}>
+                                    Preview
+                                </span>
+                                <span></span>
+                            </CQViewQuizList>
+                        </div>
                     </div>
                 </div>
             </div>

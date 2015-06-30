@@ -70,7 +70,7 @@ var CQQuizIcon = React.createClass({
             randomIndex = (n.charCodeAt(0) + 5 ) % colours.length;
 
         } else {
-            randomIndex = Math.floor(Math.random() * colours.length);
+            randomIndex = 0;
         }
 
 
