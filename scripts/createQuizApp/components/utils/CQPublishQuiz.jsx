@@ -23,12 +23,12 @@ var CQPublishQuiz = React.createClass({
     render: function() {
         var publishButton = () => {
             if (!this.props.quiz.meta.originalQuizId) {
-                if (this.props.quiz.meta.publishing === "pending") {
+                if (this.props.quiz.meta.published === "pending") {
                     return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
                         <span className="fa fa-shopping-cart"></span> Published Pending
                     </button>);
                 }
-                else if (this.props.quiz.meta.publishing === "published") {
+                else if (this.props.quiz.meta.published === "published") {
                     return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
                         <span className="fa fa-shopping-cart"></span> Published to Marketplace
                     </button>);

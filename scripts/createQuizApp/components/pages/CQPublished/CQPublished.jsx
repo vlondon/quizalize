@@ -176,7 +176,7 @@ var CQPublished = React.createClass({
             <CQViewClassList
                 quizId={this.props.quizId}/>
         );
-        if (!this.state.settings.publishing && !this.state.settings.originalQuizId) {
+        if (!this.state.settings.published && !this.state.settings.originalQuizId) {
             publishQuiz = (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>);
         }
         if (this.props.assign === true) {

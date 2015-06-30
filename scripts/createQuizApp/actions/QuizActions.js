@@ -289,7 +289,7 @@ var QuizActions = {
 
     publishQuiz: function(quiz, settings) {
         quiz.meta.price = settings.price;
-        quiz.meta.publishing = "pending";
+        quiz.meta.published = "pending";
         QuizApi.publishQuiz(quiz);
         swal({
             title: 'Thanks!',
