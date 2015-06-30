@@ -132,29 +132,6 @@ var CQQuizzes = React.createClass({
         var emptyQuizList;
         var introCopy = this.state.quizzes.length > 0 ? 'Here are your quizzes' : '';
 
-        if (this.props.appMode) {
-            createApp = (
-                <CQViewCreateApp
-                    selectedQuizzes={this.state.selectedQuizzes}
-                />
-            );
-        }
-
-        if (this.state.isAdmin){
-            apps = (
-                <div className="container">
-                    <h2>Your apps</h2>
-                    <CQViewAppGrid
-                        editMode={true}
-                        apps={this.state.apps}/>
-                </div>
-            );
-            newApp = (
-                <CQLink href="/quiz/quizzes/app" className="btn btn-primary">
-                    <i className="fa fa-plus"></i> New app
-                </CQLink>
-            );
-        }
 
         if (this.state.quizzes.length === 0){
             emptyState = (
