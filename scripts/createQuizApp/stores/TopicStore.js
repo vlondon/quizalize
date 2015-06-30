@@ -86,7 +86,6 @@ var createTopicTree = function(data){
 
 
 var addUserTopic = function(topic) {
-    debugger;
     _alltopics.push(topic);
     if (topic.parentCategoryId === "-1") {
         topic.categories = [];
