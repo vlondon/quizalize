@@ -97,9 +97,8 @@ var CQViewQuizList = React.createClass({
             if (this.props.showCta){
                 quizzes = quizCta(quizzes);
             }
+            quizzes = this.sort(undefined, quizzes);
             if (this.props.isPaginated) {
-
-                quizzes = this.sort(undefined, quizzes);
 
                 page = page || this.state.page;
 
@@ -191,11 +190,12 @@ var CQViewQuizList = React.createClass({
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
             quizzes.sort((a, b) =>  a.meta.updated > b.meta.updated ? -1 : 1);
-        } else {
+        }
+        else {
             quizzes.sort((a, b) => {
-                if (a._category && a._category.name && b._category &&  b._category.name){
-                    var A = a._category.name.toLowerCase();
-                    var B = b._category.name.toLowerCase();
+                if (a.meta.categoryId && b.meta.categoryId){
+                    var A = TopicStore.getTopicById(a.meta.categoryId).name.toLowerCase();
+                    var B = TopicStore.getTopicById(b.meta.categoryId).name.toLowerCase();
 
                     if (A === B) {
                         return a.meta.name > b.meta.name ? 1 : -1;
@@ -333,7 +333,7 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {quiz.meta.subject} {author(quiz)}
+                                    {quiz.meta.categoryId && TopicStore.getTopicById(quiz.meta.categoryId) && TopicStore.getTopicById(quiz.meta.categoryId).name} {author(quiz)}
 
 
                                     <div className="cq-viewquizlist__quizextra">

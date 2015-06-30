@@ -152,7 +152,6 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         }
         else {
             var result = getAllTopics().filter(t => t.uuid === topicId);
-            console.log('result', getAllTopics().length, getAllTopics()[453], topicId, result);
             return result.length === 1 ? result[0] : undefined;
         }
     },
