@@ -26,7 +26,7 @@ var CQYourApps = React.createClass({
                 <h2 className='cq-yourapps__header'>
                     <i className="fa fa-archive"/> Your apps
                 </h2>
-                {content}
+                <CQYourAppsCreate newApp={this.props.newApp}/>
             </CQPageTemplate>
         );
     }
