@@ -1,23 +1,29 @@
+/* @flow */
 var React = require('react');
-var router = require('createQuizApp/config/router');
 
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var GroupStore = require('createQuizApp/stores/GroupStore');
-var AppStore = require('createQuizApp/stores/AppStore');
-var UserStore = require('createQuizApp/stores/UserStore');
+var root = './../../../';
+var router = require(`${root}config/router`);
 
-var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
-var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
+var QuizActions = require(`${root}actions/QuizActions`);
+var QuizStore = require(`${root}stores/QuizStore`);
+var GroupStore = require(`${root}stores/GroupStore`);
+var AppStore = require(`${root}stores/AppStore`);
+var UserStore = require(`${root}stores/UserStore`);
 
-var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
-var CQPublishQuiz = require('createQuizApp/components/utils/CQPublishQuiz');
+var CQViewQuizList = require(`${root}components/views/CQViewQuizList`);
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQSpinner = require(`${root}components/utils/CQSpinner`);
+var CQPublishQuiz = require(`${root}components/utils/CQPublishQuiz`);
 
+var CQPageTemplate = require(`${root}components/CQPageTemplate`);
+var CQLink = require(`${root}components/utils/CQLink`);
 
+type State = {
+    selectedQuizzes?: Array<Object>;
+    quizzes: Array<Object>;
+    apps: Array<Object>;
+    isAdmin: boolean;
+};
 var CQQuizzes = React.createClass({
 
     propTypes: {
@@ -27,7 +33,6 @@ var CQQuizzes = React.createClass({
     getInitialState: function() {
         var initialState =  this.getState();
         initialState.selectedQuizzes = [];
-        initialState.isAdmin = UserStore.isAdmin();
         return initialState;
     },
 
@@ -47,21 +52,21 @@ var CQQuizzes = React.createClass({
         this.setState(this.getState());
     },
 
-    getState: function(){
+    getState: function():State{
 
         var quizzes = QuizStore.getQuizzes();
         var apps = AppStore.getApps();
+        var isAdmin: boolean = UserStore.isAdmin();
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
-        return { quizzes, apps };
+        return { quizzes, apps, isAdmin };
     },
 
     handleDelete: function(quiz){
+
         var found = false;
         var groupContents = GroupStore.getGroupsContent();
-
-
 
         for (var i in groupContents) {
 

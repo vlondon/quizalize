@@ -2,6 +2,7 @@
     "plugins": [
         "react"
     ],
+    "parser": "babel-eslint",
     "ecmaFeatures": {
         "jsx": true,
         "objectLiteralShorthandProperties": true
