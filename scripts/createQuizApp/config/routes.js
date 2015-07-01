@@ -23,6 +23,7 @@ var CQYourApps          = require('createQuizApp/components/pages/CQYourApps');
 var pages = {
     pathParams: {
         quizId: /([\w\-]+)/,
+        appId: /([\w\-]+)/,
         authorId: /([\w\-]+)/,
         questionIndex: /([\w\-]+)/,
         classCode: /([\w\-]+)/,
@@ -178,6 +179,18 @@ var pages = {
             var newApp = true;
             React.render(
                 React.createElement(CQYourApps, {newApp}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    yourAppsEdit: {
+        path: '/quiz/apps/:appId',
+        pathRegEx: /\/quiz\/apps\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(props){
+            React.render(
+                React.createElement(CQYourApps, props),
                 document.getElementById('reactApp')
             );
         }
