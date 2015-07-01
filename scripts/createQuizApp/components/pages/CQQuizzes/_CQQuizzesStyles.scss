@@ -1,16 +1,16 @@
 .cq-quizzes {
 
-    @at-root #{&}__buttonbar {
+    &__buttonbar {
         margin: 10px 0;
     }
 
-    @at-root #{&}__header {
+    &__header {
         @include cq-header();
         margin-bottom: 20px;
     }
 
 
-    @at-root #{&}__actions {
+    &__actions {
         text-align: right;
 
     }
@@ -77,25 +77,25 @@
     }
 
 
-    @at-root #{&}__button--delete {
+    &__button--delete {
         @include button($brand-color-red);
 
     }
 
-    @at-root #{&}__button--assign {
+    &__button--assign {
         @include button($brand-color-blue);
 
     }
 
-    @at-root #{&}__button--edit {
+    &__button--edit {
         @include button($brand-color-blue);
     }
 
-    @at-root #{&}__button--publish {
+    &__button--publish {
         @include button($brand-color-blue);
     }
 
-    @at-root #{&}__button--review {
+    &__button--review {
         @include button($brand-color-blue);
     }
 

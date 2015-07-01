@@ -31,8 +31,9 @@ $mobile-ie6: true !default;
 @mixin cq-header {
     color: $brand-color-grey;
     padding-bottom: 8px;
-    margin-top: 30px;
-    border-bottom: 1px solid $brand-color-grey-lighter;
+    margin-top: 10px;
+    color: $brand-color-red;
+    border-bottom: 1px solid $brand-color-red
 }
 
 

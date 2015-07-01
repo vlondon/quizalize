@@ -90,8 +90,7 @@ var CQViewHeader = React.createClass({
                 </li>
             ));
 
-            loginButton = (
-                <CQViewHeaderDropdown/>);
+            loginButton = <CQViewHeaderDropdown/>;
         } else {
             loginButton = (
                 <li>
@@ -111,21 +110,20 @@ var CQViewHeader = React.createClass({
                             {this.state.user}
                         </CQLink>
                     </div>
-                    <div className="navbar-collapse collapse" id="navbar">
-                        <ul className="nav navbar-nav navbar-right">
+                    <ul className="cq-header__buttons">
 
-                            {buttons}
+                        {buttons}
 
-                            <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
-                                    <div className="fa fa-tags"></div> Marketplace
-                                </CQLink>
-                            </li>
+                        <li id="cq-publicQuizzes">
+                            <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
+                                <div className="fa fa-tags"></div> Marketplace
+                            </CQLink>
+                        </li>
 
-                            {loginButton}
+                        {loginButton}
 
-                        </ul>
-                    </div>
+                    </ul>
+
                 </div>
                 <CQAnalytics/>
             </nav>

@@ -51,27 +51,24 @@ var CQRegister = React.createClass({
             </p>);
         }
         return (
-            <CQPageTemplate className="container cq-login">
-                <div className="row">
-                    <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-                        <div className="well">
-                            <h2 id="title" style={{'text-align': 'center'}}>
-                                Quizalize Registration
-                            </h2>
+            <CQPageTemplate className="cq-login">
 
-                            {moreInfo}
+                <div className="cq-login__inner">
+                    <h2 className="cq-login__header" id="title">
+                        Quizalize Registration
+                    </h2>
 
-                            <CQLoginForm
-                                enabled={this.state.isEnabled}
-                                onSubmit={this.handleRegister}
-                                buttonLabel={this.state.loginButtonLabel}>
-                                <div>
-                                    Already registered?&nbsp;
-                                    <CQLink href={`/quiz/login${window.location.search}`}>Log in</CQLink>
-                                </div>
-                            </CQLoginForm>
+                    {moreInfo}
+
+                    <CQLoginForm
+                        enabled={this.state.isEnabled}
+                        onSubmit={this.handleRegister}
+                        buttonLabel={this.state.loginButtonLabel}>
+                        <div>
+                            Already registered?&nbsp;
+                            <CQLink href={`/quiz/login${window.location.search}`}>Log in</CQLink>
                         </div>
-                    </div>
+                    </CQLoginForm>
                 </div>
             </CQPageTemplate>
         );

@@ -51,7 +51,9 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
-            }
+            },
+            { test: /\.png$/, loader: "url-loader?limit=100000" },
+            { test: /\.jpg$/, loader: "url-loader" }
         ]
     },
     resolve: {
