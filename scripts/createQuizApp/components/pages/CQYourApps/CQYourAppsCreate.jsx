@@ -1,4 +1,5 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var AppStore = require('createQuizApp/stores/AppStore');
 
@@ -33,6 +34,11 @@ var CQYourAppsCreate = React.createClass({
         });
     },
 
+    handleApp: function(app){
+        console.log('app clicked', app);
+        router.setRoute(`/quiz/apps/${app.uuid}`);
+    },
+
     render: function() {
 
         var create = this.props.newApp === true ? <CQViewCreateApp selectedQuizzes={this.state.selectedQuizzes}/> : undefined;
@@ -45,7 +51,7 @@ var CQYourAppsCreate = React.createClass({
 
                 {create}
                 <CQViewAppGrid
-
+                    onClick={this.handleApp}
                     editMode={true}
                     apps={this.state.apps}/>
 

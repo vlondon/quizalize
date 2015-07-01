@@ -1,7 +1,7 @@
 /* @flow */
 var React = require('react');
 
-var UserStore = require('createQuizApp/stores/UserStore');
+var UserStore = require('../../../stores/UserStore');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQYourAppsComingSoon = require('createQuizApp/components/pages/CQYourApps/CQYourAppsComingSoon');

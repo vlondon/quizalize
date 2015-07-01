@@ -35,6 +35,7 @@ router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword
 router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
 router.on(pages.yourApps.path, () => renderPage(pages.yourApps) );
 router.on(pages.yourAppsCreate.path, () => renderPage(pages.yourAppsCreate) );
+router.on(pages.yourAppsEdit.path, (appId) => renderPage(pages.yourAppsEdit, {appId}) );
 router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
 router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
 router.on(pages.create.path, () => renderPage(pages.create) );
@@ -71,7 +72,6 @@ var newUrl = function(requestedUrl){
     var page = getPage(requestedUrl);
     if (page) {
         if (page.needsLogin === undefined){
-            console.log('NO NEED TO CHECK IF NEEDS LOGIN OR NOT');
             return requestedUrl;
         }
         if (!page.needsLogin) {
