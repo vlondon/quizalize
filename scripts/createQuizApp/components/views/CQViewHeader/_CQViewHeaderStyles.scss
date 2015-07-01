@@ -30,10 +30,11 @@
         display: block;
         @include clearfix();
 
-        li {
+        & > li {
             display: inline-block;
             float: left;
         }
+        a { text-decoration: none; }
     }
     .navbar-btn {
         margin-top:9px;
@@ -65,7 +66,7 @@
         color: #FFF;
         cursor: pointer;
         margin-right: 5px;
-        position: rlative;
+        position: relative;
         &:focus,
         &:hover {
             background: $brand-color-red;
@@ -88,10 +89,10 @@
         position: absolute;
         background: rgba($brand-color-red, 0.9);
         width: 100%;
-        right: 5px;
-        top: 0;
+        right: 0;
+        top: 100%;
         min-width: 120px;
-        border-radius: 5px 0 5px 5px;
+        border-radius: 0 0 5px 5px;
         overflow: hidden;
         transform-origin: 50% 0;
         animation: cqHeaderDropdown 200ms ease-out;

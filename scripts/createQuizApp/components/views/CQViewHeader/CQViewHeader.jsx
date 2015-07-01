@@ -1,11 +1,10 @@
 var React = require('react');
 var router = require('createQuizApp/config/router');
+
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
 var CQViewHeaderDropdown = require('./CQViewHeaderDropdown');
-
 var UserStore = require('createQuizApp/stores/UserStore');
-var UserActions = require('createQuizApp/actions/UserActions');
 
 
 var sections = {

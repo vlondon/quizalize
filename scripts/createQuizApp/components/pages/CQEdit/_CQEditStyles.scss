@@ -4,7 +4,7 @@
     .btn {
         margin-left: 5px;
     }
-    @at-root #{&}__header {
+    &__header {
         font-weight: bold;
         text-align: center;
         h1, h2, h3, h4 {
@@ -12,7 +12,7 @@
         }
     }
 
-    @at-root #{&}__footer {
+    &__footer {
         position: fixed;
         bottom: 0;
         right: 0;
@@ -22,7 +22,7 @@
 
     }
 
-    @at-root #{&}__footer-inner {
+    &__footer-inner {
         max-width: 1170px;
         margin: auto;
         padding: 10px;
@@ -30,30 +30,27 @@
     }
 
 
-    @at-root #{&}__quiz {
-        background: $brand-color-grey-lighter;
-        margin-bottom: 5px;
-        border-radius: 5px;
-        padding: 5px 0;
-        cursor: pointer;
-    }
+    &__quiz {
+        border-bottom: 1px solid $brand-color-grey-lighter;
 
-    @at-root #{&}__quiz--unselected {
-        &:hover {
-            background: $brand-color-grey-light;
+        padding: 10px 0;
+        cursor: pointer;
+
+        &--unselected {
+            &:hover {
+                background: $brand-color-grey-lighter;
+            }
+        }
+        &--selected {
+            font-weight: bold;
+            background: $brand-color-grey-lighter;
+            .icons { display: none; }
         }
     }
 
-    @at-root #{&}__quiz--selected {
-        border-radius: 5px;
-        /* padding: 10px 0; */
-        font-weight: bold;
-        background: $brand-color-grey;
-        color: #FFF;
-        .icons { display: none; }
-    }
 
-    @at-root #{&}__listquestion{
+
+    &__listquestion{
         font-weight: bold;
     }
 
@@ -96,7 +93,13 @@
     }
 
 }
-.ql-question-list {
+.cq-questionlist {
+    margin-bottom: 20px;
+
+    &__button {
+        margin: 20px;
+    }
+
     .no-questions {
         text-align: center;
         h1, h2, h3 {

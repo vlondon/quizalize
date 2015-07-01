@@ -83,70 +83,34 @@ var CQPUblishedInfo = React.createClass({
 
     render: function() {
         return (
-            <CQPageTemplate className="container">
+            <CQPageTemplate className="cq-container cq-publishedinfo">
 
-                <div ng-show="ctrl.published" className="quiz-preview">
-                    <div className="row">
-                        <div className="col-sm-6">
-                            <div className="border-block">
-                                <center>
-                                    <h1>Players get ready!</h1>
-                                    <h3>Browse to <strong>http://<span old-style="color: red; font-size: 32px">quizal.me</span></strong><br/>and join this class</h3>
-                                    <center>
-                                        <div className="class-code">
-                                            {this.props.classCode}
-                                        </div>
-                                    </center><br/>
-                                    <p old-style="margin-bottom: 18.5px">You can play on any mobile, tablet or computer.</p>
-                                </center>
+                <div className="cq-publishedinfo__player">
+                    <center>
+                        <h1>Players get ready!</h1>
+                        <h3>Browse to <strong>http://<span old-style="color: red; font-size: 32px">quizal.me</span></strong><br/>and join this class</h3>
+                        <center>
+                            <div className="class-code">
+                                {this.props.classCode}
                             </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div className="border-block">
-                                <center>
-                                    <h1>Teacher get ready!</h1>
-                                    <p>Open your learning dashboard here:</p><br/><br/>
-                                    <center>
-                                        <a type="button" disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
-                                            Open Teacher Dashboard
-                                        </a>
-                                    </center>
-                                    <br/>
-                                    <p>You can see live results as your students play.</p>
-                                </center>
-                            </div>
-                        </div>
-                    </div><br/><br/>
-                    <div style={{display: 'none'}} ng-hide="ctrl.quiz.publicAssigned || (ctrl.quiz.meta.profileId!=undefined &amp;&amp; ctrl.quiz.meta.profileId!=ctrl.profileId)" className="row">
-                        <div className="col-sm-12">
-                            <div ng-style="background: #D6EBFF; padding: 10px" className="border-block">
-                                <center>
-                                    <h1>Share this quiz!</h1>
-                                    <p>Enter the email addresses of up to 10 of your colleagues so that they can use this quiz in their class</p>
-                                    <div className="row">
-                                        <div className="col-sm-11">
-                                            <input id="shareEmails"
-                                                type="text"
-                                                placeholder="charles@zzish.com samir@zzish.com"
-                                                value={this.state.shareEmails}
-                                                onChange={this.handleShareEmails}
-                                                className="form-control"/>
-                                        </div>
-                                        <div className="col-sm-1">
-                                            <a onClick={this.handleShare} className="btn btn-primary">
-                                                Share
-                                            </a>
-                                        </div>
-                                    </div><br/><br/>
-                                    <p>or share the following link with them</p>
-                                    <center>
-                                        <p old-style="font-size: 11px"><em>--ctrl.shareLink--</em></p>
-                                    </center>
-                                </center>
-                            </div>
-                        </div>
-                    </div>
+                        </center><br/>
+                        <p>You can play on any mobile, tablet or computer.</p>
+                    </center>
                 </div>
+                <div className="cq-publishedinfo__teacher">
+                    <center>
+                        <h1>Teacher get ready!</h1>
+                        <p>Open your learning dashboard here:</p><br/><br/>
+                        <center>
+                            <a type="button" disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
+                                Open Teacher Dashboard
+                            </a>
+                        </center>
+                        <br/>
+                        <p>You can see live results as your students play.</p>
+                    </center>
+                </div>
+
 
             </CQPageTemplate>
         );

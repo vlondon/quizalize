@@ -1,4 +1,4 @@
-body {
+body.quizalize {
     /* background: #FFF; */
     background-image: linear-gradient(#62B4C2, #F2F6E3);
     background-image: url(./../../assets/bg-mountain.jpg);
@@ -6,7 +6,12 @@ body {
 
     background-position: 70% center;
     background-attachment: fixed;
+
+    &__appmode {
+        background-image: none;
+    }
 }
+
 
 .cq {
     margin-bottom: 20px;

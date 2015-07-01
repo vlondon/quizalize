@@ -194,7 +194,7 @@ var CQQuizzes = React.createClass({
 
                 <div className="cq-quizzes__actions">
                     {newApp}&nbsp;
-                    <CQLink href="/quiz/create" className="btn btn-primary">
+                    <CQLink href="/quiz/create" className="btn btn-primary cq-quizzes__create">
                         <i className="fa fa-plus"></i> New quiz
                     </CQLink>
                 </div>
