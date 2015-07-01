@@ -1,24 +1,25 @@
-var React           = require('react');
+/* @flow */
+var React               = require('react');
 // var settings        = require('utils/settings');
 
-var CQPublic            = require('createQuizApp/components/pages/CQPublic');
-var CQProfile           = require('createQuizApp/components/pages/CQProfile');
-var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
-var CQLogin             = require('createQuizApp/components/pages/CQLogin');
-var CQRegister          = require('createQuizApp/components/pages/CQRegister');
-var CQRecoverPassword   = require('createQuizApp/components/pages/CQRecoverPassword');
-var CQRestorePassword   = require('createQuizApp/components/pages/CQRestorePassword');
-var CQRedirect          = require('createQuizApp/components/pages/CQRedirect');
-var CQQuizzes           = require('createQuizApp/components/pages/CQQuizzes');
-var CQCreate            = require('createQuizApp/components/pages/CQCreate');
-var CQReview            = require('createQuizApp/components/pages/CQReview');
-var CQEdit              = require('createQuizApp/components/pages/CQEdit');
-var CQAssignments       = require('createQuizApp/components/pages/CQAssignments');
-var CQPublished         = require('createQuizApp/components/pages/CQPublished');
-var CQPublishedInfo     = require('createQuizApp/components/pages/CQPublishedInfo');
-var CQSettings          = require('createQuizApp/components/pages/CQSettings');
-var CQApp               = require('createQuizApp/components/pages/CQApp');
-var CQYourApps          = require('createQuizApp/components/pages/CQYourApps');
+var CQPublic            = require('./../components/pages/CQPublic');
+var CQProfile           = require('./../components/pages/CQProfile');
+var CQNotFound          = require('./../components/pages/CQNotFound');
+var CQLogin             = require('./../components/pages/CQLogin');
+var CQRegister          = require('./../components/pages/CQRegister');
+var CQRecoverPassword   = require('./../components/pages/CQRecoverPassword');
+var CQRestorePassword   = require('./../components/pages/CQRestorePassword');
+var CQRedirect          = require('./../components/pages/CQRedirect');
+var CQQuizzes           = require('./../components/pages/CQQuizzes');
+var CQCreate            = require('./../components/pages/CQCreate');
+var CQReview            = require('./../components/pages/CQReview');
+var CQEdit              = require('./../components/pages/CQEdit');
+var CQAssignments       = require('./../components/pages/CQAssignments');
+var CQPublished         = require('./../components/pages/CQPublished');
+var CQPublishedInfo     = require('./../components/pages/CQPublishedInfo');
+var CQSettings          = require('./../components/pages/CQSettings');
+var CQApp               = require('./../components/pages/CQApp');
+var CQYourApps          = require('./../components/pages/CQYourApps');
 
 var pages = {
     pathParams: {
