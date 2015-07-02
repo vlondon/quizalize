@@ -60,7 +60,7 @@ var CQZzishLogin = React.createClass({
         return (
             <a onClick={this.handleLogin}
                 id="LoginWithZzishButton"
-                className="login-zzish btn btn-info btn-block">
+                className="login-zzish btn btn-info">
                 Login with Zzish
             </a>
         );

@@ -74,71 +74,66 @@ var CQAssignments = React.createClass({
     render: function() {
 
         return (
-            <CQPageTemplate className="container cq-classes">
-                <div>
-                    <h2 className="cq-classes__header"><i className="fa fa-users"/> Your Classes</h2>
-                    <p>Here are the quizzes which you have set to your classes</p>
-                    <div className="row">
-                        <div className="col-sm-12">
-                            <div className="row">
-                                {this.state.groups.map(classN => {
-                                    var noQuizzes;
+            <CQPageTemplate className="cq-container cq-classes">
+                <h2 className="cq-classes__header"><i className="fa fa-users"/> Your Classes</h2>
+                <p>Here are the quizzes which you have set to your classes</p>
 
-                                    if (this._getAssignments(classN.code).length === 0) {
-                                        noQuizzes = (<div className="row">
-                                            <div className="col-xs-12">
-                                                <p>You don't have any quizzes assigned to this class.</p>
+                    {this.state.groups.map(classN => {
+                        var noQuizzes;
+
+                        if (this._getAssignments(classN.code).length === 0) {
+                            noQuizzes = (<div className="row">
+                                <div className="cq-clas">
+                                    <p>You don't have any quizzes assigned to this class.</p>
+                                </div>
+                            </div>);
+                        }
+
+                        return (
+
+                            <div className="cq-classes__class">
+                                <h3 className="cq-classes__class__name">
+                                    {classN.name}
+                                    <a href={classN.link} target="_blank" className="btn btn-info pull-right">
+                                        Open {classN.name} Dashboard
+                                    </a>
+                                </h3>
+                                <p className="cq-classes__class__code" ng-style="color: #2a7ed0; font-size: 16px">
+                                    Your Class Code: {classN.code}
+                                </p><br/>
+                                    {noQuizzes}
+                                    {this._getAssignments(classN.code).map(assignment =>{
+                                        return (
+                                            <div className="cq-classes__class__assignment">
+                                                <div className="cq-classes__class__assignment__name">
+                                                    <h4>{assignment.meta.name}</h4>
+                                                </div>
+                                                <div className="cq-classes__class__assignment__topic">
+                                                    <h4>{assignment._category && assignment._category.name}</h4>
+                                                </div>
+                                                <div className="cq-classes__class__assignment__info">
+                                                    <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
+
+                                                        <button
+                                                            className="btn btn-default">
+                                                            View info
+                                                        </button>
+                                                    </CQLink>
+                                                </div>
+                                                <div className="cq-classes__class__assignment__unassign">
+                                                    <button
+                                                        onClick={this.handleUnpublish.bind(this, assignment.uuid, classN.code)}
+                                                        className="btn btn-danger">
+                                                        Unassign
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>);
-                                    }
+                                        );
+                                    })}
 
-                                    return (
-
-                                        <div ng-repeat="class in quizzes.classList track by $index" ng-style="padding-bottom: 10px" className="row well">
-                                            <div className="col-xs-12">
-                                                <h3>{classN.name}
-                                                    <a href={classN.link} target="_blank" ng-style="padding: 10px" className="btn btn-info pull-right">Open {classN.name} Dashboard</a>
-                                                </h3>
-                                                <p ng-style="color: #2a7ed0; font-size: 16px">
-                                                    Your Class Code: {classN.code}
-                                                </p><br/>
-                                                {noQuizzes}
-                                                {this._getAssignments(classN.code).map(assignment =>{
-                                                    return (
-                                                        <div ng-repeat="content in quizzes.groupContents[class.code].contents track by $index" ng-style="padding-bottom: 10px" className="row">
-                                                            <div className="col-xs-5">
-                                                                <h4>{assignment.meta.name}</h4>
-                                                            </div>
-                                                            <div className="col-xs-3">
-                                                                <h4>{assignment._category && assignment._category.name}</h4>
-                                                            </div>
-                                                            <div className="col-xs-2">
-                                                                <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
-
-                                                                    <button
-                                                                        className="btn btn-default">
-                                                                        View info
-                                                                    </button>
-                                                                </CQLink>
-                                                            </div>
-                                                            <div className="col-xs-2">
-                                                                <button
-                                                                    onClick={this.handleUnpublish.bind(this, assignment.uuid, classN.code)}
-                                                                    className="btn btn-danger">
-                                                                    Unassign
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        );
+                    })}
             </CQPageTemplate>
         );
     }

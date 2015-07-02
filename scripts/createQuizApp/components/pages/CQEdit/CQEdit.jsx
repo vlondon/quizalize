@@ -156,7 +156,7 @@ var CQEdit = React.createClass({
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
 
             return (
-                <CQPageTemplate className="container cq-edit">
+                <CQPageTemplate className="cq-container cq-edit">
 
                     <div className="cq-edit__header">
                         <h3>Now editing quiz&nbsp;

@@ -1,43 +1,60 @@
 @keyframes cqHeaderDropdown {
     from {
         opacity: 0;
-        /* transform: scale(0.5); */
     }
     to {
         opacity: 1;
-        /* transform: scale(1); */
     }
 }
 
 .cq-header {
-    background: $brand-color-red;
     border-radius: 0;
+    min-width: 980px;
+    @include clearfix();
 
-    @at-root #{&}__container {
+    &__container {
         max-width: 1170px;
         margin: auto;
         padding: 10px;
     }
-    @at-root #{&}__brand {
+
+    &__brand {
         float: left;
+    }
+
+    &__buttons {
+        list-style: none;
+        float: right;
+        margin: 0;
+        padding: 0;
+        display: block;
+        @include clearfix();
+
+        & > li {
+            display: inline-block;
+            float: left;
+        }
+        a { text-decoration: none; }
     }
     .navbar-btn {
         margin-top:9px;
         padding: 8px;
         border-radius: 5px;
-        border: 1px solid lighten($brand-color-red, 30%);
+        border: 1px solid #FFF;
         color: #FFF;
         cursor: pointer;
         margin-right: 5px;
         position: relative;
+        display: block;
         &:focus,
         &:hover {
-            background: $brand-color-blue;
-            border-color: 1px solid $brand-color-blue;
+            background: $brand-color-red;
+            border: 1px solid $brand-color-red;
         }
         &.active {
             background: #FFF;
             color: $brand-color-red;
+            border: 1px solid #FFF;
         }
     }
 
@@ -49,11 +66,11 @@
         color: #FFF;
         cursor: pointer;
         margin-right: 5px;
-        position: rlative;
+        position: relative;
         &:focus,
         &:hover {
-            background: $brand-color-blue;
-            border-color: 1px solid $brand-color-blue;
+            background: $brand-color-red;
+            border-color: 1px solid $brand-color-red;
         }
         &.active {
             background: #FFF;
@@ -70,12 +87,12 @@
     .person-menu {
         @include clearfix();
         position: absolute;
-        background: rgba($brand-color-blue, 1);
+        background: rgba($brand-color-red, 0.9);
         width: 100%;
-        right: 5px;
+        right: 0;
         top: 100%;
         min-width: 120px;
-        border-radius: 5px 0 5px 5px;
+        border-radius: 0 0 5px 5px;
         overflow: hidden;
         transform-origin: 50% 0;
         animation: cqHeaderDropdown 200ms ease-out;
@@ -97,7 +114,7 @@
         li {
             &:hover {
                 background: rgba(#FFF, .8);
-                a { color: $brand-color-blue; }
+                a { color: $brand-color-red; }
             }
         }
     }

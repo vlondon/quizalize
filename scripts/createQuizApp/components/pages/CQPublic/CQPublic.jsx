@@ -157,7 +157,7 @@ var CQPublic = React.createClass({
             );
         }
         return (
-            <CQPageTemplate className="container cq-public">
+            <CQPageTemplate className="cq-container cq-public">
                 {quizDetails}
 
                 <CQViewQuizFilter

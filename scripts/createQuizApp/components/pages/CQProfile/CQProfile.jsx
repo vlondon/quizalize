@@ -145,7 +145,7 @@ var CQProfile = React.createClass({
             );
         }
         return (
-            <CQPageTemplate className="container cq-profile">
+            <CQPageTemplate className="cq-container cq-profile">
                 <div className="cq-profile__left">
                     <CQDashboardProfile user={this.state.puser}/>
                 </div>

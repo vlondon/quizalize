@@ -1,3 +1,4 @@
+
 var React = require('react');
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
@@ -54,10 +55,11 @@ var CQSettings = React.createClass({
 
     render: function() {
         return (
-            <CQPageTemplate className="container cq-settings">
+            <CQPageTemplate className="cq-container cq-settings">
 
-
-                <h3>Settings</h3>
+                <h3 className="cq-settings__header">
+                    Settings
+                </h3>
 
                 <div className="cq-settings__profile ">
                     <div className="cq-settings__profile-item form-group">
@@ -79,7 +81,7 @@ var CQSettings = React.createClass({
                     </div>
 
                     <div className="cq-settings__profile-item form-group">
-                       <label htmlFor="url">URL</label>
+                       <label htmlFor="url">School Website</label>
                        <input type="url" id="url"
                            className="form-control"
                            onChange={this.handleChange.bind(this, 'url')}
