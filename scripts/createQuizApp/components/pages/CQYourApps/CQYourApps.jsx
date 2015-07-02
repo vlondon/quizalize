@@ -6,7 +6,7 @@ var CQYourApps = React.createClass({
 
     render: function() {
         return (
-            <CQPageTemplate className="container cq-yourapps">
+            <CQPageTemplate className="cq-container cq-yourapps">
                 <h2 className='cq-yourapps__header'>
                     <i className="fa fa-archive"/> Your apps
                 </h2>

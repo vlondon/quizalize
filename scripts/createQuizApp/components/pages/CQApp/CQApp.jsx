@@ -12,6 +12,20 @@ var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var UserStore = require('createQuizApp/stores/UserStore');
 
+
+var addClassName = function(el, className){
+    if (el.classList)
+        el.classList.add(className);
+    else
+        el.className += ' ' + className;
+};
+
+var removeClassName = function(el, className){
+    if (el.classList)
+        el.classList.remove(className);
+    else
+        el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+};
 var CQApp = React.createClass({
 
     propTypes: {
@@ -31,6 +45,7 @@ var CQApp = React.createClass({
         AppStore.removeChangeListener(this.onChange);
         TopicStore.removeChangeListener(this.onChange);
         document.body.style.backgroundColor = '';
+        removeClassName(document.body, 'quizalize__appmode');
     },
 
     onChange: function(){
@@ -48,6 +63,7 @@ var CQApp = React.createClass({
 
             if (appInfo.meta && appInfo.meta.colour){
                 document.body.style.backgroundColor = appInfo.meta.colour;
+                addClassName(document.body, 'quizalize__appmode');
             }
             return {appInfo};
         }

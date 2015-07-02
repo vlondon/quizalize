@@ -16,7 +16,7 @@ config.aws_config = {
 
 config.stripeSecret = process.env.STRIPE_SECRET;
 
-//Zzish INit (Either QATOKEN OR an object with lots of params)
+//Zzish Init (Either QATOKEN OR an object with lots of params)
 config.zzishInit = process.env.ZZISHINIT;
 
 module.exports = config;

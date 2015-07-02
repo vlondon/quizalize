@@ -33,29 +33,27 @@ var CQLogin = React.createClass({
 
     render: function() {
         return (
-            <CQPageTemplate className="container cq-login">
-                <div className="row">
-                    <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-                        <div className="well">
-                            <h2 id="title" style={{'text-align': 'center'}}>
-                                Quizalize Login
-                            </h2>
-                            <CQLoginForm onSubmit={this.handleLogin}>
-
-                                <div className="">
-                                    Don't have an account?&nbsp;
-                                    <CQLink href={`/quiz/register${window.location.search}`}>Sign Up</CQLink>
-                                </div>
-                                <div ng-show="login.mode=='login'" className="">
-                                    Forgotten Password? &nbsp;
-                                    <CQLink href="/quiz/recover">Reset</CQLink>
-
-                                </div>
+            <CQPageTemplate className="cq-login">
 
 
-                            </CQLoginForm>
+                <div className="cq-login__inner">
+                    <h2 id="title" className="cq-login__header">
+                        Quizalize Login
+                    </h2>
+                    <CQLoginForm onSubmit={this.handleLogin}>
+
+                        <div>
+                            Don't have an account?&nbsp;
+                            <CQLink href={`/quiz/register${window.location.search}`}>Sign Up</CQLink>
                         </div>
-                    </div>
+                        <div>
+                            Forgotten Password? &nbsp;
+                            <CQLink href="/quiz/recover">Reset</CQLink>
+                        </div>
+
+
+                    </CQLoginForm>
+
                 </div>
             </CQPageTemplate>
         );

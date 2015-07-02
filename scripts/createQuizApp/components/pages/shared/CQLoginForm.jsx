@@ -76,9 +76,10 @@ var CQLoginForm = React.createClass({
         var passwordField, emailField;
 
         if (this.props.showPasswordField){
-            passwordField = (<span id="passwordSpan">
-                <label className="control-label col-sm-3">Password</label>
-                <div className="col-sm-9">
+            passwordField = (
+            <div id="passwordSpan" className="cq-login__password">
+                <label className="cq-login__password__label control-label ">Password</label>
+                <div className="cq-login__password__input">
                     <input id="password"
                         type="password"
                         value={this.state.password}
@@ -88,70 +89,65 @@ var CQLoginForm = React.createClass({
                     <br/>
 
                 </div>
-            </span>);
+            </div>);
         }
 
         if (this.props.showEmailField){
             emailField = (
-                <span>
-                    <label className="col-sm-3 control-label">Email:</label>
-                    <div className="col-sm-9">
-                    <input id="email" type="email"
-                        on-enter="login.focusPassword();"
-                        value={this.state.email}
-                        onChange={this.handleChange.bind(this, 'email')}
-                        placeholder="e.g. abc@zzish.com"
-                        autofocus="true"
-                        className="form-control ng-pristine ng-valid"/>
+                <div className="cq-login__email">
+                    <label className="cq-login__email__label control-label">Email:</label>
+                    <div className="cq-login__email__input">
+                        <input id="email" type="email"
+                            on-enter="login.focusPassword();"
+                            value={this.state.email}
+                            onChange={this.handleChange.bind(this, 'email')}
+                            placeholder="e.g. abc@zzish.com"
+                            autofocus="true"
+                            className="form-control ng-pristine ng-valid"/>
 
-                    <br/>
-                </div>
-            </span>);
+
+                    </div>
+            </div>);
         }
         return (
             <form role="form" className="form-horizontal" onSubmit={this.handleSubmit}>
-                <div className="form-group">
 
+                {emailField}
+                {passwordField}
 
-                    {emailField}
-                    {passwordField}
+                <div className="cq-login__cta">
 
-                    <div className="col-sm-8">
+                    <div className="cq-login__extra">
                         {this.props.children}
                     </div>
-                    <div className="col-sm-4">
-                        <button ng-click="login.login();"
+                    <div className="cq-login__button">
+                        <button
                             disabled={!this.state.isReady || !this.props.enabled}
                             type='submit'
                             className="btn btn-primary btn-block">
 
                             <span>{this.props.buttonLabel}</span>
-
                         </button>
 
                     </div>
-
-
-                    <div className="col-xs-12">
-                        <br/>
-                        <hr/>
-                    </div>
-                    <div className="col-sm-4 col-sm-offset-4">
-                        <center>
-                            <strong>or</strong>
-                            <br/>
-                            <br/>
-                            <CQZzishLogin/>
-
-                        </center>
-                    </div>
-                    <div className="col-xs-8 col-xs-offset-2">
-                        <br/>
-                        <center>
-                            <p>Zzish is a universal teacher dashboard and unified login system for educational software</p>
-                        </center>
-                    </div>
                 </div>
+
+
+
+
+                <div className="cq-login__zzish">
+                    <div className="cq-login__zzish__header">
+                        or
+                    </div>
+                    <CQZzishLogin/>
+                    <div className="cq-login__zzish__footer">
+                        <p>Zzish is a universal teacher dashboard and unified login system for educational software</p>
+                    </div>
+
+                </div>
+
+
+
             </form>
         );
     }

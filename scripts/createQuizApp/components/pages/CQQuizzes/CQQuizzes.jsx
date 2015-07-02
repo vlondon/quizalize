@@ -140,27 +140,13 @@ var CQQuizzes = React.createClass({
             );
         }
 
-        if (this.state.isAdmin){
-            apps = (
-                <div className="container">
-                    <h2>Your apps</h2>
-                    <CQViewAppGrid
-                        editMode={true}
-                        apps={this.state.apps}/>
-                </div>
-            );
-            newApp = (
-                <CQLink href="/quiz/quizzes/app" className="btn btn-primary">
-                    <i className="fa fa-plus"></i> New app
-                </CQLink>
-            );
-        }
+
 
         if (this.state.quizzes.length === 0){
             emptyState = (
-                <div className="row cq-quizzes__empty">
+                <div className="cq-quizzes__empty">
 
-                    <div className="row well">
+                    <div className="">
                         <div className="quiz-preview">
                             <div className="row">
                                 <div className="col-sm-12">
@@ -198,62 +184,59 @@ var CQQuizzes = React.createClass({
         }
 
         return (
-            <CQPageTemplate className="container cq-quizzes">
-
-                <div>
-                    {emptyState}
+            <CQPageTemplate className="cq-container cq-quizzes">
 
 
-                    {apps}
-                    <h2 className='cq-quizzes__header'>
-                        <i className="fa fa-th-large"/> Your Quizzes
-                    </h2>
+                <h2 className='cq-quizzes__header'>
+                    <i className="fa fa-th-large"/> Your Quizzes
+                </h2>
+                {emptyState}
 
-                    <div className="cq-quizzes__actions">
-                        {newApp}&nbsp;
-                        <CQLink href="/quiz/create" className="btn btn-primary">
-                            <i className="fa fa-plus"></i> New quiz
-                        </CQLink>
-                    </div>
-
-                    <p>
-                        {introCopy}
-                    </p>
-
-                    {createApp}
-
-                    <CQViewQuizList
-                        onQuizClick={this.handleClick}
-                        showAuthor={false}
-                        showReviewButton={false}
-                        quizzes={this.state.quizzes}
-                        selectMode={this.props.appMode === true}
-                        onSelect={this.handleSelect}
-                        sortBy='time'
-                        sortOptions={this.state.isAdmin}
-                        onAssign={this.handleAssign}
-                        onEdit={this.handleEdit}
-                        onDelete={this.handleDelete}
-                        actions={this.handleAction}>
-
-                            <CQPublishQuiz className="cq-quizzes__button--publish"/>
-
-                            <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
-                                <span className="fa fa-pencil"></span> Edit
-                            </button>
-
-                            <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
-                                <span className="fa fa-users"></span> Use quiz in class
-                            </button>
-
-                            <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
-                                <span className="fa fa-trash-o"></span>
-                            </button>
-
-                    </CQViewQuizList>
-                    {emptyQuizList}
-
+                <div className="cq-quizzes__actions">
+                    {newApp}&nbsp;
+                    <CQLink href="/quiz/create" className="btn btn-primary cq-quizzes__create">
+                        <i className="fa fa-plus"></i> New quiz
+                    </CQLink>
                 </div>
+
+                <p>
+                    {introCopy}
+                </p>
+
+                {createApp}
+
+                <CQViewQuizList
+                    onQuizClick={this.handleClick}
+                    showAuthor={false}
+                    showReviewButton={false}
+                    quizzes={this.state.quizzes}
+                    selectMode={this.props.appMode === true}
+                    onSelect={this.handleSelect}
+                    sortBy='time'
+                    sortOptions={this.state.isAdmin}
+                    onAssign={this.handleAssign}
+                    onEdit={this.handleEdit}
+                    onDelete={this.handleDelete}
+                    actions={this.handleAction}>
+
+                        <CQPublishQuiz className="cq-quizzes__button--publish"/>
+
+                        <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
+                            <span className="fa fa-pencil"></span> Edit
+                        </button>
+
+                        <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
+                            <span className="fa fa-users"></span> Use quiz in class
+                        </button>
+
+                        <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
+                            <span className="fa fa-trash-o"></span>
+                        </button>
+
+                </CQViewQuizList>
+                {emptyQuizList}
+
+
             </CQPageTemplate>
         );
     }
