@@ -33,6 +33,11 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.id = $routeParams.quizId;
     self.catId = $routeParams.catId;
 
+    if (window.ga){
+        window.ga('send', 'event', 'quiz', 'end', self.id);
+    }
+
+
     var renderReactComponent = function(){
         var activityId = self.data ? self.data.currentActivityId : undefined;
         React.render(
