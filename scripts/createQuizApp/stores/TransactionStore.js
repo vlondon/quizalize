@@ -1,11 +1,12 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+
 var CHANGE_EVENT = 'change';
 
 
-var _prices = [
+var _prices:Array<number> = [
     0,
     0.79,
     1.49,

@@ -48,7 +48,7 @@ var CQViewHeader = React.createClass({
     },
 
     getState: function(){
-        var isLoggedIn = UserStore.getUser() !== false;
+        var isLoggedIn = UserStore.getUser().uuid !== undefined;
         return {
             isLoggedIn
         };
@@ -111,13 +111,13 @@ var CQViewHeader = React.createClass({
                     </div>
                     <ul className="cq-header__buttons">
 
-                        {buttons}
-
                         <li id="cq-publicQuizzes">
                             <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
                                 <div className="fa fa-tags"></div> Marketplace
                             </CQLink>
                         </li>
+                        {buttons}
+
 
                         {loginButton}
 

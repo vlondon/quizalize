@@ -21,17 +21,17 @@ var CQSettings          = require('./../components/pages/CQSettings');
 var CQApp               = require('./../components/pages/CQApp');
 var CQYourApps          = require('./../components/pages/CQYourApps');
 
-var pages = {
-    pathParams: {
-        quizId: /([\w\-]+)/,
-        appId: /([\w\-]+)/,
-        authorId: /([\w\-]+)/,
-        questionIndex: /([\w\-]+)/,
-        classCode: /([\w\-]+)/,
-        redirectURL: /([\w\-]+)/,
-        code: /([\w\-]+)/
-    },
-    mainPage: {
+export type Page = {
+    name: string;
+    path: string;
+    pathRegEx?: Object;
+    needsLogin: ?boolean;
+    renderer: Function;
+}
+
+var pagesArray: Array<Page> = [
+    {
+        name: 'mainPage',
         path: '/quiz',
         needsLogin: undefined,
         renderer: function(){
@@ -41,8 +41,8 @@ var pages = {
             );
         }
     },
-
-    mainPageWithSlash: {
+    {
+        name: 'mainPageWithSlash',
         path: '/quiz/',
         needsLogin: undefined,
         renderer: function(){
@@ -52,43 +52,44 @@ var pages = {
             );
         }
     },
-
-    ownProfilePage: {
+    {
+        name: 'ownProfilePage',
         path: '/quiz/user',
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(){
             React.render(
-                React.createElement(CQProfile, props),
+                React.createElement(CQProfile),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    profilePage: {
+    {
+        name: 'profilePage',
         path: '/quiz/user/:profileId',
         pathRegEx: /\/quiz\/user\/([\w\-]+)/,
         needsLogin: undefined,
-        renderer: function(props: Object){
+        renderer: function(profileId: string){
             React.render(
-                React.createElement(CQProfile, props),
+                React.createElement(CQProfile, {profileId}),
                 document.getElementById('reactApp')
             );
         }
     },
-
-    sharedQuizPage: {
+    {
+        name: 'sharedQuizPage',
         path: '/quiz/user/:profileId/:quizCode',
         pathRegEx: /\/quiz\/\/user\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: undefined,
-        renderer: function(props: Object){
+        renderer: function(profileId: string, quizCode: string){
             React.render(
-                React.createElement(CQProfile, props),
+                React.createElement(CQProfile, {profileId, quizCode}),
                 document.getElementById('reactApp')
             );
         }
     },
-
-    settingsPage: {
+    {
+        name: 'settingsPage',
         path: '/quiz/settings',
         needsLogin: true,
         renderer: function(){
@@ -98,8 +99,8 @@ var pages = {
             );
         }
     },
-
-    publicPage: {
+    {
+        name: 'publicPage',
         path: '/quiz/public',
         needsLogin: undefined,
         renderer: function(){
@@ -109,7 +110,8 @@ var pages = {
             );
         }
     },
-    loginPage: {
+    {
+        name: 'loginPage',
         path: '/quiz/login',
         needsLogin: false,
         renderer: function(){
@@ -119,7 +121,9 @@ var pages = {
             );
         }
     },
-    registerPage: {
+
+    {
+        name: 'registerPage',
         path: '/quiz/register',
         needsLogin: false,
         renderer: function(){
@@ -130,7 +134,8 @@ var pages = {
         }
     },
 
-    registerAndCreatePage: {
+    {
+        name: 'registerAndCreatePage',
         path: '/quiz/register/create',
         needsLogin: false,
         renderer: function(){
@@ -140,7 +145,9 @@ var pages = {
             );
         }
     },
-    recoverPassword: {
+
+    {
+        name: 'recoverPassword',
         path: '/quiz/recover',
         needsLogin: false,
         renderer: function(){
@@ -150,19 +157,22 @@ var pages = {
             );
         }
     },
-    restorePassword: {
+
+    {
+        name: 'restorePassword',
         path: '/quiz/reset/:code',
         pathRegEx: /\/quiz\/reset\/([\w\-]+)/,
         needsLogin: false,
-        renderer: function(props: Object){
+        renderer: function(code:string){
             React.render(
-                React.createElement(CQRestorePassword, props),
+                React.createElement(CQRestorePassword, {code}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    yourApps: {
+    {
+        name: 'yourApps',
         path: '/quiz/apps',
         needsLogin: true,
         renderer: function(){
@@ -173,7 +183,8 @@ var pages = {
         }
     },
 
-    yourAppsCreate: {
+    {
+        name: 'yourAppsCreate',
         path: '/quiz/apps/new',
         needsLogin: true,
         renderer: function(){
@@ -185,19 +196,21 @@ var pages = {
         }
     },
 
-    yourAppsEdit: {
+    {
+        name: 'yourAppsEdit',
         path: '/quiz/apps/:appId',
         pathRegEx: /\/quiz\/apps\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(appId: string){
             React.render(
-                React.createElement(CQYourApps, props),
+                React.createElement(CQYourApps, {appId}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    quizzes: {
+    {
+        name: 'quizzes',
         path: '/quiz/quizzes',
         needsLogin: true,
         renderer: function(){
@@ -207,19 +220,21 @@ var pages = {
             );
         }
     },
-    redirect: {
+    {
+        name: 'redirect',
         path: '/quiz/playh/:redirectURL',
         pathRegEx: /\/quiz\/playh\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(redirectURL: string){
             React.render(
-                React.createElement(CQRedirect, props),
+                React.createElement(CQRedirect, {redirectURL}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    create: {
+    {
+        name: 'create',
         path: '/quiz/create',
         needsLogin: true,
         renderer: function(){
@@ -229,7 +244,8 @@ var pages = {
             );
         }
     },
-    createApp: {
+    {
+        name: 'createApp',
         path: '/quiz/quizzes/app',
         needsLogin: true,
         renderer: function(){
@@ -240,56 +256,61 @@ var pages = {
         }
     },
 
-    editQuiz: {
+    {
+        name: 'editQuiz',
         path: '/quiz/edit/:quizId',
         pathRegEx: /\/quiz\/edit\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(quizId: string){
             React.render(
-                React.createElement(CQCreate, props),
+                React.createElement(CQCreate, {quizId}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    reviewQuiz: {
+    {
+        name: 'reviewQuiz',
         path: '/quiz/review/:quizId',
         pathRegEx: /\/quiz\/review\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(quizId: string){
             React.render(
-                React.createElement(CQReview, props),
+                React.createElement(CQReview, {quizId}),
                 document.getElementById('reactApp')
             );
         }
     },
 
 
-    edit: {
+    {
+        name: 'edit',
         path: '/quiz/create/:quizId',
         pathRegEx: /\/quiz\/create\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(quizId: string){
             React.render(
-                React.createElement(CQEdit, props),
+                React.createElement(CQEdit, {quizId}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    editQuestion: {
+    {
+        name: 'editQuestion',
         path: '/quiz/create/:quizId/:questionIndex',
         pathRegEx: /\/quiz\/create\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(quizId: string, questionIndex: string){
             React.render(
-                React.createElement(CQEdit, props),
+                React.createElement(CQEdit, {quizId, questionIndex}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    assignments: {
+    {
+        name: 'assignments',
         path: '/quiz/assignments',
         needsLogin: true,
         renderer: function(){
@@ -300,70 +321,74 @@ var pages = {
         }
     },
 
-    published: {
+    {
+        name: 'published',
         path: '/quiz/published/:quizId',
         pathRegEx: /\/quiz\/published\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(quizId: string){
             React.render(
-                React.createElement(CQPublished, props),
+                React.createElement(CQPublished, {quizId}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    publishedAssign: {
+    {
+        name: 'publishedAssign',
         path: '/quiz/published/:quizId/assign',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
-        renderer: function(props: Object){
-            props.assign = true;
+        renderer: function(quizId: string){
             React.render(
-                React.createElement(CQPublished, props),
+                React.createElement(CQPublished, {quizId, assign: true}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    publishedPricing: {
+    {
+        name: 'publishedPricing',
         path: '/quiz/published/:quizId/publish',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
-        renderer: function(props: Object){
-            props.publish = true;
+        renderer: function(quizId: string){
             React.render(
-                React.createElement(CQPublished, props),
+                React.createElement(CQPublished, {quizId, published: true}),
                 document.getElementById('reactApp')
             );
         }
     },
 
 
-    publishedInfo: {
+    {
+        name: 'publishedInfo',
         path: '/quiz/published/:quizId/:classCode/info',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/([\w\-]+)\/info/,
         needsLogin: true,
-        renderer: function(props: Object){
+        renderer: function(quizId: string, classCode: string){
             React.render(
-                React.createElement(CQPublishedInfo, props),
+                React.createElement(CQPublishedInfo, {quizId, classCode}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    app: {
+    {
+        name: 'app',
         path: '/quiz/app/:appId',
         pathRegEx: /\/quiz\/app\/([\w\-]+)/,
         needsLogin: undefined,
-        renderer: function(props: Object){
+        renderer: function(appId: string){
             React.render(
-                React.createElement(CQApp, props),
+                React.createElement(CQApp, {appId}),
                 document.getElementById('reactApp')
             );
         }
     },
 
-    pageNotFound: {
+    {
+        name: 'pageNotFound',
         path: '',
         needsLogin: false,
         renderer: function() {
@@ -373,6 +398,24 @@ var pages = {
             );
         }
     }
+];
+
+var pages = {
+    pathParams: {
+        quizId: /([\w\-]+)/,
+        appId: /([\w\-]+)/,
+        authorId: /([\w\-]+)/,
+        questionIndex: /([\w\-]+)/,
+        classCode: /([\w\-]+)/,
+        redirectURL: /([\w\-]+)/,
+        code: /([\w\-]+)/
+    },
+    pageNotFound: pagesArray.filter((p) => p.name === 'pageNotFound')[0]
+
 };
 
-module.exports = pages;
+pagesArray.forEach( p => {
+    pages[p.name] = p;
+});
+
+module.exports = { pages, pagesArray };

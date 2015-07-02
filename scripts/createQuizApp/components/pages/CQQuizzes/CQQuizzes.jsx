@@ -1,22 +1,23 @@
 /* @flow */
+import type {Quiz} from './../../../stores/QuizStore';
+
 var React = require('react');
 
-var root = './../../../';
-var router = require(`${root}config/router`);
+var router          = require(`./../../../config/router`);
 
-var QuizActions = require(`${root}actions/QuizActions`);
-var QuizStore = require(`${root}stores/QuizStore`);
-var GroupStore = require(`${root}stores/GroupStore`);
-var AppStore = require(`${root}stores/AppStore`);
-var UserStore = require(`${root}stores/UserStore`);
+var QuizActions     = require(`./../../../actions/QuizActions`);
+var QuizStore       = require(`./../../../stores/QuizStore`);
+var GroupStore      = require(`./../../../stores/GroupStore`);
+var AppStore        = require(`./../../../stores/AppStore`);
+var UserStore       = require(`./../../../stores/UserStore`);
 
-var CQViewQuizList = require(`${root}components/views/CQViewQuizList`);
+var CQViewQuizList  = require(`./../../../components/views/CQViewQuizList`);
+var CQViewCreateApp = require('./../../../components/views/CQViewCreateApp');
+var CQSpinner       = require(`./../../../components/utils/CQSpinner`);
+var CQPublishQuiz   = require(`./../../../components/utils/CQPublishQuiz`);
 
-var CQSpinner = require(`${root}components/utils/CQSpinner`);
-var CQPublishQuiz = require(`${root}components/utils/CQPublishQuiz`);
-
-var CQPageTemplate = require(`${root}components/CQPageTemplate`);
-var CQLink = require(`${root}components/utils/CQLink`);
+var CQPageTemplate  = require(`./../../../components/CQPageTemplate`);
+var CQLink          = require(`./../../../components/utils/CQLink`);
 
 type State = {
     selectedQuizzes?: Array<Object>;
@@ -24,6 +25,7 @@ type State = {
     apps: Array<Object>;
     isAdmin: boolean;
 };
+
 var CQQuizzes = React.createClass({
 
     propTypes: {
@@ -63,7 +65,7 @@ var CQQuizzes = React.createClass({
         return { quizzes, apps, isAdmin };
     },
 
-    handleDelete: function(quiz){
+    handleDelete: function(quiz: Object){
 
         var found = false;
         var groupContents = GroupStore.getGroupsContent();
@@ -95,27 +97,26 @@ var CQQuizzes = React.createClass({
         }
     },
 
-    handleClick: function(quiz){
-        console.log("quiz handleCLICK", quiz);
+    handleClick: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
     },
 
-    handleAssign: function(quiz){
+    handleAssign: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
         }
     },
 
-    handleEdit: function(quiz){
+    handleEdit: function(quiz: Quiz){
         console.log('edit???', quiz);
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
     },
 
-    handleSelect: function(selectedQuizzes){
+    handleSelect: function(selectedQuizzes: Array<Quiz>){
         this.setState({selectedQuizzes});
     },
 
@@ -131,7 +132,6 @@ var CQQuizzes = React.createClass({
         }
 
         var createApp;
-        var apps;
         var newApp;
         var emptyState;
         var emptyQuizList;
@@ -219,8 +219,7 @@ var CQQuizzes = React.createClass({
                     sortOptions={this.state.isAdmin}
                     onAssign={this.handleAssign}
                     onEdit={this.handleEdit}
-                    onDelete={this.handleDelete}
-                    actions={this.handleAction}>
+                    onDelete={this.handleDelete}>
 
                     <CQPublishQuiz className="cq-quizzes__button--publish"/>
 

@@ -1,11 +1,14 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var AppApi              = require('createQuizApp/actions/api/AppApi');
-var QuizApi             = require('createQuizApp/actions/api/QuizApi');
-var AppConstants        = require('createQuizApp/constants/AppConstants');
+/* @flow */
+import type App from './../stores/AppStore';
+
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var AppApi              = require('./../actions/api/AppApi');
+var QuizApi             = require('./../actions/api/QuizApi');
+var AppConstants        = require('./../constants/AppConstants');
 
-var debounce            = require('createQuizApp/utils/debounce');
+var debounce            = require('./../utils/debounce');
 
 var AppActions = {
 
@@ -19,7 +22,7 @@ var AppActions = {
             });
     },
 
-    loadApp: function(appId){
+    loadApp: function(appId:string){
         AppApi.getInfo(appId)
             .then(function(appInfo){
                 AppDispatcher.dispatch({
@@ -29,12 +32,12 @@ var AppActions = {
             });
     },
 
-    deleteApp: function(app){
+    deleteApp: function(app:App){
         AppApi.delete(app)
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app, appIcon){
+    saveNewApp: function(app:App, appIcon:Object){
 
 
         app.uuid = app.uuid || uuid.v4();
@@ -72,7 +75,7 @@ var AppActions = {
         }
     },
 
-    appPicture: function(appId, file){
+    appPicture: function(appId:string, file:Object){
         return AppApi.uploadMedia(appId, file);
     },
 
@@ -85,12 +88,12 @@ var AppActions = {
                 .then(function(apps){
 
                     apps = apps.filter(app => {
-                        var found =false;
+                        var found = false;
                         quizzes.forEach(quiz => {
-                            if (app.meta.quizzes.indexOf(quiz.uuid)>=0) {
+                            if (app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
                                 found = true;
                             }
-                        })
+                        });
                         return found;
                     });
 

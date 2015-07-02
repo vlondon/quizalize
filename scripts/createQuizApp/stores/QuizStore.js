@@ -1,18 +1,42 @@
-var AppDispatcher   = require('createQuizApp/dispatcher/CQDispatcher');
-var QuizConstants   = require('createQuizApp/constants/QuizConstants');
-var TopicConstants  = require('createQuizApp/constants/TopicConstants');
-var QuizActions     = require('createQuizApp/actions/QuizActions');
-var TopicStore      = require('createQuizApp/stores/TopicStore');
+/* @flow */
 var EventEmitter    = require('events').EventEmitter;
 var assign          = require('object-assign');
 var uuid            = require('node-uuid');
 
+var AppDispatcher   = require('./../dispatcher/CQDispatcher');
+var QuizConstants   = require('./../constants/QuizConstants');
+var TopicConstants  = require('./../constants/TopicConstants');
+var QuizActions     = require('./../actions/QuizActions');
+var TopicStore      = require('./../stores/TopicStore');
 
+type QuizCategory = {
+    name: string;
+    title: string;
+}
+type QuizMeta = {
+    authorId: string;
+    categoryId: string;
+    code: string;
+    created: number;
+    imageUrl: ?string;
+    name: string;
+    originalQuizId: ?string;
+    profileId: string;
+    random: boolean;
+    subject: ?string;
+    updated: number;
+};
 
+export type Quiz = {
+    uuid: string;
+    meta: QuizMeta;
+    _category: QuizCategory;
+
+}
 
 var CHANGE_EVENT = 'change';
 
-var _quizzes;
+var _quizzes: Array<Quiz> = [];
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _topics = [];
@@ -55,7 +79,7 @@ var findPublicQuiz = function(quizId){
 var QuizStore = assign({}, EventEmitter.prototype, {
 
     getQuizzes: function() {
-        console.log('_quizzes', _quizzes);
+        console.log('quizzes', _quizzes);
         if (_quizzes){
             var quizzes = _quizzes.slice();
             quizzes = quizzes.map(quiz => {
@@ -68,10 +92,9 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     },
 
     getQuizMeta: function(quizId) {
-        for (var i in _quizzes) {
-            if (_quizzes[i].uuid === quizId) {
-                return _quizzes[i];
-            }
+        var quiz = _quizzes.filter(q => q === quizId)[0];
+        if (quiz){
+            return quiz;
         }
         return _fullQuizzes[quizId];
     },

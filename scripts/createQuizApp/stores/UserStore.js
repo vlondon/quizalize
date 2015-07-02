@@ -19,6 +19,11 @@ var UserStore = assign({}, EventEmitter.prototype, {
     },
 
 
+    isLoggedIn: function():boolean {
+        return !!_user.uuid;
+    },
+
+
     getPublicUser: function(userId){
         var user = _users[userId];
         if (user === undefined){
@@ -29,10 +34,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return user;
     },
 
-    isAdmin: function(): number {
+    isAdmin: function(): boolean {
         console.log('_user', _user);
         var admins = ['Quizalize Team', 'BlaiZzish', 'Zzish', 'FrancescoZzish', 'SamirZish', 'CharlesZzish'];
-        return admins.indexOf(_user.name);
+        return admins.indexOf(_user.name) !== -1;
     },
 
 

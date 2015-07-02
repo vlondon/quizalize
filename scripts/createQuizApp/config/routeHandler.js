@@ -1,6 +1,8 @@
 /* @flow */
+import type Page from './routes';
 var router              = require('./router');
-var pages               = require('./routes');
+var pages               = require('./routes').pages;
+var pagesArray               = require('./routes').pagesArray;
 var settings            = require('./settings');
 var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
@@ -23,43 +25,47 @@ Object.keys(pages.pathParams).map( (param) => router.param(param, pages.pathPara
 
 
 // Public pages
-router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
-router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
-router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
-
-
-router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
-router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
-router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
-router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
-router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
-router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
-router.on(pages.yourApps.path, () => renderPage(pages.yourApps) );
-router.on(pages.yourAppsCreate.path, () => renderPage(pages.yourAppsCreate) );
-router.on(pages.yourAppsEdit.path, (appId) => renderPage(pages.yourAppsEdit, {appId}) );
-router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
-router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
-router.on(pages.create.path, () => renderPage(pages.create) );
-router.on(pages.createApp.path, () => renderPage(pages.createApp) );
-router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) );
-router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
-router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
-router.on(pages.assignments.path, () => renderPage(pages.assignments) );
-router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
-router.on(pages.publishedAssign.path, (quizId) => renderPage(pages.publishedAssign, {quizId}) );
-router.on(pages.publishedPricing.path, (quizId) => renderPage(pages.publishedPricing, {quizId}) );
-router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
-router.on(pages.ownProfilePage.path, () => renderPage(pages.ownProfilePage) );
-router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
-router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
-router.on(pages.sharedQuizPage.path, (profileId, quizCode) => renderPage(pages.sharedQuizPage, {profileId, quizCode}) );
+pagesArray.forEach((p:Page) => {
+    router.on(p.path, p.renderer);
+});
+//
+// router.on(pages.mainPage.path, () => renderPage(pages.mainPage) );
+// router.on(pages.mainPageWithSlash.path, () => renderPage(pages.mainPageWithSlash) );
+// router.on(pages.publicPage.path, () => renderPage(pages.publicPage) );
+//
+//
+// router.on(pages.settingsPage.path, () => renderPage(pages.settingsPage) );
+// router.on(pages.loginPage.path, () => renderPage(pages.loginPage) );
+// router.on(pages.registerPage.path, () => renderPage(pages.registerPage) );
+// router.on(pages.recoverPassword.path, () => renderPage(pages.recoverPassword) );
+// router.on(pages.restorePassword.path, (code) => renderPage(pages.restorePassword, {code}) );
+// router.on(pages.redirect.path, (redirectURL) => renderPage(pages.redirect, {redirectURL}) );
+// router.on(pages.yourApps.path, () => renderPage(pages.yourApps) );
+// router.on(pages.yourAppsCreate.path, () => renderPage(pages.yourAppsCreate) );
+// router.on(pages.yourAppsEdit.path, (appId) => renderPage(pages.yourAppsEdit, {appId}) );
+// router.on(pages.quizzes.path, () => renderPage(pages.quizzes) );
+// router.on(pages.reviewQuiz.path, (quizId) => renderPage(pages.reviewQuiz, {quizId}) );
+// router.on(pages.create.path, () => renderPage(pages.create) );
+// router.on(pages.createApp.path, () => renderPage(pages.createApp) );
+// router.on(pages.editQuiz.path, (quizId) => renderPage(pages.editQuiz, {quizId}) );
+// router.on(pages.edit.path, (quizId) => renderPage(pages.edit, {quizId}) );
+// router.on(pages.editQuestion.path, (quizId, questionIndex) => renderPage(pages.editQuestion, {quizId, questionIndex}) );
+// router.on(pages.assignments.path, () => renderPage(pages.assignments) );
+// router.on(pages.published.path, (quizId) => renderPage(pages.published, {quizId}) );
+// router.on(pages.publishedAssign.path, (quizId) => renderPage(pages.publishedAssign, {quizId}) );
+// router.on(pages.publishedPricing.path, (quizId) => renderPage(pages.publishedPricing, {quizId}) );
+// router.on(pages.publishedInfo.path, (quizId, classCode) => renderPage(pages.publishedInfo, {quizId, classCode}) );
+// router.on(pages.ownProfilePage.path, () => renderPage(pages.ownProfilePage) );
+// router.on(pages.profilePage.path, (profileId) => renderPage(pages.profilePage, {profileId}) );
+// router.on(pages.app.path, (appId) => renderPage(pages.app, {appId}) );
+// router.on(pages.sharedQuizPage.path, (profileId, quizCode) => renderPage(pages.sharedQuizPage, {profileId, quizCode}) );
 
 
 var newUrl = function(requestedUrl){
 
     // return requestedUrl;
     var getPage = function(url){
-        var arrayPages = Object.keys(pages).map((key) => pages[key]);
+        var arrayPages: Array<Object> = Object.keys(pages).map((key) => pages[key]);
         var newPage = arrayPages.filter( (p)=> {
             if (p.pathRegEx) {
                 return p.pathRegEx.test(url);
@@ -75,9 +81,9 @@ var newUrl = function(requestedUrl){
         if (page.needsLogin === undefined){
             return requestedUrl;
         }
+        console.log('we are logged in?', user);
         if (!page.needsLogin) {
-            if (typeof user === 'object' && !page.public) {
-
+            if (UserStore.isLoggedIn() && !page.public) {
                 var params = urlParams();
                 if (params.redirect){
                     window.location = window.decodeURIComponent(params.redirect);

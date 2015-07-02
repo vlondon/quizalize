@@ -1,16 +1,34 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-var AppConstants = require('createQuizApp/constants/AppConstants');
-var AppActions = require('createQuizApp/actions/AppActions');
-var TopicStore = require('createQuizApp/stores/TopicStore');
-// var AnalyticsConstants = require('createQuizApp/constants/AnalyticsConstants');
-
+/* @flow */
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var AppConstants = require('./../constants/AppConstants');
+var AppActions = require('./../actions/AppActions');
+var TopicStore = require('./../stores/TopicStore');
+
+type AppMeta = {
+    code: string;
+    colour: string;
+    created: number;
+    description: string;
+    iconURL: string;
+    name: string;
+    price: string;
+    profileId: string;
+    quizzes: string;
+    updated: number;
+}
+
+type App = {
+    uuid: string;
+    meta: AppMeta;
+}
+
 var CHANGE_EVENT = 'change';
 
-var _publicApps;
-var _apps = [];
+var _publicApps: ?Array<App>;
+var _apps: Array<App> = [];
 var _appInfo = {};
 
 var storeInit = false;
@@ -27,7 +45,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
     getAppInfo: function(appId){
         if (_appInfo[appId] === undefined){
-            console.log('loading app');
             AppActions.loadApp(appId);
             _appInfo[appId] = {};
         }
