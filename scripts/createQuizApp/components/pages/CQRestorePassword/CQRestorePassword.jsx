@@ -44,9 +44,9 @@ var CQRestorePassword = React.createClass({
 
     render: function() {
         return (
-            <CQPageTemplate className=" cq-login">
+            <CQPageTemplate className="cq-login">
 
-                <div className="cq-login__iner">
+                <div className="cq-login__inner">
                     <h2 id="title" className="cq-login__header">Password Reset</h2>
                         <CQLoginForm
                             showPasswordField={true}

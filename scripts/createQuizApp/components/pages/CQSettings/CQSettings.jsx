@@ -81,7 +81,7 @@ var CQSettings = React.createClass({
                     </div>
 
                     <div className="cq-settings__profile-item form-group">
-                       <label htmlFor="url">URL</label>
+                       <label htmlFor="url">School Website</label>
                        <input type="url" id="url"
                            className="form-control"
                            onChange={this.handleChange.bind(this, 'url')}
