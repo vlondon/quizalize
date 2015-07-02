@@ -1,10 +1,11 @@
+/* @flow */
 var router              = require('./router');
 var pages               = require('./routes');
-var settings            = require('createQuizApp/config/settings');
-var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
+var settings            = require('./settings');
+var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
-var UserStore           = require('createQuizApp/stores/UserStore');
-var urlParams           = require('createQuizApp/utils/urlParams');
+var UserStore           = require('./../stores/UserStore');
+var urlParams           = require('./../utils/urlParams');
 
 var user = null;
 var routerReady = false;

@@ -1,24 +1,25 @@
-var React           = require('react');
+/* @flow */
+var React               = require('react');
 // var settings        = require('utils/settings');
 
-var CQPublic            = require('createQuizApp/components/pages/CQPublic');
-var CQProfile           = require('createQuizApp/components/pages/CQProfile');
-var CQNotFound          = require('createQuizApp/components/pages/CQNotFound');
-var CQLogin             = require('createQuizApp/components/pages/CQLogin');
-var CQRegister          = require('createQuizApp/components/pages/CQRegister');
-var CQRecoverPassword   = require('createQuizApp/components/pages/CQRecoverPassword');
-var CQRestorePassword   = require('createQuizApp/components/pages/CQRestorePassword');
-var CQRedirect          = require('createQuizApp/components/pages/CQRedirect');
-var CQQuizzes           = require('createQuizApp/components/pages/CQQuizzes');
-var CQCreate            = require('createQuizApp/components/pages/CQCreate');
-var CQReview            = require('createQuizApp/components/pages/CQReview');
-var CQEdit              = require('createQuizApp/components/pages/CQEdit');
-var CQAssignments       = require('createQuizApp/components/pages/CQAssignments');
-var CQPublished         = require('createQuizApp/components/pages/CQPublished');
-var CQPublishedInfo     = require('createQuizApp/components/pages/CQPublishedInfo');
-var CQSettings          = require('createQuizApp/components/pages/CQSettings');
-var CQApp               = require('createQuizApp/components/pages/CQApp');
-var CQYourApps          = require('createQuizApp/components/pages/CQYourApps');
+var CQPublic            = require('./../components/pages/CQPublic');
+var CQProfile           = require('./../components/pages/CQProfile');
+var CQNotFound          = require('./../components/pages/CQNotFound');
+var CQLogin             = require('./../components/pages/CQLogin');
+var CQRegister          = require('./../components/pages/CQRegister');
+var CQRecoverPassword   = require('./../components/pages/CQRecoverPassword');
+var CQRestorePassword   = require('./../components/pages/CQRestorePassword');
+var CQRedirect          = require('./../components/pages/CQRedirect');
+var CQQuizzes           = require('./../components/pages/CQQuizzes');
+var CQCreate            = require('./../components/pages/CQCreate');
+var CQReview            = require('./../components/pages/CQReview');
+var CQEdit              = require('./../components/pages/CQEdit');
+var CQAssignments       = require('./../components/pages/CQAssignments');
+var CQPublished         = require('./../components/pages/CQPublished');
+var CQPublishedInfo     = require('./../components/pages/CQPublishedInfo');
+var CQSettings          = require('./../components/pages/CQSettings');
+var CQApp               = require('./../components/pages/CQApp');
+var CQYourApps          = require('./../components/pages/CQYourApps');
 
 var pages = {
     pathParams: {
@@ -55,7 +56,7 @@ var pages = {
     ownProfilePage: {
         path: '/quiz/user',
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQProfile, props),
                 document.getElementById('reactApp')
@@ -67,7 +68,7 @@ var pages = {
         path: '/quiz/user/:profileId',
         pathRegEx: /\/quiz\/user\/([\w\-]+)/,
         needsLogin: undefined,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQProfile, props),
                 document.getElementById('reactApp')
@@ -79,7 +80,7 @@ var pages = {
         path: '/quiz/user/:profileId/:quizCode',
         pathRegEx: /\/quiz\/\/user\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: undefined,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQProfile, props),
                 document.getElementById('reactApp')
@@ -153,7 +154,7 @@ var pages = {
         path: '/quiz/reset/:code',
         pathRegEx: /\/quiz\/reset\/([\w\-]+)/,
         needsLogin: false,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQRestorePassword, props),
                 document.getElementById('reactApp')
@@ -188,7 +189,7 @@ var pages = {
         path: '/quiz/apps/:appId',
         pathRegEx: /\/quiz\/apps\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQYourApps, props),
                 document.getElementById('reactApp')
@@ -210,7 +211,7 @@ var pages = {
         path: '/quiz/playh/:redirectURL',
         pathRegEx: /\/quiz\/playh\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQRedirect, props),
                 document.getElementById('reactApp')
@@ -243,7 +244,7 @@ var pages = {
         path: '/quiz/edit/:quizId',
         pathRegEx: /\/quiz\/edit\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQCreate, props),
                 document.getElementById('reactApp')
@@ -255,7 +256,7 @@ var pages = {
         path: '/quiz/review/:quizId',
         pathRegEx: /\/quiz\/review\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQReview, props),
                 document.getElementById('reactApp')
@@ -268,7 +269,7 @@ var pages = {
         path: '/quiz/create/:quizId',
         pathRegEx: /\/quiz\/create\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQEdit, props),
                 document.getElementById('reactApp')
@@ -280,7 +281,7 @@ var pages = {
         path: '/quiz/create/:quizId/:questionIndex',
         pathRegEx: /\/quiz\/create\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQEdit, props),
                 document.getElementById('reactApp')
@@ -303,7 +304,7 @@ var pages = {
         path: '/quiz/published/:quizId',
         pathRegEx: /\/quiz\/published\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQPublished, props),
                 document.getElementById('reactApp')
@@ -315,7 +316,7 @@ var pages = {
         path: '/quiz/published/:quizId/assign',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             props.assign = true;
             React.render(
                 React.createElement(CQPublished, props),
@@ -328,7 +329,7 @@ var pages = {
         path: '/quiz/published/:quizId/publish',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             props.publish = true;
             React.render(
                 React.createElement(CQPublished, props),
@@ -342,7 +343,7 @@ var pages = {
         path: '/quiz/published/:quizId/:classCode/info',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/([\w\-]+)\/info/,
         needsLogin: true,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQPublishedInfo, props),
                 document.getElementById('reactApp')
@@ -354,7 +355,7 @@ var pages = {
         path: '/quiz/app/:appId',
         pathRegEx: /\/quiz\/app\/([\w\-]+)/,
         needsLogin: undefined,
-        renderer: function(props){
+        renderer: function(props: Object){
             React.render(
                 React.createElement(CQApp, props),
                 document.getElementById('reactApp')

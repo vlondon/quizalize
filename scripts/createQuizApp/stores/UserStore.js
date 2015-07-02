@@ -1,14 +1,15 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-var UserConstants = require('createQuizApp/constants/UserConstants');
-var UserActions = require('createQuizApp/actions/UserActions');
+/* @flow */
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var UserConstants = require('./../constants/UserConstants');
+var UserActions = require('./../actions/UserActions');
 
 
 var CHANGE_EVENT = 'change';
 
 var storeInit = false;
-var _user;
+var _user: Object = {};
 var _users = {};
 
 var UserStore = assign({}, EventEmitter.prototype, {
@@ -28,10 +29,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return user;
     },
 
-    isAdmin: function(){
+    isAdmin: function(): number {
         console.log('_user', _user);
         var admins = ['Quizalize Team', 'BlaiZzish', 'Zzish', 'FrancescoZzish', 'SamirZish', 'CharlesZzish'];
-        return admins.indexOf(_user.name) !== -1;
+        return admins.indexOf(_user.name);
     },
 
 
@@ -81,7 +82,7 @@ AppDispatcher.register(function(action) {
         //
         case UserConstants.USER_IS_NOT_LOGGED:
         case UserConstants.USER_LOGOUT:
-            _user = false;
+            _user = {};
             UserStore.emitChange();
             break;
         //

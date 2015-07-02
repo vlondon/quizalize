@@ -1,11 +1,10 @@
 /* @flow */
 var React = require('react');
 
-var UserStore = require('../../../stores/UserStore');
-
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQYourAppsComingSoon = require('createQuizApp/components/pages/CQYourApps/CQYourAppsComingSoon');
-var CQYourAppsCreate = require('createQuizApp/components/pages/CQYourApps/CQYourAppsCreate');
+var UserStore               = require('../../../stores/UserStore');
+var CQPageTemplate          = require('../../CQPageTemplate');
+var CQYourAppsComingSoon    = require('./CQYourAppsComingSoon');
+var CQYourAppsCreate        = require('./CQYourAppsCreate');
 
 var CQYourApps = React.createClass({
 
