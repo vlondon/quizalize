@@ -24,7 +24,7 @@ exports.sendActualEmail =function(from, toArray, subject, html, text) {
 		var ses = new awssdk.SES();
 
 		var dest = { ToAddresses: toArray };
-		dest.BccAddresses = ['quizalize@zzish.com'];
+		dest.BccAddresses = ['team@quizalize.com'];
 		// if (process.env.vini === "true") {
 		// 	logger.info("Sending to Vini");
 		// 	dest.BccAddresses =  ['vini@zzish.com','team@'];
