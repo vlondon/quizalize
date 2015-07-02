@@ -175,10 +175,6 @@ var CQViewCreateApp = React.createClass({
                         selectMode={true}
                         sortOptions={false}
                     />
-                    <div className="cq-viewcreateapp__counter">
-
-                        n. of selected Quizzes <b>{this.state.selectedQuizzes.length}</b>
-                    </div>
 
                     <button className="btn btn-default" onClick={this.handleSave}>
                         Save

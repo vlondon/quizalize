@@ -4,7 +4,7 @@ var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 var AppConstants        = require('createQuizApp/constants/AppConstants');
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
-
+var router              = require('createQuizApp/config/router');
 var debounce            = require('createQuizApp/utils/debounce');
 
 var AppActions = {
@@ -51,6 +51,7 @@ var AppActions = {
                             actionType: AppConstants.APP_CREATED,
                             payload: app
                         });
+                        router.setRoute(`/quiz/apps`);
                     })
                     .catch(reject);
             });

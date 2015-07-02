@@ -50,10 +50,6 @@ var CQYourAppsCreate = React.createClass({
                 </CQLink>
 
                 {create}
-                <CQViewAppGrid
-                    onClick={this.handleApp}
-                    editMode={true}
-                    apps={this.state.apps}/>
 
             </div>
         );

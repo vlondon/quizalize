@@ -95,7 +95,9 @@ var CQViewCreateAppTemplate = React.createClass({
                         <div className="cq-app__description">
                             <p>{this.state.appInfo.meta.description}</p>
                         </div>
-
+                        <div className="cq-viewcreateapp__counter">
+                            Number of Quizzes <b>{this.state.quizzes ? this.state.quizzes.length: 0}</b>
+                        </div>
                         <div className="cq-app__quizlist">
                             <CQViewQuizList
                                 isQuizInteractive={true}

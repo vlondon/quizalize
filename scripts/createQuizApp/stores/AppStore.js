@@ -65,6 +65,12 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
+        case AppConstants.APP_CREATED:
+            _apps.push(action.payload);
+            AppStore.emitChange();
+            break;
+
+
         case AppConstants.APP_LIST_LOADED:
             _apps = action.payload;
             AppStore.emitChange();
