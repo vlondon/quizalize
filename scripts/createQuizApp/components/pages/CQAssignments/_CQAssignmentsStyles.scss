@@ -4,6 +4,15 @@
     }
 
     &__class {
+        background: $brand-color-grey-lighter;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+
+        &__name {
+            margin: 0;
+            padding: 0;
+        }
 
         &__code {
             color: #2A7ED0;
@@ -13,7 +22,7 @@
         &__assignment {
             @include clearfix();
             &__name {
-                width: 40%;
+                width: 45%;
                 float: left;
             }
             &__topic {
@@ -24,6 +33,7 @@
             &__unassign {
                 width: 15%;
                 float: left;
+                text-align: right;
             }
 
         }
