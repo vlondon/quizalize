@@ -32,6 +32,7 @@ var CQQuestionList = React.createClass({
 
     handleSave: function(){
         this.props.handleSave();
+        this.setState({canAddQuestion: false});
     },
 
     handleQuestion: function(question){
@@ -123,7 +124,10 @@ var CQQuestionList = React.createClass({
                 {newQuestionEditor}
                 <div className='new-question-cta'>
 
-                    <button type='button' className="btn btn-default cq-questionlist__button" disabled={!this.state.canAddQuestion} onClick={this.handleSave}>
+                    <button type='button'
+                        className="btn btn-default cq-questionlist__button"
+                        disabled={!this.state.canAddQuestion}
+                        onClick={this.handleSave}>
                         <span className="glyphicon glyphicon-plus"></span> Add a new question
                     </button>
 
