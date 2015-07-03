@@ -80,8 +80,8 @@ var CQViewQuizList = React.createClass({
 
         props = props || this.props;
 
-        console.log('TopicStore', TopicStore.getAllTopics().length);
-        if (TopicStore.getAllTopics().length === 0){
+        console.log('TopicStore', TopicStore.getTopicTree().length);
+        if (TopicStore.getTopicTree().length === 0){
             return {quizzes: []};
         }
 

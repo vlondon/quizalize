@@ -2,7 +2,7 @@
 
 var router              = require('./router');
 var pages               = require('./routes').pages;
-var pagesArray               = require('./routes').pagesArray;
+var pagesArray          = require('./routes').pagesArray;
 var settings            = require('./settings');
 var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
