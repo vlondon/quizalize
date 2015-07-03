@@ -1,0 +1,17 @@
+<p>Hey %name%!</p>
+
+<p>Congratulations! You have published your first quiz!</p>
+
+<p>Your quiz %quiz% has been approved and is now available on the Quizalize Marketplace!</p>
+
+<p>You now have a public profile, which contains all of your published quizzes.</p>
+
+<p>Share it with your colleagues so they can easily access your amazing work.</p>
+
+<a href="%profilelink%">Your profile</a>
+
+<p>Best wishes,</p>
+
+<p>The Quizalize Team</p>
+
+<p>www.quizalize.com</p>

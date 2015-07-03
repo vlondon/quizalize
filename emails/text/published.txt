@@ -1,0 +1,11 @@
+Hi %name%
+
+Your quiz %quiz% has been approved and is now available on the Quizalize Marketplace.
+
+Check it out on your profile: %profilelink%
+
+Best wishes,
+
+The Quizalize Team
+
+www.quizalize.com
