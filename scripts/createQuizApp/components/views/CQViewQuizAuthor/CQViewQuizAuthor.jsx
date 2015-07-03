@@ -19,7 +19,7 @@ var CQViewQuizAuthor = React.createClass({
 
     render: function() {
 
-        var name = this.props.author.name.length !== 0 ? this.props.author.name : 'Quizalize user';
+        var name = (this.props.author !== null && this.props.author.name.length !== 0) ? this.props.author.name : 'Quizalize user';
 
         return (
             <span className="cq-viewquizlist__quizauthor">
