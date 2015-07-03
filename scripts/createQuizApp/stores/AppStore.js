@@ -1,27 +1,32 @@
 /* @flow */
 import Store from './Store';
-
+import UserStore from './UserStore';
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var AppConstants = require('./../constants/AppConstants');
 var AppActions = require('./../actions/AppActions');
 
 
 type AppMeta = {
-    code: string;
+    code?: string;
     colour: string;
     created: number;
     description: string;
-    iconURL: string;
+    iconURL: ?string;
     name: string;
-    price: string;
+    price: number;
     profileId: string;
     quizzes: string;
     updated: number;
 }
 
+type AppPayload = {
+    quizzes: Array<string>;
+}
+
 export type App = {
-    uuid: string;
+    uuid?: string;
     meta: AppMeta;
+    payload?: AppPayload;
 }
 
 
@@ -31,6 +36,27 @@ var _appInfo = {};
 
 var storeInit = false;
 var storeInitPublic = false;
+
+
+var AppObject = function():App{
+    var app = {
+        meta: {
+            colour: '#a204c3',
+            created: Date.now(),
+            description: '',
+            iconURL: undefined,
+            name: '',
+            price: 0,
+            profileId: UserStore.getUser().uuid,
+            quizzes: '',
+            updated: Date.now()
+        },
+        payload: undefined
+
+    };
+
+    return app;
+};
 
 class AppStore extends Store {
 
@@ -53,6 +79,10 @@ class AppStore extends Store {
             _appInfo[appId] = {};
         }
         return _appInfo[appId];
+    }
+
+    getNewApp():App{
+        return new AppObject();
     }
 
 

@@ -5,6 +5,7 @@ import assign from 'object-assign';
 import AppActions from './../../../actions/AppActions';
 import QuizStore from './../../../stores/QuizStore';
 import AppStore from './../../../stores/AppStore';
+import type {App} from './../../../stores/AppStore';
 import TopicStore from './../../../stores/TopicStore';
 import CQViewAppColourPicker from './../../../components/views/CQViewAppColourPicker';
 
@@ -20,7 +21,7 @@ type Props = {
     appId: string;
 }
 type State = {
-    app: Object;
+    app: App;
     quizzes: Array<Object>;
     selectedQuizzes: Array<Object>;
     prices?: Array<number>;
@@ -64,19 +65,9 @@ export default class CQViewCreateApp extends React.Component {
     _getApp(props?: Props){
         props = props || this.props;
         var app = AppStore.getAppById(props.appId);
+        // if it's the first time we create an app
         if (app === undefined) {
-            app = {
-                meta: {
-                    name: undefined,
-                    description: undefined,
-                    iconURL: undefined,
-                    price: 0
-                },
-                payload: {
-                    quizzes: [],
-                    categories: []
-                }
-            };
+            app = AppStore.getNewApp();
         }
         return app;
     }
