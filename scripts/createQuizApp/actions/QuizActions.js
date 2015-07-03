@@ -236,6 +236,8 @@ var QuizActions = {
 
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.meta.categoryId = addOrCreateCategory();
+            // we filter questions with no content
+            quiz.payload.questions = quiz.payload.questions.filter( q => q.question.length > 0 && q.answer.length > 0);
 
             quiz = createNewTopicsForQuiz(quiz);
 

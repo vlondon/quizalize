@@ -69,13 +69,12 @@ var CQEdit = React.createClass({
             if (props.questionIndex) {
                 newState.questionIndex = parseInt(props.questionIndex, 10);
             } else {
-                // newState.questionIndex = newState.quiz.questions.length;
-                // newState.questionIndex = this.state.questionIndex;
+                newState.questionIndex = undefined;
             }
 
             // Check if the questionIndex is in range
             if (newState.questionIndex > newState.quiz.payload.questions.length){
-
+                console.warn('Trying to edit a question out of range');
                 setTimeout(function(){
                     router.setRoute(`/quiz/create/${newState.quiz.uuid}`);
                 }, 550);
@@ -136,6 +135,7 @@ var CQEdit = React.createClass({
 
     handleSaveButton: function(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
             this.setState({pristine: true});
         });
     },
@@ -212,7 +212,7 @@ var CQEdit = React.createClass({
                     </div>
 
                 </CQPageTemplate>
-                );
+            );
         } else {
             // add a loading animation
             return (<div>Loading</div>);
