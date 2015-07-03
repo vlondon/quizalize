@@ -1,17 +1,48 @@
-var AppDispatcher   = require('createQuizApp/dispatcher/CQDispatcher');
-var QuizConstants   = require('createQuizApp/constants/QuizConstants');
-var TransactionConstants   = require('createQuizApp/constants/TransactionConstants');
-var QuizActions     = require('createQuizApp/actions/QuizActions');
-var TopicStore      = require('createQuizApp/stores/TopicStore');
+
+/* @flow */
 var EventEmitter    = require('events').EventEmitter;
 var assign          = require('object-assign');
 var uuid            = require('node-uuid');
-var UserStore = require('createQuizApp/stores/UserStore');
 
+var AppDispatcher   = require('./../dispatcher/CQDispatcher');
+var QuizConstants   = require('./../constants/QuizConstants');
+var TopicConstants  = require('./../constants/TopicConstants');
+var QuizActions     = require('./../actions/QuizActions');
+var TopicStore      = require('./../stores/TopicStore');
+var TransactionConstants   = require('./../constants/TransactionConstants');
+var UserStore = require('./../stores/UserStore');
+
+type QuizCategory = {
+    name: string;
+    title: string;
+}
+type QuizMeta = {
+    authorId: string;
+    categoryId: string;
+    code: string;
+    created: number;
+    imageUrl: ?string;
+    name: string;
+    originalQuizId: ?string;
+    profileId: string;
+    random: boolean;
+    subject: ?string;
+    updated: number;
+};
+
+export type Quiz = {
+    uuid: string;
+    meta: QuizMeta;
+    _category: QuizCategory;
+
+}
 
 var CHANGE_EVENT = 'change';
 
+
 var _quizzes = [];
+var _quizzes: Array<Quiz> = [];
+
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var storeInit = false;
@@ -45,6 +76,7 @@ var QuizStore = assign({}, EventEmitter.prototype, {
     getQuizMeta: function(quizId) {
         var result = _quizzes.filter(t => t.uuid === quizId);
         return result.length === 1 ? result.slice()[0] : _fullQuizzes[quizId];
+
     },
 
     getQuiz: function(quizId){

@@ -1,11 +1,10 @@
 var React = require('react');
 var router = require('createQuizApp/config/router');
+
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
 var CQViewHeaderDropdown = require('./CQViewHeaderDropdown');
-
 var UserStore = require('createQuizApp/stores/UserStore');
-var UserActions = require('createQuizApp/actions/UserActions');
 
 
 var sections = {
@@ -49,7 +48,7 @@ var CQViewHeader = React.createClass({
     },
 
     getState: function(){
-        var isLoggedIn = UserStore.getUser() !== false;
+        var isLoggedIn = UserStore.getUser().uuid !== undefined;
         return {
             isLoggedIn
         };
@@ -90,8 +89,7 @@ var CQViewHeader = React.createClass({
                 </li>
             ));
 
-            loginButton = (
-                <CQViewHeaderDropdown/>);
+            loginButton = <CQViewHeaderDropdown/>;
         } else {
             loginButton = (
                 <li>
@@ -111,21 +109,20 @@ var CQViewHeader = React.createClass({
                             {this.state.user}
                         </CQLink>
                     </div>
-                    <div className="navbar-collapse collapse" id="navbar">
-                        <ul className="nav navbar-nav navbar-right">
+                    <ul className="cq-header__buttons">
 
-                            {buttons}
+                        <li id="cq-publicQuizzes">
+                            <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
+                                <div className="fa fa-tags"></div> Marketplace
+                            </CQLink>
+                        </li>
+                        {buttons}
 
-                            <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
-                                    <div className="fa fa-tags"></div> Marketplace
-                                </CQLink>
-                            </li>
 
-                            {loginButton}
+                        {loginButton}
 
-                        </ul>
-                    </div>
+                    </ul>
+
                 </div>
                 <CQAnalytics/>
             </nav>

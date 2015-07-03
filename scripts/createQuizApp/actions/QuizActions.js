@@ -1,14 +1,18 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var QuizConstants       = require('createQuizApp/constants/QuizConstants');
-var QuizApi             = require('createQuizApp/actions/api/QuizApi');
+/* @flow */
+import type Quiz from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
-var TopicStore          = require('createQuizApp/stores/TopicStore');
-var TopicActions        = require('createQuizApp/actions/TopicActions');
-var router                  = require('createQuizApp/config/router');
 var uuid                = require('node-uuid');
-var UserStore           = require('createQuizApp/stores/UserStore');
 
-var debounce            = require('createQuizApp/utils/debounce');
+
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var QuizConstants       = require('./../constants/QuizConstants');
+var QuizApi             = require('./../actions/api/QuizApi');
+var TopicStore          = require('./../stores/TopicStore');
+var TopicActions        = require('./../actions/TopicActions');
+var router              = require('./../config/router');
+var UserStore           = require('./../stores/UserStore');
+
+var debounce            = require('./../utils/debounce');
 
 
 var createNewTopicsForQuiz = function(quiz){
@@ -61,7 +65,7 @@ var QuizActions = {
     },
 
 
-    loadQuiz: function(quizId){
+    loadQuiz: function(quizId:string){
 
         var quizPromise = QuizApi.getQuiz(quizId);
 
@@ -77,7 +81,7 @@ var QuizActions = {
     },
 
 
-    saveReview: function(purchased){
+    saveReview: function(purchased:Quiz){
 
         return new Promise(function(resolve, reject){
 
@@ -101,7 +105,7 @@ var QuizActions = {
         });
     },
 
-    deleteQuiz: function(quizId){
+    deleteQuiz: function(quizId:string){
         QuizApi.deleteQuiz(quizId)
             .then(function(){
 
@@ -127,6 +131,7 @@ var QuizActions = {
     }, 300),
 
 
+
     getPublicQuizzesForProfile: function(profileId){
 
         return new Promise(function(resolve, reject){
@@ -142,7 +147,9 @@ var QuizActions = {
         });
     },
 
-    newQuiz: function(quiz){
+
+    newQuiz: function(quiz:Quiz){
+
 
         var addOrCreateCategory = function(){
             var topicUuid;
@@ -199,13 +206,13 @@ var QuizActions = {
 
     },
 
-    shareQuiz: function(quizId, quizName, emails, link){
+    shareQuiz: function(quizId:string, quizName:string, emails:string, link:string){
         var user = UserStore.getUser();
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
         var tokensComma = emails.split(',');
 
-        var data = {
+        var data: {email: string; quiz: string; emails?: Array<string>; link?: string } = {
             email: user.name,
             quiz: quizName
         };
@@ -231,7 +238,7 @@ var QuizActions = {
 
 
 
-    publishQuiz: function(quiz, settings) {
+    publishQuiz: function(quiz:Quiz, settings:Object) {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
         QuizApi.publishQuiz(quiz);

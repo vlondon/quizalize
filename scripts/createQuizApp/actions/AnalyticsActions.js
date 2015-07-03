@@ -1,6 +1,8 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var AnalyticsConstants  = require('createQuizApp/constants/AnalyticsConstants');
+/* @flow */
 var Promise             = require('es6-promise').Promise;
+
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var AnalyticsConstants  = require('./../constants/AnalyticsConstants');
 
 var AnalyticsActions = {
 
@@ -12,7 +14,7 @@ var AnalyticsActions = {
         }
     },
 
-    sendEvent: function(category, action, label){
+    sendEvent: function(category: string, action: string, label: string){
 
         if (window.ga){
             window.ga('send', 'event', category, action, label);
@@ -47,6 +49,7 @@ var AnalyticsActions = {
 
     googleConversion: function(){
         /*eslint-disable */
+        var filename = 'http://www.googleadservices.com/pagead/conversion.js';
         window.google_conversion_id = 1034680765;
 		window.google_conversion_language = "en";
 		window.google_conversion_format = "3";

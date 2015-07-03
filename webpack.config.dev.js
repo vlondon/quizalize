@@ -12,7 +12,7 @@ module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        cqApp: 'createQuizApp/CQApp.js',
+        cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [
@@ -51,7 +51,9 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
-            }
+            },
+            { test: /\.png$/, loader: "url-loader?limit=100000" },
+            { test: /\.jpg$/, loader: "url-loader" }
         ]
     },
     resolve: {

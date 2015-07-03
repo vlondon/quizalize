@@ -61,7 +61,7 @@ var CQHeaderDropdown = React.createClass({
         return (
             <li>
                 <div className="navbar-dropdown" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-                    Hi {this.state.user.name}! <i className="fa fa-caret-down"></i>
+                    Hi {this.state.user && this.state.user.name}! <i className="fa fa-caret-down"></i>
                     {dropdown}
                 </div>
             </li>

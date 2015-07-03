@@ -1,7 +1,14 @@
+/* @flow */
 var React = require('react');
 var assign = require('object-assign');
-var CQZzishLogin = require('./CQZzishLogin');
 
+
+type State = {
+    email: string;
+    password: string;
+    isReady: boolean;
+    buttonLabel: string;
+}
 var CQLoginForm = React.createClass({
 
     propTypes: {
@@ -9,10 +16,11 @@ var CQLoginForm = React.createClass({
         showPasswordField: React.PropTypes.bool,
         showEmailField: React.PropTypes.bool,
         enabled: React.PropTypes.bool,
-        buttonLabel: React.PropTypes.string
+        buttonLabel: React.PropTypes.string,
+        children: React.PropTypes.element
     },
 
-    getDefaultProps: function() {
+    getDefaultProps: function():Object {
         return {
             onSubmit: function(){},
             buttonLabel: 'Log In',
@@ -22,23 +30,22 @@ var CQLoginForm = React.createClass({
         };
     },
 
-    getInitialState: function() {
+    getInitialState: function():State {
         return {
             email: '',
             password: '',
             isReady: false,
-            buttonLabel: this.props.buttonLabel
+            buttonLabel: this.props.buttonLabel || ''
         };
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function(nextProps:Object) {
         if (nextProps.enabled === true) {
-            this.setState({buttonLabel: nextProps.buttonLable});
+            this.setState({buttonLabel: nextProps.buttonLabel});
         }
     },
 
-
-    handleChange: function(property, event) {
+    handleChange: function(property: string, event: Object) {
 
         var newState = assign({}, this.state);
         newState[property] = event.target.value;
@@ -57,9 +64,9 @@ var CQLoginForm = React.createClass({
 
 
 
-    handleSubmit: function(e){
+    handleSubmit: function(e: Object){
         e.preventDefault();
-        if (this.state.isReady){
+        if (this.state.isReady && this.props.onSubmit){
             this.props.onSubmit({
                 email: this.state.email,
                 password: this.state.password
@@ -71,14 +78,15 @@ var CQLoginForm = React.createClass({
     },
 
 
-    render: function() {
+    render: function():Object {
 
         var passwordField, emailField;
 
         if (this.props.showPasswordField){
-            passwordField = (<span id="passwordSpan">
-                <label className="control-label col-sm-3">Password</label>
-                <div className="col-sm-9">
+            passwordField = (
+            <div id="passwordSpan" className="cq-login__password">
+                <label className="cq-login__password__label control-label ">Password</label>
+                <div className="cq-login__password__input">
                     <input id="password"
                         type="password"
                         value={this.state.password}
@@ -88,70 +96,54 @@ var CQLoginForm = React.createClass({
                     <br/>
 
                 </div>
-            </span>);
+            </div>);
         }
 
         if (this.props.showEmailField){
             emailField = (
-                <span>
-                    <label className="col-sm-3 control-label">Email:</label>
-                    <div className="col-sm-9">
-                    <input id="email" type="email"
-                        on-enter="login.focusPassword();"
-                        value={this.state.email}
-                        onChange={this.handleChange.bind(this, 'email')}
-                        placeholder="e.g. abc@zzish.com"
-                        autofocus="true"
-                        className="form-control ng-pristine ng-valid"/>
+                <div className="cq-login__email">
+                    <label className="cq-login__email__label control-label">Email:</label>
+                    <div className="cq-login__email__input">
+                        <input id="email" type="email"
+                            on-enter="login.focusPassword();"
+                            value={this.state.email}
+                            onChange={this.handleChange.bind(this, 'email')}
+                            placeholder="e.g. abc@zzish.com"
+                            autofocus="true"
+                            className="form-control ng-pristine ng-valid"/>
 
-                    <br/>
-                </div>
-            </span>);
+
+                    </div>
+            </div>);
         }
         return (
             <form role="form" className="form-horizontal" onSubmit={this.handleSubmit}>
-                <div className="form-group">
 
+                {emailField}
+                {passwordField}
 
-                    {emailField}
-                    {passwordField}
+                <div className="cq-login__cta">
 
-                    <div className="col-sm-8">
+                    <div className="cq-login__extra">
                         {this.props.children}
                     </div>
-                    <div className="col-sm-4">
-                        <button ng-click="login.login();"
+                    <div className="cq-login__button">
+                        <button
                             disabled={!this.state.isReady || !this.props.enabled}
                             type='submit'
                             className="btn btn-primary btn-block">
 
                             <span>{this.props.buttonLabel}</span>
-
                         </button>
 
                     </div>
-
-
-                    <div className="col-xs-12">
-                        <br/>
-                        <hr/>
-                    </div>
-                    <div className="col-sm-4 col-sm-offset-4">
-                        <center>
-                            <strong>or</strong>
-                            <br/>
-                            <br/>
-                            <CQZzishLogin/>
-
-                        </center>
-                    </div>
-                    <div className="col-xs-8 col-xs-offset-2">
-                        <br/>
-                        <center>
-                            <p>Zzish is a universal teacher dashboard and unified login system for educational software</p>
-                        </center>
-                    </div>
                 </div>
+
+
+
+
+
+
             </form>
         );
     }

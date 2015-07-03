@@ -5,13 +5,14 @@ var Promise = require('es6-promise').Promise;
 var QuizApi = {
 
     getQuizzes: function(){
-        console.trace('getting quizzes');
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
+            console.trace('getting quizzes', uuid);
 
             if (!uuid) {
                 reject();
             } else {
+                console.log('we are loading');
                 request.get(`/create/${uuid}/quizzes/`)
                     .use(noCache)
                     .end(function(error, res){

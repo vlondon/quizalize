@@ -1,7 +1,30 @@
-body {
-    background: #FFF;
+body.quizalize {
+    /* background: #FFF; */
+    background-image: linear-gradient(#62B4C2, #F2F6E3);
+    background-image: url(./../../assets/bg-mountain.jpg);
+    background-size: cover;
+
+    background-position: 70% center;
+    background-attachment: fixed;
+
+    &__appmode {
+        background-image: none;
+    }
 }
+
 
 .cq {
     margin-bottom: 20px;
+}
+
+.cq-container {
+    min-width: 980px;
+    max-width: 1170px;
+    margin: auto;
+    padding: 10px;
+    background: #FFF;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding-top: 10px;
+    min-height: 400px;
 }

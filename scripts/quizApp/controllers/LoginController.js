@@ -8,7 +8,7 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
         $('#classcode').focus();
     }
 
-    self.checkCanSubmit = function() {                
+    self.checkCanSubmit = function() {
         return self.name=='' || self.classcode=='';
     }
 
@@ -17,15 +17,18 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
     }
 
     self.login = function() {
-        QuizData.loginUser(self.name,self.classcode,function(err,resp) {
+        QuizData.loginUser(self.name, self.classcode, function(err,resp) {
             if (!err) {
+                if (window.ga){
+                    window.ga('send', 'event', 'class', 'play', self.classcode);
+                }
                 $location.path("/list");
                 goToLoggedIn();
             }
             else {
-                QuizData.showMessage("Login Error","Can you check that you entered everything correct");
+                QuizData.showMessage("Login Error", "Can you check that you entered everything correct");
             }
-        })
+        });
     }
 
     if (QuizData.isLoggedIn()) {

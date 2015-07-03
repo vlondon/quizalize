@@ -2,17 +2,18 @@
 @import './../../../../shared/scss/mixins';
 
 .cq-settings {
-    margin-top: 20px;
-    padding: 10px;
     max-width: 600px;
-    background: $brand-color-grey-lighter;
+    min-width: 300px;
 
-
-    @at-root #{&}__save {
+    &__header {
+        @include cq-header();
+    }
+    &__save {
         text-align: center;
     }
 
-    /* @at-root #{&}__profilepicture {
-        text-align: center;
-    } */
+    &__profile {
+        padding: 20px;
+    }
+
 }

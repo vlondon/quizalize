@@ -44,31 +44,29 @@ var CQRestorePassword = React.createClass({
 
     render: function() {
         return (
-            <CQPageTemplate className="container cq-login">
-                <div className="row">
-                    <div className="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-                        <div className="well">
-                            <h2 id="title" style={{'text-align': 'center'}}>Password Reset</h2>
-                                <CQLoginForm
-                                    showPasswordField={true}
-                                    showEmailField={false}
-                                    onSubmit={this.handleSubmit}
-                                    buttonLabel="Reset Password">
+            <CQPageTemplate className="cq-login">
 
-                                    <div className="">
-                                        Don't have an account?&nbsp;
-                                        <CQLink href="/quiz/register">Sign Up</CQLink>
-                                    </div>
-                                    <div>
-                                        Already registered?&nbsp;
-                                        <CQLink href="/quiz/login">Log in</CQLink>
-                                    </div>
+                <div className="cq-login__inner">
+                    <h2 id="title" className="cq-login__header">Password Reset</h2>
+                        <CQLoginForm
+                            showPasswordField={true}
+                            showEmailField={false}
+                            onSubmit={this.handleSubmit}
+                            buttonLabel="Reset Password">
+
+                            <div className="">
+                                Don't have an account?&nbsp;
+                                <CQLink href="/quiz/register">Sign Up</CQLink>
+                            </div>
+                            <div>
+                                Already registered?&nbsp;
+                                <CQLink href="/quiz/login">Log in</CQLink>
+                            </div>
 
 
-                                </CQLoginForm>
-                        </div>
-                    </div>
+                        </CQLoginForm>
                 </div>
+
             </CQPageTemplate>
         );
     }

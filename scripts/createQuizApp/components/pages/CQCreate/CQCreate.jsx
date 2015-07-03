@@ -169,7 +169,7 @@ var CQCreate = React.createClass({
         }
 
         return (
-            <CQPageTemplate className="container cq-create">
+            <CQPageTemplate className="cq-container cq-create">
                 <div className="cq-create__body">
 
                     <h2 className="cq-create__header">
