@@ -46,6 +46,7 @@ var CQDashboardProfile = React.createClass({
         var profile;
 
         if (this.state.user){
+            var name = this.state.user.name.length !== 0 ? this.state.user.name : 'Quizalize user';
             profile = (
                 <div>
                     <div className="cq-dashboard__profilepicture">
@@ -53,11 +54,11 @@ var CQDashboardProfile = React.createClass({
                         <CQViewProfilePicture
                             width="200"
                             height="200"
-                            name={this.state.user.name}
+                            name={name}
 
                             picture={this.state.user.avatar}/>
                     </div>
-                    <h3>{this.state.user.name}</h3>
+                    <h3>{name}</h3>
 
                     <div>
                         <small>
