@@ -7,7 +7,7 @@ var fs = require('fs');
 
 exports.pingDevelopers = function(){
 	if (config.webUrl === "https://www.zzish.com/") {
-		exports.sendEmail("team@zzish.com", ["developers@zzish.com"], "Quizalize Restarted", "Please test me");
+		exports.sendEmail("team@quizalize.com", ["developers@zzish.com"], "Quizalize Restarted", "Please test me");
 	}
 };
 
