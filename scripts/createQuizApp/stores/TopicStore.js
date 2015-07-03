@@ -136,7 +136,6 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case TopicConstants.PUBLIC_TOPICS_LOADED:
-            storeInit = true;
             loadPublicTopics(action.payload);
             TopicStore.emitChange();
             break;

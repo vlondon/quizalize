@@ -42,8 +42,6 @@ var CQViewCreateAppTemplate = React.createClass({
                 fixed: false
             });
         }
-        console.log('position', positionTop, this.state);
-
     },
 
     componentWillMount: function() {

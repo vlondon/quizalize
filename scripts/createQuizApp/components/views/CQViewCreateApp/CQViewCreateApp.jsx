@@ -2,6 +2,8 @@ var React = require('react');
 var assign = require('object-assign');
 var AppActions = require('createQuizApp/actions/AppActions');
 var QuizStore = require('createQuizApp/stores/QuizStore');
+var AppStore = require('createQuizApp/stores/AppStore');
+var TopicStore = require('createQuizApp/stores/TopicStore');
 var CQViewAppColourPicker = require('createQuizApp/components/views/CQViewAppColourPicker');
 var appPicture;
 
@@ -14,7 +16,7 @@ var priceFormat = require('createQuizApp/utils/priceFormat');
 var CQViewCreateApp = React.createClass({
 
     propTypes: {
-        selectedQuizzes: React.PropTypes.array
+        appId: React.PropTypes.string
     },
 
     getInitialState: function() {
@@ -23,8 +25,32 @@ var CQViewCreateApp = React.createClass({
             selectedQuizzes: [],
             prices: TransactionStore.getPrices(),
             quizzes: QuizStore.getQuizzes(),
+            canSave: false,
+            app: this._getApp()
+        };
+    },
 
-            app: {
+    componentDidMount: function() {
+        AppStore.addChangeListener(this.onChange);
+        TopicStore.addChangeListener(this.onChange);
+        QuizStore.addChangeListener(this.onChange);
+    },
+
+    componentWillUnmount: function() {
+        AppStore.removeChangeListener(this.onChange);
+        TopicStore.removeChangeListener(this.onChange);
+        QuizStore.removeChangeListener(this.onChange);
+    },
+
+    onChange: function(){
+        this.setState(this.getState());
+    },
+
+    _getApp: function(props){
+        props = props || this.props;
+        var app = AppStore.getAppById(props.appId);
+        if (app === undefined) {
+            app = {
                 meta: {
                     name: undefined,
                     description: undefined,
@@ -35,46 +61,42 @@ var CQViewCreateApp = React.createClass({
                     quizzes: [],
                     categories: []
                 }
-            }
-        };
+            };
+        }
+        return app;
     },
 
-    componentDidMount: function() {
-        QuizStore.addChangeListener(this.onChange);
-    },
-
-    componentWillUnmount: function() {
-        QuizStore.removeChangeListener(this.onChange);
-    },
-
-    onChange: function(){
-        this.setState(this.getState());
-    },
 
 
     getState: function(){
-
+        var app = this.state.app;
+        if (this.props.appId) {
+            app = this._getApp();
+        }
         var quizzes = QuizStore.getQuizzes();
         //var apps = AppStore.getApps();
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
-        return { quizzes };
+        var selectedQuizzes = app.payload.quizzes;
+        return { app, quizzes, selectedQuizzes};
     },
 
     componentWillReceiveProps: function(nextProps) {
         var app = assign({}, this.state.app);
+        if (nextProps.appId) {
+            app = this._getApp();
+        }
 
-        app.payload.quizzes = nextProps.selectedQuizzes;
+        //app.meta.quizzes = nextProps.selectedQuizzes;
+        // var categories = nextProps.selectedQuizzes.map(q => {
+        //     var quizzes = QuizStore.getQuizzes();
+        //     var quiz = quizzes.filter(qu => qu.uuid === q)[0];
+        //     return quiz.meta.categoryId;
+        // });
 
-        var categories = nextProps.selectedQuizzes.map(q => {
-            var quizzes = QuizStore.getQuizzes();
-            var quiz = quizzes.filter(qu => qu.uuid === q)[0];
-            return quiz.meta.categoryId;
-        });
-
-        app.meta.categories = categories.join(',');
-        app.meta.quizzes = app.payload.quizzes.join(',');
+        // app.meta.categories = categories.join(',');
+        // app.meta.quizzes = app.meta.quizzes.join(',');
 
         this.setState({app});
     },
@@ -84,11 +106,17 @@ var CQViewCreateApp = React.createClass({
         var app = assign({}, this.state.app);
         app.meta[field] = event.target.value;
 
-        this.setState({app});
+        var csave = false;
+        if (field === 'name') {
+            csave = event.target.value && event.target.value.length > 0 && this.state.selectedQuizzes && this.state.selectedQuizzes.length > 0;
+        }
+
+        this.setState({app, canSave: csave});
     },
 
     handleSave: function(){
-
+        this.setState({canSave: false});
+        this.state.app.payload.quizzes = this.state.selectedQuizzes;
         AppActions.saveNewApp(this.state.app, appPicture);
     },
     // when a file is passed to the input field, retrieve the contents as a
@@ -99,7 +127,8 @@ var CQViewCreateApp = React.createClass({
     },
 
     handleSelect: function(selectedQuizzes){
-        this.setState({selectedQuizzes});
+        var csave = this.state.app.meta.name && this.state.app.meta.name.length > 0 && selectedQuizzes && selectedQuizzes.length > 0;
+        this.setState({selectedQuizzes, canSave: csave});
     },
 
     render: function() {
@@ -176,7 +205,10 @@ var CQViewCreateApp = React.createClass({
                         sortOptions={false}
                     />
 
-                    <button className="btn btn-default" onClick={this.handleSave}>
+                    <button
+                        className="btn btn-default"
+                        disabled={!this.state.canSave}
+                        onClick={this.handleSave}>
                         Save
                     </button>
                 </div>

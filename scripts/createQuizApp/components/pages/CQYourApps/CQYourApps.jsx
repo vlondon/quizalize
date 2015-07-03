@@ -10,7 +10,8 @@ var CQYourAppsCreate = require('createQuizApp/components/pages/CQYourApps/CQYour
 var CQYourApps = React.createClass({
 
     propTypes: {
-        newApp: React.PropTypes.bool
+        newApp: React.PropTypes.bool,
+        appId: React.PropTypes.string
     },
 
     getInitialState: function() {
@@ -20,13 +21,14 @@ var CQYourApps = React.createClass({
     },
 
     render: function() {
-        var content = this.state.isAdmin ? <CQYourAppsCreate newApp={this.props.newApp}/> : <CQYourAppsComingSoon/>;
+        var showContent = true;
+        var content = showContent ? <CQYourAppsCreate newApp={this.props.newApp} appId={this.props.appId}/> : <CQYourAppsComingSoon/>;
         return (
             <CQPageTemplate className="container cq-yourapps">
                 <h2 className='cq-yourapps__header'>
                     <i className="fa fa-archive"/> Your apps
                 </h2>
-                <CQYourAppsCreate newApp={this.props.newApp}/>
+                {content}
             </CQPageTemplate>
         );
     }

@@ -19,6 +19,11 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return _apps;
     },
 
+    getAppById: function(appId) {
+        var result = _apps.filter(t => t.uuid === appId);
+        return result.length === 1 ? result.slice()[0] : undefined;
+    },
+
     getPublicApps: function() {
         return _publicApps;
     },

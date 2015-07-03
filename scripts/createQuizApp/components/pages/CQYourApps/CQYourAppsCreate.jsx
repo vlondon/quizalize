@@ -10,13 +10,13 @@ var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQYourAppsCreate = React.createClass({
 
     propTypes: {
-        newApp: React.PropTypes.bool
+        newApp: React.PropTypes.bool,
+        appId: React.PropTypes.string
     },
 
     getInitialState: function() {
         return {
-            apps: AppStore.getApps(),
-            selectedQuizzes: []
+            apps: AppStore.getApps()
         };
     },
 
@@ -41,15 +41,17 @@ var CQYourAppsCreate = React.createClass({
 
     render: function() {
 
-        var create = this.props.newApp === true ? <CQViewCreateApp selectedQuizzes={this.state.selectedQuizzes}/> : undefined;
+        var edit = this.props.appId ? <CQViewCreateApp appId={this.props.appId}/> : undefined;
+        var create = this.props.newApp === true ? <CQViewCreateApp/> : undefined;
+        var list = !this.props.newApp && !this.props.appId ? <CQViewAppGrid onClick={this.handleApp} editMode={true} apps={this.state.apps}/> : undefined;
+        var newApp = !this.props.newApp && !this.props.appId ? <CQLink href="/quiz/apps/new" className="btn btn-primary"><i className="fa fa-plus"></i> New app</CQLink> : undefined;
 
         return (
             <div>
-                <CQLink href="/quiz/apps/new" className="btn btn-primary">
-                    <i className="fa fa-plus"></i> New app
-                </CQLink>
-
+                {newApp}
+                {edit}
                 {create}
+                {list}
 
             </div>
         );

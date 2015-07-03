@@ -117,6 +117,9 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case QuizConstants.QUIZZES_LOADED:
+            AppDispatcher.waitFor([
+                TopicStore.dispatchToken
+            ]);
             _quizzes = action.payload.quizzes;
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
             QuizStore.emitChange();
