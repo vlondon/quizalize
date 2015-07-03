@@ -1,14 +1,17 @@
+/* @flow */
 var React = require('react');
-var router = require('createQuizApp/config/router');
-
-var CQViewQuizLocalSort = require('createQuizApp/components/views/CQViewQuizLocalSort');
-var CQViewQuizAuthor = require('createQuizApp/components/views/CQViewQuizAuthor');
-var CQPagination = require('createQuizApp/components/utils/CQPagination');
-var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var UserStore = require('createQuizApp/stores/UserStore');
 var moment = require('moment');
+
+var router = require('./../../../config/router');
+var CQViewQuizLocalSort = require('./../../../components/views/CQViewQuizLocalSort');
+var CQViewQuizAuthor = require('./../../../components/views/CQViewQuizAuthor');
+var CQPagination = require('./../../../components/utils/CQPagination');
+var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
+
+var TopicStore = require('./../../../stores/TopicStore');
+var UserStore = require('./../../../stores/UserStore');
+
+
 
 var CQViewQuizList = React.createClass({
 
@@ -69,12 +72,19 @@ var CQViewQuizList = React.createClass({
         TopicStore.removeChangeListener(this.onChange);
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function(nextProps:Object) {
         this.onChange(nextProps);
     },
 
-    getState: function(props, page){
+    getState: function(props:Object, page:?number){
+
         props = props || this.props;
+
+        console.log('TopicStore', TopicStore.getAllTopics().length);
+        if (TopicStore.getAllTopics().length === 0){
+            return {quizzes: []};
+        }
+
 
         var quizCta = function(quizzes){
             var quizPlaceholder = {
@@ -119,7 +129,7 @@ var CQViewQuizList = React.createClass({
         }
     },
 
-    onChange: function(props, page){
+    onChange: function(props, page:?number){
         this.setState(this.getState(props, page));
     },
 
@@ -299,10 +309,9 @@ var CQViewQuizList = React.createClass({
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
 
-
-
-
+        console.log('thiss.state', this.state);
         return (
+
             <div className={`cq-viewquizlist ${this.props.className}`}>
                 {sort}
                 <ul>
