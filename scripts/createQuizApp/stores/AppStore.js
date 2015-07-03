@@ -1,12 +1,10 @@
 /* @flow */
-
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
+import Store from './Store';
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var AppConstants = require('./../constants/AppConstants');
 var AppActions = require('./../actions/AppActions');
-var TopicStore = require('./../stores/TopicStore');
+
 
 type AppMeta = {
     code: string;
@@ -21,12 +19,11 @@ type AppMeta = {
     updated: number;
 }
 
-type App = {
+export type App = {
     uuid: string;
     meta: AppMeta;
 }
 
-var CHANGE_EVENT = 'change';
 
 var _publicApps: ?Array<App>;
 var _apps: Array<App> = [];
@@ -35,37 +32,31 @@ var _appInfo = {};
 var storeInit = false;
 var storeInitPublic = false;
 
-var AppStore = assign({}, EventEmitter.prototype, {
+class AppStore extends Store {
 
-    getApps: function() {
+    getApps() {
         return _apps;
-    },
+    }
 
-    getAppById: function(appId) {
+    getAppById(appId) {
         var result = _apps.filter(t => t.uuid === appId);
         return result.length === 1 ? result.slice()[0] : undefined;
-    },
+    }
 
-    getPublicApps: function() {
+    getPublicApps() {
         return _publicApps;
-    },
+    }
 
-    getAppInfo: function(appId){
+    getAppInfo(appId){
         if (_appInfo[appId] === undefined){
             AppActions.loadApp(appId);
             _appInfo[appId] = {};
         }
         return _appInfo[appId];
-    },
+    }
 
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
 
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
+    addChangeListener (callback) {
         if (!storeInit) {
             AppActions.loadApps();
             storeInit = true;
@@ -74,32 +65,28 @@ var AppStore = assign({}, EventEmitter.prototype, {
             AppActions.searchPublicApps();
             storeInitPublic = true;
         }
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+        super.addChangeListener(callback);
     }
-});
 
+
+}
+
+var appStoreInstance = new AppStore();
 
 // Register callback to handle all updates
-AppStore.dispatchToken = AppDispatcher.register(function(action) {
+AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
         case AppConstants.APP_CREATED:
             _apps.push(action.payload);
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
 
 
         case AppConstants.APP_LIST_LOADED:
             _apps = action.payload;
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
 
         case AppConstants.APP_SEARCH_LOADED:
@@ -109,13 +96,12 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
                     app.meta.quizzes = app.meta.quizzes.split(',');
                 }
             });
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
 
         case AppConstants.APP_INFO_LOADED:
-            console.log('app loaded', action);
             _appInfo[action.payload.uuid] = action.payload;
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
 
         default:
@@ -123,4 +109,4 @@ AppStore.dispatchToken = AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = AppStore;
+module.exports = appStoreInstance;

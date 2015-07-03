@@ -1,4 +1,3 @@
-/* @flow */
 var React = require('react');
 var moment = require('moment');
 
