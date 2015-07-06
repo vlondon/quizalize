@@ -606,8 +606,20 @@
     <script src="/js/quiz.js"></script>
     <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
     <script>
+      function getParameterByName(name) {
+          name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+              results = regex.exec(location.search);
+          return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
       $(document).ready(function(){
-        $('#play-but').nivoLightbox();
+        if (getParameterByName("video")=="on") {
+          $('#play-but').nivoLightbox().trigger('click');
+        }
+        else {
+          $('#play-but').nivoLightbox();
+        }
       });
     </script>
 
