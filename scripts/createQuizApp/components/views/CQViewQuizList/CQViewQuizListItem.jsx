@@ -16,11 +16,9 @@ var CQViewQuizListItem = React.createClass({
 
                 <div className="cq-viewquizlist__quiz-inner">
                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                    {quiz.meta.subject} {author(quiz)}
-
+                    {TopicStore.getTopicName(quiz.meta.categoryId)} {author(quiz)}
 
                     <div className="cq-viewquizlist__quizextra">
-                        {categoryNameLabel(quiz._category)}
                         <br/>
                         <small>
                             Updated {moment(quiz.meta.updated).fromNow()}

@@ -27,7 +27,7 @@ var CQViewQuizLocalSort = React.createClass({
     },
 
     getState: function(){
-        var topics = TopicStore.getPublicTopics();
+        var topics = TopicStore.getTopicTree();
         return {
             topics,
             sort: 'time',
@@ -52,13 +52,10 @@ var CQViewQuizLocalSort = React.createClass({
     },
 
     performSearch: function(){
-
-
         this.props.onSearch({
             sort: this.state.sort,
             name: this.state.searchString
         });
-        // QuizActions.searchPublicQuizzes(this.state.searchString, category);
     },
 
     render: function() {

@@ -35,21 +35,13 @@ var CQQuizIcon = React.createClass({
     getInitialState: function() {
         return this.getImage();
     },
-    handleLocalImage: function(file){
-        var reader = new FileReader();
-        reader.onload = (upload) =>{
-            this.setState({
-                imageData: upload.target.result
-            });
-        };
 
-        reader.readAsDataURL(file);
-    },
     componentWillReceiveProps: function(nextProps) {
         if (nextProps.imageData){
-            this.handleLocalImage(nextProps.imageData);
+            this.setState({imageData: nextProps.imageData});
+        } else {
+            this.setState(this.getImage(nextProps));
         }
-        this.setState(this.getImage(nextProps));
     },
 
     getImage: function(props){

@@ -1,14 +1,18 @@
 /* @flow */
-import type App from './../stores/AppStore';
+// import type App from './../stores/AppStore';
 
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
+
+var router              = require('./../config/router');
+var debounce            = require('./../utils/debounce');
+
+
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var AppApi              = require('./../actions/api/AppApi');
 var QuizApi             = require('./../actions/api/QuizApi');
 var AppConstants        = require('./../constants/AppConstants');
 
-var debounce            = require('./../utils/debounce');
 
 var AppActions = {
 
@@ -23,21 +27,24 @@ var AppActions = {
     },
 
     loadApp: function(appId:string){
-        AppApi.getInfo(appId)
-            .then(function(appInfo){
-                AppDispatcher.dispatch({
-                    actionType: AppConstants.APP_INFO_LOADED,
-                    payload: appInfo
+
+        if (appId) {
+            AppApi.getInfo(appId)
+                .then(function(appInfo){
+                    AppDispatcher.dispatch({
+                        actionType: AppConstants.APP_INFO_LOADED,
+                        payload: appInfo
+                    });
                 });
-            });
+        }
     },
 
-    deleteApp: function(app:App){
+    deleteApp: function(app:Object){
         AppApi.delete(app)
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app:App, appIcon:Object){
+    saveNewApp: function(app:Object, appIcon:Object){
 
 
         app.uuid = app.uuid || uuid.v4();
@@ -54,6 +61,7 @@ var AppActions = {
                             actionType: AppConstants.APP_CREATED,
                             payload: app
                         });
+                        router.setRoute(`/quiz/apps`);
                     })
                     .catch(reject);
             });
@@ -102,6 +110,8 @@ var AppActions = {
                     //     console.log("Going through app",app);
                     //     return false;
                     // });
+
+                    console.log("GOT SOME APPS", apps);
 
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,

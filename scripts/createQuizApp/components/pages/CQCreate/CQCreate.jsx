@@ -14,8 +14,6 @@ var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
 var TopicStore = require('createQuizApp/stores/TopicStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 
-var TopicActions = require('createQuizApp/actions/TopicActions');
-
 var CQCreate = React.createClass({
 
     propTypes: {
@@ -33,7 +31,7 @@ var CQCreate = React.createClass({
         var initialState = {
             isMoreVisible: false,
             title: 'Create a Quiz',
-            isSaving: false,
+            canSave: false,
             category: undefined,
             quiz: this._getQuiz(),
             user: UserStore.getUser()
@@ -79,7 +77,7 @@ var CQCreate = React.createClass({
         var quiz = this._getQuiz();
         newState.quiz = quiz;
 
-        newState.topics = TopicStore.getAllTopics();
+        newState.topics = TopicStore.getTopicTree();
 
         newState.topicsAutofill = [];
 
@@ -113,8 +111,6 @@ var CQCreate = React.createClass({
     componentDidMount: function() {
         $('[data-toggle="popover"]').popover();
         QuizStore.addChangeListener(this.onChange);
-        TopicActions.loadPrivateTopics();
-
         TopicStore.addChangeListener(this.onChange);
     },
 
@@ -124,11 +120,13 @@ var CQCreate = React.createClass({
     },
 
     handleChange: function(property, event) {
-
         var newQuizState = assign({}, this.state.quiz);
         newQuizState.meta[property] = event.target.value;
-
-        this.setState({quiz: newQuizState});
+        var csave = false;
+        if (property === 'name') {
+            csave = event.target.value && event.target.value.length > 0;
+        }
+        this.setState({quiz: newQuizState, canSave: csave});
     },
 
     handleSettings: function(newSettings){
@@ -145,7 +143,7 @@ var CQCreate = React.createClass({
     },
 
     handleNewQuiz: function(){
-        this.setState({isSaving: true});
+        this.setState({canSave: false});
         QuizActions.newQuiz(this.state.quiz).then(function(quiz){
             console.log('we got new quiz', quiz);
             router.setRoute(`/quiz/create/${quiz.uuid}/0`);
@@ -188,8 +186,6 @@ var CQCreate = React.createClass({
                                 type="text"
                                 value={this.state.quiz.meta.name}
                                 onChange={this.handleChange.bind(this, 'name')}
-                                on-enter="ctrl.createQuiz();"
-                                ng-model="ctrl.quiz.name"
                                 placeholder="e.g. Plate Boundaries"
                                 autofocus="true"
                                 tabIndex="1"
@@ -206,7 +202,7 @@ var CQCreate = React.createClass({
                             <CQAutofill
                                 value={this.state.quiz.meta.categoryId}
                                 onChange={this.handleTopic}
-                                data={TopicStore.getAllTopics}
+                                data={TopicStore.getTopicTree}
                                 placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
                                 tabIndex="2"/>
                             <br/>
@@ -218,7 +214,7 @@ var CQCreate = React.createClass({
                             <button
                                 type="button"
                                 onClick={this.handleNewQuiz}
-                                disabled={this.state.isSaving}
+                                disabled={!this.state.canSave}
                                 tabIndex="4"
                                 className="btn btn-primary btn-block">
                                 Go!

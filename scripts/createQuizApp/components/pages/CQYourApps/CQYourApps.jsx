@@ -1,35 +1,43 @@
 /* @flow */
-var React = require('react');
+import React from 'react';
 
-var UserStore               = require('../../../stores/UserStore');
-var CQPageTemplate          = require('../../CQPageTemplate');
-var CQYourAppsComingSoon    = require('./CQYourAppsComingSoon');
-var CQYourAppsCreate        = require('./CQYourAppsCreate');
+import UserStore               from '../../../stores/UserStore';
+import CQPageTemplate          from '../../CQPageTemplate';
+import CQYourAppsComingSoon    from './CQYourAppsComingSoon';
+import CQYourAppsCreate        from './CQYourAppsCreate';
 
-var CQYourApps = React.createClass({
+type Props = {
+    newApp: boolean;
+    appId: string;
+}
+type State = {
+    isAdmin: boolean;
+}
 
-    propTypes: {
-        newApp: React.PropTypes.bool
-    },
+export default class CQYourApps extends React.Component {
 
-    getInitialState: function() {
-        return {
+    state: State;
+    props: Props;
+
+    constructor(props:Props) {
+
+        super(props);
+        this.state = {
             isAdmin: UserStore.isAdmin()
         };
-    },
+    }
 
-    render: function() {
-        var content = this.state.isAdmin ? <CQYourAppsCreate newApp={this.props.newApp}/> : <CQYourAppsComingSoon/>;
+    render() {
+        var showContent = true;
+        var content = showContent ? <CQYourAppsCreate newApp={this.props.newApp} appId={this.props.appId}/> : <CQYourAppsComingSoon/>;
         return (
             <CQPageTemplate className="cq-container cq-yourapps">
                 <h2 className='cq-yourapps__header'>
                     <i className="fa fa-archive"/> Your apps
                 </h2>
-                <CQYourAppsCreate newApp={this.props.newApp}/>
+                {content}
             </CQPageTemplate>
         );
     }
 
-});
-
-module.exports = CQYourApps;
+}

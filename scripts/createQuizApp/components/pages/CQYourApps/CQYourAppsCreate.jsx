@@ -1,64 +1,73 @@
-var React = require('react');
-var router = require('createQuizApp/config/router');
+/* @flow */
+import React from 'react';
+import router from './../../../config/router';
 
-var AppStore = require('createQuizApp/stores/AppStore');
+import AppStore from './../../../stores/AppStore';
 
-var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
-var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import CQViewAppGrid from './../../../components/views/CQViewAppGrid';
+import CQViewCreateApp from './../../../components/views/CQViewCreateApp';
+import CQLink from './../../../components/utils/CQLink';
 
-var CQYourAppsCreate = React.createClass({
+type Props = {
+    appId: string;
+    newApp: boolean;
+}
 
-    propTypes: {
-        newApp: React.PropTypes.bool
-    },
+// static propTypes: {appId: string; }
+export default class CQYourAppsCreate extends React.Component{
 
-    getInitialState: function() {
-        return {
-            apps: AppStore.getApps(),
-            selectedQuizzes: []
+    props: Props;
+
+    constructor(props:Props) {
+        super(props);
+        this.state = {
+            apps: AppStore.getApps()
         };
-    },
+        this.onChange = this.onChange.bind(this);
 
-    componentWillMount: function() {
+    }
+
+    componentWillMount() {
+        console.log('thissss', this);
         AppStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         AppStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    onChange: function(){
+    onChange(){
+        console.log('this', this);
         this.setState({
             apps: AppStore.getApps()
         });
-    },
+    }
 
-    handleApp: function(app){
+    handleApp(app:Object){
         console.log('app clicked', app);
         router.setRoute(`/quiz/apps/${app.uuid}`);
-    },
+    }
 
-    render: function() {
+    render(): Object {
 
-        var create = this.props.newApp === true ? <CQViewCreateApp selectedQuizzes={this.state.selectedQuizzes}/> : undefined;
+        var edit = this.props.appId ? <CQViewCreateApp appId={this.props.appId}/> : undefined;
+        var create = this.props.newApp === true ? <CQViewCreateApp/> : undefined;
+        var list = !this.props.newApp && !this.props.appId ? <CQViewAppGrid onClick={this.handleApp} editMode={true} apps={this.state.apps}/> : undefined;
+        var newApp = !this.props.newApp && !this.props.appId ? <CQLink href="/quiz/apps/new" className="btn btn-primary"><i className="fa fa-plus"></i> New app</CQLink> : undefined;
 
         return (
             <div>
-                <CQLink href="/quiz/apps/new" className="btn btn-primary">
-                    <i className="fa fa-plus"></i> New app
-                </CQLink>
-
+                {newApp}
+                {edit}
                 {create}
-                <CQViewAppGrid
-                    onClick={this.handleApp}
-                    editMode={true}
-                    apps={this.state.apps}/>
+                {list}
 
             </div>
         );
     }
 
-});
-
-module.exports = CQYourAppsCreate;
+}
+CQYourAppsCreate.propTypes = {
+    appId: React.PropTypes.string,
+    newApp: React.PropTypes.bool
+};

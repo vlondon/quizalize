@@ -1,37 +1,52 @@
 /* @flow */
-var Promise             = require('es6-promise').Promise;
+import Promise             from 'es6-promise';
 
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var AnalyticsConstants  = require('./../constants/AnalyticsConstants');
+import AppDispatcher       from './../dispatcher/CQDispatcher';
+import AnalyticsConstants  from './../constants/AnalyticsConstants';
 
-var AnalyticsActions = {
+export var sendEvent = function(category: string, action: string, label: string) {
 
-    trackPageView: function() {
-        if (window.ga){
-            window.ga('send', 'pageview');
-        } else {
-            console.warn('No GA object found');
-        }
-    },
+    if (window.ga){
+        window.ga('send', 'event', category, action, label);
+    } else {
+        console.warn('No GA object found');
+    }
+};
 
-    sendEvent: function(category: string, action: string, label: string){
+export var trackPageView = function() {
+    if (window.ga){
+        window.ga('send', 'pageview');
+    } else {
+        console.warn('No GA object found');
+    }
+};
+
+
+class AnalyticsActions {
+
+    constructor(){
+        console.info('new AnalyticsActions instance');
+    }
+
+
+    sendEvent(category: string, action: string, label: string){
 
         if (window.ga){
             window.ga('send', 'event', category, action, label);
         } else {
             console.warn('No GA object found');
         }
-    },
+    }
 
 
-    addAll: function(){
-        this.googleConveersion();
+    addAll(){
+        this.googleConversion();
         this.twitterConversion();
         this.facebookConversion();
-    },
+    }
 
 
-    triggerPixels: function(){
+    triggerPixels(){
         return new Promise(function(resolve){
 
             AppDispatcher.dispatch({
@@ -45,9 +60,9 @@ var AnalyticsActions = {
                 resolve();
             }, 4000);
         });
-    },
+    }
 
-    googleConversion: function(){
+    googleConversion(){
         /*eslint-disable */
         var filename = 'http://www.googleadservices.com/pagead/conversion.js';
         window.google_conversion_id = 1034680765;
@@ -64,9 +79,9 @@ var AnalyticsActions = {
         fileref.setAttribute('src', filename)
         document.getElementsByTagName('head')[0].appendChild(fileref);
 
-    },
+    }
 
-    twitterConversion: function() {
+    twitterConversion() {
         var _twttr = window._twttr || (window._twttr = []);
 
 			// Load Twitter script
@@ -86,9 +101,9 @@ var AnalyticsActions = {
 		}, 200);
 		};
 		_loadTwitter();
-    },
+    }
 
-    facebookConversion: function(){
+    facebookConversion(){
         (function() {
 				var _fbq = window._fbq || (window._fbq = []);
 				if (!_fbq.loaded) {
@@ -104,6 +119,6 @@ var AnalyticsActions = {
 		window._fbq.push(['track', '6024319569179', {'value':'0.01','currency':'GBP'}]);
         /*eslint-enable */
     }
-};
+}
 
-module.exports = AnalyticsActions;
+export default new AnalyticsActions();

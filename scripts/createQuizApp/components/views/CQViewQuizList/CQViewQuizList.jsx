@@ -1,4 +1,3 @@
-/* @flow */
 var React = require('react');
 var moment = require('moment');
 
@@ -21,6 +20,7 @@ var CQViewQuizList = React.createClass({
         quizzesPerPage: React.PropTypes.number,
         quizzes: React.PropTypes.array,
         className: React.PropTypes.string,
+        selectedQuizzes: React.PropTypes.array,
         showAuthor: React.PropTypes.bool,
         showCta: React.PropTypes.bool,
         showReviewButton: React.PropTypes.bool,
@@ -59,7 +59,7 @@ var CQViewQuizList = React.createClass({
     getInitialState: function() {
 
         var initialState = this.getState(undefined, 1);
-        initialState.selectedQuizzes = [];
+        initialState.selectedQuizzes = this.props.selectedQuizzes || [];
         initialState.page = 1;
         return initialState;
     },
@@ -80,8 +80,7 @@ var CQViewQuizList = React.createClass({
 
         props = props || this.props;
 
-        console.log('TopicStore', TopicStore.getAllTopics().length);
-        if (TopicStore.getAllTopics().length === 0){
+        if (TopicStore.getTopicTree().length === 0){
             return {quizzes: []};
         }
 
@@ -130,7 +129,12 @@ var CQViewQuizList = React.createClass({
     },
 
     onChange: function(props, page:?number){
-        this.setState(this.getState(props, page));
+        props = props || this.props;
+        var newState = this.getState(props, page);
+        if (props.selectedQuizzes) {
+            newState.selectedQuizzes = props.selectedQuizzes;
+        }
+        this.setState(newState);
     },
 
 
@@ -224,8 +228,8 @@ var CQViewQuizList = React.createClass({
                 var nameMatch;
                 var categoryMatch = false;
                 nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-                if (q._category) {
-                    categoryMatch = q._category.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+                if (q.meta.categoryId) {
+                    categoryMatch = TopicStore.getTopicName(q.meta.categoryId).toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
                 }
 
                 return nameMatch || categoryMatch;
@@ -303,13 +307,10 @@ var CQViewQuizList = React.createClass({
             select = function(){};
         }
 
-        var categoryNameLabel = c => c ? c.name : '';
-
         if (this.props.sortOptions) {
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
 
-        console.log('thiss.state', this.state);
         return (
 
             <div className={`cq-viewquizlist ${this.props.className}`}>
@@ -342,11 +343,10 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {quiz.meta.categoryId && TopicStore.getTopicById(quiz.meta.categoryId) && TopicStore.getTopicById(quiz.meta.categoryId).name} {author(quiz)}
+                                    {TopicStore.getTopicName(quiz.meta.categoryId)} {author(quiz)}
 
 
                                     <div className="cq-viewquizlist__quizextra">
-                                        {categoryNameLabel(quiz._category)}
                                         <br/>
                                         <small>
                                             Updated {moment(quiz.meta.updated).fromNow()}

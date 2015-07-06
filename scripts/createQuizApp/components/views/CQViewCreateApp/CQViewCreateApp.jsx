@@ -1,108 +1,169 @@
-var React = require('react');
-var assign = require('object-assign');
-var AppActions = require('createQuizApp/actions/AppActions');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var CQViewAppColourPicker = require('createQuizApp/components/views/CQViewAppColourPicker');
-var appPicture;
+/* @flow */
+import React from 'react';
+import assign from 'object-assign';
 
-var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var CQViewCreateAppTemplate = require('./CQViewCreateAppTemplate');
+import AppActions from './../../../actions/AppActions';
+import QuizStore from './../../../stores/QuizStore';
+import AppStore from './../../../stores/AppStore';
+import type {AppComplete} from './../../../stores/AppStore';
+import TopicStore from './../../../stores/TopicStore';
+import CQViewAppColourPicker from './../../../components/views/CQViewAppColourPicker';
 
-var TransactionStore = require('createQuizApp/stores/TransactionStore');
-var priceFormat = require('createQuizApp/utils/priceFormat');
+import CQViewQuizList from './../../../components/views/CQViewQuizList';
+import CQViewCreateAppTemplate from './CQViewCreateAppTemplate';
 
-var CQViewCreateApp = React.createClass({
+import TransactionStore from './../../../stores/TransactionStore';
+import priceFormat  from './../../../utils/priceFormat';
 
-    propTypes: {
-        selectedQuizzes: React.PropTypes.array
-    },
+var appPicture: ?Object;
 
-    getInitialState: function() {
-        return {
-            imageData: null,
+type Props = {
+    appId: string;
+}
+type State = {
+    app: AppComplete;
+    quizzes: Array<Object>;
+    selectedQuizzes: Array<string>;
+    prices?: Array<number>;
+    canSave?: boolean;
+    imageData?: ?Object;
+}
+export default class CQViewCreateApp extends React.Component {
+
+    props:Props;
+    state:State;
+
+    constructor(props:Props) {
+        super(props);
+        this.state =  {
             selectedQuizzes: [],
             prices: TransactionStore.getPrices(),
             quizzes: QuizStore.getQuizzes(),
-
-            app: {
-                meta: {
-                    name: undefined,
-                    description: undefined,
-                    iconURL: undefined,
-                    price: 0
-                },
-                payload: {
-                    quizzes: [],
-                    categories: []
-                }
-            }
+            canSave: false,
+            app: this.getApp()
         };
-    },
+        this.onChange = this.onChange.bind(this);
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
+        AppStore.addChangeListener(this.onChange);
+        TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
+        AppStore.removeChangeListener(this.onChange);
+        TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
+
+    getApp(props?: Props):AppComplete{
+        props = props || this.props;
+        console.log('appInfoappInfoappInfo', props.appId);
+        // if (props.appId === 'new')
+        var appInfo = AppStore.getAppInfo(props.appId);
+        if (appInfo){
+            return appInfo;
+        } else {
+            return AppStore.getNewApp();
+        }
+    }
 
 
-    getState: function(){
 
+    getState():State{
+
+        var app = this.getApp();
         var quizzes = QuizStore.getQuizzes();
-        //var apps = AppStore.getApps();
+
+
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
-        return { quizzes };
-    },
 
-    componentWillReceiveProps: function(nextProps) {
+        var selectedQuizzes:Array<string> = app.payload.quizzes;
+
+        return { app, quizzes, selectedQuizzes };
+
+    }
+
+    componentWillReceiveProps(nextProps:Props) {
+
         var app = assign({}, this.state.app);
+        if (nextProps.appId) {
+            app = this.getApp();
+        }
 
-        app.payload.quizzes = nextProps.selectedQuizzes;
+        // TODO: Not sure if this is needed anymore
+        //app.meta.quizzes = nextProps.selectedQuizzes;
+        // var categories = nextProps.selectedQuizzes.map(q => {
+        //     var quizzes = QuizStore.getQuizzes();
+        //     var quiz = quizzes.filter(qu => qu.uuid === q)[0];
+        //     return quiz.meta.categoryId;
+        // });
 
-        var categories = nextProps.selectedQuizzes.map(q => {
-            var quizzes = QuizStore.getQuizzes();
-            var quiz = quizzes.filter(qu => qu.uuid === q)[0];
-            return quiz.meta.categoryId;
-        });
-
-        app.meta.categories = categories.join(',');
-        app.meta.quizzes = app.payload.quizzes.join(',');
+        // app.meta.categories = categories.join(',');
+        // app.meta.quizzes = app.meta.quizzes.join(',');
 
         this.setState({app});
-    },
+    }
 
-    handleChange: function(field, event) {
+    handleChange(field: string, event: Object) {
         console.log('field, ', field, event);
         var app = assign({}, this.state.app);
         app.meta[field] = event.target.value;
 
-        this.setState({app});
-    },
+        var csave = false;
+        if (field === 'name') {
+            csave = event.target.value && event.target.value.length > 0 && this.state.selectedQuizzes && this.state.selectedQuizzes.length > 0;
+        }
 
-    handleSave: function(){
+        this.setState({app, canSave: csave});
+    }
 
-        AppActions.saveNewApp(this.state.app, appPicture);
-    },
+    handleSave(){
+        this.setState({canSave: false});
+        this.state.app.payload.quizzes = this.state.selectedQuizzes;
+        if (appPicture) {
+            AppActions.saveNewApp(this.state.app, appPicture);
+        }
+    }
     // when a file is passed to the input field, retrieve the contents as a
     // base64-encoded data URI and save it to the component's state
-    handleAppPicture: function(ev){
-        appPicture = ev.target.files[0];
-        this.setState({imageData: appPicture});
-    },
+    handleAppPicture(ev:Object){
 
-    handleSelect: function(selectedQuizzes){
-        this.setState({selectedQuizzes});
-    },
+        var reader = new FileReader();
+        reader.onload = (upload) =>{
+            console.log('upload.target.result', upload.target.result);
+            this.setState({
+                imageData: upload.target.result
+            });
+        };
 
-    render: function() {
+        var file = ev.target.files[0];
+        reader.readAsDataURL(file);
+
+    }
+
+    handleSelect(selectedQuizzes: Array<Object>){
+        console.log('this.state.app.meta.name', this.state.app);
+        var csave = this.state.app.meta.name && this.state.app.meta.name.length > 0 && selectedQuizzes && selectedQuizzes.length > 0;
+        this.setState({selectedQuizzes, canSave: csave});
+    }
+
+    render():Object {
+        var prices;
+        if (this.state.prices){
+            prices = this.state.prices.map(price=> {
+                return (
+                    <option value={price}>{priceFormat(price)}</option>
+                );
+            });
+        }
         return (
             <div className="cq-viewcreateapp">
                 <div className="cq-viewcreateapp__left">
@@ -127,7 +188,7 @@ var CQViewCreateApp = React.createClass({
                             className="form-control"
                             ref="profilePicture"
                             accept="image/*"
-                            onChange={this.handleAppPicture}/>
+                            onChange={this.handleAppPicture.bind(this)}/>
 
                     </div>
 
@@ -156,11 +217,7 @@ var CQViewCreateApp = React.createClass({
 
                         <label htmlFor="price">Price</label>
                         <select name="" id="price" className="form-control" onChange={this.handleChange.bind(this, 'price')}>
-                            {this.state.prices.map(price=> {
-                                return (
-                                    <option value={price}>{priceFormat(price)}</option>
-                                );
-                            })}
+                            {prices}
                         </select>
 
                     </div>
@@ -171,16 +228,16 @@ var CQViewCreateApp = React.createClass({
 
                     <CQViewQuizList
                         quizzes={this.state.quizzes}
-                        onSelect={this.handleSelect}
+                        onSelect={this.handleSelect.bind(this)}
+                        selectedQuizzes={this.state.selectedQuizzes}
                         selectMode={true}
                         sortOptions={false}
                     />
-                    <div className="cq-viewcreateapp__counter">
 
-                        n. of selected Quizzes <b>{this.state.selectedQuizzes.length}</b>
-                    </div>
-
-                    <button className="btn btn-default" onClick={this.handleSave}>
+                    <button
+                        className="btn btn-default"
+                        disabled={!this.state.canSave}
+                        onClick={this.handleSave}>
                         Save
                     </button>
                 </div>
@@ -193,7 +250,8 @@ var CQViewCreateApp = React.createClass({
             </div>
         );
     }
+}
 
-});
-
-module.exports = CQViewCreateApp;
+CQViewCreateApp.propTypes = {
+    appId: React.PropTypes.string
+};

@@ -1,5 +1,5 @@
 /* @flow */
-import type Quiz from './../stores/QuizStore';
+import type Quiz        from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
@@ -10,29 +10,10 @@ var QuizApi             = require('./../actions/api/QuizApi');
 var TopicStore          = require('./../stores/TopicStore');
 var TopicActions        = require('./../actions/TopicActions');
 var router              = require('./../config/router');
-var UserStore           = require('./../stores/UserStore');
+import UserStore        from './../stores/UserStore';
 
 var debounce            = require('./../utils/debounce');
 
-
-// var _questionsTopicIdToTopic = function(quiz){
-
-
-//     var findTopicName = function(topicId){
-//         var topic = TopicStore.getTopicById(topicId);
-//         return topic ? topic.name : undefined;
-//     };
-
-
-//     // if (quiz.payload.questions && quiz.payload.questions.length > 0){
-//     //     quiz.payload.questions = quiz.payload.questions.map(question => {
-//     //         question._topic = findTopicName(question.topicId);
-//     //         return question;
-//     //     });
-//     // }
-
-//     return quiz;
-// };
 
 var createNewTopicsForQuiz = function(quiz){
 
@@ -68,55 +49,19 @@ var createNewTopicsForQuiz = function(quiz){
 var QuizActions = {
 
     loadQuizzes: function(){
-        console.log('load quizzes');
-        var quizzes = QuizApi.getQuizzes();
-        var topics = QuizApi.getTopics();
-        var ptopics = QuizApi.getUserTopics();
 
+        var quizzesPromise = QuizApi.getQuizzes();
 
-        Promise.all([quizzes, topics, ptopics])
-            .then(value => {
-
-                // let's stitch quizzes to their topic
-                var loadedQuizzes = value[0];
-                var loadedTopics = value[1];
-                var loadedUserTopics = value[2];
-
-
-                var processedQuizzes = loadedQuizzes.map(function(quiz){
-                    var topic;
-                    topic = loadedTopics.pcategories.filter(function(t){
-                        return t.uuid === quiz.meta.categoryId;
-                    })[0];
-                    if (!topic) {
-                        topic = loadedTopics.categories.filter(function(t){
-                            return t.uuid === quiz.meta.categoryId;
-                        })[0];
-                    }
-                    if (!topic) {
-                        topic = loadedUserTopics.filter(function(t){
-                            return t.uuid === quiz.meta.categoryId;
-                        })[0];
-                    }
-
-                    quiz.category = topic || {};
-
-                    return quiz;
-                });
-
-
-
+        quizzesPromise
+            .then(quizzes => {
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZZES_LOADED,
                     payload: {
-                        quizzes: processedQuizzes,
-                        topics: loadedTopics,
-                        utopics: loadedUserTopics
+                        quizzes: quizzes
                     }
                 });
             });
-
     },
 
 
@@ -126,21 +71,6 @@ var QuizActions = {
 
         quizPromise
             .then((quiz) => {
-
-                var getCategoryFormUuid = function(){
-
-
-                    if (quiz.meta.categoryId) {
-                        var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
-                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
-                        return topicFound ? topicFound.name : '';
-                    }
-                    return '';
-
-                };
-
-                quiz.meta.category = getCategoryFormUuid();
-                // settings property is assumed, so it should be present
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
@@ -157,7 +87,6 @@ var QuizActions = {
 
             var savePurchased = QuizApi.putQuiz(purchased);
             var getOriginal = QuizApi.getQuiz(purchased.meta.originalQuizId);
-            console.log("Savingg View");
 
             Promise.all([savePurchased, getOriginal])
                 .then((value) => {
@@ -188,9 +117,9 @@ var QuizActions = {
     },
 
 
-    searchPublicQuizzes: debounce((searchString = '', categoryId, profileId) => {
+    searchPublicQuizzes: debounce((searchString = '', categoryId) => {
 
-        QuizApi.searchQuizzes(searchString, categoryId, profileId)
+        QuizApi.searchQuizzes(searchString, categoryId)
             .then(function(quizzes){
 
                 AppDispatcher.dispatch({
@@ -202,7 +131,25 @@ var QuizActions = {
     }, 300),
 
 
+
+    getPublicQuizzesForProfile: function(profileId: string){
+
+        return new Promise(function(resolve, reject){
+
+            var searchPromise = QuizApi.searchQuizzes('', '', profileId);
+
+            searchPromise
+                .then((quizzes) => {
+
+                    resolve(quizzes);
+
+                }).catch(reject);
+        });
+    },
+
+
     newQuiz: function(quiz:Quiz){
+
 
         var addOrCreateCategory = function(){
             var topicUuid;
