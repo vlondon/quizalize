@@ -10,7 +10,8 @@ var TopicConstants  = require('./../constants/TopicConstants');
 var QuizActions     = require('./../actions/QuizActions');
 var TopicStore      = require('./../stores/TopicStore');
 var TransactionConstants   = require('./../constants/TransactionConstants');
-var UserStore = require('./../stores/UserStore');
+
+import UserStore               from './../stores/UserStore';
 
 type QuizCategory = {
     name: string;

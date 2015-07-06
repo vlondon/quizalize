@@ -6,7 +6,10 @@ var pagesArray          = require('./routes').pagesArray;
 var settings            = require('./settings');
 var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
+// import UserStore        from './../stores/UserStore';
 var UserStore           = require('./../stores/UserStore');
+
+console.info('userstore', UserStore);
 var urlParams           = require('./../utils/urlParams');
 
 var user = null;
@@ -87,6 +90,7 @@ var options = {
         renderPage(pages.pageNotFound);
     },
     after: function(next){
+        console.log('AnalyticsActions', AnalyticsActions);
         AnalyticsActions.trackPageView();
         next();
     },

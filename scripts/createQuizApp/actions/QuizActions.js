@@ -1,5 +1,5 @@
 /* @flow */
-import type Quiz from './../stores/QuizStore';
+import type Quiz        from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
@@ -10,7 +10,7 @@ var QuizApi             = require('./../actions/api/QuizApi');
 var TopicStore          = require('./../stores/TopicStore');
 var TopicActions        = require('./../actions/TopicActions');
 var router              = require('./../config/router');
-var UserStore           = require('./../stores/UserStore');
+import UserStore        from './../stores/UserStore';
 
 var debounce            = require('./../utils/debounce');
 
@@ -132,7 +132,7 @@ var QuizActions = {
 
 
 
-    getPublicQuizzesForProfile: function(profileId){
+    getPublicQuizzesForProfile: function(profileId: string){
 
         return new Promise(function(resolve, reject){
 

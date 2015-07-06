@@ -1,5 +1,5 @@
 /* @flow */
-import type App from './../stores/AppStore';
+// import type App from './../stores/AppStore';
 
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
@@ -36,12 +36,12 @@ var AppActions = {
             });
     },
 
-    deleteApp: function(app:App){
+    deleteApp: function(app:Object){
         AppApi.delete(app)
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app:App, appIcon:Object){
+    saveNewApp: function(app:Object, appIcon:Object){
 
 
         app.uuid = app.uuid || uuid.v4();
@@ -108,7 +108,7 @@ var AppActions = {
                     //     return false;
                     // });
 
-                    console.log("GOT SOME APPS",apps);
+                    console.log("GOT SOME APPS", apps);
 
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,
