@@ -20,6 +20,7 @@ var CQViewQuizList = React.createClass({
         quizzesPerPage: React.PropTypes.number,
         quizzes: React.PropTypes.array,
         className: React.PropTypes.string,
+        selectedQuizzes: React.PropTypes.array,
         showAuthor: React.PropTypes.bool,
         showCta: React.PropTypes.bool,
         showReviewButton: React.PropTypes.bool,
@@ -58,7 +59,7 @@ var CQViewQuizList = React.createClass({
     getInitialState: function() {
 
         var initialState = this.getState(undefined, 1);
-        initialState.selectedQuizzes = [];
+        initialState.selectedQuizzes = this.props.selectedQuizzes || [];
         initialState.page = 1;
         return initialState;
     },
@@ -79,7 +80,6 @@ var CQViewQuizList = React.createClass({
 
         props = props || this.props;
 
-        console.log('TopicStore', TopicStore.getTopicTree().length);
         if (TopicStore.getTopicTree().length === 0){
             return {quizzes: []};
         }
@@ -129,7 +129,12 @@ var CQViewQuizList = React.createClass({
     },
 
     onChange: function(props, page:?number){
-        this.setState(this.getState(props, page));
+        props = props || this.props;
+        var newState = this.getState(props, page);
+        if (props.selectedQuizzes) {
+            newState.selectedQuizzes = props.selectedQuizzes;
+        }
+        this.setState(newState);
     },
 
 
@@ -306,7 +311,6 @@ var CQViewQuizList = React.createClass({
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
 
-        console.log('thiss.state', this.state);
         return (
 
             <div className={`cq-viewquizlist ${this.props.className}`}>

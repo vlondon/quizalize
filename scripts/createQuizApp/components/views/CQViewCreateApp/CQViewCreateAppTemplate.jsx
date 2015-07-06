@@ -29,7 +29,7 @@ var CQViewCreateAppTemplate = React.createClass({
         };
     },
 
-    handleScroll: function(event){
+    handleScroll: function(){
         var dom = React.findDOMNode(this.refs.cqApptemplate);
         var positionTop = dom.getBoundingClientRect().top;
         if (positionTop < 0){
@@ -94,7 +94,7 @@ var CQViewCreateAppTemplate = React.createClass({
                             <p>{this.state.appInfo.meta.description}</p>
                         </div>
                         <div className="cq-viewcreateapp__counter">
-                            Number of Quizzes <b>{this.state.quizzes ? this.state.quizzes.length: 0}</b>
+                            Number of Quizzes <b>{this.state.quizzes ? this.state.quizzes.length : 0}</b>
                         </div>
                         <div className="cq-app__quizlist">
                             <CQViewQuizList

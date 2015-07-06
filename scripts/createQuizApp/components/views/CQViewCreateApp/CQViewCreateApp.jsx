@@ -13,7 +13,7 @@ import CQViewQuizList from './../../../components/views/CQViewQuizList';
 import CQViewCreateAppTemplate from './CQViewCreateAppTemplate';
 
 import TransactionStore from './../../../stores/TransactionStore';
-import priceFormat from './../../../utils/priceFormat';
+import priceFormat  from './../../../utils/priceFormat';
 
 var appPicture: ?Object;
 
@@ -36,7 +36,6 @@ export default class CQViewCreateApp extends React.Component {
     constructor(props:Props) {
         super(props);
         this.state =  {
-            imageData: null,
             selectedQuizzes: [],
             prices: TransactionStore.getPrices(),
             quizzes: QuizStore.getQuizzes(),
@@ -64,6 +63,8 @@ export default class CQViewCreateApp extends React.Component {
 
     getApp(props?: Props):AppComplete{
         props = props || this.props;
+        console.log('appInfoappInfoappInfo', props.appId);
+        // if (props.appId === 'new')
         var appInfo = AppStore.getAppInfo(props.appId);
         if (appInfo){
             return appInfo;
@@ -91,11 +92,13 @@ export default class CQViewCreateApp extends React.Component {
     }
 
     componentWillReceiveProps(nextProps:Props) {
+
         var app = assign({}, this.state.app);
         if (nextProps.appId) {
             app = this.getApp();
         }
 
+        // TODO: Not sure if this is needed anymore
         //app.meta.quizzes = nextProps.selectedQuizzes;
         // var categories = nextProps.selectedQuizzes.map(q => {
         //     var quizzes = QuizStore.getQuizzes();
@@ -132,11 +135,22 @@ export default class CQViewCreateApp extends React.Component {
     // when a file is passed to the input field, retrieve the contents as a
     // base64-encoded data URI and save it to the component's state
     handleAppPicture(ev:Object){
-        appPicture = ev.target.files[0];
-        this.setState({imageData: appPicture});
+
+        var reader = new FileReader();
+        reader.onload = (upload) =>{
+            console.log('upload.target.result', upload.target.result);
+            this.setState({
+                imageData: upload.target.result
+            });
+        };
+
+        var file = ev.target.files[0];
+        reader.readAsDataURL(file);
+
     }
 
     handleSelect(selectedQuizzes: Array<Object>){
+        console.log('this.state.app.meta.name', this.state.app);
         var csave = this.state.app.meta.name && this.state.app.meta.name.length > 0 && selectedQuizzes && selectedQuizzes.length > 0;
         this.setState({selectedQuizzes, canSave: csave});
     }
@@ -174,7 +188,7 @@ export default class CQViewCreateApp extends React.Component {
                             className="form-control"
                             ref="profilePicture"
                             accept="image/*"
-                            onChange={this.handleAppPicture}/>
+                            onChange={this.handleAppPicture.bind(this)}/>
 
                     </div>
 
@@ -214,7 +228,8 @@ export default class CQViewCreateApp extends React.Component {
 
                     <CQViewQuizList
                         quizzes={this.state.quizzes}
-                        onSelect={this.handleSelect}
+                        onSelect={this.handleSelect.bind(this)}
+                        selectedQuizzes={this.state.selectedQuizzes}
                         selectMode={true}
                         sortOptions={false}
                     />

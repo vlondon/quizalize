@@ -51,7 +51,7 @@ export default class CQYourAppsCreate extends React.Component{
     render(): Object {
 
         var edit = this.props.appId ? <CQViewCreateApp appId={this.props.appId}/> : undefined;
-        var create = this.props.newApp === 42 ? <CQViewCreateApp/> : undefined;
+        var create = this.props.newApp === true ? <CQViewCreateApp/> : undefined;
         var list = !this.props.newApp && !this.props.appId ? <CQViewAppGrid onClick={this.handleApp} editMode={true} apps={this.state.apps}/> : undefined;
         var newApp = !this.props.newApp && !this.props.appId ? <CQLink href="/quiz/apps/new" className="btn btn-primary"><i className="fa fa-plus"></i> New app</CQLink> : undefined;
 

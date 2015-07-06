@@ -27,13 +27,16 @@ var AppActions = {
     },
 
     loadApp: function(appId:string){
-        AppApi.getInfo(appId)
-            .then(function(appInfo){
-                AppDispatcher.dispatch({
-                    actionType: AppConstants.APP_INFO_LOADED,
-                    payload: appInfo
+
+        if (appId) {
+            AppApi.getInfo(appId)
+                .then(function(appInfo){
+                    AppDispatcher.dispatch({
+                        actionType: AppConstants.APP_INFO_LOADED,
+                        payload: appInfo
+                    });
                 });
-            });
+        }
     },
 
     deleteApp: function(app:Object){
