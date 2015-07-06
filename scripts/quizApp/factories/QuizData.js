@@ -73,10 +73,21 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     }
 
-    var processQuizData = function(result,privateMode) {
+    var processQuizData = function(result, privateMode) {
 
         categories = {};
         topics = {};
+
+        var allCategories = result.categories;
+
+        if (result.pcategories) {
+            allCategories = allCategories.concat(result.pcategories);
+        }
+        console.log('processing', result, allCategories);
+        var getCategory = (categoryId) => {
+            var category = allCategories.filter(c => c.uuid === categoryId)[0];
+            return category;
+        };
 
         for (var i in result.contents) {
             var quiz = result.contents[i];
@@ -84,20 +95,14 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var category = { name: "Other" };
             if (quiz.meta.categoryId !== undefined) {
                 cuuid = quiz.meta.categoryId;
-                if (result.categories !== undefined) {
-                    for (var i in result.categories) {
-                        if (result.categories[i].uuid==quiz.meta.categoryId) {
-                            category = result.categories[i];
-                            console.log('category', category);
-                        }
-                    }
-                }
+                var quizCategory = getCategory(cuuid);
+                category = quizCategory ? quizCategory : category;
             }
             else {
                 quiz.meta.categoryId = "unknown";
             }
-            if (categories[cuuid] == undefined) {
-                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
+            if (categories[cuuid] === undefined) {
+                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index || 0)} ;
             }
             if (privateMode) {
                 //public quizzes
@@ -458,12 +463,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             loadPlayerQuizzes(callback);
         },
         loadPublicQuizzes: function(callback){
-            zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, message){
+            zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, message){
                 if(!err) {
                     message.categories = message.categories.filter(c => c !== null);
                     message.contents = message.contents.filter(c => c !== null);
 
-                    processQuizData(message,true);
+                    processQuizData(message, true);
                 }
                 callback(err, message);
                 $rootScope.$digest();
