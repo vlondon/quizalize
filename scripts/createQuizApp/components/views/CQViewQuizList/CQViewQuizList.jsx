@@ -2,6 +2,9 @@
 var React = require('react');
 var moment = require('moment');
 
+import type {Quiz} from './../../../stores/QuizStore';
+import QuizSorter from './../../../stores/extra/QuizSorter';
+
 var router = require('./../../../config/router');
 var CQViewQuizLocalSort = require('./../../../components/views/CQViewQuizLocalSort');
 var CQViewQuizAuthor = require('./../../../components/views/CQViewQuizAuthor');
@@ -11,13 +14,12 @@ var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 var TopicStore = require('./../../../stores/TopicStore');
 var UserStore = require('./../../../stores/UserStore');
 
-import type {Quiz} from './../../../stores/QuizStore';
 
 type Props = {
     isQuizInteractive: boolean,
     isPaginated: boolean,
     quizzesPerPage: number,
-    quizzes: Array<Object>,
+    quizzes: Array<Quiz>,
     className: string,
     selectedQuizzes: Array<string>,
     showAuthor: boolean,
@@ -32,12 +34,15 @@ type Props = {
     sortOptions: boolean,
     sortBy: string
 };
+
 type State = {
     page: number;
     pages: number;
     quizzes: Array<Object>;
     selectedQuizzes: Array<string>;
 };
+
+var sorter = new QuizSorter();
 
 export default class CQViewQuizList extends React.Component {
 
@@ -50,6 +55,7 @@ export default class CQViewQuizList extends React.Component {
     }
 
     componentDidMount() {
+        sorter = new QuizSorter();
         TopicStore.addChangeListener(this.onChange.bind(this));
     }
 
@@ -78,7 +84,15 @@ export default class CQViewQuizList extends React.Component {
                 uuid: 'new',
                 meta: {
                     name: 'Create your own Quiz',
-                    updated: 0
+                    updated: 0,
+                    authorId: '0',
+                    categoryId: '0',
+                    code: '0',
+                    created: 0,
+                    profileId: '0',
+                    random: false,
+                    price: 0,
+                    published: '0'
                 }
             };
             if (quizzes.filter(a => a.uuid === 'new').length === 0){
@@ -88,13 +102,14 @@ export default class CQViewQuizList extends React.Component {
 
         };
 
+        var quizzes = sorter.setQuizzes(props.quizzes);
 
-        var quizzes = props.quizzes;
         if (quizzes) {
-            if (props.showCta){
-                quizzes = quizCta(quizzes);
-            }
-            quizzes = this.sort(props, quizzes);
+            // if (props.showCta){
+            // }
+            // quizzes = this.sort(props, quizzes);
+            quizzes = sorter.sort('time');
+            quizzes = quizCta(quizzes);
             if (this.props.isPaginated) {
 
                 page = page || this.state.page;
@@ -182,6 +197,8 @@ export default class CQViewQuizList extends React.Component {
         //     };
         // }
         //
+
+
         //
         //
         // // obj = obj || this.state.savedSearch || undefined;

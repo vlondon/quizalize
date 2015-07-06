@@ -1,6 +1,7 @@
 /* @flow */
 import Store from './Store';
 import UserStore from './UserStore';
+
 var uuid            = require('node-uuid');
 
 var AppDispatcher   = require('./../dispatcher/CQDispatcher');
@@ -18,15 +19,15 @@ type QuizMeta = {
     categoryId: string;
     code: string;
     created: number;
-    imageUrl: ?string;
+    imageUrl?: string;
     name: string;
-    originalQuizId: ?string;
+    originalQuizId?: string;
     profileId: string;
     random: boolean;
-    subject: ?string;
+    subject?: string;
     updated: number;
-    review: any;
-    comment: any;
+    review?: any;
+    comment?: any;
     price: number;
     published: string;
 };
@@ -35,10 +36,13 @@ type Question = {
     uuid: string;
     question: string;
     answer: string;
+    topicId: string;
 }
+
 type QuizPayload = {
     questions: Array<Question>;
 }
+
 export type QuizComplete = {
     uuid: string;
     meta: QuizMeta;
@@ -48,7 +52,7 @@ export type QuizComplete = {
 export type Quiz = {
     uuid: string;
     meta: QuizMeta;
-    _category: QuizCategory;
+    _category?: QuizCategory;
 }
 
 

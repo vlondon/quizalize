@@ -22,7 +22,6 @@ var CQLink          = require(`./../../../components/utils/CQLink`);
 type State = {
     selectedQuizzes?: Array<Object>;
     quizzes: Array<Object>;
-    apps: Array<Object>;
     isAdmin: boolean;
 };
 
@@ -68,7 +67,6 @@ var CQQuizzes = React.createClass({
         var groupContents = GroupStore.getGroupsContent();
 
         for (var i in groupContents) {
-
 
             if (groupContents[i].contentId === quiz.uuid) {
                 found = true;
