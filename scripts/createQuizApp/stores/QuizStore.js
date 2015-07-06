@@ -1,17 +1,13 @@
-
 /* @flow */
-var EventEmitter    = require('events').EventEmitter;
-var assign          = require('object-assign');
+import Store from './Store';
+import UserStore from './UserStore';
 var uuid            = require('node-uuid');
 
 var AppDispatcher   = require('./../dispatcher/CQDispatcher');
 var QuizConstants   = require('./../constants/QuizConstants');
-var TopicConstants  = require('./../constants/TopicConstants');
 var QuizActions     = require('./../actions/QuizActions');
 var TopicStore      = require('./../stores/TopicStore');
-var TransactionConstants   = require('./../constants/TransactionConstants');
 
-import UserStore               from './../stores/UserStore';
 
 type QuizCategory = {
     name: string;
@@ -29,19 +25,34 @@ type QuizMeta = {
     random: boolean;
     subject: ?string;
     updated: number;
+    review: any;
+    comment: any;
+    price: number;
+    published: string;
 };
+
+type Question = {
+    uuid: string;
+    question: string;
+    answer: string;
+}
+type QuizPayload = {
+    questions: Array<Question>;
+}
+export type QuizComplete = {
+    uuid: string;
+    meta: QuizMeta;
+    payload: QuizPayload;
+}
 
 export type Quiz = {
     uuid: string;
     meta: QuizMeta;
     _category: QuizCategory;
-
 }
 
-var CHANGE_EVENT = 'change';
 
 
-var _quizzes = [];
 var _quizzes: Array<Quiz> = [];
 
 var _publicQuizzes = [];
@@ -69,48 +80,43 @@ var QuestionObject = function(quiz){
     return question;
 };
 
-var QuizStore = assign({}, EventEmitter.prototype, {
+class QuizStore extends Store {
 
-    getQuizzes: function() {
+    token: string;
+
+    getQuizzes(): Array<Quiz> {
         return _quizzes.slice();
-    },
+    }
 
-    getQuizMeta: function(quizId) {
+    getQuizMeta(quizId): Quiz {
         var result = _quizzes.filter(t => t.uuid === quizId);
         return result.length === 1 ? result.slice()[0] : _fullQuizzes[quizId];
 
-    },
+    }
 
-    getQuiz: function(quizId){
+    getQuiz(quizId): QuizComplete{
         var fullQuiz = _fullQuizzes[quizId];
         if (fullQuiz === undefined){
             QuizActions.loadQuiz(quizId);
         }
         return fullQuiz;
-    },
+    }
 
-    getQuestion: function(quizId, questionIndex){
+    getQuestion(quizId, questionIndex){
         var quiz = this.getQuiz(quizId);
         var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
         return question;
-    },
+    }
 
-    getPublicQuizzes: function(){
+    getPublicQuizzes(){
         return _publicQuizzes.slice().reverse();
-    },
+    }
 
-    getQuizzesForProfile: function(profileId) {
+    getQuizzesForProfile(profileId) {
         return _publicQuizzes.filter(quiz => quiz.meta.profileId === profileId).slice().reverse();
-    },
+    }
 
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
+    addChangeListener(callback){
         if (UserStore.getUser() && !storeInit) {
             QuizActions.loadQuizzes();
             storeInit = true;
@@ -119,35 +125,28 @@ var QuizStore = assign({}, EventEmitter.prototype, {
             QuizActions.searchPublicQuizzes();
             storeInitPublic = true;
         }
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
-    },
+        super.addChangeListener(callback);
+    }
 
     /**
      * is Quizzes Init
      */
-     isInitData: function() {
+    isInitData () {
         return storeInit;
-     },
+    }
 
     /**
      * is Quizzes Init
      */
-     isInitPublicData: function() {
+    isInitPublicData () {
         return storeInitPublic;
-     }
+    }
+}
 
-});
-
-
+var quizStoreInstance = new QuizStore();
+export default quizStoreInstance;
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
+quizStoreInstance.token = AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case QuizConstants.QUIZZES_LOADED:
@@ -156,7 +155,7 @@ AppDispatcher.register(function(action) {
             ]);
             _quizzes = action.payload.quizzes;
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
-            QuizStore.emitChange();
+            quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZ_LOADED:
@@ -165,25 +164,25 @@ AppDispatcher.register(function(action) {
             ]);
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
-            QuizStore.emitChange();
+            quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZZES_PUBLIC_LOADED:
             _publicQuizzes = action.payload;
-            QuizStore.emitChange();
+            quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZ_DELETED:
             var quizIdToBeDeleted = action.payload;
             var quizToBeDeleted = _quizzes.filter(q => q.uuid === quizIdToBeDeleted)[0];
             _quizzes.splice(_quizzes.indexOf(quizToBeDeleted), 1);
-            QuizStore.emitChange();
+            quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZ_ADDED:
             var quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
-            QuizStore.emitChange();
+            quizStoreInstance.emitChange();
             break;
 
 
@@ -195,11 +194,10 @@ AppDispatcher.register(function(action) {
             }
 
 
-            QuizStore.emitChange();
+            quizStoreInstance.emitChange();
             break;
 
         default:
             // no op
     }
 });
-module.exports = QuizStore;

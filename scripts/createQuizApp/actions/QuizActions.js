@@ -1,5 +1,5 @@
 /* @flow */
-import type Quiz        from './../stores/QuizStore';
+import type {Quiz, QuizComplete}        from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
@@ -148,7 +148,7 @@ var QuizActions = {
     },
 
 
-    newQuiz: function(quiz:Quiz){
+    newQuiz: function(quiz:QuizComplete){
 
 
         var addOrCreateCategory = function(){
@@ -258,9 +258,6 @@ var QuizActions = {
         });
 
     }
-
-
-
 };
 
 

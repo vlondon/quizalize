@@ -4,7 +4,7 @@ import {EventEmitter} from 'events';
 var CHANGE_EVENT = 'change';
 
 class Store extends EventEmitter {
-
+    token: string;
     constructor() {
         super();
     }

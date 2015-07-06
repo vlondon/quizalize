@@ -30,18 +30,18 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel'],
+                loaders: ['react-hot', 'babel?optional[]=runtime'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(node_modules|bower_components)/
             },
 
             {
                 test: /\.es6\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(bower_components)/
             },
             {

@@ -41,3 +41,8 @@ export default class CQYourApps extends React.Component {
     }
 
 }
+
+CQYourApps.propTypes = {
+    newApp: React.PropTypes.bool,
+    appId: React.PropTypes.string
+};

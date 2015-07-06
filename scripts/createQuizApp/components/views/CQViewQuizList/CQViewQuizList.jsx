@@ -1,3 +1,4 @@
+/* @flow */
 var React = require('react');
 var moment = require('moment');
 
@@ -10,78 +11,65 @@ var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 var TopicStore = require('./../../../stores/TopicStore');
 var UserStore = require('./../../../stores/UserStore');
 
+import type {Quiz} from './../../../stores/QuizStore';
 
+type Props = {
+    isQuizInteractive: boolean,
+    isPaginated: boolean,
+    quizzesPerPage: number,
+    quizzes: Array<Object>,
+    className: string,
+    selectedQuizzes: Array<string>,
+    showAuthor: boolean,
+    showCta: boolean,
+    showReviewButton: boolean,
+    quizCode: string,
+    onQuizClick: Function,
+    onClick: Function,
+    onSelect: Function,
+    selectMode: boolean,
+    profileMode: boolean,
+    sortOptions: boolean,
+    sortBy: string
+};
+type State = {
+    page: number;
+    pages: number;
+    quizzes: Array<Object>;
+    selectedQuizzes: Array<string>;
+};
 
-var CQViewQuizList = React.createClass({
+export default class CQViewQuizList extends React.Component {
 
-    propTypes: {
-        isQuizInteractive: React.PropTypes.bool,
-        isPaginated: React.PropTypes.bool,
-        quizzesPerPage: React.PropTypes.number,
-        quizzes: React.PropTypes.array,
-        className: React.PropTypes.string,
-        selectedQuizzes: React.PropTypes.array,
-        showAuthor: React.PropTypes.bool,
-        showCta: React.PropTypes.bool,
-        showReviewButton: React.PropTypes.bool,
-        quizCode: React.PropTypes.string,
-        onQuizClick: React.PropTypes.func,
-        onClick: React.PropTypes.func,
-        onSelect: React.PropTypes.func,
-        selectMode: React.PropTypes.bool,
-        profileMode: React.PropTypes.bool,
-        sortOptions: React.PropTypes.bool,
-        sortBy: React.PropTypes.string,
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element,
-            React.PropTypes.arrayOf(React.PropTypes.element)
-        ])
-    },
-
-    getDefaultProps: function() {
-        return {
-            isQuizInteractive: false,
-            isPaginated: false,
-            quizzes: [],
-            className: '',
-            quizzesPerPage: 16,
-            showAuthor: true,
-            showReviewButton: false,
-            showCta: false,
-            sortOptions: false,
-            onQuizClick: function(){},
-            onClick: function(){},
-            onSelect: function(){}
-        };
-    },
-
-    getInitialState: function() {
-
-        var initialState = this.getState(undefined, 1);
+    constructor(props:Props) {
+        super(props);
+        var initialState = this.getState(props, 1);
         initialState.selectedQuizzes = this.props.selectedQuizzes || [];
         initialState.page = 1;
-        return initialState;
-    },
+        this.state = initialState;
+    }
 
-    componentDidMount: function() {
-        TopicStore.addChangeListener(this.onChange);
-    },
+    componentDidMount() {
+        TopicStore.addChangeListener(this.onChange.bind(this));
+    }
 
-    componentWillUnmount: function() {
-        TopicStore.removeChangeListener(this.onChange);
-    },
+    componentWillUnmount() {
+        TopicStore.removeChangeListener(this.onChange.bind(this));
+    }
 
-    componentWillReceiveProps: function(nextProps:Object) {
+    componentWillReceiveProps(nextProps:Object) {
         this.onChange(nextProps);
-    },
+    }
 
-    getState: function(props:Object, page:?number){
+    getState(props:Props, page:?number): State {
 
         props = props || this.props;
+        var state:State = Object.assign({}, this.state);
+
 
         if (TopicStore.getTopicTree().length === 0){
-            return {quizzes: []};
+            state.quizzes = [];
+            return state;
         }
 
 
@@ -103,10 +91,10 @@ var CQViewQuizList = React.createClass({
 
         var quizzes = props.quizzes;
         if (quizzes) {
-            if (this.props.showCta){
+            if (props.showCta){
                 quizzes = quizCta(quizzes);
             }
-            quizzes = this.sort(undefined, quizzes);
+            quizzes = this.sort(props, quizzes);
             if (this.props.isPaginated) {
 
                 page = page || this.state.page;
@@ -117,29 +105,29 @@ var CQViewQuizList = React.createClass({
                 var quizzesToDisplay = quizzes.slice(quizzesIndexStart, quizzesIndexEnd);
                 var pages = Math.ceil(quizzes.length / props.quizzesPerPage);
 
-                return {
-                    quizzes: quizzesToDisplay,
-                    pages,
-                    page
-                };
+
+                state.quizzes = quizzesToDisplay;
+                state.pages = pages;
+                state.page = page;
             } else {
-                return {quizzes};
+                state.quizzes = quizzes;
             }
         }
-    },
+        return state;
+    }
 
-    onChange: function(props, page:?number){
+    onChange(props:Props, page:?number){
         props = props || this.props;
         var newState = this.getState(props, page);
         if (props.selectedQuizzes) {
             newState.selectedQuizzes = props.selectedQuizzes;
         }
         this.setState(newState);
-    },
+    }
 
 
 
-    handleClick: function(quiz){
+    handleClick(quiz:Quiz){
         if (this.props.selectMode) {
             this.handleChange(quiz);
         } else {
@@ -160,15 +148,15 @@ var CQViewQuizList = React.createClass({
                 this.props.onQuizClick(quiz);
             }
         }
-    },
+    }
 
-    handleReview: function(quiz){
+    handleReview(quiz:Quiz) {
         if (quiz){
             router.setRoute(`/quiz/review/${quiz.uuid}`);
         }
-    },
+    }
 
-    handleChange: function(quiz){
+    handleChange(quiz:Quiz) {
         var selectedQuizzes = this.state.selectedQuizzes.slice();
         var isSelected = selectedQuizzes.indexOf(quiz.uuid) === -1;
 
@@ -180,79 +168,85 @@ var CQViewQuizList = React.createClass({
         }
         this.setState({selectedQuizzes});
         this.props.onSelect(selectedQuizzes);
-    },
+    }
 
-    handlePagination: function(page){
+    handlePagination(page:number) {
         this.onChange(this.props, page);
-    },
+    }
 
-    sort: function(obj, quizzes){
-
-        if (this.props.sortBy && obj === undefined){
-            obj = {
-                sort: this.props.sortBy
-            };
-        }
-
-
-
-        // obj = obj || this.state.savedSearch || undefined;
-
-        quizzes = quizzes || this.props.quizzes.slice();
-
-        if (obj && obj.sort === 'name') {
-            quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
-        } else if (obj && obj.sort === 'time') {
-            quizzes.sort((a, b) =>  a.meta.updated > b.meta.updated ? -1 : 1);
-        }
-        else {
-            quizzes.sort((a, b) => {
-                if (a.meta.categoryId && b.meta.categoryId){
-                    var A = TopicStore.getTopicById(a.meta.categoryId).name.toLowerCase();
-                    var B = TopicStore.getTopicById(b.meta.categoryId).name.toLowerCase();
-
-                    if (A === B) {
-                        return a.meta.name > b.meta.name ? 1 : -1;
-                    }
-
-                    return A > B ? 1 : -1;
-                } else {
-                    return a.meta.name > b.meta.name ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-
-        if (obj && obj.name && obj.name.length > 0){
-            quizzes = quizzes.filter( q => {
-                var nameMatch;
-                var categoryMatch = false;
-                nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-                if (q.meta.categoryId) {
-                    categoryMatch = TopicStore.getTopicName(q.meta.categoryId).toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
-                }
-
-                return nameMatch || categoryMatch;
-            });
-        }
+    sort(obj:Object, quizzes:Array<Quiz>): Array<Quiz> {
+        //
+        // if (this.props.sortBy && obj === undefined){
+        //     obj = {
+        //         sort: this.props.sortBy
+        //     };
+        // }
+        //
+        //
+        //
+        // // obj = obj || this.state.savedSearch || undefined;
+        //
+        // quizzes = quizzes || this.props.quizzes.slice();
+        //
+        // if (obj && obj.sort === 'name') {
+        //     quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
+        // } else if (obj && obj.sort === 'time') {
+        //     quizzes.sort((a, b) =>  a.meta.updated > b.meta.updated ? -1 : 1);
+        // }
+        // else {
+        //     quizzes.sort((a, b) => {
+        //         if (a.meta.categoryId && b.meta.categoryId){
+        //             var topicA = TopicStore.getTopicById(a.meta.categoryId);
+        //             var topicB = TopicStore.getTopicById(b.meta.categoryId);
+        //
+        //             if (topicA) {
+        //                 var A = topicA.name && topicA.name.toLowerCase();
+        //             }
+        //             if (topicB) {
+        //                 var B = topicB.name && topicB.name.toLowerCase();
+        //             }
+        //
+        //             if (A && B && A === B) {
+        //                 return a.meta.name > b.meta.name ? 1 : -1;
+        //             }
+        //
+        //             return A > B ? 1 : -1;
+        //         } else {
+        //             return a.meta.name > b.meta.name ? 1 : -1;
+        //         }
+        //     });
+        // }
+        //
+        // if (obj && obj.name && obj.name.length > 0){
+        //     quizzes = quizzes.filter( q => {
+        //         var nameMatch;
+        //         var categoryMatch = false;
+        //         nameMatch = q.meta.name.toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+        //         if (q.meta.categoryId) {
+        //             categoryMatch = TopicStore.getTopicName(q.meta.categoryId).toLowerCase().indexOf(obj.name.toLowerCase()) !== -1;
+        //         }
+        //
+        //         return nameMatch || categoryMatch;
+        //     });
+        // }
 
         return quizzes;
-    },
+    }
 
-    handleSearch: function(obj, quizzes){
+    handleSearch (obj:Object, quizzes: Array<Quiz>) {
         quizzes = this.sort(obj, quizzes);
         this.setState({quizzes, savedSearch: obj});
-    },
+    }
 
-    handleNewQuiz: function(){
+    handleNewQuiz(){
         router.setRoute(`/quiz/create`);
-    },
+    }
 
-    render: function() {
+    render():any {
         var author = function(){};
         var reviewButton = function(){};
         var publishButton = function(){};
-        var select;
+        var select:Function = function(){};
         var sort;
 
         var childActionHandler = function(child, quiz){
@@ -303,8 +297,6 @@ var CQViewQuizList = React.createClass({
                     type="checkbox"
                     className="cq-viewquizlist__checkbox"/>);
             };
-        } else {
-            select = function(){};
         }
 
         if (this.props.sortOptions) {
@@ -343,7 +335,8 @@ var CQViewQuizList = React.createClass({
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {TopicStore.getTopicName(quiz.meta.categoryId)} {author(quiz)}
+                                    {TopicStore.getTopicName(quiz.meta.categoryId)}<br/>
+                                    {author(quiz)}
 
 
                                     <div className="cq-viewquizlist__quizextra">
@@ -365,13 +358,49 @@ var CQViewQuizList = React.createClass({
                 </ul>
                 <CQPagination
                     className="cq-viewquizlist__pagination"
-                    onPagination={this.handlePagination}
+                    onPagination={this.handlePagination.bind(this)}
                     pages={this.state.pages}
                     currentPage={this.state.page}/>
             </div>
         );
     }
+}
 
-});
-
-module.exports = CQViewQuizList;
+CQViewQuizList.propTypes = {
+    isQuizInteractive: React.PropTypes.bool,
+    isPaginated: React.PropTypes.bool,
+    quizzesPerPage: React.PropTypes.number,
+    quizzes: React.PropTypes.array,
+    className: React.PropTypes.string,
+    selectedQuizzes: React.PropTypes.array,
+    showAuthor: React.PropTypes.bool,
+    showCta: React.PropTypes.bool,
+    showReviewButton: React.PropTypes.bool,
+    quizCode: React.PropTypes.string,
+    onQuizClick: React.PropTypes.func,
+    onClick: React.PropTypes.func,
+    onSelect: React.PropTypes.func,
+    selectMode: React.PropTypes.bool,
+    profileMode: React.PropTypes.bool,
+    sortOptions: React.PropTypes.bool,
+    sortBy: React.PropTypes.string,
+    children: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.element,
+        React.PropTypes.arrayOf(React.PropTypes.element)
+    ])
+};
+CQViewQuizList.defaultProps = {
+    isQuizInteractive: false,
+    isPaginated: false,
+    quizzes: [],
+    className: '',
+    quizzesPerPage: 16,
+    showAuthor: true,
+    showReviewButton: false,
+    showCta: false,
+    sortOptions: false,
+    onQuizClick: function(){},
+    onClick: function(){},
+    onSelect: function(){}
+};

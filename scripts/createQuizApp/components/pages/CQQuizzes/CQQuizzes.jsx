@@ -8,7 +8,7 @@ var router          = require(`./../../../config/router`);
 var QuizActions     = require(`./../../../actions/QuizActions`);
 var QuizStore       = require(`./../../../stores/QuizStore`);
 var GroupStore      = require(`./../../../stores/GroupStore`);
-var AppStore        = require(`./../../../stores/AppStore`);
+
 var UserStore       = require(`./../../../stores/UserStore`);
 
 var CQViewQuizList  = require(`./../../../components/views/CQViewQuizList`);
@@ -41,13 +41,11 @@ var CQQuizzes = React.createClass({
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-        AppStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         GroupStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-        AppStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
@@ -57,12 +55,11 @@ var CQQuizzes = React.createClass({
     getState: function():State{
 
         var quizzes = QuizStore.getQuizzes();
-        var apps = AppStore.getApps();
         var isAdmin: boolean = UserStore.isAdmin();
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
-        return { quizzes, apps, isAdmin };
+        return { quizzes,  isAdmin };
     },
 
     handleDelete: function(quiz: Object){
@@ -123,7 +120,7 @@ var CQQuizzes = React.createClass({
     render: function() {
 
 
-        if (this.state.quizzes === undefined || this.state.apps === undefined){
+        if (this.state.quizzes === undefined || !QuizStore.isInitData()){
             return (
                 <CQPageTemplate className="container cq-quizzes">
                     <CQSpinner/>
@@ -145,7 +142,8 @@ var CQQuizzes = React.createClass({
             );
         }
 
-        if (this.state.quizzes.length === 0){
+        console.log('this.state.quizzes.length', this.state.quizzes.length);
+        if (this.state.quizzes.length === 0 && QuizStore.isInitData()){
             emptyState = (
                 <div className="cq-quizzes__empty">
 
