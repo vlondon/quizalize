@@ -18,11 +18,11 @@ function goToQuiz() {
 }
 
 function goToService() {
-  location.hash ="#service";
+  location.hash = "#service";
 }
 
 function goToApp() {
-  window.location.href="/app#/"
+  window.location.href = "/app#/";
 }
 
 

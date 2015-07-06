@@ -419,7 +419,11 @@ exports.publishToMarketplace = function(req,res) {
             var params = {
                 name: name
             };
-            email.sendEmailTemplate('team@zzish.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+              profileId: profileId,
+              id: id
+            });
             res.send();
         });
     });
@@ -442,7 +446,7 @@ exports.shareQuiz = function(req, res){
             from: emailFrom,
             link: link
         }
-        email.sendEmailTemplate('team@zzish.com', emails, 'You have been shared a quiz!', 'shared', params);
+        email.sendEmailTemplate('team@quizalize.com', emails, 'You have been shared a quiz!', 'shared', params);
     }
     res.send(true);
 };
@@ -460,7 +464,7 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                                 name: quiz.meta.name,
                                 link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
                             }
-                            email.sendEmailTemplate('team@zzish.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
+                            email.sendEmailTemplate('team@quizalize.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
                 }
@@ -488,7 +492,7 @@ exports.help = function(req, res){
     var params = {
         name: name
     }
-    email.sendEmailTemplate('team@zzish.com', [req.body.email], 'Quizalize Help', 'help', params);
+    email.sendEmailTemplate('team@quizalize.com', [req.body.email], 'Quizalize Help', 'help', params);
     var params2 = {
         name: req.body.name,
         message: req.body.message,

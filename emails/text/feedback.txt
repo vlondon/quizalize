@@ -1,6 +1,6 @@
 Hi there,
 
-Thanks for using the Quiz %namd% in your class. We want to make sure we're always promoting the best quality content in our marketplace. Can you fill out a quick survey to tell us what you think. Your review will help content creators keep their quizzes at the highest level. Click on the following link to review this quiz:
+Thanks for using the Quiz '%quiz%' in your class. We want to make sure we're always promoting the best quality content in our marketplace. Can you fill out a quick survey to tell us what you think. Your review will help content creators keep their quizzes at the highest level. Click on the following link to review this quiz:
 
 %link%
 

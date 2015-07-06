@@ -59,6 +59,7 @@ var QuestionObject = function(quiz){
         imageEnabled: false,
         uuid: uuid.v4()
     };
+
     if (quiz && quiz.payload.questions.length > 0) {
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
         question.latexEnabled = lastQuestion.latexEnabled || false;
