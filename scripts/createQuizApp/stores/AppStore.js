@@ -21,6 +21,7 @@ type AppMeta = {
 
 type AppPayload = {
     quizzes: Array<string>;
+    categories: Array<any>;
 }
 
 export type App = {
@@ -29,16 +30,23 @@ export type App = {
     payload?: AppPayload;
 }
 
+export type AppComplete = {
+    uuid?: string;
+    meta: AppMeta;
+    payload: AppPayload;
+}
+
 
 var _publicApps: ?Array<App>;
 var _apps: Array<App> = [];
+
 var _appInfo = {};
 
 var storeInit = false;
 var storeInitPublic = false;
 
 
-var AppObject = function():App{
+var AppObject = function():AppComplete{
     var app = {
         meta: {
             colour: '#a204c3',
@@ -51,7 +59,10 @@ var AppObject = function():App{
             quizzes: '',
             updated: Date.now()
         },
-        payload: undefined
+        payload: {
+            categories: [],
+            quizzes: []
+        }
 
     };
 
@@ -61,11 +72,12 @@ var AppObject = function():App{
 class AppStore extends Store {
 
     getApps() {
+        console.info('_apps', _apps);
         return _apps;
     }
 
-    getAppById(appId) {
-        var result = _apps.filter(t => t.uuid === appId);
+    getAppById(appId):?App {
+        var result:Array<App> = _apps.filter(t => t.uuid === appId);
         return result.length === 1 ? result.slice()[0] : undefined;
     }
 
@@ -73,15 +85,14 @@ class AppStore extends Store {
         return _publicApps;
     }
 
-    getAppInfo(appId){
+    getAppInfo(appId):?AppComplete{
         if (_appInfo[appId] === undefined){
             AppActions.loadApp(appId);
-            _appInfo[appId] = {};
         }
         return _appInfo[appId];
     }
 
-    getNewApp():App{
+    getNewApp(): AppComplete {
         return new AppObject();
     }
 

@@ -5,7 +5,7 @@ import assign from 'object-assign';
 import AppActions from './../../../actions/AppActions';
 import QuizStore from './../../../stores/QuizStore';
 import AppStore from './../../../stores/AppStore';
-import type {App} from './../../../stores/AppStore';
+import type {AppComplete} from './../../../stores/AppStore';
 import TopicStore from './../../../stores/TopicStore';
 import CQViewAppColourPicker from './../../../components/views/CQViewAppColourPicker';
 
@@ -21,9 +21,9 @@ type Props = {
     appId: string;
 }
 type State = {
-    app: App;
+    app: AppComplete;
     quizzes: Array<Object>;
-    selectedQuizzes: Array<Object>;
+    selectedQuizzes: Array<string>;
     prices?: Array<number>;
     canSave?: boolean;
     imageData?: ?Object;
@@ -41,7 +41,7 @@ export default class CQViewCreateApp extends React.Component {
             prices: TransactionStore.getPrices(),
             quizzes: QuizStore.getQuizzes(),
             canSave: false,
-            app: this._getApp()
+            app: this.getApp()
         };
         this.onChange = this.onChange.bind(this);
     }
@@ -62,36 +62,38 @@ export default class CQViewCreateApp extends React.Component {
         this.setState(this.getState());
     }
 
-    _getApp(props?: Props){
+    getApp(props?: Props):AppComplete{
         props = props || this.props;
-        var app = AppStore.getAppById(props.appId);
-        // if it's the first time we create an app
-        if (app === undefined) {
-            app = AppStore.getNewApp();
+        var appInfo = AppStore.getAppInfo(props.appId);
+        if (appInfo){
+            return appInfo;
+        } else {
+            return AppStore.getNewApp();
         }
-        return app;
     }
 
 
 
     getState():State{
-        var app = this.state.app;
-        if (this.props.appId) {
-            app = this._getApp();
-        }
+
+        var app = this.getApp();
         var quizzes = QuizStore.getQuizzes();
-        //var apps = AppStore.getApps();
+
+
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
-        var selectedQuizzes = app.payload.quizzes;
+
+        var selectedQuizzes:Array<string> = app.payload.quizzes;
+
         return { app, quizzes, selectedQuizzes };
+
     }
 
     componentWillReceiveProps(nextProps:Props) {
         var app = assign({}, this.state.app);
         if (nextProps.appId) {
-            app = this._getApp();
+            app = this.getApp();
         }
 
         //app.meta.quizzes = nextProps.selectedQuizzes;
