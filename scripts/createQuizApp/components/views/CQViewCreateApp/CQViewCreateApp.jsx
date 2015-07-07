@@ -40,9 +40,11 @@ export default class CQViewCreateApp extends React.Component {
             selectedQuizzes: [],
             prices: TransactionStore.getPrices(),
             quizzes: QuizStore.getPersonalQuizzes(),
-            canSave: false,
+            canSave: props.appId ? true : false,
             app: this.getApp()
         };
+        console.log('this.state', this.state);
+
         this.onChange = this.onChange.bind(this);
     }
 
@@ -64,8 +66,8 @@ export default class CQViewCreateApp extends React.Component {
 
     getApp(props?: Props):AppComplete{
         props = props || this.props;
-        console.log('appInfoappInfoappInfo', props.appId);
-        // if (props.appId === 'new')
+
+
         var appInfo = AppStore.getAppInfo(props.appId);
         if (appInfo){
             return appInfo;
@@ -118,7 +120,7 @@ export default class CQViewCreateApp extends React.Component {
         var app = assign({}, this.state.app);
         app.meta[field] = event.target.value;
 
-        var csave = false;
+        var csave = this.state.canSave;
         if (field === 'name') {
             csave = event.target.value && event.target.value.length > 0 && this.state.selectedQuizzes && this.state.selectedQuizzes.length > 0;
         }
