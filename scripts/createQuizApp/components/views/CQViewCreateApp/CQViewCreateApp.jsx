@@ -145,6 +145,7 @@ export default class CQViewCreateApp extends React.Component {
         };
 
         var file = ev.target.files[0];
+        appPicture = file;
         reader.readAsDataURL(file);
 
     }
@@ -155,7 +156,7 @@ export default class CQViewCreateApp extends React.Component {
         this.setState({selectedQuizzes, canSave: csave});
     }
 
-    render():Object {
+    render():any {
         var prices;
         if (this.state.prices){
             prices = this.state.prices.map(price=> {
@@ -237,7 +238,7 @@ export default class CQViewCreateApp extends React.Component {
                     <button
                         className="btn btn-default"
                         disabled={!this.state.canSave}
-                        onClick={this.handleSave}>
+                        onClick={this.handleSave.bind(this)}>
                         Save
                     </button>
                 </div>
