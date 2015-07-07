@@ -61,8 +61,17 @@ var _quizzes: Array<Quiz> = [];
 
 var _publicQuizzes = [];
 var _fullQuizzes = {};
+var _fullPublicQuizzes = {};
 var storeInit = false;
 var storeInitPublic = false;
+
+// Add user listener
+UserStore.addChangeListener(function(){
+    storeInit = false;
+    storeInitPublic = false;
+
+});
+
 
 var QuestionObject = function(quiz){
 
@@ -109,6 +118,14 @@ class QuizStore extends Store {
             QuizActions.loadQuiz(quizId);
         }
         return fullQuiz;
+    }
+
+    getPublicQuiz(quizId): QuizComplete{
+        var fullPublicQuiz = _fullPublicQuizzes[quizId];
+        if (fullPublicQuiz === undefined){
+            QuizActions.loadPublicQuiz(quizId);
+        }
+        return fullPublicQuiz;
     }
 
     getQuestion(quizId, questionIndex){
@@ -173,6 +190,12 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             ]);
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
+            quizStoreInstance.emitChange();
+            break;
+
+        case QuizConstants.QUIZ_PUBLIC_LOADED:
+            var publicQuiz = action.payload;
+            _fullPublicQuizzes[publicQuiz.uuid] = publicQuiz;
             quizStoreInstance.emitChange();
             break;
 

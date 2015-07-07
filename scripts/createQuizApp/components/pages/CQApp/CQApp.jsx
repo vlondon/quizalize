@@ -47,6 +47,8 @@ export default class CQApp extends React.Component {
     constructor(props:Props) {
         super(props);
         this.state =  this.getState();
+        this.handleDetails = this.handleDetails.bind(this);
+        this.handleDetailsClose = this.handleDetailsClose.bind(this);
     }
 
     componentDidMount () {
