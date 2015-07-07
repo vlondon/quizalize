@@ -22,8 +22,21 @@ var CQViewAppGrid = React.createClass({
         };
     },
 
-    handleDelete: function(app){
-        AppActions.deleteApp(app);
+    handleDelete: function(app, event){
+        event.preventDefault();
+        event.stopPropagation();
+
+        swal({
+            title: 'Confirm Delete',
+            text: 'Are you sure you want to permanently delete this app?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }, function(isConfirmed){
+            if (isConfirmed){
+                AppActions.deleteApp(app);
+            }
+        });
     },
 
     handleClick: function(app){
