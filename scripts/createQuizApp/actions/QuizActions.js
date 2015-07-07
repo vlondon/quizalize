@@ -240,8 +240,6 @@ var QuizActions = {
 
     },
 
-
-
     publishQuiz: function(quiz:Quiz, settings:Object) {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";

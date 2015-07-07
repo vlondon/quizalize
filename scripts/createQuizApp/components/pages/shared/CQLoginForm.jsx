@@ -1,8 +1,7 @@
 /* @flow */
 var React = require('react');
 var assign = require('object-assign');
-
-
+var CQZzishLogin = require('./CQZzishLogin');
 type State = {
     email: string;
     password: string;
@@ -138,7 +137,12 @@ var CQLoginForm = React.createClass({
 
                     </div>
                 </div>
+                <div className="cq-login__zzish">
 
+
+                    <CQZzishLogin/>
+
+                </div>
 
 
 

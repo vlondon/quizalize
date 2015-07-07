@@ -5,37 +5,40 @@
  * the subfolder /webpack-dev-server/ is visited. Visiting the root will not automatically reload.
  */
 var webpack = require('webpack');
+var path = require('path');
+
 module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        cqApp: ['createQuizApp/CQApp.js'],
-        vendor: ['fastclick', 'react', 'superagent', 'object-assign', 'babel-runtime']
+        cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
+        vendor: ['fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|es/)
     ],
     output: {
-        path: __dirname,
-        filename: '[name].js'
+        path: path.join(__dirname, 'public/js/'),
+        filename: '[name].js',
+        publicPath: 'http://localhost:7071/js/'
     },
     module: {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel'],
+                loaders: ['react-hot', 'babel?optional[]=runtime'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(node_modules|bower_components)/
             },
 
             {
                 test: /\.es6\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(bower_components)/
             },
             {

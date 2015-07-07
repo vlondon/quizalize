@@ -49,7 +49,7 @@ var CQViewQuizMarketplaceOptions = React.createClass({
     },
 
 
-    handleDone: function(ev){
+    handleDone: function(){
 
         var settings = {
             price: this.state.price
