@@ -16,23 +16,23 @@ var UserStore = require('./../../../stores/UserStore');
 
 
 type Props = {
-    isQuizInteractive: boolean,
-    isPaginated: boolean,
-    quizzesPerPage: number,
-    quizzes: Array<Quiz>,
-    className: string,
-    selectedQuizzes: Array<string>,
-    showAuthor: boolean,
-    showCta: boolean,
-    showReviewButton: boolean,
-    quizCode: string,
-    onQuizClick: Function,
-    onClick: Function,
-    onSelect: Function,
-    selectMode: boolean,
-    profileMode: boolean,
-    sortOptions: boolean,
-    sortBy: string
+    isQuizInteractive: boolean;
+    isPaginated: boolean;
+    quizzesPerPage: number;
+    quizzes: Array<Quiz>;
+    className: string;
+    selectedQuizzes: Array<string>;
+    showAuthor: boolean;
+    showCta: boolean;
+    showReviewButton: boolean;
+    quizCode: string;
+    onQuizClick: Function;
+    onClick: Function;
+    onSelect: Function;
+    selectMode: boolean;
+    profileMode: boolean;
+    sortOptions: boolean;
+    sortBy: string;
 };
 
 type State = {
