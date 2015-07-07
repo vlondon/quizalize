@@ -10,6 +10,9 @@ var QuizApi             = require('./../actions/api/QuizApi');
 var TopicStore          = require('./../stores/TopicStore');
 var TopicActions        = require('./../actions/TopicActions');
 var router              = require('./../config/router');
+
+var UserApi             = require('createQuizApp/actions/api/UserApi');
+
 import UserStore        from './../stores/UserStore';
 
 var debounce            = require('./../utils/debounce');
@@ -180,7 +183,7 @@ var QuizActions = {
         };
 
         return new Promise((resolve, reject) => {
-
+            var updatedQuiz = !!quiz.uuid;
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.meta.categoryId = addOrCreateCategory();
             // we filter questions with no content
@@ -191,6 +194,9 @@ var QuizActions = {
             quiz = createNewTopicsForQuiz(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
+            if (!updatedQuiz) {
+                UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+            }
 
             promise.then(()=>{
                 AppDispatcher.dispatch({

@@ -3,6 +3,7 @@ var email = require("../email"); //for sending emails
 var zzish = require("../zzish"); //initialized zzish
 var crypto = require('crypto'); //create encrypted password
 var uuid = require('node-uuid'); //uuid generator
+var intercom = require("./intercom")
 
 var algorithm = 'aes-256-ctr';
 var password = '##34dsadfasdf££FE';
@@ -34,6 +35,36 @@ exports.saveUser = function(req, res) {
     var profileId = req.params.profileId;
     zzish.saveUser(profileId, req.body, function(err, data){
         if (!err && typeof data === 'object') {
+            var user = {
+              'user_id': data.uuid,
+              'name': req.body.name,
+              'custom_data': req.body.attributes
+            };
+            if (req.body.attributes && req.body.attributes.school) {
+                user.company = {
+                    id: req.body.attributes.school,
+                    name: req.body.attributes.school
+                };
+            }
+            if (req.body.attributes && req.body.attributes.location) {
+                user['location_data'] = {
+                    type: "location_data",
+                    "city_name": req.body.attributes.location
+                };
+            }
+            if (req.body.attributes && req.body.attributes.url) {
+                  user['social_profiles'] = {
+                    "type": "social_profile.list",
+                    "social_profiles": [
+                      {
+                        "name": "Website",
+                        "id": "Website",
+                        "url": req.body.attributes.url
+                      }
+                    ]
+                };
+            }
+            intercom.updateUser(user);
             res.status(200);
         }
         else {
@@ -63,6 +94,7 @@ exports.authenticate =  function(req, res) {
 
     zzish.authenticate(userEmail, encrypt(userPassword), function(err, data) {
         if (!err && typeof data === 'object') {
+            intercom.trackEvent(data.uuid, 'logged_in');
             res.status(200).send(data);
         }
         else {
@@ -77,6 +109,11 @@ exports.register =  function(req, res) {
     zzish.registerUser(userEmail, encrypt(userPassword), function(err, data) {
         if (!err) {
             res.status(200);
+            intercom.createUser({
+              'email': userEmail,
+              'user_id': data.uuid,
+              'created_at': Date.now()
+            });
             email.sendEmailTemplate('team@zzish.com', [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
         }
         else {

@@ -20,6 +20,7 @@ var marketplace      = require('./routes/marketplace');
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
+var intercom = require('./routes/intercom');
 
 
 
@@ -72,7 +73,7 @@ app.get('/user/:profileId', user.details);
 app.post('/user/:profileId', user.saveUser);
 app.post('/email/', email.sendDocumentEmail);
 
-
+app.post('/user/:uuid/events/:name', intercom.events);
 
 app.post('/create/profile', quiz.createProfile);
 
