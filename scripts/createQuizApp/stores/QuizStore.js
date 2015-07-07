@@ -94,7 +94,7 @@ class QuizStore extends Store {
 
     // this will return all user quizzes that are not bought
     getPersonalQuizzes(): Array<Quiz> {
-        return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined);
+        return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined && q.meta.published === 'published');
     }
 
     getQuizMeta(quizId): Quiz {
