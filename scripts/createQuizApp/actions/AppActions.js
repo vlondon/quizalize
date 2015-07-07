@@ -44,7 +44,7 @@ var AppActions = {
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app:Object, appIcon:Object){
+    saveNewApp: function(app:Object, appIcon:?Object){
 
 
         app.uuid = app.uuid || uuid.v4();
@@ -67,16 +67,20 @@ var AppActions = {
             });
         };
 
-        if (appIcon !== undefined){
+        if (appIcon){
             return new Promise((resolve, reject) => {
-                this.appPicture(app.uuid, appIcon)
-                    .then(function(response){
-                        console.log('we got image uploaded?', response);
-                        return handleSave(response);
-                    })
-                    .then(resolve)
-                    .catch(reject);
+                // this double conditional is to prevent flow complaining
+                // about appIcon being undefined
+                if (appIcon){
+                    this.appPicture(app.uuid, appIcon)
+                        .then(function(response){
+                            console.log('we got image uploaded?', response);
+                            return handleSave(response);
+                        })
+                        .then(resolve)
+                        .catch(reject);
 
+                    }
                 });
         } else {
             return handleSave();

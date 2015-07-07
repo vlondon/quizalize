@@ -1,10 +1,50 @@
 .cq-yourapps {
 
-    @at-root #{&}__header {
+    &__header {
         @include cq-header;
     }
 
-    @at-root #{&}__body {
+    &__newapp {
+        display: inline-block;
+        text-align: center;
+        display: inline-block;
+
+        color: $brand-color-grey-light;
+        font-weight: bold;
+        height: 240px;
+        margin: 10px;
+        vertical-align: top;
+        @include clearfix();
+        &__icon {
+            width: 140px;
+            height: 140px;
+            background: $brand-color-grey-lighter;
+            margin: 0 15px 15px;
+            border-radius: 100%;
+            line-height: 120px;
+            font-size: 80px;
+            border: 5px dotted $brand-color-grey-light;
+        }
+    }
+
+    .cq-appgrid {
+        display: inline;
+        margin-top: 30px;
+
+        &__appicon {
+            // border: 5px solid rgba(0,0,0,0);
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.5;
+                // border: 5px solid $brand-color-red;;
+            }
+        }
+
+    }
+
+
+    &__body {
         max-width: 600px;
         margin: auto;
         text-align: center;
@@ -12,6 +52,24 @@
         p {
             margin-top: 30px;
         }
+    }
+
+    &__title {
+        font-weight: bolder;
+    }
+
+    &__block,
+    &__subblock {
+        margin: 20px;
+        p {
+            font-size: 18px;
+        }
+    }
+
+    &__subblock {
+        max-width: 460px;
+
+
     }
 
     .cq-appgrid {

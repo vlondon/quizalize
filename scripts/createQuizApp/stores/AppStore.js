@@ -24,10 +24,16 @@ type AppPayload = {
     categories: Array<any>;
 }
 
+type AppExtra = {
+    author: Object;
+    quizzes: Array<Object>;
+}
+
 export type App = {
     uuid?: string;
     meta: AppMeta;
     payload?: AppPayload;
+    extra?: AppExtra;
 }
 
 export type AppComplete = {
@@ -85,7 +91,7 @@ class AppStore extends Store {
         return _publicApps;
     }
 
-    getAppInfo(appId):?AppComplete{
+    getAppInfo(appId:string):?AppComplete{
         if (_appInfo[appId] === undefined){
             AppActions.loadApp(appId);
         }
@@ -120,8 +126,10 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case AppConstants.APP_CREATED:
-            _apps.push(action.payload);
-            appStoreInstance.emitChange();
+            // _apps.push(action.payload);
+            _appInfo[action.payload.uuid] = undefined;
+            AppActions.loadApps();
+            // appStoreInstance.emitChange();
             break;
 
 

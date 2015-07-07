@@ -28,6 +28,7 @@ type State = {
     canSave?: boolean;
     imageData?: ?Object;
 }
+
 export default class CQViewCreateApp extends React.Component {
 
     props:Props;
@@ -128,9 +129,7 @@ export default class CQViewCreateApp extends React.Component {
     handleSave(){
         this.setState({canSave: false});
         this.state.app.payload.quizzes = this.state.selectedQuizzes;
-        if (appPicture) {
-            AppActions.saveNewApp(this.state.app, appPicture);
-        }
+        AppActions.saveNewApp(this.state.app, appPicture);
     }
     // when a file is passed to the input field, retrieve the contents as a
     // base64-encoded data URI and save it to the component's state
@@ -138,7 +137,6 @@ export default class CQViewCreateApp extends React.Component {
 
         var reader = new FileReader();
         reader.onload = (upload) =>{
-            console.log('upload.target.result', upload.target.result);
             this.setState({
                 imageData: upload.target.result
             });
@@ -150,8 +148,7 @@ export default class CQViewCreateApp extends React.Component {
 
     }
 
-    handleSelect(selectedQuizzes: Array<Object>){
-        console.log('this.state.app.meta.name', this.state.app);
+    handleSelect(selectedQuizzes: Array<Object>) {
         var csave = this.state.app.meta.name && this.state.app.meta.name.length > 0 && selectedQuizzes && selectedQuizzes.length > 0;
         this.setState({selectedQuizzes, canSave: csave});
     }

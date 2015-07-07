@@ -49,6 +49,7 @@ var sorter = new QuizSorter();
 export default class CQViewQuizList extends React.Component {
 
     props: Props;
+
     constructor(props:Props) {
         super(props);
         var initialState = this.getState(props, 1);
@@ -59,11 +60,13 @@ export default class CQViewQuizList extends React.Component {
 
     componentDidMount() {
         sorter = new QuizSorter();
+        console.trace("adding TopicStore listener");
         TopicStore.addChangeListener(this.onChange.bind(this));
     }
 
     componentWillUnmount() {
-        TopicStore.removeChangeListener(this.onChange.bind(this));
+        console.info("removing TopicStore listener");
+        TopicStore.removeChangeListener(this.onChange);
     }
 
     componentWillReceiveProps(nextProps:Object) {
@@ -142,7 +145,6 @@ export default class CQViewQuizList extends React.Component {
         }
         this.setState(newState);
     }
-
 
 
     handleClick(quiz:Quiz){
