@@ -1,102 +1,162 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-var AppConstants = require('createQuizApp/constants/AppConstants');
-var AppActions = require('createQuizApp/actions/AppActions');
-var TopicStore = require('createQuizApp/stores/TopicStore');
-// var AnalyticsConstants = require('createQuizApp/constants/AnalyticsConstants');
+/* @flow */
+import Store from './Store';
+import UserStore from './UserStore';
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var AppConstants = require('./../constants/AppConstants');
+var AppActions = require('./../actions/AppActions');
 
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
 
-var CHANGE_EVENT = 'change';
+type AppMeta = {
+    code?: string;
+    colour: string;
+    created: number;
+    description: string;
+    iconURL: ?string;
+    name: string;
+    price: number;
+    profileId: string;
+    quizzes: string;
+    updated: number;
+}
 
-var _publicApps;
-var _apps = [];
+type AppPayload = {
+    quizzes: Array<string>;
+    categories: Array<any>;
+}
+
+type AppExtra = {
+    author: Object;
+    quizzes: Array<Object>;
+}
+
+export type App = {
+    uuid: string;
+    meta: AppMeta;
+    payload?: AppPayload;
+    extra?: AppExtra;
+}
+
+export type AppComplete = {
+    uuid: ?string;
+    meta: AppMeta;
+    payload: AppPayload;
+}
+
+
+var _publicApps: ?Array<App>;
+var _apps: Array<App> = [];
+
 var _appInfo = {};
 
 var storeInit = false;
+var storeInitPublic = false;
 
-var AppStore = assign({}, EventEmitter.prototype, {
 
-    getApps: function() {
-        return _apps;
-    },
-
-    getPublicApps: function() {
-        return _publicApps;
-    },
-
-    getAppInfo: function(appId){
-        if (_appInfo[appId] === undefined){
-            console.log('loading app');
-            AppActions.loadApp(appId);
-            _appInfo[appId] = {};
+var AppObject = function():AppComplete{
+    var app = {
+        uuid: undefined,
+        meta: {
+            colour: '#a204c3',
+            created: Date.now(),
+            description: '',
+            iconURL: undefined,
+            name: '',
+            price: 0,
+            profileId: UserStore.getUser().uuid,
+            quizzes: '',
+            updated: Date.now()
+        },
+        payload: {
+            categories: [],
+            quizzes: []
         }
-        var appInfo = _appInfo[appId];
-        if (appInfo._quizzes){
-            appInfo._quizzes = appInfo._quizzes.map(quiz => {
-                quiz._category = TopicStore.getTopicById(quiz.meta.categoryId);
-                return quiz;
-            });
+
+    };
+
+    return app;
+};
+
+class AppStore extends Store {
+
+    getApps() {
+        console.info('_apps', _apps);
+        return _apps;
+    }
+
+    getAppById(appId):?App {
+        var result:Array<App> = _apps.filter(t => t.uuid === appId);
+        return result.length === 1 ? result.slice()[0] : undefined;
+    }
+
+    getPublicApps() {
+        return _publicApps;
+    }
+
+    getAppInfo(appId:string): ?AppComplete{
+        if (_appInfo[appId] === undefined){
+            AppActions.loadApp(appId);
         }
         return _appInfo[appId];
-    },
+    }
 
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
+    getNewApp(): AppComplete {
+        return new AppObject();
+    }
 
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
+
+    addChangeListener (callback) {
         if (!storeInit) {
             AppActions.loadApps();
             storeInit = true;
         }
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+        if (!storeInitPublic) {
+            AppActions.searchPublicApps();
+            storeInitPublic = true;
+        }
+        super.addChangeListener(callback);
     }
-});
 
+
+}
+
+var appStoreInstance = new AppStore();
 
 // Register callback to handle all updates
-AppStore.dispatchToken = AppDispatcher.register(function(action) {
+AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
+        case AppConstants.APP_CREATED:
+            // _apps.push(action.payload);
+            _appInfo[action.payload.uuid] = undefined;
+            AppActions.loadApps();
+            // appStoreInstance.emitChange();
+            break;
+
+
         case AppConstants.APP_LIST_LOADED:
             _apps = action.payload;
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
 
         case AppConstants.APP_SEARCH_LOADED:
             _publicApps = action.payload;
             _publicApps.forEach(function(app){
-                app.meta.quizzes = app.meta.quizzes.split(',');
+                if (app.meta.quizzes) {
+                    app.meta.quizzes = app.meta.quizzes.split(',');
+                }
             });
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
-        //
+
         case AppConstants.APP_INFO_LOADED:
-            console.log('app loaded', action);
             _appInfo[action.payload.uuid] = action.payload;
-            AppStore.emitChange();
+            appStoreInstance.emitChange();
             break;
-        // case AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED:
-        //     _analyticsEnabled = false;
-        //     break;
-
-
 
         default:
             // no op
     }
 });
 
-module.exports = AppStore;
+module.exports = appStoreInstance;

@@ -58,11 +58,21 @@ var CQZzishLogin = React.createClass({
 
     render: function() {
         return (
-            <a onClick={this.handleLogin}
-                id="LoginWithZzishButton"
-                className="login-zzish btn btn-info">
-                Login with Zzish
-            </a>
+            <div className="cq-login__zzish">
+                <div className="cq-login__zzish__header">
+                    or
+                </div>
+                <a onClick={this.handleLogin}
+                    id="LoginWithZzishButton"
+                    className="login-zzish btn btn-info">
+                    Login with Zzish
+                </a>
+                <div className="cq-login__zzish__footer">
+                    <p>Zzish is a universal teacher dashboard and unified login system for educational software</p>
+                </div>
+                
+
+            </div>
         );
     }
 

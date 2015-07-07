@@ -6,6 +6,6 @@
 
 <p>Best Wishes</p>
 
-<h5>The Quizalize Team.</h5>
+<p>The Quizalize Team.<br/>
 <a href="http://www.quizalize.com">www.quizalize.com</a>
-
+</p>

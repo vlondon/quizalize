@@ -1,16 +1,20 @@
+/* @flow */
 var React = require('react');
-var router = require('createQuizApp/config/router');
+var router = require('./../../../config/router');
 
-var AppStore = require('createQuizApp/stores/AppStore');
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
+import AppStore from './../../../stores/AppStore';
+var TopicStore = require('./../../../stores/TopicStore');
+var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
 
-var TransactionActions = require('createQuizApp/actions/TransactionActions');
+var TransactionActions = require('./../../../actions/TransactionActions');
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var UserStore = require('createQuizApp/stores/UserStore');
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
+var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
+var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
+var UserStore = require('./../../../stores/UserStore');
+
+import type {Quiz} from './../../../stores/QuizStore';
+import type {App} from './../../../stores/AppStore';
 
 
 var addClassName = function(el, className){
@@ -26,133 +30,145 @@ var removeClassName = function(el, className){
     else
         el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
-var CQApp = React.createClass({
 
-    propTypes: {
-        appId: React.PropTypes.string.isRequired
-    },
+type Props = {
+    appId: string;
+}
 
-    getInitialState: function() {
-        return this.getState();
-    },
+type State = {
+    appInfo: ?App;
+}
 
-    componentDidMount: function() {
-        AppStore.addChangeListener(this.onChange);
-        TopicStore.addChangeListener(this.onChange);
-    },
+export default class CQApp extends React.Component {
 
-    componentWillUnmount: function() {
+    props: Props;
+    state: State;
+
+    constructor(props:Props) {
+        super(props);
+        this.state =  this.getState();
+    }
+
+    componentDidMount () {
+        AppStore.addChangeListener(this.onChange.bind(this));
+        TopicStore.addChangeListener(this.onChange.bind(this));
+    }
+
+    componentWillUnmount () {
         AppStore.removeChangeListener(this.onChange);
         TopicStore.removeChangeListener(this.onChange);
         document.body.style.backgroundColor = '';
         removeClassName(document.body, 'quizalize__appmode');
-    },
+    }
 
-    onChange: function(){
+    onChange (){
         this.setState(this.getState());
-    },
+    }
 
-    handlePreview: function(quiz){
+    handlePreview (quiz:Quiz){
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/play/public/${quiz.uuid}`);
-    },
+    }
 
-    getState: function(){
+    getState(): Object {
         if (this.props.appId) {
             var appInfo = AppStore.getAppInfo(this.props.appId);
 
-            if (appInfo.meta && appInfo.meta.colour){
-                document.body.style.backgroundColor = appInfo.meta.colour;
-                addClassName(document.body, 'quizalize__appmode');
+            if (appInfo){
+                if (appInfo.meta && appInfo.meta.colour){
+                    document.body.style.backgroundColor = appInfo.meta.colour;
+                    addClassName(document.body, 'quizalize__appmode');
+                }
             }
             return {appInfo};
         }
         else {
             return {};
         }
-    },
+    }
 
-    handleBuy: function(){
-
-        var app = this.state.appInfo;
+    handleBuy (){
         var user = UserStore.getUser();
-        if (user === false){
-            swal({
-                title: 'You need to be logged in',
-                text: `In order to buy this item you need to log into Quizalize`,
-                type: 'info',
-                confirmButtonText: 'Log in',
-                showCancelButton: true
-            }, function(isConfirm){
-                if (isConfirm){
-                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/app/' + app.uuid)}`);
-                }
-            });
-        } else {
+        if (this.state.appInfo){
+            var app = this.state.appInfo;
+            if (user === false){
+                swal({
+                    title: 'You need to be logged in',
+                    text: `In order to buy this item you need to log into Quizalize`,
+                    type: 'info',
+                    confirmButtonText: 'Log in',
+                    showCancelButton: true
+                }, function(isConfirm){
+                    if (isConfirm){
+                        var redirectUrl = window.encodeURIComponent('/quiz/app/' + app.uuid);
+                        router.setRoute(`/quiz/login?redirect=${redirectUrl}`);
+                    }
+                });
+            } else {
 
 
 
-            swal({
-                    title: 'Confirm Purchase',
-                    text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    html: true
-                }, (isConfirm) => {
+                swal({
+                        title: 'Confirm Purchase',
+                        text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        html: true
+                    }, (isConfirm) => {
 
-                if (isConfirm){
-                    setTimeout(()=>{
+                    if (isConfirm){
+                        setTimeout(()=>{
 
-                        var newTransaction = {
-                            meta: {
-                                type: 'app',
-                                appId: app.uuid,
-                                profileId: app.meta.profileId,
-                                price: 0
-                            }
-                        };
+                            var newTransaction = {
+                                meta: {
+                                    type: 'app',
+                                    appId: app.uuid,
+                                    profileId: app.meta.profileId,
+                                    price: 0
+                                }
+                            };
 
-                        swal({
-                            title: 'Working…',
-                            text: `We're processing your order`,
-                            showConfirmButton: false
-                        });
-
-                        console.log('storing transaction', newTransaction);
-                        TransactionActions.saveNewTransaction(newTransaction)
-                            .then(function(){
-                                swal.close();
-                                setTimeout(()=>{
-                                    swal({
-                                        title: 'Purchase complete!',
-                                        text: 'You will find the new content in your quizzes',
-                                        type: 'success'
-                                    }, ()=>{
-                                        router.setRoute('/quiz/quizzes');
-                                    });
-                                }, 400);
+                            swal({
+                                title: 'Working…',
+                                text: `We're processing your order`,
+                                showConfirmButton: false
                             });
 
-                    }, 400);
-                }
-            });
+                            console.log('storing transaction', newTransaction);
+                            TransactionActions.saveNewTransaction(newTransaction)
+                                .then(function(){
+                                    swal.close();
+                                    setTimeout(()=>{
+                                        swal({
+                                            title: 'Purchase complete!',
+                                            text: 'You will find the new content in your quizzes',
+                                            type: 'success'
+                                        }, ()=>{
+                                            router.setRoute('/quiz/quizzes');
+                                        });
+                                    }, 400);
+                                });
 
+                        }, 400);
+                    }
+                });
+
+            }
         }
 
 
-    },
+    }
 
-    handleDetails: function(quiz){
+    handleDetails(quiz:Quiz){
         this.setState({quizDetails: quiz.uuid});
-    },
+    }
 
-    handleDetailsClose: function(){
+    handleDetailsClose(){
         this.setState({quizDetails: undefined});
-    },
+    }
 
-
-    render: function() {
+    render () {
         var quizDetails;
         if (this.state.quizDetails) {
             quizDetails = (<CQViewQuizDetails
@@ -161,6 +177,7 @@ var CQApp = React.createClass({
         }
 
         if (this.state.appInfo && this.state.appInfo.meta){
+            var quizzes = this.state.appInfo.extra ? this.state.appInfo.extra.quizzes :  [];
 
             return (
                 <CQPageTemplate>
@@ -174,7 +191,7 @@ var CQApp = React.createClass({
                         <div className="cq-app__info">
                             <h2>{this.state.appInfo.meta.name}</h2>
                             <div className="cq-app__price">Free</div>
-                            <button className="cq-app__button" onClick={this.handleBuy}>
+                            <button className="cq-app__button" onClick={this.handleBuy.bind(this)}>
                                 Use for free
                             </button>
 
@@ -187,7 +204,7 @@ var CQApp = React.createClass({
                             <CQViewQuizList
                                 isQuizInteractive={true}
                                 onQuizClick={this.handleDetails}
-                                quizzes={this.state.appInfo.extra.quizzes}
+                                quizzes={quizzes}
                                 sortBy="category">
                                 <span className='cq-app__buttonextra' onClick={this.handlePreview}>
                                     Preview
@@ -202,7 +219,4 @@ var CQApp = React.createClass({
             return (<CQPageTemplate/>);
         }
     }
-
-});
-
-module.exports = CQApp;
+}

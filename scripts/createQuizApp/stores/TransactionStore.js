@@ -1,45 +1,46 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
+/* @flow */
+import Store from './Store';
 
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var CHANGE_EVENT = 'change';
+import AppDispatcher from './../dispatcher/CQDispatcher';
 
 
-var _prices = [
+
+
+var _prices:Array<number> = [
     0,
     0.79,
     1.49,
-    2.99
+    2.29,
+    2.99,
+    3.99,
+    4.49,
+    4.99,
+    5.99,
+    6.99,
+    7.99,
+    8.49,
+    8.99,
+    9.99
 ];
 
-var TransactionStore = assign({}, EventEmitter.prototype, {
+class TransactionStore extends Store {
 
-    getPrices: function(){
-        return _prices.slice();
-    },
-
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+    dispatchToken: ?number;
+    constructor(){
+        super();
     }
-});
+
+    getPrices():Array<number> {
+        return _prices.slice();
+    }
+}
+
+var transactionStoreInstance = new TransactionStore();
+
 
 
 // Register callback to handle all updates
-TransactionStore.dispatchToken = AppDispatcher.register(function(action) {
+transactionStoreInstance.dispatchToken = AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
@@ -49,4 +50,4 @@ TransactionStore.dispatchToken = AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = TransactionStore;
+module.exports = transactionStoreInstance;

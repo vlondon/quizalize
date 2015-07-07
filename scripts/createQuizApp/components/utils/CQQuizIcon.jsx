@@ -28,6 +28,7 @@ var CQQuizIcon = React.createClass({
         className: React.PropTypes.string,
         name: React.PropTypes.string,
         image: React.PropTypes.string,
+        imageData: React.PropTypes.object,
         children: React.PropTypes.element
     },
 
@@ -36,7 +37,11 @@ var CQQuizIcon = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        this.setState(this.getImage(nextProps));
+        if (nextProps.imageData){
+            this.setState({imageData: nextProps.imageData});
+        } else {
+            this.setState(this.getImage(nextProps));
+        }
     },
 
     getImage: function(props){
@@ -57,7 +62,7 @@ var CQQuizIcon = React.createClass({
             randomIndex = (n.charCodeAt(0) + 5 ) % colours.length;
 
         } else {
-            randomIndex = Math.floor(Math.random() * colours.length);
+            randomIndex = 0;
         }
 
 
@@ -75,6 +80,10 @@ var CQQuizIcon = React.createClass({
             style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
         } else if (this.props.children) {
             image = this.props.children;
+        } else if (this.state.imageData) {
+            //image = (<img src={this.state.imageData}/>);
+            style.backgroundImage = `url(${this.state.imageData})`;
+            console.info('this.props.imageData', this.props.imageData);
         } else {
             image = (<img src="/img/ui-create/icon_base.png" alt=""/>);
         }

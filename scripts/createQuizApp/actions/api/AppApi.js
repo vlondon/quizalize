@@ -4,7 +4,7 @@ var Promise = require('es6-promise').Promise;
 
 var AppApi = {
 
-    get: function(app){
+    get: function(){
         return new Promise(function(resolve, reject){
 
 
@@ -134,7 +134,7 @@ var AppApi = {
                 });
 
         });
-    },
+    }
 };
 
 module.exports = AppApi;

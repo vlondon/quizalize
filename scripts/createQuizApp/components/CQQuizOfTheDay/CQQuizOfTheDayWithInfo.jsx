@@ -22,10 +22,10 @@ var CQQuizOfTheDayWithInfo = React.createClass({
     },
 
     getState: function(){
-        var quiz = QuizStore.getQuizOfTheDay();
-        return {
-            quiz
-        };
+        // var quiz = QuizStore.getQuizOfTheDay();
+        // return {
+        //     quiz
+        // };
     },
     render: function() {
         return (

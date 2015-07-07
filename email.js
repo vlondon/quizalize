@@ -7,7 +7,7 @@ var fs = require('fs');
 
 exports.pingDevelopers = function(){
 	if (config.webUrl === "https://www.zzish.com/") {
-		exports.sendEmail("team@zzish.com", ["developers@zzish.com"], "Quizalize Restarted", "Please test me");
+		exports.sendEmail("team@quizalize.com", ["developers@zzish.com"], "Quizalize Restarted", "Please test me");
 	}
 };
 
@@ -16,7 +16,7 @@ exports.sendEmail = function(from, toArray, subject, body){
 	exports.sendActualEmail(from, toArray, subject, body, body);
 };
 
-exports.sendActualEmail =function(from, toArray, subject, html, text) {
+exports.sendActualEmail = function(from, toArray, subject, html, text) {
 	//"var emailCheck = process.env.sendEmail;
 	var emailCheck = true;
 	if (config.aws_enabled && emailCheck) {
@@ -24,7 +24,12 @@ exports.sendActualEmail =function(from, toArray, subject, html, text) {
 		var ses = new awssdk.SES();
 
 		var dest = { ToAddresses: toArray };
-		dest.BccAddresses = ['team@quizalize.com'];
+		if (config.webUrl === "https://www.zzish.com/") {
+			dest.BccAddresses = ['team@quizalize.com'];
+		}
+		else if (config.webUrl === "https://test.zzish.com/") {
+			dest.CcAddresses = ['frabusiello@gmail.com'];
+		}
 		// if (process.env.vini === "true") {
 		// 	logger.info("Sending to Vini");
 		// 	dest.BccAddresses =  ['vini@zzish.com','team@'];
@@ -90,7 +95,7 @@ exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlPara
 			});
 		}
 	});
-}
+};
 
 exports.sendDocumentEmail = function(req, res) {
 	var doc = req.body.doc;
@@ -100,5 +105,5 @@ exports.sendDocumentEmail = function(req, res) {
 	var htmlParams =  req.body.htmlParams || params;
 	var subject = req.body.subject;
 
-	exports.sendEmailTemplate(from,email,subject,doc,params,htmlParams);
+	exports.sendEmailTemplate(from, email, subject, doc, params, htmlParams);
 };

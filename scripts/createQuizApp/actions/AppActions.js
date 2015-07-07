@@ -1,11 +1,18 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var AppApi              = require('createQuizApp/actions/api/AppApi');
-var QuizApi             = require('createQuizApp/actions/api/QuizApi');
-var AppConstants        = require('createQuizApp/constants/AppConstants');
+/* @flow */
+// import type App from './../stores/AppStore';
+
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
-var debounce            = require('createQuizApp/utils/debounce');
+var router              = require('./../config/router');
+var debounce            = require('./../utils/debounce');
+
+
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var AppApi              = require('./../actions/api/AppApi');
+var QuizApi             = require('./../actions/api/QuizApi');
+var AppConstants        = require('./../constants/AppConstants');
+
 
 var AppActions = {
 
@@ -19,22 +26,25 @@ var AppActions = {
             });
     },
 
-    loadApp: function(appId){
-        AppApi.getInfo(appId)
-            .then(function(appInfo){
-                AppDispatcher.dispatch({
-                    actionType: AppConstants.APP_INFO_LOADED,
-                    payload: appInfo
+    loadApp: function(appId:string){
+
+        if (appId) {
+            AppApi.getInfo(appId)
+                .then(function(appInfo){
+                    AppDispatcher.dispatch({
+                        actionType: AppConstants.APP_INFO_LOADED,
+                        payload: appInfo
+                    });
                 });
-            });
+        }
     },
 
-    deleteApp: function(app){
+    deleteApp: function(app:Object){
         AppApi.delete(app)
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app, appIcon){
+    saveNewApp: function(app:Object, appIcon:?Object){
 
 
         app.uuid = app.uuid || uuid.v4();
@@ -51,28 +61,33 @@ var AppActions = {
                             actionType: AppConstants.APP_CREATED,
                             payload: app
                         });
+                        router.setRoute(`/quiz/apps`);
                     })
                     .catch(reject);
             });
         };
 
-        if (appIcon !== undefined){
+        if (appIcon){
             return new Promise((resolve, reject) => {
-                this.appPicture(app.uuid, appIcon)
-                    .then(function(response){
-                        console.log('we got image uploaded?', response);
-                        return handleSave(response);
-                    })
-                    .then(resolve)
-                    .catch(reject);
+                // this double conditional is to prevent flow complaining
+                // about appIcon being undefined
+                if (appIcon){
+                    this.appPicture(app.uuid, appIcon)
+                        .then(function(response){
+                            console.log('we got image uploaded?', response);
+                            return handleSave(response);
+                        })
+                        .then(resolve)
+                        .catch(reject);
 
+                    }
                 });
         } else {
             return handleSave();
         }
     },
 
-    appPicture: function(appId, file){
+    appPicture: function(appId:string, file:Object){
         return AppApi.uploadMedia(appId, file);
     },
 
@@ -99,6 +114,8 @@ var AppActions = {
                     //     console.log("Going through app",app);
                     //     return false;
                     // });
+
+                    console.log("GOT SOME APPS", apps);
 
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,

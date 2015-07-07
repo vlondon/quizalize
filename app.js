@@ -14,11 +14,13 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
+var admin      = require('./routes/admin');
 var marketplace      = require('./routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
+var intercom = require('./routes/intercom');
 
 
 
@@ -71,7 +73,7 @@ app.get('/user/:profileId', user.details);
 app.post('/user/:profileId', user.saveUser);
 app.post('/email/', email.sendDocumentEmail);
 
-
+app.post('/user/:uuid/events/:name', intercom.events);
 
 app.post('/create/profile', quiz.createProfile);
 
@@ -111,6 +113,9 @@ app.get('/create/:profileId/transaction/:id', transaction.get);
 app.post('/create/:profileId/transaction', transaction.post);
 app.post('/create/:profileId/transaction/:id', transaction.post);
 
+
+app.post('/admin/:profileId/approve/:id', admin.approve);
+app.post('/admin/:profileId/approvefirst/:id', admin.approvefirst);
 
 app.get('/apps/', appContent.listPublicApps);
 app.get('/apps/:id', appContent.getPublic);
