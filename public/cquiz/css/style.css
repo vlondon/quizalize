@@ -2143,8 +2143,8 @@ a.btn:focus{
 }
 
 .cta2 {
-
-	padding: 20px 60px;
+	text-align: center;
+	padding: 20px;
 	background: #FA5858;
 	font-weight: bold;
 	font-size: 28px;
