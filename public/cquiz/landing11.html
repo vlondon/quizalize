@@ -585,6 +585,16 @@
     <div id="outdated"></div>
     <!-- Core JavaScript Files -->
     <script>
+      function showQuiz(id) {
+          var check = localStorage.getItem("userId") || localStorage.getItem('token');
+          var quizUrl = window.location.href = "/app#/play/public/" + id;
+          if (!check) {
+              quizUrl = "/quiz/register?redirect=" + window.encodeURIComponent(quizUrl);
+          }
+          window.location.href = quizUrl;
+      }
+
+
       function newQuiz() {
         window.location.href="/quiz";
       }
@@ -603,7 +613,6 @@
     <script src="/cquiz/js/custom.js"></script>
     <script src="/js/vendor.js"></script>
     <script src="//zzish.github.io/zzishsdk-js/zzish.js"></script>
-    <script src="/js/quiz.js"></script>
     <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
     <script>
       function getParameterByName(name) {
