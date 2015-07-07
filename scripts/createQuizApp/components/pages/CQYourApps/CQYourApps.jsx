@@ -3,7 +3,6 @@ import React from 'react';
 
 import UserStore               from '../../../stores/UserStore';
 import CQPageTemplate          from '../../CQPageTemplate';
-import CQYourAppsComingSoon    from './CQYourAppsComingSoon';
 import CQYourAppsCreate        from './CQYourAppsCreate';
 
 type Props = {
@@ -28,14 +27,13 @@ export default class CQYourApps extends React.Component {
     }
 
     render() {
-        var showContent = true;
-        var content = showContent ? <CQYourAppsCreate newApp={this.props.newApp} appId={this.props.appId}/> : <CQYourAppsComingSoon/>;
+
         return (
             <CQPageTemplate className="cq-container cq-yourapps">
                 <h2 className='cq-yourapps__header'>
                     <i className="fa fa-archive"/> Your apps
                 </h2>
-                {content}
+                <CQYourAppsCreate newApp={this.props.newApp} appId={this.props.appId}/>
             </CQPageTemplate>
         );
     }
