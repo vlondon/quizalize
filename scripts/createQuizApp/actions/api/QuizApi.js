@@ -71,6 +71,27 @@ var QuizApi = {
         };
     })(),
 
+    getPublicQuiz: (function(){
+        var promises = {};
+        return function(quizId){
+            promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
+
+                request.get(`/quizzes/public/${quizId}`)
+                    .use(noCache)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+
+
+            });
+            return promises[quizId];
+        };
+    })(),
+
     deleteQuiz: function(quizId){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
@@ -98,7 +119,7 @@ var QuizApi = {
         return function(){
 
             promise = promise || new Promise(function(resolve, reject){
-                
+
 
                 request.get(`/create/topics/`)
                     .use(noCache)
