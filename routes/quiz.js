@@ -22,7 +22,7 @@ var handleError = function(err, res){
 
 var publicConfig = {
     stripeKey: config.stripeKey,
-    zzishInit: config.zzishInit
+    zzishInit: config.zzishInit.replace(/[']/g, '"')
 };
 
 function encrypt(text){
