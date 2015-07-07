@@ -36,7 +36,7 @@ type Props = {
 }
 
 type State = {
-    appInfo?: App;
+    appInfo: ?App;
 }
 
 export default class CQApp extends React.Component {
@@ -70,7 +70,7 @@ export default class CQApp extends React.Component {
         window.open(`/app#/play/public/${quiz.uuid}`);
     }
 
-    getState(): State {
+    getState(): Object {
         if (this.props.appId) {
             var appInfo = AppStore.getAppInfo(this.props.appId);
 
@@ -88,10 +88,9 @@ export default class CQApp extends React.Component {
     }
 
     handleBuy (){
-
-        var app = this.state.appInfo;
         var user = UserStore.getUser();
-        if (app){
+        if (this.state.appInfo){
+            var app = this.state.appInfo;
             if (user === false){
                 swal({
                     title: 'You need to be logged in',

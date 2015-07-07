@@ -11,7 +11,7 @@ var TopicStore          = require('./../stores/TopicStore');
 var TopicActions        = require('./../actions/TopicActions');
 var router              = require('./../config/router');
 
-var UserApi             = require('createQuizApp/actions/api/UserApi');
+var UserApi             = require('./../actions/api/UserApi');
 
 import UserStore        from './../stores/UserStore';
 

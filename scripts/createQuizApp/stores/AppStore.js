@@ -30,14 +30,14 @@ type AppExtra = {
 }
 
 export type App = {
-    uuid?: string;
+    uuid: string;
     meta: AppMeta;
     payload?: AppPayload;
     extra?: AppExtra;
 }
 
 export type AppComplete = {
-    uuid?: string;
+    uuid: ?string;
     meta: AppMeta;
     payload: AppPayload;
 }
@@ -54,6 +54,7 @@ var storeInitPublic = false;
 
 var AppObject = function():AppComplete{
     var app = {
+        uuid: undefined,
         meta: {
             colour: '#a204c3',
             created: Date.now(),
@@ -91,7 +92,7 @@ class AppStore extends Store {
         return _publicApps;
     }
 
-    getAppInfo(appId:string):?AppComplete{
+    getAppInfo(appId:string): ?AppComplete{
         if (_appInfo[appId] === undefined){
             AppActions.loadApp(appId);
         }
