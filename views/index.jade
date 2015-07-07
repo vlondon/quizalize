@@ -5,6 +5,7 @@ html(ng-app='quizApp')
             title #{quiz.meta.name} by Quizalize
         else
             title Quizalize
+            
         meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
         meta(name='description', content='')
         meta(charset='UTF-8')
@@ -46,7 +47,8 @@ html(ng-app='quizApp')
 
 
         script.
-            var initToken = JSON.parse(!{JSON.stringify(zzishapi)});
+            var initToken = JSON.parse(!{JSON.stringify(zzishapi)});    
+            var publicConfig = !{JSON.stringify(publicConfig)}
 
         script(src='/js/vendor.js')
         script(src='/lib/angular.min.js')

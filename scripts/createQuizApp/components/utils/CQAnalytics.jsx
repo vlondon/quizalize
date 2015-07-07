@@ -1,6 +1,7 @@
 var React = require('react');
 
 var AnalyticsStore = require('createQuizApp/stores/AnalyticsStore');
+var UserStore = require('createQuizApp/stores/UserStore');
 
 var CQAnalytics = React.createClass({
 
@@ -8,26 +9,29 @@ var CQAnalytics = React.createClass({
         return {
             googleConversion: false,
             twitterConversion: false,
-            facebookConversion: false
+            facebookConversion: false,
+            user: UserStore.getUser()
         };
     },
 
 
     componentDidMount: function() {
         AnalyticsStore.addChangeListener(this.onChange);
+        UserStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         AnalyticsStore.removeChangeListener(this.onChange);
+        UserStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
-
         this.setState({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,
-            facebookConversion: analyticsEnabled
+            facebookConversion: analyticsEnabled,
+            user: UserStore.getUser()
         });
 
     },
@@ -35,6 +39,15 @@ var CQAnalytics = React.createClass({
     render: function() {
 
         var googleConversion, twitterConversion, facebookConversion;
+        if (this.state.user){
+            window.intercomSettings = {
+              name: (this.state.user && this.state.user.name),
+              email: (this.state.user && this.state.user.email),
+              created_at: (this.state.user && this.state.user.created),
+              app_id: 'mnacdt52'
+            };
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+        }
 
         if (this.state.googleConversion) {
             googleConversion = (

@@ -48,7 +48,7 @@ var CQViewHeader = React.createClass({
     },
 
     getState: function(){
-        var isLoggedIn = UserStore.getUser() !== false;
+        var isLoggedIn = UserStore.getUser().uuid !== undefined;
         return {
             isLoggedIn
         };

@@ -16,6 +16,7 @@ var purchaseComplete = function(){
         text: 'You will find the new content in your quizzes',
         type: 'success'
     }, ()=>{
+        QuizActions.loadQuizzes();
         router.setRoute('/quiz/quizzes');
     });
 };
@@ -41,7 +42,6 @@ var TransactionActions = {
                 TransactionApi.put(transaction)
                     .then(function(){
                         console.log('transaction saved saved');
-                        QuizActions.loadQuizzes();
                         AppDispatcher.dispatch({
                             actionType: TransactionConstants.TRANSACTION_NEW,
                             payload: transaction
@@ -113,7 +113,6 @@ var TransactionActions = {
                     });
 
                     TransactionActions.saveNewTransaction(newTransaction);
-
 
                 }, 300);
             }

@@ -4,6 +4,7 @@ var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
+var TopicStore          = require('createQuizApp/stores/TopicStore');
 
 var timeouts = [];
 var priceFormat = require('createQuizApp/utils/priceFormat');
@@ -87,7 +88,7 @@ var CQViewQuizDetails = React.createClass({
                 <div className="cq-quizdetails__cardinner">
                     <div className="cq-quizdetails__info">
                         <h5>
-                            {this.state.quiz.meta.category} / {this.state.quiz.meta.subject}
+                            {TopicStore.getTopicName(this.state.quiz.meta.categoryId)}
                         </h5>
                         <h1>{this.state.quiz.meta.name}</h1>
                         <p>

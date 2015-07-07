@@ -44,8 +44,6 @@ var detectLatex = function(string, regularExpression){
         });
     }
 
-    console.log('result', string, result);
-
     return result;
 
 

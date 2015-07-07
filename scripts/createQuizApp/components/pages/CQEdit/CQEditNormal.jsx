@@ -205,7 +205,7 @@ var CQEditNormal = React.createClass({
     },
 
     handleGetTopics: function() {
-        return TopicStore.getAllTopics(this.props.quiz.meta.categoryId);
+        return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
     },
 
     render: function() {

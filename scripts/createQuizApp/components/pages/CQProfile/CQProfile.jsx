@@ -5,7 +5,6 @@ var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
 var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
 var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
@@ -24,8 +23,6 @@ var CQProfile = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         this.setState(this.getState(nextProps));
-        var profileId = nextProps.profileId || UserStore.getUser().uuid;
-        QuizActions.searchPublicQuizzes('', '', profileId);
     },
 
     getInitialState: function() {
@@ -52,8 +49,7 @@ var CQProfile = React.createClass({
     getState: function(props){
         props = props || this.props;
         var profileId = props.profileId || UserStore.getUser().uuid;
-        console.log('profileId', profileId);
-        var quizzes = QuizStore.getPublicProfileQuizzes(profileId);
+        var quizzes = QuizStore.getQuizzesForProfile(profileId);
 
         if (quizzes) {
             var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
@@ -70,7 +66,6 @@ var CQProfile = React.createClass({
             newState.quizDetails = quiz.uuid;
         }
         return newState;
-
     },
 
     onChange: function(){

@@ -20,6 +20,11 @@ var handleError = function(err, res){
     return err;
 };
 
+var publicConfig = {
+    stripeKey: config.stripeKey,
+    zzishInit: config.zzishInit.replace(/[']/g, '"')
+};
+
 function encrypt(text){
     var cipher = crypto.createCipher(algorithm, password);
     var crypted = cipher.update(text, 'utf8', 'hex');
@@ -73,7 +78,13 @@ function getZzishParam(parse) {
 zzish.init(getZzishParam(true)); //TODO broken
 
 exports.index =  function(req, res) {
-    var params = {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE};
+
+    var params = {
+        zzishapi: getZzishParam(),
+        devServer: process.env.ZZISH_DEVMODE,
+        publicConfig: publicConfig
+    };
+
     if (req.query.uuid !== undefined) {
         zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {
 
@@ -93,10 +104,12 @@ exports.indexQuiz =  function(req, res) {
     res.redirect(301, '/app?uuid=' + req.params.id + '#/play/public/' + req.params.id);
 };
 
-
-
 exports.create =  function(req, res) {
-    res.render('create', {zzishapi: getZzishParam(), devServer: process.env.ZZISH_DEVMODE});
+    res.render('create', {
+        zzishapi: getZzishParam(),
+        devServer: process.env.ZZISH_DEVMODE,
+        publicConfig: publicConfig
+    });
 };
 
 exports.landingpage =  function(req, res) {
@@ -405,8 +418,12 @@ exports.publishToMarketplace = function(req,res) {
             if (user.name) name = user.name;
             var params = {
                 name: name
-            }
-            email.sendEmailTemplate('team@zzish.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            };
+            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+              profileId: profileId,
+              id: id
+            });
             res.send();
         });
     });
@@ -429,7 +446,7 @@ exports.shareQuiz = function(req, res){
             from: emailFrom,
             link: link
         }
-        email.sendEmailTemplate('team@zzish.com', emails, 'You have been shared a quiz!', 'shared', params);
+        email.sendEmailTemplate('team@quizalize.com', emails, 'You have been shared a quiz!', 'shared', params);
     }
     res.send(true);
 };
@@ -447,7 +464,7 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                                 name: quiz.meta.name,
                                 link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
                             }
-                            email.sendEmailTemplate('team@zzish.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
+                            email.sendEmailTemplate('team@quizalize.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
                 }
@@ -475,7 +492,7 @@ exports.help = function(req, res){
     var params = {
         name: name
     }
-    email.sendEmailTemplate('team@zzish.com', [req.body.email], 'Quizalize Help', 'help', params);
+    email.sendEmailTemplate('team@quizalize.com', [req.body.email], 'Quizalize Help', 'help', params);
     var params2 = {
         name: req.body.name,
         message: req.body.message,

@@ -1,0 +1,11 @@
+<p>Hi %name%</p>
+
+<p>Your quiz '%quiz%' has been approved and is now available on the Quizalize Marketplace.<p>
+
+<p>Check it out on <a href="%profilelink%">your profile</a><p>
+
+<p>Best wishes,<p>
+
+<p>The Quizalize Team.<br/>
+<a href="http://www.quizalize.com">www.quizalize.com</a>
+</p>
