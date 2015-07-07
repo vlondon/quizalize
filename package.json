@@ -30,6 +30,7 @@
     "express": "^4.10.3",
     "express-http-proxy": "^0.6.0",
     "express-session": "^1.9.3",
+    "intercom.io": "^1.0.10",
     "jade": "1.8.2",
     "lodash": "^3.9.3",
     "log4js": "^0.6.26",

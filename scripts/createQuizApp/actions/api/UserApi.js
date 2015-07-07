@@ -159,6 +159,13 @@ var UserApi = {
                     }
                 });
         });
+    },
+
+    trackEvent: function(name, meta){
+        var uuid = localStorage.getItem('cqUuid');
+        if (uuid) {
+            request.post(`/user/${uuid}/events/${name}`, meta);
+        }
     }
 };
 
