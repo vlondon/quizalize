@@ -2114,13 +2114,13 @@ a.btn:focus{
 	background-color: #FFF;
 	background: url(/img/qz-homepage-placeholder-8bit.png) center top repeat-x;
 	height: 600px;
-	/*width: 1040px;*/
+	/*width: 850px;*/
 
 }
 .flash-container {
 	margin: auto;
 	height: 600px;
-	width: 1040px;
+	width: 850px;
 }
 
 .cta-container {
@@ -2171,7 +2171,7 @@ a.btn:focus{
 }
 
 
-@media (max-width: 1040px) {
+@media (max-width: 850px) {
 	.flash-container {
 		display: none;
 	}
