@@ -164,7 +164,8 @@ var UserApi = {
     trackEvent: function(name, meta){
         var uuid = localStorage.getItem('cqUuid');
         if (uuid) {
-            request.post(`/user/${uuid}/events/${name}`, meta);
+            console.log(`/user/${uuid}/events/${name}`);
+            request.post(`/user/${uuid}/events/${name}`).send(meta);
         }
     }
 };

@@ -21,7 +21,8 @@ exports.updateUser = function(user, callback) {
 
 exports.trackEvent = function(userId, event_name, meta, callback){
   var event = {};
-  if (!event.created_at) event.created_at = Date.now();
+  if (!event.created_at) event.created_at = parseInt(Date.now()/1000);
+
   event.user_id = userId;
   event.event_name = event_name;
   if (meta) event.meta_data = meta;
