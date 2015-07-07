@@ -57,6 +57,7 @@ var CQPublic = React.createClass({
     },
 
     handleBuy: function(quiz){
+        console.log("should we buy????");
         if (!this.state.user) {
             swal({
                 title: 'You need to be logged in',

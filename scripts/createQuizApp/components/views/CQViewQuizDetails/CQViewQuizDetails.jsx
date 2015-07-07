@@ -44,7 +44,7 @@ var CQViewQuizDetails = React.createClass({
 
     getState: function(){
         var state = {
-            quiz: QuizStore.getQuiz(this.props.quizId)
+            quiz: QuizStore.getPublicQuiz(this.props.quizId)
         };
 
         return state;

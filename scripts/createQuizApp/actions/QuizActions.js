@@ -83,6 +83,25 @@ var QuizActions = {
             });
     },
 
+    loadPublicQuiz: function(quizId:string){
+        return new Promise(function(resolve, reject){
+            var quizPromise = QuizApi.getPublicQuiz(quizId);
+
+            quizPromise
+                .then((quiz) => {
+
+                    AppDispatcher.dispatch({
+                        actionType: QuizConstants.QUIZ_PUBLIC_LOADED,
+                        payload: quiz
+                    });
+                    resolve(quiz);
+
+                })
+                .catch(reject);
+
+        });
+    },
+
 
     saveReview: function(purchased:Quiz){
 
