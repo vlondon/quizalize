@@ -25,6 +25,7 @@ type Props = {
     showAuthor: boolean;
     showCta: boolean;
     showReviewButton: boolean;
+    showBought: boolean;
     quizCode: string;
     onQuizClick: Function;
     onClick: Function;
@@ -33,6 +34,7 @@ type Props = {
     profileMode: boolean;
     sortOptions: boolean;
     sortBy: string;
+    children: any;
 };
 
 type State = {
@@ -46,6 +48,7 @@ var sorter = new QuizSorter();
 
 export default class CQViewQuizList extends React.Component {
 
+    props: Props;
     constructor(props:Props) {
         super(props);
         var initialState = this.getState(props, 1);
@@ -105,11 +108,11 @@ export default class CQViewQuizList extends React.Component {
         var quizzes = sorter.setQuizzes(props.quizzes);
 
         if (quizzes) {
-            // if (props.showCta){
-            // }
-            // quizzes = this.sort(props, quizzes);
             quizzes = sorter.sort('time');
-            quizzes = quizCta(quizzes);
+            if (props.showCta){
+                quizzes = quizCta(quizzes);
+            }
+            // quizzes = this.sort(props, quizzes);
             if (this.props.isPaginated) {
 
                 page = page || this.state.page;
@@ -393,6 +396,7 @@ CQViewQuizList.propTypes = {
     showAuthor: React.PropTypes.bool,
     showCta: React.PropTypes.bool,
     showReviewButton: React.PropTypes.bool,
+    showBought: React.PropTypes.bool,
     quizCode: React.PropTypes.string,
     onQuizClick: React.PropTypes.func,
     onClick: React.PropTypes.func,
@@ -415,6 +419,7 @@ CQViewQuizList.defaultProps = {
     quizzesPerPage: 16,
     showAuthor: true,
     showReviewButton: false,
+    showBought: true,
     showCta: false,
     sortOptions: false,
     onQuizClick: function(){},

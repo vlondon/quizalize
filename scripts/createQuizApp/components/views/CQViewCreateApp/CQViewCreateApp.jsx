@@ -38,7 +38,7 @@ export default class CQViewCreateApp extends React.Component {
         this.state =  {
             selectedQuizzes: [],
             prices: TransactionStore.getPrices(),
-            quizzes: QuizStore.getQuizzes(),
+            quizzes: QuizStore.getPersonalQuizzes(),
             canSave: false,
             app: this.getApp()
         };
@@ -78,7 +78,7 @@ export default class CQViewCreateApp extends React.Component {
     getState():State{
 
         var app = this.getApp();
-        var quizzes = QuizStore.getQuizzes();
+        var quizzes = QuizStore.getPersonalQuizzes();
 
 
         if (quizzes){

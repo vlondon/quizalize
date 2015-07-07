@@ -1,5 +1,5 @@
 /* @flow */
-import Promise             from 'es6-promise';
+import {Promise}             from 'es6-promise';
 
 import AppDispatcher       from './../dispatcher/CQDispatcher';
 import AnalyticsConstants  from './../constants/AnalyticsConstants';
@@ -58,7 +58,7 @@ class AnalyticsActions {
                     actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
                 });
                 resolve();
-            }, 4000);
+            }, 3000);
         });
     }
 
@@ -120,5 +120,6 @@ class AnalyticsActions {
         /*eslint-enable */
     }
 }
-
-export default new AnalyticsActions();
+var instanceAnalyticsActions = new AnalyticsActions();
+console.log('instanceAnalyticsActions', instanceAnalyticsActions, instanceAnalyticsActions.triggerPixels);
+export default instanceAnalyticsActions;

@@ -55,7 +55,6 @@ var CQLogin = React.createClass({
 
                 </div>
 
-                <CQZzishLogin/>
             </CQPageTemplate>
         );
     }

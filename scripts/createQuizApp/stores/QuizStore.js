@@ -92,6 +92,11 @@ class QuizStore extends Store {
         return _quizzes.slice();
     }
 
+    // this will return all user quizzes that are not bought
+    getPersonalQuizzes(): Array<Quiz> {
+        return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined);
+    }
+
     getQuizMeta(quizId): Quiz {
         var result = _quizzes.filter(t => t.uuid === quizId);
         return result.length === 1 ? result.slice()[0] : _fullQuizzes[quizId];

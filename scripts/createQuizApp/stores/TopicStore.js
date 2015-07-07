@@ -92,12 +92,7 @@ var TopicStore = assign({}, EventEmitter.prototype, {
     getTopicName: function(topicId) {
         var topic = TopicStore.getTopicById(topicId);
         if (topic) {
-            if (topic.subjectId) {
-                return _subjectHash[topic.subjectId] + " > " + topic.name;
-            }
-            else {
-                return topic.name;
-            }
+            return topic.name;
         }
         return '';
     },
