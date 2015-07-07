@@ -29,9 +29,8 @@ export default class CQYourAppsCreate extends React.Component{
     }
 
     componentWillMount() {
-        console.log('thissss', this);
-        AppStore.addChangeListener(this.onChange.bind(this));
-        QuizStore.addChangeListener(this.onChange.bind(this));
+        AppStore.addChangeListener(this.onChange);
+        QuizStore.addChangeListener(this.onChange);
 
     }
 
@@ -41,14 +40,12 @@ export default class CQYourAppsCreate extends React.Component{
     }
 
     onChange(){
-        console.log('this', this);
         this.setState({
             apps: AppStore.getApps()
         });
     }
 
     handleApp(app:Object){
-        console.log('app clicked', app);
         router.setRoute(`/quiz/apps/${app.uuid}`);
     }
 
