@@ -82,6 +82,8 @@ app.get('/quiz/profile/:uuid', quiz.getProfileById);
 
 app.get('/quiz/*', quiz.create);
 app.get('/quiz', quiz.create);
+app.get('/play/*', quiz.play);
+app.get('/play', quiz.play);
 
 
 app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
@@ -175,6 +177,8 @@ app.get('/brighton', quiz.brightonlanding);
 app.get('/tool/', quiz.landingpage);
 app.get('/quiz/', quiz.create);
 app.get('/app/', quiz.index);
+
+
 app.get('/qapp/:id', quiz.indexQuiz);
 app.post('/quizHelp/', quiz.help);
 

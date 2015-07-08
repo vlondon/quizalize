@@ -13,6 +13,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
+        pqApp: ['playQuizApp/styles/PQStyles', 'playQuizApp/index'],
         vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [
@@ -30,18 +31,18 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel?optional[]=runtime'],
+                loaders: ['react-hot', 'babel?optional[]=runtime&stage=0'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel?optional[]=runtime',
+                loader: 'babel?optional[]=runtime&stage=0',
                 exclude: /(node_modules|bower_components)/
             },
 
             {
                 test: /\.es6\.js$/,
-                loader: 'babel?optional[]=runtime',
+                loader: 'babel?optional[]=runtime&stage=0',
                 exclude: /(bower_components)/
             },
             {

@@ -1,0 +1,95 @@
+doctype html
+html
+    head
+        if quiz && quiz.meta.name
+            title #{quiz.meta.name} by Quizalize
+        else
+            title Quizalize
+            
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0')
+        meta(name='description', content='')
+        meta(charset='UTF-8')
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="twitter:card" content="summary_large_image")
+        meta(name="twitter:site" content="@quizalizeapp")
+        meta(name="twitter:creator" content="@quizalizeapp")
+        if quiz && quiz.meta.name
+            meta(property='og:title' content='#{quiz.meta.name}')
+        else
+            meta(property='og:title' content='Quizalize - Spot student learning gaps instantly')
+        meta(property='og:site_name' content='Quizalize')
+        if quiz && quiz.uuid
+           meta(property="og:url" content="http://www.quizalize.com/app?uuid=#{quiz.uuid}#/play/public/#{quiz.uuid}")
+        if quiz && quiz.meta && quiz.meta.description
+            meta(property='og:description' content='#{quiz.meta.description}')
+        else
+            meta(property="og:description" content="Quizalize lets you engage your class and deliver instant assessments for personalised learning on any computer, tablet or smartphone. It helps you quickly identify the strengths, weaknesses and learning gaps of individual students and intervene in real-time to give one-on-one help in the classroom.")
+        //description will break in refactor
+        meta(property='og:type' content='article')
+        if quiz && quiz.meta && quiz.meta.imageUrl
+            meta(property='og:image' content="#{quiz.meta.imageUrl}")
+        else
+            meta(property="og:image" content="http://www.quizalize.com/cquiz/img/Quizalize-meta.png")
+        //imageUrl will break in refactor
+        meta(name="apple-mobile-web-app-capable" content="yes")
+        link(rel='apple-touch-icon', sizes='72x72', href='/img/icons/touch-icon-ipad-precomposed.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='/img/icons/touch-icon-iphone-retina-precomposed.png')
+        link(rel='apple-touch-icon', sizes='144x144', href='/img/icons/touch-icon-ipad-retina-precomposed.png')
+        link(rel='icon', sizes='192x192', href='/img/icons/ic_launcher.png')
+        link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
+        link(href='/css/cq-light-bootstrap.min.css', rel='stylesheet')
+        link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+
+        if quiz && quiz.meta.featured
+            script.
+                var domain = document.referrer ? document.referrer.split('/')[2] : undefined;
+                ga('send', 'event', 'quiz-of-the-day', '#{quiz.meta.name}', domain);
+
+
+        script.
+            var initToken = JSON.parse(!{JSON.stringify(zzishapi)});    
+            var publicConfig = !{JSON.stringify(publicConfig)}
+
+        script(src='/js/vendor.js')
+        script(src='/lib/uuid.js')
+        script(src='#{session.zzishsdkurl}/zzish.js')
+        
+        script(src='/js/quiz.js')
+        
+        script(src='/outdatedbrowser/outdatedbrowser.min.js')
+        script.
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-2402555-23', 'auto');
+            ga('send', 'pageview');
+            
+        
+        link(href='/css/quizalize.css', rel='stylesheet')
+
+        script(src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js")
+        link(href='//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css', rel='stylesheet')
+        <!-- Hotjar Tracking Code for www.quizalize.com -->
+        script.
+            
+            (function(f,b){
+                var c;
+                f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
+                f._hjSettings={hjid:45670, hjsv:4};
+                c=b.createElement("script");c.async=1;
+                c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
+                b.getElementsByTagName("head")[0].appendChild(c); 
+            })(window,document);
+        
+
+
+        
+    body
+        #reactApp
+            
+        script(src='/js/pqApp.js')
+        if (devServer=='true')
+            //- script(src="http://localhost:7071/webpack-dev-server.js")
