@@ -69,7 +69,7 @@ var newUrl = function(requestedUrl){
                 return requestedUrl;
             }
         } else if(page.needsLogin) {
-            if (typeof user === 'object'){
+            if (UserStore.isLoggedIn()){
                 return requestedUrl;
             } else {
                 return '/quiz/register?redirect=' + window.encodeURIComponent(requestedUrl);
