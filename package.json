@@ -1,6 +1,6 @@
 {
   "name": "quizalize",
-  "version": "0.5.0",
+  "version": "0.5.4",
   "description": "Quizalize Quizzes",
   "main": "app.js",
   "scripts": {

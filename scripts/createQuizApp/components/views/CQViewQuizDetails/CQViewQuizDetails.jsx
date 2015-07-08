@@ -1,10 +1,11 @@
 var React = require('react');
-
+var router = require('./../../../config/router');
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var TopicStore          = require('createQuizApp/stores/TopicStore');
+var UserStore = require('./../../../stores/UserStore');
 
 var timeouts = [];
 var priceFormat = require('createQuizApp/utils/priceFormat');
@@ -44,7 +45,7 @@ var CQViewQuizDetails = React.createClass({
 
     getState: function(){
         var state = {
-            quiz: QuizStore.getQuiz(this.props.quizId)
+            quiz: QuizStore.getPublicQuiz(this.props.quizId)
         };
 
         return state;
@@ -65,7 +66,21 @@ var CQViewQuizDetails = React.createClass({
 
     handleBuy: function(){
         if (this.state.quiz) {
-            TransactionActions.buyQuiz(this.state.quiz);
+            if (!UserStore.isLoggedIn()){
+                swal({
+                    title: 'You need to be logged in',
+                    text: `In order to buy this item you need to log into Quizalize`,
+                    type: 'info',
+                    confirmButtonText: 'Log in',
+                    showCancelButton: true
+                }, function(isConfirm){
+                    if (isConfirm){
+                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                    }
+                });
+            } else {
+                TransactionActions.buyQuiz(this.state.quiz);
+            }
         }
     },
 
