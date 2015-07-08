@@ -12,7 +12,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
-        pqApp: ['playQuizApp/styles/PQStyles.scss', 'playQuizApp/index.js'],
+        pqApp: ['playQuizApp/styles/PQstyles', 'playQuizApp/index.js'],
         vendor: ['fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [
