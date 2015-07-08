@@ -11,9 +11,8 @@ export default class PQPageTemplate extends React.Component {
     componentWillUnmount() {
     }
 
-    static
 
-    render () {
+    render ():any {
         return (
             <div className='cq'>
                 <div className={this.props.wrapperMainClassName + ' ' + this.props.wrapperStyleClassName}>
@@ -31,7 +30,8 @@ export default class PQPageTemplate extends React.Component {
 
 PQPageTemplate.defaultProps = {
     wrapperMainClassName: 'wrapper',
-    wrapperStyleClassName: 'wrapper-style-dark'
+    wrapperStyleClassName: 'wrapper-style-dark',
+    className: 'page'
 };
 
 PQPageTemplate.propTypes = {

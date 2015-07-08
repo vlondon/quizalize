@@ -2,7 +2,7 @@
 
 import PQStore from './PQStore';
 
-var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var AppDispatcher = require('./../dispatcher/PQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
 // var UserActions = require('./../actions/UserActions');
 
@@ -12,6 +12,7 @@ var _user: Object = {};
 var _users = {};
 
 class PQUserStore extends PQStore {
+
     constructor(){
         super();
     }

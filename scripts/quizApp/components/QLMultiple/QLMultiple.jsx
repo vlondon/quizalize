@@ -41,8 +41,7 @@ var QLMultiple = React.createClass({
         return {
             cssState: cssStates[cssStateIndex],
             answered: null,
-            startTime: Date.now(),
-            hasLatex: this.props.currentQuiz.latexEnabled
+            startTime: Date.now()
         };
     },
 

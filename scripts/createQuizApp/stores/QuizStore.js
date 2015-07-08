@@ -32,11 +32,12 @@ type QuizMeta = {
     published: string;
 };
 
-type Question = {
+export type Question = {
     uuid: string;
     question: string;
     answer: string;
     topicId: string;
+    alternatives?: Array<string>
 }
 
 type QuizPayload = {
