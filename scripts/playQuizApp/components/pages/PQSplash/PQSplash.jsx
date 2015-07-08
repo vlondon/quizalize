@@ -17,7 +17,7 @@ class PQSplash extends React.Component {
     state: State;
     constructor (props:Object){
         super(props);
-        PQQuizStore.getQuiz('c3c3880d-8981-4039-9f9f-b98149312c63');
+        PQQuizStore.getQuiz('9b8f788f-7889-488e-ba33-a82c56f04c47');
         //c3c3880d-8981-4039-9f9f-b98149312c63
         this.state = {};
         this.onChange = this.onChange.bind(this);
