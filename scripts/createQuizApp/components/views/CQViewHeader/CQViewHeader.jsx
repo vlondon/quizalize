@@ -49,8 +49,11 @@ var CQViewHeader = React.createClass({
 
     getState: function(){
         var isLoggedIn = UserStore.getUser().uuid !== undefined;
+        var home = "/";
+        if (UserStore.getUser().uuid !== undefined) home = "/quiz/quizzes";
         return {
-            isLoggedIn
+            isLoggedIn,
+            home
         };
     },
 
@@ -104,10 +107,9 @@ var CQViewHeader = React.createClass({
             <nav className="cq-header">
                 <div className="cq-header__container">
                     <div className="cq-header__brand">
-                        <CQLink href="/quiz/quizzes">
+                        <a href={this.state.home}>
                             <img src="/img/quizalize.png" className="cq-brand" alt=""/>
-                            {this.state.user}
-                        </CQLink>
+                        </a>
                     </div>
                     <ul className="cq-header__buttons">
 

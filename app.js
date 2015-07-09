@@ -80,8 +80,8 @@ app.post('/create/profile', quiz.createProfile);
 app.get('/quiz/token/:token', quiz.getProfileByToken);
 app.get('/quiz/profile/:uuid', quiz.getProfileById);
 
-app.get('/quiz/*', quiz.create);
-app.get('/quiz', quiz.create);
+app.get('/quiz/*', checkForIE, quiz.create);
+app.get('/quiz', checkForIE, quiz.create);
 
 
 app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
@@ -214,6 +214,13 @@ function isIE(req) {
     return isIECheck;
 }
 
+function checkForIE(req, res, next){
+    if (isIE(req)){
+        logger.info('Redirecting to IE');
+        res.redirect('/ie');
+    }
+    return next();
+}
 
 // note: the next method param is passed as well
 function checkForMobile(req, res, next) {
