@@ -358,7 +358,7 @@ export default class CQViewQuizList extends React.Component {
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {TopicStore.getTopicName(quiz.meta.categoryId)}<br/>
+                                    {TopicStore.getTopicName(quiz.meta.publicCategoryId || quiz.meta.categoryId)}<br/>
                                     {author(quiz)}
 
 

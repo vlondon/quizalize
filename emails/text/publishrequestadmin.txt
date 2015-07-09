@@ -1,2 +1,3 @@
-quiz_id: %id%
-profileId: %id%
+id: %id%
+profileId: %profileId%
+Type: %type%

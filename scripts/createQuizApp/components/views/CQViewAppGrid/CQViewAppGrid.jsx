@@ -11,7 +11,7 @@ var CQViewAppGrid = React.createClass({
         className: React.PropTypes.string,
         apps: React.PropTypes.array,
         editMode: React.PropTypes.bool,
-        onClick: React.PropTypes.fund
+        onClick: React.PropTypes.fund,
     },
 
     getDefaultProps: function() {
@@ -20,6 +20,21 @@ var CQViewAppGrid = React.createClass({
             editMode: false,
             onClick: function(){}
         };
+    },
+
+    handlePublish: function(app, event){
+        event.preventDefault();
+        event.stopPropagation();
+
+        swal({
+            title: 'Published',
+            text: 'Your App has been submitted for approval. You will receive an email once it has been approved',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'No'
+        }, function(){
+            AppActions.publishApp(app);
+        });
     },
 
     handleDelete: function(app, event){
@@ -46,8 +61,9 @@ var CQViewAppGrid = React.createClass({
     render: function() {
 
 
-
+        var publishButton = function(){};
         var deleteButton = function(){};
+        var status = function(){};
 
         if (this.props.editMode){
             deleteButton = (app) =>{
@@ -56,6 +72,33 @@ var CQViewAppGrid = React.createClass({
                         Delete
                     </button>
                 );
+            };
+            publishButton =  (app) =>{
+                if (app.meta.published === "published") {
+
+                }
+                else if (app.meta.published === "pending") {
+
+                }
+                else {
+                    return (
+                        <button className="btn btn-info" onClick={this.handlePublish.bind(this, app)}>
+                            Publish
+                        </button>
+                    );
+                }
+            };
+            status = (app) =>{
+                if (app.meta.published === "published") {
+                    return (
+                        <span>(Published)</span>
+                    );
+                }
+                else if (app.meta.published === "Pending") {
+                    return (
+                        <span>(Pending)</span>
+                    );
+                }
             };
         }
 
@@ -67,9 +110,10 @@ var CQViewAppGrid = React.createClass({
                             <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
 
                             <div className="cq-appgrid__appdetails">
-                                <div className="cq-appgrid__appname">{app.meta.name}</div>
+                                <div className="cq-appgrid__appname">{app.meta.name} {status(app)}</div>
                             </div>
                             {deleteButton(app)}
+                            {publishButton(app)}
                         </li>
                     );
                 })}

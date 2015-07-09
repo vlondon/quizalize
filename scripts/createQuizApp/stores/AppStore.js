@@ -154,6 +154,11 @@ AppDispatcher.register(function(action) {
             appStoreInstance.emitChange();
             break;
 
+        case AppConstants.APP_META_UPDATED:
+            _appInfo[action.payload.uuid] = action.payload;
+            appStoreInstance.emitChange();
+            break;
+
         default:
             // no op
     }
