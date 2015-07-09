@@ -32,7 +32,8 @@ var QLMultiple = React.createClass({
         currentQuiz: React.PropTypes.object,
         imageURL: React.PropTypes.string,
         latexEnabled: React.PropTypes.bool,
-        imageEnabled: React.PropTypes.bool
+        imageEnabled: React.PropTypes.bool,
+        startTime: React.PropTypes.number,
     },
 
     getInitialState: function() {
@@ -106,7 +107,7 @@ var QLMultiple = React.createClass({
         var showAnswer, showQuestions, showCountdown;
 
         if (!this.state.answer) {
-            showCountdown = <QLCountDown/>;
+            showCountdown = <QLCountDown startTime={this.props.startTime}/>;
             showQuestions = this.props.alternatives.map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
