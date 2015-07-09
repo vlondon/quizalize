@@ -53,12 +53,12 @@ var approveDocument = function(req, res, doc) {
                       if (quiz.meta.published !== "published") {
                         quiz.meta.published = "published";
                         quiz.meta.updated = Date.now();
-                      }
-                      if (req.body.subjectId) {
-                        quiz.meta.subjectId = req.body.subjectId;
-                      }
-                      if (req.body.publicCategoryId) {
-                        quiz.meta.publicCategoryId = req.body.publicCategoryId;
+                        if (req.body.subjectId) {
+                          quiz.meta.subjectId = req.body.subjectId;
+                        }
+                        if (req.body.publicCategoryId) {
+                          quiz.meta.publicCategoryId = req.body.publicCategoryId;
+                        }
                       }
                       zzish.postContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quiz.uuid, quiz.meta, quiz.payload, function(err3) {
                         icallback(err3);
