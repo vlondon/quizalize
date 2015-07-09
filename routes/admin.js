@@ -50,8 +50,10 @@ var approveDocument = function(req, res, doc) {
                 async.eachSeries(content.payload.quizzes, function (quizId, icallback) {
                   zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err2, quiz) {
                     if (!err2) {
-                      quiz.meta.published = "published";
-                      quiz.meta.updated = Date.now();
+                      if (quiz.meta.published !== "published") {
+                        quiz.meta.published = "published";
+                        quiz.meta.updated = Date.now();
+                      }
                       if (req.body.subjectId) {
                         quiz.meta.subjectId = req.body.subjectId;
                       }
