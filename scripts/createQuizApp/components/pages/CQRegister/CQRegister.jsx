@@ -1,13 +1,14 @@
+/* @flow */
 var React = require('react');
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLoginForm = require('createQuizApp/components/pages/shared/CQLoginForm');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
+var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
+var CQLink = require('./../../../components/utils/CQLink');
 
 
-var UserActions = require('createQuizApp/actions/UserActions');
-var urlParams  = require('createQuizApp/utils/urlParams');
-
+var UserActions = require('./../../../actions/UserActions');
+import router from './../../../config/router';
+import {urlParams} from './../../../utils';
 
 var CQRegister = React.createClass({
 
@@ -21,14 +22,15 @@ var CQRegister = React.createClass({
         };
     },
 
-    handleRegister: function(data){
+    handleRegister: function(data: Object){
         this.setState({
             isEnabled: false,
             loginButtonLabel: 'Working…'
         });
         UserActions.register(data)
+            .then(()=> router.setRoute('/quiz/settings'))
             .catch((error) => {
-                console.log('error AAA', typeof error);
+
                 if (error === 'Duplicate Email address'){
                     swal('Register Error', 'This email has already been used.');
                 } else {

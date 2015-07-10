@@ -1,4 +1,6 @@
 /* @flow */
+
+
 export var urlParams = function() : Object {
     var search = window.location.search;
     return search.substring(1).split('&').reduce(function(result, value) {
