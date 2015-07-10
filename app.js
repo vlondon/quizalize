@@ -221,7 +221,9 @@ function checkForIE(req, res, next){
         logger.info('Redirecting to IE');
         res.redirect('/ie');
     }
-    return next();
+    else {
+        return next();
+    }
 }
 
 // note: the next method param is passed as well
