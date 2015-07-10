@@ -1,4 +1,6 @@
 // set variables for environment
+require('pmx').init();
+var http = require('http');
 var express     = require('express');
 var app         = express();
 var path        = require('path');
