@@ -26,7 +26,10 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
                 goToLoggedIn();
             }
             else {
-                QuizData.showMessage("Login Error", "Can you check that you entered everything correct");
+                if (window.ga){
+                    window.ga('send', 'event', 'error-class', err, resp);
+                }
+                QuizData.showMessage("Login Error", "Please check that you entered the class code correctly");
             }
         });
     }

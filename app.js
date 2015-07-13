@@ -1,4 +1,6 @@
 // set variables for environment
+require('pmx').init();
+var http = require('http');
 var express     = require('express');
 var app         = express();
 var path        = require('path');
@@ -221,7 +223,9 @@ function checkForIE(req, res, next){
         logger.info('Redirecting to IE');
         res.redirect('/ie');
     }
-    return next();
+    else {
+        return next();
+    }
 }
 
 // note: the next method param is passed as well
