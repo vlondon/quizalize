@@ -8,8 +8,10 @@ var options = {
   appId: process.env.intercomAppId
 };
 
-
-var intercom = new Intercom(options);
+var intercom;
+if (process.env.intercom == "true") {
+  intercom = new Intercom(options);
+}
 
 exports.createUser = function(user, callback){
   if (process.env.intercom == "true") {
