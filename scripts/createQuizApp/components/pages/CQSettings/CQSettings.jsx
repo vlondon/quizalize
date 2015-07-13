@@ -1,78 +1,167 @@
-
+/* @flow */
 var React = require('react');
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
-var UserStore = require('createQuizApp/stores/UserStore');
-var UserActions = require('createQuizApp/actions/UserActions');
+
+import type {User} from './../../../stores/UserStore';
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
+var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePicture');
+var UserStore = require('./../../../stores/UserStore');
+var UserActions = require('./../../../actions/UserActions');
 var assign = require('object-assign');
-var router = require('createQuizApp/config/router');
+var router = require('./../../../config/router');
 
-var facebookSDK = require('createQuizApp/config/facebookSDK');
+var facebookSDK = require('./../../../config/facebookSDK');
 
-var CQSettings = React.createClass({
+import {urlParams} from './../../../utils';
+import {sendEvent} from './../../../actions/AnalyticsActions';
 
-    getInitialState: function() {
-        var user = UserStore.getUser();
-        return {
-            user
+type Params = {
+    redirect: string;
+}
+type State = {
+    user: User;
+    params: Params;
+    canSave: boolean;
+    errors: Array<boolean>;
+    isNew: boolean;
+}
+
+
+export default class CQSettings extends React.Component {
+
+    state: State;
+
+    constructor (props: any) {
+        super(props);
+        var user:User = UserStore.getUser();
+        var params = urlParams();
+        var {canSave, errors} = this.isFormValid(user);
+        var isNew = user.name === null ? true : false;
+        this.state =  {
+            user,
+            params,
+            canSave,
+            errors,
+            isNew
         };
-    },
-    componentDidMount: function() {
-        facebookSDK.load();
-    },
 
-    handleSave: function(){
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.isFormValid = this.isFormValid.bind(this);
+    }
+
+    componentDidMount() {
+        facebookSDK.load();
+    }
+
+    isFormValid(u:User): Object{
+        var canSave = true;
+        console.log("errors", this);
+        var errors = [false, false, false];
+        var user:User = u || this.state.user;
+
+        if (!user.name || user.name.length < 2) {
+            canSave = false;
+            errors[0] = true;
+
+        }
+
+        if (!user.attributes.school || user.attributes.school.length < 2){
+            canSave = false;
+            errors[1] = true;
+        }
+
+        if (!user.attributes.location || user.attributes.location.length < 2){
+            canSave = false;
+            errors[2] = true;
+        }
+
+        if (!user.attributes.ageTaught || user.attributes.ageTaught.length < 2){
+            canSave = false;
+            errors[3] = true;
+        }
+
+        if (!user.attributes.subjectTaught || user.attributes.subjectTaught.length < 2){
+            canSave = false;
+            errors[4] = true;
+        }
+
+        return {canSave, errors};
+    }
+
+    handleSave(){
+        // if (this.state.isNew) {
+        //     sendEvent('register', 'forced', 'finished');
+        // }
         UserActions.update(this.state.user)
-            .then( ()=> router.setRoute('/quiz/quizzes'));
-    },
-    handleChange: function(field, event){
+            .then( ()=> {
+                if (this.state.params.redirect){
+                    router.setRoute(this.state.params.redirect);
+                } else {
+                    router.setRoute('/quiz/quizzes');
+                }
+            });
+    }
+
+    handleChange(field: string, event: Object){
 
         var user = assign({}, this.state.user);
         user.attributes[field] = event.target.value;
-        this.setState({user});
+        var {canSave, errors} = this.isFormValid(user);
+        this.setState({user, canSave, errors});
 
-    },
+    }
 
-    handleNameChange: function(event){
+    handleNameChange(event: Object){
 
         var user = assign({}, this.state.user);
+
         user.name = event.target.value;
-        this.setState({user});
+        var {canSave, errors} = this.isFormValid(user);
+        this.setState({user, canSave, errors});
 
-    },
+    }
 
-    handleProfilePicture: function(){
+    handleProfilePicture(){
         facebookSDK.getProfilePicture()
             .then((profilePictureUrl) => {
-                console.log('we got', profilePictureUrl);
+
                 var user = assign({}, this.state.user);
+
                 user.avatar = profilePictureUrl;
+
                 this.setState({user}, ()=>{
                     UserActions.update(this.state.user);
                 });
-            });
-    },
 
-    render: function() {
+            });
+    }
+
+    render() {
+
+        var classNameError = (index) => {
+            return this.state.errors[index] ? '--error' : '';
+        };
+
+        var message = this.state.isNew ? 'We need some extra infromation' : 'Settings';
         return (
             <CQPageTemplate className="cq-container cq-settings">
 
                 <h3 className="cq-settings__header">
-                    Settings
+                    {message}
                 </h3>
 
-                <div className="cq-settings__profile ">
-                    <div className="cq-settings__profile-item form-group">
-                        <label htmlFor="name">Name</label>
+                <div className={`cq-settings__profile`}>
+                    <div className={`cq-settings__profile-item${classNameError(0)} form-group`}>
+                        <label htmlFor="name">Name <small>(required)</small></label>
                         <input type="text" id="name"
                             className="form-control"
-                            placeholder = "e.g. Mr Smith"
+                            placeholder = "e.g. John Smith"
                             onChange={this.handleNameChange}
                             value={this.state.user.name}/>
                     </div>
 
-                    <div className="cq-settings__profile-item form-group">
-                        <label htmlFor="school">School name / company</label>
+                    <div className={`cq-settings__profile-item${classNameError(1)} form-group`}>
+                        <label htmlFor="school">School name / company <small>(required)</small></label>
                         <input type="text" id="school"
                             className="form-control"
                             placeholder = "e.g. City School Academy"
@@ -84,17 +173,37 @@ var CQSettings = React.createClass({
                        <label htmlFor="url">School Website</label>
                        <input type="url" id="url"
                            className="form-control"
+                           placeholder="e.g. http://www.school.com"
                            onChange={this.handleChange.bind(this, 'url')}
                            value={this.state.user.attributes.url}/>
                     </div>
 
-                    <div className="cq-settings__profile-item form-group">
-                        <label htmlFor="location">Location</label>
+                    <div className={`cq-settings__profile-item${classNameError(2)} form-group`}>
+                        <label htmlFor="location">Location <small>(required)</small></label>
                         <input type="text" id="location"
                             className="form-control"
                             placeholder = "e.g. London"
                             onChange={this.handleChange.bind(this, 'location')}
                             value={this.state.user.attributes.location}/>
+                    </div>
+
+                    <div className={`cq-settings__profile-item${classNameError(3)} form-group`}>
+                        <label htmlFor="location">Age group taught (required)</label>
+                        <input type="text" id="location"
+                            className="form-control"
+                            placeholder = "e.g. Year 3 / Grade 3"
+                            onChange={this.handleChange.bind(this, 'ageTaught')}
+                            value={this.state.user.attributes.ageTaught}/>
+                    </div>
+
+
+                    <div className={`cq-settings__profile-item${classNameError(4)} form-group`}>
+                        <label htmlFor="location">Subject taught (required)</label>
+                        <input type="text" id="location"
+                            className="form-control"
+                            placeholder = "e.g. Biology and Chemistry"
+                            onChange={this.handleChange.bind(this, 'subjectTaught')}
+                            value={this.state.user.attributes.subjectTaught}/>
                     </div>
 
 
@@ -113,7 +222,11 @@ var CQSettings = React.createClass({
 
 
                     <div className="cq-settings__save">
-                        <button className="btn btn-danger" onClick={this.handleSave}>Save Profile</button>
+                        <button className="btn btn-danger"
+                            disabled={!this.state.canSave}
+                            onClick={this.handleSave}>
+                            Save Profile
+                        </button>
                     </div>
 
 
@@ -121,9 +234,8 @@ var CQSettings = React.createClass({
                 </div>
             </CQPageTemplate>
         );
+
     }
 
 
-});
-
-module.exports = CQSettings;
+}

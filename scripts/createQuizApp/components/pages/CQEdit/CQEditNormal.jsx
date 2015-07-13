@@ -58,7 +58,7 @@ var CQEditNormal = React.createClass({
             this.refs.alternatives1,
             this.refs.alternatives2,
             this.refs.answerExplanation,
-            this.refs._topic
+            this.refs.topicId
         ];
     },
 
@@ -436,6 +436,7 @@ var CQEditNormal = React.createClass({
                             <CQAutofill
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
+                                ref1='topicId'
                                 data={this.handleGetTopics}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>

@@ -10,7 +10,7 @@ var CQAnalytics = React.createClass({
             googleConversion: false,
             twitterConversion: false,
             facebookConversion: false,
-            user: UserStore.getUser()
+            user: UserStore.getUser().uuid !== undefined
         };
     },
 
@@ -31,7 +31,7 @@ var CQAnalytics = React.createClass({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,
             facebookConversion: analyticsEnabled,
-            user: UserStore.getUser()
+            user: UserStore.getUser().uuid !== undefined
         });
 
     },
@@ -40,13 +40,19 @@ var CQAnalytics = React.createClass({
 
         var googleConversion, twitterConversion, facebookConversion;
         if (this.state.user){
-            // window.intercomSettings = {
-            //   name: (this.state.user && this.state.user.name),
-            //   email: (this.state.user && this.state.user.email),
-            //   created_at: (this.state.user && this.state.user.created),
-            //   app_id: 'mnacdt52'
-            // };
-            // (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+            window.intercomSettings = {
+              name: (this.state.user && this.state.user.name),
+              email: (this.state.user && this.state.user.email),
+              created_at: (this.state.user && this.state.user.created),
+              app_id: 'mnacdt52'
+            };
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+        }
+        else {
+            window.intercomSettings = {
+              app_id: 'mnacdt52'
+            };
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
         }
 
         if (this.state.googleConversion) {

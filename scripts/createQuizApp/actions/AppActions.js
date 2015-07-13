@@ -87,6 +87,16 @@ var AppActions = {
         }
     },
 
+    publishApp: function(app:Object) {
+        app.meta.published = "pending";
+        AppApi.publishApp(app);
+        AppDispatcher.dispatch({
+            actionType: AppConstants.APP_META_UPDATED,
+            payload: app
+        });
+
+    },
+
     appPicture: function(appId:string, file:Object){
         return AppApi.uploadMedia(appId, file);
     },

@@ -16,7 +16,7 @@ var CQViewQuizListItem = React.createClass({
 
                 <div className="cq-viewquizlist__quiz-inner">
                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                    {TopicStore.getTopicName(quiz.meta.categoryId)} {author(quiz)}
+                    {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || quiz.meta.categoryId)} {author(quiz)}
 
                     <div className="cq-viewquizlist__quizextra">
                         <br/>

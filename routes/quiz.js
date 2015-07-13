@@ -421,7 +421,7 @@ exports.publishToMarketplace = function(req,res) {
     var id = req.params.id;
     var quiz = req.body;
 
-    zzish.postContent(profileId, QUIZ_CONTENT_TYPE, id, quiz.meta, quiz.content, function(err2, message) {
+    zzish.postContent(profileId, QUIZ_CONTENT_TYPE, id, quiz.meta, quiz.payload, function(err2, message) {
         zzish.getUser(profileId, null, function(err, user) {
             var name = "there";
             if (user.name) name = user.name;
@@ -431,7 +431,8 @@ exports.publishToMarketplace = function(req,res) {
             email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
             email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
               profileId: profileId,
-              id: id
+              id: id,
+              type: 'app'
             });
             res.send();
         });

@@ -6,23 +6,46 @@ var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
 var UserActions = require('./../actions/UserActions');
 
+type UserAttributes = {
+    location?: string;
+    school?: string;
+    url?: string;
+    subjectTaught?: string;
+    ageTaught?: string;
+};
+export type User = {
+    uuid?: string;
+    avatar: string;
+    email: string;
+    name: string;
+    attributes: UserAttributes;
+}
+
+var noUser:User = {
+    uuid: undefined,
+    avatar: '',
+    email: '',
+    name: '',
+    attributes: {}
+};
 
 var storeInit = false;
-var _user: Object = {};
+var _user:User = noUser;
 var _users = {};
 
 class UserStore extends Store {
+
     constructor(){
         super();
     }
 
-    getUser():Object {
+    getUser():User {
         return _user;
     }
 
 
     isLoggedIn(): boolean {
-        return !!_user.uuid;
+        return (_user && _user.uuid) ? true : false;
     }
 
 
@@ -37,7 +60,11 @@ class UserStore extends Store {
 
     isAdmin(): boolean {
         var admins = ['Quizalize Team', 'BlaiZzish', 'Zzish', 'FrancescoZzish', 'SamirZish', 'CharlesZzish'];
-        return admins.indexOf(_user.name) !== -1;
+        if (_user && _user.name){
+            return admins.indexOf(_user.name) !== -1;
+        } else {
+            return false;
+        }
     }
 
 
@@ -71,7 +98,7 @@ AppDispatcher.register(function(action) {
         //
         case UserConstants.USER_IS_NOT_LOGGED:
         case UserConstants.USER_LOGOUT:
-            _user = {};
+            _user = noUser;
             userStore.emitChange();
             break;
         //
@@ -94,5 +121,6 @@ AppDispatcher.register(function(action) {
             // no op
     }
 });
+
 
 module.exports = userStore;

@@ -49,11 +49,12 @@ export default class CQApp extends React.Component {
         this.state =  this.getState();
         this.handleDetails = this.handleDetails.bind(this);
         this.handleDetailsClose = this.handleDetailsClose.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount () {
-        AppStore.addChangeListener(this.onChange.bind(this));
-        TopicStore.addChangeListener(this.onChange.bind(this));
+        AppStore.addChangeListener(this.onChange);
+        TopicStore.addChangeListener(this.onChange);
     }
 
     componentWillUnmount () {

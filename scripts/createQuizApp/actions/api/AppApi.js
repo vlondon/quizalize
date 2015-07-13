@@ -134,6 +134,25 @@ var AppApi = {
                 });
 
         });
+    },
+    publishApp: function(app) {
+        return new Promise(function(resolve, reject){
+            var uuid = localStorage.getItem('cqUuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.post(`/create/${uuid}/apps/${app.uuid}/publishToMarketplace`)
+                    .send(app)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+            }
+        });
     }
 };
 

@@ -1,19 +1,26 @@
 var React = require('react');
 
-var timeout, startTimer;
+var timeout;
 
 var updateInterval = 100;
-var startInterval = 62;
+var startInterval = 60;
+var buffer = 2;
 var CountDown = React.createClass({
+
+    propTypes: {
+        duration: React.PropTypes.number,
+        startTime: React.PropTypes.number
+    },
 
     getInitialState: function() {
         return {
-            time: startInterval
+            time: (this.props.duration || startInterval) + buffer,
+            duration: (this.props.duration || startInterval) + buffer,
+            startTime: (this.props.startTime || Date.now())
         };
     },
 
     componentDidMount: function() {
-        startTimer = Date.now();
         timeout = setTimeout(this.handleTimeout, updateInterval);
     },
     componentWillUnmount: function() {
@@ -22,8 +29,7 @@ var CountDown = React.createClass({
 
 
     handleTimeout: function(){
-        var time = Math.floor(startInterval - (Date.now() - startTimer) / 1000);
-
+        var time = Math.floor(this.state.duration - (Date.now() - this.props.startTime) / 1000);
         time = (time > 0) ? time : 0;
 
         if (this.state.time !== time){

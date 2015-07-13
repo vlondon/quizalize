@@ -74,9 +74,23 @@ var CQAssignments = React.createClass({
 
     render: function() {
 
+        var editClass = "";
+
+        if (this.state.groups.length > 0) {
+            var dashboard = `${this.state.groups[0].link}/dashboard`;
+            editClass = (
+                <a href={dashboard} target="_blank" className="btn btn-info pull-right">
+                    Edit Classes
+                </a>
+            );
+        }
+
         return (
             <CQPageTemplate className="cq-container cq-classes">
-                <h2 className="cq-classes__header"><i className="fa fa-users"/> Your Classes</h2>
+                <h2 className="cq-classes__header">
+                    <i className="fa fa-users"/> Your Classes
+                    {editClass}
+                </h2>
                 <p>Here are the quizzes which you have set to your classes</p>
 
                     {this.state.groups.map(classN => {

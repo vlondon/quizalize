@@ -48,6 +48,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                 letters: self.letters,
                 imageURL: self.imageURL,
                 imageEnabled: self.imageEnabled,
+                startTime: QuizData.logQuestion(self.questionData),
                 onAddLetter: function(index) {
                     $scope.$apply(function(){
                         self.addLetter(index);
@@ -82,8 +83,6 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
 
     };
 
-
-
     var startTime = (new Date()).getTime();
 
     self.id = $routeParams.quizId;
@@ -113,6 +112,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                     //we already have this question
                     $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                 }
+
                 addReactComponent();
                 lastEmpty = 0;
             });
