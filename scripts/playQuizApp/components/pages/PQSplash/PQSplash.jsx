@@ -6,8 +6,8 @@ import type {Question} from './../../../../createQuizApp/stores/QuizStore';
 import PQQuizStore from './../../../stores/PQQuizStore';
 
 import PQPageTemplate from './../../PQPageTemplate';
-import PQViewVideo from './../../views/PQViewVideo';
-import QLMultiple from './../../../../quizApp/components/QLMultiple';
+
+import PQViewQuizVideo from './../../views/PQViewQuizVideo';
 
 type State = {
     question?: Question;
@@ -24,11 +24,14 @@ class PQSplash extends React.Component {
     }
 
     onChange(){
-        console.log('onChange called', this);
+
         var quiz = PQQuizStore.getQuiz('9b8f788f-7889-488e-ba33-a82c56f04c47');
         if (quiz) {
-            var question:Question = quiz.getQuestion(0);
-            this.setState({question});
+            var question:Question = quiz.getQuestion(0).toObject();
+            this.setState({
+                quiz,
+                question
+            });
         }
     }
 
@@ -43,24 +46,18 @@ class PQSplash extends React.Component {
 
     render (): any {
 
-        var question;
-        if (this.state.question) {
-            question = (
-                <div>
-                    <PQViewVideo/>
-                    <QLMultiple
-                        question={this.state.question.question}
-                        alternatives={this.state.question.alternatives}
-                        questionData={this.state.question}
-                    />
-                </div>
+        var quiz;
+        if (this.state.quiz) {
+            quiz = (
+                <PQViewQuizVideo quiz={this.state.quiz}/>
+
             );
         }
-        console.log('this.state', this.state, question);
+
         return (
             <PQPageTemplate>
-                Splash
-                {question}
+
+                {quiz}
             </PQPageTemplate>
         );
     }

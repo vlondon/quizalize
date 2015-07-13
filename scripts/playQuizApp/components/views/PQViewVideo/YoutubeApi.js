@@ -1,6 +1,10 @@
+/* @flow */
 import {Promise} from 'es6-promise';
 
-export var addYoutubeSdk = function(DOMId, videoId){
+
+
+
+export var addYoutubeSdk = function(DOMId:string, videoId: string, begin: number, end: number, cb:?Function){
 
     return new Promise(function(resolve){
 
@@ -11,13 +15,13 @@ export var addYoutubeSdk = function(DOMId, videoId){
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         var player;
 
-
         var onPlayerReady = function(ev){
-            console.log('ev onPLayerready', ev);
+            console.log('ev onPlayerReady', ev);
 
         };
 
         var onPlayerStateChange = function(ev){
+            if (cb) cb(ev);
             console.log('onPlayerStateChange', ev);
         };
 
@@ -28,8 +32,8 @@ export var addYoutubeSdk = function(DOMId, videoId){
                 width: '640',
                 videoId: videoId,
                 playerVars: {
-                    start: 3,
-                    end: 5,
+                    start: begin,
+                    end: end,
                     autoplay: true,
                     autohide: 1,
                     rel: 0,

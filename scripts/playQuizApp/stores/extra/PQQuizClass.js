@@ -1,6 +1,6 @@
 /* @flow */
 import type {QuizComplete} from './../../../createQuizApp/stores/QuizStore';
-
+import PQQuestion from './PQQuestionClass';
 class PQQuiz {
 
     _quiz: QuizComplete;
@@ -24,7 +24,7 @@ class PQQuiz {
         }
         var question  = this._quiz.payload.questions[this.questionIndex];
         this.questionIndex += 1;
-        return question;
+        return new PQQuestion(question);
     }
 }
 
