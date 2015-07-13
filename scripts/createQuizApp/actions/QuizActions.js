@@ -236,7 +236,7 @@ var QuizActions = {
     },
 
     shareQuiz: function(quizId:string, quizName:string, emails:string, link:string){
-        var user = UserStore.getUser();
+        var user:Object = UserStore.getUser();
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
         var tokensComma = emails.split(',');

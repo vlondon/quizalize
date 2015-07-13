@@ -53,6 +53,8 @@ var storeInitPublic = false;
 
 
 var AppObject = function():AppComplete{
+    var user:Object = UserStore.getUser();
+    var profileId = user.uuid || undefined;
     var app = {
         uuid: undefined,
         meta: {
@@ -62,7 +64,7 @@ var AppObject = function():AppComplete{
             iconURL: undefined,
             name: '',
             price: 0,
-            profileId: UserStore.getUser().uuid,
+            profileId,
             quizzes: '',
             updated: Date.now()
         },
