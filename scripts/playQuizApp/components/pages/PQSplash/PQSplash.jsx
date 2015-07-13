@@ -25,9 +25,11 @@ class PQSplash extends React.Component {
 
     onChange(){
         console.log('onChange called', this);
-        var quiz = PQQuizStore.getQuiz('c3c3880d-8981-4039-9f9f-b98149312c63');
-        var question:Question = quiz.getQuestion(0);
-        this.setState({question});
+        var quiz = PQQuizStore.getQuiz('9b8f788f-7889-488e-ba33-a82c56f04c47');
+        if (quiz) {
+            var question:Question = quiz.getQuestion(0);
+            this.setState({question});
+        }
     }
 
     componentWillMount() {
