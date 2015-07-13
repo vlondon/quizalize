@@ -154,7 +154,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
         var numAlternatives = getNumAlternvatives(currentQuestion);
-        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8 || length==1) {
+        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=12 || length==1) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
