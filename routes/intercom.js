@@ -2,15 +2,17 @@ var config = require('../config.js');
 
 //general zzish config
 var Intercom = require('intercom.io');
+
 var options = {
-  apiKey: "2f83eafd4c62128e001ba6de9084277311ca726c",
-  appId: "mnacdt52"
+  apiKey: process.env.intercomKey,
+  appId: process.env.intercomAppId
 };
+
 
 var intercom = new Intercom(options);
 
 exports.createUser = function(user, callback){
-  if (config.webUrl === "https://www.zzish.com/") {
+  if (process.env.intercom == "true") {
     intercom.createUser(user, function(err, resp) {
       if (callback) callback(err, resp);
     });
@@ -18,12 +20,13 @@ exports.createUser = function(user, callback){
 };
 
 exports.updateUser = function(user, callback) {
-  if (config.webUrl === "https://www.zzish.com/") {
+  if (process.env.intercom == "true") {
     intercom.updateUser(user, function(err, resp) {
       if (callback) callback(err, resp);
     });
   }
 };
+
 
 exports.trackEvent = function(userId, event_name, meta, callback){
   if (config.webUrl === "https://www.zzish.com/") {

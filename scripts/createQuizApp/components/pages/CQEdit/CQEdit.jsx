@@ -10,8 +10,7 @@ var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
-var TopicActions = require('createQuizApp/actions/TopicActions');
-
+var UserApi             = require('createQuizApp/actions/api/UserApi');
 
 var CQEdit = React.createClass({
 
@@ -123,6 +122,7 @@ var CQEdit = React.createClass({
     },
 
     handleFinished: function(){
+        UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
         });

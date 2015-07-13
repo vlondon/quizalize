@@ -12,6 +12,7 @@ var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
 var UserStore = require('./../../../stores/UserStore');
+var UserApi      = require('./../../../actions/api/UserApi');
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {App} from './../../../stores/AppStore';
@@ -120,6 +121,7 @@ export default class CQApp extends React.Component {
                     }, (isConfirm) => {
 
                     if (isConfirm){
+                        UserApi.trackEvent('buy_app', {uuid: app.uuid, name: app.meta.name});
                         setTimeout(()=>{
 
                             var newTransaction = {
