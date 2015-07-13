@@ -18,7 +18,7 @@ config.stripeKey = process.env.STRIPE_KEY;
 config.stripeSecret = process.env.STRIPE_SECRET;
 
 //Zzish Init (Either QATOKEN OR an object with lots of params)
-config.zzishInit = process.env.ZZISHINIT;
+config.zzishInit = "{\"api\": \"2d14d1984a2e3293bd13aab34c85e2ea\", \"protocol\": \"http://\",\"baseUrl\": \"test-api.zzish.com/api/\", \"webUrl\": \"http://test.zzish.com/\",\"logEnabled\": true}";;
 
 
 module.exports = config;
