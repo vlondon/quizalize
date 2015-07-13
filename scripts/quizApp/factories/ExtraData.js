@@ -10,6 +10,18 @@ angular.module('quizApp')
 
         var ExtraData = {
 
+            videoQuizHandler: function(quiz){
+                var isVideoQuiz = quiz && quiz.meta.name.split('|').length > 0;
+                var videoSegments = quiz.meta.name.split('|');
+                videoSegments.shift();
+                videoSegments = videoSegments.map(v => parseInt(v, 10));
+
+                return {
+                    isVideoQuiz,
+                    videoSegments
+                };
+            },
+
             getLeaderBoard: function(quizId, activityId){
 
                 var formatLeaderboard = function(results) {

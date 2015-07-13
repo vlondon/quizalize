@@ -7,20 +7,10 @@ import {addYoutubeSdk} from './YoutubeApi';
 type Props = {
     start: string;
     end: string;
-    timers: Array<number>;
     player: Object;
     onComplete: Function;
 }
 
-
-var convertTimeToSeconds = function(time):number{
-    var seconds;
-    console.log('time', time);
-    var timeArr = time.split(':');
-    seconds = parseInt(timeArr[0], 10) * 60;
-    seconds += parseInt(timeArr[1], 10);
-    return seconds;
-};
 
 
 export default class PQViewVideo extends React.Component {
@@ -29,8 +19,8 @@ export default class PQViewVideo extends React.Component {
         super(props);
         this.state = {
             currentTime: 0,
-            start: convertTimeToSeconds(this.props.start),
-            end: convertTimeToSeconds(this.props.end),
+            start: this.props.start,
+            end: this.props.end,
             cssState: 'enter'
         };
         this.handleYoutubeEvent = this.handleYoutubeEvent.bind(this);
@@ -64,7 +54,7 @@ export default class PQViewVideo extends React.Component {
     handleEnd(){
         this.clearTimers();
         this.setState({cssState: 'exit'});
-        setTimeout(()=>{ this.props.onComplete() }, 600);
+        setTimeout(()=>{ this.props.onComplete(); }, 600);
 
     }
 
