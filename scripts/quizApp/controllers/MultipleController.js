@@ -54,8 +54,10 @@ angular.module('quizApp')
         QuizData.loadQuiz(self.catId, self.id, function(data) {
 
             //$scope.$apply(function(){
-                self.currentQuiz = data;
-                self.videoQuizData = ExtraData.videoQuizHandler(data);
+                var extraQuizData = ExtraData.videoQuizHandler(data);
+                self.currentQuiz = extraQuizData.quiz;
+                self.videoQuizData = extraQuizData.extra;
+
 
 
                 self.score = QuizData.currentQuizResult().totalScore;

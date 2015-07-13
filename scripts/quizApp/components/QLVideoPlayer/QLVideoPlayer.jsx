@@ -101,6 +101,7 @@ var QLVideoPlayer = React.createClass({
                     onNext={this.onNext}
                     quizData={this.props.quizData}
                     questionData={this.props.questionData}
+                    questionIndex={this.state.questionIndex}
                     currentQuiz={this.props.currentQuiz}
                     imageURL={this.props.imageURL}
                     latexEnabled={this.props.latexEnabled}

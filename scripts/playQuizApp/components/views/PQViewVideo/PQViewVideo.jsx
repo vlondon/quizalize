@@ -24,6 +24,7 @@ export default class PQViewVideo extends React.Component {
             cssState: 'enter'
         };
         this.handleYoutubeEvent = this.handleYoutubeEvent.bind(this);
+        this.handleSkip = this.handleSkip.bind(this);
         this.timers = [];
 
         this.timers.push(setTimeout(()=>{
@@ -37,8 +38,6 @@ export default class PQViewVideo extends React.Component {
         addYoutubeSdk('pq-viewvideo', 'rNu8XDBSn10', this.state.start, this.state.end, this.handleYoutubeEvent)
             .then((player)=>{
                 this.player = player;
-                console.log('youtube player', player);
-                // this.setTimers();
             });
     }
 
@@ -56,6 +55,11 @@ export default class PQViewVideo extends React.Component {
         this.setState({cssState: 'exit'});
         setTimeout(()=>{ this.props.onComplete(); }, 600);
 
+    }
+
+    handleSkip(){
+        this.player.stopVideo();
+        this.handleEnd();
     }
 
     handleYoutubeEvent(ev:Object){
@@ -101,14 +105,20 @@ export default class PQViewVideo extends React.Component {
 
         return (
             <div className={`pq-viewvideo ${this.state.cssState}`}>
-                <div class="pq-viewvideo__player">
+                <div className="pq-viewvideo__player">
 
                     <div id="pq-viewvideo"/>
                 </div>
-                <div class="pq-viewevideo__extras">
-
-                    Time: {displayTime(this.state.currentTime)}
-                    Next questions in: {displayTime(this.state.end - this.state.currentTime)}
+                <div className="pq-viewvideo__extras">
+                    <div className="pq-viewvideo__totaltime">
+                        Time: {displayTime(this.state.currentTime)}
+                    </div>
+                    <div className="pq-viewvideo__skip" onClick={this.handleSkip}>
+                        Skip
+                    </div>
+                    <div className="pq-viewvideo__timeremaining">
+                        Next questions in: {displayTime(this.state.end - this.state.currentTime)}
+                    </div>
                 </div>
             </div>
         );
