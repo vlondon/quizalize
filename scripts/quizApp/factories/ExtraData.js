@@ -6,11 +6,13 @@ angular.module('quizApp')
             $log.error("Require zzish.js to use zzish");
         }
 
+        var extraData;
 
 
         var ExtraData = {
 
             videoQuizHandler: function(quiz){
+                if (extraData) { return extraData; }
                 var isVideoQuiz = quiz && quiz.meta.name.split('|').length > 0;
                 var videoSegments = quiz.meta.name.split('|');
                 videoSegments.shift();
@@ -28,7 +30,7 @@ angular.module('quizApp')
                     q.question = q.question.split('|')[0];
                 })
 
-                return {
+                extraData = {
                     extra: {
                         isVideoQuiz,
                         videoSegments,
@@ -36,6 +38,7 @@ angular.module('quizApp')
                     },
                     quiz
                 };
+                return extraData;
             },
 
             getLeaderBoard: function(quizId, activityId){
