@@ -118,7 +118,7 @@ var UserActions = {
     register: function(data) {
 
         return new Promise(function(resolve, reject){
-
+            console.log('registering', data);
             UserApi.register(data)
                 .then(function(user){
                     console.log("AnalyticsActions", AnalyticsActions);

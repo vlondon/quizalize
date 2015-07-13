@@ -1,5 +1,7 @@
-var React = require('react');
-var router = require('createQuizApp/config/router');
+/* @flow */
+import React from 'react';
+import router from './../../config/router';
+import UserStore from './../../stores/UserStore';
 
 var CQPublishQuiz = React.createClass({
 
@@ -8,20 +10,43 @@ var CQPublishQuiz = React.createClass({
         className: React.PropTypes.string
     },
 
-    handleIgnore: function(ev) {
+    handleIgnore: function(ev:Object) {
         ev.preventDefault();
-        ev.stopPropogation();
+        ev.stopPropagation();
     },
 
-    handlePublish: function(){
+    handlePublish: function(ev:Object){
+        console.log('ev', ev);
+        ev.preventDefault();
+        ev.stopPropagation();
+        // we check if the user has the details
         var quiz = this.props.quiz;
-        if (quiz){
-            router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
+        var user = UserStore.getUser();
+        if (user && user.name && user.name.length > 0) {
+            console.log('we got user with name', user.name);
+            if (quiz){
+                router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
+            }
+        } else {
+
+            swal({
+                title: 'You have an incomplete profile',
+                text: `To publish to the marketplace you musth complete your profile.`,
+                type: 'info',
+                confirmButtonText: 'Enter details',
+                showCancelButton: false
+            }, function(isConfirm){
+                if (isConfirm){
+                    router.setRoute(`/quiz/settings?redirect=${window.encodeURIComponent(`/quiz/published/${quiz.uuid}/publish`)}`);
+                }
+            });
         }
+
+
     },
 
-    render: function() {
-        var publishButton = () => {
+    render: function(): any {
+        var publishButton = (() => {
             if (!this.props.quiz.meta.originalQuizId) {
                 if (this.props.quiz.meta.published === "pending") {
                     return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
@@ -39,11 +64,11 @@ var CQPublishQuiz = React.createClass({
                     </button>);
                 }
             }
-        };
+        })();
 
         return (
             <span>
-                {publishButton()}
+                {publishButton}
             </span>
         );
     }
