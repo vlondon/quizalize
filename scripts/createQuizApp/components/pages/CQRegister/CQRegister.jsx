@@ -14,11 +14,14 @@ var CQRegister = React.createClass({
 
     getInitialState: function() {
         console.log('window.location.search;,', window.location.search);
+        var variation = typeof window.cxApi === 'object' ? window.cxApi.chooseVariation() : 0;
+        var willRedirect = variation === 1;
         return {
             isRedirect: urlParams().redirect ? true : false,
             redirectUrl: '',
             isEnabled: true,
-            loginButtonLabel: 'Sign up'
+            loginButtonLabel: 'Sign up',
+            willRedirect
         };
     },
 
@@ -28,7 +31,13 @@ var CQRegister = React.createClass({
             loginButtonLabel: 'Working…'
         });
         UserActions.register(data)
-            .then(()=> router.setRoute('/quiz/settings'))
+            .then(()=>{
+                if (this.state.willRedirect){
+                    router.setRoute('/quiz/settings');
+                } else {
+                    router.setRoute('/quiz/quizzes');
+                }
+            })
             .catch((error) => {
 
                 if (error === 'Duplicate Email address'){
