@@ -73,7 +73,7 @@ var approveDocument = function(req, res, doc) {
                 });
               }
               else {
-                finalApproval(type, content);
+                finalApproval(req, res, type, content, doc);
               }
             }
             else {
