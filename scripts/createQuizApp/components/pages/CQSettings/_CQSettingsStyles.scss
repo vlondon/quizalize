@@ -7,6 +7,9 @@
 
     &__header {
         @include cq-header();
+        .btn {
+            float: right;
+        }
     }
     &__save {
         text-align: center;

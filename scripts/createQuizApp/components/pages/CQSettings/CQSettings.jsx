@@ -2,6 +2,7 @@
 var React = require('react');
 
 import type {User} from './../../../stores/UserStore';
+import CQLink from './../../../components/utils/CQLink';
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePicture');
 var UserStore = require('./../../../stores/UserStore');
@@ -35,7 +36,7 @@ export default class CQSettings extends React.Component {
         var user:User = UserStore.getUser();
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
-        var isNew = user.name === null ? true : false;
+        var isNew = this.props.isRegister === true;
         this.state =  {
             user,
             params,
@@ -43,7 +44,7 @@ export default class CQSettings extends React.Component {
             errors,
             isNew
         };
-
+        this.handleProfilePicture = this.handleProfilePicture.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
@@ -53,45 +54,47 @@ export default class CQSettings extends React.Component {
         facebookSDK.load();
     }
 
-    isFormValid(u:User): Object{
+    isFormValid(): Object{
+        //u?:User
         var canSave = true;
         console.log("errors", this);
         var errors = [false, false, false];
-        var user:User = u || this.state.user;
-
-        if (!user.name || user.name.length < 2) {
-            canSave = false;
-            errors[0] = true;
-
-        }
-
-        if (!user.attributes.school || user.attributes.school.length < 2){
-            canSave = false;
-            errors[1] = true;
-        }
-
-        if (!user.attributes.location || user.attributes.location.length < 2){
-            canSave = false;
-            errors[2] = true;
-        }
-
-        if (!user.attributes.ageTaught || user.attributes.ageTaught.length < 2){
-            canSave = false;
-            errors[3] = true;
-        }
-
-        if (!user.attributes.subjectTaught || user.attributes.subjectTaught.length < 2){
-            canSave = false;
-            errors[4] = true;
-        }
-
+        // var user:User = u || this.state.user;
         return {canSave, errors};
+        // if (!user.name || user.name.length < 2) {
+        //     canSave = false;
+        //     errors[0] = true;
+        //
+        // }
+        //
+        // if (!user.attributes.school || user.attributes.school.length < 2){
+        //     canSave = false;
+        //     errors[1] = true;
+        // }
+        //
+        // if (!user.attributes.location || user.attributes.location.length < 2){
+        //     canSave = false;
+        //     errors[2] = true;
+        // }
+        //
+        // if (!user.attributes.ageTaught || user.attributes.ageTaught.length < 2){
+        //     canSave = false;
+        //     errors[3] = true;
+        // }
+        //
+        // if (!user.attributes.subjectTaught || user.attributes.subjectTaught.length < 2){
+        //     canSave = false;
+        //     errors[4] = true;
+        // }
+        //
+        // return {canSave, errors};
     }
 
     handleSave(){
-        // if (this.state.isNew) {
-        //     sendEvent('register', 'forced', 'finished');
-        // }
+
+        if (this.state.isNew) {
+            sendEvent('register', 'details', 'filled');
+        }
         UserActions.update(this.state.user)
             .then( ()=> {
                 if (this.state.params.redirect){
@@ -136,23 +139,68 @@ export default class CQSettings extends React.Component {
             });
     }
 
+    skipRegister(){
+        console.log('registering', sendEvent);
+        sendEvent('register', 'details', 'skipped');
+    }
+
     render() {
 
+        var message, profilePicture, schoolWebsite, skipButton;
         var classNameError = (index) => {
             return this.state.errors[index] ? '--error' : '';
         };
 
-        var message = this.state.isNew ? 'We need some extra information' : 'Settings';
+        if (!this.state.isNew) {
+            profilePicture = (
+                <div className="cq-settings__profile-item cq-settings__profilepicture form-group">
+                    <label>Profile picture</label>
+                    <div className="cq-settings__picture">
+
+                        <CQViewProfilePicture
+                            width="150"
+                            height="150"
+                            name={this.state.user.name}
+                            picture={this.state.user.avatar}/>
+                    </div>
+                    <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
+                </div>
+            );
+
+            schoolWebsite = (
+                <div className="cq-settings__profile-item form-group">
+                   <label htmlFor="url">School Website</label>
+                   <input type="url" id="url"
+                       className="form-control"
+                       placeholder="e.g. http://www.school.com"
+                       onChange={this.handleChange.bind(this, 'url')}
+                       value={this.state.user.attributes.url}/>
+                </div>
+            );
+        } else {
+            skipButton = (
+                <CQLink href='/quiz/quizzes' onClick={this.skipRegister}>
+                    <button className="btn btn-danger btn-sm">
+                        Skip
+                    </button>
+                </CQLink>
+            );
+        }
+
+        message = this.state.isNew ? 'We need some extra information' : 'Settings';
         return (
             <CQPageTemplate className="cq-container cq-settings">
 
                 <h3 className="cq-settings__header">
+                    <div className="skip">
+                        {skipButton}
+                    </div>
                     {message}
                 </h3>
 
                 <div className={`cq-settings__profile`}>
                     <div className={`cq-settings__profile-item${classNameError(0)} form-group`}>
-                        <label htmlFor="name">Name <small>(required)</small></label>
+                        <label htmlFor="name">Name</label>
                         <input type="text" id="name"
                             className="form-control"
                             placeholder = "e.g. John Smith"
@@ -161,7 +209,7 @@ export default class CQSettings extends React.Component {
                     </div>
 
                     <div className={`cq-settings__profile-item${classNameError(1)} form-group`}>
-                        <label htmlFor="school">School name / company <small>(required)</small></label>
+                        <label htmlFor="school">School name / company</label>
                         <input type="text" id="school"
                             className="form-control"
                             placeholder = "e.g. City School Academy"
@@ -169,17 +217,10 @@ export default class CQSettings extends React.Component {
                             value={this.state.user.attributes.school}/>
                     </div>
 
-                    <div className="cq-settings__profile-item form-group">
-                       <label htmlFor="url">School Website</label>
-                       <input type="url" id="url"
-                           className="form-control"
-                           placeholder="e.g. http://www.school.com"
-                           onChange={this.handleChange.bind(this, 'url')}
-                           value={this.state.user.attributes.url}/>
-                    </div>
+                    {schoolWebsite}
 
                     <div className={`cq-settings__profile-item${classNameError(2)} form-group`}>
-                        <label htmlFor="location">Location <small>(required)</small></label>
+                        <label htmlFor="location">Location</label>
                         <input type="text" id="location"
                             className="form-control"
                             placeholder = "e.g. London, UK"
@@ -188,7 +229,7 @@ export default class CQSettings extends React.Component {
                     </div>
 
                     <div className={`cq-settings__profile-item${classNameError(3)} form-group`}>
-                        <label htmlFor="location">Age groups taught (required)</label>
+                        <label htmlFor="location">Age groups taught</label>
                         <input type="text" id="location"
                             className="form-control"
                             placeholder="e.g. Year 3 - Year 5 / Grade 3 - Grade 5"
@@ -198,7 +239,7 @@ export default class CQSettings extends React.Component {
 
 
                     <div className={`cq-settings__profile-item${classNameError(4)} form-group`}>
-                        <label htmlFor="location">Subjects taught (required)</label>
+                        <label htmlFor="location">Subjects taught</label>
                         <input type="text" id="location"
                             className="form-control"
                             placeholder = "e.g. Biology and Chemistry"
@@ -207,18 +248,7 @@ export default class CQSettings extends React.Component {
                     </div>
 
 
-                    <div className="cq-settings__profile-item cq-settings__profilepicture form-group">
-                        <label>Profile picture</label>
-                        <div className="cq-settings__picture">
-
-                            <CQViewProfilePicture
-                                width="150"
-                                height="150"
-                                name={this.state.user.name}
-                                picture={this.state.user.avatar}/>
-                        </div>
-                        <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
-                    </div>
+                    {profilePicture}
 
 
                     <div className="cq-settings__save">
@@ -239,3 +269,7 @@ export default class CQSettings extends React.Component {
 
 
 }
+
+CQSettings.propTypes = {
+    isRegister: React.PropTypes.bool
+};
