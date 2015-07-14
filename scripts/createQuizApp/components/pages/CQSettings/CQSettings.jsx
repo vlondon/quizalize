@@ -142,7 +142,7 @@ export default class CQSettings extends React.Component {
             return this.state.errors[index] ? '--error' : '';
         };
 
-        var message = this.state.isNew ? 'We need some extra infromation' : 'Settings';
+        var message = this.state.isNew ? 'We need some extra information' : 'Settings';
         return (
             <CQPageTemplate className="cq-container cq-settings">
 
@@ -182,23 +182,23 @@ export default class CQSettings extends React.Component {
                         <label htmlFor="location">Location <small>(required)</small></label>
                         <input type="text" id="location"
                             className="form-control"
-                            placeholder = "e.g. London"
+                            placeholder = "e.g. London, UK"
                             onChange={this.handleChange.bind(this, 'location')}
                             value={this.state.user.attributes.location}/>
                     </div>
 
                     <div className={`cq-settings__profile-item${classNameError(3)} form-group`}>
-                        <label htmlFor="location">Age group taught (required)</label>
+                        <label htmlFor="location">Age groups taught (required)</label>
                         <input type="text" id="location"
                             className="form-control"
-                            placeholder = "e.g. Year 3 / Grade 3"
+                            placeholder="e.g. Year 3 - Year 5 / Grade 3 - Grade 5"
                             onChange={this.handleChange.bind(this, 'ageTaught')}
                             value={this.state.user.attributes.ageTaught}/>
                     </div>
 
 
                     <div className={`cq-settings__profile-item${classNameError(4)} form-group`}>
-                        <label htmlFor="location">Subject taught (required)</label>
+                        <label htmlFor="location">Subjects taught (required)</label>
                         <input type="text" id="location"
                             className="form-control"
                             placeholder = "e.g. Biology and Chemistry"
