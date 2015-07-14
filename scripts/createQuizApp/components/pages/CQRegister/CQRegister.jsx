@@ -33,7 +33,7 @@ var CQRegister = React.createClass({
         UserActions.register(data)
             .then(()=>{
                 if (this.state.willRedirect){
-                    router.setRoute('/quiz/settings');
+                    router.setRoute('/quiz/register-settings');
                 } else {
                     router.setRoute('/quiz/quizzes');
                 }

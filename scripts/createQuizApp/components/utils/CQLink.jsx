@@ -30,7 +30,8 @@ var CQLink = React.createClass({
         children: React.PropTypes.any,
         href: React.PropTypes.string,
         className: React.PropTypes.string,
-        stopPropagation: React.PropTypes.bool
+        stopPropagation: React.PropTypes.bool,
+        onClick: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -65,6 +66,9 @@ var CQLink = React.createClass({
 
         if (this.props.stopPropagation){
             ev.stopPropagation();
+        }
+        if (this.props.onClick){
+            this.props.onClick(ev);
         }
         if (commandPressed === true){
             window.open(this.props.href);

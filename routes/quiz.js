@@ -432,7 +432,7 @@ exports.publishToMarketplace = function(req,res) {
             email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
               profileId: profileId,
               id: id,
-              type: 'app'
+              type: 'quiz'
             });
             res.send();
         });

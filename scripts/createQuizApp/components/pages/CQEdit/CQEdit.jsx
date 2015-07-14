@@ -10,8 +10,7 @@ var QuizStore = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 var TopicStore = require('createQuizApp/stores/TopicStore');
-var TopicActions = require('createQuizApp/actions/TopicActions');
-
+var UserApi             = require('createQuizApp/actions/api/UserApi');
 
 var CQEdit = React.createClass({
 
@@ -123,6 +122,7 @@ var CQEdit = React.createClass({
     },
 
     handleFinished: function(){
+        UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
         });
@@ -134,11 +134,13 @@ var CQEdit = React.createClass({
             this.setState({pristine: true});
         });
     },
-  /*  handlePreview: function(){
+
+    handlePreview: function(){
+        window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, '_blank');
+            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         });
-    },*/
+    },
 
     enableDisableSave: function(saveEnabled){
         this.setState({saveEnabled});
@@ -181,13 +183,13 @@ var CQEdit = React.createClass({
                     <div className="cq-edit__footer">
                         <div className="cq-edit__footer-inner">
 
-                            <a
+                            <button onClick={this.handlePreview}
                                 disabled={!previewEnabled}
-                                href={`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`}
+
                                 target="zzishgame"
                                 className="btn btn-info">
                                 Preview
-                            </a>
+                            </button>
 
                             <button
                                 disabled={!previewEnabled || this.state.pristine || !this.state.saveEnabled}

@@ -38,7 +38,7 @@ var CQEditNormal = React.createClass({
     componentDidMount: function() {
         this.focusNext(0);
         $('textarea').autogrow();
-        $('[data-toggle="popover"]').popover();
+        this.handlePopover();
         this.props.onChange(this.state.question);
 
     },
@@ -182,6 +182,10 @@ var CQEditNormal = React.createClass({
         this.props.onChange(newQuestionState);
     },
 
+    handlePopover: function(){
+        $('[data-toggle="popover"]').popover();
+    },
+
 
     // handleTopic: function(event){
     //     var canBeSaved = this.canBeSaved();
@@ -194,13 +198,13 @@ var CQEditNormal = React.createClass({
     },
 
     handleCheckbox: function(property){
+
         var question = assign({}, this.state.question);
         question[property] = !this.state.question[property];
-        var canBeSaved = this.canBeSaved(question);
-        console.log('property', property, question[property]);
-        console.info('can be saved?', canBeSaved);
 
-        this.setState({question, canBeSaved});
+        var canBeSaved = this.canBeSaved(question);
+
+        this.setState({question, canBeSaved}, this.handlePopover);
         this.props.onChange(question);
     },
 
@@ -217,7 +221,7 @@ var CQEditNormal = React.createClass({
                 <div className='block clearfix'>
 
                     <label className="left control-label">
-                        Image Link
+                        Image Link&nbsp;
                         <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
                     </label>
                     <div className="right">
@@ -265,7 +269,7 @@ var CQEditNormal = React.createClass({
 
                     <div className="image-mode">
                         <div>
-                            Use Images &nbsp;
+                            Use Images&nbsp;
                             <a data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. <a target=_blank href='http://blog.zzish.com/post/119032391314/using-images-in-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                         </div>
                         <label  className="switch">
@@ -281,7 +285,7 @@ var CQEditNormal = React.createClass({
                 <div className='block clearfix'>
 
                     <label className="left control-label">
-                        Question
+                        Question&nbsp;
                         <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                     </label>
                     <div className="right">
@@ -310,7 +314,8 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                            Correct Answer <a data-toggle="popover" title="Correct Answer" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="9" className="glyphicon glyphicon-question-sign"></a>
+                            Correct Answer&nbsp;
+                            <a data-toggle="popover" title="Correct Answer" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="9" className="glyphicon glyphicon-question-sign"></a>
                     </label>
                     <div className="right">
 
@@ -331,7 +336,7 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                        Incorrect Answers
+                        Incorrect Answers&nbsp;
                         <a data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. &lt;a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'&gt;Learn more&lt;/a&gt;" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="10" data-html="true" className="glyphicon glyphicon-question-sign"/>
                         <div className="optional">Optional</div>
                     </label>
@@ -418,7 +423,7 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                        Subtopic
+                        Subtopic&nbsp;
                         <a data-toggle="popover"
                             title="Subtopic (Optional)"
                             data-content="Use sub-topics to group questions together and spot learning gaps more easily. &lt;a  target=_blank href='http://blog.zzish.com/post/118863520184/quizalize-classroom-quiz-response-system'&gt;Learn more&lt;/a&gt;"

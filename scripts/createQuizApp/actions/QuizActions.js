@@ -269,6 +269,7 @@ var QuizActions = {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
         QuizApi.publishQuiz(quiz);
+        UserApi.trackEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
         swal({
             title: 'Thanks!',
             text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,
