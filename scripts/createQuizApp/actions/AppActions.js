@@ -117,7 +117,7 @@ var AppActions = {
                                 found = true;
                             }
                         });
-                        return found;
+                        return found && app.meta.published === "published";
                     });
 
 
