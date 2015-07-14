@@ -38,7 +38,7 @@ var CQEditNormal = React.createClass({
     componentDidMount: function() {
         this.focusNext(0);
         $('textarea').autogrow();
-        $('[data-toggle="popover"]').popover();
+        this.handlePopover();
         this.props.onChange(this.state.question);
 
     },
@@ -182,6 +182,10 @@ var CQEditNormal = React.createClass({
         this.props.onChange(newQuestionState);
     },
 
+    handlePopover: function(){
+        $('[data-toggle="popover"]').popover();
+    },
+
 
     // handleTopic: function(event){
     //     var canBeSaved = this.canBeSaved();
@@ -194,13 +198,13 @@ var CQEditNormal = React.createClass({
     },
 
     handleCheckbox: function(property){
+
         var question = assign({}, this.state.question);
         question[property] = !this.state.question[property];
-        var canBeSaved = this.canBeSaved(question);
-        console.log('property', property, question[property]);
-        console.info('can be saved?', canBeSaved);
 
-        this.setState({question, canBeSaved});
+        var canBeSaved = this.canBeSaved(question);
+
+        this.setState({question, canBeSaved}, this.handlePopover);
         this.props.onChange(question);
     },
 
