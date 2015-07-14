@@ -1,0 +1,9 @@
+Hi %name%
+
+Your app '%quiz%' has been approved and is now available on the Quizalize Marketplace.
+
+
+Best wishes,
+
+The Quizalize Team
+www.quizalize.com
