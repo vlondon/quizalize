@@ -35,22 +35,26 @@ var CQViewCreateAppTemplate = React.createClass({
         if (positionTop < 0){
             this.setState({
                 fixed: true,
-                distance: -positionTop
+                distance: -positionTop,
+                windowHeight: window.innerHeight
             });
         } else if (positionTop > 0 && this.state.fixed === true){
             this.setState({
-                fixed: false
+                fixed: false,
+                windowHeight: window.innerHeight
             });
         }
     },
 
     componentWillMount: function() {
         document.addEventListener('scroll', this.handleScroll);
+        document.addEventListener('resize', this.handleScroll);
 
     },
 
     componentWillUnmount: function() {
         document.removeEventListener('scroll', this.handleScroll);
+        document.removeEventListener('resize', this.handleScroll);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -59,16 +63,18 @@ var CQViewCreateAppTemplate = React.createClass({
         this.setState({ appInfo, quizzes });
     },
 
+
     render: function() {
         var style = {
-            background: this.state.appInfo.meta.colour
+            background: this.state.appInfo.meta.colour,
+            maxHeight: this.state.windowHeight
         };
         if (this.state.fixed) {
             style.position = 'relative';
             style.top = this.state.distance;
+
         } else {
             style.position = 'relative';
-
         }
         var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price)}`;
         return (
