@@ -38,7 +38,7 @@ export default class CQAutofill extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.state = initialState;
     }
 
@@ -95,7 +95,15 @@ export default class CQAutofill extends React.Component {
         });
     }
 
+    handleKeyDown(ev:Object){
+        console.log('ev.keyCode', ev.keyCode);
+        if (ev.keyCode === 13) {
+            this.handleClick(this.state.selected, event);
+        }
+    }
+
     handleChange(ev:Object){
+
         if (this.state.topicsAutofill) {
             var searchString = ev.target.value;
             var searchArray = searchString.split(' ');
@@ -129,30 +137,29 @@ export default class CQAutofill extends React.Component {
                         id: "-1",
                         name: searchString
                     };
-                    TopicActions.createTemporaryTopic({
-                        uuid: "-1",
-                        name: searchString
-                    });
-                    this.handleClick(option);
+                    TopicActions.createTemporaryTopic(option);
+                    //
                 }
             }
         }
     }
 
-    handleClick(option:Object){
+    handleClick(option:?Object, event?:Object){
         console.log('handleClchandleClickhandleClickhandleClickik', option);
+        option = option || this.state.selected;
         if (option) {
             this.setState({
                 selected: option,
                 searchString: option.name
             });
-            this.props.onChange(option.id);
+            this.props.onChange(option.id, event);
         }
         else {
             this.setState({
                 selected: null,
                 searchString: ""
             });
+            this.props.onChange(null, event);
         }
     }
 
@@ -228,13 +235,18 @@ export default class CQAutofill extends React.Component {
     handleBlur(ev:Object){
         this.handleChange(ev);
 
-        // by delying changing state we prevent a collision with
-        // on select
+        // by delying changing state we prevent a cl
         setTimeout(()=>{
             this.setState({
                 selecting: false
             });
         }, 200);
+    }
+
+    onFocus(){
+        console.log('Trying to focus CQAutofill');
+        var element = this.refs.inputField;
+        React.findDOMNode(element).focus();
     }
 
     render(): any {
@@ -244,11 +256,12 @@ export default class CQAutofill extends React.Component {
             <div className='cq-autofill'>
                 <input id="category"
                     type="text"
-                    ref={this.props.ref1}
+                    ref="inputField"
                     value={this.state.searchString}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
                     onChange={this.handleChange}
+                    onKeyUp={this.handleKeyDown}
                     placeholder={this.props.placeholder}
                     tabIndex={this.props.tabIndex}
                     className="form-control"/>
