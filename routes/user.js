@@ -38,32 +38,8 @@ exports.saveUser = function(req, res) {
             var user = {
               'user_id': data.uuid,
               'name': req.body.name,
-              'custom_data': req.body.attributes
+              'custom_attributes': req.body.attributes
             };
-            if (req.body.attributes && req.body.attributes.school) {
-                user.company = {
-                    id: req.body.attributes.school,
-                    name: req.body.attributes.school
-                };
-            }
-            if (req.body.attributes && req.body.attributes.location) {
-                user['location_data'] = {
-                    type: "location_data",
-                    "city_name": req.body.attributes.location
-                };
-            }
-            if (req.body.attributes && req.body.attributes.url) {
-                  user['social_profiles'] = {
-                    "type": "social_profile.list",
-                    "social_profiles": [
-                      {
-                        "name": "Website",
-                        "id": "Website",
-                        "url": req.body.attributes.url
-                      }
-                    ]
-                };
-            }
             intercom.updateUser(user);
             res.status(200);
         }

@@ -56,12 +56,13 @@ export default class CQViewQuizList extends React.Component {
         initialState.selectedQuizzes = this.props.selectedQuizzes || [];
         initialState.page = 1;
         this.state = initialState;
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         sorter = new QuizSorter();
         console.trace("adding TopicStore listener");
-        TopicStore.addChangeListener(this.onChange.bind(this));
+        TopicStore.addChangeListener(this.onChange);
     }
 
     componentWillUnmount() {
@@ -357,7 +358,7 @@ export default class CQViewQuizList extends React.Component {
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
-                                    {TopicStore.getTopicName(quiz.meta.categoryId)}<br/>
+                                    {TopicStore.getTopicName(quiz.meta.publicCategoryId || quiz.meta.categoryId)}<br/>
                                     {author(quiz)}
 
 

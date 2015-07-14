@@ -2,7 +2,7 @@
 
 <p>Congratulations! You have published your first quiz!</p>
 
-<p>Your quiz '%quiz%' has been approved and is now available on the Quizalize Marketplace!</p>
+<p>Your %type% '%quiz%' has been approved and is now available on the Quizalize Marketplace!</p>
 
 <p>You now have a public profile, which contains all of your published quizzes.</p>
 

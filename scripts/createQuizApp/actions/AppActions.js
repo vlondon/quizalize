@@ -12,7 +12,7 @@ var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var AppApi              = require('./../actions/api/AppApi');
 var QuizApi             = require('./../actions/api/QuizApi');
 var AppConstants        = require('./../constants/AppConstants');
-
+var UserApi             = require('./../actions/api/UserApi');
 
 var AppActions = {
 
@@ -45,10 +45,10 @@ var AppActions = {
     },
 
     saveNewApp: function(app:Object, appIcon:?Object){
-
-
-        app.uuid = app.uuid || uuid.v4();
-
+        if (!app.uuid) {
+            app.uuid = uuid.v4();
+            UserApi.trackEvent('new_app', {uuid: app.uuid, name: app.meta.name});
+        }
         var handleSave = function(icon){
             return new Promise(function(resolve, reject){
 
@@ -85,6 +85,17 @@ var AppActions = {
         } else {
             return handleSave();
         }
+    },
+
+    publishApp: function(app:Object) {
+        UserApi.trackEvent('publish_app', {uuid: app.uuid, name: app.meta.name});
+        app.meta.published = "pending";
+        AppApi.publishApp(app);
+        AppDispatcher.dispatch({
+            actionType: AppConstants.APP_META_UPDATED,
+            payload: app
+        });
+
     },
 
     appPicture: function(appId:string, file:Object){

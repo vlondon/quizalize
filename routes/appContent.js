@@ -8,7 +8,7 @@ var AWS                 = require('./../awssdk');
 var userHelper          = require('./helpers/userHelper');
 var Promise             = require('es6-promise').Promise;
 var logger              = require('../logger');
-
+var email           = require("../email");
 
 exports.list = function(req, res){
     var profileId = req.params.profileId;
@@ -169,3 +169,26 @@ exports.postIcon = function(req, res){
         }
     });
 };
+
+exports.publishToMarketplace = function(req, res) {
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    var app = req.body;
+
+    zzish.postContent(profileId, APP_CONTENT_TYPE, id, app.meta, app.payload, function(err2, message) {
+        zzish.getUser(profileId, null, function(err, user) {
+            var name = "there";
+            if (user.name) name = user.name;
+            var params = {
+                name: name
+            };
+            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your app to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+              profileId: profileId,
+              type: 'app',
+              id: id
+            });
+            res.send();
+        });
+    });
+}

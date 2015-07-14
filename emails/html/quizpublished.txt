@@ -1,6 +1,6 @@
 <p>Hi %name%</p>
 
-<p>Your quiz '%quiz%' has been approved and is now available on the Quizalize Marketplace.<p>
+<p>Your %type% '%quiz%' has been approved and is now available on the Quizalize Marketplace.<p>
 
 <p>Check it out on <a href="%profilelink%">your profile</a><p>
 

@@ -9,6 +9,7 @@ var CQAutofill = React.createClass({
         tabIndex: React.PropTypes.number,
         limit: React.PropTypes.number,
         placeholder: React.PropTypes.string,
+        ref1: React.PropTypes.string,
         data: React.PropTypes.func,
         value: React.PropTypes.string,
         onChange: React.PropTypes.func.isRequired
@@ -220,10 +221,12 @@ var CQAutofill = React.createClass({
 
     render: function() {
         var results = this.searchList();
+        console.log(this.props);
         return (
             <div className='cq-autofill'>
                 <input id="category"
                     type="text"
+                    ref={this.props.ref1}
                     value={this.state.searchString}
                     onFocus={this.handleFocus}
                     onChange={this.handleChange}

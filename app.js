@@ -106,6 +106,7 @@ app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 app.post('/create/:profileId/apps', appContent.post);
 app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
+app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishToMarketplace);
 
 
 app.get('/create/:profileId/transaction/', transaction.list);
@@ -116,8 +117,9 @@ app.post('/create/:profileId/transaction', transaction.post);
 app.post('/create/:profileId/transaction/:id', transaction.post);
 
 
-app.post('/admin/:profileId/approve/:id', admin.approve);
-app.post('/admin/:profileId/approvefirst/:id', admin.approvefirst);
+app.post('/admin/:profileId/approve/:type/:id', admin.approve);
+app.post('/admin/:profileId/approvefirst/:type/:id', admin.approvefirst);
+app.get('/admin/:profileId/:type/pending', admin.pending);
 
 app.get('/apps/', appContent.listPublicApps);
 app.get('/apps/:id', appContent.getPublic);
@@ -221,7 +223,9 @@ function checkForIE(req, res, next){
         logger.info('Redirecting to IE');
         res.redirect('/ie');
     }
-    return next();
+    else {
+        return next();
+    }
 }
 
 // note: the next method param is passed as well

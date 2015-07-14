@@ -236,7 +236,7 @@ var QuizActions = {
     },
 
     shareQuiz: function(quizId:string, quizName:string, emails:string, link:string){
-        var user = UserStore.getUser();
+        var user:Object = UserStore.getUser();
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
         var tokensComma = emails.split(',');
@@ -269,6 +269,7 @@ var QuizActions = {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
         QuizApi.publishQuiz(quiz);
+        UserApi.trackEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
         swal({
             title: 'Thanks!',
             text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,

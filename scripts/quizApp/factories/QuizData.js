@@ -154,7 +154,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
         var numAlternatives = getNumAlternvatives(currentQuestion);
-        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8 || length==1) {
+        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=12 || length==1) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
@@ -440,7 +440,19 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return callback(topics);
             }
         },
-        loginUser: function(user,classcode,callback) {
+        logQuestion: function(question) {
+            if (!currentQuizResult.processing) {
+                currentQuizResult.processing = {};
+            }
+            if (!currentQuizResult.processing[question.uuid]) {
+                currentQuizResult.processing[question.uuid] = {
+                    startTime: Date.now()
+                };
+            }
+            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
+            return currentQuizResult.processing[question.uuid].startTime;
+        },
+        loginUser: function(user, classcode, callback) {
             if (zzish.validateClassCode(classcode)) {
                 var newId = uuid.v4();
                 zzish.authUser(newId,user,classcode,function(err,message) {

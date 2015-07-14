@@ -26,6 +26,7 @@ angular.module('quizApp')
                     imageURL: self.imageURL,
                     latexEnabled: self.latexEnabled,
                     imageEnabled: self.imageEnabled,
+                    startTime: QuizData.logQuestion(self.questionData),
                     onSelect: function(index){
                         $scope.$apply(() => self.select(index) );
                     },

@@ -1,34 +1,45 @@
+/* @flow */
 var React = require('react');
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLoginForm = require('createQuizApp/components/pages/shared/CQLoginForm');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
+var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
+var CQLink = require('./../../../components/utils/CQLink');
 
 
-var UserActions = require('createQuizApp/actions/UserActions');
-var urlParams  = require('createQuizApp/utils/urlParams');
-
+var UserActions = require('./../../../actions/UserActions');
+import router from './../../../config/router';
+import {urlParams} from './../../../utils';
 
 var CQRegister = React.createClass({
 
     getInitialState: function() {
         console.log('window.location.search;,', window.location.search);
+        var variation = typeof window.cxApi === 'object' ? window.cxApi.chooseVariation() : 0;
+        var willRedirect = variation === 1;
         return {
             isRedirect: urlParams().redirect ? true : false,
             redirectUrl: '',
             isEnabled: true,
-            loginButtonLabel: 'Sign up'
+            loginButtonLabel: 'Sign up',
+            willRedirect
         };
     },
 
-    handleRegister: function(data){
+    handleRegister: function(data: Object){
         this.setState({
             isEnabled: false,
             loginButtonLabel: 'Working…'
         });
         UserActions.register(data)
+            .then(()=>{
+                if (this.state.willRedirect){
+                    router.setRoute('/quiz/register-settings');
+                } else {
+                    router.setRoute('/quiz/quizzes');
+                }
+            })
             .catch((error) => {
-                console.log('error AAA', typeof error);
+
                 if (error === 'Duplicate Email address'){
                     swal('Register Error', 'This email has already been used.');
                 } else {

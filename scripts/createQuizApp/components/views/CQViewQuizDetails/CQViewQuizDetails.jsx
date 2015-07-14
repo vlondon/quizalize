@@ -103,7 +103,7 @@ var CQViewQuizDetails = React.createClass({
                 <div className="cq-quizdetails__cardinner">
                     <div className="cq-quizdetails__info">
                         <h5>
-                            {TopicStore.getTopicName(this.state.quiz.meta.categoryId)}
+                            {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || this.state.quiz.meta.categoryId)}
                         </h5>
                         <h1>{this.state.quiz.meta.name}</h1>
                         <p>

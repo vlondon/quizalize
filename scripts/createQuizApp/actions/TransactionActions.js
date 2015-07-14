@@ -8,7 +8,7 @@ var QuizActions             = require('createQuizApp/actions/QuizActions');
 var UserStore               = require('createQuizApp/stores/UserStore');
 var stripeSDK               = require('createQuizApp/config/stripeSDK');
 var priceFormat             = require('createQuizApp/utils/priceFormat');
-
+var UserApi                 = require('createQuizApp/actions/api/UserApi');
 
 var purchaseComplete = function(){
     swal({
@@ -95,6 +95,7 @@ var TransactionActions = {
             }, (isConfirm) => {
 
             if (isConfirm){
+                UserApi.trackEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
                 setTimeout(()=>{
 
                     var newTransaction = {

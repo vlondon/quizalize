@@ -153,6 +153,8 @@ var CQCreate = React.createClass({
     handleTopic: function(topicId){
         var newQuizState = assign({}, this.state.quiz);
         newQuizState.meta.categoryId = topicId;
+        var topic = TopicStore.getTopicById(topicId);
+        newQuizState.meta.subjectId = topic.subjectId;
         console.log('new topic', newQuizState);
         this.setState({quiz: newQuizState});
     },

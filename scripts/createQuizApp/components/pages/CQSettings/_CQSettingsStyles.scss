@@ -7,6 +7,9 @@
 
     &__header {
         @include cq-header();
+        .btn {
+            float: right;
+        }
     }
     &__save {
         text-align: center;
@@ -14,6 +17,12 @@
 
     &__profile {
         padding: 20px;
+
+        &-item {
+            &--error {
+                color: $brand-color-red;
+            }
+        }
     }
 
 }
