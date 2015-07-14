@@ -134,11 +134,13 @@ var CQEdit = React.createClass({
             this.setState({pristine: true});
         });
     },
-  /*  handlePreview: function(){
+
+    handlePreview: function(){
+        window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, '_blank');
+            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         });
-    },*/
+    },
 
     enableDisableSave: function(saveEnabled){
         this.setState({saveEnabled});
@@ -181,13 +183,13 @@ var CQEdit = React.createClass({
                     <div className="cq-edit__footer">
                         <div className="cq-edit__footer-inner">
 
-                            <a
+                            <button onClick={this.handlePreview}
                                 disabled={!previewEnabled}
-                                href={`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`}
+
                                 target="zzishgame"
                                 className="btn btn-info">
                                 Preview
-                            </a>
+                            </button>
 
                             <button
                                 disabled={!previewEnabled || this.state.pristine || !this.state.saveEnabled}
