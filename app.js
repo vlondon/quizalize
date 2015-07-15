@@ -1,6 +1,5 @@
 // set variables for environment
 require('pmx').init();
-var http = require('http');
 var express     = require('express');
 var app         = express();
 var path        = require('path');
@@ -224,23 +223,6 @@ function checkForIE(req, res, next){
         res.redirect('/ie');
     }
     else {
-        return next();
-    }
-}
-
-// note: the next method param is passed as well
-function checkForMobile(req, res, next) {
-    // check to see if the caller is a mobile device
-    var isMobile = isCallerMobile(req);
-
-    if (isMobile) {
-        logger.info("Going mobile");
-        res.redirect('/mobile');
-    } else if (isIE(req)) {
-        logger.info("Going IE");
-        res.redirect('/ie');
-    } else {
-        // if we didn't detect mobile, call the next method, which will eventually call the desktop route
         return next();
     }
 }
