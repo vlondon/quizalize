@@ -96,8 +96,11 @@ var CQEdit = React.createClass({
     },
 
     handleSaveNewQuestion: function(newQuestion){
+        // trying to discover question value;
+        console.log('about to save questions', newQuestion, this.state);
+        var nextQuestion = this.state.questionIndex + 1;
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${this.state.quiz.payload.questions.length}`);
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         });
     },
 

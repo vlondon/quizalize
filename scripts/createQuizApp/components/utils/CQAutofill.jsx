@@ -130,9 +130,7 @@ export default class CQAutofill extends React.Component {
                 break;
 
             case 13:
-                indexSelected = indexSelected || 0;
-                var optionSelected = occurrences[indexSelected];
-                this.selectOption(optionSelected);
+                this.handleAssign();
                 break;
             default:
 
@@ -159,15 +157,19 @@ export default class CQAutofill extends React.Component {
                     return d.name.toLowerCase().indexOf(string.toLowerCase()) !== -1;
                 };
 
-                return data.filter(d => checkData(d));
+                return data.filter(checkData);
             };
+
 
             var searchString = ev.target.value;
             var searchArray = searchString.split(' ');
             var occurrences = this.state.topicsAutofill.slice();
 
             searchArray.forEach( s => occurrences = findOcurrences(occurrences, s) );
+
             occurrences = occurrences.length > this.props.limit ? occurrences.slice(0, this.props.limit) : occurrences;
+
+
             var selected = this.getState().selected || occurrences[0];
 
             if (occurrences.length === 0 && searchString.length > 0) {
@@ -206,7 +208,6 @@ export default class CQAutofill extends React.Component {
 
     searchList():?Array<Object>{
 
-
         var formatString = function(string, key){
             var format = string.split('>').map(function(s, i){
                 return [
@@ -221,13 +222,14 @@ export default class CQAutofill extends React.Component {
         };
 
         var list = [];
+        var {occurrences, selecting, indexSelected} = this.state;
 
-        if (this.state.occurrences && this.state.selecting){
+        if (occurrences && selecting){
 
             var getClassName = (index, className) => {
-                return (this.state.indexSelected !== undefined && index === this.state.indexSelected) ? `${className}--selected` : className;
+                return (indexSelected !== undefined && index === indexSelected) ? `${className}--selected` : className;
             };
-            if (this.state.occurrences.length === 0) {
+            if (occurrences.length === 0) {
                 var option = {
                     id: "-1",
                     name: this.state.searchString
@@ -241,7 +243,7 @@ export default class CQAutofill extends React.Component {
                     </li>
                 )];
             } else {
-                list = this.state.occurrences.map( (o, i) => {
+                list = occurrences.map( (o, i) => {
                     return (
                         <li key={o.id}
                             className={getClassName(i, 'cq-autofill__option')}
@@ -278,13 +280,26 @@ export default class CQAutofill extends React.Component {
         }, 20);
     }
 
-    handleBlur(){
-        var {indexSelected, occurrences} = this.state;
-        indexSelected = indexSelected || 0;
-        // this.handleChange(ev);
-        var optionSelected = occurrences[indexSelected];
-        this.selectOption(optionSelected);
+    handleAssign(){
 
+        var {indexSelected, occurrences, searchString} = this.state;
+        var optionSelected;
+        if (indexSelected === undefined) {
+            var option = {
+                id: "-1",
+                name: searchString
+            };
+            TopicActions.createTemporaryTopic(option);
+            optionSelected = option;
+        } else {
+            optionSelected = occurrences[indexSelected];
+        }
+
+        this.selectOption(optionSelected);
+    }
+
+    handleBlur(){
+        this.handleAssign();
         setTimeout(()=>{
             this.setState({
                 selecting: false
@@ -293,7 +308,6 @@ export default class CQAutofill extends React.Component {
     }
 
     handleClick(option:?Object){
-        console.log('handleClchandleClickhandleClickhandleClickik', option);
         option = option || this.state.selected;
         if (option) {
             this.selectOption(option);
@@ -302,7 +316,7 @@ export default class CQAutofill extends React.Component {
 
 
     onFocus(){
-        console.log('Trying to focus CQAutofill');
+        
         var element = this.refs.inputField;
         React.findDOMNode(element).focus();
         React.findDOMNode(element).select();
