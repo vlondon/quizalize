@@ -70,8 +70,6 @@ var CQEditNormal = React.createClass({
             question
         };
 
-        console.log('newState', newState);
-
 
         return newState;
     },
@@ -154,13 +152,14 @@ var CQEditNormal = React.createClass({
     },
 
     handleTopic: function(topicId, ev){
+        console.log('we got new topic', topicId);
         var newQuestionState = assign({}, this.state.question);
         newQuestionState.topicId = topicId;
-        console.log('we got new topic', topicId, newQuestionState);
+
         this.props.onChange(newQuestionState);
-        if (ev.keyCode === 13){
-            this.handleNext('topicId', undefined, ev);
-        }
+        // if (ev.keyCode === 13){
+        //     this.handleNext('topicId', undefined, ev);
+        // }
     },
 
     handlePopover: function(){
@@ -424,6 +423,7 @@ var CQEditNormal = React.createClass({
                                 onChange={this.handleTopic}
                                 ref='topicId'
                                 data={this.handleGetTopics}
+                                onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>
                         </div>
