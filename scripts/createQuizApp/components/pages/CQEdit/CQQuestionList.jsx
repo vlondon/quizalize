@@ -44,7 +44,9 @@ var CQQuestionList = React.createClass({
     },
 
     handleEdit: function(index){
-        router.setRoute(`/quiz/create/${this.props.quiz.uuid}/${index}`);
+        if (this.props.questionIndex !== index){
+            router.setRoute(`/quiz/create/${this.props.quiz.uuid}/${index}`);
+        }
     },
 
     render: function() {
@@ -89,6 +91,7 @@ var CQQuestionList = React.createClass({
             questions = this.props.quiz.payload.questions.map((item, index) => {
                 var editor = index === this.props.questionIndex ? questionEditor : undefined;
                 var className = index === this.props.questionIndex ? 'cq-edit__quiz cq-edit__quiz--selected' : 'cq-edit__quiz cq-edit__quiz--unselected';
+
 
 
                 return (

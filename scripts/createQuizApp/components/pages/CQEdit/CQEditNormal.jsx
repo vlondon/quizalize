@@ -70,8 +70,6 @@ var CQEditNormal = React.createClass({
             question
         };
 
-        console.log('newState', newState);
-
 
         return newState;
     },
@@ -90,32 +88,6 @@ var CQEditNormal = React.createClass({
             }
 
             var indexRef = refs.indexOf(ref);
-            var handleNext = (i)=>{
-
-                var nextRef = i < (refs.length - 1) ? i + 1 : 0;
-                var nextElement = refs[nextRef];
-                var node = React.findDOMNode(nextElement);
-
-                var gotoNext = ()=>{
-                    if (nextElement) {
-                        node.focus();
-                    } else {
-                        handleNext(nextRef);
-                    }
-                };
-                if (nextRef === 0) {
-                    if (this.canBeSaved()){
-                        this.handleSave();
-                    } else {
-                        gotoNext();
-                    }
-                } else {
-                    gotoNext();
-                }
-
-
-            };
-
             this.focusNext(indexRef);
             event.preventDefault();
         }
@@ -131,7 +103,11 @@ var CQEditNormal = React.createClass({
 
         var gotoNext = ()=>{
             if (nextElement) {
-                node.focus();
+                if (nextElement.onFocus){
+                    nextElement.onFocus();
+                } else {
+                    node.focus();
+                }
             } else {
                 this.focusNext(nextRef);
             }
@@ -175,11 +151,15 @@ var CQEditNormal = React.createClass({
         return canBeSaved;
     },
 
-    handleTopic: function(topicId){
+    handleTopic: function(topicId, ev){
+        console.log('we got new topic', topicId);
         var newQuestionState = assign({}, this.state.question);
         newQuestionState.topicId = topicId;
-        console.log('we got new topic', topicId, newQuestionState);
+
         this.props.onChange(newQuestionState);
+        // if (ev.keyCode === 13){
+        //     this.handleNext('topicId', undefined, ev);
+        // }
     },
 
     handlePopover: function(){
@@ -441,8 +421,9 @@ var CQEditNormal = React.createClass({
                             <CQAutofill
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
-                                ref1='topicId'
+                                ref='topicId'
                                 data={this.handleGetTopics}
+                                onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>
                         </div>
