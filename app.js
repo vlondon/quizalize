@@ -169,8 +169,7 @@ app.get('/landing', quiz.landing);
 Endpoints for students: actually we are making this client side
  */
 
-app.get('/', checkForMobile, quiz.landingpage5);
-app.get('/mobile', quiz.landingpage5);
+app.get('/', quiz.landingpage);
 app.get('/ie', quiz.landingpage3);
 app.get('/ks4-gcse-maths', quiz.landingpage4);
 app.get('/maths', quiz.maths);
