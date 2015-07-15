@@ -73,10 +73,21 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     }
 
-    var processQuizData = function(result,privateMode) {
+    var processQuizData = function(result, privateMode) {
 
         categories = {};
         topics = {};
+
+        var allCategories = result.categories;
+
+        if (result.pcategories) {
+            allCategories = allCategories.concat(result.pcategories);
+        }
+        console.log('processing', result, allCategories);
+        var getCategory = (categoryId) => {
+            var category = allCategories.filter(c => c.uuid === categoryId)[0];
+            return category;
+        };
 
         for (var i in result.contents) {
             var quiz = result.contents[i];
@@ -84,20 +95,14 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var category = { name: "Other" };
             if (quiz.meta.categoryId !== undefined) {
                 cuuid = quiz.meta.categoryId;
-                if (result.categories !== undefined) {
-                    for (var i in result.categories) {
-                        if (result.categories[i].uuid==quiz.meta.categoryId) {
-                            category = result.categories[i];
-                            console.log('category', category);
-                        }
-                    }
-                }
+                var quizCategory = getCategory(cuuid);
+                category = quizCategory ? quizCategory : category;
             }
             else {
                 quiz.meta.categoryId = "unknown";
             }
-            if (categories[cuuid] == undefined) {
-                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index)} ;
+            if (categories[cuuid] === undefined) {
+                categories[cuuid] = { category: category, quizzes: [], order_index: parseInt(category.index || 0)} ;
             }
             if (privateMode) {
                 //public quizzes
@@ -149,7 +154,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = currentQuestion.answer.length;
         var numAlternatives = getNumAlternvatives(currentQuestion);
-        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=8 || length==1) {
+        if(numAlternatives>0 || patternToDected || indexOfSpace>=0 || length >=12 || length==1) {
             //either there are alternatives or there is a space in the anser
             return "multiple";
         }
@@ -413,7 +418,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, data) {
 
                         if (!err) {
-                            data.categories = data.categories.filter(c => c !== null);
+                            data.categories = data.pcategories.filter(c => c !== null).concat(data.categories.filter(c => c !== null));
                             data.contents = data.contents.filter(c => c !== null);
                             processQuizCategories(data);
                         }
@@ -435,7 +440,19 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return callback(topics);
             }
         },
-        loginUser: function(user,classcode,callback) {
+        logQuestion: function(question) {
+            if (!currentQuizResult.processing) {
+                currentQuizResult.processing = {};
+            }
+            if (!currentQuizResult.processing[question.uuid]) {
+                currentQuizResult.processing[question.uuid] = {
+                    startTime: Date.now()
+                };
+            }
+            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
+            return currentQuizResult.processing[question.uuid].startTime;
+        },
+        loginUser: function(user, classcode, callback) {
             if (zzish.validateClassCode(classcode)) {
                 var newId = uuid.v4();
                 zzish.authUser(newId,user,classcode,function(err,message) {
@@ -458,12 +475,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             loadPlayerQuizzes(callback);
         },
         loadPublicQuizzes: function(callback){
-            zzish.listPublicContent(QUIZ_CONTENT_TYPE,function(err, message){
+            zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, message){
                 if(!err) {
                     message.categories = message.categories.filter(c => c !== null);
                     message.contents = message.contents.filter(c => c !== null);
 
-                    processQuizData(message,true);
+                    processQuizData(message, true);
                 }
                 callback(err, message);
                 $rootScope.$digest();
@@ -517,8 +534,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     groupCode: classCode
                 }
             }
-            if (currentQuiz.categoryId) {
-                parameters.extensions.categoryId = currentQuiz.categoryId;
+            if (currentQuiz.meta.categoryId) {
+                parameters.extensions.categoryId = currentQuiz.meta.categoryId;
             }
             if (currentQuiz.publicAssigned==true && userUuid==null) {
                 userUuid = uuid.v4();
@@ -570,7 +587,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 }
                 var options = randomise(answers).slice(0,3);
                 options.push(correct);
-                return options;
+                return randomise(options);
             }
         },
         answerQuestion: function(idx, response, answer, questionName, duration){

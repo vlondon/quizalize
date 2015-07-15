@@ -5,13 +5,17 @@ var uuid = require('node-uuid');
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 
 var QuizStore = require('createQuizApp/stores/QuizStore');
+var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
+var TopicStore = require('createQuizApp/stores/TopicStore');
+
 // TODO: Rename to a better name to describe editing questions
 var CQEditNormal = React.createClass({
 
     propTypes: {
         onSave: React.PropTypes.func.isRequired,
         quiz: React.PropTypes.object,
-        onChange: React.PropTypes.func
+        onChange: React.PropTypes.func,
+        setSaveMode: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -20,6 +24,8 @@ var CQEditNormal = React.createClass({
                 uuid: uuid.v4(),
                 question: '',
                 answer: '',
+                latexEnabled: false,
+                imageEnabled: false,
                 alternatives: []
             }
         };
@@ -32,7 +38,8 @@ var CQEditNormal = React.createClass({
     componentDidMount: function() {
         this.focusNext(0);
         $('textarea').autogrow();
-        $('[data-toggle="popover"]').popover();
+        this.handlePopover();
+        this.props.onChange(this.state.question);
 
     },
 
@@ -51,18 +58,17 @@ var CQEditNormal = React.createClass({
             this.refs.alternatives1,
             this.refs.alternatives2,
             this.refs.answerExplanation,
-            this.refs._topic
+            this.refs.topicId
         ];
     },
 
     getState: function(props) {
         props = props || this.props;
         var question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
+        question.alternatives = question.alternatives || [];
         var newState = {
             question
         };
-
-        console.log('newState', newState);
 
 
         return newState;
@@ -82,32 +88,6 @@ var CQEditNormal = React.createClass({
             }
 
             var indexRef = refs.indexOf(ref);
-            var handleNext = (i)=>{
-
-                var nextRef = i < (refs.length - 1) ? i + 1 : 0;
-                var nextElement = refs[nextRef];
-                var node = React.findDOMNode(nextElement);
-
-                var gotoNext = ()=>{
-                    if (nextElement) {
-                        node.focus();
-                    } else {
-                        handleNext(nextRef);
-                    }
-                };
-                if (nextRef === 0) {
-                    if (this.canBeSaved()){
-                        this.handleSave();
-                    } else {
-                        gotoNext();
-                    }
-                } else {
-                    gotoNext();
-                }
-
-
-            };
-
             this.focusNext(indexRef);
             event.preventDefault();
         }
@@ -123,7 +103,11 @@ var CQEditNormal = React.createClass({
 
         var gotoNext = ()=>{
             if (nextElement) {
-                node.focus();
+                if (nextElement.onFocus){
+                    nextElement.onFocus();
+                } else {
+                    node.focus();
+                }
             } else {
                 this.focusNext(nextRef);
             }
@@ -162,13 +146,31 @@ var CQEditNormal = React.createClass({
 
     canBeSaved: function(newQuestionState){
         newQuestionState = newQuestionState || this.state.question;
-        return newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
+        var canBeSaved = newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
+        this.props.setSaveMode(canBeSaved);
+        return canBeSaved;
     },
 
-    handleTopic: function(event){
-        var canBeSaved = this.canBeSaved();
-        this.setState({topic: event.target.value, canBeSaved});
+    handleTopic: function(topicId, ev){
+        console.log('we got new topic', topicId);
+        var newQuestionState = assign({}, this.state.question);
+        newQuestionState.topicId = topicId;
+
+        this.props.onChange(newQuestionState);
+        // if (ev.keyCode === 13){
+        //     this.handleNext('topicId', undefined, ev);
+        // }
     },
+
+    handlePopover: function(){
+        $('[data-toggle="popover"]').popover();
+    },
+
+
+    // handleTopic: function(event){
+    //     var canBeSaved = this.canBeSaved();
+    //     this.setState({topic: event.target.value, canBeSaved});
+    // },
 
     handleSave: function(){
         this.props.onSave(this.state.question);
@@ -176,13 +178,19 @@ var CQEditNormal = React.createClass({
     },
 
     handleCheckbox: function(property){
+
         var question = assign({}, this.state.question);
         question[property] = !this.state.question[property];
+
         var canBeSaved = this.canBeSaved(question);
-        this.setState({question, canBeSaved});
+
+        this.setState({question, canBeSaved}, this.handlePopover);
+        this.props.onChange(question);
     },
 
-
+    handleGetTopics: function() {
+        return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
+    },
 
     render: function() {
 
@@ -193,7 +201,7 @@ var CQEditNormal = React.createClass({
                 <div className='block clearfix'>
 
                     <label className="left control-label">
-                        Image Link
+                        Image Link&nbsp;
                         <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
                     </label>
                     <div className="right">
@@ -241,7 +249,7 @@ var CQEditNormal = React.createClass({
 
                     <div className="image-mode">
                         <div>
-                            Use Images &nbsp;
+                            Use Images&nbsp;
                             <a data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. <a target=_blank href='http://blog.zzish.com/post/119032391314/using-images-in-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                         </div>
                         <label  className="switch">
@@ -257,7 +265,7 @@ var CQEditNormal = React.createClass({
                 <div className='block clearfix'>
 
                     <label className="left control-label">
-                        Question
+                        Question&nbsp;
                         <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                     </label>
                     <div className="right">
@@ -286,7 +294,8 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                            Correct Answer <a data-toggle="popover" title="Correct Answer" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="9" className="glyphicon glyphicon-question-sign"></a>
+                            Correct Answer&nbsp;
+                            <a data-toggle="popover" title="Correct Answer" data-content="The answer to the above question. E.g. “Paris”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="9" className="glyphicon glyphicon-question-sign"></a>
                     </label>
                     <div className="right">
 
@@ -307,7 +316,7 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                        Incorrect Answers
+                        Incorrect Answers&nbsp;
                         <a data-toggle="popover" title="Incorrect Answers (Optional)" data-content="Enter incorrect answers if you want to create a multiple choice question. Leave them out and we'll do something smart. &lt;a  target=_blank href='http://blog.zzish.com/post/119035172944/question-types-in-quizalize-classroom-response-system'&gt;Learn more&lt;/a&gt;" data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="10" data-html="true" className="glyphicon glyphicon-question-sign"/>
                         <div className="optional">Optional</div>
                     </label>
@@ -394,7 +403,7 @@ var CQEditNormal = React.createClass({
 
                 <div className="block clearfix">
                     <label className="left control-label">
-                        Subtopic
+                        Subtopic&nbsp;
                         <a data-toggle="popover"
                             title="Subtopic (Optional)"
                             data-content="Use sub-topics to group questions together and spot learning gaps more easily. &lt;a  target=_blank href='http://blog.zzish.com/post/118863520184/quizalize-classroom-quiz-response-system'&gt;Learn more&lt;/a&gt;"
@@ -409,26 +418,19 @@ var CQEditNormal = React.createClass({
                     </label>
                     <div className="right">
                         <div className="entry-input-full-width">
-
-                            <input
-                                value={this.state.question._topic}
-                                ref='_topic'
-                                onChange={this.handleChange.bind(this, '_topic', undefined)}
-                                onKeyDown={this.handleNext.bind(this, '_topic', undefined)}
-                                id="topic" type="text" placeholder="e.g. European Capital Cities" autofocus="true" tabIndex="6" className="form-control"/>
+                            <CQAutofill
+                                value={this.state.question.topicId}
+                                onChange={this.handleTopic}
+                                ref='topicId'
+                                data={this.handleGetTopics}
+                                onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
+                                placeholder="e.g. European Capital Cities"
+                                tabIndex="6"/>
                         </div>
                     </div>
                 </div>
 
-                <div className="block clearfix">
-                    <div className="save">
 
-                        <button type="button" className="btn btn-primary btn-block" disabled={!this.state.canBeSaved} onClick={this.handleSave}>
-                            Save and add a new Question
-                        </button>
-
-                    </div>
-                </div>
 
             </div>
 );

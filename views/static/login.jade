@@ -2,7 +2,7 @@
     .row
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
             .well
-                h2#title Quizalize Login            
+                h2#title Quizalize Login
                 form.form-horizontal(role="form")
                     .form-group
                         label.col-sm-3.control-label Email:
@@ -10,7 +10,7 @@
                             input.form-control#email(type="text", on-enter="login.focusPassword();", ng-model="login.email", placeholder="e.g. abc@zzish.com", autofocus="true")
                             br
                         span#passwordSpan
-                            label.control-label.col-sm-3 Password                              
+                            label.control-label.col-sm-3 Password
                             .col-sm-9
                                 input.form-control#password(type="password", on-enter="login.login();",ng-model="login.password")
                                 br
@@ -18,7 +18,7 @@
                             span(ng-hide="login.mode=='register'") Don't have an account?&nbsp;
                                 a(ng-href='' ng-click="login.showRegister()") Sign Up
                                 br
-                            span(ng-show="login.mode=='login'") Forgotten Password?&nbsp; 
+                            span(ng-show="login.mode=='login'") Forgotten Password?&nbsp;
                                 a(ng-href='' ng-click="login.showForget()") Reset
                                 br
                             span(ng-hide="login.mode=='login'") Already registered?&nbsp;
@@ -34,7 +34,7 @@
                                 strong or
                                 br
                                 br
-                                a.btn.btn-info.btn-block(href="javascript:login('/quiz#/')",style="background-color: #8d3b8e; border-color: #8d3b8e")#LoginWithZzishButton Login with Zzish
+                                a.btn.btn-info.btn-block(href="javascript:login('/quiz#/')",style="background-color: #8d3b8e; border-color: #8d3b8e")#LoginWithZzishButton Sign up with Zzish
                         .col-xs-8.col-xs-offset-2
                             br
                             center

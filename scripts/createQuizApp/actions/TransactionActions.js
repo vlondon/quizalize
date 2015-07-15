@@ -5,7 +5,21 @@ var TransactionApi          = require('createQuizApp/actions/api/TransactionApi'
 var TransactionConstants    = require('createQuizApp/constants/TransactionConstants');
 var Promise                 = require('es6-promise').Promise;
 var QuizActions             = require('createQuizApp/actions/QuizActions');
+var UserStore               = require('createQuizApp/stores/UserStore');
+var stripeSDK               = require('createQuizApp/config/stripeSDK');
+var priceFormat             = require('createQuizApp/utils/priceFormat');
+var UserApi                 = require('createQuizApp/actions/api/UserApi');
 
+var purchaseComplete = function(){
+    swal({
+        title: 'Purchase complete!',
+        text: 'You will find the new content in your quizzes',
+        type: 'success'
+    }, ()=>{
+        QuizActions.loadQuizzes();
+        router.setRoute('/quiz/quizzes');
+    });
+};
 
 var TransactionActions = {
 
@@ -24,27 +38,56 @@ var TransactionActions = {
 
         return new Promise(function(resolve, reject){
 
-            TransactionApi.put(transaction)
-                .then(function(){
-                    console.log('transaction saved saved');
-                    QuizActions.loadQuizzes();
-                    AppDispatcher.dispatch({
-                        actionType: TransactionConstants.TRANSACTION_NEW,
-                        payload: transaction
+            var put = function(){
+                TransactionApi.put(transaction)
+                    .then(function(){
+                        console.log('transaction saved saved');
+                        AppDispatcher.dispatch({
+                            actionType: TransactionConstants.TRANSACTION_NEW,
+                            payload: transaction
+                        });
+                        purchaseComplete();
+                    })
+                    .catch(reject);
+            };
+
+            console.log('saving new transaction', transaction);
+
+            if (transaction.meta.price > 0) {
+                swal.close();
+                var userEmail = UserStore.getUser().email;
+                console.log('creating stripe checkout', UserStore.getUser());
+                stripeSDK.stripeCheckout(transaction.meta.price, userEmail)
+                    .then(function(stripeToken){
+                        transaction._token = stripeToken;
+                        console.log('we got transaction', transaction);
+                        resolve(false);
+                        put();
                     });
-                    resolve();
-                })
-                .catch(reject);
+            } else {
+                put();
+
+            }
+
+            // reject();
+
+
         });
 
 
     },
 
 
-    buyQuiz: function(quiz) {
+    buyQuiz: function(quiz, free) {
+        var price = 0;
+        var priceTag = "free";
+        if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
+            price = quiz.meta.price;
+            priceTag = priceFormat(quiz.meta.price);
+        }
         swal({
                 title: 'Confirm Purchase',
-                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>free</b>`,
+                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>${priceTag}</b>`,
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
@@ -52,6 +95,7 @@ var TransactionActions = {
             }, (isConfirm) => {
 
             if (isConfirm){
+                UserApi.trackEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
                 setTimeout(()=>{
 
                     var newTransaction = {
@@ -59,7 +103,7 @@ var TransactionActions = {
                             type: 'quiz',
                             quizId: quiz.uuid,
                             profileId: quiz.meta.profileId,
-                            price: 0
+                            price: price
                         }
                     };
 
@@ -69,25 +113,12 @@ var TransactionActions = {
                         showConfirmButton: false
                     });
 
-                    TransactionActions.saveNewTransaction(newTransaction)
-                        .then(function(){
-                            swal.close();
-                            setTimeout(()=>{
-                                swal({
-                                    title: 'Purchase complete!',
-                                    text: 'You will find the new content in your quizzes',
-                                    type: 'success'
-                                }, ()=>{
-                                    router.setRoute('/quiz/quizzes');
-                                });
-                            }, 300);
-                        });
+                    TransactionActions.saveNewTransaction(newTransaction);
 
                 }, 300);
             }
         });
     }
-
 };
 
 module.exports = TransactionActions;

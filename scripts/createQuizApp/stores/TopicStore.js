@@ -1,6 +1,6 @@
 var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
 var TopicConstants = require('createQuizApp/constants/TopicConstants');
-var QuizConstants = require('createQuizApp/constants/QuizConstants');
+var UserStore = require('createQuizApp/stores/UserStore');
 
 var TopicActions = require('createQuizApp/actions/TopicActions');
 
@@ -9,55 +9,104 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 var storeInit = false;
+var storeInitPublic = false;
 
-var _topics = [];
-// subjects come (for now) from the public quizzes
-var _publicTopics = [];
+var _publictopics = [];
+var _usertopics = [];
+var _subjects = [];
+var _subjectHash = {};
+var _temporaryTopic;
 
-
-var sortPublicTopics = function(topics){
-
-    topics.forEach((parentTopic) => {
-        var childrenTopics = topics.filter(childs => childs.parentCategoryId === parentTopic.uuid );
-        childrenTopics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-        parentTopic.categories = childrenTopics;
+var loadPublicTopics = function(data) {
+    _subjects = data.psubjects;
+    _subjects.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+    data.psubjects.forEach((subject) => {
+        _subjectHash[subject.uuid] = subject.name;
     });
-
-    topics = topics.filter(t => t.parentCategoryId === '-1');
-    topics.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
-
-    return topics;
+    _publictopics = data.pcategories;
+    _publictopics.push.apply(_publictopics, data.categories);
 };
 
+var loadUserTopics = function(data) {
+    _usertopics = data;
+};
+
+var getTopics = function(topics) {
+    var result = topics.filter(t => t.parentCategoryId === '-1' || t.parentCategoryId === null).slice();
+    result.forEach((topic) => {
+        if (topic.subjectId && !topic.init) {
+            topic.name = _subjectHash[topic.subjectId] + " > " + topic.name;
+            topic.init = true;
+        }
+    });
+    result.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+    return result;
+};
 
 var TopicStore = assign({}, EventEmitter.prototype, {
 
-    getTopics: function() {
-        return _topics.slice();
+    getPublicSubjects: function() {
+        return _subjects;
     },
 
-    getTopicById: function(topicId){
-        var result = _publicTopics.filter(t => t.uuid === topicId);
-        if (result.length === 0){
-            result = _topics.filter(t => t.uuid === topicId);
+    getTopicTreeForTopic: function(parentCategoryId) {
+        var result = _publictopics.filter(t => t.parentCategoryId === parentCategoryId);
+        var userResult = _usertopics.filter(t => t.parentCategoryId === parentCategoryId);
+        userResult.push.apply(userResult, result);
+        userResult.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+
+        // Do not display duplicate names
+        var seen = [];
+        userResult = userResult.filter( u => {
+            if (seen.indexOf(u.name) === -1){
+                seen.push(u.name);
+                return true;
+            }
+            return false;
+        });
+
+        return userResult;
+    },
+
+    getTopicTree: function() {
+        var result = getTopics(_usertopics);
+        result.push.apply(result, getTopics(_publictopics));
+        return result;
+    },
+
+    getTopicById: function(topicId) {
+        if (topicId === "-1") {
+            return _temporaryTopic;
         }
-        return result.length === 1 ? result[0] : undefined;
-    },
-
-    getTopicByName: function(topicName){
-        var result = _publicTopics.filter(t => t.name === topicName);
-        if (result.length === 0){
-            result = _topics.filter(t => {console.log("t.name", t.name, topicName, t.name === topicName); return t.name === topicName; });
+        else {
+            var result = _usertopics.filter(t => t.uuid === topicId);
+            if (result.length === 0) {
+                result = _publictopics.filter(t => t.uuid === topicId);
+            }
+            return result.length === 1 ? result.slice()[0] : undefined;
         }
-        return result.length > 0 ? result[0] : undefined;
     },
 
-    getPublicTopics: function(){
-        console.log('_publicTopics', _publicTopics);
-        var publicTopics = _publicTopics ? sortPublicTopics(_publicTopics.slice()) : [];
-        return publicTopics;
+    getTopicByName: function(name) {
+        if (_temporaryTopic && _temporaryTopic.name === name) {
+            return _temporaryTopic;
+        }
+        else {
+            var result = _usertopics.filter(t => t.name === name);
+            if (result.length === 0) {
+                result = _publictopics.filter(t => t.name === name);
+            }
+            return result.length === 1 ? result.slice()[0] : undefined;
+        }
     },
 
+    getTopicName: function(topicId) {
+        var topic = TopicStore.getTopicById(topicId);
+        if (topic) {
+            return topic.name;
+        }
+        return '';
+    },
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -67,8 +116,12 @@ var TopicStore = assign({}, EventEmitter.prototype, {
      * @param {function} callback
      */
     addChangeListener: function(callback) {
-        if (!storeInit){
+        if (UserStore.getUser() && !storeInit){
             storeInit = true;
+            TopicActions.loadUserTopics();
+        }
+        if (!storeInitPublic) {
+            storeInitPublic = true;
             TopicActions.loadPublicTopics();
         }
         this.on(CHANGE_EVENT, callback);
@@ -88,25 +141,20 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
-
-        case QuizConstants.QUIZZES_LOADED:
-            _publicTopics = action.payload.topics;
-            TopicStore.emitChange();
-            break;
-
-        case TopicConstants.TOPIC_ADDED:
-            _topics.push(action.payload);
-            TopicStore.emitChange();
-            break;
-
         case TopicConstants.PUBLIC_TOPICS_LOADED:
-            storeInit = true;
-            _publicTopics = action.payload;
+            loadPublicTopics(action.payload);
             TopicStore.emitChange();
             break;
-
         case TopicConstants.TOPICS_LOADED:
-            _topics = action.payload;
+            loadUserTopics(action.payload);
+            TopicStore.emitChange();
+            break;
+        case TopicConstants.TOPIC_ADDED:
+            _usertopics.push(action.payload);
+            TopicStore.emitChange();
+            break;
+        case TopicConstants.TEMPORARY_TOPIC_ADDED:
+            _temporaryTopic = action.payload;
             break;
         default:
             // no op

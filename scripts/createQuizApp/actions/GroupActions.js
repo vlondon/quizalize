@@ -8,7 +8,6 @@ var assign              = require('object-assign');
 var GroupActions = {
 
     loadGroups: function(){
-        
         var groups = GroupApi.getGroups();
         var groupsContent = GroupApi.getGroupContents();
 
@@ -32,7 +31,7 @@ var GroupActions = {
 
     },
 
-    unpublishQuiz: function(quizId, groupCode){
+    unpublishAssignment: function(quizId, groupCode){
 
         GroupApi.unpublishQuiz(quizId, groupCode)
             .then(() => {
@@ -49,7 +48,7 @@ var GroupActions = {
                 groupName
             };
 
-            var data = assign({}, settings, dataToSend);
+            // var data = assign({}, settings, dataToSend);
 
             GroupApi.publishNewAssignment(quizId, groupName)
                 .then((response) => {

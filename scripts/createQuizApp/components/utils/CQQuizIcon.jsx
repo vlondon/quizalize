@@ -28,20 +28,20 @@ var CQQuizIcon = React.createClass({
         className: React.PropTypes.string,
         name: React.PropTypes.string,
         image: React.PropTypes.string,
+        imageData: React.PropTypes.object,
         children: React.PropTypes.element
     },
 
     getInitialState: function() {
-        var image = this.props.image;
-
-        if (this.props.image && this.props.image.indexOf('http') === -1) {
-            image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
-        }
         return this.getImage();
     },
 
     componentWillReceiveProps: function(nextProps) {
-        this.setState(this.getImage(nextProps));
+        if (nextProps.imageData){
+            this.setState({imageData: nextProps.imageData});
+        } else {
+            this.setState(this.getImage(nextProps));
+        }
     },
 
     getImage: function(props){
@@ -62,7 +62,7 @@ var CQQuizIcon = React.createClass({
             randomIndex = (n.charCodeAt(0) + 5 ) % colours.length;
 
         } else {
-            randomIndex = Math.floor(Math.random() * colours.length);
+            randomIndex = 0;
         }
 
 
@@ -73,13 +73,17 @@ var CQQuizIcon = React.createClass({
         };
 
         var detectYoutubeThumbnail = function(img){
-            console.log("imgmggmmg", img);
             return img.indexOf("youtube") === -1 ? img : '//img.youtube.com/vi/' + img.split('/')[4] + "/0.jpg";
         };
+
         if (this.state.image){
             style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
         } else if (this.props.children) {
             image = this.props.children;
+        } else if (this.state.imageData) {
+            //image = (<img src={this.state.imageData}/>);
+            style.backgroundImage = `url(${this.state.imageData})`;
+            console.info('this.props.imageData', this.props.imageData);
         } else {
             image = (<img src="/img/ui-create/icon_base.png" alt=""/>);
         }

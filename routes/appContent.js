@@ -8,7 +8,7 @@ var AWS                 = require('./../awssdk');
 var userHelper          = require('./helpers/userHelper');
 var Promise             = require('es6-promise').Promise;
 var logger              = require('../logger');
-
+var email           = require("../email");
 
 exports.list = function(req, res){
     var profileId = req.params.profileId;
@@ -38,6 +38,8 @@ exports.listPublicApps = function(req, res){
 exports.get = function(req, res){
     var id = req.params.id;
     var profileId = req.params.profileId;
+    logger.info('id', id);
+    logger.info('profileId', profileId);
 
     zzish.getContent(profileId, APP_CONTENT_TYPE, id, function(err, resp){
         if(!err){
@@ -53,6 +55,8 @@ exports.get = function(req, res){
 
 exports.getPublic = function(req, res){
     var id = req.params.id;
+    logger.info('id', id === 'undefined');
+    // logger.info('profileId', profileId);
 
     var getQuiz = function(quizId){
         return new Promise(function(resolve, reject){
@@ -70,24 +74,30 @@ exports.getPublic = function(req, res){
 
 
     zzish.getPublicContent(APP_CONTENT_TYPE, id, function(err, resp){
+        logger.info('resp', resp);
         if(!err){
             // res.send(resp);
-            var promises = resp.payload.quizzes.map(function(quiz){ return getQuiz(quiz); });
-            Promise.all(promises)
-                .then(function(values){
-                    resp.extra = {
-                        quizzes: values
-                    };
-                    userHelper.addUserToExtra(resp)
-                        .then(function(respWithUser){
-                            res.send(respWithUser);
-                        })
-                        .catch(function(error){
-                            res.status(500).send(error);
-                        });
-                    // res.send(resp);
-                });
+            if (resp.payload && resp.payload.quizzes) {
+                logger.info('Payload', res.payload);
+                var promises = resp.payload.quizzes.map(function(quiz){ return getQuiz(quiz); });
+                Promise.all(promises)
+                    .then(function(values){
+                        resp.extra = {
+                            quizzes: values
+                        };
+                        userHelper.addUserToExtra(resp)
+                            .then(function(respWithUser){
+                                res.send(respWithUser);
+                            })
+                            .catch(function(error){
+                                res.status(500).send(error);
+                            });
+                        // res.send(resp);
+                    });
 
+            } else {
+                res.status(400).send();
+            }
         }else{
             res.status(400).send();
         }
@@ -95,12 +105,12 @@ exports.getPublic = function(req, res){
 };
 
 
-exports.delete = function(req,res){
+exports.delete = function(req, res){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
     zzish.deleteContent(profileId, APP_CONTENT_TYPE, id, function(err, resp){
-        res.send(err == undefined);
+        res.send(err === undefined);
     });
 };
 
@@ -159,3 +169,26 @@ exports.postIcon = function(req, res){
         }
     });
 };
+
+exports.publishToMarketplace = function(req, res) {
+    var profileId = req.params.profileId;
+    var id = req.params.id;
+    var app = req.body;
+
+    zzish.postContent(profileId, APP_CONTENT_TYPE, id, app.meta, app.payload, function(err2, message) {
+        zzish.getUser(profileId, null, function(err, user) {
+            var name = "there";
+            if (user.name) name = user.name;
+            var params = {
+                name: name
+            };
+            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your app to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+              profileId: profileId,
+              type: 'app',
+              id: id
+            });
+            res.send();
+        });
+    });
+}

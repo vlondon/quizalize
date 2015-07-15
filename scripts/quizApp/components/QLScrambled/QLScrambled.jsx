@@ -53,7 +53,8 @@ var QLScrambled = React.createClass({
         question: React.PropTypes.string.isRequired,
         letters: React.PropTypes.array.isRequired,
         onAddLetter: React.PropTypes.func,
-        quizData: React.PropTypes.object
+        quizData: React.PropTypes.object,
+        startTime: React.PropTypes.number,
     },
 
     getInitialState: function() {
@@ -164,7 +165,7 @@ var QLScrambled = React.createClass({
         var showAnswer, showTargets, showOptions, showCountdown;
 
         if (this.props.letters.length > 0) {
-            showCountdown = <QLCountDown/>;
+            showCountdown = <QLCountDown  startTime={this.props.startTime}/>;
             showTargets = this.props.answer.map(function(letter, index){
                 return (
                     <button className="letterTile btn-info ng-binding ng-scope solution"

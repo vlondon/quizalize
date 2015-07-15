@@ -1,16 +1,31 @@
 .cq-quizzes {
-
-    @at-root #{&}__buttonbar {
+    position: relative;
+    &__buttonbar {
         margin: 10px 0;
     }
 
-    .cq-quizzes__edit {
+    &__header {
+        @include cq-header();
+        margin-bottom: 20px;
+    }
+
+
+    &__actions {
+        text-align: right;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+
+    &__edit {
         display: none;
         /* display: inline-block; */
         padding: 0 10px;
         color: $brand-color-grey-light;
     }
     .cq-viewquizlist__quiz {
+
         &:hover {
             .cq-quizzes__edit { display: inline-block; }
         }
@@ -64,21 +79,25 @@
     }
 
 
-    @at-root #{&}__button--delete {
+    &__button--delete {
         @include button($brand-color-red);
 
     }
 
-    @at-root #{&}__button--assign {
+    &__button--assign {
         @include button($brand-color-blue);
 
     }
 
-    @at-root #{&}__button--edit {
+    &__button--edit {
         @include button($brand-color-blue);
     }
 
-    @at-root #{&}__button--review {
+    &__button--publish {
+        @include button($brand-color-blue);
+    }
+
+    &__button--review {
         @include button($brand-color-blue);
     }
 

@@ -50,7 +50,6 @@ GroupStore.dispatchToken = AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case GroupConstants.GROUPS_LOADED:
-
             _groups = action.payload.groups;
             _groupsContent = action.payload.groupsContent;
             GroupStore.emitChange();

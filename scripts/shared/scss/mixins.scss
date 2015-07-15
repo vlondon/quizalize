@@ -28,6 +28,14 @@ $mobile-ie6: true !default;
     margin: auto;
 }
 
+@mixin cq-header {
+    color: $brand-color-grey;
+    padding-bottom: 8px;
+    margin-top: 10px;
+    color: $brand-color-red;
+    border-bottom: 1px solid $brand-color-red
+}
+
 
 @mixin button($color) {
     background: none repeat scroll 0 0 transparent;

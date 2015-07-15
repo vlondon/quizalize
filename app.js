@@ -1,4 +1,6 @@
 // set variables for environment
+require('pmx').init();
+var http = require('http');
 var express     = require('express');
 var app         = express();
 var path        = require('path');
@@ -14,11 +16,13 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
-// var marketplace = require('./routes/marketplace');
+var admin      = require('./routes/admin');
+var marketplace      = require('./routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
+var intercom = require('./routes/intercom');
 
 
 
@@ -64,22 +68,22 @@ app.get('/quiz/create', quiz.create);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
-app.post('/users/register', user.registerEmail);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 app.get('/user/:profileId', user.details);
 app.post('/user/:profileId', user.saveUser);
+app.post('/email/', email.sendDocumentEmail);
 
-
+app.post('/user/:uuid/events/:name', intercom.events);
 
 app.post('/create/profile', quiz.createProfile);
 
 app.get('/quiz/token/:token', quiz.getProfileByToken);
 app.get('/quiz/profile/:uuid', quiz.getProfileById);
 
-app.get('/quiz/*', quiz.create);
-app.get('/quiz', quiz.create);
+app.get('/quiz/*', checkForIE, quiz.create);
+app.get('/quiz', checkForIE, quiz.create);
 
 
 app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);
@@ -102,6 +106,7 @@ app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 app.post('/create/:profileId/apps', appContent.post);
 app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
+app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishToMarketplace);
 
 
 app.get('/create/:profileId/transaction/', transaction.list);
@@ -112,6 +117,10 @@ app.post('/create/:profileId/transaction', transaction.post);
 app.post('/create/:profileId/transaction/:id', transaction.post);
 
 
+app.post('/admin/:profileId/approve/:type/:id', admin.approve);
+app.post('/admin/:profileId/approvefirst/:type/:id', admin.approvefirst);
+app.get('/admin/:profileId/:type/pending', admin.pending);
+
 app.get('/apps/', appContent.listPublicApps);
 app.get('/apps/:id', appContent.getPublic);
 // app.get('/create/:profileId/apps/:id', appContent.get);
@@ -119,7 +128,7 @@ app.get('/apps/:id', appContent.getPublic);
 // app.post('/create/:profileId/apps/:id', appContent.post);
 // app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 
-// app.get('/marketplace/quiz/:id', marketplace.getQuiz);
+app.get('/marketplace/quiz/:id', marketplace.getQuiz);
 
 
 
@@ -133,6 +142,7 @@ app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);
+app.post('/create/:profileId/quizzes/:id/publishToMarketplace', quiz.publishToMarketplace);
 app.post('/create/:profileId/quizzes/:id/:group/unpublish', quiz.unpublishQuiz);
 
 
@@ -209,6 +219,15 @@ function isIE(req) {
     return isIECheck;
 }
 
+function checkForIE(req, res, next){
+    if (isIE(req)){
+        logger.info('Redirecting to IE');
+        res.redirect('/ie');
+    }
+    else {
+        return next();
+    }
+}
 
 // note: the next method param is passed as well
 function checkForMobile(req, res, next) {

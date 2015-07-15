@@ -8,6 +8,10 @@
         margin-right: 5px;
     }
 
+    @at-root #{&}__header {
+        @include cq-header;
+    }
+
     @at-root #{&}__list {
         list-style: none;
         margin: 0;

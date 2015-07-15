@@ -31,6 +31,9 @@
   <link href="/cquiz/css/style.css" rel="stylesheet">
   <link href="/cquiz/color/default.css" rel="stylesheet">
 
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+
+
 
 </head>
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
@@ -55,7 +58,6 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="menu">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href='/packages'>Schools</a></li>
               <li><a  onclick="ask('order')">Info pack</a></li>
               <li><a  onclick="ask('demo')">Book a demo</a></li>
               <li><a id='StudentLogin'href="/app">Student Login</a></li>
@@ -72,29 +74,35 @@
   </nav>
 </div>
 <!-- /Navigation -->
-<section id="intro" class="home-slide ">
-  <div class="item-inner item-inner__hero item-1">
-    <div class="cta-container">
-      <h1 class="cta2-title"><strong>Turn assessments into fun classroom games</strong></h1>
-      <div class='row'>
+<div id="intro" class="intro">
+    <div class="aled-made-me-hack-this"></div>
+  <div class="flash__hero">
+      <div class="flash-container">
 
-        <div class="col-md-12" class="free"><a class="cta2" href="/quiz/register">Get my free account</a><p class="cta-thirty">Sign up in less than 30 seconds</p></div> </div>
-
-
-
+        <div id="flash"></div>
       </div>
-      <div class="row text-center"> <a href="https://www.youtube.com/watch?v=J3_CWmLcEI0" title="Quizalize Video" id="play-but"><span  class="cta_what">Watch an overview</span><img src="cquiz/img/play.png" style="height:100px; margin-left:20px"alt="" /></a> </div>
-      <div class="row text-center"><a href="https://www.youtube.com/watch?v=J3_CWmLcEI0" title="Quizalize Video" id="play-but2"><img src="cquiz/img/play.png" style="height:80px;" alt="" /></a> </div>
+
     </div>
-  </div>
+    <div class="cta-container clearfix">
+
+        <div class="cta-container__left">
+            <a class="cta2" href="/quiz/register">
+                Get Start here, it's free
+            </a>
+        </div>
+
+        <div class="cta-video cta-container__right">
+            or <a href="https://www.youtube.com/watch?v=J3_CWmLcEI0" title="Quizalize Video" id="play-but">watch a video</a> to learn more
+        </div>
+
+    </div>
 </div>
-</section>
+</div>
 <!-- /Section: intro -->
 
 <section id="what_is" class="home-section color-dark bg-light">
   <div class="container marginbot-50">
     <div class="text-center">
-      <h1 class="what_is"> What is Quizalize?</h1>
 
       <div class="container">
         <div class="row">
@@ -400,7 +408,6 @@
                 <li><a href="javascript:showQuiz('a4b8d503-6017-4f2f-97c8-438dfadc29d3')">Global Warming</a></li>
                 <li><a href="javascript:showQuiz('7c623d0c-2950-4989-8dbc-7e6c45345136')">Regions - Europe</a></li>
                 <li><a href="javascript:showQuiz('c48a2ce7-c90f-401c-9d4b-502c31396892')">Earthquakes</a></li>
-                <li>&nbsp;</li>
               </ul>
             </div>
             <div class="col-md-4">
@@ -410,7 +417,6 @@
                 <li><a href="javascript:showQuiz('a2b490ba-5bf9-41e1-89ec-eff66ed0ec1d')">The Stuarts</a></li>
                 <li><a href="javascript:showQuiz('3c281df9-b248-4d82-820d-36dc4d3fb892')">The Tudor Era</a></li>
                 <li><a href="javascript:showQuiz('6d642331-d7fd-4565-ba11-cfba6d744d6b')">Winston Churchill</a></li>
-                <li><a href="javascript:showQuiz('dfdedc1e-63e4-425a-a113-f16072e09c87')">Henry VIII</a></li>
                 <li><a href="javascript:showQuiz('1bb62157-46b7-4ebd-8ad2-f3ab131197ca')">Henry II and T. Becket</a></li>
               </ul>
             </div>
@@ -421,7 +427,6 @@
                 <li><a href="javascript:showQuiz('c3be1a1d-fce2-48f0-bf41-21773e75da22')">RS - World Religions </a></li>
                 <li><a href="javascript:showQuiz('00332e3e-36f2-428e-8ea6-2ca0a86f7a9f')">RS - Churches</a></li>
                 <li><a href="javascript:showQuiz('c5df93ad-b4a1-427a-b01d-a1b0f5091bd9')">Music - Composition</a></li>
-                <li>&nbsp;</li>
                 <li>&nbsp;</li>
               </ul>
             </div>
@@ -476,7 +481,7 @@
 
 
 <!-- Section: contact -->
-<section id="contact" class=" home-section nopadd-bot color-dark bg-dark text-center">
+<section id="contact" class=" home-section nopadd-bot color-dark bg-dark text-center container-fluid">
   <a name="sendForm" id="sendForm">
     <div class="container marginbot-50">
       <div class="col-md-12 ">
@@ -568,7 +573,7 @@
                 <li><a href="http://www.facebook.com/quizalize"><i class="fa fa-lg fa-facebook"></i></a></li>
                 <li><a href="http://twitter.com/quizalizeapp"><i class="fa fa-lg fa-twitter"></i></a></li>
                 <li><a href="http://blog.zzish.com/"><i class="fa fa-lg fa-tumblr"></i></a></li>
-                <li><a href="http://www.youtube.com/channel/UCsN-UvRQ-hYUAndrQePJkMA"></a><i class="fa fa-lg fa-youtube"></i></li>
+                <li><a href="http://www.youtube.com/channel/UCsN-UvRQ-hYUAndrQePJkMA"><i class="fa fa-lg fa-youtube"></i></a></li>
               </ul>
             </div>
           </div>
@@ -589,6 +594,16 @@
     <div id="outdated"></div>
     <!-- Core JavaScript Files -->
     <script>
+      function showQuiz(id) {
+          var check = localStorage.getItem("userId") || localStorage.getItem('token');
+          var quizUrl = window.location.href = "/app#/play/public/" + id;
+          if (!check) {
+              quizUrl = "/quiz/register?redirect=" + window.encodeURIComponent(quizUrl);
+          }
+          window.location.href = quizUrl;
+      }
+
+
       function newQuiz() {
         window.location.href="/quiz";
       }
@@ -607,11 +622,22 @@
     <script src="/cquiz/js/custom.js"></script>
     <script src="/js/vendor.js"></script>
     <script src="//zzish.github.io/zzishsdk-js/zzish.js"></script>
-    <script src="/js/quiz.js"></script>
     <script src="/outdatedbrowser/outdatedbrowser.min.js"></script>
     <script>
+      function getParameterByName(name) {
+          name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+              results = regex.exec(location.search);
+          return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
       $(document).ready(function(){
-        $('#play-but').nivoLightbox();
+        if (getParameterByName("video")=="on") {
+          $('#play-but').nivoLightbox().trigger('click');
+        }
+        else {
+          $('#play-but').nivoLightbox();
+        }
       });
     </script>
 
@@ -693,6 +719,15 @@
     </script>
 
 
+    <script>
+    //   var el = document.getElementById("flash");
+    //   console.log('we flash ', el);
+    var flashvars = {},
+        params = {wmode:"transparent"},
+        attributes = {};
+      swfobject.embedSWF("img/qz-homepage-demo.swf", "flash", "850", "600", "10.0.0", undefined, flashvars, params, attributes);
+    //   swfobject.embedSWF("/img/qz-homepage-demo.swf", el, 300, 120, 10);
+    </script>
 
 
     <script type="text/javascript">
@@ -765,5 +800,6 @@
           <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&amp;guid=ON&amp;script=0"/>
         </div>
       </noscript>
+
     </body>
     </html>

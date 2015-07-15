@@ -2,9 +2,11 @@
     "plugins": [
         "react"
     ],
+    "parser": "babel-eslint",
     "ecmaFeatures": {
         "jsx": true,
-        "objectLiteralShorthandProperties": true
+        "objectLiteralShorthandProperties": true,
+        "modules": true
     },
     "rules": {
         "semi": 2,
@@ -37,6 +39,7 @@
         "$": true,
         "Zzish": true,
         "zzish": true,
-        "swal": true
+        "swal": true,
+        "FB": true
     }
 }

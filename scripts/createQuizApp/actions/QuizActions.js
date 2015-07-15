@@ -1,64 +1,46 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var QuizConstants       = require('createQuizApp/constants/QuizConstants');
-var QuizApi             = require('createQuizApp/actions/api/QuizApi');
+/* @flow */
+import type {Quiz, QuizComplete}        from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
-var TopicStore          = require('createQuizApp/stores/TopicStore');
-var TopicActions        = require('createQuizApp/actions/TopicActions');
-var TopicConstants      = require('createQuizApp/constants/TopicConstants');
 var uuid                = require('node-uuid');
-var UserStore           = require('createQuizApp/stores/UserStore');
-
-var debounce            = require('createQuizApp/utils/debounce');
 
 
-var _questionsTopicIdToTopic = function(quiz){
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var QuizConstants       = require('./../constants/QuizConstants');
+var QuizApi             = require('./../actions/api/QuizApi');
+var TopicStore          = require('./../stores/TopicStore');
+var TopicActions        = require('./../actions/TopicActions');
+var router              = require('./../config/router');
+
+var UserApi             = require('./../actions/api/UserApi');
+
+import UserStore        from './../stores/UserStore';
+
+var debounce            = require('./../utils/debounce');
 
 
-    var findTopicName = function(topicId){
-        var topic = TopicStore.getTopicById(topicId);
-        return topic ? topic.name : undefined;
-    };
-
-
-    if (quiz.payload.questions && quiz.payload.questions.length > 0){
-        quiz.payload.questions = quiz.payload.questions.map(question => {
-            question._topic = findTopicName(question.topicId);
-            return question;
-        });
-    }
-
-    return quiz;
-};
-
-var _questionsTopicToTopicId = function(quiz){
+var createNewTopicsForQuiz = function(quiz){
 
     var questions = quiz.payload.questions;
 
-    var findTopicId = function(topicName){
-        var topic = TopicStore.getTopicByName(topicName);
-        console.info('findTopicId', topicName, topic);
-        if (topic === undefined){
-            // we create a new topic and save it
-            topic = {
-                uuid: uuid.v4(),
-                name: topicName,
-                subContent: true,
-                parentCategoryId: quiz.categoryId
-            };
-            TopicActions.createTopic(topic);
-        }
-
-        return topic ? topic.uuid : uuid.v4();
+    var createTopicForQuestion = function(question){
+        var topic = TopicStore.getTopicById(question.topicId);
+        console.log("Creating new topic for", topic);
+        // we create a new topic and save it
+        topic = {
+            uuid: uuid.v4(),
+            name: topic.name,
+            subContent: true,
+            parentCategoryId: quiz.meta.categoryId
+        };
+        TopicActions.createTopic(topic);
+        return topic.uuid;
     };
 
     if (questions && questions.length > 0) {
         questions = questions.map(function(question){
-            if (question._topic){
-                question.topicId = findTopicId(question._topic);
+            if (question.topicId === "-1") {
+                question.topicId = createTopicForQuestion(question);
             }
-
-            delete question._topic;
-
             return question;
         });
     }
@@ -71,92 +53,62 @@ var QuizActions = {
 
     loadQuizzes: function(){
 
-        var quizzes = QuizApi.getQuizzes();
-        var topics = QuizApi.getTopics();
+        var quizzesPromise = QuizApi.getQuizzes();
 
-
-        Promise.all([quizzes, topics])
-            .then(value => {
-
-                // let's stitch quizzes to their topic
-                var loadedQuizzes = value[0];
-                var loadedTopics = value[1];
-
-
-                var processedQuizzes = loadedQuizzes.map(function(quiz){
-                    var topic = loadedTopics.filter(function(t){
-                        return t.uuid === quiz.categoryId;
-                    })[0];
-
-                    quiz.category = topic || {};
-
-                    return quiz;
-                });
-
-
-
+        quizzesPromise
+            .then(quizzes => {
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZZES_LOADED,
                     payload: {
-                        quizzes: processedQuizzes,
-                        topics: loadedTopics
+                        quizzes: quizzes
                     }
                 });
             });
-
     },
 
 
-    loadQuiz: function(quizId){
-        var quizzesPromise = QuizApi.getQuizzes();
+    loadQuiz: function(quizId:string){
+
         var quizPromise = QuizApi.getQuiz(quizId);
-        var topicsPromise = QuizApi.getTopics();
 
-
-        Promise.all([quizzesPromise, quizPromise, topicsPromise])
-            .then((value) => {
-
-                // // let's stitch quizzes to their topic
-                var loadedQuizzes = value[0];
-                var quiz = value[1];
-                var topics = value[2];
-                //
-                var getCategoryFormUuid = function(){
-
-                    // if (!quiz.categoryId) {
-                    //     var fq = loadedQuizzes.filter(q => q.uuid === quizId)[0];
-                    //     quiz.categoryId = fq.categoryId;
-                    // }
-                    //
-                    if (quiz.meta.categoryId) {
-                        var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
-                        console.log('looking for meta', quiz.meta.categoryId, topicFound);
-                        return topicFound ? topicFound.name : '';
-                    }
-                    return '';
-
-                };
-
-                quiz.meta.category = getCategoryFormUuid();
-                // settings property is assumed, so it should be present
+        quizPromise
+            .then((quiz) => {
 
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_LOADED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
             });
     },
 
+    loadPublicQuiz: function(quizId:string){
+        return new Promise(function(resolve, reject){
+            var quizPromise = QuizApi.getPublicQuiz(quizId);
 
-    saveReview: function(purchased){
+            quizPromise
+                .then((quiz) => {
+
+                    AppDispatcher.dispatch({
+                        actionType: QuizConstants.QUIZ_PUBLIC_LOADED,
+                        payload: quiz
+                    });
+                    resolve(quiz);
+
+                })
+                .catch(reject);
+
+        });
+    },
+
+
+    saveReview: function(purchased:Quiz){
 
         return new Promise(function(resolve, reject){
 
             var savePurchased = QuizApi.putQuiz(purchased);
             var getOriginal = QuizApi.getQuiz(purchased.meta.originalQuizId);
-            console.log("Savingg View");
 
             Promise.all([savePurchased, getOriginal])
                 .then((value) => {
@@ -175,7 +127,7 @@ var QuizActions = {
         });
     },
 
-    deleteQuiz: function(quizId){
+    deleteQuiz: function(quizId:string){
         QuizApi.deleteQuiz(quizId)
             .then(function(){
 
@@ -201,20 +153,45 @@ var QuizActions = {
     }, 300),
 
 
-    newQuiz: function(quiz){
+
+    getPublicQuizzesForProfile: function(profileId: string){
+
+        return new Promise(function(resolve, reject){
+
+            var searchPromise = QuizApi.searchQuizzes('', '', profileId);
+
+            searchPromise
+                .then((quizzes) => {
+
+                    resolve(quizzes);
+
+                }).catch(reject);
+        });
+    },
+
+
+    newQuiz: function(quiz:QuizComplete){
+
 
         var addOrCreateCategory = function(){
             var topicUuid;
-            var topics = TopicStore.getTopics();
-            var topicFound = topics.filter( t => t.name === quiz.meta.category )[0];
-
-            if (topicFound) {
+            var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
+            if (quiz.meta.categoryId === undefined) {
+                topicFound = TopicStore.getTopicByName("");
+                if (!topicFound) {
+                    //we have an empty topic
+                    topicFound = {
+                        uuid: "-1",
+                        name: ""
+                    };
+                }
+            }
+            if (topicFound && topicFound.uuid !== "-1") {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
                 TopicActions.createTopic({
-                    subject: quiz.meta.subject,
-                    name: quiz.meta.category,
+                    name: topicFound.name,
                     parentCategoryId: '-1',
                     uuid: topicUuid,
                     subContent: false
@@ -225,22 +202,29 @@ var QuizActions = {
         };
 
         return new Promise((resolve, reject) => {
-
+            var updatedQuiz = !!quiz.uuid;
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.meta.categoryId = addOrCreateCategory();
+            // we filter questions with no content
+            if (quiz.payload.questions){
+                quiz.payload.questions = quiz.payload.questions.filter( q => q.question.length > 0 && q.answer.length > 0);
+            }
 
-            quiz = _questionsTopicToTopicId(quiz);
+            quiz = createNewTopicsForQuiz(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
+            if (!updatedQuiz) {
+                UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+            }
 
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
-                    payload: _questionsTopicIdToTopic(quiz)
+                    payload: quiz
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
-                // this.loadQuizzes();
+                this.loadQuizzes();
                 resolve(quiz);
             }, ()=> {
                 reject();
@@ -251,13 +235,13 @@ var QuizActions = {
 
     },
 
-    shareQuiz: function(quizId, quizName, emails, link){
-        var user = UserStore.getUser();
+    shareQuiz: function(quizId:string, quizName:string, emails:string, link:string){
+        var user:Object = UserStore.getUser();
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
         var tokensComma = emails.split(',');
 
-        var data = {
+        var data: {email: string; quiz: string; emails?: Array<string>; link?: string } = {
             email: user.name,
             quiz: quizName
         };
@@ -279,8 +263,27 @@ var QuizActions = {
 
         QuizApi.shareQuiz(quizId, data);
 
-    }
+    },
 
+    publishQuiz: function(quiz:Quiz, settings:Object) {
+        quiz.meta.price = settings.price;
+        quiz.meta.published = "pending";
+        QuizApi.publishQuiz(quiz);
+        UserApi.trackEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+        swal({
+            title: 'Thanks!',
+            text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,
+            type: 'success'
+        }, ()=>{
+            router.setRoute(`/quiz/quizzes`);
+        });
+
+        AppDispatcher.dispatch({
+            actionType: QuizConstants.QUIZ_META_UPDATED,
+            payload: quiz
+        });
+
+    }
 };
 
 

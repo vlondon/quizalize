@@ -5,11 +5,13 @@
  * the subfolder /webpack-dev-server/ is visited. Visiting the root will not automatically reload.
  */
 var webpack = require('webpack');
+var path = require('path');
+
 module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        cqApp: 'createQuizApp/CQApp.js',
+        cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [
@@ -17,25 +19,26 @@ module.exports = {
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|es/)
     ],
     output: {
-        path: __dirname,
-        filename: '[name].js'
+        path: path.join(__dirname, 'public/js/'),
+        filename: '[name].js',
+        publicPath: 'http://localhost:7071/js/'
     },
     module: {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel'],
+                loaders: ['react-hot', 'babel?optional[]=runtime'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(node_modules|bower_components)/
             },
 
             {
                 test: /\.es6\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(bower_components)/
             },
             {
@@ -45,7 +48,9 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
-            }
+            },
+            { test: /\.png$/, loader: "url-loader?limit=100000" },
+            { test: /\.jpg$/, loader: "url-loader" }
         ]
     },
     resolve: {
@@ -54,6 +59,5 @@ module.exports = {
         alias: {
             'ie': 'component-ie'
         }
-
     }
 };

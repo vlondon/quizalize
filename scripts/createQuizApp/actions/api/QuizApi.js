@@ -7,10 +7,12 @@ var QuizApi = {
     getQuizzes: function(){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
+            console.trace('getting quizzes', uuid);
 
             if (!uuid) {
                 reject();
             } else {
+                console.log('we are loading');
                 request.get(`/create/${uuid}/quizzes/`)
                     .use(noCache)
                     .end(function(error, res){
@@ -26,10 +28,11 @@ var QuizApi = {
         });
     },
 
-    searchQuizzes: function(search = '', categoryId){
+    searchQuizzes: function(search = '', categoryId, profileId){
+        console.log('searchQuizzes');
         return new Promise(function(resolve, reject){
             request.post(`/search/quizzes`)
-                .send({search, categoryId})
+                .send({search, categoryId, profileId})
                 .end(function(error, res){
                     if (error) {
                         reject();
@@ -43,14 +46,37 @@ var QuizApi = {
     },
 
 
-    getQuiz: function(quizId){
-        return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+    getQuiz: (function(){
+        var promises = {};
+        return function(quizId){
+            promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
+                var uuid = localStorage.getItem('cqUuid');
 
-            if (!uuid) {
-                reject();
-            } else {
-                request.get(`/create/${uuid}/quizzes/${quizId}`)
+
+                if (!uuid) {
+                    reject();
+                } else {
+                    request.get(`/create/${uuid}/quizzes/${quizId}`)
+                        .use(noCache)
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+                        });
+                }
+            });
+            return promises[quizId];
+        };
+    })(),
+
+    getPublicQuiz: (function(){
+        var promises = {};
+        return function(quizId){
+            promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
+
+                request.get(`/quizzes/public/${quizId}`)
                     .use(noCache)
                     .end(function(error, res){
                         if (error) {
@@ -58,11 +84,13 @@ var QuizApi = {
                         } else {
                             resolve(res.body);
                         }
-
                     });
-            }
-        });
-    },
+
+
+            });
+            return promises[quizId];
+        };
+    })(),
 
     deleteQuiz: function(quizId){
         return new Promise(function(resolve, reject){
@@ -91,22 +119,19 @@ var QuizApi = {
         return function(){
 
             promise = promise || new Promise(function(resolve, reject){
-                var uuid = localStorage.getItem('cqUuid');
 
-                if (!uuid) {
-                    reject();
-                } else {
-                    request.get(`/create/topics/`)
-                        .use(noCache)
-                        .end(function(error, res){
-                            if (error) {
-                                reject();
-                            } else {
-                                resolve(res.body);
-                            }
 
-                        });
-                }
+                request.get(`/create/topics/`)
+                    .use(noCache)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+
+                    });
+
             });
             return promise;
 
@@ -190,6 +215,25 @@ var QuizApi = {
             } else {
                 request.post(`/create/${uuid}/quizzes/${quizId}/share`)
                     .send(data)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+            }
+        });
+    },
+    publishQuiz: function(quiz) {
+        return new Promise(function(resolve, reject){
+            var uuid = localStorage.getItem('cqUuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.post(`/create/${uuid}/quizzes/${quiz.uuid}/publishToMarketplace`)
+                    .send(quiz)
                     .end(function(error, res){
                         if (error) {
                             reject();

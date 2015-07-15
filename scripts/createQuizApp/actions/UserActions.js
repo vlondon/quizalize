@@ -2,7 +2,7 @@ var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
 var UserConstants       = require('createQuizApp/constants/UserConstants');
 var UserApi             = require('createQuizApp/actions/api/UserApi');
 var urlParams           = require('createQuizApp/utils/urlParams');
-var AnalyticsActions    = require('createQuizApp/actions/AnalyticsActions');
+import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
 var Promise             = require('es6-promise').Promise;
 
 
@@ -14,7 +14,12 @@ var handleRedirect = function(){
     }
     return false;
 };
+
+console.log('AnalyticsActions', AnalyticsActions);
+
 var UserActions = {
+
+
     request: function() {
 
         UserApi.get()
@@ -113,10 +118,11 @@ var UserActions = {
     register: function(data) {
 
         return new Promise(function(resolve, reject){
-
+            console.log('registering', data);
             UserApi.register(data)
                 .then(function(user){
-
+                    console.log("AnalyticsActions", AnalyticsActions);
+                    console.log("AnalyticsActions.triggerPixels", AnalyticsActions.triggerPixels);
                     AnalyticsActions.triggerPixels().then(function(){
                         if (handleRedirect() === false){
                             resolve(user);
@@ -129,8 +135,6 @@ var UserActions = {
                 })
                 .catch(function(error){
                     reject(error);
-
-
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_REGISTER_ERROR,
                         payload: error
@@ -165,6 +169,22 @@ var UserActions = {
                 })
                 .catch(reject);
         });
+    },
+
+    getPublicUser: function(userId){
+        return new Promise(function(resolve, reject){
+            UserApi.getPublic(userId)
+                .then(function(user){
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_PUBLIC_LOADED,
+                        payload: user
+                    });
+                    console.log('will load', userId, user);
+                    resolve(user);
+                })
+                .catch(reject);
+        });
+
     }
 };
 

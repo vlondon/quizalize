@@ -2,34 +2,32 @@ var React = require('react');
 var router = require('createQuizApp/config/router');
 
 var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+
 
 var CQAppGrid = require('./CQAppGrid');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
 var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
-
+var CQViewQuizPrice = require('createQuizApp/components/utils/CQViewQuizPrice');
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
-var AppActions = require('createQuizApp/actions/AppActions');
-
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 
-
 var CQPublic = React.createClass({
 
     getInitialState: function() {
-        var newState =  this.getState();
-        newState.showApps = true;
-        newState.showQuizzes = true;
-        newState.user = UserStore.getUser();
-        return newState;
+        return {
+            quizzes: QuizStore.getPublicQuizzes(),
+            user: UserStore.getUser(),
+            showApps: true,
+            showQuizzes: true
+        };
+
     },
 
     componentDidMount: function() {
-        AppActions.searchPublicApps();
         QuizStore.addChangeListener(this.onChange);
         AppStore.addChangeListener(this.onChange);
     },
@@ -41,9 +39,7 @@ var CQPublic = React.createClass({
 
     getState: function(){
         var quizzes = QuizStore.getPublicQuizzes();
-        var newState = { quizzes };
-        return newState;
-
+        return { quizzes };
     },
 
     onChange: function(){
@@ -53,7 +49,6 @@ var CQPublic = React.createClass({
     handlePreview: function(quiz){
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/play/public/${quiz.uuid}`);
-        // window.location.href = `/app#/play/public/${quiz.uuid}`;
 
     },
 
@@ -62,6 +57,7 @@ var CQPublic = React.createClass({
     },
 
     handleBuy: function(quiz){
+        console.log("should we buy????");
         if (!this.state.user) {
             swal({
                 title: 'You need to be logged in',
@@ -75,7 +71,6 @@ var CQPublic = React.createClass({
                 }
             });
         } else {
-
             TransactionActions.buyQuiz(quiz);
         }
     },
@@ -114,45 +109,56 @@ var CQPublic = React.createClass({
     render: function() {
 
         var appGrid, quizList, quizDetails;
-        if (this.state.showApps) {
-            appGrid = (<CQAppGrid/>);
-        }
+        var appsPerPage = this.state.showQuizzes ? 5 : 10;
 
         if (this.state.quizDetails) {
             quizDetails = (<CQViewQuizDetails
                 onClose={this.handleDetailsClose}
                 quizId={this.state.quizDetails}/>);
         }
-
-
-        if (this.state.showQuizzes) {
-
-            var numOfQuizzes = this.state.showApps ? 12 : 16;
+        if (this.state.showApps ){
+            appGrid = (
+                <div>
+                    <h3 className='cq-public__header'>
+                        <i className="fa fa-archive"/> Apps
+                    </h3>
+                    <CQAppGrid appsPerPage={appsPerPage}/>
+                </div>
+            );
+        }
+         if (this.state.showQuizzes) {
 
             quizList = (
-                <CQViewQuizList
-                    isQuizInteractive={true}
-                    isPaginated={true}
+                <div>
+                    <h3 className='cq-public__header'>
+                        <i className="fa fa-th-large"/> Quizzes
+                    </h3>
+                    <CQViewQuizList
+                        isQuizInteractive={true}
+                        isPaginated={true}
+                        onQuizClick={this.handleDetails}
+                        quizzes={this.state.quizzes}
+                        showCta={true}
+                        className="cq-public__list"
+                        sortBy="time">
 
-                    onQuizClick={this.handleDetails}
-                    quizzes={this.state.quizzes}
-                    className="cq-public__list"
-                    sortBy="time">
+                        <span className='cq-public__button' onClick={this.handlePreview}>
+                            Preview
+                        </span>
+                        <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
 
-                    <span className='cq-public__button' onClick={this.handlePreview}>
-                        Preview
-                    </span>
-                    <span className='cq-public__button' onClick={this.handleBuy}>
-                        Free
-                    </span>
-
-                </CQViewQuizList>
+                    </CQViewQuizList>
+                </div>
             );
         }
         return (
-            <CQPageTemplate className="container cq-public">
+            <CQPageTemplate className="cq-container cq-public" showBanner={true}>
                 {quizDetails}
-                <CQViewQuizFilter onViewChange={this.handleViewChange}/>
+
+                <CQViewQuizFilter
+                    appEnabled={true}
+                    onViewChange={this.handleViewChange}
+                    allTopics={true}/>
 
                 {appGrid}
                 {quizList}

@@ -1,4 +1,59 @@
 .cq-edit {
+    margin-bottom: 80px;
+
+    .btn {
+        margin-left: 5px;
+    }
+    &__header {
+        font-weight: bold;
+        text-align: center;
+        h1, h2, h3, h4 {
+            font-weight: bold;
+        }
+    }
+
+    &__footer {
+        position: relative;
+        // bottom: 0;
+        // right: 0;
+        // left: 0;
+        // padding: 0;
+        background: rgba($brand-color-black, .3);
+
+    }
+
+    &__footer-inner {
+        max-width: 1170px;
+        margin: auto;
+        padding: 10px;
+        text-align: right;
+    }
+
+
+    &__quiz {
+        border-bottom: 1px solid $brand-color-grey-lighter;
+
+        padding: 10px 0;
+        cursor: pointer;
+
+        &--unselected {
+            &:hover {
+                background: $brand-color-grey-lighter;
+            }
+        }
+        &--selected {
+            font-weight: bold;
+            background: $brand-color-grey-lighter;
+            .icons { display: none; }
+        }
+    }
+
+
+
+    &__listquestion{
+        font-weight: bold;
+    }
+
     .create-question {
         position: relative;
     }
@@ -19,6 +74,8 @@
         a { color: #FFF; }
     }
     .new-question {
+        padding: 20px 0;
+        @include clearfix();
         i {
             color: #999;
         }
@@ -34,11 +91,15 @@
         opacity: 0.6;
         margin-right: 20px;
     }
-    .glyphicon {
-        margin-left: 4px;
-    }
+
 }
-.ql-question-list {
+.cq-questionlist {
+    margin-bottom: 20px;
+
+    &__button {
+        margin: 20px;
+    }
+
     .no-questions {
         text-align: center;
         h1, h2, h3 {
@@ -46,10 +107,13 @@
             margin: 20px auto;
         }
     }
-    .selected {
+
+    .create-question {
         background: #FFF;
+        margin: 20px;
         border-radius: 5px;
-        .icons { display: none; }
+        font-weight: normal;
+        color: $brand-color-black;
     }
     .icons {
         text-align: right;

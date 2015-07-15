@@ -30,10 +30,30 @@ var UserApi = {
         });
     },
 
+    getPublic: function(userId){
+        return new Promise((resolve, reject) => {
+
+            if (!userId){
+                reject();
+
+            } else {
+                request.get(`/user/${userId}`)
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+
+            }
+
+        });
+    },
+
     post: function(user){
         return new Promise((resolve, reject) => {
             var uuid = localStorage.getItem('cqUuid');
-
             if (!uuid){
                 reject();
             } else {
@@ -139,6 +159,14 @@ var UserApi = {
                     }
                 });
         });
+    },
+
+    trackEvent: function(name, meta){
+        var uuid = localStorage.getItem('cqUuid');
+        if (uuid) {
+            console.log(`/user/${uuid}/events/${name}`);
+            request.post(`/user/${uuid}/events/${name}`).send(meta);
+        }
     }
 };
 

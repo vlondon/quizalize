@@ -11,7 +11,8 @@ var CQPageTemplate = React.createClass({
         ]),
         className: React.PropTypes.string,
         wrapperMainClassName: React.PropTypes.string,
-        wrapperStyleClassName: React.PropTypes.string
+        wrapperStyleClassName: React.PropTypes.string,
+        showBanner: React.PropTypes.bool
     },
 
     componentDidMount: function() {
@@ -30,10 +31,17 @@ var CQPageTemplate = React.createClass({
     },
 
     render: function () {
+        var banner = "";
+        if (this.props.showBanner) {
+            banner = (<div className="cq-container2">
+                        <a href="/quiz/create"><img src="/img/qz-banner-mkt-whereteachersbuy.png"/></a>
+                    </div>);
+        }
         return (
-            <div>
+            <div className='cq'>
                 <div className={this.props.wrapperMainClassName + ' ' + this.props.wrapperStyleClassName}>
                     <CQViewHeader/>
+                    {banner}
                     <div className={this.props.className}>
                         {this.props.children}
                     </div>

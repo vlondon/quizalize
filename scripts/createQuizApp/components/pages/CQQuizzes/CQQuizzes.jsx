@@ -1,19 +1,29 @@
+/* @flow */
+import type {Quiz} from './../../../stores/QuizStore';
+
 var React = require('react');
 
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var GroupStore = require('createQuizApp/stores/GroupStore');
-var AppStore = require('createQuizApp/stores/AppStore');
-var UserStore = require('createQuizApp/stores/UserStore');
+var router          = require(`./../../../config/router`);
 
-var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var CQViewAppGrid = require('createQuizApp/components/views/CQViewAppGrid');
-var CQViewCreateApp = require('createQuizApp/components/views/CQViewCreateApp');
+var QuizActions     = require(`./../../../actions/QuizActions`);
+var QuizStore       = require(`./../../../stores/QuizStore`);
+var GroupStore      = require(`./../../../stores/GroupStore`);
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLink = require('createQuizApp/components/utils/CQLink');
-var router = require('createQuizApp/config/router');
+var UserStore       = require(`./../../../stores/UserStore`);
 
+var CQViewQuizList  = require(`./../../../components/views/CQViewQuizList`);
+var CQViewCreateApp = require('./../../../components/views/CQViewCreateApp');
+var CQSpinner       = require(`./../../../components/utils/CQSpinner`);
+var CQPublishQuiz   = require(`./../../../components/utils/CQPublishQuiz`);
+
+var CQPageTemplate  = require(`./../../../components/CQPageTemplate`);
+var CQLink          = require(`./../../../components/utils/CQLink`);
+
+type State = {
+    selectedQuizzes?: Array<Object>;
+    quizzes: Array<Object>;
+    isAdmin: boolean;
+};
 
 var CQQuizzes = React.createClass({
 
@@ -24,43 +34,40 @@ var CQQuizzes = React.createClass({
     getInitialState: function() {
         var initialState =  this.getState();
         initialState.selectedQuizzes = [];
-        initialState.isAdmin = UserStore.isAdmin();
-
-
         return initialState;
     },
 
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-        AppStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
         GroupStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-        AppStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
         this.setState(this.getState());
     },
 
-    getState: function(){
-        var quizzes = QuizStore.getQuizzes().sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
-        var apps = AppStore.getApps();
-        return { quizzes, apps };
+    getState: function():State{
+
+        var quizzes = QuizStore.getQuizzes();
+        var isAdmin: boolean = UserStore.isAdmin();
+        if (quizzes){
+            quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
+        }
+        return { quizzes,  isAdmin };
     },
 
-    handleDelete: function(quiz){
+    handleDelete: function(quiz: Object){
+
         var found = false;
         var groupContents = GroupStore.getGroupsContent();
-        console.log('quiz', quiz);
 
-        console.log('groupContents', quiz, groupContents);
         for (var i in groupContents) {
 
-            console.log('quiz found', groupContents[i].contentId, quiz.uuid, groupContents[i].contentId === quiz.uuid);
             if (groupContents[i].contentId === quiz.uuid) {
                 found = true;
                 swal('Cannot Delete', 'You cannot delete this quiz as you have this quiz assigned in class');
@@ -85,61 +92,60 @@ var CQQuizzes = React.createClass({
         }
     },
 
-    handleClick: function(quiz){
+    handleClick: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
     },
 
-    handleAssign: function(quiz){
+    handleAssign: function(quiz: Quiz){
         if (quiz){
-            router.setRoute(`/quiz/published/${quiz.uuid}`);
+            router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
         }
     },
 
-    handleEdit: function(quiz){
+    handleEdit: function(quiz: Quiz){
         console.log('edit???', quiz);
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
     },
 
-    handleSelect: function(selectedQuizzes){
+    handleSelect: function(selectedQuizzes: Array<Quiz>){
         this.setState({selectedQuizzes});
     },
 
     render: function() {
 
+
+        if (this.state.quizzes === undefined || !QuizStore.isInitData()){
+            return (
+                <CQPageTemplate className="container cq-quizzes">
+                    <CQSpinner/>
+                </CQPageTemplate>
+            );
+        }
+
         var createApp;
-        var apps;
         var newApp;
         var emptyState;
         var emptyQuizList;
         var introCopy = this.state.quizzes.length > 0 ? 'Here are your quizzes' : '';
 
         if (this.props.appMode) {
-            createApp = (<CQViewCreateApp
-                selectedQuizzes={this.state.selectedQuizzes}
-                />);
+            createApp = (
+                <CQViewCreateApp
+                    selectedQuizzes={this.state.selectedQuizzes}
+                />
+            );
         }
 
-        if (this.state.isAdmin){
-            apps = (<div className="container">
-                <h2>Your apps</h2>
-                <CQViewAppGrid
-                    editMode={true}
-                    apps={this.state.apps}/>
-            </div>);
-            newApp = (<CQLink href="/quiz/quizzes/app" className="btn btn-primary">
-                <i className="fa fa-plus"></i> New app
-            </CQLink>);
-        }
-
-        if (this.state.quizzes.length === 0){
+        console.log('this.state.quizzes.length', this.state.quizzes.length);
+        if (this.state.quizzes.length === 0 && QuizStore.isInitData()){
             emptyState = (
-                <div className="row cq-quizzes__empty">
+                <div className="cq-quizzes__empty">
 
-                    <div className="row well">
+                    <div className="">
                         <div className="quiz-preview">
                             <div className="row">
                                 <div className="col-sm-12">
@@ -154,8 +160,8 @@ var CQQuizzes = React.createClass({
 
                                         It looks like you haven't created any quizzes yet, but don't worry, you can start by doing the following
                                         <ol>
-                                            <li>Experience Quizalize by playing our Quiz of the Day</li>
-                                            <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classrom. It only takes 60 seconds!</li>
+                                            <li>Read or print out our <a target="_blank" href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">quick start guide</a></li>
+                                            <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classroom. It only takes 60 seconds!</li>
                                             <li>Browse our <CQLink href="/quiz/public">marketplace for content</CQLink> created by other Quizalize users.</li>
                                         </ol>
                                     </div>
@@ -176,59 +182,59 @@ var CQQuizzes = React.createClass({
             );
         }
 
-
         return (
-            <CQPageTemplate className="container cq-quizzes">
-
-                <div className="container">
-                    {emptyState}
+            <CQPageTemplate className="cq-container cq-quizzes">
 
 
-                    {apps}
+                <h2 className='cq-quizzes__header'>
+                    <i className="fa fa-th-large"/> Your Quizzes
+                </h2>
+                {emptyState}
 
-                    <h2>Your Quizzes
-                        <div className="pull-right">
-                            {newApp}&nbsp;
-                            <CQLink href="/quiz/create" className="btn btn-primary">
-                                <i className="fa fa-plus"></i> New quiz
-                            </CQLink>
-                        </div>
-                    </h2>
-
-                    <p>{introCopy}</p>
-
-                    {createApp}
-
-                    <CQViewQuizList
-                        onQuizClick={this.handleClick}
-                        showAuthor={false}
-                        showReviewButton={false}
-                        quizzes={this.state.quizzes}
-                        selectMode={this.props.appMode === true}
-                        onSelect={this.handleSelect}
-
-                        sortOptions={this.state.isAdmin}
-                        onAssign={this.handleAssign}
-                        onEdit={this.handleEdit}
-                        onDelete={this.handleDelete}
-                        actions={this.handleAction}>
-
-                            <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
-                                <span className="fa fa-pencil"></span> Edit
-                            </button>
-
-                            <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
-                                <span className="fa fa-users"></span> Assign quiz to a Class
-                            </button>
-
-                            <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
-                                <span className="fa fa-trash-o"></span>
-                            </button>
-
-                    </CQViewQuizList>
-                    {emptyQuizList}
-
+                <div className="cq-quizzes__actions">
+                    {newApp}&nbsp;
+                    <CQLink href="/quiz/create" className="btn btn-primary cq-quizzes__create">
+                        <i className="fa fa-plus"></i> New quiz
+                    </CQLink>
                 </div>
+
+                <p>
+                    {introCopy}
+                </p>
+
+                {createApp}
+
+                <CQViewQuizList
+                    onQuizClick={this.handleClick}
+                    showAuthor={false}
+                    showReviewButton={false}
+                    quizzes={this.state.quizzes}
+                    selectMode={this.props.appMode === true}
+                    onSelect={this.handleSelect}
+                    sortBy='time'
+                    sortOptions={this.state.isAdmin}
+                    onAssign={this.handleAssign}
+                    onEdit={this.handleEdit}
+                    onDelete={this.handleDelete}>
+
+                    <CQPublishQuiz className="cq-quizzes__button--publish"/>
+
+                    <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
+                        <span className="fa fa-pencil"></span> Edit
+                    </button>
+
+                    <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
+                        <span className="fa fa-users"></span> Use quiz in class
+                    </button>
+
+                    <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
+                        <span className="fa fa-trash-o"></span>
+                    </button>
+
+                </CQViewQuizList>
+
+                {emptyQuizList}
+
             </CQPageTemplate>
         );
     }

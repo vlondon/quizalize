@@ -1,0 +1,50 @@
+.cq-autofill {
+    position: relative;
+
+    @at-root #{&}__options {
+        position: absolute;
+        left: 0;
+        right: 0;
+        background: #FFF;
+        z-index: 9;
+        border: 1px solid $brand-color-grey-lighter;
+
+        list-style: none;
+        padding: 0;
+
+    }
+
+
+    &__option {
+
+        /* background: #FFF; */
+        padding: 5px;
+        cursor: pointer;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        color: $brand-color-grey;
+
+
+        span {
+            &:last-child {
+                font-weight: bold;
+                color: $brand-color-black;
+            }
+        }
+
+    }
+
+    &__option--selected {
+        padding: 5px;
+        cursor: pointer;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        color: $brand-color-grey;
+        background: $brand-color-grey-lighter;
+
+        span {
+            &:last-child {
+                font-weight: bold;
+                color: $brand-color-black;
+            }
+        }
+    }
+}

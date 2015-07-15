@@ -7,9 +7,7 @@ var AppApi = {
     get: function(app){
         return new Promise(function(resolve, reject){
 
-
             // reject();
-
             var uuid = localStorage.getItem('cqUuid');
 
             if (!uuid) {
@@ -26,9 +24,9 @@ var AppApi = {
                 });
             }
         });
-
     },
 
+    
     put: function(transaction){
         return new Promise(function(resolve, reject){
 
@@ -49,7 +47,6 @@ var AppApi = {
                     });
             }
         });
-
     }
 };
 

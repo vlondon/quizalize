@@ -1,35 +1,52 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var AnalyticsConstants  = require('createQuizApp/constants/AnalyticsConstants');
-var Promise             = require('es6-promise').Promise;
+/* @flow */
+import {Promise}             from 'es6-promise';
 
-var AnalyticsActions = {
+import AppDispatcher       from './../dispatcher/CQDispatcher';
+import AnalyticsConstants  from './../constants/AnalyticsConstants';
 
-    trackPageView: function() {
-        if (window.ga){
-            window.ga('send', 'pageview');
-        } else {
-            console.warn('No GA object found');
-        }
-    },
+export var sendEvent = function(category: string, action: string, label: string) {
 
-    sendEvent: function(category, action, label){
+    if (window.ga){
+        window.ga('send', 'event', category, action, label);
+    } else {
+        console.warn('No GA object found');
+    }
+};
+
+export var trackPageView = function() {
+    if (window.ga){
+        window.ga('send', 'pageview');
+    } else {
+        console.warn('No GA object found');
+    }
+};
+
+
+class AnalyticsActions {
+
+    constructor(){
+        console.info('new AnalyticsActions instance');
+    }
+
+
+    sendEvent(category: string, action: string, label: string){
 
         if (window.ga){
             window.ga('send', 'event', category, action, label);
         } else {
             console.warn('No GA object found');
         }
-    },
+    }
 
 
-    addAll: function(){
-        this.googleConveersion();
+    addAll(){
+        this.googleConversion();
         this.twitterConversion();
         this.facebookConversion();
-    },
+    }
 
 
-    triggerPixels: function(){
+    triggerPixels(){
         return new Promise(function(resolve){
 
             AppDispatcher.dispatch({
@@ -41,12 +58,13 @@ var AnalyticsActions = {
                     actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
                 });
                 resolve();
-            }, 4000);
+            }, 3000);
         });
-    },
+    }
 
-    googleConversion: function(){
+    googleConversion(){
         /*eslint-disable */
+        var filename = 'http://www.googleadservices.com/pagead/conversion.js';
         window.google_conversion_id = 1034680765;
 		window.google_conversion_language = "en";
 		window.google_conversion_format = "3";
@@ -61,9 +79,9 @@ var AnalyticsActions = {
         fileref.setAttribute('src', filename)
         document.getElementsByTagName('head')[0].appendChild(fileref);
 
-    },
+    }
 
-    twitterConversion: function() {
+    twitterConversion() {
         var _twttr = window._twttr || (window._twttr = []);
 
 			// Load Twitter script
@@ -83,9 +101,9 @@ var AnalyticsActions = {
 		}, 200);
 		};
 		_loadTwitter();
-    },
+    }
 
-    facebookConversion: function(){
+    facebookConversion(){
         (function() {
 				var _fbq = window._fbq || (window._fbq = []);
 				if (!_fbq.loaded) {
@@ -101,6 +119,7 @@ var AnalyticsActions = {
 		window._fbq.push(['track', '6024319569179', {'value':'0.01','currency':'GBP'}]);
         /*eslint-enable */
     }
-};
-
-module.exports = AnalyticsActions;
+}
+var instanceAnalyticsActions = new AnalyticsActions();
+console.log('instanceAnalyticsActions', instanceAnalyticsActions, instanceAnalyticsActions.triggerPixels);
+export default instanceAnalyticsActions;

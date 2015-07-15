@@ -1,3 +1,4 @@
+/* @flow */
 var assign = require('object-assign');
 
 var defaultSettings = {

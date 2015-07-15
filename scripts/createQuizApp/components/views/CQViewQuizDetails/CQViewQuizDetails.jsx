@@ -1,15 +1,19 @@
 var React = require('react');
-
+var router = require('./../../../config/router');
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 var QuizStore = require('createQuizApp/stores/QuizStore');
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
+var TopicStore          = require('createQuizApp/stores/TopicStore');
+var UserStore = require('./../../../stores/UserStore');
 
 var timeouts = [];
+var priceFormat = require('createQuizApp/utils/priceFormat');
 var CQViewQuizDetails = React.createClass({
 
     propTypes: {
         quizId: React.PropTypes.string.isRequired,
+        quizCode: React.PropTypes.string,
         onClose: React.PropTypes.func.isRequired
     },
 
@@ -41,7 +45,7 @@ var CQViewQuizDetails = React.createClass({
 
     getState: function(){
         var state = {
-            quiz: QuizStore.getQuiz(this.props.quizId)
+            quiz: QuizStore.getPublicQuiz(this.props.quizId)
         };
 
         return state;
@@ -62,28 +66,57 @@ var CQViewQuizDetails = React.createClass({
 
     handleBuy: function(){
         if (this.state.quiz) {
-            TransactionActions.buyQuiz(this.state.quiz);
+            if (!UserStore.isLoggedIn()){
+                swal({
+                    title: 'You need to be logged in',
+                    text: `In order to buy this item you need to log into Quizalize`,
+                    type: 'info',
+                    confirmButtonText: 'Log in',
+                    showCancelButton: true
+                }, function(isConfirm){
+                    if (isConfirm){
+                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                    }
+                });
+            } else {
+                TransactionActions.buyQuiz(this.state.quiz);
+            }
         }
     },
 
     render: function() {
 
         var quizInfo;
+        var tagLine = () => {
+            // this.state.quiz.meta.price = 3;
+            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
+                return (<span>{priceFormat(this.state.quiz.meta.price)} - Buy Now!</span>);
+            }
+            else {
+                return (<span>Use it - it's free!</span>);
+            }
+        };
+
 
         if (this.state.quiz){
             quizInfo = (
                 <div className="cq-quizdetails__cardinner">
                     <div className="cq-quizdetails__info">
                         <h5>
-                            {this.state.quiz.meta.category} / {this.state.quiz.meta.subject}
+                            {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || this.state.quiz.meta.categoryId)}
                         </h5>
                         <h1>{this.state.quiz.meta.name}</h1>
                         <p>
                             {this.state.quiz.meta.description}
                         </p>
+                        <p>
+                        <i>
+                            {this.state.quiz.payload.questions.length} questions.
+                        </i>
+                        </p>
 
                         <button className="cq-quizdetails__button" onClick={this.handleBuy}>
-                            Use it - it's free!
+                            {tagLine()}
                         </button>
                     </div>
 
@@ -91,10 +124,10 @@ var CQViewQuizDetails = React.createClass({
                         <div className="cq-quizdetails__questions">
                             <ul>
 
-                                {this.state.quiz.payload.questions.map( question => {
+                                {this.state.quiz.payload.questions.map( (question, index) => {
                                     return (
-                                        <li key={question.uuid}>
-                                            <CQLatexString>{question.question}</CQLatexString>
+                                        <li className="cq-quizdetails__question" key={question.uuid}>
+                                            {index + 1}. <CQLatexString>{question.question}</CQLatexString>
                                         </li>
                                     );
                                 })}

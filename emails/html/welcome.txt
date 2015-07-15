@@ -1,0 +1,21 @@
+<p>Welcome to Quizalize</p>
+<p>Hey %name%!</p>
+
+<p>Thank you for signing up to <a href="http://quizalize.com">Quizalize</a> from Zzish!<p>
+
+<p>Quizalize lets you engage your class and deliver instant assessments for personalized learning on any computer, tablet or smartphone.  We hope it will make lessons more fun for you and your students, give you valuable insight into your students learning and save you time in and out of the classroom.</p>
+
+<p>Three things you can do straight away:</p>
+<ul>
+    <li><a href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">Read or print out our quick start guide</a></li>
+    <li><a href="http://quizalize.com/quiz/create">Create your first quiz ... don't worry it's super simple!</a></li>
+    <li><a href="http://quizalize.com/quiz/public">Browse the Quizalize Marketplace and choose a quiz to assign to your class</a></li>
+</ul>
+
+<p>Quizalize is wonderful when you use it live in the classroom, but you can also set quizzes for your students to do as homework too.  Try setting them a quiz right now.</p>
+
+<p>If you have any questions at all, please do get in touch as we'd love to hear from you and we're always happy to help. Just drop Charles or Vini an email at team@zzish.com.</p>
+
+<p>The Quizalize Team.<br/>
+<a href="http://www.quizalize.com">www.quizalize.com</a>
+</p>

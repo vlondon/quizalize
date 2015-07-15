@@ -1,0 +1,12 @@
+[ignore]
+.*/node_modules/invalidPackageJson
+.*/node_modules/match-at
+.*/node_modules/node-sass
+
+[include]
+./scripts
+
+[libs]
+interfaces/
+
+[options]

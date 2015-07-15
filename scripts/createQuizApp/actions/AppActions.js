@@ -1,10 +1,18 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var AppApi              = require('createQuizApp/actions/api/AppApi');
-var AppConstants        = require('createQuizApp/constants/AppConstants');
+/* @flow */
+// import type App from './../stores/AppStore';
+
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
-var debounce            = require('createQuizApp/utils/debounce');
+var router              = require('./../config/router');
+var debounce            = require('./../utils/debounce');
+
+
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var AppApi              = require('./../actions/api/AppApi');
+var QuizApi             = require('./../actions/api/QuizApi');
+var AppConstants        = require('./../constants/AppConstants');
+var UserApi             = require('./../actions/api/UserApi');
 
 var AppActions = {
 
@@ -18,26 +26,29 @@ var AppActions = {
             });
     },
 
-    loadApp: function(appId){
-        AppApi.getInfo(appId)
-            .then(function(appInfo){
-                AppDispatcher.dispatch({
-                    actionType: AppConstants.APP_INFO_LOADED,
-                    payload: appInfo
+    loadApp: function(appId:string){
+
+        if (appId) {
+            AppApi.getInfo(appId)
+                .then(function(appInfo){
+                    AppDispatcher.dispatch({
+                        actionType: AppConstants.APP_INFO_LOADED,
+                        payload: appInfo
+                    });
                 });
-            });
+        }
     },
 
-    deleteApp: function(app){
+    deleteApp: function(app:Object){
         AppApi.delete(app)
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app, appIcon){
-
-
-        app.uuid = app.uuid || uuid.v4();
-
+    saveNewApp: function(app:Object, appIcon:?Object){
+        if (!app.uuid) {
+            app.uuid = uuid.v4();
+            UserApi.trackEvent('new_app', {uuid: app.uuid, name: app.meta.name});
+        }
         var handleSave = function(icon){
             return new Promise(function(resolve, reject){
 
@@ -50,42 +61,82 @@ var AppActions = {
                             actionType: AppConstants.APP_CREATED,
                             payload: app
                         });
+                        router.setRoute(`/quiz/apps`);
                     })
                     .catch(reject);
             });
         };
 
-        if (appIcon !== undefined){
+        if (appIcon){
             return new Promise((resolve, reject) => {
-                this.appPicture(app.uuid, appIcon)
-                    .then(function(response){
-                        console.log('we got image uploaded?', response);
-                        return handleSave(response);
-                    })
-                    .then(resolve)
-                    .catch(reject);
+                // this double conditional is to prevent flow complaining
+                // about appIcon being undefined
+                if (appIcon){
+                    this.appPicture(app.uuid, appIcon)
+                        .then(function(response){
+                            console.log('we got image uploaded?', response);
+                            return handleSave(response);
+                        })
+                        .then(resolve)
+                        .catch(reject);
 
+                    }
                 });
         } else {
             return handleSave();
         }
     },
 
-    appPicture: function(appId, file){
+    publishApp: function(app:Object) {
+        UserApi.trackEvent('publish_app', {uuid: app.uuid, name: app.meta.name});
+        app.meta.published = "pending";
+        AppApi.publishApp(app);
+        AppDispatcher.dispatch({
+            actionType: AppConstants.APP_META_UPDATED,
+            payload: app
+        });
+
+    },
+
+    appPicture: function(appId:string, file:Object){
         return AppApi.uploadMedia(appId, file);
     },
 
-    searchPublicApps: debounce((searchString = '', categoryId) => {
+    searchPublicApps: debounce((searchString = '', categoryId, profileId) => {
 
-        AppApi.searchApps(searchString, categoryId)
-            .then(function(apps){
+        QuizApi.searchQuizzes(searchString, categoryId, profileId)
+            .then(function(quizzes){
 
-                AppDispatcher.dispatch({
-                    actionType: AppConstants.APP_SEARCH_LOADED,
-                    payload: apps
+            AppApi.searchApps('', '')
+                .then(function(apps){
+
+                    apps = apps.filter(app => {
+                        var found = false;
+                        quizzes.forEach(quiz => {
+                            if (app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
+                                found = true;
+                            }
+                        });
+                        return found && app.meta.published === "published";
+                    });
+
+
+                    // apps = apps.filter(function(app) {
+                    //     console.log("Going through app",app);
+                    //     return false;
+                    // });
+
+                    console.log("GOT SOME APPS", apps);
+
+                    AppDispatcher.dispatch({
+                        actionType: AppConstants.APP_SEARCH_LOADED,
+                        payload: apps
+                    });
+
                 });
 
             });
+
     }, 300)
 
 

@@ -1,9 +1,26 @@
 .cq-viewcreateapp {
     background: $brand-color-grey-lighter;
     padding: 5px;
+    @include clearfix();
 
     @at-root #{&}__formelement {
-        margin: 20px;
+        margin: 20px 0;
     }
 
+    @at-root #{&}__left {
+        width: 50%;
+        float: left;
+    }
+
+    @at-root #{&}__right {
+        width: 50%;
+        float: left;
+    }
+
+}
+.cq-apptemplate {
+    padding: 20px;
+    min-height: 600px;
+    height: 100%;
+    overflow: scroll;
 }

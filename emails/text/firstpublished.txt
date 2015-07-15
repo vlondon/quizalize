@@ -1,0 +1,16 @@
+Hey %name%!
+
+Congratulations! You have published your first quiz!
+
+Your %type% '%quiz%' has been approved and is now available on the Quizalize Marketplace!
+
+You now have a public profile, which contains all of your published quizzes.
+
+Share it with your colleagues so they can easily access your amazing work.
+
+Your profile: %profilelink%
+
+Best wishes,
+
+The Quizalize Team
+www.quizalize.com

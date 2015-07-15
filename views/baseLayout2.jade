@@ -43,4 +43,28 @@ html(ng-app='createQuizApp')
         link(href='/cquiz/color/default.css', rel='stylesheet')
         block header
 body
+
+    #navigation
+            .nav.navbar.navbar-custom.reduced_nav(role='navigation')
+                .container.red_nav
+                    .row
+                        .col-xs-2.site-logo-container
+                            .site-logo
+                                a(href="/")
+                                    img(src='/cquiz/img/logo 2.png')         
+                        .col-xs-10
+                            .navbar-header
+                                button.navbar-toggle(type='button', data-toggle='collapse', data-target='#menu')
+                                    i.fa.fa-bars
+                            #menu.collapse.navbar-collapse
+                                ul.nav.navbar-nav.navbar-right
+                                    li
+                                        a(onclick="ask('order')") Info pack               
+                                    li
+                                        a(onclick="ask('demo')") Book a demo               
+                                    li
+                                        a#StudentLogin(href='/app') Student Login             
+                                    li
+                                        a#LoginButton(href='/quiz/login') Teacher Login
+
     block body

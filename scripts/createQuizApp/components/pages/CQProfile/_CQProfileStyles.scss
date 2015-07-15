@@ -1,0 +1,31 @@
+.cq-profile {
+    margin-top: 40px;
+    position: relative;
+    @include clearfix();
+
+    &__left {
+        width: 100%;
+        padding: 0 10px;
+        @include media($size-mobile) {
+            position: absolute;
+            left: 0;
+            width: 210px;
+            float: left;
+            display: block;
+        }
+    }
+
+
+    &__right {
+        width: 100%;
+        padding: 10px;
+        @include media($size-mobile) {
+            width: auto;
+            margin-left: 220px;
+        }
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+}

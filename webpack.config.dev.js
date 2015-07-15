@@ -12,8 +12,8 @@ module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        cqApp: 'createQuizApp/CQApp.js',
         home: ['webpack/hot/dev-server', 'home.js'],
+        cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent', 'object-assign']
     },
     plugins: [
@@ -31,18 +31,18 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel'],
+                loaders: ['react-hot', 'babel?optional[]=runtime'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(node_modules|bower_components)/
             },
 
             {
                 test: /\.es6\.js$/,
-                loader: 'babel',
+                loader: 'babel?optional[]=runtime',
                 exclude: /(bower_components)/
             },
             {
@@ -52,7 +52,9 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
-            }
+            },
+            { test: /\.png$/, loader: "url-loader?limit=100000" },
+            { test: /\.jpg$/, loader: "url-loader" }
         ]
     },
     resolve: {

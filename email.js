@@ -3,25 +3,37 @@ var awssdk = require('./awssdk');
 //general zzish config
 var config = require('./config.js');
 var logger = require('./logger');
+var fs = require('fs');
 
 exports.pingDevelopers = function(){
 	if (config.webUrl === "https://www.zzish.com/") {
-		exports.sendEmail("team@zzish.com", ["developers@zzish.com"], "Quizalize Restarted", "Please test me");
+		exports.sendEmail("team@quizalize.com", ["developers@zzish.com"], "Quizalize Restarted", "Please test me");
 	}
 };
 
 /* * * * * * * Generic Send Email * * * * * * */
 exports.sendEmail = function(from, toArray, subject, body){
-	logger.info("Sending" + from + " to =>" + toArray + "with subject" + subject + " and message" + body);
-	if (config.aws_enabled) {
+	exports.sendActualEmail(from, toArray, subject, body, body);
+};
+
+exports.sendActualEmail = function(from, toArray, subject, html, text) {
+	//"var emailCheck = process.env.sendEmail;
+	var emailCheck = true;
+	if (config.aws_enabled && emailCheck) {
 		// load AWS SES
 		var ses = new awssdk.SES();
 
 		var dest = { ToAddresses: toArray };
-		if (process.env.vini === "true") {
-			logger.info("Sending to Vini");
-			dest.BccAddresses =  ['vini@zzish.com'];
+		if (config.webUrl === "https://www.zzish.com/") {
+			dest.BccAddresses = ['team@quizalize.com'];
 		}
+		else if (config.webUrl === "https://test.zzish.com/") {
+			dest.CcAddresses = ['frabusiello@gmail.com'];
+		}
+		// if (process.env.vini === "true") {
+		// 	logger.info("Sending to Vini");
+		// 	dest.BccAddresses =  ['vini@zzish.com','team@'];
+		// }
 
 		// this sends the email
 		ses.sendEmail(
@@ -34,7 +46,10 @@ exports.sendEmail = function(from, toArray, subject, body){
 					},
 					Body: {
 						Text: {
-							Data: body
+							Data: text
+						},
+						Html: {
+							Data: html
 						}
 					}
 				}
@@ -51,4 +66,44 @@ exports.sendEmail = function(from, toArray, subject, body){
 	else {
 		logger.warn("Email not enabled");
 	}
+};
+
+
+function parseData(input, params) {
+	for (var i in params) {
+		var patt = new RegExp("%" + i + "%", "g" );
+		input = input.replace(patt, params[i]);
+	}
+	return input;
+}
+
+
+exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams) {
+	fs.stat(__dirname + '/emails/html/' + doc + ".txt", function(err) {
+		if (!err) {
+			fs.readFile(__dirname + '/emails/html/' + doc + ".txt", 'utf-8', function(err1, contents) {
+				var htmlText = contents;
+				fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err2, contents2) {
+					var txtText = contents2;
+					if (!htmlParams) htmlParams = params;
+					exports.sendActualEmail(from, email, subject, parseData(htmlText, htmlParams), parseData(txtText, params));
+				});
+			});
+		} else {
+			fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
+				exports.sendActualEmail(from, email, subject, parseData(contents, params), parseData(contents, params));
+			});
+		}
+	});
+};
+
+exports.sendDocumentEmail = function(req, res) {
+	var doc = req.body.doc;
+	var email = req.body.email;
+	var from = req.body.from;
+	var params = req.body.params;
+	var htmlParams =  req.body.htmlParams || params;
+	var subject = req.body.subject;
+
+	exports.sendEmailTemplate(from, email, subject, doc, params, htmlParams);
 };
