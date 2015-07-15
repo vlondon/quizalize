@@ -1,17 +1,15 @@
 /* @flow */
 import React from 'react';
-
 import type {Question} from './../../../../createQuizApp/stores/QuizStore';
-
 import PQQuizStore from './../../../stores/PQQuizStore';
-
+import PQLink from './../../utils/PQLink';
 import PQPageTemplate from './../../PQPageTemplate';
 
-import PQViewQuizVideo from './../../views/PQViewQuizVideo';
 
 type State = {
     question?: Question;
 }
+
 class PQSplash extends React.Component {
 
     state: State;
@@ -46,18 +44,12 @@ class PQSplash extends React.Component {
 
     render (): any {
 
-        var quiz;
-        if (this.state.quiz) {
-            quiz = (
-                <PQViewQuizVideo quiz={this.state.quiz}/>
-
-            );
-        }
-
         return (
             <PQPageTemplate>
-
-                {quiz}
+                <h1>Splash</h1>
+                <p>
+                    <PQLink href='/play/class'>Log in as a student</PQLink>
+                </p>
             </PQPageTemplate>
         );
     }

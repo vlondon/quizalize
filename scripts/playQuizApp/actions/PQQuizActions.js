@@ -3,7 +3,12 @@
 import AppDispatcher  from './../dispatcher/PQDispatcher';
 import PQQuizConstants from './../constants/PQQuizConstants';
 
-var PQQuizActions = {
+class PQQuizActions  {
+
+    loginUser(classCode:string, name:string){
+        console.log('will log in user', classCode, name);
+    }
+
     loadQuiz(quizId:string){
 
         window.zzish.getPublicContent('quiz', quizId, function (err, quiz) {
@@ -22,6 +27,7 @@ var PQQuizActions = {
 
         });
     }
-};
+}
 
-export default PQQuizActions;
+var pqQuizActionsInstance = new PQQuizActions();
+export default pqQuizActionsInstance;
