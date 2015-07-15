@@ -1,28 +1,27 @@
+/* @flow */
 var React = require('react');
+var assign = require('object-assign');
 
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var TopicActions = require('createQuizApp/actions/TopicActions');
+var TopicStore = require('./../../stores/TopicStore');
+var TopicActions = require('./../../actions/TopicActions');
 
-var CQAutofill = React.createClass({
 
-    propTypes: {
-        tabIndex: React.PropTypes.number,
-        limit: React.PropTypes.number,
-        placeholder: React.PropTypes.string,
-        ref1: React.PropTypes.string,
-        data: React.PropTypes.func,
-        value: React.PropTypes.string,
-        onChange: React.PropTypes.func.isRequired
-    },
+type Props = {
+    limit: number;
+    value: string;
+}
+type State = {
+    topics: Array<Object>;
+    searchString: ?string;
+    selected?: Object;
+    selecting: boolean;
+}
+export default class CQAutofill extends React.Component {
 
-    getDefaultProps: function() {
-        return {
-            limit: 30
-        };
-    },
+    state: State;
 
-    getInitialState: function() {
-
+    constructor(props:Props) {
+        super(props);
         var initialState = this.getState();
 
         if (this.props.value) {
@@ -34,20 +33,25 @@ var CQAutofill = React.createClass({
         }
 
         initialState.selected = initialState.selected || undefined;
+        initialState.selecting = true;
+        this.onChange = this.onChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
 
-        return initialState;
-    },
+        this.state = initialState;
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    getState: function(){
-        var newState = {};
+    getState():State{
+        var newState = assign({}, this.state);
 
         var fillAutoFill = function(array, prefix){
             var result = [];
@@ -75,14 +79,13 @@ var CQAutofill = React.createClass({
         }
         newState.searchString = selected ? selected.name : undefined;
         return newState;
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
+    }
 
-    },
-
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps:Props) {
 
         var topic = TopicStore.getTopicById(nextProps.value);
         var searchString = topic ? topic.name : '';
@@ -90,9 +93,9 @@ var CQAutofill = React.createClass({
         this.setState({
             searchString
         });
-    },
+    }
 
-    handleChange: function(ev){
+    handleChange(ev:Object){
         if (this.state.topicsAutofill) {
             var searchString = ev.target.value;
             var searchArray = searchString.split(' ');
@@ -134,10 +137,10 @@ var CQAutofill = React.createClass({
                 }
             }
         }
-    },
+    }
 
-    handleClick: function(option){
-
+    handleClick(option:Object){
+        console.log('handleClchandleClickhandleClickhandleClickik', option);
         if (option) {
             this.setState({
                 selected: option,
@@ -151,13 +154,15 @@ var CQAutofill = React.createClass({
                 searchString: ""
             });
         }
-    },
+    }
 
-    searchList: function(){
+    searchList():?Array<Object>{
 
         if ((this.state.searchString && this.state.searchString.length < 1) || this.state.selected !== undefined) {
             return null;
         }
+
+        if (!this.state.selecting) { return null; }
 
         var formatString = function(string, key){
             var format = string.split('>').map(function(s, i){
@@ -207,21 +212,34 @@ var CQAutofill = React.createClass({
                 {list}
             </ul>
         );
-    },
+    }
 
-    handleFocus: function(ev){
+    handleFocus(ev:Object){
         this.handleChange(ev);
         this.setState({
-            selected: undefined
+            selected: undefined,
+            selecting: true
         });
 
         var domNode = React.findDOMNode(ev.target);
         domNode.select();
-    },
+    }
 
-    render: function() {
+    handleBlur(ev:Object){
+        this.handleChange(ev);
+
+        // by delying changing state we prevent a collision with
+        // on select
+        setTimeout(()=>{
+            this.setState({
+                selecting: false
+            });
+        }, 200);
+    }
+
+    render(): any {
         var results = this.searchList();
-        console.log(this.props);
+
         return (
             <div className='cq-autofill'>
                 <input id="category"
@@ -229,6 +247,7 @@ var CQAutofill = React.createClass({
                     ref={this.props.ref1}
                     value={this.state.searchString}
                     onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
                     onChange={this.handleChange}
                     placeholder={this.props.placeholder}
                     tabIndex={this.props.tabIndex}
@@ -239,6 +258,18 @@ var CQAutofill = React.createClass({
         );
     }
 
-});
+}
 
-module.exports = CQAutofill;
+CQAutofill.propTypes = {
+    tabIndex: React.PropTypes.number,
+    limit: React.PropTypes.number,
+    placeholder: React.PropTypes.string,
+    ref1: React.PropTypes.string,
+    data: React.PropTypes.func,
+    value: React.PropTypes.string,
+    onChange: React.PropTypes.func.isRequired
+};
+
+CQAutofill.defaultProps = {
+    limit: 30
+};
