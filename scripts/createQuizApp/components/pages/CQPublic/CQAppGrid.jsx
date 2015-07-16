@@ -73,6 +73,9 @@ var CQAppGrid = React.createClass({
             var appsToDisplay = apps.slice(appIndexStart, appIndexEnd);
             var pages = Math.ceil(apps.length / props.appsPerPage);
 
+            if (page > pages) {
+                page = 1;
+            }
             return {
                 apps: appsToDisplay,
                 pages,

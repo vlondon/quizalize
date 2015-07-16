@@ -130,6 +130,10 @@ export default class CQViewQuizList extends React.Component {
 
                 state.quizzes = quizzesToDisplay;
                 state.pages = pages;
+
+                if (page > pages) {
+                    page = 1;
+                }
                 state.page = page;
             } else {
                 state.quizzes = quizzes;

@@ -1,3 +1,4 @@
+/* @flow */
 var React = require('react');
 
 var CQPagination = React.createClass({
@@ -9,13 +10,13 @@ var CQPagination = React.createClass({
         onPagination: React.PropTypes.func.isRequired
     },
 
-    getDefaultProps: function() {
+    getDefaultProps: function():Object {
         return {
             className: ''
         };
     },
 
-    handlePagination: function(pageNumber, ev){
+    handlePagination: function(pageNumber: number, ev: ?Object){
         if (ev){
             ev.preventDefault();
         }
@@ -23,7 +24,7 @@ var CQPagination = React.createClass({
         this.props.onPagination(pageNumber);
     },
 
-    handlePrevious: function(ev){
+    handlePrevious: function(ev: Object){
 
         if (this.props.currentPage > 1) {
             this.handlePagination(this.props.currentPage - 1);
@@ -31,7 +32,7 @@ var CQPagination = React.createClass({
         ev.preventDefault();
     },
 
-    handleNext: function(ev){
+    handleNext: function(ev:Object){
 
         if (this.props.currentPage < this.props.pages) {
             this.handlePagination(this.props.currentPage + 1);
@@ -39,7 +40,7 @@ var CQPagination = React.createClass({
         ev.preventDefault();
     },
 
-    render: function() {
+    render: function(): any {
 
         var first = this.props.currentPage === 1;
         var last = this.props.currentPage === this.props.pages;
