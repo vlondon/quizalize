@@ -151,10 +151,11 @@ export default class CQViewQuizList extends React.Component {
         if (props.selectedQuizzes) {
             newState.selectedQuizzes = props.selectedQuizzes;
         }
-        this.setState(newState);
-        if (this.props.sortBy){
-            this.handleSearch();
-        }
+        this.setState(newState, ()=>{
+            if (this.props.sortBy){
+                this.handleSearch();
+            }
+        });
     }
 
 
