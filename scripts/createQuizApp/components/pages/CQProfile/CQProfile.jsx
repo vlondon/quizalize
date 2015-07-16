@@ -74,8 +74,8 @@ var CQProfile = React.createClass({
 
     handlePreview: function(quiz){
         sessionStorage.setItem('mode', 'teacher');
-        window.open(`/app#/play/marketplace/${quiz.uuid}`);
-        // window.location.href = `/app#/play/marketplace/${quiz.uuid}`;
+        window.open(`/app#/play/public/${quiz.uuid}`);
+        // window.location.href = `/app#/play/public/${quiz.uuid}`;
 
     },
 

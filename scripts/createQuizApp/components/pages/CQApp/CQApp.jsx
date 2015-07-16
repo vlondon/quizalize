@@ -71,7 +71,7 @@ export default class CQApp extends React.Component {
 
     handlePreview (quiz:Quiz){
         sessionStorage.setItem('mode', 'teacher');
-        window.open(`/app#/play/marketplace/${quiz.uuid}`);
+        window.open(`/app#/play/public/${quiz.uuid}`);
     }
 
     getState(): Object {
