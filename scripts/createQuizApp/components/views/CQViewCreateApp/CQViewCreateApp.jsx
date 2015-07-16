@@ -232,6 +232,7 @@ export default class CQViewCreateApp extends React.Component {
                         selectedQuizzes={this.state.selectedQuizzes}
                         selectMode={true}
                         sortOptions={false}
+                        sortBy='time'
                     />
 
                     <button
