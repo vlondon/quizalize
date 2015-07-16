@@ -114,7 +114,7 @@ var CQEditNormal = React.createClass({
         };
         if (nextRef === 0) {
             if (this.canBeSaved()){
-                this.handleSave();
+                setTimeout(()=>{ this.handleSave(); }, 20);
             } else {
                 gotoNext();
             }
