@@ -19,7 +19,7 @@ var sections = {
         'assignments'
     ],
     public: [
-        'public'
+        'marketplace'
     ]
 };
 

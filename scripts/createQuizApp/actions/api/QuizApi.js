@@ -76,7 +76,7 @@ var QuizApi = {
         return function(quizId){
             promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
 
-                request.get(`/quizzes/marketplace/${quizId}`)
+                request.get(`/quizzes/public/${quizId}`)
                     .use(noCache)
                     .end(function(error, res){
                         if (error) {
