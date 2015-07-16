@@ -47,7 +47,7 @@ var CQPublic = React.createClass({
     },
 
     handlePreview: function(quiz){
-        sessionStorage.setItem('mode', 'teacher');
+        sessionStorage.setItem('mode', 'preview');
         window.open(`/app#/play/public/${quiz.uuid}`);
 
     },

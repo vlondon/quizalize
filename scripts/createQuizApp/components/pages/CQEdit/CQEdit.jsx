@@ -139,6 +139,7 @@ var CQEdit = React.createClass({
     },
 
     handlePreview: function(){
+        sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
