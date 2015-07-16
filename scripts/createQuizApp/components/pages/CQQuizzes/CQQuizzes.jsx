@@ -162,7 +162,7 @@ var CQQuizzes = React.createClass({
                                         <ol>
                                             <li>Read or print out our <a target="_blank" href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">quick start guide</a></li>
                                             <li>Create a <CQLink href="/quiz/create">new quiz</CQLink> for your classroom. It only takes 60 seconds!</li>
-                                            <li>Browse our <CQLink href="/quiz/public">marketplace for content</CQLink> created by other Quizalize users.</li>
+                                            <li>Browse our <CQLink href="/quiz/marketplace">marketplace for content</CQLink> created by other Quizalize users.</li>
                                         </ol>
                                     </div>
 
@@ -177,7 +177,7 @@ var CQQuizzes = React.createClass({
                 <div className="cq-quizzes__emptylist">
                     You don't have any quizzes yet on your account, <CQLink href="/quiz/create">why not you create your first one?</CQLink>
                     <p>or </p>
-                    Browse the <CQLink href="/quiz/public">marketplace</CQLink> to get quizzes created by other users
+                    Browse the <CQLink href="/quiz/marketplace">marketplace</CQLink> to get quizzes created by other users
                 </div>
             );
         }

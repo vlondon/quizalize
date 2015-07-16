@@ -112,7 +112,7 @@ var pagesArray: Array<Page> = [
     },
     {
         name: 'publicPage',
-        path: '/quiz/public',
+        path: '/quiz/marketplace',
         needsLogin: undefined,
         renderer: function(){
             React.render(

@@ -48,7 +48,7 @@ var CQPublic = React.createClass({
 
     handlePreview: function(quiz){
         sessionStorage.setItem('mode', 'preview');
-        window.open(`/app#/play/public/${quiz.uuid}`);
+        window.open(`/app#/play/marketplace/${quiz.uuid}`);
 
     },
 
@@ -67,7 +67,7 @@ var CQPublic = React.createClass({
                 showCancelButton: true
             }, function(isConfirm){
                 if (isConfirm){
-                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
                 }
             });
         } else {
