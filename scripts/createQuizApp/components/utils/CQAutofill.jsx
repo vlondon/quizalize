@@ -195,14 +195,19 @@ export default class CQAutofill extends React.Component {
         }
     }
 
-    selectOption (option:Object){
-        this.setState({
-            selected: option,
-            searchString: option.name,
-            selecting: false
-        });
+    selectOption (option:?Object){
+        if (option){
 
-        this.props.onChange(option.id);
+            this.setState({
+                selected: option,
+                searchString: option.name,
+                selecting: false
+            });
+            this.props.onChange(option.id);
+        } else {
+            this.props.onChange(undefined);
+        }
+
     }
 
 
@@ -284,16 +289,22 @@ export default class CQAutofill extends React.Component {
 
         var {indexSelected, occurrences, searchString} = this.state;
         var optionSelected;
+
         if (indexSelected === undefined) {
-            var option = {
-                id: "-1",
-                name: searchString
-            };
-            TopicActions.createTemporaryTopic(option);
-            optionSelected = option;
+            if (searchString.length !== 0){
+                var option = {
+                    id: '-1',
+                    name: searchString
+                };
+                TopicActions.createTemporaryTopic(option);
+                optionSelected = option;
+            } else {
+                optionSelected = undefined;
+            }
         } else {
             optionSelected = occurrences[indexSelected];
         }
+
 
         this.selectOption(optionSelected);
     }
@@ -316,7 +327,7 @@ export default class CQAutofill extends React.Component {
 
 
     onFocus(){
-        
+
         var element = this.refs.inputField;
         React.findDOMNode(element).focus();
         React.findDOMNode(element).select();

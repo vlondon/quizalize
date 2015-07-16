@@ -68,7 +68,7 @@ var CQViewAppGrid = React.createClass({
         if (this.props.editMode){
             deleteButton = (app) =>{
                 return (
-                    <button className="btn btn-danger" onClick={this.handleDelete.bind(this, app)}>
+                    <button className="cq-appgrid__button btn btn-danger btn-sm" onClick={this.handleDelete.bind(this, app)}>
                         Delete
                     </button>
                 );
@@ -82,7 +82,7 @@ var CQViewAppGrid = React.createClass({
                 }
                 else {
                     return (
-                        <button className="btn btn-info" onClick={this.handlePublish.bind(this, app)}>
+                        <button className="cq-appgrid__button btn btn-info btn-sm" onClick={this.handlePublish.bind(this, app)}>
                             Publish
                         </button>
                     );

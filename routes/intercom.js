@@ -31,7 +31,7 @@ exports.updateUser = function(user, callback) {
 
 
 exports.trackEvent = function(userId, event_name, meta, callback){
-  if (config.webUrl === "https://www.zzish.com/") {
+  if (process.env.intercom == "true") {
     var event = {};
     if (!event.created_at) event.created_at = parseInt(Date.now() / 1000);
 

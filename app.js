@@ -62,6 +62,7 @@ app.get('/quiz/view/:page', function(req, res){
 
 app.get('/quiz/create', quiz.create);
 
+
 //Endpoints for teachers TODO rename appropriately
 
 app.post('/user/authenticate', user.authenticate);
@@ -81,6 +82,9 @@ app.post('/create/profile', quiz.createProfile);
 app.get('/quiz/token/:token', quiz.getProfileByToken);
 app.get('/quiz/profile/:uuid', quiz.getProfileById);
 
+app.get('/quiz/public', function(req, res){
+    res.redirect(301, '/quiz/marketplace');
+});
 app.get('/quiz/*', checkForIE, quiz.create);
 app.get('/quiz', checkForIE, quiz.create);
 

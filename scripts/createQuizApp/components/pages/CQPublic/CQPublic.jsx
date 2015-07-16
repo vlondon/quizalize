@@ -67,7 +67,7 @@ var CQPublic = React.createClass({
                 showCancelButton: true
             }, function(isConfirm){
                 if (isConfirm){
-                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
                 }
             });
         } else {

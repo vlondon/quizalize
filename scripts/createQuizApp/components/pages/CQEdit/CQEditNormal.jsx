@@ -114,7 +114,7 @@ var CQEditNormal = React.createClass({
         };
         if (nextRef === 0) {
             if (this.canBeSaved()){
-                this.handleSave();
+                setTimeout(()=>{ this.handleSave(); }, 20);
             } else {
                 gotoNext();
             }
@@ -202,7 +202,7 @@ var CQEditNormal = React.createClass({
 
                     <label className="left control-label">
                         Image Link&nbsp;
-                        <a data-toggle="popover" title="Question" data-content="The title of your question. E.g. “What is the capital of France?”." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
+                        <a data-toggle="popover" title="Image Link" data-content="Provide an optional link to an image you would like to display."  data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
                     </label>
                     <div className="right">
 
