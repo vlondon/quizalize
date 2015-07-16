@@ -5,19 +5,39 @@
 
 .q-home {
 	font-size: 16px;
-	color: $brand-color-black;
+	color: $brand-color-grey-dark;
+	img {
+		max-width: 100%;
+	}
+
 	&__header {
+		width: 100%;
+		top: 0;
+		height: 70px;
+		position: fixed;
 		background: $brand-color-blue;
 	}
 
 	&__section {
+		padding-top: 40px;
+		padding-bottom: 40px;
 		&__inner {
 			max-width: 1120px;
 			padding: 20px;
 			margin: auto;
+			text-align: center;
+
+			h1 {
+				color: $brand-color-blue;
+				padding: 20px 10px;
+			}
+			p { padding: 10px; }
 		}
 	}
 }
 
 @import './../createQuizApp/components/views/CQViewHeader/CQViewHeaderStyles';
 @import 'home/hero';
+@import 'home/whatis';
+@import 'home/howitworks';
+@import 'home/features';

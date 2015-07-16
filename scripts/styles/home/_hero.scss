@@ -1,0 +1,43 @@
+.q-home__hero {
+    background: $brand-color-blue;
+    background-image: url(./../assets/bg-mountain.jpg);
+
+    padding-top: 70px;
+    background-size: fill;
+    a {
+        color: #FFF;
+    }
+    .flash__hero {
+        width: 850px;
+        height: 500px;
+        margin: auto;
+        margin-bottom: 20px;
+        .flash-container {
+            height: 500px;
+        }
+    }
+
+    .cta-container {
+        &__right,
+        &__left {
+            width: 50%;
+            float: left;
+            padding: 10px;
+        }
+        .get-started {
+            text-align: center;
+            padding: 20px;
+            background: $brand-color-blue;
+            font-weight: bold;
+            font-size: 28px;
+            display: block;
+        }
+
+        .cta-video {
+            padding-top: 30px;
+            font-size: 22px;
+            color: $brand-color-grey-dark;
+            font-weight: bold;
+        }
+    }
+}

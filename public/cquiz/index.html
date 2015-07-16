@@ -28,7 +28,7 @@
         <link href="/cquiz/css/flexslider.css" rel="stylesheet" />
         <link href="/cquiz/css/animate.css" rel="stylesheet" />
         <link href="/cquiz/css/style.css" rel="stylesheet">
-        <link href="/cquiz/color/default.css" rel="stylesheet">
+
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
         <script type="text/javascript" src="http://localhost:7071/webpack-dev-server.js"></script>
@@ -85,7 +85,7 @@
                 <div class="cta-container clearfix">
 
                     <div class="cta-container__left">
-                        <a class="cta2" href="/quiz/register">
+                        <a class="get-started" href="/quiz/register">
                             Get Start here, it's free
                         </a>
                     </div>
@@ -100,86 +100,114 @@
         </section>
 
         <!-- /Section: intro -->
-        <section id="what_is" class="q-home__section">
+        <section id="what_is" class="q-home__section q-home__whatis">
             <div class="q-home__section__inner">
-                <p>
-                    Quizalize lets you engage your class and deliver instant assessments
-                    for personalised learning on any computer, tablet or smartphone.
-                    It helps you quickly identify the strengths, weaknesses and learning gaps of individual
-                    students and intervene in real-time to give one-on-one help in the classroom.  You can create
-                    your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague
-                    has shared with you or pick one from our growing library of public curriculum based quizzes.
-                </p>
+
+                <div class="q-home__whatis__left">
+                    <img src="/img/homev2/home_whatis.png" alt="Quizalize available on computer, tablet and phones" class="q-home__whatis__image">
+                </div>
+                <div class="q-home__whatis__right">
+                    <h1>What is Quizalize?</h1>
+                    <p>
+                        Quizalize lets you engage your class and deliver instant assessments
+                        for personalised learning on any computer, tablet or smartphone.
+                        It helps you quickly identify the strengths, weaknesses and learning gaps of individual
+                        students and intervene in real-time to give one-on-one help in the classroom.
+                    </p>
+                    <p>
+                        You can create your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague
+                        has shared with you or pick one from our growing library of public curriculum based quizzes.
+                    </p>
+                </div>
             </div>
         </section>
 
 
         <!-- how quizalize works section -->
-        <section id="steps" class="q-home__section">
+        <section id="steps" class="q-home__section q-home__howitworks">
             <div class="q-home__section__inner">
+                <h1>How it works</h1>
+                <p>
                     <ul>
                         <li>
+                            <img src="img/homev2/home_marketplace.png" alt="">
                             <p>
-                                1. Create or Choose
+                                Create a quiz in less than 60 seconeds, or choose one
+                                created by other teachers.
                             </p>
-                        </li>
-                        <li>
+                        </li><!--
+                    --><li>
+                            <img src="img/homev2/home_marketplace.png" alt="">
                             <p>
-                                2. Engage
+                                Engage the whole class with live dashboards
                             </p>
-                        </li>
-                        <li>
+                        </li><!--
+                    --><li>
+                            <img src="img/homev2/home_marketplace.png" alt="">
                             <p>
-                                3.Identify
+                                Identify struggling students quickly
                             </p>
-                        </li>
-                        <li>
+                        </li><!--
+                    --><li>
+                            <img src="img/homev2/home_marketplace.png" alt="">
                             <p>
-                                4. Spot
+                                Spot learning gaps instantly
                             </p>
                         </li>
                     </ul>
+                </p>
             </div>
         </section>
 
     <!-- Section: about -->
 
 
-        <section id="about" class="q-home__section">
+        <section id="about" class="q-home__section q-home__features">
             <div class="q-home__section__inner">
                 <h1>
                     Diagnostic Assessments Made Easy
                 </h1>
                 <ul>
                     <li>
-                        <h3><img src="../img/icon3.jpg"> Engage Students</h3>
+                        <div class="q-home__features__img">
+                            <img src="/img/icon3.jpg">
+                        </div>
+                        <h3>Engage Students</h3>
 
                         <p>
                             Turn dull assessments into a fun online game. Students love
                             playing Quizalize and you can even show a live leaderboard
                             on the electronic whiteboard!
                         </p>
-                    </li>
-                    <li>
-                        <h3><img src="../img/icon1.jpg"> Personalise Learning</h3>
+                    </li><!--
+                --><li>
+                        <div class="q-home__features__img">
+                            <img src="/img/icon1.jpg">
+                        </div>
+                        <h3>Personalise Learning</h3>
                         <p>
                             Create custom quizzes in 60 seconds and get insight into
                             individual students’ strengths, weaknesses and learning
                             gaps with printable reports.
                         </p>
 
-                    </li>
-                    <li>
-
-                        <h3><img src="../img/icon5.jpg"> Track Progress</h3>
+                    </li><!--
+                --><li>
+                        <div class="q-home__features__img">
+                            <img src="/img/icon5.jpg">
+                        </div>
+                        <h3>Track Progress</h3>
                         <p>
                             Record student results over time and monitor progress at the
                             class and student level using our state-of-the-art
                             progress dashboards.
                         </p>
-                    </li>
-                    <li>
-                        <h3><img src="../img/icon4.jpg"> Save Time</h3>
+                    </li><!--
+                --><li>
+                        <div class="q-home__features__img">
+                            <img src="/img/icon4.jpg">
+                        </div>
+                        <h3>Save Time</h3>
                         <p>
                             Use our live dashboards to identify struggling students in
                             real-time so you can give them one-on-one help in class.
@@ -511,7 +539,7 @@
         var flashvars = {},
         params = {wmode:"transparent"},
         attributes = {};
-        swfobject.embedSWF("img/qz-homepage-demo.swf", "flash", "850", "600", "10.0.0", undefined, flashvars, params, attributes);
+        swfobject.embedSWF("img/qz-homepage-demo.swf", "flash", "100%", "100%", "10.0.0", undefined, flashvars, params, attributes);
         //   swfobject.embedSWF("/img/qz-homepage-demo.swf", el, 300, 120, 10);
         </script>
 
