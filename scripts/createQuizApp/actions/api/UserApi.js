@@ -165,7 +165,11 @@ var UserApi = {
         var uuid = localStorage.getItem('cqUuid');
         if (uuid) {
             console.log(`/user/${uuid}/events/${name}`);
-            request.post(`/user/${uuid}/events/${name}`).send(meta);
+            request.post(`/user/${uuid}/events/${name}`)
+                .send(meta)
+                .end(function(error, res){
+
+                });
         }
     }
 };
