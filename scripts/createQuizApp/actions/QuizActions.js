@@ -217,7 +217,6 @@ var QuizActions = {
                 UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             }
 
-            resolve(quiz);
             promise.then(()=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
@@ -226,6 +225,9 @@ var QuizActions = {
 
                 // TODO: Call loadQuizzes only if the quiz is new
                 this.loadQuizzes();
+                resolve(quiz);
+            }, ()=> {
+                reject();
             });
 
 
