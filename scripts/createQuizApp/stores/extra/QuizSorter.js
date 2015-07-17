@@ -13,12 +13,11 @@ export default class QuizSorter {
     setQuizzes(quizzes: Array<Quiz>): Array<Quiz> {
         this.listOfQuizzes = quizzes;
 
-        return this.listOfQuizzes;
+        return this.listOfQuizzes.slice();
     }
 
     sort(kind?:string): Array<Quiz>{
-
-        var quizzes = this.listOfQuizzes;
+        var quizzes = this.listOfQuizzes.slice();
         switch (kind) {
             case 'name':
                 quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);

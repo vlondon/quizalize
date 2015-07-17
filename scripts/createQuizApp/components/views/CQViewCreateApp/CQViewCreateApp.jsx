@@ -122,7 +122,7 @@ export default class CQViewCreateApp extends React.Component {
 
         var csave = this.state.canSave;
         if (field === 'name') {
-            csave = event.target.value && event.target.value.length > 0 && this.state.selectedQuizzes && this.state.selectedQuizzes.length > 0;
+            csave = event.target.value && event.target.value.length > 0;
         }
 
         this.setState({app, canSave: csave});
@@ -232,6 +232,7 @@ export default class CQViewCreateApp extends React.Component {
                         selectedQuizzes={this.state.selectedQuizzes}
                         selectMode={true}
                         sortOptions={false}
+                        sortBy='time'
                     />
 
                     <button

@@ -96,8 +96,16 @@ var CQEdit = React.createClass({
     },
 
     handleSaveNewQuestion: function(newQuestion){
+        // trying to discover question value;
+        console.log('about to save questions', newQuestion, this.state);
+        var nextQuestion;
+        if (this.state.questionIndex) {
+            nextQuestion = this.state.questionIndex + 1;
+        } else {
+            nextQuestion = this.state.quiz.payload.questions.length;
+        }
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${this.state.quiz.payload.questions.length}`);
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         });
     },
 
@@ -131,14 +139,17 @@ var CQEdit = React.createClass({
     handleSaveButton: function(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
-            this.setState({pristine: true});
+            this.setState({pristine: true, saveEnabled: true});
         });
     },
-  /*  handlePreview: function(){
+
+    handlePreview: function(){
+        sessionStorage.setItem('mode', 'teacher');
+        window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, '_blank');
+            window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         });
-    },*/
+    },
 
     enableDisableSave: function(saveEnabled){
         this.setState({saveEnabled});
@@ -176,18 +187,19 @@ var CQEdit = React.createClass({
                         handleQuestion={this.handleQuestion}
                         handleRemoveQuestion={this.handleRemoveQuestion}
                         setSaveMode={this.enableDisableSave}
+                        isSaveEnabled={this.state.saveEnabled}
                         handleSave={this.handleSaveNewQuestion}/>
 
                     <div className="cq-edit__footer">
                         <div className="cq-edit__footer-inner">
 
-                            <a
+                            <button onClick={this.handlePreview}
                                 disabled={!previewEnabled}
-                                href={`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`}
+
                                 target="zzishgame"
                                 className="btn btn-info">
                                 Preview
-                            </a>
+                            </button>
 
                             <button
                                 disabled={!previewEnabled || this.state.pristine || !this.state.saveEnabled}
