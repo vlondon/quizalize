@@ -14,11 +14,6 @@ var CQQuestionList = React.createClass({
         setSaveMode: React.PropTypes.func
     },
 
-    getDefaultProps: function() {
-        return {
-            questions: []
-        };
-    },
 
     getInitialState: function() {
         return {
@@ -31,8 +26,17 @@ var CQQuestionList = React.createClass({
     },
 
     handleSave: function(){
-        this.props.handleSave();
-        this.setState({canAddQuestion: false});
+        var {quiz, questionIndex} = this.state;
+        if (questionIndex) {
+            var question = quiz[questionIndex];
+            console.log('questionquestionquestionquestionquestionquestion', question);
+            if (question.question.length > 0 && question.answer.length > 0) {
+                this.props.handleSave();
+            }
+        } else {
+            this.props.handleSave();
+        }
+        // this.setState({canAddQuestion: true});
     },
 
     handleQuestion: function(question){
@@ -53,15 +57,21 @@ var CQQuestionList = React.createClass({
 
         var questions;
         var newQuestionEditor;
+        var questionEditor;
 
-        var questionEditor = (
-            <CQEditNormal
-                setSaveMode={this.setSaveMode}
-                quiz={this.props.quiz}
-                questionIndex={this.props.questionIndex}
-                onChange={this.handleQuestion}
-                onSave={this.handleSave}/>
-            );
+
+        if (this.props.questionIndex){
+            console.log('new question editor', this.props.questionIndex);
+            questionEditor = (
+
+                <CQEditNormal
+                    setSaveMode={this.setSaveMode}
+                    quiz={this.props.quiz}
+                    questionIndex={this.props.questionIndex}
+                    onChange={this.handleQuestion}
+                    onSave={this.handleSave}/>
+                );
+        }
 
 
         if (this.props.questionIndex === this.props.quiz.payload.questions.length){
