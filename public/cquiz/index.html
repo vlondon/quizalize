@@ -32,6 +32,10 @@
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
         <script type="text/javascript" src="http://localhost:7071/webpack-dev-server.js"></script>
+        <script src="/js/vendor.js"></script>
+        <script src="/js/home.js"></script>
+
+
     </head>
     <body id="page-top" class="q-home">
         <!-- Navigation -->
@@ -219,23 +223,15 @@
 
         </section>
 
-        <section id="about" class="q-home__section">
-            <div class="q-home__section__inner">
-
-                <h1>Runs on every platform</h1>
-                <img src="../img/multi.png">
-            </div>
-        </section>
-
-
-        <section id="about" class="q-home__section">
+        <section id="about" class="q-home__section q-home__tutorial">
             <div class="q-home__section__inner">
 
                 <h1>Watch a tutorial</h1>
-
-                <div class='embed-container'>
-                    <iframe src='//www.youtube.com/embed/4ZmFuhSzr8s' frameborder='0' allowfullscreen></iframe>
-                </div>
+                <p>
+                    <div class='q-home__tutorial__video'>
+                        <iframe src='//www.youtube.com/embed/4ZmFuhSzr8s?&amp;controls=1&amp;autohide=1'  frameborder='0' allowfullscreen ></iframe>
+                    </div>
+                </p>
             </div>
         </section>
 
@@ -460,8 +456,6 @@
         <script src="/cquiz/js/jquery.min.js"></script>
         <script src="/cquiz/js/bootstrap.min.js"></script>
 
-        <script src="/js/vendor.js"></script>
-        <script src="/js/home.js"></script>
 
         <script src="//zzish.github.io/zzishsdk-js/zzish.js"></script>
 
