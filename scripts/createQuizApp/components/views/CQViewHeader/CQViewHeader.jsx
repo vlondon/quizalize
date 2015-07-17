@@ -19,7 +19,7 @@ var sections = {
         'assignments'
     ],
     public: [
-        'public'
+        'marketplace'
     ]
 };
 
@@ -116,7 +116,7 @@ var CQViewHeader = React.createClass({
                         {buttons}
 
                         <li id="cq-publicQuizzes">
-                            <CQLink href="/quiz/public" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
+                            <CQLink href="/quiz/marketplace" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
                                 <div className="fa fa-tags"></div> Marketplace
                             </CQLink>
                         </li>

@@ -106,8 +106,7 @@ var CQViewCreateAppTemplate = React.createClass({
                             <CQViewQuizList
                                 isQuizInteractive={true}
                                 onQuizClick={this.handleDetails}
-                                quizzes={this.state.quizzes}
-                                sortBy="category">
+                                quizzes={this.state.quizzes}>
                                 <span className='cq-app__buttonextra' onClick={this.handlePreview}>
                                     Preview
                                 </span>

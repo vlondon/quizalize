@@ -36,8 +36,10 @@ export type Question = {
     uuid: string;
     question: string;
     answer: string;
-    topicId: string;
     alternatives?: Array<string>
+    topicId?: string;
+    latexEnabled: boolean;
+    imageEnabled: boolean;
 }
 
 type QuizPayload = {
@@ -76,7 +78,7 @@ UserStore.addChangeListener(function(){
 
 var QuestionObject = function(quiz){
 
-    var question = {
+    var question:Question = {
         alternatives: ['', '', ''],
         question: '',
         answer: '',
@@ -89,6 +91,8 @@ var QuestionObject = function(quiz){
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
         question.latexEnabled = lastQuestion.latexEnabled || false;
         question.imageEnabled = lastQuestion.imageEnabled || false;
+        question.topicId = lastQuestion.topicId;
+        console.log('question', question, lastQuestion);
     }
 
     return question;

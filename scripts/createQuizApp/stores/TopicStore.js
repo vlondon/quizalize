@@ -54,6 +54,17 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         var userResult = _usertopics.filter(t => t.parentCategoryId === parentCategoryId);
         userResult.push.apply(userResult, result);
         userResult.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
+
+        // Do not display duplicate names
+        var seen = [];
+        userResult = userResult.filter( u => {
+            if (seen.indexOf(u.name) === -1){
+                seen.push(u.name);
+                return true;
+            }
+            return false;
+        });
+
         return userResult;
     },
 

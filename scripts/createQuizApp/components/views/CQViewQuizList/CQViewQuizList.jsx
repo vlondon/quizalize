@@ -59,6 +59,8 @@ export default class CQViewQuizList extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
+
+
     componentDidMount() {
         sorter = new QuizSorter();
         console.trace("adding TopicStore listener");
@@ -72,6 +74,7 @@ export default class CQViewQuizList extends React.Component {
 
     componentWillReceiveProps(nextProps:Object) {
         this.onChange(nextProps);
+
     }
 
     getState(props:Props, page:?number): State {
@@ -130,6 +133,10 @@ export default class CQViewQuizList extends React.Component {
 
                 state.quizzes = quizzesToDisplay;
                 state.pages = pages;
+
+                if (page > pages) {
+                    page = 1;
+                }
                 state.page = page;
             } else {
                 state.quizzes = quizzes;
@@ -144,7 +151,11 @@ export default class CQViewQuizList extends React.Component {
         if (props.selectedQuizzes) {
             newState.selectedQuizzes = props.selectedQuizzes;
         }
-        this.setState(newState);
+        this.setState(newState, ()=>{
+            if (this.props.sortBy){
+                this.handleSearch();
+            }
+        });
     }
 
 
@@ -162,7 +173,7 @@ export default class CQViewQuizList extends React.Component {
                     showCancelButton: true
                 }, function(isConfirm){
                     if (isConfirm){
-                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/public')}`);
+                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
                     }
                 });
             } else {
@@ -195,51 +206,49 @@ export default class CQViewQuizList extends React.Component {
         this.onChange(this.props, page);
     }
 
-    sort(obj:Object, quizzes:Array<Quiz>): Array<Quiz> {
+    sort(sortingOption:?Object, quizzes:?Array<Quiz>): Array<Quiz> {
         //
-        // if (this.props.sortBy && obj === undefined){
-        //     obj = {
-        //         sort: this.props.sortBy
-        //     };
-        // }
-        //
+        var obj:?Object;
+        if (this.props.sortBy && sortingOption === undefined){
+            obj = {
+                sort: this.props.sortBy
+            };
+        } else {
+            obj = sortingOption;
+        }
 
+        // obj = obj || this.state.savedSearch || undefined;
 
-        //
-        //
-        // // obj = obj || this.state.savedSearch || undefined;
-        //
-        // quizzes = quizzes || this.props.quizzes.slice();
-        //
-        // if (obj && obj.sort === 'name') {
-        //     quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
-        // } else if (obj && obj.sort === 'time') {
-        //     quizzes.sort((a, b) =>  a.meta.updated > b.meta.updated ? -1 : 1);
-        // }
-        // else {
-        //     quizzes.sort((a, b) => {
-        //         if (a.meta.categoryId && b.meta.categoryId){
-        //             var topicA = TopicStore.getTopicById(a.meta.categoryId);
-        //             var topicB = TopicStore.getTopicById(b.meta.categoryId);
-        //
-        //             if (topicA) {
-        //                 var A = topicA.name && topicA.name.toLowerCase();
-        //             }
-        //             if (topicB) {
-        //                 var B = topicB.name && topicB.name.toLowerCase();
-        //             }
-        //
-        //             if (A && B && A === B) {
-        //                 return a.meta.name > b.meta.name ? 1 : -1;
-        //             }
-        //
-        //             return A > B ? 1 : -1;
-        //         } else {
-        //             return a.meta.name > b.meta.name ? 1 : -1;
-        //         }
-        //     });
-        // }
-        //
+        quizzes = quizzes || this.props.quizzes.slice();
+        console.log('quizzes', quizzes);
+        if (obj && obj.sort === 'name') {
+            quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
+        } else if (obj && obj.sort === 'time') {
+            quizzes.sort((a, b) =>  a.meta.updated > b.meta.updated ? -1 : 1);
+        } else if (obj && obj.sort === 'category' ) {
+            quizzes.sort((a, b) => {
+                if (a.meta.categoryId && b.meta.categoryId){
+                    var topicA = TopicStore.getTopicById(a.meta.categoryId);
+                    var topicB = TopicStore.getTopicById(b.meta.categoryId);
+
+                    if (topicA) {
+                        var A = topicA.name && topicA.name.toLowerCase();
+                    }
+                    if (topicB) {
+                        var B = topicB.name && topicB.name.toLowerCase();
+                    }
+
+                    if (A && B && A === B) {
+                        return a.meta.name > b.meta.name ? 1 : -1;
+                    }
+
+                    return A > B ? 1 : -1;
+                } else {
+                    return a.meta.name > b.meta.name ? 1 : -1;
+                }
+            });
+        }
+
         // if (obj && obj.name && obj.name.length > 0){
         //     quizzes = quizzes.filter( q => {
         //         var nameMatch;
@@ -252,11 +261,11 @@ export default class CQViewQuizList extends React.Component {
         //         return nameMatch || categoryMatch;
         //     });
         // }
-
+        console.log('quizzes end', quizzes);
         return quizzes;
     }
 
-    handleSearch (obj:Object, quizzes: Array<Quiz>) {
+    handleSearch (obj:?Object, quizzes: ?Array<Quiz>) {
         quizzes = this.sort(obj, quizzes);
         this.setState({quizzes, savedSearch: obj});
     }
@@ -266,6 +275,7 @@ export default class CQViewQuizList extends React.Component {
     }
 
     render():any {
+
         var author = function(){};
         var reviewButton = function(){};
         var publishButton = function(){};
@@ -325,6 +335,7 @@ export default class CQViewQuizList extends React.Component {
         if (this.props.sortOptions) {
             sort = (<CQViewQuizLocalSort onSearch={this.handleSearch}/>);
         }
+
 
         return (
 

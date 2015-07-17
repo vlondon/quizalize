@@ -3,7 +3,7 @@
 
     $appIcon: 140px;
     $quizIcon: 40px;
-    min-height: 660px;
+    min-height: 330px;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -12,6 +12,10 @@
     ul {
         padding: 0;
         margin: 0;
+    }
+
+    &__button {
+        margin: 0 3px;
     }
 
     &.cq-appgrid__n5 {

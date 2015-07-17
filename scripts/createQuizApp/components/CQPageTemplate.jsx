@@ -34,7 +34,7 @@ var CQPageTemplate = React.createClass({
         var banner = "";
         if (this.props.showBanner) {
             banner = (<div className="cq-container2">
-                        <a href="/quiz/create"><img src="/img/qz-banner-mkt-teacherpreneur.png"/></a>
+                        <a href="/quiz/create"><img src="/img/qz-banner-mkt-whereteachersbuy.png"/></a>
                     </div>);
         }
         return (
