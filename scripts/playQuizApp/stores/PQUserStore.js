@@ -1,10 +1,14 @@
 /* @flow */
+export type User = {
+    uuid: string;
+}
 
 import PQStore from './PQStore';
 
 var AppDispatcher = require('./../dispatcher/PQDispatcher');
-var UserConstants = require('./../constants/UserConstants');
-// var UserActions = require('./../actions/UserActions');
+var UserConstants = require('./../constants/PQUserConstants');
+import PQUserActions from './../actions/PQUserActions';
+
 
 
 var storeInit = false;
@@ -45,7 +49,7 @@ class PQUserStore extends PQStore {
     addChangeListener(callback: Function) {
         if (!storeInit){
             storeInit = true;
-            // UserActions.request();
+            PQUserActions.getUser();
         }
         super.addChangeListener(callback);
 
@@ -96,4 +100,4 @@ AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = userStore;
+export default userStore;

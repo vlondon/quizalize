@@ -17,6 +17,7 @@
         "strict": [2, "never"],
         "no-underscore-dangle": 0,
         "curly": 0,
+        "new-cap": 0,
         "react/prop-types": 1,
         "react/wrap-multilines": 1,
         "react/self-closing-comp": 1,

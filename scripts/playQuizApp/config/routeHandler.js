@@ -7,7 +7,7 @@ var settings            = require('./settings');
 // var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
 // import UserStore        from './../stores/UserStore';
-var UserStore           = require('./../stores/PQUserStore');
+import UserStore           from './../stores/PQUserStore';
 
 
 var urlParams           = require('./../../createQuizApp/utils/urlParams');
@@ -122,19 +122,18 @@ var options = {
 
 
 // Add user listener
-// UserStore.addChangeListener(function(){
-//     user = UserStore.getUser();
-//
-// });
+UserStore.addChangeListener(function(){
+    user = UserStore.getUser();
+    if (routerReady !== true) {
+        router.init();
+        routerReady = true;
+    } else {
+        options.before();
+    }
+});
 
 // Initialize router
 router.configure(options);
-if (routerReady !== true) {
-    router.init();
-    routerReady = true;
-} else {
-    options.before();
-}
 // Request user status
 
 module.exports = router;
