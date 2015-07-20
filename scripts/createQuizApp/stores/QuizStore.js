@@ -36,7 +36,7 @@ export type Question = {
     uuid: string;
     question: string;
     answer: string;
-    alternatives?: Array<string>
+    alternatives?: Array<string>;
     topicId?: string;
     latexEnabled: boolean;
     imageEnabled: boolean;
