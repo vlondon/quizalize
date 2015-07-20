@@ -1,6 +1,8 @@
 /* @flow */
 import React from 'react';
 
+import PQLink from './../../../components/utils/PQLink';
+
 import PQQuizStore from './../../../stores/PQQuizStore';
 
 import PQPageTemplate from './../../PQPageTemplate';
@@ -14,6 +16,7 @@ class PQList extends React.Component {
         };
 
         this.onChange = this.onChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
@@ -29,6 +32,10 @@ class PQList extends React.Component {
         this.setState({quizzes});
     }
 
+    handleClick(){
+
+    }
+
     render (): any {
         return (
             <PQPageTemplate className="pq-list">
@@ -40,9 +47,11 @@ class PQList extends React.Component {
                     <ul>
                         {this.state.quizzes.toArray().map((quiz, key)=> {
                             return (
-                                <li key={key}>
-                                    {quiz.meta.name}
-                                </li>
+                                <PQLink href={`/play/quiz/${quiz.uuid}`} key={key}>
+                                    <li>
+                                        {quiz.meta.name}
+                                    </li>
+                                </PQLink>
                             );
                         })}
                     </ul>

@@ -4,6 +4,7 @@ var React               = require('react');
 import PQSplash from './../components/pages/PQSplash';
 import PQLogin from './../components/pages/PQLogin';
 import PQList from './../components/pages/PQList';
+import PQGame from './../components/pages/PQGame';
 
 export type Page = {
     name: string;
@@ -46,6 +47,19 @@ var pagesArray: Array<Page> = [
 
             React.render(
                 React.createElement(PQList, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    {
+        name: 'quizGame',
+        path: '/play/quiz/:quizId',
+        pathRegEx: /\/play\/quiz\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(){
+
+            React.render(
+                React.createElement(PQGame, null),
                 document.getElementById('reactApp')
             );
         }
