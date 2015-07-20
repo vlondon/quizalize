@@ -139,7 +139,7 @@ var CQEdit = React.createClass({
     handleSaveButton: function(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
-            this.setState({pristine: true, saveEnabled: true});
+            this.setState({pristine: true});
         });
     },
 
@@ -187,7 +187,6 @@ var CQEdit = React.createClass({
                         handleQuestion={this.handleQuestion}
                         handleRemoveQuestion={this.handleRemoveQuestion}
                         setSaveMode={this.enableDisableSave}
-                        isSaveEnabled={this.state.saveEnabled}
                         handleSave={this.handleSaveNewQuestion}/>
 
                     <div className="cq-edit__footer">
