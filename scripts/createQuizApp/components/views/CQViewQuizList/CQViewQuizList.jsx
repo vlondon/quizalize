@@ -119,6 +119,10 @@ export default class CQViewQuizList extends React.Component {
             if (props.showCta){
                 quizzes = quizCta(quizzes);
             }
+
+            if (this.props.sortBy){
+                quizzes = this.sort(undefined, quizzes);
+            }
             // quizzes = this.sort(props, quizzes);
             if (this.props.isPaginated) {
 
@@ -151,11 +155,7 @@ export default class CQViewQuizList extends React.Component {
         if (props.selectedQuizzes) {
             newState.selectedQuizzes = props.selectedQuizzes;
         }
-        this.setState(newState, ()=>{
-            if (this.props.sortBy){
-                this.handleSearch();
-            }
-        });
+        this.setState(newState);
     }
 
 
