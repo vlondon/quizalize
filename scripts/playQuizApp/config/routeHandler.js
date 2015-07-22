@@ -38,7 +38,7 @@ var newUrl = function(requestedUrl){
     // return requestedUrl;
     var getPage = function(url){
         var arrayPages: Array<Object> = Object.keys(pages).map((key) => pages[key]);
-        console.log('url?', arrayPages);
+
         var newPage = arrayPages.filter( (p)=> {
             if (p.pathRegEx) {
                 return p.pathRegEx.test(url);
@@ -54,7 +54,7 @@ var newUrl = function(requestedUrl){
         if (page.needsLogin === undefined){
             return requestedUrl;
         }
-        console.log('we are logged in?', user);
+
         if (!page.needsLogin) {
             if (UserStore.isLoggedIn() && !page.public) {
                 var params = urlParams();

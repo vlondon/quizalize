@@ -56,10 +56,9 @@ var pagesArray: Array<Page> = [
         path: '/play/quiz/:quizId',
         pathRegEx: /\/play\/quiz\/([\w\-]+)/,
         needsLogin: true,
-        renderer: function(){
-
+        renderer: function(quizId){
             React.render(
-                React.createElement(PQGame, null),
+                React.createElement(PQGame, {quizId}),
                 document.getElementById('reactApp')
             );
         }

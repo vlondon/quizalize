@@ -23,9 +23,6 @@ class PQQuizActions  {
     loadQuiz(quizId:string){
 
         window.zzish.getPublicContent('quiz', quizId, function (err, quiz) {
-            console.log('err', PQQuizConstants.QUIZ_LOADED);
-            console.log('message', quiz);
-
             if (err){
                 console.error('Error', err);
             } else {
