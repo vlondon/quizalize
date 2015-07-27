@@ -186,6 +186,9 @@ var QuizActions = {
                     };
                 }
             }
+            if (topicFound && topicFound.id === '-1'){
+                topicFound.uuid = "-1";
+            }
             if (topicFound && topicFound.uuid !== "-1") {
                 topicUuid = topicFound.uuid;
             } else {
