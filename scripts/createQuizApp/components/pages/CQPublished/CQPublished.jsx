@@ -12,7 +12,7 @@ var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var GroupActions = require('./../../../actions/GroupActions');
 var GroupStore  = require('./../../../stores/GroupStore');
 import QuizStore from './../../../stores/QuizStore';
-import type { Quiz } from './../../../stores/QuizStore';
+import type { QuizComplete } from './../../../stores/QuizStore';
 
 
 
@@ -74,7 +74,7 @@ export default class CQPublished extends React.Component {
 
     }
 
-    getQuiz (props? : Props) : ?Quiz {
+    getQuiz (props? : Props) : ?QuizComplete {
 
         props = props || this.props;
 
