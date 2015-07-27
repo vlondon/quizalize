@@ -88,7 +88,7 @@ var CQCreate = React.createClass({
                 var name = prefix ? `${prefix} > ${el.name}` : el.name;
                 newState.topicsAutofill.push({
                     name: name,
-                    id: el.uuid
+                    uuid: el.uuid
                 });
                 if (el.categories && el.categories.length > 0){
                     fillAutoFill(el.categories, name);
@@ -131,7 +131,7 @@ var CQCreate = React.createClass({
 
     handleSettings: function(newSettings){
         var quiz = assign({}, this.state.quiz);
-        var meta = assign(quiz.meta, newSettings);
+        var meta = assign({}, quiz.meta, newSettings);
         quiz.meta = meta;
         this.setState({quiz});
     },
@@ -143,20 +143,30 @@ var CQCreate = React.createClass({
     },
 
     handleNewQuiz: function(){
+
         this.setState({canSave: false});
-        QuizActions.newQuiz(this.state.quiz).then(function(quiz){
-            console.log('we got new quiz', quiz);
+
+        QuizActions.newQuiz(this.state.quiz).then((quiz)=>{
+            console.log('we got new quiz', this.state.quiz, quiz);
             router.setRoute(`/quiz/create/${quiz.uuid}/0`);
         });
     },
 
     handleTopic: function(topicId){
-        var newQuizState = assign({}, this.state.quiz);
-        newQuizState.meta.categoryId = topicId;
+        var quiz = assign({}, this.state.quiz);
         var topic = TopicStore.getTopicById(topicId);
-        newQuizState.meta.subjectId = topic.subjectId;
-        console.log('new topic', newQuizState);
-        this.setState({quiz: newQuizState});
+
+        quiz.meta.categoryId = topicId;
+
+        if (topic){
+            quiz.meta.subjectId = topic.subjectId;
+        } else {
+            quiz.meta.subjectId = undefined;
+        }
+
+        var canSave = this.state.title.length > 0;
+        console.log('topicid', topicId, topic, quiz);
+        this.setState({quiz, canSave});
     },
 
     render: function() {
@@ -169,7 +179,7 @@ var CQCreate = React.createClass({
                 More Settings
             </button>);
         }
-
+        console.warn('getTopicTree', TopicStore.getTopicTree());
         return (
             <CQPageTemplate className="cq-container cq-create">
                 <div className="cq-create__body">
@@ -197,7 +207,7 @@ var CQCreate = React.createClass({
                         </div>
 
                         <label className="">
-                            Unit/Topic:
+                            Unit/Topic:&nbsp;
                             <a data-toggle="popover" title="Quiz Topic" data-content="You can provide an optional topic to help organize your quizzes into different topic areas. This is optional." data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="3" className="left-space glyphicon glyphicon-question-sign"></a>
                         </label>
                         <div className="">
