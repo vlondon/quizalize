@@ -1,55 +1,67 @@
+/* @flow */
+import type { Quiz, Question } from './../../../stores/QuizStore';
+
 var React = require('react');
 var assign = require('object-assign');
-var uuid = require('node-uuid');
 
-var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
+var CQLatexString = require('./../../../components/utils/CQLatexString');
 
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
-var TopicStore = require('createQuizApp/stores/TopicStore');
+import QuizStore from './../../../stores/QuizStore';
+import CQAutofill from './../../../components/utils/CQAutofill';
+import CQEditDurationPicker from './CQEditDurationPicker';
+var TopicStore = require('./../../../stores/TopicStore');
 
 // TODO: Rename to a better name to describe editing questions
-var CQEditNormal = React.createClass({
+type Props = {
+    quiz: Quiz;
+    onChange: Function;
+    onSave: Function;
+    setSaveMode: Function;
+    questionIndex: number;
+}
 
-    propTypes: {
-        onSave: React.PropTypes.func.isRequired,
-        quiz: React.PropTypes.object,
-        onChange: React.PropTypes.func,
-        setSaveMode: React.PropTypes.func
-    },
+type State = {
+    question: Question;
+}
 
-    getDefaultProps: function() {
-        return {
-            question: {
-                uuid: uuid.v4(),
-                question: '',
-                answer: '',
-                latexEnabled: false,
-                imageEnabled: false,
-                alternatives: []
-            }
-        };
-    },
+// 5, 10, 20, 30, 45, 60
 
-    getInitialState: function() {
-        return this.getState();
-    },
+export default class CQEditNormal extends React.Component{
 
-    componentDidMount: function() {
+    static props : Props;
+    constructor(props:Props) {
+        super(props);
+
+        this.getRefs = this.getRefs.bind(this);
+        this.getState = this.getState.bind(this);
+        this.handleNext = this.handleNext.bind(this);
+        this.focusNext = this.focusNext.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.canBeSaved = this.canBeSaved.bind(this);
+        this.handleTopic = this.handleTopic.bind(this);
+        this.handlePopover = this.handlePopover.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleCheckbox = this.handleCheckbox.bind(this);
+        this.handleGetTopics = this.handleGetTopics.bind(this);
+        this.handleDuration = this.handleDuration.bind(this);
+
+        this.state = this.getState();
+    }
+
+    componentDidMount() {
         this.focusNext(0);
         $('textarea').autogrow();
         this.handlePopover();
         this.props.onChange(this.state.question);
+    }
 
-    },
-
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps : Props) {
 
         var newState = this.getState(nextProps);
         this.setState(newState);
-    },
+    }
 
-    getRefs: function(){
+    getRefs() : Array<Object> {
         return  [
             this.refs.imageURL,
             this.refs.question,
@@ -60,11 +72,11 @@ var CQEditNormal = React.createClass({
             this.refs.answerExplanation,
             this.refs.topicId
         ];
-    },
+    }
 
-    getState: function(props) {
+    getState (props? : Props) : State {
         props = props || this.props;
-        var question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
+        var question : Question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
         question.alternatives = question.alternatives || [];
         var newState = {
             question
@@ -72,14 +84,13 @@ var CQEditNormal = React.createClass({
 
 
         return newState;
-    },
+    }
 
-    handleNext: function(property, index, event){
+    handleNext(property : string, index? : number, event : Event) {
         var ref;
         var refs = this.getRefs();
 
         if (event.keyCode === 13) {
-
 
             if (index !== undefined){
                 ref = this.refs[property + index];
@@ -92,9 +103,9 @@ var CQEditNormal = React.createClass({
             event.preventDefault();
         }
 
-    },
+    }
 
-    focusNext: function(i){
+    focusNext (i : number) {
         var refs = this.getRefs();
 
         var nextRef = i < (refs.length - 1) ? i + 1 : 0;
@@ -123,10 +134,11 @@ var CQEditNormal = React.createClass({
         }
 
 
-    },
+    }
 
 
-    handleChange: function(property, index, event) {
+    handleChange (property : string, index? : number, event : Object) {
+
         var newQuestionState = assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
@@ -135,23 +147,32 @@ var CQEditNormal = React.createClass({
         }
 
         var canBeSaved = this.canBeSaved(newQuestionState);
-        console.info('can be saved?', canBeSaved);
+
         this.setState({
             question: newQuestionState,
             canBeSaved
         });
 
         this.props.onChange(newQuestionState);
-    },
+    }
 
-    canBeSaved: function(newQuestionState){
+    handleDuration(duration : number){
+        var question = assign({}, this.state.question);
+        var canBeSaved = this.canBeSaved(question);
+        question.duration = duration;
+        console.log('handleDuration', question, duration);
+        this.setState({question, canBeSaved});
+        this.props.onChange(question);
+    }
+
+    canBeSaved (newQuestionState? : Question) : boolean {
         newQuestionState = newQuestionState || this.state.question;
         var canBeSaved = newQuestionState.question.length > 0 && newQuestionState.answer.length > 0;
         this.props.setSaveMode(canBeSaved);
         return canBeSaved;
-    },
+    }
 
-    handleTopic: function(topicId, ev){
+    handleTopic (topicId: string) {
         console.log('we got new topic', topicId);
         var newQuestionState = assign({}, this.state.question);
         newQuestionState.topicId = topicId;
@@ -160,24 +181,17 @@ var CQEditNormal = React.createClass({
         // if (ev.keyCode === 13){
         //     this.handleNext('topicId', undefined, ev);
         // }
-    },
+    }
 
-    handlePopover: function(){
+    handlePopover () {
         $('[data-toggle="popover"]').popover();
-    },
+    }
 
-
-    // handleTopic: function(event){
-    //     var canBeSaved = this.canBeSaved();
-    //     this.setState({topic: event.target.value, canBeSaved});
-    // },
-
-    handleSave: function(){
+    handleSave () {
         this.props.onSave(this.state.question);
+    }
 
-    },
-
-    handleCheckbox: function(property){
+    handleCheckbox (property : string) {
 
         var question = assign({}, this.state.question);
         question[property] = !this.state.question[property];
@@ -186,13 +200,13 @@ var CQEditNormal = React.createClass({
 
         this.setState({question, canBeSaved}, this.handlePopover);
         this.props.onChange(question);
-    },
+    }
 
-    handleGetTopics: function() {
+    handleGetTopics () {
         return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
-    },
+    }
 
-    render: function() {
+    render() : any {
 
         var imageLink;
 
@@ -257,6 +271,17 @@ var CQEditNormal = React.createClass({
                             <span className="switch-label" data-on="Yes" data-off="No"></span>
                             <span className="switch-handle"></span>
                         </label>
+                    </div>
+
+                    <div className="duration">
+                        <div>
+                            Duration&nbsp;
+                            <a data-toggle="popover" title="Duration" data-content="Select the length of time students have to answer the question. " data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
+                            <CQEditDurationPicker
+                                duration={this.state.question.duration}
+                                onChange={this.handleDuration}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -433,9 +458,13 @@ var CQEditNormal = React.createClass({
 
 
             </div>
-);
+        );
+    }
 }
 
-});
-
-module.exports = CQEditNormal;
+CQEditNormal.propTypes = {
+    onSave: React.PropTypes.func.isRequired,
+    quiz: React.PropTypes.object,
+    onChange: React.PropTypes.func,
+    setSaveMode: React.PropTypes.func
+};

@@ -32,13 +32,15 @@ type QuizMeta = {
     published: string;
 };
 
-type Question = {
+export type Question = {
     uuid: string;
     question: string;
     answer: string;
     topicId?: string;
     latexEnabled: boolean;
     imageEnabled: boolean;
+    duration: number;
+    alternatives: Array<string>
 }
 
 type QuizPayload = {
@@ -77,12 +79,13 @@ UserStore.addChangeListener(function(){
 
 var QuestionObject = function(quiz){
 
-    var question:Question = {
+    var question : Question = {
         alternatives: ['', '', ''],
         question: '',
         answer: '',
         latexEnabled: false,
         imageEnabled: false,
+        duration: 60,
         uuid: uuid.v4()
     };
 
@@ -133,9 +136,11 @@ class QuizStore extends Store {
         return fullPublicQuiz;
     }
 
-    getQuestion(quizId, questionIndex){
+    getQuestion(quizId, questionIndex) : Question{
         var quiz = this.getQuiz(quizId);
         var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
+        // adding new properties to the object
+        question.duration = question.duration || 60;
         return question;
     }
 
