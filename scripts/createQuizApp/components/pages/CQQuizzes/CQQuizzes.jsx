@@ -115,6 +115,12 @@ var CQQuizzes = React.createClass({
         this.setState({selectedQuizzes});
     },
 
+
+    handlePreview: function(quiz: Quiz){
+        sessionStorage.setItem('mode', 'teacher');
+        window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
+    },
+
     render: function() {
 
 
@@ -218,6 +224,10 @@ var CQQuizzes = React.createClass({
                     onDelete={this.handleDelete}>
 
                     <CQPublishQuiz className="cq-quizzes__button--publish"/>
+
+                    <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
+                        <span className="fa fa-search"></span> Preview
+                    </button>
 
                     <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
                         <span className="fa fa-pencil"></span> Edit

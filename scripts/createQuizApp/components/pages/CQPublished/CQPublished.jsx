@@ -1,50 +1,67 @@
+/* @flow */
 var React = require('react');
-var router = require('createQuizApp/config/router');
+var router = require('./../../../config/router');
 
-var CQViewClassList = require('createQuizApp/components/views/CQViewClassList');
-var CQViewQuizMarketplaceOptions = require('createQuizApp/components/views/CQViewQuizMarketplaceOptions');
+var CQViewClassList = require('./../../../components/views/CQViewClassList');
+var CQViewQuizMarketplaceOptions = require('./../../../components/views/CQViewQuizMarketplaceOptions');
 
-var CQLink = require('createQuizApp/components/utils/CQLink');
-
-
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
+var CQLink = require('./../../../components/utils/CQLink');
 
 
-var CQPublished = React.createClass({
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
+var GroupActions = require('./../../../actions/GroupActions');
+var GroupStore  = require('./../../../stores/GroupStore');
+import QuizStore from './../../../stores/QuizStore';
+import type { Quiz } from './../../../stores/QuizStore';
 
-    propTypes: {
-        quizId: React.PropTypes.string.isRequired,
-        assign: React.PropTypes.bool,
-        publish: React.PropTypes.bool
-    },
 
-    getInitialState: function() {
-        return this.getState();
-    },
 
-    componentDidMount: function() {
-        QuizStore.addChangeListener(this.onChangeQuiz);
+type Props = {
+    quizId: string;
+    assign?: boolean;
+    publish?: boolean;
+}
+type State = {
+    groups: Array<Object>;
+    selectedClass: string;
+    isMoreVisible: boolean;
+    settings: Object;
+    newClass: string;
+}
+export default class CQPublished extends React.Component {
+
+
+
+    constructor(props : Props) {
+        super(props);
+
+        this.onChange = this.onChange.bind(this);
+        this.getState = this.getState.bind(this);
+        this.getQuiz = this.getQuiz.bind(this);
+
+
+        this.state = this.getState();
+
+    }
+
+    componentDidMount() {
+        QuizStore.addChangeListener(this.onChange);
         GroupStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
-        QuizStore.removeChangeListener(this.onChangeQuiz);
+    componentWillUnmount() {
+        QuizStore.removeChangeListener(this.onChange);
         GroupStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    getState: function(){
+    getState() : State {
 
         var groups = GroupStore.getGroups();
         var selectedClass = (groups && groups.length > 0) ? groups[0].code : 'new';
         var isMoreVisible = this.state ? this.state.isMoreVisible : false;
-        var quiz = this._getQuiz();
-        var settings = quiz.meta;
+        var quiz = this.getQuiz();
+        var settings = quiz ? quiz.meta : {};
         var newClass = '';
-
         var newState = {
             groups,
             selectedClass,
@@ -55,119 +72,47 @@ var CQPublished = React.createClass({
 
         return newState;
 
-    },
+    }
 
-    _getQuiz: function(props){
+    getQuiz (props? : Props) : ?Quiz {
+
         props = props || this.props;
 
         var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
 
 
-        if (quiz === undefined){
-            if (this.props.quizId) {
-                QuizActions.loadQuiz(this.props.quizId);
-            }
-            quiz = {
-                meta: {
-                    name: "",
-                    subject: "",
-                    category: "",
-                    description: undefined,
-                    imageUrl: undefined,
-                    imageAttribution: undefined,
-                    live: false,
-                    featured: false,
-                    featureDate: undefined,
-                    numQuestions: undefined,
-                    random: false
-                },
-                payload: {}
-            };
-
-        }
-
 
         return quiz;
-    },
+    }
 
-    onChangeQuiz: function(){
-        var newState = this.getState();
-        var quiz = this._getQuiz();
-        newState.settings = quiz.meta;
-        this.setState(newState);
-    },
 
-    onChange: function(){
+    onChange (){
         this.setState(this.getState());
-    },
+    }
 
-    handleChange: function(ev){
 
-        this.setState({
-            selectedClass: ev.target.value
-        });
-
-    },
-
-    handleNewClassInput: function(ev){
-        this.setState({
-            newClass: ev.target.value
-        });
-    },
-
-    _showGroupsList: function(){
-
-        if (!this.state.groups) {
-            return [{
-                value: null,
-                label: 'Loading',
-                disabled: true
-            }];
-        }
-        var groupList = this.state.groups.map(g => {
-            return {value: g.code, label: g.name};
-        });
-
-        return groupList;
-
-    },
-
-    handleClick: function(){
+    handleClick () {
 
         var redirect = function(quizId, classId){
-            console.log('should redirect!');
             router.setRoute(`/quiz/published/${quizId}/${classId}/info`);
         };
 
-        console.log('about to publish', this.state.selectedClass);
         if (this.state.selectedClass === 'new') {
-
             GroupActions.publishNewAssignment(this.props.quizId, this.state.newClass, this.state.settings)
                 .then((response) =>{
                     redirect(this.props.quizId, response.code);
                 });
 
         } else {
-            console.log('about to save an already existing class', this.state.selectedClass);
             GroupActions.publishAssignment(this.props.quizId, this.state.selectedClass, this.state.settings)
                 .then(()=>{
                     redirect(this.props.quizId, this.state.selectedClass);
                 });
         }
-    },
+    }
 
-    handleSettings: function(settings){
-        console.log('settingsObject', settings);
-        this.setState({settings});
-    },
 
-    handleMoreClick: function(){
-        this.setState({
-            isMoreVisible: !this.state.isMoreVisible
-        });
-    },
-
-    render: function() {
+    render() : any {
 
         var classList;
         var publishQuiz;
@@ -212,7 +157,13 @@ var CQPublished = React.createClass({
         );
     }
 
-});
+}
+
+CQPublished.propTypes = {
+    quizId: React.PropTypes.string.isRequired,
+    assign: React.PropTypes.bool,
+    publish: React.PropTypes.bool
+};
                 // <div className="pricing">
                 //     Set pricing and marketplace options
                 // </div>
@@ -228,5 +179,3 @@ var CQPublished = React.createClass({
                 // <div className="btn btn-default">
                 //     Close and go to my page
                 // </div>
-
-module.exports = CQPublished;
