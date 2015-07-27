@@ -178,7 +178,7 @@ var CQviewQuizFilter = React.createClass({
 
                 <div className="cq-quizfilter__context">
 
-                    <div className="cq-quizfilter__search form-inline">
+                    {/*<div className="cq-quizfilter__search form-inline">
                         <div className="form-group">
                             <div className="input-group">
 
@@ -190,7 +190,7 @@ var CQviewQuizFilter = React.createClass({
                                     value={this.state.searchString}/>
                             </div>
                         </div>
-                    </div>
+                    </div>*/}
                     {quizDropDown()}
                     {topicsDropDown()}
 
