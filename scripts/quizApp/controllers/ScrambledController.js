@@ -141,7 +141,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                                 self.userAnswerLetters.join("").toUpperCase(),
                                 self.answer.toUpperCase(),
                                 self.question,
-                                (new Date()).getTime() - startTime);
+                                (new Date()).getTime() - startTime - 2000);
             // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
         }
         renderReactComponent();

@@ -17,7 +17,10 @@ type State = {
     selecting: boolean;
     occurrences: Array<Object>;
     indexSelected?: number;
+
+    
 }
+
 export default class CQAutofill extends React.Component {
 
     state: State;
