@@ -1,19 +1,18 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import router from './../../../config/router';
 
-var CQViewClassList = require('./../../../components/views/CQViewClassList');
-var CQViewQuizMarketplaceOptions = require('./../../../components/views/CQViewQuizMarketplaceOptions');
+import CQViewClassList from './../../../components/views/CQViewClassList';
+import CQViewQuizMarketplaceOptions from './../../../components/views/CQViewQuizMarketplaceOptions';
 
-var CQLink = require('./../../../components/utils/CQLink');
+import CQLink from './../../../components/utils/CQLink';
 
-
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var GroupActions = require('./../../../actions/GroupActions');
-var GroupStore  = require('./../../../stores/GroupStore');
+import CQPageTemplate from './../../../components/CQPageTemplate';
+import GroupActions from './../../../actions/GroupActions';
+import GroupStore  from './../../../stores/GroupStore';
 import QuizStore from './../../../stores/QuizStore';
 import type { QuizComplete } from './../../../stores/QuizStore';
-
+import CQViewShareQuiz from './../../../components/views/CQViewShareQuiz';
 
 
 type Props = {
@@ -21,6 +20,7 @@ type Props = {
     assign?: boolean;
     publish?: boolean;
 }
+
 type State = {
     groups: Array<Object>;
     selectedClass: string;
@@ -28,9 +28,8 @@ type State = {
     settings: Object;
     newClass: string;
 }
+
 export default class CQPublished extends React.Component {
-
-
 
     constructor(props : Props) {
         super(props);
@@ -80,16 +79,12 @@ export default class CQPublished extends React.Component {
 
         var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
 
-
-
         return quiz;
     }
-
 
     onChange (){
         this.setState(this.getState());
     }
-
 
     handleClick () {
 
@@ -116,20 +111,31 @@ export default class CQPublished extends React.Component {
 
         var classList;
         var publishQuiz;
+        var shareQuiz;
 
         classList = (
             <CQViewClassList
                 quizId={this.props.quizId}/>
         );
+
+        shareQuiz = <CQViewShareQuiz/>;
+
         if (!this.state.settings.published && !this.state.settings.originalQuizId) {
             publishQuiz = (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>);
         }
+
         if (this.props.assign === true) {
-            console.log('yahah');
             publishQuiz = undefined;
+            shareQuiz = undefined;
         }
 
         if (this.props.publish === true){
+            classList = undefined;
+            shareQuiz = undefined;
+        }
+
+        if (this.props.share) {
+            publishQuiz = undefined;
             classList = undefined;
         }
         return (
@@ -151,6 +157,7 @@ export default class CQPublished extends React.Component {
 
                 {classList}
                 {publishQuiz}
+                {shareQuiz}
 
 
             </CQPageTemplate>
@@ -162,7 +169,8 @@ export default class CQPublished extends React.Component {
 CQPublished.propTypes = {
     quizId: React.PropTypes.string.isRequired,
     assign: React.PropTypes.bool,
-    publish: React.PropTypes.bool
+    publish: React.PropTypes.bool,
+    share: React.PropTypes.bool
 };
                 // <div className="pricing">
                 //     Set pricing and marketplace options

@@ -115,6 +115,9 @@ var CQQuizzes = React.createClass({
         this.setState({selectedQuizzes});
     },
 
+    handleShare: function(quiz: Quiz){
+        router.setRoute(`/quiz/published/${quiz.uuid}/share`);
+    },
 
     handlePreview: function(quiz: Quiz){
         sessionStorage.setItem('mode', 'teacher');
@@ -229,12 +232,16 @@ var CQQuizzes = React.createClass({
                         <span className="fa fa-search"></span> Preview
                     </button>
 
+                    <button className="cq-quizzes__button--share" onClick={this.handleShare}>
+                        <span className="fa fa-share"></span> Share
+                    </button>
+
                     <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
                         <span className="fa fa-pencil"></span> Edit
                     </button>
 
                     <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
-                        <span className="fa fa-users"></span> Use quiz in class
+                        <span className="fa fa-users"></span> Use in class
                     </button>
 
                     <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>

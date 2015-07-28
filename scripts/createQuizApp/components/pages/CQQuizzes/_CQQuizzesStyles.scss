@@ -100,20 +100,10 @@
         }
 
     }
-    &__button--preview {
-        @extend %button-blue;
-    }
-    &__button--edit {
-        @extend %button-blue;
-    }
-
-    &__button--publish {
-        @extend %button-blue;
-
-    }
-
-    &__button--review {
-        @extend %button-blue;
-    }
+    &__button--preview { @extend %button-blue; }
+    &__button--share { @extend %button-blue; }
+    &__button--edit { @extend %button-blue; }
+    &__button--publish { @extend %button-blue; }
+    &__button--review { @extend %button-blue; }
 
 }
