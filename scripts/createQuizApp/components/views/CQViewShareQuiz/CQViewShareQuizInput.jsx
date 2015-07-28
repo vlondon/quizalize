@@ -8,13 +8,14 @@ var React = require('react');
 type State = {
     entries: Array<string>;
     inputEnabled: boolean;
-    value: number;
+    value: string;
     validEmails: Array<boolean>;
 }
 
 export default class CQViewShareQuizInput extends React.Component {
 
-    static state: State;
+    state: State;
+
     constructor(props : Object) {
         super(props);
 
@@ -29,7 +30,8 @@ export default class CQViewShareQuizInput extends React.Component {
         this.state = {
             entries: [],
             inputEnabled: true,
-            value: ''
+            value: '',
+            validEmails: []
         };
     }
 
@@ -47,6 +49,9 @@ export default class CQViewShareQuizInput extends React.Component {
         this.setState({
             value: ev.target.value
         });
+        var entries = this.state.entries.slice();
+        entries.push(ev.target.value);
+        this.props.onChange(entries);
     }
 
     handleKeyDown(ev : Object) {
@@ -160,5 +165,6 @@ export default class CQViewShareQuizInput extends React.Component {
 
 CQViewShareQuizInput.propTypes = {
     cid: React.PropTypes.number.isRequired,
-    question: React.PropTypes.object.isRequired
+    question: React.PropTypes.object.isRequired,
+    onChange: React.PropTypes.func
 };

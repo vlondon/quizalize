@@ -238,15 +238,17 @@ var QuizActions = {
 
     },
 
-    shareQuiz: function(quizId:string, quizName:string, emails:string, link:string){
+    shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string){
         var user:Object = UserStore.getUser();
+        var emails = emailList.join(';');
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
         var tokensComma = emails.split(',');
+        var quizId = quiz.uuid;
 
         var data: {email: string; quiz: string; emails?: Array<string>; link?: string } = {
             email: user.name,
-            quiz: quizName
+            quiz
         };
         if (tokensSpace.length > 1) {
             data.emails = tokensSpace;

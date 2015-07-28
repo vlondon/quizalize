@@ -118,7 +118,7 @@ export default class CQPublished extends React.Component {
                 quizId={this.props.quizId}/>
         );
 
-        shareQuiz = <CQViewShareQuiz/>;
+        shareQuiz = <CQViewShareQuiz quiz={this.getQuiz()}/>;
 
         if (!this.state.settings.published && !this.state.settings.originalQuizId) {
             publishQuiz = (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>);
