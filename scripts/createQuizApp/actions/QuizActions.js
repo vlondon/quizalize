@@ -246,7 +246,7 @@ var QuizActions = {
         var tokensComma = emails.split(',');
         var quizId = quiz.uuid;
 
-        var data: {email: string; quiz: string; emails?: Array<string>; link?: string } = {
+        var data: {email: string; quiz: Quiz; emails?: Array<string>; link?: string } = {
             email: user.name,
             quiz
         };
