@@ -1,8 +1,8 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var GroupActions = require('createQuizApp/actions/GroupActions');
-var router = require('createQuizApp/config/router');
 var UserApi = require('createQuizApp/actions/api/UserApi');
 
 var CQViewClassList = React.createClass({
