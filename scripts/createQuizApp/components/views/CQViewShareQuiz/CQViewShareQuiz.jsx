@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react';
+import router from './../../../config/router';
 import type {Quiz} from './../../../stores/QuizStore';
 import QuizActions from './../../../actions/QuizActions';
 
@@ -33,9 +34,19 @@ class CQViewShareQuiz extends React.Component {
 
     sendShare(){
         console.log('about to send', this.state.emailList);
-        QuizActions.shareQuiz(this.props.quiz, this.props.quiz.meta.name, this.state.emailList);
+        QuizActions.shareQuiz(this.props.quiz, this.props.quiz.meta.name, this.state.emailList)
+            .then(()=> {
+                swal({
+                    title: 'Quiz shared!',
+                    text: `We'll email your colleagues with a link so they can use it in Quizalize!`,
+                    type: 'success'
+                }, ()=>{
+                    router.setRoute(`/quiz/quizzes`);
+                });
 
-        //shareQuiz: function(quizId:string, quizName:string, emailList:Array<string>, link:string){
+            });
+
+
     }
 
 
@@ -54,7 +65,7 @@ class CQViewShareQuiz extends React.Component {
                         className={this.state.canSaveNewClass ? "btn btn-primary" : "btn btn-primary"}
                         type="submit"
                         onClick={this.sendShare}>
-                        Create and use in class
+                        Share the quiz
                     </button>
                 </div>
             </div>

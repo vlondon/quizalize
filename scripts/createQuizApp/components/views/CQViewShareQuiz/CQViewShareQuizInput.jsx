@@ -51,7 +51,10 @@ export default class CQViewShareQuizInput extends React.Component {
         });
         var entries = this.state.entries.slice();
         entries.push(ev.target.value);
-        this.props.onChange(entries);
+
+        var validEntries = entries.filter(this.checkEmail);
+
+        this.props.onChange(validEntries);
     }
 
     handleKeyDown(ev : Object) {

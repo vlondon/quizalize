@@ -58,7 +58,7 @@ exports.encryptQuiz = function(req, res) {
 };
 
 exports.decryptQuiz = function(req, res) {
-    res.send(getDecryptQuiz(req.body.code));
+    res.send(getDecryptQuiz(req.params.token));
 };
 
 function getZzishParam(parse) {
@@ -447,7 +447,8 @@ exports.shareQuiz = function(req, res){
 
     if (link === undefined) {
         logger.info('quiz', quiz);
-        link = "http://quizalize.com/quiz/quizzes/?s=" + quiz.meta.code;
+        var code = getEncryptQuiz(quiz.meta.profileId, quiz.uuid);
+        link = "http://quizalize.com/quiz/quizzes/s/" + code;
     }
     if (emails !== undefined) {
         var params = {

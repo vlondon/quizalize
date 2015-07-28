@@ -1,22 +1,36 @@
-var AppDispatcher           = require('createQuizApp/dispatcher/CQDispatcher');
-var router                  = require('createQuizApp/config/router');
-
-var TransactionApi          = require('createQuizApp/actions/api/TransactionApi');
-var TransactionConstants    = require('createQuizApp/constants/TransactionConstants');
+/* @flow */
 var Promise                 = require('es6-promise').Promise;
-var QuizActions             = require('createQuizApp/actions/QuizActions');
-var UserStore               = require('createQuizApp/stores/UserStore');
-var stripeSDK               = require('createQuizApp/config/stripeSDK');
-var priceFormat             = require('createQuizApp/utils/priceFormat');
-var UserApi                 = require('createQuizApp/actions/api/UserApi');
 
+var AppDispatcher           = require('./../dispatcher/CQDispatcher');
+var router                  = require('./../config/router');
+
+var TransactionApi          = require('./../actions/api/TransactionApi');
+var TransactionConstants    = require('./../constants/TransactionConstants');
+var QuizActions             = require('./../actions/QuizActions');
+var UserStore               = require('./../stores/UserStore');
+var stripeSDK               = require('./../config/stripeSDK');
+var priceFormat             = require('./../utils/priceFormat');
+var UserApi                 = require('./../actions/api/UserApi');
+
+import type {Quiz} from './../stores/QuizStore';
+
+type TransactionMeta = {
+    type: string;
+    quizId: string;
+    profileId: string;
+    price: number
+}
+type Transaction = {
+    meta: TransactionMeta;
+    _token?: Object;
+}
 var purchaseComplete = function(){
     swal({
         title: 'Purchase complete!',
         text: 'You will find the new content in your quizzes',
         type: 'success'
     }, ()=>{
-        QuizActions.loadQuizzes();
+
         router.setRoute('/quiz/quizzes');
     });
 };
@@ -33,11 +47,10 @@ var TransactionActions = {
             });
     },
 
-    saveNewTransaction: function(transaction){
-
+    saveNewTransaction: function(transaction : Transaction, showComplete? : boolean){
 
         return new Promise(function(resolve, reject){
-
+            showComplete = showComplete || false;
             var put = function(){
                 TransactionApi.put(transaction)
                     .then(function(){
@@ -46,7 +59,11 @@ var TransactionActions = {
                             actionType: TransactionConstants.TRANSACTION_NEW,
                             payload: transaction
                         });
-                        purchaseComplete();
+                        if (showComplete){
+                            purchaseComplete();
+                        }
+                        QuizActions.loadQuizzes();
+                        resolve();
                     })
                     .catch(reject);
             };
@@ -77,8 +94,31 @@ var TransactionActions = {
 
     },
 
+    getSharedQuiz: function(token : string){
+        // magic to convert quizCode to quizId
+        // var quiz = {};
+        console.log('getSharedQuizgetSharedQuiz');
+        TransactionApi.decrypt(token)
+            .then((info)=>{
+                console.log('getSharedQuizgetSharedQuiz', info);
+                var newTransaction : Transaction = {
+                    meta: {
+                        type: 'quiz',
+                        profileId: info.profileId,
+                        quizId: info.uuid,
+                        price: 0
+                    }
+                };
+                TransactionActions.saveNewTransaction(newTransaction)
+                    .then(()=>{
 
-    buyQuiz: function(quiz, free) {
+                        router.setRoute('/quiz/quizzes');
+                    });
+            });
+    },
+
+
+    buyQuiz: function(quiz : Quiz, free : number) {
         var price = 0;
         var priceTag = "free";
         if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
@@ -113,7 +153,7 @@ var TransactionActions = {
                         showConfirmButton: false
                     });
 
-                    TransactionActions.saveNewTransaction(newTransaction);
+                    TransactionActions.saveNewTransaction(newTransaction, true);
 
                 }, 300);
             }

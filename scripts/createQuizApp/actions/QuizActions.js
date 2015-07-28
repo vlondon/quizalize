@@ -3,6 +3,7 @@ import type {Quiz, QuizComplete} from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
+import AnalyticsActions from './AnalyticsActions';
 
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var QuizConstants       = require('./../constants/QuizConstants');
@@ -67,6 +68,16 @@ var QuizActions = {
             });
     },
 
+    loadQuizByCode: function(quizCode: string) : Promise{
+        return new Promise((resolve, reject)=>{
+
+        QuizApi.getQuizByCode(quizCode)
+            .then((quiz)=>{
+                resolve(quiz);
+            })
+            .catch(reject);
+        });
+    },
 
     loadQuiz: function(quizId:string){
 
@@ -238,7 +249,7 @@ var QuizActions = {
 
     },
 
-    shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string){
+    shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string) : Promise{
         var user:Object = UserStore.getUser();
         var emails = emailList.join(';');
         var tokensSpace = emails.split(' ');
@@ -266,7 +277,9 @@ var QuizActions = {
             data.link = link;
         }
 
-        QuizApi.shareQuiz(quizId, data);
+        AnalyticsActions.sendEvent('quiz', 'shared', quizId);
+
+        return QuizApi.shareQuiz(quizId, data);
 
     },
 

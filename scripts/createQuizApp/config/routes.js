@@ -231,6 +231,20 @@ var pagesArray: Array<Page> = [
             );
         }
     },
+
+    {
+        name: 'quizzesShare',
+        path: '/quiz/quizzes/s/:quizCode',
+        pathRegEx: /\/quiz\/quizzes\/s\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(quizCode){
+            React.render(
+                React.createElement(CQQuizzes, {quizCode}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
     {
         name: 'redirect',
         path: '/quiz/playh/:redirectURL',
@@ -428,6 +442,7 @@ var pages = {
     pathParams: {
         quizId: /([\w\-]+)/,
         appId: /([\w\-]+)/,
+        quizCode: /([\w\-]+)/,
         authorId: /([\w\-]+)/,
         questionIndex: /([\w\-]+)/,
         classCode: /([\w\-]+)/,

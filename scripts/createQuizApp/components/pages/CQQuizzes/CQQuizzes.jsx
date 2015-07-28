@@ -5,6 +5,7 @@ var React = require('react');
 
 var router          = require(`./../../../config/router`);
 
+var TransactionActions = require(`./../../../actions/TransactionActions`);
 var QuizActions     = require(`./../../../actions/QuizActions`);
 var QuizStore       = require(`./../../../stores/QuizStore`);
 var GroupStore      = require(`./../../../stores/GroupStore`);
@@ -28,7 +29,8 @@ type State = {
 var CQQuizzes = React.createClass({
 
     propTypes: {
-        appMode: React.PropTypes.bool
+        appMode: React.PropTypes.bool,
+        quizCode: React.PropTypes.string
     },
 
     getInitialState: function() {
@@ -40,6 +42,12 @@ var CQQuizzes = React.createClass({
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+
+        // let's check if there's a quiz refered
+        console.log('PROPS', this.props);
+        if (this.props.quizCode){
+            TransactionActions.getSharedQuiz(this.props.quizCode);
+        }
     },
 
     componentWillUnmount: function() {
