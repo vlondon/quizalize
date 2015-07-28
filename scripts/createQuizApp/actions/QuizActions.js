@@ -220,10 +220,10 @@ var QuizActions = {
                 UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             }
 
-            promise.then(()=>{
+            promise.then((savedQuiz)=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
-                    payload: quiz
+                    payload: savedQuiz
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
