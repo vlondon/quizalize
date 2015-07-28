@@ -16,7 +16,8 @@ import type {Quiz} from './../stores/QuizStore';
 
 type TransactionMeta = {
     type: string;
-    quizId: string;
+    quizId?: string;
+    appId?: string;
     profileId: string;
     price: number
 }
