@@ -3,6 +3,7 @@ import type {Quiz, QuizComplete} from './../stores/QuizStore';
 var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
+import AnalyticsActions from './AnalyticsActions';
 
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var QuizConstants       = require('./../constants/QuizConstants');
@@ -67,6 +68,16 @@ var QuizActions = {
             });
     },
 
+    loadQuizByCode: function(quizCode: string) : Promise{
+        return new Promise((resolve, reject)=>{
+
+        QuizApi.getQuizByCode(quizCode)
+            .then((quiz)=>{
+                resolve(quiz);
+            })
+            .catch(reject);
+        });
+    },
 
     loadQuiz: function(quizId:string){
 
@@ -220,10 +231,10 @@ var QuizActions = {
                 UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             }
 
-            promise.then(()=>{
+            promise.then((savedQuiz)=>{
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_ADDED,
-                    payload: quiz
+                    payload: savedQuiz
                 });
 
                 // TODO: Call loadQuizzes only if the quiz is new
@@ -238,15 +249,17 @@ var QuizActions = {
 
     },
 
-    shareQuiz: function(quizId:string, quizName:string, emails:string, link:string){
+    shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string) : Promise{
         var user:Object = UserStore.getUser();
+        var emails = emailList.join(';');
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
         var tokensComma = emails.split(',');
+        var quizId = quiz.uuid;
 
-        var data: {email: string; quiz: string; emails?: Array<string>; link?: string } = {
+        var data: {email: string; quiz: Quiz; emails?: Array<string>; link?: string } = {
             email: user.name,
-            quiz: quizName
+            quiz
         };
         if (tokensSpace.length > 1) {
             data.emails = tokensSpace;
@@ -264,7 +277,9 @@ var QuizActions = {
             data.link = link;
         }
 
-        QuizApi.shareQuiz(quizId, data);
+        AnalyticsActions.sendEvent('quiz', 'shared', quizId);
+
+        return QuizApi.shareQuiz(quizId, data);
 
     },
 

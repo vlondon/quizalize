@@ -58,7 +58,7 @@ exports.encryptQuiz = function(req, res) {
 };
 
 exports.decryptQuiz = function(req, res) {
-    res.send(getDecryptQuiz(req.body.code));
+    res.send(getDecryptQuiz(req.params.token));
 };
 
 function getZzishParam(parse) {
@@ -349,10 +349,17 @@ exports.postQuiz = function(req, res){
     zzish.postContent(profileId, QUIZ_CONTENT_TYPE, req.params.id, data.meta, data.payload, function(err){
         if (!err) {
             res.status = 200;
+
+            zzish.getPublicContent(QUIZ_CONTENT_TYPE, req.params.id, function(err2, quiz){
+                if (!handleError(err2, res)) {
+                    res.send(quiz);
+                }
+            });
+
         } else{
             res.status = 400;
+            res.send();
         }
-        res.send();
     });
 };
 
@@ -428,7 +435,7 @@ exports.publishToMarketplace = function(req,res) {
             res.send();
         });
     });
-}
+};
 
 //we need to have a class code now
 exports.shareQuiz = function(req, res){
@@ -439,14 +446,17 @@ exports.shareQuiz = function(req, res){
     var link = req.body.link;
 
     if (link === undefined) {
-        link = "http://quizalize.com/quiz#/share/" + quiz.code;
+        logger.info('quiz', quiz);
+        var code = getEncryptQuiz(quiz.meta.profileId, quiz.uuid);
+        link = "http://quizalize.com/quiz/quizzes/s/" + code;
     }
     if (emails !== undefined) {
         var params = {
             quiz: quiz.meta.name,
             from: emailFrom,
             link: link
-        }
+        };
+        logger.info('sending email', typeof emails, emails);
         email.sendEmailTemplate('team@quizalize.com', emails, 'You have been shared a quiz!', 'shared', params);
     }
     res.send(true);

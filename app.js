@@ -142,7 +142,7 @@ app.get('/search/apps', search.getApps);
 app.post('/search/apps', search.getApps);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
-app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
+app.get('/create/:profileId/decrypt/:token', quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);

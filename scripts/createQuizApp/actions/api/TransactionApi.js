@@ -4,7 +4,7 @@ var Promise = require('es6-promise').Promise;
 
 var AppApi = {
 
-    get: function(app){
+    get: function(){
         return new Promise(function(resolve, reject){
 
             // reject();
@@ -26,7 +26,7 @@ var AppApi = {
         });
     },
 
-    
+
     put: function(transaction){
         return new Promise(function(resolve, reject){
 
@@ -41,6 +41,25 @@ var AppApi = {
                     .end(function(error, res){
                         if (error) {
                             reject();
+                        } else {
+                            resolve(res.body);
+                        }
+                    });
+            }
+        });
+    },
+
+    decrypt: function(token){
+        return new Promise((resolve, reject)=>{
+            var uuid = localStorage.getItem('cqUuid');
+
+            if (!uuid) {
+                reject();
+            } else {
+                request.get(`/create/${uuid}/decrypt/${token}`)
+                    .end((error, res)=>{
+                        if (error){
+                            reject(error);
                         } else {
                             resolve(res.body);
                         }
