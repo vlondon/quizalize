@@ -69,6 +69,7 @@ app.get('/quiz/create', quiz.create);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
+app.post('/user/token', user.token);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);

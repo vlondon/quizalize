@@ -88,6 +88,36 @@ var UserActions = {
         });
     },
 
+    loginWithToken: function(data) {
+        return new Promise(function(resolve, reject){
+
+            UserApi.loginWithToken(data)
+                .then(function(user){
+                    // AnalyticsActions.triggerPixels();
+                    if (handleRedirect() === false){
+                        resolve(user);
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_IS_LOGGED,
+                            payload: user
+                        });
+                    }
+                })
+                .catch(function(error){
+                    reject(error);
+
+
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_LOGIN_ERROR,
+                        payload: error
+                    });
+                });
+
+            AppDispatcher.dispatch({
+                actionType: UserConstants.USER_LOGIN_REQUEST
+            });
+        });
+    },
+
     logout: function(){
 
         var logoutEnd = function(){

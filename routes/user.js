@@ -63,6 +63,20 @@ exports.details = function(req, res) {
     });
 };
 
+exports.token =  function(req, res) {
+    var token = req.body.token;
+
+    zzish.getCurrentUser(token, function(err, data) {
+        if (!err && typeof data === 'object') {
+            intercom.trackEvent(data.uuid, 'logged_in');
+            res.status(200).send(data);
+        }
+        else {
+            res.status(500).send(err);
+        }
+    });
+};
+
 exports.authenticate =  function(req, res) {
     var userEmail = req.body.email;
     var userPassword = req.body.password;

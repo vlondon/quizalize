@@ -110,6 +110,22 @@ var UserApi = {
         });
     },
 
+    loginWithToken: function(token){
+        return new Promise(function(resolve, reject){
+            request.post('/user/token/')
+                .send({token: token})
+                .end(function(error, res){
+                    if (error){
+                        reject(error);
+                    } else {
+                        // TODO Move this to a more convenient place
+                        localStorage.setItem('cqUuid', res.body.uuid);
+                        resolve(res.body);
+                    }
+                });
+        });
+    },
+
     register: function(data){
         return new Promise(function(resolve, reject){
             request.post('/user/register')
