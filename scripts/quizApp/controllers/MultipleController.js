@@ -88,7 +88,7 @@ angular.module('quizApp')
                                     self.alternatives[idx],
                                     self.answer,
                                     self.question,
-                                    (new Date()).getTime() - startTime,
+                                    (new Date()).getTime() - startTime - 2000,
                                     false);
             // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
             renderReactComponent();
