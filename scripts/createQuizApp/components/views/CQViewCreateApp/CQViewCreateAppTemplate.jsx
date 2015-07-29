@@ -76,7 +76,7 @@ var CQViewCreateAppTemplate = React.createClass({
         } else {
             style.position = 'relative';
         }
-        var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price)}`;
+        var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price, '$', 'us')}`;
         return (
             <div>
                 <div ref="cqApptemplate"></div>
@@ -90,7 +90,7 @@ var CQViewCreateAppTemplate = React.createClass({
 
                         <div className="cq-app__info">
                             <h2>{this.state.appInfo.meta.name}</h2>
-                            <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price)}</div>
+                            <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price, '$', 'us')}</div>
                             <button className="cq-app__button" onClick={this.handleBuy}>
                                 {buySentence}
                             </button>

@@ -89,7 +89,7 @@ var CQViewQuizMarketplaceOptions = React.createClass({
                                     onChange={this.handleChange}
                                     checked={selected}/>
                                 <label htmlFor={`price-${key}`}>
-                                    &nbsp;{priceFormat(price)}
+                                    &nbsp;{priceFormat(price, '$', 'us')}
                                 </label>
                             </div>
                         );

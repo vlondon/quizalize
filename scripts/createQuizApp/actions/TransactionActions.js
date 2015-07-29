@@ -124,7 +124,7 @@ var TransactionActions = {
         var priceTag = "free";
         if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
             price = quiz.meta.price;
-            priceTag = priceFormat(quiz.meta.price);
+            priceTag = priceFormat(quiz.meta.price, '$', 'us');
         }
         swal({
                 title: 'Confirm Purchase',
