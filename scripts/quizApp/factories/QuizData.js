@@ -595,7 +595,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         answerQuestion: function(idx, response, answer, questionName, duration){
 
             var question = currentQuiz.payload.questions[idx];
-            var questionDuration = question.duration || maxTime;
+            var questionDuration = question.duration || maxTime / 1000;
             console.log('currentQuiz,', currentQuiz);
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
