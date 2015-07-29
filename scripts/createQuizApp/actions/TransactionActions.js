@@ -9,8 +9,8 @@ var TransactionConstants    = require('./../constants/TransactionConstants');
 var QuizActions             = require('./../actions/QuizActions');
 var UserStore               = require('./../stores/UserStore');
 var stripeSDK               = require('./../config/stripeSDK');
-var priceFormat             = require('./../utils/priceFormat');
 var UserApi                 = require('./../actions/api/UserApi');
+import priceFormat from './../utils/priceFormat';
 
 import type {Quiz} from './../stores/QuizStore';
 
