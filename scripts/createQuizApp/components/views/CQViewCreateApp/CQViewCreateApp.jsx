@@ -82,12 +82,6 @@ export default class CQViewCreateApp extends React.Component {
 
         var app = this.getApp();
         var quizzes = QuizStore.getPersonalQuizzes();
-
-
-        if (quizzes){
-            quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
-        }
-
         var selectedQuizzes:Array<string> = app.payload.quizzes;
 
         return { app, quizzes, selectedQuizzes };

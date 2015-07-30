@@ -179,6 +179,7 @@ export default class CQApp extends React.Component {
                 onClose={this.handleDetailsClose}
                 quizId={this.state.quizDetails}/>);
         }
+        var description = this.state.appInfo ? this.state.appInfo.meta.description : '';
 
         if (this.state.appInfo && this.state.appInfo.meta){
             var quizzes = this.state.appInfo.extra ? this.state.appInfo.extra.quizzes :  [];
@@ -201,7 +202,7 @@ export default class CQApp extends React.Component {
 
                         </div>
                         <div className="cq-app__description">
-                            <p>{this.state.appInfo.meta.description}</p>
+                            <p>{description}</p>
                         </div>
 
                         <div className="cq-app__quizlist">
