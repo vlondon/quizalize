@@ -119,9 +119,7 @@ var CQPublic = React.createClass({
         if (this.state.showApps ){
             appGrid = (
                 <div>
-                    <h3 className='cq-public__header'>
-                        <i className="fa fa-archive"/> Apps
-                    </h3>
+                    
                     <CQAppGrid appsPerPage={appsPerPage}/>
                 </div>
             );
@@ -130,9 +128,7 @@ var CQPublic = React.createClass({
 
             quizList = (
                 <div>
-                    <h3 className='cq-public__header'>
-                        <i className="fa fa-th-large"/> Quizzes
-                    </h3>
+
                     <CQViewQuizList
                         isQuizInteractive={true}
                         isPaginated={true}
