@@ -129,7 +129,7 @@ export default class CQPublished extends React.Component {
             shareQuiz = undefined;
         }
 
-        if (this.props.publish === true){
+        if (this.props.published === true){
             classList = undefined;
             shareQuiz = undefined;
         }

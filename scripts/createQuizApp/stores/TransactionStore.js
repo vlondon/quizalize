@@ -3,10 +3,28 @@ import Store from './Store';
 
 import AppDispatcher from './../dispatcher/CQDispatcher';
 
+var defaultCurrency = 'uk';
 
+var us:Array<number> = [
+    0,
+    0.99,
+    1.99,
+    2.99,
+    3.99,
+    4.99,
+    5.99,
+    6.99,
+    7.99,
+    8.99,
+    9.99,
+    10.99,
+    11.99,
+    12.99,
+    13.99,
+    14.99
+];
 
-
-var _prices:Array<number> = [
+var uk:Array<number> = [
     0,
     0.79,
     1.49,
@@ -23,6 +41,8 @@ var _prices:Array<number> = [
     9.99
 ];
 
+var _prices = { uk, us };
+
 class TransactionStore extends Store {
 
     dispatchToken: ?number;
@@ -31,7 +51,13 @@ class TransactionStore extends Store {
     }
 
     getPrices():Array<number> {
-        return _prices.slice();
+        return _prices[defaultCurrency].slice();
+    }
+
+    getPriceInCurrency(amount : mixed, country : string) : number {
+        var amountNumber = Number(amount);
+        var index = _prices[defaultCurrency].indexOf(amountNumber);
+        return _prices[country][index];
     }
 }
 

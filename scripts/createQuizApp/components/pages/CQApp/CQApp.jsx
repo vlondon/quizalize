@@ -6,16 +6,17 @@ import AppStore from './../../../stores/AppStore';
 var TopicStore = require('./../../../stores/TopicStore');
 var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
 
+import priceFormat from './../../../utils/priceFormat';
 var TransactionActions = require('./../../../actions/TransactionActions');
 
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
 var UserStore = require('./../../../stores/UserStore');
-var UserApi      = require('./../../../actions/api/UserApi');
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {App} from './../../../stores/AppStore';
+
 
 
 var addClassName = function(el, className){
@@ -108,56 +109,7 @@ export default class CQApp extends React.Component {
                     }
                 });
             } else {
-
-
-
-                swal({
-                        title: 'Confirm Purchase',
-                        text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>free</b>`,
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'No',
-                        html: true
-                    }, (isConfirm) => {
-
-                    if (isConfirm){
-                        UserApi.trackEvent('buy_app', {uuid: app.uuid, name: app.meta.name});
-                        setTimeout(()=>{
-
-                            var newTransaction = {
-                                meta: {
-                                    type: 'app',
-                                    appId: app.uuid,
-                                    profileId: app.meta.profileId,
-                                    price: 0
-                                }
-                            };
-
-                            swal({
-                                title: 'Working…',
-                                text: `We're processing your order`,
-                                showConfirmButton: false
-                            });
-
-                            console.log('storing transaction', newTransaction);
-                            TransactionActions.saveNewTransaction(newTransaction)
-                                .then(function(){
-                                    swal.close();
-                                    setTimeout(()=>{
-                                        swal({
-                                            title: 'Purchase complete!',
-                                            text: 'You will find the new content in your quizzes',
-                                            type: 'success'
-                                        }, ()=>{
-                                            router.setRoute('/quiz/quizzes');
-                                        });
-                                    }, 400);
-                                });
-
-                        }, 400);
-                    }
-                });
-
+                TransactionActions.buyApp(app);
             }
         }
 
@@ -179,6 +131,7 @@ export default class CQApp extends React.Component {
                 onClose={this.handleDetailsClose}
                 quizId={this.state.quizDetails}/>);
         }
+        var description = this.state.appInfo ? this.state.appInfo.meta.description : '';
 
         if (this.state.appInfo && this.state.appInfo.meta){
             var quizzes = this.state.appInfo.extra ? this.state.appInfo.extra.quizzes :  [];
@@ -196,12 +149,12 @@ export default class CQApp extends React.Component {
                             <h2>{this.state.appInfo.meta.name}</h2>
                             <div className="cq-app__price">Free</div>
                             <button className="cq-app__button" onClick={this.handleBuy.bind(this)}>
-                                Use for free
+                                {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
                             </button>
 
                         </div>
                         <div className="cq-app__description">
-                            <p>{this.state.appInfo.meta.description}</p>
+                            <p>{description}</p>
                         </div>
 
                         <div className="cq-app__quizlist">

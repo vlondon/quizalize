@@ -21,9 +21,8 @@ var stripeCheckout = function(amount, email){
                 key: window.publicConfig.stripeKey,
                 amount: amount * 100,
                 email: email,
-                currency: 'GBP',
+                currency: 'USD',
                 token: function(token) {
-
                     console.log('we got token!', token);
                     resolve(token);
                     // Use the token to create the charge with a server-side script.

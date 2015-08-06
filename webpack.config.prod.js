@@ -35,7 +35,10 @@ module.exports = {
                 loader: 'babel?optional[]=runtime',
                 exclude: /(node_modules|bower_components)/
             },
-
+            {
+                test: /\.json$/,
+                loader: 'json'
+            },
             {
                 test: /\.es6\.js$/,
                 loader: 'babel?optional[]=runtime',
@@ -54,7 +57,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
+        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.json', '.scss'],
         modulesDirectories: ['node_modules', 'scripts'],
         alias: {
             'ie': 'component-ie'

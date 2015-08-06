@@ -1,6 +1,4 @@
 /* @flow */
-var Promise                 = require('es6-promise').Promise;
-
 var AppDispatcher           = require('./../dispatcher/CQDispatcher');
 var router                  = require('./../config/router');
 
@@ -9,10 +7,13 @@ var TransactionConstants    = require('./../constants/TransactionConstants');
 var QuizActions             = require('./../actions/QuizActions');
 var UserStore               = require('./../stores/UserStore');
 var stripeSDK               = require('./../config/stripeSDK');
-var priceFormat             = require('./../utils/priceFormat');
 var UserApi                 = require('./../actions/api/UserApi');
+var TransactionStore        = require('./../stores/TransactionStore');
+
+import priceFormat from './../utils/priceFormat';
 
 import type {Quiz} from './../stores/QuizStore';
+import type {App} from './../stores/AppStore';
 
 type TransactionMeta = {
     type: string;
@@ -48,7 +49,7 @@ var TransactionActions = {
             });
     },
 
-    saveNewTransaction: function(transaction : Transaction, showComplete? : boolean){
+    saveNewTransaction: function(transaction : Transaction, showComplete? : boolean) : Promise{
 
         return new Promise(function(resolve, reject){
             showComplete = showComplete || false;
@@ -75,7 +76,9 @@ var TransactionActions = {
                 swal.close();
                 var userEmail = UserStore.getUser().email;
                 console.log('creating stripe checkout', UserStore.getUser());
-                stripeSDK.stripeCheckout(transaction.meta.price, userEmail)
+                var localPrice = TransactionStore.getPriceInCurrency(transaction.meta.price, 'us');
+                console.log('localPrice', transaction.meta.price, localPrice);
+                stripeSDK.stripeCheckout(localPrice, userEmail)
                     .then(function(stripeToken){
                         transaction._token = stripeToken;
                         console.log('we got transaction', transaction);
@@ -124,7 +127,7 @@ var TransactionActions = {
         var priceTag = "free";
         if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
             price = quiz.meta.price;
-            priceTag = priceFormat(quiz.meta.price);
+            priceTag = priceFormat(quiz.meta.price, '$', 'us');
         }
         swal({
                 title: 'Confirm Purchase',
@@ -148,6 +151,48 @@ var TransactionActions = {
                         }
                     };
 
+                    swal({
+                        title: 'Working…',
+                        text: `We're processing your order`,
+                        showConfirmButton: false
+                    });
+
+                    TransactionActions.saveNewTransaction(newTransaction, true);
+
+                }, 300);
+            }
+        });
+    },
+
+    buyApp: function(app : App, free : ?boolean) {
+        var price = 0;
+        var priceTag = "free";
+        if ((app.meta.price && app.meta.price !== 0) && !free) {
+            price = app.meta.price;
+            priceTag = priceFormat(app.meta.price, '$', 'us');
+        }
+        swal({
+                title: 'Confirm Purchase',
+                text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>${priceTag}</b>`,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                html: true
+            }, (isConfirm) => {
+
+            if (isConfirm){
+                UserApi.trackEvent('buy_quiz', {uuid: app.uuid, name: app.meta.name});
+                setTimeout(()=>{
+
+                    var newTransaction = {
+                        meta: {
+                            type: 'app',
+                            appId: app.uuid,
+                            profileId: app.meta.profileId,
+                            price: price
+                        }
+                    };
+                    console.log('new transaction', newTransaction);
                     swal({
                         title: 'Working…',
                         text: `We're processing your order`,

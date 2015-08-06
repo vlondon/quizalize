@@ -31,7 +31,7 @@ var CQPublishQuiz = React.createClass({
 
             swal({
                 title: 'You have an incomplete profile',
-                text: `To publish to the marketplace you musth complete your profile.`,
+                text: `To publish to the marketplace you must complete your profile.`,
                 type: 'info',
                 confirmButtonText: 'Enter details',
                 showCancelButton: false
