@@ -45,6 +45,10 @@ module.exports = {
                 exclude: /(bower_components)/
             },
             {
+                test: /\.json$/,
+                loader: 'json'
+            },
+            {
                 test: /\.scss$/,
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version!sass?sourceMap&sourceMapContents=true'
             },
