@@ -54,8 +54,9 @@ class TransactionStore extends Store {
         return _prices[defaultCurrency].slice();
     }
 
-    getPriceInCurrency(amount : number, country : string) : number {
-        var index = _prices[defaultCurrency].indexOf(amount);
+    getPriceInCurrency(amount : mixed, country : string) : number {
+        var amountNumber = Number(amount);
+        var index = _prices[defaultCurrency].indexOf(amountNumber);
         return _prices[country][index];
     }
 }
