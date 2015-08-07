@@ -7,7 +7,6 @@ var QuizApi = {
     getQuizzes: function(){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
-            console.trace('getting quizzes', uuid);
 
             if (!uuid) {
                 reject();

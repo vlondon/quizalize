@@ -50,11 +50,11 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version!sass?sourceMap&sourceMapContents=true'
+                loader: 'style!css?sourceMap!autoprefixer-loader?{browsers:["last 2 version", "IE >= 9"]}!sass?sourceMap&sourceMapContents=true'
             },
             {
                 test: /\.css$/,
-                loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
+                loader: 'style!css?sourceMap!autoprefixer-loader?{browsers:["last 2 version", "IE >= 9"]}'
             },
             { test: /\.png$/, loader: "url-loader?limit=100000" },
             { test: /\.jpg$/, loader: "url-loader" }

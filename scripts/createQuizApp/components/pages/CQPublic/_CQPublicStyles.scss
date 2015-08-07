@@ -3,9 +3,8 @@
     $quizIcon: 40px;
 
     .cq-viewquizlist__quiz {
-        width: calc(50% - 5px);
-        float: left;
-        margin-right: 5px;
+        width: 50%;
+
     }
 
     @at-root #{&}__header {

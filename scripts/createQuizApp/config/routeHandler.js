@@ -90,7 +90,6 @@ var options = {
         renderPage(pages.pageNotFound);
     },
     after: function(next){
-        console.trace('AnalyticsActions', AnalyticsActions);
         AnalyticsActions.trackPageView();
         next();
     },

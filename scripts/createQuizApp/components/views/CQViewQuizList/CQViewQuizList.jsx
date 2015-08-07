@@ -63,7 +63,6 @@ export default class CQViewQuizList extends React.Component {
 
     componentDidMount() {
         sorter = new QuizSorter();
-        console.trace("adding TopicStore listener");
         TopicStore.addChangeListener(this.onChange);
     }
 
@@ -344,9 +343,9 @@ export default class CQViewQuizList extends React.Component {
 
         return (
 
-            <div className={`cq-viewquizlist ${this.props.className}`}>
+            <div>
                 {sort}
-                <ul>
+                <ul className={`cq-viewquizlist ${this.props.className}`}>
                     {this.state.quizzes.map((quiz) => {
                         if (quiz.uuid === 'new'){
                             return (
