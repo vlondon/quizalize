@@ -69,6 +69,7 @@ app.get('/quiz/create', quiz.create);
 app.post('/user/authenticate', user.authenticate);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
+app.post('/user/token', user.token);
 app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
@@ -142,7 +143,7 @@ app.get('/search/apps', search.getApps);
 app.post('/search/apps', search.getApps);
 
 app.get('/create/:profileId/quizzes/:id/encrypt', quiz.encryptQuiz);
-app.post('/create/:profileId/quizzes/:id/decrypt', quiz.decryptQuiz);
+app.get('/create/:profileId/decrypt/:token', quiz.decryptQuiz);
 
 app.post('/create/:profileId/quizzes/:id/share', quiz.shareQuiz);
 app.post('/create/:profileId/quizzes/:id/publish', quiz.publishQuiz);

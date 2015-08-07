@@ -3,13 +3,11 @@ var router = require('createQuizApp/config/router');
 
 var AppStore = require('createQuizApp/stores/AppStore');
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 
-var CQAppCreate = require('./CQAppCreate');
 var CQPagination = require('createQuizApp/components/utils/CQPagination');
 
-
+import priceFormat from './../../../utils/priceFormat';
 
 var CQAppGrid = React.createClass({
 
@@ -156,7 +154,7 @@ var CQAppGrid = React.createClass({
                                         </div>
 
                                         <div className="cq-appgrid__appprice">
-                                            {app.uuid !== 'new' ? 'Free' : ''}
+                                            {app.uuid !== 'new' ? priceFormat(app.meta.price, '$', 'us') : ''}
                                         </div>
                                     </div>
 

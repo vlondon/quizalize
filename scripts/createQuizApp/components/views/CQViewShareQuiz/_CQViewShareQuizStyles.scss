@@ -1,0 +1,78 @@
+.cq-sharequiz {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    background: $brand-color-grey-light;
+    border-radius: 25px;
+    min-height: 50px;
+    font-size: 18px;
+    color: #FFF;
+    padding: 10px 25px 30px;
+    box-shadow: 0 5px 10px rgba($brand-color-black, .4);
+
+    .list-tags {
+        @include clearfix();
+        border: 1px solid #AAA;
+        background-image: linear-gradient(#eeeeee 1%, #ffffff 15%);
+        list-style-type: none;
+        padding: 0 5px;
+        position: relative;
+        min-height: 35px;
+        .disabled {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(#999, .4);
+        }
+        input {
+            color: $brand-color-black;
+            font-size: 14px;
+            width: auto;
+        }
+
+
+
+    }
+    .list-entry {
+        font-size: 14px;
+        position: relative;
+        box-shadow: 0 0 2px white inset, 0 1px 0 rgba(#000, .05);
+        float: left;
+        color: $brand-color-black;
+        // border: 1px solid #aaa;
+        margin: 3px 5px 3px 0;
+        padding: 3px 5px;
+        border-radius: 3px;
+        background-color: #CCC;
+        // background-image: linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+
+        &.valid {
+            background: $brand-color-alt-3;
+        }
+        &.invalid {
+            background: $brand-color-red;
+            color: #FFF;
+        }
+        & .after {
+            content: 'x';
+            cursor: pointer;
+            // color: #999;
+            padding-left: 10px;
+            &:hover {
+                color: red;
+            }
+        }
+    }
+    .list-search {
+        float: left;
+        width: 80%;
+        input {
+            width: 100%;
+            outline: 0;
+            border: 0;
+            padding: 4px;
+            margin: 3px;
+        }
+    }
+}

@@ -13,6 +13,7 @@ var QuizActions  = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
+var UserActions  = require('createQuizApp/actions/UserActions');
 
 var CQProfile = React.createClass({
 
@@ -26,11 +27,28 @@ var CQProfile = React.createClass({
     },
 
     getInitialState: function() {
+        var foundToken = false;
         var newState =  this.getState();
-        newState.showQuizzes = true;
-        newState.user = UserStore.getUser();
-        var profileId = this.props.profileId || UserStore.getUser().uuid;
-        QuizActions.searchPublicQuizzes('', '', profileId);
+        if (location.search) {
+            var params = location.search.substring(1).split('&');
+            if (params) {
+                params.forEach(function(param) {
+                    var splitToken = param.split("=");
+                    if (splitToken[0] === "token") {
+                        UserActions.loginWithToken(splitToken[1]).then(function(user){
+                            router.setRoute("/quiz/quizzes");
+                            foundToken = true;
+                        });
+                    }
+                });
+            }
+        }
+        if (!foundToken) {
+            newState.showQuizzes = true;
+            newState.user = UserStore.getUser();
+            var profileId = this.props.profileId || UserStore.getUser().uuid;
+            QuizActions.searchPublicQuizzes('', '', profileId);
+        }
         return newState;
     },
 

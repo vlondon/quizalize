@@ -281,6 +281,7 @@ export default class CQViewQuizList extends React.Component {
         var publishButton = function(){};
         var select:Function = function(){};
         var sort;
+        var updated = function(){};
 
         var childActionHandler = function(child, quiz){
             if (child && child.length && child.length > 0) {
@@ -308,6 +309,10 @@ export default class CQViewQuizList extends React.Component {
                 if (quiz.extra && quiz.extra.author) {
                     return (<CQViewQuizAuthor author={quiz.extra.author}/>);
                 }
+            };
+        } else {
+            updated = function(quiz){
+                return `Updated ${moment(quiz.meta.updated).fromNow()}`;
             };
         }
 
@@ -376,7 +381,7 @@ export default class CQViewQuizList extends React.Component {
                                     <div className="cq-viewquizlist__quizextra">
                                         <br/>
                                         <small>
-                                            Updated {moment(quiz.meta.updated).fromNow()}
+                                            {updated(quiz)}
                                         </small>
                                     </div>
                                 </div>

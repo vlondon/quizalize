@@ -45,6 +45,10 @@ module.exports = {
                 exclude: /(bower_components)/
             },
             {
+                test: /\.json$/,
+                loader: 'json'
+            },
+            {
                 test: /\.scss$/,
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version!sass?sourceMap&sourceMapContents=true'
             },
@@ -57,7 +61,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
+        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.json', '.scss'],
         modulesDirectories: ['node_modules', 'scripts'],
         alias: {
             'ie': 'component-ie'
