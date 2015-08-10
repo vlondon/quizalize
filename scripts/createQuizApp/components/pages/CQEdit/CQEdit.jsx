@@ -1,115 +1,133 @@
+/* @flow */
 var React = require('react');
-var assign = require('object-assign');
-var router = require('createQuizApp/config/router');
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+var router = require('./../../../config/router');
+
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQQuestionList = require('./CQQuestionList');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQLink = require('./../../../components/utils/CQLink');
 
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
+import QuizStore from './../../../stores/QuizStore';
+import type {QuizComplete, Question} from './../../../stores/QuizStore';
+var QuizActions = require('./../../../actions/QuizActions');
 
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var UserApi             = require('createQuizApp/actions/api/UserApi');
+var TopicStore = require('./../../../stores/TopicStore');
+var UserApi = require('./../../../actions/api/UserApi');
 
-var CQEdit = React.createClass({
+type Props = {
+    quizId: ?string;
+    questionIndex: ?string;
+};
 
-    propTypes: {
-        quizId: React.PropTypes.string.isRequired
-    },
+type State = {
+    questionIndex?: number;
+    quiz: QuizComplete;
+    mode: string;
+    pristine: boolean;
+    saveEnabled: boolean;
+}
+
+export default class CQEdit extends React.Component {
+
+    props: Props;
+    state: State;
 
 
-    getInitialState: function() {
-
-        return {
+    constructor(props : Props) {
+        super(props);
+        this.state = {
             mode: 'Create',
             pristine: true,
-            saveEnabled: true
+            saveEnabled: true,
+            quiz: this._getQuiz()
         };
-    },
+        this.onChange = this.onChange.bind(this);
+    }
 
-    _getQuiz: function(props){
-        props = props || this.props;
-        var quiz = QuizStore.getQuiz(props.quizId);
+    _getQuiz() : QuizComplete {
+        var props = this.props;
+        var quiz;
+        quiz = QuizStore.getQuiz(props.quizId);
         return quiz;
-    },
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
         this.onChange();
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps : Props) {
         this.onChange(nextProps);
-    },
+    }
 
-    onChange: function(props){
+    onChange(props : ?Props){
         props = props || this.props;
         // TODO: we need to load the quiz without having to worry about
         // if the quiz store have finished loading
 
-        var newState = {
-            quiz: this._getQuiz(props)
-        };
+        if (props) {
 
-        if (newState.quiz){
-            newState.quiz.payload.questions = newState.quiz.payload.questions || [];
-            if (props.questionIndex) {
-                newState.questionIndex = parseInt(props.questionIndex, 10);
-            } else {
-                newState.questionIndex = undefined;
-            }
+            var quiz = this._getQuiz(props);
+            var questionIndex;
 
-            // Check if the questionIndex is in range
-            if (newState.questionIndex > newState.quiz.payload.questions.length){
-                console.warn('Trying to edit a question out of range');
-                setTimeout(function(){
-                    router.setRoute(`/quiz/create/${newState.quiz.uuid}`);
-                }, 550);
+
+            if (quiz){
+                quiz.payload.questions = quiz.payload.questions || [];
+                if (props.questionIndex) {
+                    questionIndex = parseInt(props.questionIndex, 10);
+                }
+
+                // Check if the questionIndex is in range
+                if (questionIndex && questionIndex > quiz.payload.questions.length){
+                    console.warn('Trying to edit a question out of range');
+                    setTimeout(function(){
+                        router.setRoute(`/quiz/create/${quiz.uuid}`);
+                    }, 550);
+                }
             }
+            this.setState({ quiz, questionIndex });
         }
-        this.setState(newState);
-    },
+    }
 
-    handleQuestion: function(question){
-
-        var updatedQuiz = assign({}, this.state.quiz);
+    handleQuestion(question : Question){
+        // question update
+        var quiz = Object.assign({}, this.state.quiz);
 
         var index = this.state.questionIndex;
 
-        if (index === undefined) {
+        if (index === undefined && this.state.quiz) {
             index = this.state.quiz.payload.questions.length;
         }
 
-
-        updatedQuiz.payload.questions[index] = question;
+        quiz.payload.questions[index] = question;
         this.setState({
-            quiz: updatedQuiz,
-            pristine: false
+            pristine: false,
+            quiz
         });
-    },
+    }
 
-    handleSaveNewQuestion: function(newQuestion){
-        // trying to discover question value;
-        console.log('about to save questions', newQuestion, this.state);
+    handleSaveNewQuestion(){
+        // new question
+
         var nextQuestion;
         if (this.state.questionIndex) {
             nextQuestion = this.state.questionIndex + 1;
-        } else {
+        } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
+            QuizActions.newQuiz(this.state.quiz).then( ()=> {
+                router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
+            });
         }
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
-        });
-    },
 
-    handleRemoveQuestion: function(question, event){
+    }
+
+    handleRemoveQuestion(question : Question, event : Object){
         event.stopPropagation();
         swal({
                 title: 'Confirm Delete',
@@ -120,42 +138,42 @@ var CQEdit = React.createClass({
             }, (isConfirm) => {
             if (isConfirm){
                 var questionIndex = this.state.quiz.payload.questions.indexOf(question);
-                var quiz = assign({}, this.state.quiz);
+                var quiz = Object.assign({}, this.state.quiz);
                 quiz.payload.questions = this.state.quiz.payload.questions;
                 quiz.payload.questions.splice(questionIndex, 1);
                 console.log('about to remove question', quiz.payload.questions);
                 this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
             }
         });
-    },
+    }
 
-    handleFinished: function(){
+    handleFinished(){
         UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
         });
-    },
+    }
 
-    handleSaveButton: function(){
+    handleSaveButton(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
             this.setState({pristine: true});
         });
-    },
+    }
 
-    handlePreview: function(){
+    handlePreview(){
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         });
-    },
+    }
 
-    enableDisableSave: function(saveEnabled){
+    enableDisableSave(saveEnabled: boolean){
         this.setState({saveEnabled});
-    },
+    }
 
-    render: function() {
+    render() {
 
         if (this.state.quiz){
 
@@ -224,7 +242,7 @@ var CQEdit = React.createClass({
             return (<div>Loading</div>);
         }
     }
-
-});
-
-module.exports = CQEdit;
+}
+CQEdit.propTypes = {
+    quizId: React.PropTypes.string.isRequired
+};

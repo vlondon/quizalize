@@ -1,6 +1,5 @@
 /* @flow */
 import type {Quiz, QuizComplete} from './../stores/QuizStore';
-var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
 import AnalyticsActions from './AnalyticsActions';

@@ -76,6 +76,34 @@ UserStore.addChangeListener(function(){
 
 });
 
+var QuizObject = function() : QuizComplete{
+    var quiz : QuizComplete = {
+        uuid: uuid.v4(),
+        meta: {
+            authorId: UserStore.getUserId(),
+            categoryId: null,
+            code: null,
+            created: null,
+
+            name: null,
+
+            profileId: null,
+            random: null,
+
+            updated: null,
+
+
+            price: 0,
+            published: null,
+        },
+        payload: {
+            questions: []
+        }
+
+    };
+    return quiz;
+};
+
 
 var QuestionObject = function(quiz){
 
@@ -120,10 +148,17 @@ class QuizStore extends Store {
 
     }
 
-    getQuiz(quizId): QuizComplete{
-        var fullQuiz = _fullQuizzes[quizId];
-        if (fullQuiz === undefined){
-            QuizActions.loadQuiz(quizId);
+    getQuiz(quizId?): QuizComplete{
+        var fullQuiz;
+
+        if (quizId){
+            fullQuiz = _fullQuizzes[quizId];
+            if (fullQuiz === undefined){
+                QuizActions.loadQuiz(quizId);
+                //create empty quiz?
+            }
+        } else {
+            fullQuiz = new QuizObject();
         }
         return fullQuiz;
     }

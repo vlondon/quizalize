@@ -14,7 +14,7 @@ type UserAttributes = {
     ageTaught?: string;
 };
 export type User = {
-    uuid?: string;
+    uuid: string;
     avatar: string;
     email: string;
     name: string;
@@ -22,7 +22,7 @@ export type User = {
 }
 
 var noUser:User = {
-    uuid: undefined,
+    uuid: '-1',
     avatar: '',
     email: '',
     name: '',
@@ -41,6 +41,10 @@ class UserStore extends Store {
 
     getUser():User {
         return _user;
+    }
+
+    getUserId(): string {
+        return _user.uuid;
     }
 
 

@@ -264,7 +264,7 @@ var pagesArray: Array<Page> = [
         needsLogin: true,
         renderer: function(){
             React.render(
-                React.createElement(CQCreate, null),
+                React.createElement(CQEdit, null),
                 document.getElementById('reactApp')
             );
         }
