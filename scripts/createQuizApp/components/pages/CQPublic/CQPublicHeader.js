@@ -1,4 +1,3 @@
-/* @flow */
 import React from 'react';
 import CQLink from './../../utils/CQLink';
 
