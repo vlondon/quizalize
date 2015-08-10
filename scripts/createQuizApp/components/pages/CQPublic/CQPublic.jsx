@@ -14,6 +14,7 @@ var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
+var CQPublicHeader = require('./CQPublicHeader');
 
 var CQPublic = React.createClass({
 
@@ -119,7 +120,7 @@ var CQPublic = React.createClass({
         if (this.state.showApps ){
             appGrid = (
                 <div>
-                    
+
                     <CQAppGrid appsPerPage={appsPerPage}/>
                 </div>
             );
@@ -148,7 +149,8 @@ var CQPublic = React.createClass({
             );
         }
         return (
-            <CQPageTemplate className="cq-container cq-public" showBanner={true}>
+            <CQPageTemplate className="cq-container cq-public">
+                <CQPublicHeader/>
                 {quizDetails}
 
                 <CQViewQuizFilter
