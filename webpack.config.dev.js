@@ -57,7 +57,8 @@ module.exports = {
                 loader: 'style!css?sourceMap!autoprefixer-loader?{browsers:["last 2 version", "IE >= 9"]}'
             },
             { test: /\.png$/, loader: "url-loader?limit=100000" },
-            { test: /\.jpg$/, loader: "url-loader" }
+            { test: /\.jpg$/, loader: "url-loader" },
+            { test: /\.svg$/, loader: "url-loader?limit=100000" }
         ]
     },
     resolve: {
