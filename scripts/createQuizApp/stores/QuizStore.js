@@ -15,21 +15,21 @@ type QuizCategory = {
     title: string;
 }
 type QuizMeta = {
-    authorId: string;
-    categoryId: string;
-    code: string;
+    authorId?: string;
+    categoryId?: string;
+    code?: string;
+    comment?: any;
     created: number;
     imageUrl?: string;
     name: string;
     originalQuizId?: string;
+    price?: number;
     profileId: string;
+    published?: string;
     random: boolean;
+    review?: any;
     subject?: string;
     updated: number;
-    review?: any;
-    comment?: any;
-    price: number;
-    published: string;
 };
 
 export type Question = {
@@ -76,25 +76,18 @@ UserStore.addChangeListener(function(){
 
 });
 
-var QuizObject = function() : QuizComplete{
+var QuizObject = function() : QuizComplete {
     var quiz : QuizComplete = {
         uuid: uuid.v4(),
         meta: {
-            authorId: UserStore.getUserId(),
-            categoryId: null,
-            code: null,
-            created: null,
-
-            name: null,
-
-            profileId: null,
-            random: null,
-
-            updated: null,
-
-
-            price: 0,
-            published: null,
+            categoryId: undefined,
+            featured: false,
+            live: false,
+            name: '',
+            profileId: UserStore.getUserId(),
+            random: false,
+            created: Date.now(),
+            updated: Date.now()
         },
         payload: {
             questions: []
@@ -149,16 +142,19 @@ class QuizStore extends Store {
     }
 
     getQuiz(quizId?): QuizComplete{
+        console.trace('getQuiz', quizId);
         var fullQuiz;
 
         if (quizId){
             fullQuiz = _fullQuizzes[quizId];
             if (fullQuiz === undefined){
+                console.log('quizId', quizId);
                 QuizActions.loadQuiz(quizId);
                 //create empty quiz?
             }
         } else {
             fullQuiz = new QuizObject();
+            _fullQuizzes[fullQuiz.uuid] = fullQuiz;
         }
         return fullQuiz;
     }

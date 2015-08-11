@@ -93,7 +93,7 @@ var QuizActions = {
             });
     },
 
-    loadPublicQuiz: function(quizId:string){
+    loadPublicQuiz: function(quizId:string) : Promise {
         return new Promise(function(resolve, reject){
             var quizPromise = QuizApi.getPublicQuiz(quizId);
 
@@ -113,7 +113,7 @@ var QuizActions = {
     },
 
 
-    saveReview: function(purchased:Quiz){
+    saveReview: function(purchased:Quiz) : Promise {
 
         return new Promise(function(resolve, reject){
 
@@ -164,7 +164,7 @@ var QuizActions = {
 
 
 
-    getPublicQuizzesForProfile: function(profileId: string){
+    getPublicQuizzesForProfile: function(profileId: string) : Promise {
 
         return new Promise(function(resolve, reject){
 
@@ -180,26 +180,27 @@ var QuizActions = {
     },
 
 
-    newQuiz: function(quiz:QuizComplete){
+    newQuiz: function(quiz:QuizComplete) : Promise {
 
+        debugger;
 
         var addOrCreateCategory = function(){
             var topicUuid;
             var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
             if (quiz.meta.categoryId === undefined) {
-                topicFound = TopicStore.getTopicByName("");
+                topicFound = TopicStore.getTopicByName('');
                 if (!topicFound) {
                     //we have an empty topic
                     topicFound = {
-                        uuid: "-1",
-                        name: ""
+                        uuid: '-1',
+                        name: ''
                     };
                 }
             }
             if (topicFound && topicFound.id === '-1'){
-                topicFound.uuid = "-1";
+                topicFound.uuid = '-1';
             }
-            if (topicFound && topicFound.uuid !== "-1") {
+            if (topicFound && topicFound.uuid !== '-1') {
                 topicUuid = topicFound.uuid;
             } else {
                 topicUuid = uuid.v4();
@@ -215,6 +216,7 @@ var QuizActions = {
         };
 
         return new Promise((resolve, reject) => {
+
             var updatedQuiz = !!quiz.uuid;
             quiz.uuid = quiz.uuid || uuid.v4();
             quiz.meta.categoryId = addOrCreateCategory();
@@ -226,6 +228,7 @@ var QuizActions = {
             quiz = createNewTopicsForQuiz(quiz);
 
             var promise = QuizApi.putQuiz(quiz);
+
             if (!updatedQuiz) {
                 UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             }
@@ -239,8 +242,9 @@ var QuizActions = {
                 // TODO: Call loadQuizzes only if the quiz is new
                 this.loadQuizzes();
                 resolve(quiz);
-            }, ()=> {
-                reject();
+            }, (error)=> {
+                console.error(error);
+                reject(error);
             });
 
 
@@ -248,7 +252,7 @@ var QuizActions = {
 
     },
 
-    shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string) : Promise{
+    shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string) : Promise {
         var user:Object = UserStore.getUser();
         var emails = emailList.join(';');
         var tokensSpace = emails.split(' ');
@@ -282,7 +286,7 @@ var QuizActions = {
 
     },
 
-    publishQuiz: function(quiz:Quiz, settings:Object) {
+    publishQuiz: function(quiz:Quiz, settings:Object)  {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
         QuizApi.publishQuiz(quiz);

@@ -32,29 +32,34 @@ export default class CQEdit extends React.Component {
     props: Props;
     state: State;
 
-
     constructor(props : Props) {
         super(props);
         this.state = {
             mode: 'Create',
             pristine: true,
             saveEnabled: true,
-            quiz: this._getQuiz()
+            quiz: this.getQuiz()
         };
         this.onChange = this.onChange.bind(this);
+        this.handleSaveNewQuestion = this.handleSaveNewQuestion.bind(this);
+        this.handleQuestion = this.handleQuestion.bind(this);
+        this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
+        this.handleFinished = this.handleFinished.bind(this);
+        this.handleSaveButton = this.handleSaveButton.bind(this);
+        this.handlePreview = this.handlePreview.bind(this);
+        this.enableDisableSave = this.enableDisableSave.bind(this);
+        this.getQuiz = this.getQuiz.bind(this);
     }
 
-    _getQuiz() : QuizComplete {
-        var props = this.props;
-        var quiz;
-        quiz = QuizStore.getQuiz(props.quizId);
+    getQuiz() : QuizComplete {
+        var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.quizId;
+        var quiz = QuizStore.getQuiz(quizId);
         return quiz;
     }
 
     componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-        this.onChange();
     }
 
     componentWillUnmount() {
@@ -67,13 +72,15 @@ export default class CQEdit extends React.Component {
     }
 
     onChange(props : ?Props){
+
         props = props || this.props;
+
         // TODO: we need to load the quiz without having to worry about
         // if the quiz store have finished loading
 
         if (props) {
 
-            var quiz = this._getQuiz(props);
+            var quiz = this.getQuiz(props);
             var questionIndex;
 
 
@@ -99,7 +106,11 @@ export default class CQEdit extends React.Component {
         // question update
         var quiz = Object.assign({}, this.state.quiz);
 
-        var index = this.state.questionIndex;
+
+        var index = 0;
+        if (this.state.questionIndex){
+            index = this.state.questionIndex;
+        }
 
         if (index === undefined && this.state.quiz) {
             index = this.state.quiz.payload.questions.length;
@@ -120,9 +131,10 @@ export default class CQEdit extends React.Component {
             nextQuestion = this.state.questionIndex + 1;
         } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
-            QuizActions.newQuiz(this.state.quiz).then( ()=> {
-                router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
-            });
+            console.log('state quiz', this.state.quiz, `/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
+            // QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            // });
         }
 
     }
@@ -244,5 +256,5 @@ export default class CQEdit extends React.Component {
     }
 }
 CQEdit.propTypes = {
-    quizId: React.PropTypes.string.isRequired
+    quizId: React.PropTypes.string
 };
