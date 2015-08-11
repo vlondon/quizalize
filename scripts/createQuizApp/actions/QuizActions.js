@@ -230,7 +230,7 @@ var QuizActions = {
             }
 
             quiz = createNewTopicsForQuiz(quiz);
-
+            delete quiz._temp;
             var promise = QuizApi.putQuiz(quiz);
 
             if (!updatedQuiz) {

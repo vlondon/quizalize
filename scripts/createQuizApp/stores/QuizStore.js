@@ -48,6 +48,7 @@ type QuizPayload = {
 }
 
 export type QuizComplete = {
+    _temp?: boolean;
     uuid: string;
     meta: QuizMeta;
     payload: QuizPayload;
@@ -151,7 +152,7 @@ class QuizStore extends Store {
                         fullQuiz = new QuizObject();
                         if (quizId){
                             fullQuiz.uuid = quizId;
-                            // fullQuiz.temp = true;
+                            fullQuiz._temp = true;
                             _fullQuizzes[fullQuiz.uuid] = fullQuiz;
                         }
                         this.emitChange();
