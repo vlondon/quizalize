@@ -149,9 +149,11 @@ class QuizStore extends Store {
                     .catch(()=>{
                         console.log('new quiz');
                         fullQuiz = new QuizObject();
-                        fullQuiz.uuid = quizId;
-                        // fullQuiz.temp = true;
-                        _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+                        if (quizId){
+                            fullQuiz.uuid = quizId;
+                            // fullQuiz.temp = true;
+                            _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+                        }
                         this.emitChange();
                     });
                 //create empty quiz?
