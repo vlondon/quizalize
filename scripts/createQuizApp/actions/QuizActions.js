@@ -78,19 +78,25 @@ var QuizActions = {
         });
     },
 
-    loadQuiz: function(quizId:string){
+    loadQuiz: function(quizId : string) : Promise {
+        return new Promise((resolve, reject)=>{
 
         var quizPromise = QuizApi.getQuiz(quizId);
 
         quizPromise
             .then((quiz) => {
-
-                AppDispatcher.dispatch({
-                    actionType: QuizConstants.QUIZ_LOADED,
-                    payload: quiz
-                });
-
-            });
+                if (quiz){
+                    AppDispatcher.dispatch({
+                        actionType: QuizConstants.QUIZ_LOADED,
+                        payload: quiz
+                    });
+                    resolve(quiz);
+                } else {
+                    reject();
+                }
+            })
+            .catch(reject);
+        });
     },
 
     loadPublicQuiz: function(quizId:string) : Promise {
@@ -181,8 +187,6 @@ var QuizActions = {
 
 
     newQuiz: function(quiz:QuizComplete) : Promise {
-
-        debugger;
 
         var addOrCreateCategory = function(){
             var topicUuid;

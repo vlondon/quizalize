@@ -59,10 +59,7 @@ export type Quiz = {
     _category?: QuizCategory;
 }
 
-
-
 var _quizzes: Array<Quiz> = [];
-
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _fullPublicQuizzes = {};
@@ -148,8 +145,15 @@ class QuizStore extends Store {
         if (quizId){
             fullQuiz = _fullQuizzes[quizId];
             if (fullQuiz === undefined){
-                console.log('quizId', quizId);
-                QuizActions.loadQuiz(quizId);
+                QuizActions.loadQuiz(quizId)
+                    .catch(()=>{
+                        console.log('new quiz');
+                        fullQuiz = new QuizObject();
+                        fullQuiz.uuid = quizId;
+                        // fullQuiz.temp = true;
+                        _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+                        this.emitChange();
+                    });
                 //create empty quiz?
             }
         } else {
