@@ -1,85 +1,102 @@
+/* @flow */
 var React = require('react');
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var AppActions = require('createQuizApp/actions/AppActions');
+var QuizActions = require('./../../../actions/QuizActions');
+var AppActions = require('./../../../actions/AppActions');
 
-var CQDropdown = require('createQuizApp/components/utils/CQDropdown');
+var CQDropdown = require('./../../../components/utils/CQDropdown');
+import TopicStore from './../../../stores/TopicStore';
 
-var CQviewQuizFilter = React.createClass({
+import type {Quiz} from './../../../stores/QuizStore';
+import type {Topic} from './../../../stores/TopicStore';
 
-    propTypes: {
-        onSearchInput: React.PropTypes.func,
-        onViewChange: React.PropTypes.func,
-        appEnabled: React.PropTypes.bool,
-        allTopics: React.PropTypes.bool,
-        profileId: React.PropTypes.string,
-        quizzes: React.PropTypes.array
-    },
+type Props = {
+    onSearchInput: Function;
+    onViewChange: Function;
+    appEnabled: boolean;
+    allTopics: boolean;
+    profileId: string;
+    quizzes: Array<Quiz>;
+};
 
-    getInitialState: function() {
+type State = {
+    searchString: ?string;
+    topics: Array<Topic>;
+    categorySelected: Object;
+    kindSelected: Object;
+
+};
+
+class CQViewQuizFilter extends React.Component {
+
+    props: Props;
+    state: State;
+
+    constructor(props : Props) {
+        super(props);
         var initialState = this.getState();
         initialState.searchString = undefined;
-        return initialState;
-    },
+        this.state = initialState;
 
-    componentDidMount: function() {
+        this.onChange = this.onChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+    }
+
+    componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    getState: function(){
+    getState() : State {
         var topics = TopicStore.getPublicSubjects();
         return {
             topics,
             searchString: '',
-            categorySelected: 'all',
-            kindSelected: 'all'
+            categorySelected: { value: 'all' },
+            kindSelected: { value: 'all' }
         };
-    },
+    }
 
-    handleSearch: function(ev){
+    handleSearch(ev : Object){
 
         this.setState({
             searchString: ev.target.value
         }, this.performSearch);
 
-    },
+    }
 
-    handleChange: function(category){
+    handleChange(category : Object ) {
 
         this.setState({
             categorySelected: category
         }, this.performSearch);
 
-    },
+    }
 
-    handleKind: function(kind){
+    handleKind(kind : Object){
         this.setState({
             kindSelected: kind
         });
 
         this.props.onViewChange(kind.value);
-    },
+    }
 
-    performSearch: function(){
+    performSearch(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
         console.log('searchign for', this.state.searchString, category, this.props.profileId);
         QuizActions.searchPublicQuizzes(this.state.searchString, category, this.props.profileId);
         AppActions.searchPublicApps(this.state.searchString, category, this.props.profileId);
 
-    },
+    }
 
-
-
-    render: function() {
+    render() : any {
 
         var mappedTopics = [];
         if (this.props.allTopics) {
@@ -92,13 +109,14 @@ var CQviewQuizFilter = React.createClass({
         else {
 
             if (this.state.topics.length > 0) {
-                var currentTopics = this.props.quizzes.map(quiz => {
+                var currentTopics : Array<Object> = this.props.quizzes.map(quiz => {
                     return { topicId: quiz.meta.categoryId };
                 });
                 var currentTopicsHash = {};
-                for (var i in currentTopics) {
-                    currentTopicsHash[currentTopics[i].topicId] = "A";
-                }
+                currentTopics.forEach(topic => {
+                    currentTopicsHash[topic.topicId] = "A";
+                });
+
                 mappedTopics = this.state.topics.map(topic => {
                     return { value: topic.uuid, name: topic.name };
                 });
@@ -201,6 +219,15 @@ var CQviewQuizFilter = React.createClass({
         );
     }
 
-});
+}
 
-module.exports = CQviewQuizFilter;
+
+CQViewQuizFilter.propTypes = {
+    onSearchInput: React.PropTypes.func,
+    onViewChange: React.PropTypes.func,
+    appEnabled: React.PropTypes.bool,
+    allTopics: React.PropTypes.bool,
+    profileId: React.PropTypes.string,
+    quizzes: React.PropTypes.array
+};
+module.exports = CQViewQuizFilter;

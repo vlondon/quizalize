@@ -7,7 +7,7 @@ var uuid            = require('node-uuid');
 var AppDispatcher   = require('./../dispatcher/CQDispatcher');
 var QuizConstants   = require('./../constants/QuizConstants');
 var QuizActions     = require('./../actions/QuizActions');
-var TopicStore      = require('./../stores/TopicStore');
+import TopicStore from './../stores/TopicStore';
 
 
 type QuizCategory = {
@@ -225,7 +225,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case QuizConstants.QUIZZES_LOADED:
             AppDispatcher.waitFor([
-                TopicStore.dispatchToken
+                TopicStore.token
             ]);
             _quizzes = action.payload.quizzes;
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
@@ -234,7 +234,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_LOADED:
             AppDispatcher.waitFor([
-                TopicStore.dispatchToken
+                TopicStore.token
             ]);
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;

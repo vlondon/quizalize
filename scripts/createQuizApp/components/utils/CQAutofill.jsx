@@ -2,7 +2,7 @@
 var React = require('react');
 var assign = require('object-assign');
 
-var TopicStore = require('./../../stores/TopicStore');
+import TopicStore from './../../stores/TopicStore';
 var TopicActions = require('./../../actions/TopicActions');
 
 

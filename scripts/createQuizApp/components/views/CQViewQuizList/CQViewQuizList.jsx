@@ -11,7 +11,7 @@ var CQViewQuizAuthor = require('./../../../components/views/CQViewQuizAuthor');
 var CQPagination = require('./../../../components/utils/CQPagination');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 var UserStore = require('./../../../stores/UserStore');
 
 

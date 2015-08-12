@@ -9,7 +9,7 @@ var CQLatexString = require('./../../../components/utils/CQLatexString');
 import QuizStore from './../../../stores/QuizStore';
 import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditDurationPicker from './CQEditDurationPicker';
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {

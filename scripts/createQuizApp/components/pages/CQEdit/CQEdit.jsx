@@ -11,7 +11,7 @@ import QuizStore from './../../../stores/QuizStore';
 import type {QuizComplete, Question} from './../../../stores/QuizStore';
 var QuizActions = require('./../../../actions/QuizActions');
 
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 var UserApi = require('./../../../actions/api/UserApi');
 
 type Props = {

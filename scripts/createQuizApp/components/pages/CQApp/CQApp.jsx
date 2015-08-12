@@ -3,7 +3,7 @@ var React = require('react');
 var router = require('./../../../config/router');
 
 import AppStore from './../../../stores/AppStore';
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
 
 import priceFormat from './../../../utils/priceFormat';

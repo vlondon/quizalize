@@ -20,7 +20,6 @@ var CQViewQuizPrice = React.createClass({
     },
 
     handleClick: function(ev){
-        console.log('ooyoyo', this.props);
         ev.stopPropagation();
         if (!UserStore.isLoggedIn()) {
             swal({
@@ -35,7 +34,7 @@ var CQViewQuizPrice = React.createClass({
                 }
             });
         } else {
-            TransactionActions.buyQuiz(this.props.quiz);
+                TransactionActions.buyQuiz(this.props.quiz);
         }
     },
 
