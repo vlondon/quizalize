@@ -1,63 +1,84 @@
+/* @flow */
 var React = require('react');
-var router = require('createQuizApp/config/router');
+var router = require('./../../../config/router');
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
 
 
 var CQAppGrid = require('./CQAppGrid');
-var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var CQViewQuizFilter = require('createQuizApp/components/views/CQViewQuizFilter');
-var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
-var CQViewQuizPrice = require('createQuizApp/components/utils/CQViewQuizPrice');
-
-var TransactionActions = require('createQuizApp/actions/TransactionActions');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-var AppStore = require('createQuizApp/stores/AppStore');
-var UserStore = require('createQuizApp/stores/UserStore');
+var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
+var CQViewQuizFilter = require('./../../../components/views/CQViewQuizFilter');
+var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
+var CQViewQuizPrice = require('./../../../components/utils/CQViewQuizPrice');
 var CQPublicHeader = require('./CQPublicHeader');
 
-var CQPublic = React.createClass({
+var TransactionActions = require('./../../../actions/TransactionActions');
 
-    getInitialState: function() {
-        return {
+import QuizStore from './../../../stores/QuizStore';
+import AppStore from './../../../stores/AppStore';
+import UserStore from './../../../stores/UserStore';
+
+import type {Quiz} from './../../../stores/QuizStore';
+import type {User} from './../../../stores/UserStore';
+
+type State = {
+    user: User;
+    quizzes: Array<Quiz>;
+    showApps: boolean;
+    showQuizzes: boolean;
+    quizDetails: ?string;
+};
+
+export default class CQPublic extends React.Component {
+
+    state: State;
+
+    constructor(props : Object) {
+        super(props);
+        this.state = {
             quizzes: QuizStore.getPublicQuizzes(),
             user: UserStore.getUser(),
             showApps: true,
-            showQuizzes: true
+            showQuizzes: true,
+            quizDetails: undefined
         };
+        this.onChange = this.onChange.bind(this);
+        this.handleBuy = this.handleBuy.bind(this);
+        this.handleViewChange = this.handleViewChange.bind(this);
+        this.handleDetails = this.handleDetails.bind(this);
+        this.handleDetailsClose = this.handleDetailsClose.bind(this);
+    }
 
-    },
-
-    componentDidMount: function() {
+    componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
         AppStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         QuizStore.removeChangeListener(this.onChange);
         AppStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    getState: function(){
+    getState(): Object {
         var quizzes = QuizStore.getPublicQuizzes();
         return { quizzes };
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    handlePreview: function(quiz){
+    handlePreview(quiz : Quiz){
         sessionStorage.setItem('mode', 'preview');
         window.open(`/app#/play/public/${quiz.uuid}`);
 
-    },
+    }
 
-    handleSet: function(quiz){
+    handleSet(quiz : Quiz){
         router.setRoute(`/quiz/published/${quiz.uuid}`);
-    },
+    }
 
-    handleBuy: function(quiz){
+    handleBuy(quiz : Quiz){
         console.log("should we buy????");
         if (!this.state.user) {
             swal({
@@ -74,9 +95,9 @@ var CQPublic = React.createClass({
         } else {
             TransactionActions.buyQuiz(quiz);
         }
-    },
+    }
 
-    handleViewChange: function(options){
+    handleViewChange(options: string){
         switch (options){
             case 'all':
                 this.setState({
@@ -97,17 +118,17 @@ var CQPublic = React.createClass({
                     showQuizzes: false
                 });
         }
-    },
+    }
 
-    handleDetails: function(quiz){
+    handleDetails(quiz: Quiz){
         this.setState({quizDetails: quiz.uuid});
-    },
+    }
 
-    handleDetailsClose: function(){
+    handleDetailsClose(){
         this.setState({quizDetails: undefined});
-    },
+    }
 
-    render: function() {
+    render() {
 
         var appGrid, quizList, quizDetails;
         var appsPerPage = this.state.showQuizzes ? 5 : 10;
@@ -120,7 +141,6 @@ var CQPublic = React.createClass({
         if (this.state.showApps ){
             appGrid = (
                 <div>
-
                     <CQAppGrid appsPerPage={appsPerPage}/>
                 </div>
             );
@@ -165,6 +185,4 @@ var CQPublic = React.createClass({
         );
     }
 
-});
-
-module.exports = CQPublic;
+}
