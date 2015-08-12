@@ -27,22 +27,28 @@ var QuizApi = {
         });
     },
 
-    searchQuizzes: function(search = '', categoryId, profileId){
-        console.log('searchQuizzes');
-        return new Promise(function(resolve, reject){
-            request.post(`/search/quizzes`)
-                .send({search, categoryId, profileId})
-                .end(function(error, res){
-                    if (error) {
-                        reject();
-                    } else {
-                        resolve(res.body);
-                    }
+    searchQuizzes: (function(){
+        var promises = {};
 
-                });
+        return function(search = '', categoryId, profileId){
+            var promise = promises[categoryId] || new Promise(function(resolve, reject){
+                request.post(`/search/quizzes`)
+                    .send({search, categoryId, profileId})
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
 
-        });
-    },
+                    });
+
+            });
+            console.log('searchQuizzes', promise, promises[categoryId]);
+            promises[categoryId] = promise;
+            return promise;
+        };
+    })(),
 
 
     getQuiz: (function(){

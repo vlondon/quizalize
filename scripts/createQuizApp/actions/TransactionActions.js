@@ -122,7 +122,7 @@ var TransactionActions = {
     },
 
 
-    buyQuiz: function(quiz : Quiz, free : number) {
+    buyQuiz: function(quiz : Quiz, free? : number) {
         var price = 0;
         var priceTag = "free";
         if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
