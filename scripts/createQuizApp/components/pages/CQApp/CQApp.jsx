@@ -147,9 +147,9 @@ export default class CQApp extends React.Component {
 
                         <div className="cq-app__info">
                             <h2>{this.state.appInfo.meta.name}</h2>
-                            <div className="cq-app__price">Free</div>
+
                             <button className="cq-app__button" onClick={this.handleBuy.bind(this)}>
-                                {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
+                                Get it for {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
                             </button>
 
                         </div>
