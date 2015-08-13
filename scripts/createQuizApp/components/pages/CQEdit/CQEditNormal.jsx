@@ -419,7 +419,7 @@ export default class CQEditNormal extends React.Component{
                                 ref='answerExplanation'
                                 onChange={this.handleChange.bind(this, 'answerExplanation', undefined)}
                                 onKeyDown={this.handleNext.bind(this, 'answerExplanation', undefined)}
-                                id="topic" type="text" placeholder="e.g. Barcelona has a population of 1,620,943" autofocus="true" tabIndex="6" className="form-control"/>
+                                id="topic" type="text" placeholder="e.g. As the capital of France, Paris is the seat of France's national government" autofocus="true" tabIndex="6" className="form-control"/>
                         </div>
                     </div>
                 </div>
