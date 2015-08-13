@@ -1,4 +1,4 @@
-/* @flow */
+
 import Store from './Store';
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
