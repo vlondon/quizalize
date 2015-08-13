@@ -9,7 +9,7 @@ var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var CQViewQuizPrice = React.createClass({
 
     propTypes: {
-        quiz: React.PropTypes.object.isRequired,
+        quiz: React.PropTypes.object,
         className: React.PropTypes.string
     },
 

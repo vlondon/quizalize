@@ -12,6 +12,7 @@ import type {Topic} from './../../../stores/TopicStore';
 type Props = {
     onSearchInput: Function;
     onViewChange: Function;
+    onCategoryChange: Function;
     appEnabled: boolean;
     allTopics: boolean;
     profileId: string;
@@ -22,7 +23,7 @@ type State = {
     searchString: ?string;
     topics: Array<Topic>;
     categorySelected: Object;
-    kindSelected: Object;
+    kindSelected: string;
 
 };
 
@@ -39,6 +40,8 @@ class CQViewQuizFilter extends React.Component {
 
         this.onChange = this.onChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleKind = this.handleKind.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -58,8 +61,8 @@ class CQViewQuizFilter extends React.Component {
         return {
             topics,
             searchString: '',
-            categorySelected: { value: 'all' },
-            kindSelected: { value: 'all' }
+            categorySelected: {value: 'all'},
+            kindSelected: 'all'
         };
     }
 
@@ -76,6 +79,7 @@ class CQViewQuizFilter extends React.Component {
         this.setState({
             categorySelected: category
         }, this.performSearch);
+        this.props.onCategoryChange(category);
 
     }
 
@@ -183,7 +187,7 @@ class CQViewQuizFilter extends React.Component {
             {
                 return (
                     <CQDropdown
-                        selected={this.state.categorySelected}
+                        selected={this.state.categorySelected.value}
                         values={mappedTopics}
                         onChange={this.handleChange}/>
                 );
@@ -209,6 +213,7 @@ class CQViewQuizFilter extends React.Component {
                             </div>
                         </div>
                     </div>*/}
+
                     {quizDropDown()}
                     {topicsDropDown()}
 
@@ -225,6 +230,7 @@ class CQViewQuizFilter extends React.Component {
 CQViewQuizFilter.propTypes = {
     onSearchInput: React.PropTypes.func,
     onViewChange: React.PropTypes.func,
+    onCategoryChange: React.PropTypes.func,
     appEnabled: React.PropTypes.bool,
     allTopics: React.PropTypes.bool,
     profileId: React.PropTypes.string,

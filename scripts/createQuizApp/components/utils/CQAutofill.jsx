@@ -375,5 +375,6 @@ CQAutofill.propTypes = {
 };
 
 CQAutofill.defaultProps = {
-    limit: 30
+    limit: 30,
+    onChange: function(){}
 };

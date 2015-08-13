@@ -11,6 +11,7 @@ var CQViewQuizFilter = require('./../../../components/views/CQViewQuizFilter');
 var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
 var CQViewQuizPrice = require('./../../../components/utils/CQViewQuizPrice');
 var CQPublicHeader = require('./CQPublicHeader');
+var CQLink = require('./../../../components/utils/CQLink');
 
 var TransactionActions = require('./../../../actions/TransactionActions');
 
@@ -27,6 +28,7 @@ type State = {
     showApps: boolean;
     showQuizzes: boolean;
     quizDetails: ?string;
+    currentCategory: Object;
 };
 
 export default class CQPublic extends React.Component {
@@ -40,13 +42,17 @@ export default class CQPublic extends React.Component {
             user: UserStore.getUser(),
             showApps: true,
             showQuizzes: true,
-            quizDetails: undefined
+            quizDetails: undefined,
+            currentCategory: {
+                value: 'all'
+            }
         };
         this.onChange = this.onChange.bind(this);
         this.handleBuy = this.handleBuy.bind(this);
         this.handleViewChange = this.handleViewChange.bind(this);
         this.handleDetails = this.handleDetails.bind(this);
         this.handleDetailsClose = this.handleDetailsClose.bind(this);
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
     }
 
     componentDidMount() {
@@ -120,6 +126,10 @@ export default class CQPublic extends React.Component {
         }
     }
 
+    handleCategoryChange(currentCategory : Object) {
+        this.setState({currentCategory});
+    }
+
     handleDetails(quiz: Quiz){
         this.setState({quizDetails: quiz.uuid});
     }
@@ -176,7 +186,14 @@ export default class CQPublic extends React.Component {
                 <CQViewQuizFilter
                     appEnabled={true}
                     onViewChange={this.handleViewChange}
+                    onCategoryChange={this.handleCategoryChange}
                     allTopics={true}/>
+
+                <CQLink href={`/quiz/create?c=${this.state.currentCategory.value}`}>
+                    <button className="cq-public__new-quiz">
+                        Create new Quiz
+                    </button>
+                </CQLink>
 
                 {appGrid}
                 {quizList}

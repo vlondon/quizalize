@@ -1,18 +1,21 @@
 /* @flow */
-var React = require('react');
+import React from 'react';
 
-var router = require('./../../../config/router');
+import router from './../../../config/router';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQQuestionList = require('./CQQuestionList');
-var CQLink = require('./../../../components/utils/CQLink');
+import CQPageTemplate from './../../../components/CQPageTemplate';
+import CQQuestionList from './CQQuestionList';
+import CQLink from './../../../components/utils/CQLink';
+import CQAutofill from './../../../components/utils/CQAutofill';
 
 import QuizStore from './../../../stores/QuizStore';
 import type {QuizComplete, Question} from './../../../stores/QuizStore';
-var QuizActions = require('./../../../actions/QuizActions');
+import QuizActions from './../../../actions/QuizActions';
 
 import TopicStore from './../../../stores/TopicStore';
-var UserApi = require('./../../../actions/api/UserApi');
+import UserApi from './../../../actions/api/UserApi';
+
+import urlParams from './../../../utils/urlParams';
 
 type Props = {
     quizId: ?string;
@@ -55,6 +58,14 @@ export default class CQEdit extends React.Component {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.quizId;
         var quiz = QuizStore.getQuiz(quizId);
         return quiz;
+    }
+
+    componentWillMount() {
+        var p = urlParams();
+        console.log('we got params!', p, this);
+        var quiz = this.state.quiz;
+        quiz.meta.categoryId = p.c;
+        this.setState({quiz});
     }
 
     componentDidMount() {
@@ -206,6 +217,12 @@ export default class CQEdit extends React.Component {
                         <p className="small">
                             Speed Tip: We found clicking is a pain - just hit enter to step through quickly
                         </p>
+                        <CQAutofill
+                            value={this.state.quiz.meta.categoryId}
+                            onChange={this.handleTopic}
+                            data={TopicStore.getTopicTree}
+                            placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
+                            tabIndex="2"/>
                     </div>
 
 

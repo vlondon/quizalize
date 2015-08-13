@@ -219,7 +219,7 @@ export default class CQViewQuizList extends React.Component {
         // obj = obj || this.state.savedSearch || undefined;
 
         quizzes = quizzes || this.props.quizzes.slice();
-        console.log('quizzes', quizzes);
+
         if (obj && obj.sort === 'name') {
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
@@ -260,7 +260,7 @@ export default class CQViewQuizList extends React.Component {
         //         return nameMatch || categoryMatch;
         //     });
         // }
-        console.log('quizzes end', quizzes);
+
         return quizzes;
     }
 

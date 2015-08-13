@@ -49,7 +49,7 @@ class UserStore extends Store {
 
 
     isLoggedIn(): boolean {
-        return (_user && _user.uuid) ? true : false;
+        return (_user && _user.uuid && _user.uuid !== '-1') ? true : false;
     }
 
 

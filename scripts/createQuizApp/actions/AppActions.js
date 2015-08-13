@@ -126,8 +126,6 @@ var AppActions = {
                     //     return false;
                     // });
 
-                    console.log("GOT SOME APPS", apps);
-
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,
                         payload: apps
