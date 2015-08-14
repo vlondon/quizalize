@@ -1,6 +1,5 @@
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
-var Promise = require('es6-promise').Promise;
 
 var GroupApi = {
 

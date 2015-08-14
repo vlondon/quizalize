@@ -68,7 +68,6 @@ class TopicStore extends Store {
     token: string;
 
     getPublicSubjects() : Array<Topic> {
-        console.info('_subjects', _subjects);
         return _subjects;
     }
 

@@ -1,6 +1,5 @@
 /* @flow */
 var React = require('react');
-var assign = require('object-assign');
 
 import TopicStore from './../../stores/TopicStore';
 var TopicActions = require('./../../actions/TopicActions');
@@ -57,7 +56,7 @@ export default class CQAutofill extends React.Component {
     }
 
     getState():State{
-        var newState = assign({}, this.state);
+        var newState = Object.assign({}, this.state);
 
         var fillAutoFill = function(array, prefix){
             var result = [];
@@ -77,11 +76,14 @@ export default class CQAutofill extends React.Component {
             return result;
         };
         newState.topics = this.props.data();
+
         newState.topicsAutofill = fillAutoFill(newState.topics);
 
         var selected;
         if (this.props.value){
             selected = newState.topicsAutofill.filter(t => t.uuid === this.props.value)[0];
+
+            console.log('selected??????', selected, newState.topicsAutofill);
         }
         newState.searchString = selected ? selected.name : undefined;
         return newState;

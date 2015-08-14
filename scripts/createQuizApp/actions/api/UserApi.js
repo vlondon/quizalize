@@ -1,5 +1,4 @@
 var request = require('superagent');
-var Promise = require('es6-promise').Promise;
 
 var UserApi = {
 

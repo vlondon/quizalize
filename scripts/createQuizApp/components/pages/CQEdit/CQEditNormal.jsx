@@ -2,7 +2,6 @@
 import type { Quiz, Question } from './../../../stores/QuizStore';
 
 var React = require('react');
-var assign = require('object-assign');
 
 var CQLatexString = require('./../../../components/utils/CQLatexString');
 
@@ -139,7 +138,7 @@ export default class CQEditNormal extends React.Component{
 
     handleChange (property : string, index? : number, event : Object) {
 
-        var newQuestionState = assign({}, this.state.question);
+        var newQuestionState = Object.assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
         } else {
@@ -157,7 +156,7 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleDuration(duration : number){
-        var question = assign({}, this.state.question);
+        var question = Object.assign({}, this.state.question);
         var canBeSaved = this.canBeSaved(question);
         question.duration = duration;
         console.log('handleDuration', question, duration);
@@ -174,7 +173,7 @@ export default class CQEditNormal extends React.Component{
 
     handleTopic (topicId: string) {
         console.log('we got new topic', topicId);
-        var newQuestionState = assign({}, this.state.question);
+        var newQuestionState = Object.assign({}, this.state.question);
         newQuestionState.topicId = topicId;
 
         this.props.onChange(newQuestionState);
@@ -193,7 +192,7 @@ export default class CQEditNormal extends React.Component{
 
     handleCheckbox (property : string) {
 
-        var question = assign({}, this.state.question);
+        var question = Object.assign({}, this.state.question);
         question[property] = !this.state.question[property];
 
         var canBeSaved = this.canBeSaved(question);

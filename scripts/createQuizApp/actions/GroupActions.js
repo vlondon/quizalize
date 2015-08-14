@@ -1,9 +1,6 @@
 var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
 var GroupConstants      = require('createQuizApp/constants/GroupConstants');
 var GroupApi            = require('createQuizApp/actions/api/GroupApi');
-var Promise             = require('es6-promise').Promise;
-var assign              = require('object-assign');
-
 
 var GroupActions = {
 
@@ -71,7 +68,7 @@ var GroupActions = {
                 code
             };
 
-            var data = assign({}, settings, dataToSend);
+            var data = Object.assign({}, settings, dataToSend);
 
             GroupApi.publishAssignment(quizId, data)
                 .then((response) => {

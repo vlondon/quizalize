@@ -3,7 +3,6 @@ var UserConstants       = require('createQuizApp/constants/UserConstants');
 var UserApi             = require('createQuizApp/actions/api/UserApi');
 var urlParams           = require('createQuizApp/utils/urlParams');
 import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
-var Promise             = require('es6-promise').Promise;
 
 
 var handleRedirect = function(){
@@ -15,7 +14,6 @@ var handleRedirect = function(){
     return false;
 };
 
-console.log('AnalyticsActions', AnalyticsActions);
 
 var UserActions = {
 

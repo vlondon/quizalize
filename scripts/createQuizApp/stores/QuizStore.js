@@ -166,6 +166,16 @@ class QuizStore extends Store {
         return fullQuiz;
     }
 
+    getOwnedQuizByOriginalQuizId(quizId: string) : ?Quiz{
+        var ownedQuiz = _quizzes.filter( q => q.meta.originalQuizId === quizId);
+        if (ownedQuiz.length > 0){
+            console.log('do I own the quiz????????', ownedQuiz);
+            return ownedQuiz[0];
+
+        }
+
+    }
+
     getPublicQuiz(quizId): QuizComplete{
         var fullPublicQuiz = _fullPublicQuizzes[quizId];
         if (fullPublicQuiz === undefined){

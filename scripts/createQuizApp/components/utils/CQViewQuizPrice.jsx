@@ -39,9 +39,15 @@ var CQViewQuizPrice = React.createClass({
     },
 
     render: function() {
+        var price;
+        if (this.props.quiz.meta.price === 0){
+            price = 'Play in class';
+        } else {
+            price = 'Classroom version ' + priceFormat(this.props.quiz.meta.price, '$', 'us');
+        }
         return (
             <span className={this.props.className} onClick={this.handleClick}>
-                {priceFormat(this.props.quiz.meta.price, '$', 'us')}
+                {price}
             </span>
         );
     }

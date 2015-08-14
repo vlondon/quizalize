@@ -1,7 +1,6 @@
 /* @flow */
 // import type App from './../stores/AppStore';
 
-var Promise             = require('es6-promise').Promise;
 var uuid                = require('node-uuid');
 
 var router              = require('./../config/router');
@@ -44,7 +43,7 @@ var AppActions = {
             .then(()=> this.loadApps() );
     },
 
-    saveNewApp: function(app:Object, appIcon:?Object){
+    saveNewApp: function(app:Object, appIcon:?Object) : Promise {
         if (!app.uuid) {
             app.uuid = uuid.v4();
             UserApi.trackEvent('new_app', {uuid: app.uuid, name: app.meta.name});

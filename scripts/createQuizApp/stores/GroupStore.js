@@ -3,14 +3,13 @@ var GroupConstants = require('createQuizApp/constants/GroupConstants');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 
 var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 
 var storeInit = false;
 var _groups = [];
 var _groupsContent = [];
 
-var GroupStore = assign({}, EventEmitter.prototype, {
+var GroupStore = Object.assign({}, EventEmitter.prototype, {
 
     getGroups: function() {
         return _groups;

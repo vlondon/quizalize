@@ -24,7 +24,6 @@ var CQDropdown = React.createClass({
         var getNameFormId = (id) => {
 
             if (this.props.values && id) {
-                console.log('getNameFormId', JSON.parse(JSON.stringify(this.props.values)), id);
                 var values = this.props.values.filter(v=> v.value === id);
                 if (values.length > 0){
                     return values[0].name;

@@ -1,6 +1,4 @@
 /* @flow */
-import {Promise}             from 'es6-promise';
-
 import AppDispatcher       from './../dispatcher/CQDispatcher';
 import AnalyticsConstants  from './../constants/AnalyticsConstants';
 
@@ -24,9 +22,7 @@ export var trackPageView = function() {
 
 class AnalyticsActions {
 
-    constructor(){
-        console.info('new AnalyticsActions instance');
-    }
+
 
 
     sendEvent(category: string, action: string, label: string){
@@ -46,7 +42,7 @@ class AnalyticsActions {
     }
 
 
-    triggerPixels(){
+    triggerPixels() : Promise {
         return new Promise(function(resolve){
 
             AppDispatcher.dispatch({
@@ -121,5 +117,5 @@ class AnalyticsActions {
     }
 }
 var instanceAnalyticsActions = new AnalyticsActions();
-console.log('instanceAnalyticsActions', instanceAnalyticsActions, instanceAnalyticsActions.triggerPixels);
+
 export default instanceAnalyticsActions;

@@ -12,7 +12,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
-        vendor: ['fastclick', 'react', 'superagent', 'object-assign']
+        vendor: ['fastclick', 'react', 'superagent']
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),

@@ -1,6 +1,5 @@
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
-var Promise = require('es6-promise').Promise;
 
 var QuizApi = {
 
@@ -11,7 +10,7 @@ var QuizApi = {
             if (!uuid) {
                 reject();
             } else {
-                console.log('we are loading');
+
                 request.get(`/create/${uuid}/quizzes/`)
                     .use(noCache)
                     .end(function(error, res){
@@ -44,7 +43,6 @@ var QuizApi = {
                     });
 
             });
-            console.log('searchQuizzes', promise, promises[categoryId]);
             promises[categoryId] = promise;
             return promise;
         };
@@ -193,7 +191,6 @@ var QuizApi = {
     putQuiz: function(quiz){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
-            console.log("PUTTING QUIZ");
             quiz.meta.profileId = uuid;
             if (!uuid) {
                 reject();

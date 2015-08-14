@@ -13,7 +13,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
-        vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent', 'object-assign']
+        vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent']
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),

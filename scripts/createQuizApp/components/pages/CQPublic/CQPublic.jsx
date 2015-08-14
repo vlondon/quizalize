@@ -170,8 +170,9 @@ export default class CQPublic extends React.Component {
                         sortBy="time">
 
                         <span className='cq-public__button' onClick={this.handlePreview}>
-                            Preview
+                            Play
                         </span>
+                        
                         <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
 
                     </CQViewQuizList>

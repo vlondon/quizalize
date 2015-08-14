@@ -62,11 +62,15 @@ export default class CQEdit extends React.Component {
 
     componentWillMount() {
         var p = urlParams();
-        console.log('we got params!', p, this);
-        var quiz = this.state.quiz;
-        quiz.meta.categoryId = p.c;
-        this.setState({quiz});
+        if (this.state.quiz && this.state.quiz.meta.categoryId === undefined && p.c) {
+            var quiz = this.state.quiz;
+            quiz.meta.categoryId = p.c;
+
+            this.setState({quiz});
+        }
     }
+
+
 
     componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
@@ -97,8 +101,11 @@ export default class CQEdit extends React.Component {
 
             if (quiz){
                 quiz.payload.questions = quiz.payload.questions || [];
+
                 if (props.questionIndex) {
                     questionIndex = parseInt(props.questionIndex, 10);
+                } else if (quiz.payload.questions.length === 0 && this.state.questionIndex === undefined){
+                    questionIndex = 0;
                 }
 
                 // Check if the questionIndex is in range
