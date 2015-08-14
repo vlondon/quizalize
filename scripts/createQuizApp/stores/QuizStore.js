@@ -171,7 +171,6 @@ class QuizStore extends Store {
         if (ownedQuiz.length > 0){
             return ownedQuiz[0];
         }
-
     }
 
     getPublicQuiz(quizId): QuizComplete{

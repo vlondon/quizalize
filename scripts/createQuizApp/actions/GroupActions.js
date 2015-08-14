@@ -45,6 +45,9 @@ var GroupActions = {
                 });
         } else {
             console.log('a class already exists');
+            setTimeout(function(){
+                router.setRoute(`/quiz/published/${quizId}/assign`);
+            }, 510);
         }
     },
 

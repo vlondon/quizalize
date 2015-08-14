@@ -41,23 +41,18 @@ class CQAssignQuiz extends React.Component {
 
     onChange(){
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.marketplaceQuizId);
-        var groups = GroupStore.getGroups();
-        console.log('Groups', groups);
+
         var init = this.state.init;
         if (quiz && init === false){
             init = true;
             GroupActions.createFirstAssignment(quiz.uuid);
         }
 
-
-        this.setState({quiz, init});
     }
 
     render () {
         return (
-            <CQPageTemplate>
-                Yo
-            </CQPageTemplate>
+            <CQPageTemplate/>
         );
     }
 }
