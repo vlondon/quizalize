@@ -1,17 +1,17 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import router from './../../../config/router';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
+import CQPageTemplate from './../../../components/CQPageTemplate';
 
 
-var CQAppGrid = require('./CQAppGrid');
-var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
-var CQViewQuizFilter = require('./../../../components/views/CQViewQuizFilter');
-var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
-var CQViewQuizPrice = require('./../../../components/utils/CQViewQuizPrice');
-var CQPublicHeader = require('./CQPublicHeader');
-var CQLink = require('./../../../components/utils/CQLink');
+import CQAppGrid from './CQAppGrid';
+import CQViewQuizList from './../../../components/views/CQViewQuizList';
+import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
+import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
+import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
+import CQPublicHeader from './CQPublicHeader';
+import CQLink from './../../../components/utils/CQLink';
 
 var TransactionActions = require('./../../../actions/TransactionActions');
 
@@ -172,7 +172,7 @@ export default class CQPublic extends React.Component {
                         <span className='cq-public__button' onClick={this.handlePreview}>
                             Play
                         </span>
-                        
+
                         <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
 
                     </CQViewQuizList>
