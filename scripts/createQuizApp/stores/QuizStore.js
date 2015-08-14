@@ -169,9 +169,7 @@ class QuizStore extends Store {
     getOwnedQuizByOriginalQuizId(quizId: string) : ?Quiz{
         var ownedQuiz = _quizzes.filter( q => q.meta.originalQuizId === quizId);
         if (ownedQuiz.length > 0){
-            console.log('do I own the quiz????????', ownedQuiz);
             return ownedQuiz[0];
-
         }
 
     }

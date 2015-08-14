@@ -2,6 +2,8 @@
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var GroupConstants      = require('./../constants/GroupConstants');
 var GroupApi            = require('./../actions/api/GroupApi');
+import GroupStore from './../stores/GroupStore';
+import router from './../config/router';
 
 var GroupActions = {
 
@@ -26,7 +28,24 @@ var GroupActions = {
                 });
             });
 
+    },
 
+    createFirstAssignment: function(quizId : string){
+
+        // make sure we don't have any class created:
+        var groups = GroupStore.getGroups();
+        if (groups.length === 0){
+
+            this.publishNewAssignment(quizId, 'Your first class')
+                .then(classResponse => {
+                    console.log('class', classResponse);
+                    setTimeout(function(){
+                        router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`);
+                    }, 510);
+                });
+        } else {
+            console.log('a class already exists');
+        }
     },
 
     unpublishAssignment: function(quizId: string, groupCode : string){

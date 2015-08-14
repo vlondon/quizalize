@@ -5,12 +5,14 @@ import CQPageTemplate from './../../../components/CQPageTemplate';
 import QuizStore from './../../../stores/QuizStore';
 import GroupStore from './../../../stores/GroupStore';
 import type { Quiz } from './../../../stores/QuizStore';
+import GroupActions from './../../../actions/GroupActions';
 
 type Props = {
     marketplaceQuizId: string;
 }
 type State = {
     quiz: ?Quiz;
+    init: boolean;
 }
 
 class CQAssignQuiz extends React.Component {
@@ -21,8 +23,9 @@ class CQAssignQuiz extends React.Component {
     constructor(props: Props){
         super(props);
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(props.marketplaceQuizId);
+        var init = false;
         console.log('QUIZ', quiz);
-        this.state = { quiz };
+        this.state = { quiz, init };
         this.onChange = this.onChange.bind(this);
     }
 
@@ -40,9 +43,14 @@ class CQAssignQuiz extends React.Component {
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.marketplaceQuizId);
         var groups = GroupStore.getGroups();
         console.log('Groups', groups);
+        var init = this.state.init;
+        if (quiz && init === false){
+            init = true;
+            GroupActions.createFirstAssignment(quiz.uuid);
+        }
 
 
-        this.setState({quiz});
+        this.setState({quiz, init});
     }
 
     render () {

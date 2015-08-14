@@ -168,7 +168,7 @@ var TransactionActions = {
             UserApi.trackEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             TransactionActions.saveNewTransaction(newTransaction, false).then(()=>{
                 // TODO : Wrong uuid
-                router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
+                router.setRoute(`/quiz/multi/${quiz.uuid}`);
             });
         }
 
