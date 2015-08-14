@@ -20,6 +20,7 @@ var CQPublishedInfo     = require('./../components/pages/CQPublishedInfo');
 var CQSettings          = require('./../components/pages/CQSettings');
 var CQApp               = require('./../components/pages/CQApp');
 var CQYourApps          = require('./../components/pages/CQYourApps');
+var CQAssignQuiz        = require('./../components/pages/CQAssignQuiz');
 
 export type Page = {
     name: string;
@@ -345,6 +346,20 @@ var pagesArray: Array<Page> = [
             );
         }
     },
+
+    {
+        name: 'multi',
+        path: '/quiz/multi/:quizId',
+        pathRegEx: /\/quiz\/multi\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(marketplaceQuizId: string){
+            React.render(
+                React.createElement(CQAssignQuiz, {marketplaceQuizId}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
 
     {
         name: 'published',

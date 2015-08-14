@@ -1,6 +1,7 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var GroupConstants      = require('createQuizApp/constants/GroupConstants');
-var GroupApi            = require('createQuizApp/actions/api/GroupApi');
+/* @flow */
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var GroupConstants      = require('./../constants/GroupConstants');
+var GroupApi            = require('./../actions/api/GroupApi');
 
 var GroupActions = {
 
@@ -28,7 +29,7 @@ var GroupActions = {
 
     },
 
-    unpublishAssignment: function(quizId, groupCode){
+    unpublishAssignment: function(quizId: string, groupCode : string){
 
         GroupApi.unpublishQuiz(quizId, groupCode)
             .then(() => {
@@ -37,7 +38,7 @@ var GroupActions = {
             });
     },
 
-    publishNewAssignment: function(quizId, groupName, settings) {
+    publishNewAssignment: function(quizId : string, groupName : string) : Promise {
 
         return new Promise((resolve, reject) => {
            var dataToSend = {
@@ -45,9 +46,7 @@ var GroupActions = {
                 groupName
             };
 
-            // var data = assign({}, settings, dataToSend);
-
-            GroupApi.publishNewAssignment(quizId, groupName)
+            GroupApi.publishNewAssignment(quizId, dataToSend)
                 .then((response) => {
                     AppDispatcher.dispatch({
                         actionType: GroupConstants.NEW_GROUP_PUBLISHED,
@@ -60,7 +59,7 @@ var GroupActions = {
         });
     },
 
-    publishAssignment: function(quizId, code, settings) {
+    publishAssignment: function(quizId : string, code : string , settings : Object ) : Promise {
 
         return new Promise((resolve, reject) => {
             var dataToSend = {

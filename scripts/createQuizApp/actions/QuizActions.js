@@ -13,7 +13,7 @@ var router              = require('./../config/router');
 var UserApi             = require('./../actions/api/UserApi');
 
 import TopicStore from './../stores/TopicStore';
-import UserStore        from './../stores/UserStore';
+import UserStore from './../stores/UserStore';
 
 var debounce            = require('./../utils/debounce');
 

@@ -1,9 +1,10 @@
+/* @flow */
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
 var GroupApi = {
 
-    getGroups: function(){
+    getGroups: function() : Promise {
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
 
@@ -25,7 +26,7 @@ var GroupApi = {
         });
     },
 
-    getGroupContents: function(){
+    getGroupContents: function() : Promise {
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
 
@@ -47,7 +48,7 @@ var GroupApi = {
         });
     },
 
-    unpublishQuiz: function(quizId, groupCode){
+    unpublishQuiz: function(quizId : string, groupCode : string) : Promise {
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
 
@@ -68,7 +69,7 @@ var GroupApi = {
         });
     },
 
-    publishNewAssignment: function(quizId, groupName){
+    publishNewAssignment: function(quizId : string, data : Object ) : Promise {
         return new Promise(function(resolve, reject){
 
             var uuid = localStorage.getItem('cqUuid');
@@ -77,10 +78,7 @@ var GroupApi = {
                 reject();
             } else {
                 request.post(`/create/${uuid}/quizzes/${quizId}/publish`)
-                    .send({
-                        access: -1,
-                        groupName
-                    })
+                    .send(data)
                     .end(function(error, res){
                         if (error) {
                             reject();
@@ -94,7 +92,7 @@ var GroupApi = {
         });
     },
 
-    publishAssignment: function(quizId, data){
+    publishAssignment: function(quizId : string, data : Object) : Promise {
         return new Promise(function(resolve, reject){
 
             var uuid = localStorage.getItem('cqUuid');

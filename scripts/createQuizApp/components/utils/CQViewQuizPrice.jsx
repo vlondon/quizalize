@@ -27,6 +27,7 @@ export default class CQViewQuizPrice extends React.Component {
         this.state = {
             user: UserStore.getUser()
         };
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(ev : Object){
