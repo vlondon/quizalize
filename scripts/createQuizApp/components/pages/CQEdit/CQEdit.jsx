@@ -209,6 +209,7 @@ var CQEdit = React.createClass({
 
                             <button
                                 disabled={!previewEnabled}
+                                id='finishQuiz'
                                 className="btn btn-primary"
                                 onClick={this.handleFinished}>
                                 Let's finish!
