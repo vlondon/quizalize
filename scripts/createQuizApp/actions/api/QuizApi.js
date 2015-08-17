@@ -1,6 +1,5 @@
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
-var Promise = require('es6-promise').Promise;
 
 var QuizApi = {
 
@@ -11,7 +10,7 @@ var QuizApi = {
             if (!uuid) {
                 reject();
             } else {
-                console.log('we are loading');
+
                 request.get(`/create/${uuid}/quizzes/`)
                     .use(noCache)
                     .end(function(error, res){
@@ -27,22 +26,27 @@ var QuizApi = {
         });
     },
 
-    searchQuizzes: function(search = '', categoryId, profileId){
-        console.log('searchQuizzes');
-        return new Promise(function(resolve, reject){
-            request.post(`/search/quizzes`)
-                .send({search, categoryId, profileId})
-                .end(function(error, res){
-                    if (error) {
-                        reject();
-                    } else {
-                        resolve(res.body);
-                    }
+    searchQuizzes: (function(){
+        var promises = {};
 
-                });
+        return function(search = '', categoryId, profileId){
+            var promise = promises[categoryId] || new Promise(function(resolve, reject){
+                request.post(`/search/quizzes`)
+                    .send({search, categoryId, profileId})
+                    .end(function(error, res){
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body);
+                        }
 
-        });
-    },
+                    });
+
+            });
+            promises[categoryId] = promise;
+            return promise;
+        };
+    })(),
 
 
     getQuiz: (function(){
@@ -187,7 +191,6 @@ var QuizApi = {
     putQuiz: function(quiz){
         return new Promise(function(resolve, reject){
             var uuid = localStorage.getItem('cqUuid');
-            console.log("PUTTING QUIZ");
             quiz.meta.profileId = uuid;
             if (!uuid) {
                 reject();

@@ -1,6 +1,5 @@
 /* @flow */
 import React from 'react';
-import assign from 'object-assign';
 
 import AppActions from './../../../actions/AppActions';
 import QuizStore from './../../../stores/QuizStore';
@@ -90,7 +89,7 @@ export default class CQViewCreateApp extends React.Component {
 
     componentWillReceiveProps(nextProps:Props) {
 
-        var app = assign({}, this.state.app);
+        var app = Object.assign({}, this.state.app);
         if (nextProps.appId) {
             app = this.getApp();
         }
@@ -111,7 +110,7 @@ export default class CQViewCreateApp extends React.Component {
 
     handleChange(field: string, event: Object) {
         console.log('field, ', field, event);
-        var app = assign({}, this.state.app);
+        var app = Object.assign({}, this.state.app);
         app.meta[field] = event.target.value;
 
         var csave = this.state.canSave;

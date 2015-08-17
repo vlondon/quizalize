@@ -1,5 +1,4 @@
 /* global StripeCheckout */
-var Promise = require('es6-promise').Promise;
 
 var loadStripeAsync = function(u, c){
     console.log('loading', u, c);

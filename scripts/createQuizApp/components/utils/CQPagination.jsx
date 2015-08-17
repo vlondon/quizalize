@@ -99,7 +99,7 @@ var CQPagination = React.createClass({
                             var className = (p === this.props.currentPage) ? 'active' : '';
 
                             return (
-                                <li className={className} onClick={this.handlePagination.bind(this, p)}>
+                                <li className={className} onClick={this.handlePagination.bind(this, p)} key={p}>
                                     <a href="#">{p}</a>
                                 </li>
                             );

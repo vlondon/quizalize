@@ -1,5 +1,4 @@
 var React = require('react');
-var assign = require('object-assign');
 var router = require('createQuizApp/config/router');
 
 var QuizActions = require('createQuizApp/actions/QuizActions');
@@ -85,7 +84,7 @@ var CQReview = React.createClass({
 
     handleChange: function(property, event) {
         console.log('handleChange');
-        var newQuizState = assign({}, this.state.quiz);
+        var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta[property] = event.target.value;
 
         this.setState({quiz: newQuizState});
@@ -93,7 +92,7 @@ var CQReview = React.createClass({
 
     updateStars: function(num) {
         console.log('updateStars', num);
-        var newQuizState = assign({}, this.state.quiz);
+        var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta.review = num;
         this.setState({
             quiz: newQuizState,

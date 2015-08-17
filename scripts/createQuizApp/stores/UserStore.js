@@ -14,7 +14,7 @@ type UserAttributes = {
     ageTaught?: string;
 };
 export type User = {
-    uuid?: string;
+    uuid: string;
     avatar: string;
     email: string;
     name: string;
@@ -22,7 +22,7 @@ export type User = {
 }
 
 var noUser:User = {
-    uuid: undefined,
+    uuid: '-1',
     avatar: '',
     email: '',
     name: '',
@@ -43,9 +43,13 @@ class UserStore extends Store {
         return _user;
     }
 
+    getUserId(): string {
+        return _user.uuid;
+    }
+
 
     isLoggedIn(): boolean {
-        return (_user && _user.uuid) ? true : false;
+        return (_user && _user.uuid && _user.uuid !== '-1') ? true : false;
     }
 
 

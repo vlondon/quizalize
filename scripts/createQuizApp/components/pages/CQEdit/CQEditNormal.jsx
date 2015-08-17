@@ -2,14 +2,13 @@
 import type { Quiz, Question } from './../../../stores/QuizStore';
 
 var React = require('react');
-var assign = require('object-assign');
 
 var CQLatexString = require('./../../../components/utils/CQLatexString');
 
 import QuizStore from './../../../stores/QuizStore';
 import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditDurationPicker from './CQEditDurationPicker';
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {
@@ -22,6 +21,7 @@ type Props = {
 
 type State = {
     question: Question;
+    subtopics: Array<Object>;
 }
 
 // 5, 10, 20, 30, 45, 60
@@ -78,8 +78,10 @@ export default class CQEditNormal extends React.Component{
         props = props || this.props;
         var question : Question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
         question.alternatives = question.alternatives || [];
+        var subtopics = this.handleGetTopics();
         var newState = {
-            question
+            question,
+            subtopics
         };
 
 
@@ -139,7 +141,7 @@ export default class CQEditNormal extends React.Component{
 
     handleChange (property : string, index? : number, event : Object) {
 
-        var newQuestionState = assign({}, this.state.question);
+        var newQuestionState = Object.assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
         } else {
@@ -157,7 +159,7 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleDuration(duration : number){
-        var question = assign({}, this.state.question);
+        var question = Object.assign({}, this.state.question);
         var canBeSaved = this.canBeSaved(question);
         question.duration = duration;
         console.log('handleDuration', question, duration);
@@ -174,7 +176,7 @@ export default class CQEditNormal extends React.Component{
 
     handleTopic (topicId: string) {
         console.log('we got new topic', topicId);
-        var newQuestionState = assign({}, this.state.question);
+        var newQuestionState = Object.assign({}, this.state.question);
         newQuestionState.topicId = topicId;
 
         this.props.onChange(newQuestionState);
@@ -193,7 +195,7 @@ export default class CQEditNormal extends React.Component{
 
     handleCheckbox (property : string) {
 
-        var question = assign({}, this.state.question);
+        var question = Object.assign({}, this.state.question);
         question[property] = !this.state.question[property];
 
         var canBeSaved = this.canBeSaved(question);
@@ -203,6 +205,7 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleGetTopics () {
+        console.info('SUBTOPIC LIST REFRESHED');
         return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
     }
 
@@ -448,7 +451,7 @@ export default class CQEditNormal extends React.Component{
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
                                 ref='topicId'
-                                data={this.handleGetTopics}
+                                data={this.state.subtopics}
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>

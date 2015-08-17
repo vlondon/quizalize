@@ -1,6 +1,5 @@
 /* @flow */
 var React = require('react');
-var assign = require('object-assign');
 var CQZzishLogin = require('./CQZzishLogin');
 type State = {
     email: string;
@@ -46,7 +45,7 @@ var CQLoginForm = React.createClass({
 
     handleChange: function(property: string, event: Object) {
 
-        var newState = assign({}, this.state);
+        var newState = Object.assign({}, this.state);
         newState[property] = event.target.value;
 
         if (this.props.showPasswordField && this.props.showEmailField) {

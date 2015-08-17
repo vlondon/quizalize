@@ -1,115 +1,180 @@
-var React = require('react');
-var assign = require('object-assign');
-var router = require('createQuizApp/config/router');
+/* @flow */
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQQuestionList = require('./CQQuestionList');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import router from './../../../config/router';
 
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
+import CQPageTemplate from './../../../components/CQPageTemplate';
+import CQQuestionList from './CQQuestionList';
+import CQAutofill from './../../../components/utils/CQAutofill';
 
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var UserApi             = require('createQuizApp/actions/api/UserApi');
+import QuizStore from './../../../stores/QuizStore';
+import type {QuizComplete, Question} from './../../../stores/QuizStore';
+import QuizActions from './../../../actions/QuizActions';
 
-var CQEdit = React.createClass({
+import TopicStore from './../../../stores/TopicStore';
+import UserApi from './../../../actions/api/UserApi';
 
-    propTypes: {
-        quizId: React.PropTypes.string.isRequired
-    },
+import urlParams from './../../../utils/urlParams';
 
+type Props = {
+    quizId: ?string;
+    questionIndex: ?string;
+};
 
-    getInitialState: function() {
+type State = {
+    questionIndex?: number;
+    quiz: QuizComplete;
+    mode: string;
+    pristine: boolean;
+    saveEnabled: boolean;
+}
 
-        return {
+export default class CQEdit extends React.Component {
+
+    props: Props;
+    state: State;
+
+    constructor(props : Props) {
+        super(props);
+        this.state = {
             mode: 'Create',
             pristine: true,
-            saveEnabled: true
+            saveEnabled: true,
+            quiz: this.getQuiz()
         };
-    },
+        var state = this.getState(props);
+        state.mode = 'Create';
+        state.pristine = true;
+        state.saveEnabled = true;
+        state.quiz = this.getQuiz();
 
-    _getQuiz: function(props){
-        props = props || this.props;
-        var quiz = QuizStore.getQuiz(props.quizId);
+        this.state = state;
+
+        this.onChange = this.onChange.bind(this);
+        this.handleSaveNewQuestion = this.handleSaveNewQuestion.bind(this);
+        this.handleQuestion = this.handleQuestion.bind(this);
+        this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
+        this.handleFinished = this.handleFinished.bind(this);
+        this.handleSaveButton = this.handleSaveButton.bind(this);
+        this.handlePreview = this.handlePreview.bind(this);
+        this.enableDisableSave = this.enableDisableSave.bind(this);
+        this.getQuiz = this.getQuiz.bind(this);
+        this.handleTopic = this.handleTopic.bind(this);
+    }
+
+    getQuiz() : QuizComplete {
+        var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.quizId;
+        var quiz = QuizStore.getQuiz(quizId);
         return quiz;
-    },
+    }
 
-    componentDidMount: function() {
+    componentWillMount() {
+        var p = urlParams();
+        if (this.state.quiz && this.state.quiz.meta.categoryId === undefined && p.c) {
+            var quiz = this.state.quiz;
+            quiz.meta.categoryId = p.c;
+            this.setState({quiz});
+        }
+    }
+
+
+
+    componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
-        this.onChange();
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps : Props) {
         this.onChange(nextProps);
-    },
+    }
 
-    onChange: function(props){
+    onChange(props : ?Props){
+
         props = props || this.props;
+
         // TODO: we need to load the quiz without having to worry about
         // if the quiz store have finished loading
 
-        var newState = {
-            quiz: this._getQuiz(props)
-        };
+        if (props) {
+            this.setState(this.getState(props));
+        }
+    }
 
-        if (newState.quiz){
-            newState.quiz.payload.questions = newState.quiz.payload.questions || [];
+    getState(props : ?Props) : State {
+        props = props || this.props;
+        var state = Object.assign({}, this.state);
+        var quiz = this.getQuiz(props);
+        var questionIndex;
+
+
+        if (quiz){
+            quiz.payload.questions = quiz.payload.questions || [];
+
             if (props.questionIndex) {
-                newState.questionIndex = parseInt(props.questionIndex, 10);
-            } else {
-                newState.questionIndex = undefined;
+                questionIndex = parseInt(props.questionIndex, 10);
+            }
+
+            if (quiz.payload.questions.length === 0){
+                questionIndex = 0;
             }
 
             // Check if the questionIndex is in range
-            if (newState.questionIndex > newState.quiz.payload.questions.length){
+            if (questionIndex && questionIndex > quiz.payload.questions.length){
                 console.warn('Trying to edit a question out of range');
                 setTimeout(function(){
-                    router.setRoute(`/quiz/create/${newState.quiz.uuid}`);
+                    router.setRoute(`/quiz/create/${quiz.uuid}`);
                 }, 550);
             }
         }
-        this.setState(newState);
-    },
+        state.quiz = quiz;
+        state.questionIndex = questionIndex;
+        return state;
 
-    handleQuestion: function(question){
+    }
 
-        var updatedQuiz = assign({}, this.state.quiz);
+    handleQuestion(question : Question){
+        // question update
+        var quiz = Object.assign({}, this.state.quiz);
 
-        var index = this.state.questionIndex;
 
-        if (index === undefined) {
+        var index = 0;
+        if (this.state.questionIndex){
+            index = this.state.questionIndex;
+        }
+
+        if (index === undefined && this.state.quiz) {
             index = this.state.quiz.payload.questions.length;
         }
 
-
-        updatedQuiz.payload.questions[index] = question;
+        quiz.payload.questions[index] = question;
         this.setState({
-            quiz: updatedQuiz,
-            pristine: false
+            pristine: false,
+            quiz
         });
-    },
+    }
 
-    handleSaveNewQuestion: function(newQuestion){
-        // trying to discover question value;
-        console.log('about to save questions', newQuestion, this.state);
+    handleSaveNewQuestion(){
+        // new question
+
         var nextQuestion;
         if (this.state.questionIndex) {
             nextQuestion = this.state.questionIndex + 1;
-        } else {
+        } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
-        }
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            console.log('state quiz', this.state.quiz, `/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
-        });
-    },
+            // QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            // });
+        }
 
-    handleRemoveQuestion: function(question, event){
+    }
+
+    handleRemoveQuestion(question : Question, event : Object){
         event.stopPropagation();
         swal({
                 title: 'Confirm Delete',
@@ -120,62 +185,81 @@ var CQEdit = React.createClass({
             }, (isConfirm) => {
             if (isConfirm){
                 var questionIndex = this.state.quiz.payload.questions.indexOf(question);
-                var quiz = assign({}, this.state.quiz);
+                var quiz = Object.assign({}, this.state.quiz);
                 quiz.payload.questions = this.state.quiz.payload.questions;
                 quiz.payload.questions.splice(questionIndex, 1);
                 console.log('about to remove question', quiz.payload.questions);
                 this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
             }
         });
-    },
+    }
 
-    handleFinished: function(){
+    handleFinished(){
         UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
         });
-    },
+    }
 
-    handleSaveButton: function(){
+    handleSaveButton(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
             this.setState({pristine: true});
         });
-    },
+    }
 
-    handlePreview: function(){
+    handlePreview(){
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         });
-    },
+    }
 
-    enableDisableSave: function(saveEnabled){
+    enableDisableSave(saveEnabled: boolean){
         this.setState({saveEnabled});
-    },
 
-    render: function() {
+        // <p className="small">
+        //     Speed Tip: We found clicking is a pain - just hit enter to step through quickly
+        // </p>
+    }
+
+    handleTopic(topicId: string){
+        console.log('we got topic', topicId);
+        var quiz = this.state.quiz;
+        quiz.meta.categoryId = topicId;
+        this.setState({quiz});
+    }
+
+    render() {
 
         if (this.state.quiz){
 
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
+            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : '';
+            console.log('placeholderForName', placeholderForName);
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">
 
                     <div className="cq-edit__header">
                         <h3>Now editing quiz&nbsp;
-                            <span style={{color: 'red'}}>{this.state.quiz.meta.name}</span>
-                            <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
-                                <button className="btn btn-sm btn-info">
-                                    <span className="glyphicon glyphicon-cog"> </span>
-                                </button>
-                            </CQLink>
+                            <input
+                                type="text"
+                                className="cq-edit__input-header"
+                                value={this.state.quiz.meta.name}
+                                placeholder={placeholderForName}
+                            />
                         </h3>
-                        <p className="small">
-                            Speed Tip: We found clicking is a pain - just hit enter to step through quickly
-                        </p>
+
+                        Using the topic&nbsp;
+                        <CQAutofill
+                            value={this.state.quiz.meta.categoryId}
+                            onChange={this.handleTopic}
+                            data={TopicStore.getTopicTree}
+                            className="cq-edit__input-topic"
+                            placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
+                        />
                     </div>
 
 
@@ -225,7 +309,7 @@ var CQEdit = React.createClass({
             return (<div>Loading</div>);
         }
     }
-
-});
-
-module.exports = CQEdit;
+}
+CQEdit.propTypes = {
+    quizId: React.PropTypes.string
+};

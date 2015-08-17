@@ -176,15 +176,16 @@
     }
 
     &__button {
-        background: $brand-color-grey-light;
-        color: $brand-color-grey-dark;
+        @include button($brand-color-blue);
+        // background: $brand-color-grey-light;
+        // color: $brand-color-grey-dark;
         margin: 5px;
         padding: 5px;
         cursor: pointer;
 
         &:hover {
-            background: $brand-color-grey;
-            color: $brand-color-grey-lighter;
+            // background: $brand-color-grey;
+            // color: $brand-color-grey-lighter;
         }
     }
 }

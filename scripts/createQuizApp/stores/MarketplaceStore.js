@@ -1,8 +1,7 @@
 var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
 var AnalyticsConstants  = require('createQuizApp/constants/AnalyticsConstants');
-var Promise             = require('es6-promise').Promise;
 
-var _marketplace = p[];
+var _marketplace = [];
 var MarketplaceStore = {
 
 };

@@ -1,13 +1,33 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-var TopicConstants = require('createQuizApp/constants/TopicConstants');
-var UserStore = require('createQuizApp/stores/UserStore');
 
-var TopicActions = require('createQuizApp/actions/TopicActions');
+import Store from './Store';
 
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var TopicConstants = require('./../constants/TopicConstants');
+var UserStore = require('./../stores/UserStore');
 
-var CHANGE_EVENT = 'change';
+var TopicActions = require('./../actions/TopicActions');
+
+
+export type Topic = {
+    attributes: Object;
+    created: Number;
+    createdString: string;
+    description?: string;
+    index?: number;
+    name: string;
+    ownerId?: string;
+    revision: number;
+    timestamp: number;
+    timestampedString: string;
+    title: string;
+    type?: string;
+    updated?: number;
+    updatedString?: string;
+    uuid: string;
+}
+
+
+
 var storeInit = false;
 var storeInitPublic = false;
 
@@ -15,7 +35,7 @@ var _publictopics = [];
 var _usertopics = [];
 var _subjects = [];
 var _subjectHash = {};
-var _temporaryTopic;
+var _temporaryTopic : ?Topic;
 
 var loadPublicTopics = function(data) {
     _subjects = data.psubjects;
@@ -43,13 +63,15 @@ var getTopics = function(topics) {
     return result;
 };
 
-var TopicStore = assign({}, EventEmitter.prototype, {
+class TopicStore extends Store {
 
-    getPublicSubjects: function() {
+    token: string;
+
+    getPublicSubjects() : Array<Topic> {
         return _subjects;
-    },
+    }
 
-    getTopicTreeForTopic: function(parentCategoryId) {
+    getTopicTreeForTopic(parentCategoryId) {
         var result = _publictopics.filter(t => t.parentCategoryId === parentCategoryId);
         var userResult = _usertopics.filter(t => t.parentCategoryId === parentCategoryId);
         userResult.push.apply(userResult, result);
@@ -66,16 +88,16 @@ var TopicStore = assign({}, EventEmitter.prototype, {
         });
 
         return userResult;
-    },
+    }
 
-    getTopicTree: function() {
+    getTopicTree() {
         var result = getTopics(_usertopics);
         result.push.apply(result, getTopics(_publictopics));
         return result;
-    },
+    }
 
-    getTopicById: function(topicId) {
-        if (topicId === "-1") {
+    getTopicById(topicId): ?Topic {
+        if (topicId === '-1') {
             return _temporaryTopic;
         }
         else {
@@ -85,9 +107,9 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             }
             return result.length === 1 ? result.slice()[0] : undefined;
         }
-    },
+    }
 
-    getTopicByName: function(name) {
+    getTopicByName(name) {
         if (_temporaryTopic && _temporaryTopic.name === name) {
             return _temporaryTopic;
         }
@@ -98,24 +120,17 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             }
             return result.length === 1 ? result.slice()[0] : undefined;
         }
-    },
+    }
 
-    getTopicName: function(topicId) {
-        var topic = TopicStore.getTopicById(topicId);
+    getTopicName(topicId) {
+        var topic = this.getTopicById(topicId);
         if (topic) {
             return topic.name;
         }
         return '';
-    },
+    }
 
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
+    addChangeListener(callback) {
         if (UserStore.getUser() && !storeInit){
             storeInit = true;
             TopicActions.loadUserTopics();
@@ -124,34 +139,29 @@ var TopicStore = assign({}, EventEmitter.prototype, {
             storeInitPublic = true;
             TopicActions.loadPublicTopics();
         }
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+        super.addChangeListener(callback);
     }
-});
 
+}
+var topicStoreInstance = new TopicStore();
+export default topicStoreInstance;
 
 // Register callback to handle all updates
-TopicStore.dispatchToken = AppDispatcher.register(function(action) {
+topicStoreInstance.token = AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
         case TopicConstants.PUBLIC_TOPICS_LOADED:
             loadPublicTopics(action.payload);
-            TopicStore.emitChange();
+            topicStoreInstance.emitChange();
             break;
         case TopicConstants.TOPICS_LOADED:
             loadUserTopics(action.payload);
-            TopicStore.emitChange();
+            topicStoreInstance.emitChange();
             break;
         case TopicConstants.TOPIC_ADDED:
             _usertopics.push(action.payload);
-            TopicStore.emitChange();
+            topicStoreInstance.emitChange();
             break;
         case TopicConstants.TEMPORARY_TOPIC_ADDED:
             _temporaryTopic = action.payload;
@@ -160,5 +170,3 @@ TopicStore.dispatchToken = AppDispatcher.register(function(action) {
             // no op
     }
 });
-
-module.exports = TopicStore;
