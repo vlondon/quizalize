@@ -11,7 +11,6 @@ import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
-import CQLink from './../../../components/utils/CQLink';
 
 var TransactionActions = require('./../../../actions/TransactionActions');
 

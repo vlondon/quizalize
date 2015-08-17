@@ -64,9 +64,10 @@ export default class CQAutofill extends React.Component {
         TopicStore.removeChangeListener(this.onChange);
     }
 
-    getState(props?:Props):State{
+    getState(props:?Props):State{
         props = props || this.props;
         var newState = Object.assign({}, this.state);
+        var selected;
 
         var fillAutoFill = function(array, prefix){
             var result = [];
@@ -86,7 +87,7 @@ export default class CQAutofill extends React.Component {
             return result;
         };
 
-        console.log('typeof this.props.data', typeof props.data, props.data);
+
         if (typeof props.data === 'function'){
             newState.topics = props.data();
         } else {
@@ -95,11 +96,10 @@ export default class CQAutofill extends React.Component {
 
         newState.topicsAutofill = fillAutoFill(newState.topics);
 
-        var selected;
-        if (this.props.value){
-            selected = newState.topicsAutofill.filter(t => t.uuid === props.value)[0];
 
-            console.log('selected??????', selected, newState.topicsAutofill);
+        if (props && props.value){
+            var val = props.value;
+            selected = newState.topicsAutofill.filter(t => t.uuid === val)[0];
         }
         newState.searchString = selected ? selected.name : undefined;
         return newState;
