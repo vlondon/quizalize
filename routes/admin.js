@@ -2,6 +2,7 @@
 var zzish               = require("zzishsdk");
 var logger              = require('../logger');
 var email              = require('../email');
+var db              = require('./db');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
 var QUIZ_CONTENT_TYPE   = "quiz";
@@ -36,58 +37,78 @@ var finalApproval = function(req, res, type, content, doc) {
 };
 
 var approveDocument = function(req, res, doc) {
-  var userId = req.params.profileId;
-  var id = req.params.id;
-  var type = req.params.type;
+    var id = req.params.id;
+    var type = req.params.type;
 
-  zzish.getUser(userId, null, function(err, user) {
-    if (!err) {
-      if (user.attributes.admin === 'true') {
-        zzish.getPublicContent(type, id, function(err1, content) {
-          if (!err1) {
-            if (content.meta.published !== "published") {
-              if (type === APP_CONTENT_TYPE) {
-                async.eachSeries(content.payload.quizzes, function (quizId, icallback) {
-                  zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err2, quiz) {
-                    if (!err2) {
-                      if (quiz.meta.published !== "published") {
-                        quiz.meta.published = "published";
-                        quiz.meta.updated = Date.now();
-                        if (req.body.subjectId) {
-                          quiz.meta.subjectId = req.body.subjectId;
-                        }
-                        if (req.body.publicCategoryId) {
-                          quiz.meta.publicCategoryId = req.body.publicCategoryId;
-                        }
-                      }
-                      zzish.postContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quiz.uuid, quiz.meta, quiz.payload, function(err3) {
-                        icallback(err3);
-                      });
+    zzish.getPublicContent(type, id, function(err1, content) {
+      if (!err1) {
+        if (content.meta.published !== "published") {
+          if (type === APP_CONTENT_TYPE) {
+            async.eachSeries(content.payload.quizzes, function (quizId, icallback) {
+              zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err2, quiz) {
+                if (!err2) {
+                  if (quiz.meta.published !== "published") {
+                    quiz.meta.published = "published";
+                    quiz.meta.updated = Date.now();
+                    if (req.body.subjectId) {
+                      quiz.meta.subjectId = req.body.subjectId;
                     }
+                    if (req.body.publicCategoryId) {
+                      quiz.meta.publicCategoryId = req.body.publicCategoryId;
+                    }
+                  }
+                  zzish.postContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quiz.uuid, quiz.meta, quiz.payload, function(err3) {
+                    icallback(err3);
                   });
-                }, function(err3){
-                    // if any of the file processing produced an error, err would equal that error
-                    if (!err3) {
-                      finalApproval(req, res, type, content, doc);
-                    }
-                });
-              }
-              else {
-                finalApproval(req, res, type, content, doc);
-              }
-            }
-            else {
-              res.send("Already Published" + content.meta.published);
-            }
+                }
+              });
+            }, function(err3){
+                // if any of the file processing produced an error, err would equal that error
+                if (!err3) {
+                  finalApproval(req, res, type, content, doc);
+                }
+            });
           }
+          else {
+            finalApproval(req, res, type, content, doc);
+          }
+        }
+        else {
+          res.send("Already Published" + content.meta.published);
+        }
+      }
+    });
+};
+
+exports.index = function(req, res){
+    res.render("admin/index");
+};
+
+exports.pendingQuizzes = function(req, res){
+    db.findDocuments("subject",{}, -1, function(err, subjects) {
+        db.findDocuments("contentcategory",{}, -1, function(err, categories) {
+            db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, result) {
+                if (!err) {
+                    res.render("admin/pending", {approved1: result, categories: categories, subjects: subjects});
+                }
+                else {
+                    res.render("admin/error", {error: err});
+                }
+            });
         });
-      }
-      else {
-        logger.trace('admin ', 'not admin', user);
-        res.send("Anauthorized");
-      }
-    }
-  });
+    });
+
+};
+
+exports.approved = function(req, res){
+    db.findDocuments("content", {"meta.published": "published"}, -1, function(err, result) {
+        if (!err) {
+            res.render("admin/approved", {approved1: result});
+        }
+        else {
+            res.render("admin/error", {error: err});
+        }
+    });
 };
 
 exports.approve = function(req, res){
@@ -97,28 +118,3 @@ exports.approve = function(req, res){
 exports.approvefirst = function(req, res){
   approveDocument(req, res, 'firstpublished');
 };
-
-exports.pending = function(req, res){
-  var userId = req.params.profileId;
-  zzish.getUser(userId, null, function(err, user) {
-    if (!err) {
-      if (user.attributes.admin === 'true') {
-        var mongoQuery = {
-          published: "pending"
-        };
-        zzish.searchPublicContent(req.params.type, mongoQuery, function(err1, resp){
-            if (resp) {
-              res.send(resp);
-            } else {
-              res.status(500).send(err1);
-            }
-        });
-      }
-      else {
-        logger.trace('admin ', 'not admin', user);
-        res.send("Anauthorized");
-      }
-    }
-  });
-};
-

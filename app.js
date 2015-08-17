@@ -112,6 +112,13 @@ app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishToMarketplace);
 
+if (process.env.admin === "true") {
+    app.get('/admin/', admin.index);
+    app.get('/admin/approved', admin.approved);
+    app.get('/admin/pending', admin.pendingQuizzes);
+    app.post('/admin/approve/:type/:id', admin.approve);
+    app.post('/admin/approvefirst/:type/:id', admin.approvefirst);
+}
 
 app.get('/create/:profileId/transaction/', transaction.list);
 app.get('/create/:profileId/transaction/process', transaction.process);
@@ -121,9 +128,6 @@ app.post('/create/:profileId/transaction', transaction.post);
 app.post('/create/:profileId/transaction/:id', transaction.post);
 
 
-app.post('/admin/:profileId/approve/:type/:id', admin.approve);
-app.post('/admin/:profileId/approvefirst/:type/:id', admin.approvefirst);
-app.get('/admin/:profileId/:type/pending', admin.pending);
 
 app.get('/apps/', appContent.listPublicApps);
 app.get('/apps/:id', appContent.getPublic);
