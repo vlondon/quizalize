@@ -8,6 +8,14 @@ var TopicActions = require('./../../actions/TopicActions');
 type Props = {
     limit: number;
     value: string;
+    className: string;
+    tabIndex: number;
+    placeholder: string;
+    ref1: string;
+    data: any;
+    onChange: Function;
+    onKeyDown: Function;
+
 }
 type State = {
     topics: Array<Object>;
@@ -23,6 +31,7 @@ type State = {
 export default class CQAutofill extends React.Component {
 
     state: State;
+    props: Props;
 
     constructor(props:Props) {
         super(props);
@@ -55,7 +64,8 @@ export default class CQAutofill extends React.Component {
         TopicStore.removeChangeListener(this.onChange);
     }
 
-    getState():State{
+    getState(props?:Props):State{
+        props = props || this.props;
         var newState = Object.assign({}, this.state);
 
         var fillAutoFill = function(array, prefix){
@@ -75,13 +85,19 @@ export default class CQAutofill extends React.Component {
 
             return result;
         };
-        newState.topics = this.props.data();
+
+        console.log('typeof this.props.data', typeof props.data, props.data);
+        if (typeof props.data === 'function'){
+            newState.topics = props.data();
+        } else {
+            newState.topics = props.data;
+        }
 
         newState.topicsAutofill = fillAutoFill(newState.topics);
 
         var selected;
         if (this.props.value){
-            selected = newState.topicsAutofill.filter(t => t.uuid === this.props.value)[0];
+            selected = newState.topicsAutofill.filter(t => t.uuid === props.value)[0];
 
             console.log('selected??????', selected, newState.topicsAutofill);
         }
@@ -94,13 +110,7 @@ export default class CQAutofill extends React.Component {
     }
 
     componentWillReceiveProps(nextProps:Props) {
-
-        var topic = TopicStore.getTopicById(nextProps.value);
-        var searchString = topic ? topic.name : '';
-
-        this.setState({
-            searchString
-        });
+        this.setState(this.getState(nextProps));
     }
 
     handleKeyDown(ev:Object){
@@ -356,7 +366,8 @@ export default class CQAutofill extends React.Component {
                     onKeyDown={this.handleKeyDown}
                     placeholder={this.props.placeholder}
                     tabIndex={this.props.tabIndex}
-                    className="form-control"/>
+                    className={this.props.className}
+                />
 
                 {results}
             </div>
@@ -373,10 +384,12 @@ CQAutofill.propTypes = {
     data: React.PropTypes.func,
     value: React.PropTypes.string,
     onChange: React.PropTypes.func.isRequired,
-    onKeyDown: React.PropTypes.func
+    onKeyDown: React.PropTypes.func,
+    className: React.PropTypes.string
 };
 
 CQAutofill.defaultProps = {
     limit: 30,
-    onChange: function(){}
+    onChange: function(){},
+    className: 'form-control'
 };

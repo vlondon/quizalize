@@ -5,7 +5,6 @@ import router from './../../../config/router';
 
 import CQPageTemplate from './../../../components/CQPageTemplate';
 import CQQuestionList from './CQQuestionList';
-import CQLink from './../../../components/utils/CQLink';
 import CQAutofill from './../../../components/utils/CQAutofill';
 
 import QuizStore from './../../../stores/QuizStore';
@@ -43,6 +42,14 @@ export default class CQEdit extends React.Component {
             saveEnabled: true,
             quiz: this.getQuiz()
         };
+        var state = this.getState(props);
+        state.mode = 'Create';
+        state.pristine = true;
+        state.saveEnabled = true;
+        state.quiz = this.getQuiz();
+
+        this.state = state;
+
         this.onChange = this.onChange.bind(this);
         this.handleSaveNewQuestion = this.handleSaveNewQuestion.bind(this);
         this.handleQuestion = this.handleQuestion.bind(this);
@@ -52,6 +59,7 @@ export default class CQEdit extends React.Component {
         this.handlePreview = this.handlePreview.bind(this);
         this.enableDisableSave = this.enableDisableSave.bind(this);
         this.getQuiz = this.getQuiz.bind(this);
+        this.handleTopic = this.handleTopic.bind(this);
     }
 
     getQuiz() : QuizComplete {
@@ -65,7 +73,6 @@ export default class CQEdit extends React.Component {
         if (this.state.quiz && this.state.quiz.meta.categoryId === undefined && p.c) {
             var quiz = this.state.quiz;
             quiz.meta.categoryId = p.c;
-
             this.setState({quiz});
         }
     }
@@ -94,30 +101,40 @@ export default class CQEdit extends React.Component {
         // if the quiz store have finished loading
 
         if (props) {
-
-            var quiz = this.getQuiz(props);
-            var questionIndex;
-
-
-            if (quiz){
-                quiz.payload.questions = quiz.payload.questions || [];
-
-                if (props.questionIndex) {
-                    questionIndex = parseInt(props.questionIndex, 10);
-                } else if (quiz.payload.questions.length === 0 && this.state.questionIndex === undefined){
-                    questionIndex = 0;
-                }
-
-                // Check if the questionIndex is in range
-                if (questionIndex && questionIndex > quiz.payload.questions.length){
-                    console.warn('Trying to edit a question out of range');
-                    setTimeout(function(){
-                        router.setRoute(`/quiz/create/${quiz.uuid}`);
-                    }, 550);
-                }
-            }
-            this.setState({ quiz, questionIndex });
+            this.setState(this.getState(props));
         }
+    }
+
+    getState(props : ?Props) : State {
+        props = props || this.props;
+        var state = Object.assign({}, this.state);
+        var quiz = this.getQuiz(props);
+        var questionIndex;
+
+
+        if (quiz){
+            quiz.payload.questions = quiz.payload.questions || [];
+
+            if (props.questionIndex) {
+                questionIndex = parseInt(props.questionIndex, 10);
+            }
+
+            if (quiz.payload.questions.length === 0){
+                questionIndex = 0;
+            }
+
+            // Check if the questionIndex is in range
+            if (questionIndex && questionIndex > quiz.payload.questions.length){
+                console.warn('Trying to edit a question out of range');
+                setTimeout(function(){
+                    router.setRoute(`/quiz/create/${quiz.uuid}`);
+                }, 550);
+            }
+        }
+        state.quiz = quiz;
+        state.questionIndex = questionIndex;
+        return state;
+
     }
 
     handleQuestion(question : Question){
@@ -201,6 +218,17 @@ export default class CQEdit extends React.Component {
 
     enableDisableSave(saveEnabled: boolean){
         this.setState({saveEnabled});
+
+        // <p className="small">
+        //     Speed Tip: We found clicking is a pain - just hit enter to step through quickly
+        // </p>
+    }
+
+    handleTopic(topicId: string){
+        console.log('we got topic', topicId);
+        var quiz = this.state.quiz;
+        quiz.meta.categoryId = topicId;
+        this.setState({quiz});
     }
 
     render() {
@@ -208,28 +236,30 @@ export default class CQEdit extends React.Component {
         if (this.state.quiz){
 
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
+            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : '';
+            console.log('placeholderForName', placeholderForName);
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">
 
                     <div className="cq-edit__header">
                         <h3>Now editing quiz&nbsp;
-                            <span style={{color: 'red'}}>{this.state.quiz.meta.name}</span>
-                            <CQLink href={`/quiz/edit/${this.state.quiz.uuid}`}>
-                                <button className="btn btn-sm btn-info">
-                                    <span className="glyphicon glyphicon-cog"> </span>
-                                </button>
-                            </CQLink>
+                            <input
+                                type="text"
+                                className="cq-edit__input-header"
+                                value={this.state.quiz.meta.name}
+                                placeholder={placeholderForName}
+                            />
                         </h3>
-                        <p className="small">
-                            Speed Tip: We found clicking is a pain - just hit enter to step through quickly
-                        </p>
+
+                        Using the topic&nbsp;
                         <CQAutofill
                             value={this.state.quiz.meta.categoryId}
                             onChange={this.handleTopic}
                             data={TopicStore.getTopicTree}
+                            className="cq-edit__input-topic"
                             placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
-                            tabIndex="2"/>
+                        />
                     </div>
 
 

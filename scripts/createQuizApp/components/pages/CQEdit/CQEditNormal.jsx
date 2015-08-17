@@ -21,6 +21,7 @@ type Props = {
 
 type State = {
     question: Question;
+    subtopics: Array<Object>;
 }
 
 // 5, 10, 20, 30, 45, 60
@@ -77,8 +78,10 @@ export default class CQEditNormal extends React.Component{
         props = props || this.props;
         var question : Question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
         question.alternatives = question.alternatives || [];
+        var subtopics = this.handleGetTopics();
         var newState = {
-            question
+            question,
+            subtopics
         };
 
 
@@ -202,6 +205,7 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleGetTopics () {
+        console.info('SUBTOPIC LIST REFRESHED');
         return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
     }
 
@@ -447,7 +451,7 @@ export default class CQEditNormal extends React.Component{
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
                                 ref='topicId'
-                                data={this.handleGetTopics}
+                                data={this.state.subtopics}
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>

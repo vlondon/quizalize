@@ -190,11 +190,6 @@ export default class CQPublic extends React.Component {
                     onCategoryChange={this.handleCategoryChange}
                     allTopics={true}/>
 
-                <CQLink href={`/quiz/create?c=${this.state.currentCategory.value}`}>
-                    <button className="cq-public__new-quiz">
-                        Create new Quiz
-                    </button>
-                </CQLink>
 
                 {appGrid}
                 {quizList}
