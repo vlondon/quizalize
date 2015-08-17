@@ -252,6 +252,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_PUBLIC_LOADED:
             var publicQuiz = action.payload;
+            publicQuiz.meta.price = publicQuiz.meta.price || 0;
             _fullPublicQuizzes[publicQuiz.uuid] = publicQuiz;
             quizStoreInstance.emitChange();
             break;
