@@ -451,6 +451,7 @@ export default class CQEditNormal extends React.Component{
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
                                 ref='topicId'
+                                id="subtopic"
                                 data={this.state.subtopics}
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"

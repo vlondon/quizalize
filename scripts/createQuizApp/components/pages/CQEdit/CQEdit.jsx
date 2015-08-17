@@ -254,6 +254,7 @@ export default class CQEdit extends React.Component {
 
                         Using the topic&nbsp;
                         <CQAutofill
+                            id="subject"
                             value={this.state.quiz.meta.categoryId}
                             onChange={this.handleTopic}
                             data={TopicStore.getTopicTree}

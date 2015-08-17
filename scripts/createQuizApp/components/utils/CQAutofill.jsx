@@ -6,6 +6,7 @@ var TopicActions = require('./../../actions/TopicActions');
 
 
 type Props = {
+    id: string;
     limit: number;
     value: string;
     className: string;
@@ -356,7 +357,7 @@ export default class CQAutofill extends React.Component {
 
         return (
             <div className='cq-autofill'>
-                <input id="category"
+                <input id={this.props.id}
                     type="text"
                     ref="inputField"
                     value={this.state.searchString}
@@ -377,6 +378,7 @@ export default class CQAutofill extends React.Component {
 }
 
 CQAutofill.propTypes = {
+    id: React.PropTypes.string,
     tabIndex: React.PropTypes.number,
     limit: React.PropTypes.number,
     placeholder: React.PropTypes.string,
