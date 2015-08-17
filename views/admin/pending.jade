@@ -1,0 +1,20 @@
+extends ./layout
+
+block body
+    h1 Approvied 2
+    
+    for quiz in approved1
+        .row
+            .col-xs-1
+                p #{quiz.type}
+            .col-xs-2
+                p #{quiz.meta.name}
+            .col-xs-3
+                p #{quiz.meta.categoryId}
+            .col-xs-3
+                form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
+                    select(name="publicCategoryId")
+                        option(value="asfdlijasldfjasf") Art in other Culutures
+                        option(value="asfdlijasldfjasf") Hello
+                    input(type="text", name="subjectId", value="", placeholder="Subject Id")
+                    input(type="submit" value="APPROVE")
