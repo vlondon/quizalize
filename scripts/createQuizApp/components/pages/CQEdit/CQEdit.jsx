@@ -60,6 +60,7 @@ export default class CQEdit extends React.Component {
         this.enableDisableSave = this.enableDisableSave.bind(this);
         this.getQuiz = this.getQuiz.bind(this);
         this.handleTopic = this.handleTopic.bind(this);
+        this.handleName = this.handleName.bind(this);
     }
 
     getQuiz() : QuizComplete {
@@ -216,6 +217,13 @@ export default class CQEdit extends React.Component {
         });
     }
 
+    handleName(ev:Object){
+        var name = ev.target.value;
+        var quiz = this.state.quiz;
+        quiz.meta.name = name;
+        this.setState({quiz});
+    }
+
     enableDisableSave(saveEnabled: boolean){
         this.setState({saveEnabled});
 
@@ -248,6 +256,7 @@ export default class CQEdit extends React.Component {
                                 type="text"
                                 className="cq-edit__input-header"
                                 value={this.state.quiz.meta.name}
+                                onChange={this.handleName}
                                 placeholder={placeholderForName}
                             />
                         </h3>

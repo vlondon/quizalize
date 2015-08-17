@@ -52,13 +52,13 @@ export default class CQViewQuizPrice extends React.Component {
     render() : any {
         var price;
         var OwnedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
-        console.log('OwnedQuiz', OwnedQuiz);
+        console.log('OwnedQuiz', OwnedQuiz, this.props.quiz.meta.price);
         if (OwnedQuiz){
             price = 'Owned';
-        } else if (this.props.quiz.meta.price === 0){
-            price = 'Play in class';
-        } else {
+        } else if (this.props.quiz.meta.price && this.props.quiz.meta.price > 0){
             price = 'Classroom version ' + priceFormat(this.props.quiz.meta.price, '$', 'us');
+        } else {
+            price = 'Play in class';
         }
         return (
             <span className={this.props.className} onClick={this.handleClick}>
