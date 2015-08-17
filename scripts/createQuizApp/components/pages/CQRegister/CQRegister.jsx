@@ -10,6 +10,9 @@ var UserActions = require('./../../../actions/UserActions');
 import router from './../../../config/router';
 import {urlParams} from './../../../utils';
 
+import UserStore from './../../../stores/UserStore';
+
+
 var CQRegister = React.createClass({
 
     getInitialState: function() {

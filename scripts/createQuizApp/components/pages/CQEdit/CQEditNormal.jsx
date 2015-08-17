@@ -448,11 +448,11 @@ export default class CQEditNormal extends React.Component{
                     <div className="right">
                         <div className="entry-input-full-width">
                             <CQAutofill
+                                id="subtopic"
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
-                                ref='topicId'
-                                id="subtopic"
                                 data={this.state.subtopics}
+                                ref='topicId'
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>

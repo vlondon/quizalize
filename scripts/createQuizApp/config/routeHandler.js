@@ -92,7 +92,7 @@ var options = {
     after: function(next){
         AnalyticsActions.trackPageView();
         next();
-        window.scrollTop();
+        window.scrollTo(0,0);
     },
     before: function(){
         var destinationURL = newUrl(router.getPath());

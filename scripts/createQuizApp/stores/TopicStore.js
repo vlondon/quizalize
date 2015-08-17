@@ -101,10 +101,9 @@ class TopicStore extends Store {
             return _temporaryTopic;
         }
         else {
-            var result = _usertopics.filter(t => t.uuid === topicId);
-            if (result.length === 0) {
-                result = _publictopics.filter(t => t.uuid === topicId);
-            }
+
+            var result = this.getTopicTree().filter(t => t.uuid === topicId);
+            
             return result.length === 1 ? result.slice()[0] : undefined;
         }
     }
@@ -124,10 +123,11 @@ class TopicStore extends Store {
 
     getTopicName(topicId) {
         var topic = this.getTopicById(topicId);
-        if (topic) {
-            return topic.name;
+        console.log('topic', topic);
+        if (topic === undefined){
+            console.log('_subjects', _subjects);
         }
-        return '';
+        return topic ? topic.name : '';
     }
 
     addChangeListener(callback) {

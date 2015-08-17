@@ -25,7 +25,6 @@ type State = {
     questionIndex?: number;
     quiz: QuizComplete;
     mode: string;
-    pristine: boolean;
     saveEnabled: boolean;
 }
 
@@ -44,7 +43,6 @@ export default class CQEdit extends React.Component {
         };
         var state = this.getState(props);
         state.mode = 'Create';
-        state.pristine = true;
         state.saveEnabled = true;
         state.quiz = this.getQuiz();
 
@@ -92,6 +90,10 @@ export default class CQEdit extends React.Component {
 
     componentWillReceiveProps(nextProps : Props) {
         this.onChange(nextProps);
+    }
+
+    componentWillUnmount() {
+        QuizActions.newQuiz(this.state.quiz);
     }
 
     onChange(props : ?Props){
@@ -167,10 +169,7 @@ export default class CQEdit extends React.Component {
             nextQuestion = this.state.questionIndex + 1;
         } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
-            console.log('state quiz', this.state.quiz, `/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
-            // QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            // });
         }
 
     }
@@ -197,15 +196,12 @@ export default class CQEdit extends React.Component {
 
     handleFinished(){
         UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
-        });
+        router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
     }
 
     handleSaveButton(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
-            this.setState({pristine: true});
         });
     }
 
@@ -234,7 +230,7 @@ export default class CQEdit extends React.Component {
 
     handleTopic(topicId: string){
         console.log('we got topic', topicId);
-        var quiz = this.state.quiz;
+        var {quiz} = this.state;
         quiz.meta.categoryId = topicId;
         this.setState({quiz});
     }
@@ -245,6 +241,7 @@ export default class CQEdit extends React.Component {
 
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
             var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : '';
+            var topics = TopicStore.getTopicTree();
             console.log('placeholderForName', placeholderForName);
 
             return (
@@ -266,7 +263,7 @@ export default class CQEdit extends React.Component {
                             id="subject"
                             value={this.state.quiz.meta.categoryId}
                             onChange={this.handleTopic}
-                            data={TopicStore.getTopicTree}
+                            data={topics}
                             className="cq-edit__input-topic"
                             placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
                         />
@@ -295,7 +292,7 @@ export default class CQEdit extends React.Component {
                             </button>
 
                             <button
-                                disabled={!previewEnabled || this.state.pristine || !this.state.saveEnabled}
+                                disabled={!previewEnabled || !this.state.saveEnabled}
                                 className="btn btn-primary"
                                 onClick={this.handleSaveButton}>
                                 Save
