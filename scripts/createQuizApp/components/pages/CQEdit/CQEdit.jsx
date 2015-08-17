@@ -263,6 +263,7 @@ export default class CQEdit extends React.Component {
 
                             <button
                                 disabled={!previewEnabled}
+                                id='finishQuiz'
                                 className="btn btn-primary"
                                 onClick={this.handleFinished}>
                                 Let's finish!

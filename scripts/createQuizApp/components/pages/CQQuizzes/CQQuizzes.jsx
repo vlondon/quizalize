@@ -100,6 +100,10 @@ var CQQuizzes = React.createClass({
         }
     },
 
+    handleNew: function(){
+            router.setRoute(`/quiz/create`);
+    },
+
     handleClick: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
@@ -208,11 +212,11 @@ var CQQuizzes = React.createClass({
                 </h2>
                 {emptyState}
 
-                <div className="cq-quizzes__actions">
+                <div className="cq-quizzes__actions" >
                     {newApp}&nbsp;
-                    <CQLink href="/quiz/create" className="btn btn-primary cq-quizzes__create">
+                    <button  onClick={this.handleNew} className="btn btn-primary cq-quizzes__create">
                         <i className="fa fa-plus"></i> New quiz
-                    </CQLink>
+                    </button>
                 </div>
 
                 <p>

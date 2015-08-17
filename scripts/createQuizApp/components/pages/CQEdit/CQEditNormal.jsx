@@ -221,6 +221,7 @@ export default class CQEditNormal extends React.Component{
 
                         <div className="entry-input-full-width">
                             <textarea
+                                id='imageBox'
                                 value={this.state.question.imageURL}
                                 onChange={this.handleChange.bind(this, 'imageURL', undefined)}
                                 onKeyDown={this.handleNext.bind(this, 'imageURL', undefined)}
@@ -251,12 +252,12 @@ export default class CQEditNormal extends React.Component{
                             <a data-toggle="popover" title="Math mode" data-content="Use maths mode to enter equations in questions and answers. <br><a target=_blank href='http://blog.zzish.com/post/119033343859/math-mode-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                         </div>
                         <label className="switch">
-                            <input type="checkbox" className="switch-input"
+                            <input type="checkbox"  className="switch-input"
                                 checked={this.state.question.latexEnabled}
                                 onChange={this.handleCheckbox.bind(this, 'latexEnabled')}
                                 />
                             <span className="switch-label" data-on="Yes" data-off="No"></span>
-                            <span className="switch-handle"></span>
+                            <span  id="switchMathMode" className="switch-handle"></span>
                         </label>
                     </div>
 
@@ -266,9 +267,9 @@ export default class CQEditNormal extends React.Component{
                             <a data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. <a target=_blank href='http://blog.zzish.com/post/119032391314/using-images-in-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                         </div>
                         <label  className="switch">
-                            <input type="checkbox" className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                            <input type="checkbox"  className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')}></input>
                             <span className="switch-label" data-on="Yes" data-off="No"></span>
-                            <span className="switch-handle"></span>
+                            <span id="switchImageMode" className="switch-handle"></span>
                         </label>
                     </div>
 

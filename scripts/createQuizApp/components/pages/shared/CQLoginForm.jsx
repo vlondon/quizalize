@@ -129,6 +129,7 @@ var CQLoginForm = React.createClass({
                         <button
                             disabled={!this.state.isReady || !this.props.enabled}
                             type='submit'
+                            id='loginButton'
                             className="btn btn-primary btn-block">
 
                             <span>{this.props.buttonLabel}</span>
