@@ -23,7 +23,7 @@ type QuizMeta = {
     imageUrl?: string;
     name: string;
     originalQuizId?: string;
-    price?: number;
+    price: number;
     profileId: string;
     published?: string;
     random: boolean;
@@ -83,6 +83,7 @@ var QuizObject = function() : QuizComplete {
             live: false,
             name: '',
             profileId: UserStore.getUserId(),
+            price: 0,
             random: false,
             created: Date.now(),
             updated: Date.now()
@@ -235,6 +236,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
                 TopicStore.token
             ]);
             _quizzes = action.payload.quizzes;
+
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
             quizStoreInstance.emitChange();
             break;
@@ -256,6 +258,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZZES_PUBLIC_LOADED:
             _publicQuizzes = action.payload;
+            _publicQuizzes.forEach(quiz => quiz.meta.price = quiz.meta.price || 0);
             quizStoreInstance.emitChange();
             break;
 
