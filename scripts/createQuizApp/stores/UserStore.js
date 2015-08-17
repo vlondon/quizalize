@@ -32,11 +32,16 @@ var noUser:User = {
 var storeInit = false;
 var _user:User = noUser;
 var _users = {};
+var _loginEmail = '';
 
 class UserStore extends Store {
 
     constructor(){
         super();
+    }
+
+    getUserLoginEmail() : string{
+        return _loginEmail;
     }
 
     getUser():User {
@@ -119,6 +124,10 @@ AppDispatcher.register(function(action) {
             userStore.emitChange();
             break;
 
+        case UserConstants.USER_LOGIN_EMAIL_ADDED:
+            _loginEmail = action.payload;
+            // userStore.emitChange();
+            break;
 
 
         default:

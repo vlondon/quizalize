@@ -17,7 +17,6 @@ var handleRedirect = function(){
 
 var UserActions = {
 
-
     request: function() {
 
         UserApi.get()
@@ -213,6 +212,13 @@ var UserActions = {
                 .catch(reject);
         });
 
+    },
+
+    setLoginEmail: function(email){
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USER_LOGIN_EMAIL_ADDED,
+            payload: email
+        });
     }
 };
 
