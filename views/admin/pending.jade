@@ -1,20 +1,65 @@
 extends ./layout
 
 block body
-    h1 Approvied 2
     
-    for quiz in approved1
+    -function prettyDate(dateString){
+        //if it's already a date object and not a string you don't need this line:
+        -if (dateString=="" || dateString=="0") return "";
+        -var date = new Date(dateString);
+        -var d = date.getDate();
+        -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = monthNames[date.getMonth()];
+        -var y = date.getFullYear();
+        -var result = d+' '+m+' '+y;
+        -if(result=="1 Jan 1970") return "";
+        -return result;
+    -}
+    
+    script.        
+        var subjectString = "#{JSON.stringify(subjects)}";
+        subjectString = subjectString.replace(/&quot;/g, '"');
+        
+        var categoryString = "#{JSON.stringify(categories)}";
+        categoryString = categoryString.replace(/&quot;/g, '"');
+        
+        var categories = JSON.parse(categoryString);
+        var subjects = JSON.parse(subjectString);
+        
+        function showCategories(subjectId) {
+            console.log("Subject is now",subjectId);
+            var availableCategories = categories.filter(function(category) {
+                return category.subjectId == subjectId;
+            });
+            console.log(availableCategories);
+        }
+        
+    
+    h1 Pending Quizes
+    .container-fluid
         .row
-            .col-xs-1
-                p #{quiz.type}
-            .col-xs-2
-                p #{quiz.meta.name}
-            .col-xs-3
-                p #{quiz.meta.categoryId}
-            .col-xs-3
-                form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
-                    select(name="publicCategoryId")
-                        option(value="asfdlijasldfjasf") Art in other Culutures
-                        option(value="asfdlijasldfjasf") Hello
-                    input(type="text", name="subjectId", value="", placeholder="Subject Id")
-                    input(type="submit" value="APPROVE")
+            table(border="1", style="font-size:12px")
+                thead
+                    th Type
+                    th Name
+                    th Category
+                    th Updated
+                    th Set Category And Approve
+                tbody
+                for quiz in pending
+                    tr
+                        td #{quiz.type}
+                        td #{quiz.meta.name}
+                        td #{quiz.meta.categoryId}
+                        td #{prettyDate(quiz.updated)} 
+                        td
+                            form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
+                                select(name="subjectId", onchange="showCategories(this.value)")
+                                    for subject in subjects
+                                        option(value=subject.uuid) #{subject.name}
+                                select(name="publicCategoryId")
+                                    option(value="") Default
+                                input(type="submit" value="APPROVE")
+                                    
+                        td
+                            form(method="POST", action="/admin/approvefirst/#{quiz.type}/#{quiz.uuid}")
+                                
