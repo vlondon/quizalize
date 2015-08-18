@@ -87,14 +87,16 @@ exports.index = function(req, res){
 exports.pendingQuizzes = function(req, res){
     db.findDocuments("subject",{}, -1, function(err, subjects) {
         db.findDocuments("contentcategory",{}, -1, function(err, categories) {
-            db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, result) {
+            db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
                 if (!err) {
-                    res.render("admin/pending", {approved1: result, categories: categories, subjects: subjects});
+                    res.render("admin/pending", {pending: pending, categories: categories, subjects: subjects});
                 }
                 else {
                     res.render("admin/error", {error: err});
                 }
+
             });
+
         });
     });
 
@@ -103,7 +105,7 @@ exports.pendingQuizzes = function(req, res){
 exports.approved = function(req, res){
     db.findDocuments("content", {"meta.published": "published"}, -1, function(err, result) {
         if (!err) {
-            res.render("admin/approved", {approved1: result});
+            res.render("admin/approved", {approved: result});
         }
         else {
             res.render("admin/error", {error: err});
