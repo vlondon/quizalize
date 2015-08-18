@@ -35,6 +35,7 @@ type GroupContent = {
 type GroupsContent = Array<GroupContent>;
 
 var storeInit = false;
+var _storeLoaded = false;
 var _groups:Groups = [];
 var _groupsContent:GroupsContent = [];
 
@@ -44,9 +45,14 @@ class GroupStore extends Store {
         super();
     }
 
+    isLoaded():boolean{
+        return _storeLoaded;
+    }
+
     getGroups():Groups {
         return _groups;
     }
+
 
     getGroupsContent():GroupsContent {
         return _groupsContent;
@@ -77,6 +83,7 @@ groupStoreInstance.token = AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case GroupConstants.GROUPS_LOADED:
             _groups = action.payload.groups;
+            _storeLoaded = true;
             _groupsContent = action.payload.groupsContent;
             groupStoreInstance.emitChange();
             break;

@@ -83,24 +83,6 @@ export default class CQPublic extends React.Component {
         router.setRoute(`/quiz/published/${quiz.uuid}`);
     }
 
-    handleBuy(quiz : Quiz){
-        console.log("should we buy????");
-        if (!this.state.user) {
-            swal({
-                title: 'You need to be logged in',
-                text: `In order to buy this item you need to log into Quizalize`,
-                type: 'info',
-                confirmButtonText: 'Log in',
-                showCancelButton: true
-            }, function(isConfirm){
-                if (isConfirm){
-                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
-                }
-            });
-        } else {
-            TransactionActions.buyQuiz(quiz);
-        }
-    }
 
     handleViewChange(options: string){
         switch (options){
@@ -172,7 +154,7 @@ export default class CQPublic extends React.Component {
                             Play
                         </span>
 
-                        <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
+                        <CQViewQuizPrice className='cq-public__button'/>
 
                     </CQViewQuizList>
                 </div>

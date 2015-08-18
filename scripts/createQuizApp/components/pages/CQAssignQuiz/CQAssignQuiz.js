@@ -41,9 +41,10 @@ class CQAssignQuiz extends React.Component {
 
     onChange(){
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.marketplaceQuizId);
+        var groupsLoaded = GroupStore.isLoaded();
 
         var init = this.state.init;
-        if (quiz && init === false){
+        if (quiz && init === false && groupsLoaded){
             init = true;
             GroupActions.createFirstAssignment(quiz.uuid);
         }
