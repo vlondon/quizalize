@@ -1,6 +1,7 @@
 extends ./layout
 
 block body
+    
     -function prettyDate(dateString){
         //if it's already a date object and not a string you don't need this line:
         -if (dateString=="" || dateString=="0") return "";
@@ -13,6 +14,26 @@ block body
         -if(result=="1 Jan 1970") return "";
         -return result;
     -}
+    
+    script.        
+        var subjectString = "#{JSON.stringify(subjects)}";
+        subjectString = subjectString.replace(/&quot;/g, '"');
+        
+        var categoryString = "#{JSON.stringify(categories)}";
+        categoryString = categoryString.replace(/&quot;/g, '"');
+        
+        var categories = JSON.parse(categoryString);
+        var subjects = JSON.parse(subjectString);
+        
+        function showCategories(subjectId) {
+            console.log("Subject is now",subjectId);
+            var availableCategories = categories.filter(function(category) {
+                return category.subjectId == subjectId;
+            });
+            console.log(availableCategories);
+        }
+        
+    
     h1 Pending Quizes
     .container-fluid
         .row
@@ -32,15 +53,9 @@ block body
                         td #{prettyDate(quiz.updated)} 
                         td
                             form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
-                                select(name="subjectId")
-                                    option(value="") Default
+                                select(name="subjectId", onchange="showCategories(this.value)")
                                     for subject in subjects
-                                        for category in categories
-                                            -var subject = #{subject.uuid};
-                                            -var parent = #{category.subjectId};
-                                            if (subject == parent) {
-                                                option(value="#{subject.uuid}") #{subject.name}  #{category.name}
-                                                }
+                                        option(value=subject.uuid) #{subject.name}
                                 select(name="publicCategoryId")
                                     option(value="") Default
                                 input(type="submit" value="APPROVE")
