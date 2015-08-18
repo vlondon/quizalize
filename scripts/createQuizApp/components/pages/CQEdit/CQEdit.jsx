@@ -92,10 +92,6 @@ export default class CQEdit extends React.Component {
         this.onChange(nextProps);
     }
 
-    componentWillUnmount() {
-        QuizActions.newQuiz(this.state.quiz);
-    }
-
     onChange(props : ?Props){
 
         props = props || this.props;
@@ -142,7 +138,6 @@ export default class CQEdit extends React.Component {
 
     handleQuestion(question : Question){
         // question update
-        console.log('HANDLEQUESTION', question);
         var quiz = Object.assign({}, this.state.quiz);
 
 
@@ -164,14 +159,17 @@ export default class CQEdit extends React.Component {
 
     handleSaveNewQuestion(){
         // new question
-
+        console.log('handleSaveNewQuestion', this.state.questionIndex, this.state.quiz);
         var nextQuestion;
+
         if (this.state.questionIndex) {
             nextQuestion = this.state.questionIndex + 1;
         } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
-            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         }
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
+        });
 
     }
 
@@ -197,7 +195,9 @@ export default class CQEdit extends React.Component {
 
     handleFinished(){
         UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
-        router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
+        });
     }
 
     handleSaveButton(){
@@ -243,7 +243,6 @@ export default class CQEdit extends React.Component {
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
             var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : '';
             var topics = TopicStore.getTopicTree();
-            console.log('placeholderForName', placeholderForName);
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">

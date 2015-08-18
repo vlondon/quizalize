@@ -446,7 +446,6 @@ export default class CQEditNormal extends React.Component{
                     </label>
                     <div className="right">
                         <div className="entry-input-full-width">
-                            {this.state.question.topicId}
                             <CQAutofill
                                 id="subtopic"
                                 value={this.state.question.topicId}

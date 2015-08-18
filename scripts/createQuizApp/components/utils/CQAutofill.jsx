@@ -82,9 +82,7 @@ export default class CQAutofill extends React.Component {
 
 
         if (props && props.value){
-            console.log('CQAutofill prop value', props.value);
             selected = TopicStore.getTopicById(props.value);
-            console.log('CQAutofill prop value selected', selected);
         }
         var searchString = selected ? selected.name : undefined;
 
@@ -100,18 +98,8 @@ export default class CQAutofill extends React.Component {
     }
 
     componentWillReceiveProps(nextProps:Props) {
-        console.trace('CQAutofill componentWillReceiveProps', nextProps);
+        //console.trace('CQAutofill componentWillReceiveProps', nextProps);
         var newState = this.getState(nextProps);
-        // var topic = TopicStore.getTopicById(nextProps.value);
-        // var searchString = topic ? topic.name : '';
-        // var selected = topic;
-        // var topics;
-        // if (typeof nextProps.data === 'function'){
-        //     topics = nextProps.data();
-        // } else {
-        //     topics = nextProps.data;
-        // }
-
         this.setState(newState);
 
     }
