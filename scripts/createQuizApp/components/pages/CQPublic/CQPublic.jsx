@@ -47,7 +47,6 @@ export default class CQPublic extends React.Component {
             }
         };
         this.onChange = this.onChange.bind(this);
-        this.handleBuy = this.handleBuy.bind(this);
         this.handleViewChange = this.handleViewChange.bind(this);
         this.handleDetails = this.handleDetails.bind(this);
         this.handleDetailsClose = this.handleDetailsClose.bind(this);
