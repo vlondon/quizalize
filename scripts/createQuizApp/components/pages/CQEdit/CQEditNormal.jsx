@@ -205,7 +205,6 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleGetTopics () {
-        console.info('SUBTOPIC LIST REFRESHED');
         return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
     }
 
@@ -447,6 +446,7 @@ export default class CQEditNormal extends React.Component{
                     </label>
                     <div className="right">
                         <div className="entry-input-full-width">
+                            {this.state.question.topicId}
                             <CQAutofill
                                 id="subtopic"
                                 value={this.state.question.topicId}

@@ -142,6 +142,7 @@ export default class CQEdit extends React.Component {
 
     handleQuestion(question : Question){
         // question update
+        console.log('HANDLEQUESTION', question);
         var quiz = Object.assign({}, this.state.quiz);
 
 
