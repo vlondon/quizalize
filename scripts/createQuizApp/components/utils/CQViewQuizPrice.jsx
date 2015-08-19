@@ -38,7 +38,7 @@ export default class CQViewQuizPrice extends React.Component {
             if (!UserStore.isLoggedIn()) {
                 swal({
                     title: 'You need to have an account to use this quiz in a class',
-                    text: `In order to buy this item you need to log into Quizalize`,
+                    text: `It takes seconds to create an account`,
                     type: 'info',
                     confirmButtonText: 'Create an account',
                     showCancelButton: true
@@ -57,7 +57,7 @@ export default class CQViewQuizPrice extends React.Component {
         var price, owned = false;
         var OwnedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
         if (OwnedQuiz){
-            price = 'Owned';
+            price = 'Play in class';
             owned = true;
         } else if (this.props.quiz.meta.price && this.props.quiz.meta.price > 0){
             price = 'Classroom version ' + priceFormat(this.props.quiz.meta.price, '$', 'us');

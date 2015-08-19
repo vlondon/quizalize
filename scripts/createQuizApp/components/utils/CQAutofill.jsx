@@ -20,7 +20,7 @@ type Props = {
 
 type State = {
     topics: Array<Object>;
-    searchString: ?string;
+    searchString: string;
     selected?: Object;
     selecting: boolean;
     occurrences: Array<Object>;
@@ -84,7 +84,7 @@ export default class CQAutofill extends React.Component {
         if (props && props.value){
             selected = TopicStore.getTopicById(props.value);
         }
-        var searchString = selected ? selected.name : undefined;
+        var searchString = selected ? selected.name : '';
 
         var occurrences = this.state && this.state.occurrences ? this.state.occurrences : [];
         var selecting = this.state && this.state.selecting ? this.state.selecting : false;
@@ -208,6 +208,11 @@ export default class CQAutofill extends React.Component {
             });
             this.props.onChange(option.uuid);
         } else {
+            this.setState({
+                selected: undefined,
+                searchString: '',
+                selecting: false
+            });
             this.props.onChange(undefined);
         }
 
@@ -312,18 +317,25 @@ export default class CQAutofill extends React.Component {
     }
 
     handleBlur(){
-        //console.trace('CQAutofill handleBlur', this);
+        console.trace('CQAutofill handleBlur', this);
         // this.handleAssign();
         setTimeout(()=>{
-        if (this.state.selecting) {
-            var option = this.state.selected;
-            if (option) {
-                this.selectOption(option);
+            if (this.state.selecting) {
+
+                if (this.state.searchString.trim() === '') {
+                    console.log('option should be undefined');
+                    this.selectOption(undefined);
+                }  else {
+                    var option = this.state.selected;
+                    if (option) {
+                        this.selectOption(option);
+                    }
+
+                }
+                // this.setState({
+                //     selecting: false
+                // });
             }
-            // this.setState({
-            //     selecting: false
-            // });
-        }
         }, 500);
     }
 
