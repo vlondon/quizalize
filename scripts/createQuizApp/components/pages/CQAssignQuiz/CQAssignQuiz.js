@@ -47,6 +47,7 @@ class CQAssignQuiz extends React.Component {
         if (quiz && init === false && groupsLoaded){
             init = true;
             GroupActions.createFirstAssignment(quiz.uuid);
+            this.setState({init});
         }
 
     }

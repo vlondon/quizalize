@@ -37,14 +37,14 @@ export default class CQViewQuizPrice extends React.Component {
         } else {
             if (!UserStore.isLoggedIn()) {
                 swal({
-                    title: 'You need to be logged in',
+                    title: 'You need to have an account to use this quiz in a class',
                     text: `In order to buy this item you need to log into Quizalize`,
                     type: 'info',
-                    confirmButtonText: 'Log in',
+                    confirmButtonText: 'Create an account',
                     showCancelButton: true
-                }, function(isConfirm){
+                }, (isConfirm) => {
                     if (isConfirm){
-                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
+                        router.setRoute(`/quiz/register?redirect=${window.encodeURIComponent('/quiz/marketplace?quid=' + this.props.quiz.uuid)}`);
                     }
                 });
             } else {
@@ -56,7 +56,6 @@ export default class CQViewQuizPrice extends React.Component {
     render() : any {
         var price, owned = false;
         var OwnedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
-        console.log('OwnedQuiz', OwnedQuiz, this.props.quiz.meta.price);
         if (OwnedQuiz){
             price = 'Owned';
             owned = true;

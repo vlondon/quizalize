@@ -11,9 +11,11 @@ import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
+import urlParams from './../../../utils/urlParams';
 
 var TransactionActions = require('./../../../actions/TransactionActions');
 
+import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';
 import AppStore from './../../../stores/AppStore';
 import UserStore from './../../../stores/UserStore';
@@ -56,6 +58,10 @@ export default class CQPublic extends React.Component {
     componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
         AppStore.addChangeListener(this.onChange);
+        var quizId = urlParams().quid;
+        if (quizId) {
+            QuizActions.loadPublicQuiz(quizId).then(TransactionActions.buyQuiz);
+        }
     }
 
     componentWillUnmount() {
