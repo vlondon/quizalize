@@ -17,8 +17,8 @@ var CQRegister = React.createClass({
 
     getInitialState: function() {
         console.log('window.location.search;,', window.location.search);
-        var variation = typeof window.cxApi === 'object' ? window.cxApi.chooseVariation() : 0;
-        var willRedirect = variation === 1;
+        
+        var willRedirect = true;
         return {
             isRedirect: urlParams().redirect ? true : false,
             redirectUrl: '',
