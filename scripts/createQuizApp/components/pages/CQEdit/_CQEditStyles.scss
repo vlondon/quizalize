@@ -1,16 +1,43 @@
 .cq-edit {
     margin-bottom: 80px;
 
+    padding: 20px;
     .btn {
         margin-left: 5px;
     }
     &__header {
         font-weight: bold;
-        text-align: center;
+        margin-bottom: 20px;
+
         h1, h2, h3, h4 {
             font-weight: bold;
         }
+        .cq-autofill {
+            display: inline-block;
+            width: 500px;
+            border: 0;
+            border-bottom: 1px solid $brand-color-grey-lighter;
+
+            // TODO: Remove this when Bootstrap gets removed
+            .form-control {
+                border: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
     }
+    &__input-topic,
+    &__input-header {
+        border: 0;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        color: red;
+        width: 500px;
+    }
+    &__input-topic {
+        border-bottom: 0;
+    }
+
 
     &__footer {
         position: relative;

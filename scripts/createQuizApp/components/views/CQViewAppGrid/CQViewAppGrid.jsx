@@ -11,7 +11,7 @@ var CQViewAppGrid = React.createClass({
         className: React.PropTypes.string,
         apps: React.PropTypes.array,
         editMode: React.PropTypes.bool,
-        onClick: React.PropTypes.fund,
+        onClick: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -74,11 +74,10 @@ var CQViewAppGrid = React.createClass({
                 );
             };
             publishButton =  (app) =>{
-                if (app.meta.published === "published") {
-
-                }
-                else if (app.meta.published === "pending") {
-
+                if (app.meta.published === 'published') {
+                    console.log('its published, skip');
+                } else if (app.meta.published === 'pending') {
+                    console.log('its pending, skip');
                 }
                 else {
                     return (

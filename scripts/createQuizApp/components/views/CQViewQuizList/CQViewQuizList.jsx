@@ -11,7 +11,7 @@ var CQViewQuizAuthor = require('./../../../components/views/CQViewQuizAuthor');
 var CQPagination = require('./../../../components/utils/CQPagination');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 var UserStore = require('./../../../stores/UserStore');
 
 
@@ -63,7 +63,6 @@ export default class CQViewQuizList extends React.Component {
 
     componentDidMount() {
         sorter = new QuizSorter();
-        console.trace("adding TopicStore listener");
         TopicStore.addChangeListener(this.onChange);
     }
 
@@ -220,7 +219,7 @@ export default class CQViewQuizList extends React.Component {
         // obj = obj || this.state.savedSearch || undefined;
 
         quizzes = quizzes || this.props.quizzes.slice();
-        console.log('quizzes', quizzes);
+
         if (obj && obj.sort === 'name') {
             quizzes.sort((a, b) => a.meta.name > b.meta.name ? 1 : -1);
         } else if (obj && obj.sort === 'time') {
@@ -261,7 +260,7 @@ export default class CQViewQuizList extends React.Component {
         //         return nameMatch || categoryMatch;
         //     });
         // }
-        console.log('quizzes end', quizzes);
+
         return quizzes;
     }
 
@@ -344,9 +343,9 @@ export default class CQViewQuizList extends React.Component {
 
         return (
 
-            <div className={`cq-viewquizlist ${this.props.className}`}>
+            <div>
                 {sort}
-                <ul>
+                <ul className={`cq-viewquizlist ${this.props.className}`}>
                     {this.state.quizzes.map((quiz) => {
                         if (quiz.uuid === 'new'){
                             return (
@@ -373,13 +372,12 @@ export default class CQViewQuizList extends React.Component {
 
 
                                 <div className="cq-viewquizlist__quiz-inner">
-                                    <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
                                     {TopicStore.getTopicName(quiz.meta.publicCategoryId || quiz.meta.categoryId)}<br/>
+                                    <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
                                     {author(quiz)}
 
 
                                     <div className="cq-viewquizlist__quizextra">
-                                        <br/>
                                         <small>
                                             {updated(quiz)}
                                         </small>

@@ -10,10 +10,10 @@ var stripeSDK               = require('./../config/stripeSDK');
 var UserApi                 = require('./../actions/api/UserApi');
 var TransactionStore        = require('./../stores/TransactionStore');
 
-import priceFormat from './../utils/priceFormat';
+import priceFormat  from './../utils/priceFormat';
 
-import type {Quiz} from './../stores/QuizStore';
-import type {App} from './../stores/AppStore';
+import type {Quiz}  from './../stores/QuizStore';
+import type {App}   from './../stores/AppStore';
 
 type TransactionMeta = {
     type: string;
@@ -115,53 +115,63 @@ var TransactionActions = {
                 };
                 TransactionActions.saveNewTransaction(newTransaction)
                     .then(()=>{
-
                         router.setRoute('/quiz/quizzes');
                     });
             });
     },
 
 
-    buyQuiz: function(quiz : Quiz, free : number) {
+    buyQuiz: function(quiz : Quiz, free? : number) {
         var price = 0;
         var priceTag = "free";
         if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
             price = quiz.meta.price;
             priceTag = priceFormat(quiz.meta.price, '$', 'us');
         }
-        swal({
-                title: 'Confirm Purchase',
-                text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>${priceTag}</b>`,
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                html: true
-            }, (isConfirm) => {
 
-            if (isConfirm){
-                UserApi.trackEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
-                setTimeout(()=>{
-
-                    var newTransaction = {
-                        meta: {
-                            type: 'quiz',
-                            quizId: quiz.uuid,
-                            profileId: quiz.meta.profileId,
-                            price: price
-                        }
-                    };
-
-                    swal({
-                        title: 'Working…',
-                        text: `We're processing your order`,
-                        showConfirmButton: false
-                    });
-
-                    TransactionActions.saveNewTransaction(newTransaction, true);
-
-                }, 300);
+        var newTransaction = {
+            meta: {
+                type: 'quiz',
+                quizId: quiz.uuid,
+                profileId: quiz.meta.profileId,
+                price: price
             }
-        });
+        };
+
+        if (quiz.meta.price !== 0){
+
+            swal({
+                    title: 'Confirm Purchase',
+                    text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>${priceTag}</b>`,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    html: true
+                }, (isConfirm) => {
+
+                if (isConfirm){
+                    UserApi.trackEvent('buy_paid_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+                    setTimeout(()=>{
+
+                        swal({
+                            title: 'Working…',
+                            text: `We're processing your order`,
+                            showConfirmButton: false
+                        });
+
+                        TransactionActions.saveNewTransaction(newTransaction, true);
+
+                    }, 300);
+                }
+            });
+        } else {
+            UserApi.trackEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+            TransactionActions.saveNewTransaction(newTransaction, false).then(()=>{
+                // TODO : Wrong uuid
+                router.setRoute(`/quiz/multi/${quiz.uuid}`);
+            });
+        }
+
     },
 
     buyApp: function(app : App, free : ?boolean) {
@@ -172,13 +182,13 @@ var TransactionActions = {
             priceTag = priceFormat(app.meta.price, '$', 'us');
         }
         swal({
-                title: 'Confirm Purchase',
-                text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>${priceTag}</b>`,
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                html: true
-            }, (isConfirm) => {
+            title: 'Confirm Purchase',
+            text: `Are you sure you want to purchase <br/><b>${app.meta.name}</b> <br/> for <b>${priceTag}</b>`,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            html: true
+        }, (isConfirm) => {
 
             if (isConfirm){
                 UserApi.trackEvent('buy_quiz', {uuid: app.uuid, name: app.meta.name});

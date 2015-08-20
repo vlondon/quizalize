@@ -2,14 +2,13 @@
 import type { Quiz, Question } from './../../../stores/QuizStore';
 
 var React = require('react');
-var assign = require('object-assign');
 
 var CQLatexString = require('./../../../components/utils/CQLatexString');
 
 import QuizStore from './../../../stores/QuizStore';
 import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditDurationPicker from './CQEditDurationPicker';
-var TopicStore = require('./../../../stores/TopicStore');
+import TopicStore from './../../../stores/TopicStore';
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {
@@ -22,6 +21,7 @@ type Props = {
 
 type State = {
     question: Question;
+    subtopics: Array<Object>;
 }
 
 // 5, 10, 20, 30, 45, 60
@@ -78,8 +78,10 @@ export default class CQEditNormal extends React.Component{
         props = props || this.props;
         var question : Question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
         question.alternatives = question.alternatives || [];
+        var subtopics = this.handleGetTopics();
         var newState = {
-            question
+            question,
+            subtopics
         };
 
 
@@ -139,7 +141,7 @@ export default class CQEditNormal extends React.Component{
 
     handleChange (property : string, index? : number, event : Object) {
 
-        var newQuestionState = assign({}, this.state.question);
+        var newQuestionState = Object.assign({}, this.state.question);
         if (index !== undefined){
             newQuestionState[property][index] = event.target.value;
         } else {
@@ -157,7 +159,7 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleDuration(duration : number){
-        var question = assign({}, this.state.question);
+        var question = Object.assign({}, this.state.question);
         var canBeSaved = this.canBeSaved(question);
         question.duration = duration;
         console.log('handleDuration', question, duration);
@@ -174,7 +176,7 @@ export default class CQEditNormal extends React.Component{
 
     handleTopic (topicId: string) {
         console.log('we got new topic', topicId);
-        var newQuestionState = assign({}, this.state.question);
+        var newQuestionState = Object.assign({}, this.state.question);
         newQuestionState.topicId = topicId;
 
         this.props.onChange(newQuestionState);
@@ -193,7 +195,7 @@ export default class CQEditNormal extends React.Component{
 
     handleCheckbox (property : string) {
 
-        var question = assign({}, this.state.question);
+        var question = Object.assign({}, this.state.question);
         question[property] = !this.state.question[property];
 
         var canBeSaved = this.canBeSaved(question);
@@ -222,6 +224,7 @@ export default class CQEditNormal extends React.Component{
 
                         <div className="entry-input-full-width">
                             <textarea
+                                id='imageBox'
                                 value={this.state.question.imageURL}
                                 onChange={this.handleChange.bind(this, 'imageURL', undefined)}
                                 onKeyDown={this.handleNext.bind(this, 'imageURL', undefined)}
@@ -252,12 +255,12 @@ export default class CQEditNormal extends React.Component{
                             <a data-toggle="popover" title="Math mode" data-content="Use maths mode to enter equations in questions and answers. <br><a target=_blank href='http://blog.zzish.com/post/119033343859/math-mode-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                         </div>
                         <label className="switch">
-                            <input type="checkbox" className="switch-input"
+                            <input type="checkbox"  className="switch-input"
                                 checked={this.state.question.latexEnabled}
                                 onChange={this.handleCheckbox.bind(this, 'latexEnabled')}
                                 />
                             <span className="switch-label" data-on="Yes" data-off="No"></span>
-                            <span className="switch-handle"></span>
+                            <span  id="switchMathMode" className="switch-handle"></span>
                         </label>
                     </div>
 
@@ -267,9 +270,9 @@ export default class CQEditNormal extends React.Component{
                             <a data-toggle="popover" title="Use Images" data-content="Make your questions more engaging using images. <a target=_blank href='http://blog.zzish.com/post/119032391314/using-images-in-quizalize-classroom-quiz-response-system'>Learn more</a>" data-trigger="focus" data-placement="auto left" data-container="body" data-html="true" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"></a>
                         </div>
                         <label  className="switch">
-                            <input type="checkbox" className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')} ng-model="create.quiz.latexEnabled"  ng-change="create.toggleLatex()"></input>
+                            <input type="checkbox"  className="switch-input"  checked={this.state.question.imageEnabled} onChange={this.handleCheckbox.bind(this, 'imageEnabled')}></input>
                             <span className="switch-label" data-on="Yes" data-off="No"></span>
-                            <span className="switch-handle"></span>
+                            <span id="switchImageMode" className="switch-handle"></span>
                         </label>
                     </div>
 
@@ -419,7 +422,7 @@ export default class CQEditNormal extends React.Component{
                                 ref='answerExplanation'
                                 onChange={this.handleChange.bind(this, 'answerExplanation', undefined)}
                                 onKeyDown={this.handleNext.bind(this, 'answerExplanation', undefined)}
-                                id="topic" type="text" placeholder="e.g. Barcelona has a population of 1,620,943" autofocus="true" tabIndex="6" className="form-control"/>
+                                id="topic" type="text" placeholder="e.g. As the capital of France, Paris is the seat of France's national government" autofocus="true" tabIndex="6" className="form-control"/>
                         </div>
                     </div>
                 </div>
@@ -444,10 +447,11 @@ export default class CQEditNormal extends React.Component{
                     <div className="right">
                         <div className="entry-input-full-width">
                             <CQAutofill
+                                id="subtopic"
                                 value={this.state.question.topicId}
                                 onChange={this.handleTopic}
+                                data={this.state.subtopics}
                                 ref='topicId'
-                                data={this.handleGetTopics}
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 tabIndex="6"/>

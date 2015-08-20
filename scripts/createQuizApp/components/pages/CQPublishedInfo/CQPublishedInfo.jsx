@@ -102,7 +102,7 @@ var CQPUblishedInfo = React.createClass({
                         <h1>Teacher get ready!</h1>
                         <p>Open your learning dashboard here:</p><br/><br/>
                         <center>
-                            <a type="button" disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
+                            <a type="button" id='openDashboard' disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
                                 Open Teacher Dashboard
                             </a>
                         </center>

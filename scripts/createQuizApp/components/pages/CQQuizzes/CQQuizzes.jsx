@@ -100,6 +100,10 @@ var CQQuizzes = React.createClass({
         }
     },
 
+    handleNew: function(){
+            router.setRoute(`/quiz/create`);
+    },
+
     handleClick: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
@@ -208,11 +212,11 @@ var CQQuizzes = React.createClass({
                 </h2>
                 {emptyState}
 
-                <div className="cq-quizzes__actions">
+                <div className="cq-quizzes__actions" >
                     {newApp}&nbsp;
-                    <CQLink href="/quiz/create" className="btn btn-primary cq-quizzes__create">
+                    <button  onClick={this.handleNew} className="btn btn-primary cq-quizzes__create">
                         <i className="fa fa-plus"></i> New quiz
-                    </CQLink>
+                    </button>
                 </div>
 
                 <p>
@@ -231,14 +235,10 @@ var CQQuizzes = React.createClass({
                     sortBy='time'
                     sortOptions={this.state.isAdmin}
                     onAssign={this.handleAssign}
-                    onEdit={this.handleEdit}
                     onDelete={this.handleDelete}>
 
                     <CQPublishQuiz className="cq-quizzes__button--publish"/>
 
-                    <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
-                        <span className="fa fa-search"></span> Preview
-                    </button>
 
                     <button className="cq-quizzes__button--share" onClick={this.handleShare}>
                         <span className="fa fa-share"></span> Share
@@ -248,8 +248,12 @@ var CQQuizzes = React.createClass({
                         <span className="fa fa-pencil"></span> Edit
                     </button>
 
+                    <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
+                        <span className="fa fa-search"></span> Play
+                    </button>
+
                     <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
-                        <span className="fa fa-users"></span> Use in class
+                        <span className="fa fa-users"></span> Play in class
                     </button>
 
                     <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>

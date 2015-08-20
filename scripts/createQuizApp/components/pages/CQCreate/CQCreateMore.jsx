@@ -1,5 +1,4 @@
 var React = require('react');
-var assign = require('object-assign');
 
 var TransactionStore = require('createQuizApp/stores/TransactionStore');
 var prices = TransactionStore.getPrices();
@@ -46,7 +45,7 @@ var CQCreateMore = React.createClass({
             // showanswers: false,
             // timer: true
         console.log("My initial settings", this.props.settings);
-        defaultSettings = assign({}, defaultSettings, this.props.settings);
+        defaultSettings = Object.assign({}, defaultSettings, this.props.settings);
         convertToBoolean(defaultSettings, 'live');
         convertToBoolean(defaultSettings, 'featured');
         convertToBoolean(defaultSettings, 'random');
@@ -61,7 +60,7 @@ var CQCreateMore = React.createClass({
 
         console.log('event.target', type);
 
-        var newState = assign({}, this.state);
+        var newState = Object.assign({}, this.state);
 
         if (type === 'text'){
             newState[property] = (property === 'price') ? Number(event.target.value) :  event.target.value;

@@ -1,16 +1,14 @@
 var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
 var AnalyticsConstants = require('createQuizApp/constants/AnalyticsConstants');
 
-
 var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
 
 
 var CHANGE_EVENT = 'change';
 
 var _analyticsEnabled = false;
 
-var AnalyticsStore = assign({}, EventEmitter.prototype, {
+var AnalyticsStore = Object.assign({}, EventEmitter.prototype, {
 
     analyticsEnabled: function() {
         return _analyticsEnabled;

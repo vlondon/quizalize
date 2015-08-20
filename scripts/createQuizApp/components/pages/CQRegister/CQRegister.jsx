@@ -14,8 +14,8 @@ var CQRegister = React.createClass({
 
     getInitialState: function() {
         console.log('window.location.search;,', window.location.search);
-        var variation = typeof window.cxApi === 'object' ? window.cxApi.chooseVariation() : 0;
-        var willRedirect = variation === 1;
+
+        var willRedirect = true;
         return {
             isRedirect: urlParams().redirect ? true : false,
             redirectUrl: '',
@@ -30,16 +30,21 @@ var CQRegister = React.createClass({
             isEnabled: false,
             loginButtonLabel: 'Working…'
         });
+        var redirect = urlParams().redirect;
         UserActions.register(data)
             .then(()=>{
                 if (this.state.willRedirect){
-                    router.setRoute('/quiz/register-settings');
+                    if (redirect) {
+                        router.setRoute('/quiz/register-settings?final=true&redirect=' + redirect);
+                    }
+                    else {
+                        router.setRoute('/quiz/register-settings');
+                    }
                 } else {
                     router.setRoute('/quiz/quizzes');
                 }
             })
             .catch((error) => {
-
                 if (error === 'Duplicate Email address'){
                     swal('Register Error', 'This email has already been used.');
                 } else {

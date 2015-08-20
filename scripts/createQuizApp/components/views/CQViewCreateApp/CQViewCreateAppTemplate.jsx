@@ -1,5 +1,4 @@
 var React = require('react');
-var assign = require('object-assign');
 
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
@@ -58,7 +57,7 @@ var CQViewCreateAppTemplate = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var appInfo = assign({}, this.state.appInfo, nextProps.app);
+        var appInfo = Object.assign({}, this.state.appInfo, nextProps.app);
         var quizzes = nextProps.quizzes.map(qId => QuizStore.getQuizMeta(qId));
         this.setState({ appInfo, quizzes });
     },

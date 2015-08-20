@@ -59,7 +59,7 @@ var CQAppGrid = React.createClass({
         };
 
         var apps = AppStore.getPublicApps();
-        console.log("apps", apps);
+
 
         if (apps) {
             apps = appCreate(apps);

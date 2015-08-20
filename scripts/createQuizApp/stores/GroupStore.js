@@ -1,58 +1,91 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-var GroupConstants = require('createQuizApp/constants/GroupConstants');
-var GroupActions = require('createQuizApp/actions/GroupActions');
+/* @flow */
 
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var CHANGE_EVENT = 'change';
+import Store from './Store';
+
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var GroupConstants = require('./../constants/GroupConstants');
+var GroupActions = require('./../actions/GroupActions');
+
+
+export type Group = {
+    code: string;
+    link: string;
+    name: string;
+};
+type Groups = Array<Group>;
+
+type GroupContent = {
+    access: number;
+    attributes: {
+        access: string;
+        code: string;
+    };
+    contentId: string;
+    created: number;
+    createdString: string;
+    groupCode: string;
+    ownerId: string;
+    profileOwnerId: string;
+    revision: number;
+    timestamp: number;
+    timestampedString: string;
+    uuid: string;
+}
+
+type GroupsContent = Array<GroupContent>;
 
 var storeInit = false;
-var _groups = [];
-var _groupsContent = [];
+var _storeLoaded = false;
+var _groups:Groups = [];
+var _groupsContent:GroupsContent = [];
 
-var GroupStore = assign({}, EventEmitter.prototype, {
+class GroupStore extends Store {
 
-    getGroups: function() {
+    constructor(){
+        super();
+    }
+
+    isLoaded():boolean{
+        return _storeLoaded;
+    }
+
+    getGroups():Groups {
         return _groups;
-    },
+    }
 
-    getGroupsContent: function() {
+
+    getGroupsContent():GroupsContent {
         return _groupsContent;
-    },
+    }
 
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
+
 
     /**
      * @param {function} callback
      */
-    addChangeListener: function(callback) {
+    addChangeListener(callback: Function) {
         if (!storeInit) {
             storeInit = true;
             GroupActions.loadGroups();
         }
-        this.on(CHANGE_EVENT, callback);
-    },
+        super.addChangeListener(callback);
 
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
     }
-});
 
 
+}
+
+var groupStoreInstance = new GroupStore();
 // Register callback to handle all updates
-GroupStore.dispatchToken = AppDispatcher.register(function(action) {
+groupStoreInstance.token = AppDispatcher.register(function(action) {
     // var text;
 
     switch(action.actionType) {
         case GroupConstants.GROUPS_LOADED:
             _groups = action.payload.groups;
+            _storeLoaded = true;
             _groupsContent = action.payload.groupsContent;
-            GroupStore.emitChange();
+            groupStoreInstance.emitChange();
             break;
 
         case GroupConstants.NEW_GROUP_PUBLISHED:
@@ -60,9 +93,8 @@ GroupStore.dispatchToken = AppDispatcher.register(function(action) {
             newGroup.name = newGroup.groupName;
             delete newGroup.groupName;
             _groups.push(newGroup);
-            GroupStore.emitChange();
+            groupStoreInstance.emitChange();
             break;
-
 
 
         default:
@@ -70,4 +102,4 @@ GroupStore.dispatchToken = AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = GroupStore;
+export default groupStoreInstance;

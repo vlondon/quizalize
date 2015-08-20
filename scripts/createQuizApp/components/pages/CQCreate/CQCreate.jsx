@@ -1,5 +1,4 @@
 var React = require('react');
-var assign = require('object-assign');
 var router = require('createQuizApp/config/router');
 
 var QuizActions = require('createQuizApp/actions/QuizActions');
@@ -120,7 +119,7 @@ var CQCreate = React.createClass({
     },
 
     handleChange: function(property, event) {
-        var newQuizState = assign({}, this.state.quiz);
+        var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta[property] = event.target.value;
         var csave = false;
         if (property === 'name') {
@@ -130,8 +129,8 @@ var CQCreate = React.createClass({
     },
 
     handleSettings: function(newSettings){
-        var quiz = assign({}, this.state.quiz);
-        var meta = assign({}, quiz.meta, newSettings);
+        var quiz = Object.assign({}, this.state.quiz);
+        var meta = Object.assign({}, quiz.meta, newSettings);
         quiz.meta = meta;
         this.setState({quiz});
     },
@@ -153,7 +152,7 @@ var CQCreate = React.createClass({
     },
 
     handleTopic: function(topicId){
-        var quiz = assign({}, this.state.quiz);
+        var quiz = Object.assign({}, this.state.quiz);
         var topic = TopicStore.getTopicById(topicId);
 
         quiz.meta.categoryId = topicId;

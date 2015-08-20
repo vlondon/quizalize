@@ -3,7 +3,7 @@ var email = require("../email"); //for sending emails
 var zzish = require("../zzish"); //initialized zzish
 var crypto = require('crypto'); //create encrypted password
 var uuid = require('node-uuid'); //uuid generator
-var intercom = require("./intercom")
+var intercom = require("./intercom");
 
 var algorithm = 'aes-256-ctr';
 var password = '##34dsadfasdf££FE';
@@ -36,9 +36,9 @@ exports.saveUser = function(req, res) {
     zzish.saveUser(profileId, req.body, function(err, data){
         if (!err && typeof data === 'object') {
             var user = {
-              'user_id': data.uuid,
-              'name': req.body.name,
-              'custom_attributes': req.body.attributes
+                'user_id': data.uuid,
+                'name': req.body.name,
+                'custom_attributes': req.body.attributes
             };
             intercom.updateUser(user);
             res.status(200);
@@ -100,9 +100,9 @@ exports.register =  function(req, res) {
         if (!err) {
             res.status(200);
             intercom.createUser({
-              'email': userEmail,
-              'user_id': data.uuid,
-              'created_at': Date.now()
+                'email': userEmail,
+                'user_id': data.uuid,
+                'created_at': Date.now()
             });
             email.sendEmailTemplate('team@zzish.com', [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
         }
