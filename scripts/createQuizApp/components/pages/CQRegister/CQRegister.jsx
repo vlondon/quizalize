@@ -14,7 +14,7 @@ var CQRegister = React.createClass({
 
     getInitialState: function() {
         console.log('window.location.search;,', window.location.search);
-
+        console.log("redirecting to after?", urlParams().redirect);
         var willRedirect = true;
         return {
             isRedirect: urlParams().redirect ? true : false,
@@ -35,7 +35,7 @@ var CQRegister = React.createClass({
             .then(()=>{
                 if (this.state.willRedirect){
                     if (redirect) {
-                        router.setRoute('/quiz/register-settings?final=true&redirect=' + redirect);
+                        router.setRoute(`/quiz/register-settings?final=true&redirect=${window.encodeURIComponent(redirect)}`);
                     }
                     else {
                         router.setRoute('/quiz/register-settings');

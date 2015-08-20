@@ -32,6 +32,7 @@ export default class CQSettings extends React.Component {
 
     constructor (props: any) {
         super(props);
+
         var user:User = UserStore.getUser();
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
@@ -50,6 +51,7 @@ export default class CQSettings extends React.Component {
     }
 
     componentDidMount() {
+        console.log("redirecting to after?", urlParams().redirect);
         facebookSDK.load();
     }
 
