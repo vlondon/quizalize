@@ -7,7 +7,7 @@ import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
 
 var handleRedirect = function(){
     var params = urlParams();
-    if (params.redirect){
+    if (params.redirect && params.final){
         window.location = window.decodeURIComponent(params.redirect);
         return true;
     }
@@ -48,7 +48,9 @@ var UserActions = {
                         actionType: UserConstants.USER_DETAILS_UPDATED,
                         payload: user
                     });
-                    resolve(user);
+                    if (handleRedirect() === false){
+                        resolve(user);
+                    }
                 })
                 .catch(reject);
         });
@@ -61,12 +63,12 @@ var UserActions = {
             UserApi.login(data)
                 .then(function(user){
                     // AnalyticsActions.triggerPixels();
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_IS_LOGGED,
+                        payload: user
+                    });
                     if (handleRedirect() === false){
                         resolve(user);
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_IS_LOGGED,
-                            payload: user
-                        });
                     }
                 })
                 .catch(function(error){
@@ -91,12 +93,12 @@ var UserActions = {
             UserApi.loginWithToken(data)
                 .then(function(user){
                     // AnalyticsActions.triggerPixels();
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_IS_LOGGED,
+                        payload: user
+                    });
                     if (handleRedirect() === false){
                         resolve(user);
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_IS_LOGGED,
-                            payload: user
-                        });
                     }
                 })
                 .catch(function(error){
@@ -151,12 +153,12 @@ var UserActions = {
                     console.log("AnalyticsActions", AnalyticsActions);
                     console.log("AnalyticsActions.triggerPixels", AnalyticsActions.triggerPixels);
                     AnalyticsActions.triggerPixels().then(function(){
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_REGISTERED,
+                            payload: user
+                        });
                         if (handleRedirect() === false){
                             resolve(user);
-                            AppDispatcher.dispatch({
-                                actionType: UserConstants.USER_REGISTERED,
-                                payload: user
-                            });
                         }
                     });
                 })

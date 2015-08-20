@@ -96,11 +96,7 @@ export default class CQSettings extends React.Component {
         }
         UserActions.update(this.state.user)
             .then( ()=> {
-                if (this.state.params.redirect){
-                    router.setRoute(this.state.params.redirect);
-                } else {
-                    router.setRoute('/quiz/quizzes');
-                }
+                router.setRoute('/quiz/quizzes');
             });
     }
 

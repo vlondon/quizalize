@@ -55,19 +55,22 @@ var newUrl = function(requestedUrl){
         }
         console.log('we are logged in?', user);
         if (!page.needsLogin) {
-            if (UserStore.isLoggedIn() && !page.public) {
-                var params = urlParams();
-                if (params.redirect){
-                    window.location = window.decodeURIComponent(params.redirect);
-                    return true;
-                } else {
+            // if (UserStore.isLoggedIn() && !page.public) {
+            //     var params = urlParams();
+            //     if (params.redirect){
+            //         window.location = window.decodeURIComponent(params.redirect);
+            //         return true;
+            //     } else {
+            //
+            //         return settings.defaultLoggedPage;
+            //     }
+            //
+            // } else {
+            //     return requestedUrl;
+            // }
 
-                    return settings.defaultLoggedPage;
-                }
-
-            } else {
-                return requestedUrl;
-            }
+            //just got to page if you;re not logged in. UserActions.login will handle redirectUrl
+            return requestedUrl;
         } else if(page.needsLogin) {
             if (UserStore.isLoggedIn()){
                 return requestedUrl;

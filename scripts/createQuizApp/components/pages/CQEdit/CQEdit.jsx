@@ -240,8 +240,8 @@ export default class CQEdit extends React.Component {
 
         if (this.state.quiz){
 
-            var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
-            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : '';
+            var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0;
+            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : 'e.g. Enter a quiz name';
             var topics = TopicStore.getTopicTree();
 
             return (
