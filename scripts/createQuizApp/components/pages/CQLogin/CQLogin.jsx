@@ -14,6 +14,7 @@ var CQLogin = React.createClass({
         return {};
     },
 
+
     handleChange: function(property:string, event:Object) {
 
         var newState = {};
