@@ -19,7 +19,7 @@ var CQLogin = React.createClass({
         if (UserStore.isLoggedIn()){
             setTimeout(function(){
                 router.setRoute('/quiz/quizzes');
-            }, 100);
+            }, 520);
         }
     },
 
