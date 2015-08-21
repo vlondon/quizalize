@@ -101,17 +101,6 @@ var pagesArray: Array<Page> = [
         }
     },
     {
-        name: 'settingsRegisterPage',
-        path: '/quiz/register-settings',
-        needsLogin: true,
-        renderer: function(){
-            React.render(
-                React.createElement(CQSettings, {isRegister: true}),
-                document.getElementById('reactApp')
-            );
-        }
-    },
-    {
         name: 'publicPage',
         path: '/quiz/marketplace',
         needsLogin: undefined,
@@ -137,7 +126,7 @@ var pagesArray: Array<Page> = [
     {
         name: 'registerPage',
         path: '/quiz/register',
-        needsLogin: false,
+        needsLogin: undefined,
         renderer: function(){
             React.render(
                 React.createElement(CQRegister, null),

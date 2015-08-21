@@ -3,12 +3,12 @@ var UserConstants       = require('createQuizApp/constants/UserConstants');
 var UserApi             = require('createQuizApp/actions/api/UserApi');
 var urlParams           = require('createQuizApp/utils/urlParams');
 import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
-
+import router from './../config/router';
 
 var handleRedirect = function(){
     var params = urlParams();
-    if (params.redirect && params.final){
-        window.location = window.decodeURIComponent(params.redirect);
+    if (params.redirect){
+        router.setRoute(window.decodeURIComponent(params.redirect));
         return true;
     }
     return false;
@@ -157,9 +157,9 @@ var UserActions = {
                             actionType: UserConstants.USER_REGISTERED,
                             payload: user
                         });
-                        if (handleRedirect() === false){
-                            resolve(user);
-                        }
+                        resolve(user);
+                        // if (handleRedirect() === false){
+                        // }
                     });
                 })
                 .catch(function(error){

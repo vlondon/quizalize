@@ -98,7 +98,12 @@ export default class CQSettings extends React.Component {
         }
         UserActions.update(this.state.user)
             .then( ()=> {
-                router.setRoute('/quiz/quizzes');
+                var params = urlParams();
+                if (params.redirect){
+                    router.setRoute(window.decodeURIComponent(params.redirect));
+                } else {
+                    router.setRoute('/quiz/quizzes');
+                }
             });
     }
 
@@ -139,9 +144,10 @@ export default class CQSettings extends React.Component {
     handleSkip() : boolean {
         sendEvent('register', 'details', 'skipped');
         var params = urlParams();
-        if (params.redirect && params.final){
-            window.location = window.decodeURIComponent(params.redirect);
-            return true;
+        if (params.redirect){
+            // window.location = window.decodeURIComponent(params.redirect);
+            router.setRoute(window.decodeURIComponent(params.redirect));
+            // return true;
         }
         return false;
     }
