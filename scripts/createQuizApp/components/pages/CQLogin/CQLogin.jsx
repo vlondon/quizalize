@@ -6,21 +6,12 @@ var CQLoginForm     = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink          = require('./../../../components/utils/CQLink');
 
 var UserActions     = require('./../../../actions/UserActions');
-var UserStore       = require('./../../../stores/UserStore');
 
 
 var CQLogin = React.createClass({
 
     getInitialState: function() {
         return {};
-    },
-
-    componentDidMount: function() {
-        if (UserStore.isLoggedIn()){
-            setTimeout(function(){
-                router.setRoute('/quiz/quizzes');
-            }, 520);
-        }
     },
 
     handleChange: function(property:string, event:Object) {
