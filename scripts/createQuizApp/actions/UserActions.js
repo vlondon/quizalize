@@ -3,12 +3,12 @@ var UserConstants       = require('createQuizApp/constants/UserConstants');
 var UserApi             = require('createQuizApp/actions/api/UserApi');
 var urlParams           = require('createQuizApp/utils/urlParams');
 import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
-
+import router from './../config/router';
 
 var handleRedirect = function(){
     var params = urlParams();
     if (params.redirect){
-        window.location = window.decodeURIComponent(params.redirect);
+        router.setRoute(window.decodeURIComponent(params.redirect));
         return true;
     }
     return false;

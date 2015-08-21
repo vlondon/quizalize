@@ -104,7 +104,6 @@ var TransactionActions = {
         console.log('getSharedQuizgetSharedQuiz');
         TransactionApi.decrypt(token)
             .then((info)=>{
-                console.log('getSharedQuizgetSharedQuiz', info);
                 var newTransaction : Transaction = {
                     meta: {
                         type: 'quiz',
@@ -115,9 +114,7 @@ var TransactionActions = {
                 };
                 TransactionActions.saveNewTransaction(newTransaction)
                     .then(()=>{
-                        setTimeout(function(){
-                            router.setRoute('/quiz/quizzes');
-                        }, 500);
+                        router.setRoute('/quiz/quizzes');
                     });
             });
     },

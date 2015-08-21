@@ -49,11 +49,11 @@ class AnalyticsActions {
                 actionType: AnalyticsConstants.ANALYTICS_CONVERSION_ENABLED
             });
 
+            resolve();
             setTimeout(function(){
                 AppDispatcher.dispatch({
                     actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
                 });
-                resolve();
             }, 3000);
         });
     }
