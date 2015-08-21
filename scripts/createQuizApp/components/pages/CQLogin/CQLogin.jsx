@@ -1,6 +1,6 @@
 /* @flow */
 var React = require('react');
-
+var router          = require('./../../../config/router');
 var CQPageTemplate  = require('./../../../components/CQPageTemplate');
 var CQLoginForm     = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink          = require('./../../../components/utils/CQLink');
@@ -24,6 +24,9 @@ var CQLogin = React.createClass({
     handleLogin: function(data:Object){
 
         UserActions.login(data)
+            .then(function(){
+                router.setRoute('/quiz/quizzes');
+            })
             .catch(function(){
                 swal('Login Error', 'Invalid Details during login');
             });
