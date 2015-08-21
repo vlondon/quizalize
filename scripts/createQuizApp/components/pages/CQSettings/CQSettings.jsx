@@ -136,9 +136,14 @@ export default class CQSettings extends React.Component {
             });
     }
 
-    skipRegister(){
-        console.log('registering', sendEvent);
+    handleSkip() : boolean {
         sendEvent('register', 'details', 'skipped');
+        var params = urlParams();
+        if (params.redirect && params.final){
+            window.location = window.decodeURIComponent(params.redirect);
+            return true;
+        }
+        return false;
     }
 
     render() {
@@ -176,11 +181,10 @@ export default class CQSettings extends React.Component {
             );
         } else {
             skipButton = (
-                <CQLink href='/quiz/quizzes' onClick={this.skipRegister}>
-                    <button className="btn btn-danger btn-sm">
-                        Skip
-                    </button>
-                </CQLink>
+                <button className="btn btn-danger btn-sm"
+                    onClick={this.handleSkip}>
+                    Skip
+                </button>
             );
         }
 
