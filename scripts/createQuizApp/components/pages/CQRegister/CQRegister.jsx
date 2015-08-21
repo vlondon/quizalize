@@ -4,7 +4,7 @@ var React = require('react');
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink = require('./../../../components/utils/CQLink');
-
+var CQSettings = require('./../../../components/pages/CQSettings');
 
 var UserActions = require('./../../../actions/UserActions');
 import router from './../../../config/router';
@@ -13,10 +13,11 @@ import {urlParams} from './../../../utils';
 var CQRegister = React.createClass({
 
     getInitialState: function() {
-        console.log('window.location.search;,', window.location.search);
-        console.log("redirecting to after?", urlParams().redirect);
+
+
         var willRedirect = true;
         return {
+            isRegister: true,
             isRedirect: urlParams().redirect ? true : false,
             redirectUrl: '',
             isEnabled: true,
@@ -30,19 +31,13 @@ var CQRegister = React.createClass({
             isEnabled: false,
             loginButtonLabel: 'Working…'
         });
-        var redirect = urlParams().redirect;
+        
         UserActions.register(data)
             .then(()=>{
-                if (this.state.willRedirect){
-                    if (redirect) {
-                        router.setRoute(`/quiz/register-settings?final=true&redirect=${window.encodeURIComponent(redirect)}`);
-                    }
-                    else {
-                        router.setRoute('/quiz/register-settings');
-                    }
-                } else {
-                    router.setRoute('/quiz/quizzes');
-                }
+
+                this.setState({isRegister: false});
+
+
             })
             .catch((error) => {
                 if (error === 'Duplicate Email address'){
@@ -66,28 +61,33 @@ var CQRegister = React.createClass({
                 <br/>
             </p>);
         }
-        return (
-            <CQPageTemplate className="cq-login">
+        if (this.state.isRegister){
 
-                <div className="cq-login__inner">
-                    <h2 className="cq-login__header" id="title">
-                        Quizalize Registration
-                    </h2>
+            return (
+                <CQPageTemplate className="cq-login">
 
-                    {moreInfo}
+                    <div className="cq-login__inner">
+                        <h2 className="cq-login__header" id="title">
+                            Quizalize Registration
+                        </h2>
 
-                    <CQLoginForm
-                        enabled={this.state.isEnabled}
-                        onSubmit={this.handleRegister}
-                        buttonLabel={this.state.loginButtonLabel}>
-                        <div>
-                            Already registered?&nbsp;
-                            <CQLink href={`/quiz/login${window.location.search}`}>Log in</CQLink>
-                        </div>
-                    </CQLoginForm>
-                </div>
-            </CQPageTemplate>
-        );
+                        {moreInfo}
+
+                        <CQLoginForm
+                            enabled={this.state.isEnabled}
+                            onSubmit={this.handleRegister}
+                            buttonLabel={this.state.loginButtonLabel}>
+                            <div>
+                                Already registered?&nbsp;
+                                <CQLink href={`/quiz/login${window.location.search}`}>Log in</CQLink>
+                            </div>
+                        </CQLoginForm>
+                    </div>
+                </CQPageTemplate>
+            );
+        } else {
+            return <CQSettings isRedirect={true}/>;
+        }
     }
 
 });

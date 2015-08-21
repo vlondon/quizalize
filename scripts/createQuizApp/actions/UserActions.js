@@ -7,7 +7,7 @@ import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
 
 var handleRedirect = function(){
     var params = urlParams();
-    if (params.redirect && params.final){
+    if (params.redirect){
         window.location = window.decodeURIComponent(params.redirect);
         return true;
     }
@@ -157,9 +157,9 @@ var UserActions = {
                             actionType: UserConstants.USER_REGISTERED,
                             payload: user
                         });
-                        if (handleRedirect() === false){
-                            resolve(user);
-                        }
+                        resolve(user);
+                        // if (handleRedirect() === false){
+                        // }
                     });
                 })
                 .catch(function(error){
