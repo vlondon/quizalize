@@ -58,8 +58,7 @@ var newUrl = function(requestedUrl){
             if (UserStore.isLoggedIn() && !page.public) {
                 var params = urlParams();
                 if (params.redirect){
-                    window.location = window.decodeURIComponent(params.redirect);
-                    return true;
+                    return window.decodeURIComponent(params.redirect);;
                 } else {
 
                     return settings.defaultLoggedPage;
