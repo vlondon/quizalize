@@ -115,7 +115,9 @@ var TransactionActions = {
                 };
                 TransactionActions.saveNewTransaction(newTransaction)
                     .then(()=>{
-                        router.setRoute('/quiz/quizzes');
+                        setTimeout(function(){
+                            router.setRoute('/quiz/quizzes');
+                        }, 500);
                     });
             });
     },

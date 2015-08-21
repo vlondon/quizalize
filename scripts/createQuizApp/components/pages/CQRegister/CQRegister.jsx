@@ -7,7 +7,7 @@ var CQLink = require('./../../../components/utils/CQLink');
 var CQSettings = require('./../../../components/pages/CQSettings');
 
 var UserActions = require('./../../../actions/UserActions');
-import router from './../../../config/router';
+
 import {urlParams} from './../../../utils';
 
 var CQRegister = React.createClass({
@@ -31,7 +31,7 @@ var CQRegister = React.createClass({
             isEnabled: false,
             loginButtonLabel: 'Working…'
         });
-        
+
         UserActions.register(data)
             .then(()=>{
 
