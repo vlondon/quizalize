@@ -1,11 +1,22 @@
 //general zzish config
-var zzish               = require("zzishsdk");
-var logger              = require('../logger');
+var zzish = require("../zzish"); //initialized zzish
+var config = require("../config"); //initialized zzish
 var email              = require('../email');
-var db              = require('./db');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
 var QUIZ_CONTENT_TYPE   = "quiz";
+
+var Zzish = require('zzish');
+var zzish_db = new Zzish();
+var adminResult = {
+    apiUrl: config.apiUrlAdmin,
+    appToken: config.appTokenAdmin,
+    wso2: "true",
+    log: false
+};
+console.log("Init", adminResult);
+zzish_db.init(adminResult);
+
 
 
 var finalApproval = function(req, res, type, content, doc) {
@@ -85,32 +96,80 @@ exports.index = function(req, res){
 };
 
 exports.pendingQuizzes = function(req, res){
-    db.findDocuments("subject",{}, -1, function(err, subjects) {
-        db.findDocuments("contentcategory",{}, -1, function(err, categories) {
-            db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
-                if (!err) {
-                    res.render("admin/pending", {pending: pending, categories: categories, subjects: subjects});
-                }
-                else {
-                    res.render("admin/error", {error: err});
-                }
-
+    // db.findDocuments("subject",{}, -1, function(err, subjects) {
+    //     var subjectArray = subjects.map(function(item) {
+    //         return {uuid: item.uuid, name: item.name};
+    //     });
+    //     //subjectArray = [];
+    //     console.log("I got subjects", subjectArray.length);
+    //     db.findDocuments("contentcategory",{subjectId: {$exists: true}}, -1, function(err, categories) {
+    //         var categoryArray = categories.map(function(item) {
+    //             return {uuid: item.uuid, name: item.name};
+    //         });
+    //         //categoryArray = [];
+    //         console.log("I got categories", categoryArray.length);
+    //         db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
+    //             var contentArray = pending.map(function(item) {
+    //                 return {uuid: item.uuid, meta: item.meta, updated: item.updated, type: item.type};
+    //             });
+    //             console.log(contentArray.length);
+    //             //var contentArray = [];
+    //             if (!err) {
+    //                 //res.render("admin/error", {error: categoryArray});
+    //                 res.render("admin/pending1", {pending: contentArray, categories: categoryArray, subjects: subjectArray});
+    //             }
+    //             else {
+    //                 res.render("admin/error", {error: err});
+    //             }
+    //         });
+    //     });
+    // });
+    // db.findDocuments("contentcategory",{subjectId: {$exists: true}}, -1, function(err, categories) {
+    //     var categoryArray = categories.map(function(item) {
+    //         return {uuid: item.uuid, name: item.name};
+    //     });
+    //     categoryArray = categoryArray.slice(0,5);
+    //     //categoryArray = [];
+    //     console.log("I got categories", categoryArray.length);
+    //     db.findDocuments("subject",{}, -1, function(err, subjects) {
+    //         var subjectArray = subjects.map(function(item) {
+    //             return {uuid: item.uuid, name: item.name};
+    //         });
+    //         subjectArray = subjectArray.slice(0,5);
+    //         //subjectArray = [];
+    //         console.log("I got subjects", subjectArray.length);
+    //         db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
+    //             var contentArray = pending.map(function(item) {
+    //                 return {uuid: item.uuid, meta: item.meta, updated: item.updated, type: item.type};
+    //             });
+    //             //var contentArray = [];
+    //             contentArray = contentArray.slice(0,5);
+    //             console.log("I got content",contentArray.length);
+    //             if (!err) {
+    //                 //res.render("admin/error", {error: categoryArray});
+    //                 res.render("admin/pending1", {pending: contentArray, categories: categoryArray, subjects: subjectArray});
+    //             }
+    //             else {
+    //                 res.render("admin/error", {error: err});
+    //             }
+    //         });
+    //     });
+    // });
+    zzish_db.secure.post("db/contentcategory/query/",{"query": "{}"}, function(err, categories){
+        //console.log(categories.length.payload);
+        zzish_db.secure.post("db/subject/query/",{"query": "{subjectId: {$exists: true}}"}, function(err, subjects){
+            zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
+                res.render("admin/pending", { pending: JSON.parse(pending.payload), categories: JSON.parse(categories.payload), subjects: JSON.parse(subjects.payload)});
             });
-
         });
     });
-
 };
 
 exports.approved = function(req, res){
-    db.findDocuments("content", {"meta.published": "published"}, -1, function(err, result) {
-        if (!err) {
-            res.render("admin/approved", {approved: result});
-        }
-        else {
-            res.render("admin/error", {error: err});
-        }
+    zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'published'}"}, function(err, pending) {
+        res.render("admin/approved", {approved: JSON.parse(pending.payload)});
     });
+
 };
 
 exports.approve = function(req, res){
