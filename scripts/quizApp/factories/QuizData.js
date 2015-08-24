@@ -359,19 +359,21 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     }
 
-    var calculateScore = function(correct, duration){
-        //Something a bit like (below not clear... probably meant 20000 etc), will go with 100 as max... can obviously easily change this
-        //P2:  Add 20 second timer and have max 200 points scored per
+    var calculateScore = function(correct, duration, questionDuration){
+        // Something a bit like (below not clear... probably meant 20000 etc), will go with 100 as max... can obviously easily change this
+        // P2:  Add 20 second timer and have max 200 points scored per
         // question =  max (  0.1*(min(2000-time_in_milis,0),  if(correct, 50,0)).
         // To do this ideally should have a "Next" button that comes up after answering
         // each question and a 3, 2, 1 countdown page before showing the next question.
         //
-
-        if(correct){
-            return Math.max(minScore, Math.min(Math.round((maxTime + gracePeriod - duration)/(maxTime/maxScore)), maxScore));
-        }else{
-            return 0;
+        var score;
+        questionDuration = questionDuration * 1000;
+        if (correct) {
+            score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+        } else {
+            score = 0;
         }
+        return score;
     };
 
     //return client data api
@@ -594,16 +596,17 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         answerQuestion: function(idx, response, answer, questionName, duration){
 
             var question = currentQuiz.payload.questions[idx];
+            var questionDuration = question.duration || maxTime / 1000;
             console.log('currentQuiz,', currentQuiz);
 
             var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
-            var score = calculateScore(correct, duration);
+            var score = calculateScore(correct, duration, questionDuration);
             var parameters = {
                 definition: {
                     type: question.uuid,
                     name: question.question,
                     score: maxScore,
-                    duration: maxTime,
+                    duration: questionDuration,
                     response: question.answer
                 },
                 result: {

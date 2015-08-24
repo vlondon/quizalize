@@ -1,9 +1,9 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var GroupConstants      = require('createQuizApp/constants/GroupConstants');
-var GroupApi            = require('createQuizApp/actions/api/GroupApi');
-var Promise             = require('es6-promise').Promise;
-var assign              = require('object-assign');
-
+/* @flow */
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var GroupConstants      = require('./../constants/GroupConstants');
+var GroupApi            = require('./../actions/api/GroupApi');
+import GroupStore from './../stores/GroupStore';
+import router from './../config/router';
 
 var GroupActions = {
 
@@ -28,10 +28,30 @@ var GroupActions = {
                 });
             });
 
-
     },
 
-    unpublishAssignment: function(quizId, groupCode){
+    createFirstAssignment: function(quizId : string){
+
+        // make sure we don't have any class created:
+        var groups = GroupStore.getGroups();
+        if (groups.length === 0){
+
+            this.publishNewAssignment(quizId, 'Your first class')
+                .then(classResponse => {
+                    console.log('class', classResponse);
+                    setTimeout(function(){
+                        router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`);
+                    }, 510);
+                });
+        } else {
+            console.log('a class already exists');
+            setTimeout(function(){
+                router.setRoute(`/quiz/published/${quizId}/assign`);
+            }, 510);
+        }
+    },
+
+    unpublishAssignment: function(quizId: string, groupCode : string){
 
         GroupApi.unpublishQuiz(quizId, groupCode)
             .then(() => {
@@ -40,7 +60,7 @@ var GroupActions = {
             });
     },
 
-    publishNewAssignment: function(quizId, groupName, settings) {
+    publishNewAssignment: function(quizId : string, groupName : string) : Promise {
 
         return new Promise((resolve, reject) => {
            var dataToSend = {
@@ -48,9 +68,7 @@ var GroupActions = {
                 groupName
             };
 
-            // var data = assign({}, settings, dataToSend);
-
-            GroupApi.publishNewAssignment(quizId, groupName)
+            GroupApi.publishNewAssignment(quizId, dataToSend)
                 .then((response) => {
                     AppDispatcher.dispatch({
                         actionType: GroupConstants.NEW_GROUP_PUBLISHED,
@@ -63,7 +81,7 @@ var GroupActions = {
         });
     },
 
-    publishAssignment: function(quizId, code, settings) {
+    publishAssignment: function(quizId : string, code : string , settings : Object ) : Promise {
 
         return new Promise((resolve, reject) => {
             var dataToSend = {
@@ -71,7 +89,7 @@ var GroupActions = {
                 code
             };
 
-            var data = assign({}, settings, dataToSend);
+            var data = Object.assign({}, settings, dataToSend);
 
             GroupApi.publishAssignment(quizId, data)
                 .then((response) => {

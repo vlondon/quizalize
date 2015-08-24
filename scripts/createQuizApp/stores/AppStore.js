@@ -17,30 +17,30 @@ type AppMeta = {
     profileId: string;
     quizzes: string;
     updated: number;
-}
+};
 
 type AppPayload = {
     quizzes: Array<string>;
     categories: Array<any>;
-}
+};
 
 type AppExtra = {
     author: Object;
     quizzes: Array<Object>;
-}
+};
 
 export type App = {
     uuid: string;
     meta: AppMeta;
     payload?: AppPayload;
     extra?: AppExtra;
-}
+};
 
 export type AppComplete = {
     uuid: ?string;
     meta: AppMeta;
     payload: AppPayload;
-}
+};
 
 
 var _publicApps: ?Array<App>;
@@ -78,16 +78,23 @@ var AppObject = function():AppComplete{
     return app;
 };
 
+var fixAppTypes = function(app: ?App){
+    if (app) {
+        app.meta.price = Number(app.meta.price);
+    }
+    return app;
+};
+
 class AppStore extends Store {
 
     getApps() {
-        console.info('_apps', _apps);
         return _apps;
     }
 
     getAppById(appId):?App {
         var result:Array<App> = _apps.filter(t => t.uuid === appId);
-        return result.length === 1 ? result.slice()[0] : undefined;
+        var app : ?App = result.length === 1 ? result.slice()[0] : undefined;
+        return fixAppTypes(app);
     }
 
     getPublicApps() {
@@ -95,10 +102,12 @@ class AppStore extends Store {
     }
 
     getAppInfo(appId:string): ?AppComplete{
-        if (_appInfo[appId] === undefined){
+        var app = _appInfo[appId];
+        if (app === undefined){
             AppActions.loadApp(appId);
         }
-        return _appInfo[appId];
+        return app;
+        // return fixAppTypes(app);
     }
 
     getNewApp(): AppComplete {
@@ -166,4 +175,4 @@ AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = appStoreInstance;
+export default appStoreInstance;

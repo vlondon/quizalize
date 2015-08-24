@@ -20,6 +20,7 @@ var CQPublishedInfo     = require('./../components/pages/CQPublishedInfo');
 var CQSettings          = require('./../components/pages/CQSettings');
 var CQApp               = require('./../components/pages/CQApp');
 var CQYourApps          = require('./../components/pages/CQYourApps');
+var CQAssignQuiz        = require('./../components/pages/CQAssignQuiz');
 
 export type Page = {
     name: string;
@@ -100,17 +101,6 @@ var pagesArray: Array<Page> = [
         }
     },
     {
-        name: 'settingsRegisterPage',
-        path: '/quiz/register-settings',
-        needsLogin: true,
-        renderer: function(){
-            React.render(
-                React.createElement(CQSettings, {isRegister: true}),
-                document.getElementById('reactApp')
-            );
-        }
-    },
-    {
         name: 'publicPage',
         path: '/quiz/marketplace',
         needsLogin: undefined,
@@ -136,7 +126,7 @@ var pagesArray: Array<Page> = [
     {
         name: 'registerPage',
         path: '/quiz/register',
-        needsLogin: false,
+        needsLogin: undefined,
         renderer: function(){
             React.render(
                 React.createElement(CQRegister, null),
@@ -231,6 +221,20 @@ var pagesArray: Array<Page> = [
             );
         }
     },
+
+    {
+        name: 'quizzesShare',
+        path: '/quiz/quizzes/s/:quizCode',
+        pathRegEx: /\/quiz\/quizzes\/s\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(quizCode){
+            React.render(
+                React.createElement(CQQuizzes, {quizCode}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
     {
         name: 'redirect',
         path: '/quiz/playh/:redirectURL',
@@ -250,7 +254,7 @@ var pagesArray: Array<Page> = [
         needsLogin: true,
         renderer: function(){
             React.render(
-                React.createElement(CQCreate, null),
+                React.createElement(CQEdit, null),
                 document.getElementById('reactApp')
             );
         }
@@ -333,6 +337,20 @@ var pagesArray: Array<Page> = [
     },
 
     {
+        name: 'multi',
+        path: '/quiz/multi/:quizId',
+        pathRegEx: /\/quiz\/multi\/([\w\-]+)/,
+        needsLogin: true,
+        renderer: function(marketplaceQuizId: string){
+            React.render(
+                React.createElement(CQAssignQuiz, {marketplaceQuizId}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+
+    {
         name: 'published',
         path: '/quiz/published/:quizId',
         pathRegEx: /\/quiz\/published\/([\w\-]+)/,
@@ -353,6 +371,19 @@ var pagesArray: Array<Page> = [
         renderer: function(quizId: string){
             React.render(
                 React.createElement(CQPublished, {quizId, assign: true}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+
+    {
+        name: 'publishedShare',
+        path: '/quiz/published/:quizId/share',
+        pathRegEx: /\/quiz\/published\/([\w\-]+)\/share/,
+        needsLogin: true,
+        renderer: function(quizId: string){
+            React.render(
+                React.createElement(CQPublished, {quizId, share: true}),
                 document.getElementById('reactApp')
             );
         }
@@ -415,6 +446,7 @@ var pages = {
     pathParams: {
         quizId: /([\w\-]+)/,
         appId: /([\w\-]+)/,
+        quizCode: /([\w\-]+)/,
         authorId: /([\w\-]+)/,
         questionIndex: /([\w\-]+)/,
         classCode: /([\w\-]+)/,

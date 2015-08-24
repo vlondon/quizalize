@@ -14,7 +14,7 @@ type UserAttributes = {
     ageTaught?: string;
 };
 export type User = {
-    uuid?: string;
+    uuid: string;
     avatar: string;
     email: string;
     name: string;
@@ -22,7 +22,7 @@ export type User = {
 }
 
 var noUser:User = {
-    uuid: undefined,
+    uuid: '-1',
     avatar: '',
     email: '',
     name: '',
@@ -32,6 +32,7 @@ var noUser:User = {
 var storeInit = false;
 var _user:User = noUser;
 var _users = {};
+var _loginEmail = '';
 
 class UserStore extends Store {
 
@@ -39,13 +40,21 @@ class UserStore extends Store {
         super();
     }
 
+    getUserLoginEmail() : string{
+        return _loginEmail;
+    }
+
     getUser():User {
         return _user;
     }
 
+    getUserId(): string {
+        return _user.uuid;
+    }
+
 
     isLoggedIn(): boolean {
-        return (_user && _user.uuid) ? true : false;
+        return (_user && _user.uuid && _user.uuid !== '-1') ? true : false;
     }
 
 
@@ -115,6 +124,10 @@ AppDispatcher.register(function(action) {
             userStore.emitChange();
             break;
 
+        case UserConstants.USER_LOGIN_EMAIL_ADDED:
+            _loginEmail = action.payload;
+            // userStore.emitChange();
+            break;
 
 
         default:

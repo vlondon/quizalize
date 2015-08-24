@@ -1,6 +1,5 @@
 /* @flow */
 import React from 'react';
-import assign from 'object-assign';
 
 import AppActions from './../../../actions/AppActions';
 import QuizStore from './../../../stores/QuizStore';
@@ -82,12 +81,6 @@ export default class CQViewCreateApp extends React.Component {
 
         var app = this.getApp();
         var quizzes = QuizStore.getPersonalQuizzes();
-
-
-        if (quizzes){
-            quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
-        }
-
         var selectedQuizzes:Array<string> = app.payload.quizzes;
 
         return { app, quizzes, selectedQuizzes };
@@ -96,7 +89,7 @@ export default class CQViewCreateApp extends React.Component {
 
     componentWillReceiveProps(nextProps:Props) {
 
-        var app = assign({}, this.state.app);
+        var app = Object.assign({}, this.state.app);
         if (nextProps.appId) {
             app = this.getApp();
         }
@@ -117,7 +110,7 @@ export default class CQViewCreateApp extends React.Component {
 
     handleChange(field: string, event: Object) {
         console.log('field, ', field, event);
-        var app = assign({}, this.state.app);
+        var app = Object.assign({}, this.state.app);
         app.meta[field] = event.target.value;
 
         var csave = this.state.canSave;
@@ -160,7 +153,7 @@ export default class CQViewCreateApp extends React.Component {
         if (this.state.prices){
             prices = this.state.prices.map(price=> {
                 return (
-                    <option value={price}>{priceFormat(price)}</option>
+                    <option value={price}>{priceFormat(price, '$', 'us')}</option>
                 );
             });
         }

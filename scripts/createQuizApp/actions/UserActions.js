@@ -3,22 +3,19 @@ var UserConstants       = require('createQuizApp/constants/UserConstants');
 var UserApi             = require('createQuizApp/actions/api/UserApi');
 var urlParams           = require('createQuizApp/utils/urlParams');
 import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
-var Promise             = require('es6-promise').Promise;
-
+import router from './../config/router';
 
 var handleRedirect = function(){
     var params = urlParams();
     if (params.redirect){
-        window.location = window.decodeURIComponent(params.redirect);
+        router.setRoute(window.decodeURIComponent(params.redirect));
         return true;
     }
     return false;
 };
 
-console.log('AnalyticsActions', AnalyticsActions);
 
 var UserActions = {
-
 
     request: function() {
 
@@ -51,7 +48,9 @@ var UserActions = {
                         actionType: UserConstants.USER_DETAILS_UPDATED,
                         payload: user
                     });
-                    resolve(user);
+                    if (handleRedirect() === false){
+                        resolve(user);
+                    }
                 })
                 .catch(reject);
         });
@@ -64,12 +63,42 @@ var UserActions = {
             UserApi.login(data)
                 .then(function(user){
                     // AnalyticsActions.triggerPixels();
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_IS_LOGGED,
+                        payload: user
+                    });
                     if (handleRedirect() === false){
                         resolve(user);
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_IS_LOGGED,
-                            payload: user
-                        });
+                    }
+                })
+                .catch(function(error){
+                    reject(error);
+
+
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_LOGIN_ERROR,
+                        payload: error
+                    });
+                });
+
+            AppDispatcher.dispatch({
+                actionType: UserConstants.USER_LOGIN_REQUEST
+            });
+        });
+    },
+
+    loginWithToken: function(data) {
+        return new Promise(function(resolve, reject){
+
+            UserApi.loginWithToken(data)
+                .then(function(user){
+                    // AnalyticsActions.triggerPixels();
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_IS_LOGGED,
+                        payload: user
+                    });
+                    if (handleRedirect() === false){
+                        resolve(user);
                     }
                 })
                 .catch(function(error){
@@ -124,13 +153,13 @@ var UserActions = {
                     console.log("AnalyticsActions", AnalyticsActions);
                     console.log("AnalyticsActions.triggerPixels", AnalyticsActions.triggerPixels);
                     AnalyticsActions.triggerPixels().then(function(){
-                        if (handleRedirect() === false){
-                            resolve(user);
-                            AppDispatcher.dispatch({
-                                actionType: UserConstants.USER_REGISTERED,
-                                payload: user
-                            });
-                        }
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_REGISTERED,
+                            payload: user
+                        });
+                        resolve(user);
+                        // if (handleRedirect() === false){
+                        // }
                     });
                 })
                 .catch(function(error){
@@ -185,6 +214,13 @@ var UserActions = {
                 .catch(reject);
         });
 
+    },
+
+    setLoginEmail: function(email){
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USER_LOGIN_EMAIL_ADDED,
+            payload: email
+        });
     }
 };
 

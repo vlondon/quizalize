@@ -1,8 +1,8 @@
 var React = require('react');
+var router = require('createQuizApp/config/router');
 
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var GroupActions = require('createQuizApp/actions/GroupActions');
-var router = require('createQuizApp/config/router');
 var UserApi = require('createQuizApp/actions/api/UserApi');
 
 var CQViewClassList = React.createClass({
@@ -157,12 +157,14 @@ var CQViewClassList = React.createClass({
 
                     <form className="form-inline cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
+                            id='newClassBox'
                             type="text"
                             className="form-control"
                             value={this.state.newClassName}
                             onChange={this.handleClassName}
                             placeholder="Enter a new class name"/>
                         <button className={this.state.canSaveNewClass ? "btn btn-primary" : "btn btn-default"}
+                            id='createNewClass'
                             type="submit"
                             disabled={!this.state.canSaveNewClass}>
                             Create and use in class

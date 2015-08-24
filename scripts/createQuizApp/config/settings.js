@@ -1,5 +1,4 @@
 /* @flow */
-var assign = require('object-assign');
 
 var defaultSettings = {
     apiDomain: '/',
@@ -7,7 +6,7 @@ var defaultSettings = {
     type: 'quiz'
 };
 
-var settings = assign(defaultSettings, {});
+var settings = Object.assign(defaultSettings, {});
 
 // // fixing types
 console.log((function(){

@@ -2,17 +2,97 @@
 
     $quizIcon: 40px;
 
-    .cq-viewquizlist__quiz {
-        width: calc(50% - 5px);
-        float: left;
-        margin-right: 5px;
+    &__headercta {
+        position: relative;
+        a { cursor: pointer; color: #FF6B00; }
+        &__background {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 215px;
+            z-index: 2;
+            // height: 279px;
+        }
+        h5 {
+            /* Quick start: */
+
+            font-size: 14.97px;
+            color: #5CB3C5;
+            line-height: 18px;
+        }
+        &__box {
+            background: #D3EAE0;
+            position: relative;
+
+            margin: 0 -10px;
+            padding: 10px;
+            button {
+                /* Rectangle 4: */
+                @include button-filled(#FF6B00);
+                // background: #FF6B00;
+                width: 270px;
+                height: 70px;
+                box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.50);
+                border-radius: 9px;
+                margin-top: -20px;
+            }
+
+            ul {
+                position: relative;
+                z-index: 3;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                @include clearfix();
+                li {
+                    display: block;
+                    float: left;
+                    width: 180px;
+
+                    /* Write questions: */
+                    // font-family: Lato-Bold;
+                    font-size: 28.97px;
+                    color: #565656;
+                    line-height: 26px;
+                    position: relative;
+                    padding-right: 30px;
+                    margin-left: 30px;
+                    &:after {
+                        content: url(./../../assets/caret.svg);
+                        position: absolute;
+                        right: 0;
+                        top: 20px;
+                    }
+                    &:first-child {
+                        font-weight: bold;
+                        color: #FF6B00;
+                        margin-left: 0;
+                    }
+                    &:last-child {
+                        width: 400px;
+                        &:after {
+                            content: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__info {
+            min-height: 40px;
+        }
     }
 
-    @at-root #{&}__header {
+    .cq-viewquizlist__quiz {
+        width: 50%;
+
+    }
+
+    &__header {
         @include cq-header;
     }
 
-    @at-root #{&}__list {
+    &__list {
         list-style: none;
         margin: 0;
         padding: 0;
@@ -21,7 +101,7 @@
 
 
 
-    @at-root #{&}__quiz {
+    &__quiz {
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;
         margin: 5px;
@@ -29,12 +109,12 @@
         @include clearfix();
     }
 
-    @at-root #{&}__quiz-inner {
+    &__quiz-inner {
         text-align: left;
         float: left;
     }
 
-    @at-root #{&}__quizicon {
+    &__quizicon {
         width: $quizIcon;
         height: $quizIcon;
         border-radius: 100%;
@@ -50,28 +130,28 @@
         img { width: 100%; }
 
     }
-    @at-root #{&}__quizname {
+    &__quizname {
         font-weight: bold;
         display: inline;
         font-size: 18px;
     }
 
-    @at-root #{&}__quizauthor {
+    &__quizauthor {
         display: inline;
     }
 
-    @at-root #{&}__quizdate {
+    &__quizdate {
         font-weight: 100;
         color: $brand-color-grey;
     }
 
-    @at-root #{&}__quizextra {
+    &__quizextra {
         text-align: center;
         margin: 12px 0;
         float: right;
     }
 
-    @at-root #{&}__quizcategory {
+    &__quizcategory {
         display: inline-block;
         font-weight: 100;
         color: $brand-color-grey;
@@ -83,7 +163,7 @@
         margin: 2px;
     }
 
-    @at-root #{&}__sort {
+    &__sort {
         float: left;
         width: 300px;
         min-height: 400px;
@@ -91,20 +171,21 @@
     }
 
 
-    @at-root #{&}__list {
+    &__list {
         width: 100%;
     }
 
-    @at-root #{&}__button {
-        background: $brand-color-grey-light;
-        color: $brand-color-grey-dark;
+    &__button {
+        @include button($brand-color-blue);
+        // background: $brand-color-grey-light;
+        // color: $brand-color-grey-dark;
         margin: 5px;
         padding: 5px;
         cursor: pointer;
 
         &:hover {
-            background: $brand-color-grey;
-            color: $brand-color-grey-lighter;
+            // background: $brand-color-grey;
+            // color: $brand-color-grey-lighter;
         }
     }
 }

@@ -90,7 +90,7 @@ var CQViewQuizDetails = React.createClass({
         var tagLine = () => {
             // this.state.quiz.meta.price = 3;
             if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
-                return (<span>{priceFormat(this.state.quiz.meta.price)} - Buy Now!</span>);
+                return (<span>{priceFormat(this.state.quiz.meta.price, '$', 'us')} - Buy Now!</span>);
             }
             else {
                 return (<span>Use it - it's free!</span>);

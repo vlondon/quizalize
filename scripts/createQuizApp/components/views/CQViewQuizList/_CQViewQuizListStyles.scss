@@ -1,6 +1,12 @@
 .cq-viewquizlist {
 
     $quizIcon: 60px;
+    display: flex;
+    flex-direction: row wrap;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
 
     ul {
         @include clearfix();
@@ -25,11 +31,14 @@
 
     }
     @at-root #{&}__quiz {
-        position: relative;
+        display: flex;
+        flex-grow: 2;
+        align-items: center;
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;
         padding: 5px;
         width: 100%;
+
         background: #FFF;
         margin-bottom: 5px;
 
@@ -47,9 +56,35 @@
         @include clearfix();
     }
 
+    @at-root #{&}__quizicon {
+        min-width: $quizIcon;
+        width: $quizIcon;
+        height: $quizIcon;
+        border-radius: 100%;
+        margin: 5px;
+
+
+        font-size: $quizIcon - 10px;
+        text-align: center;
+        line-height: $quizIcon;
+        color: #FFF;
+        background-size: cover;
+        background-position: center center;
+
+        img { width: 100%; }
+
+    }
     @at-root #{&}__quiz-inner {
-        text-align: left;
-        float: left;
+
+        flex: 1;
+        width: 100%;
+    }
+
+    @at-root #{&}__extras {
+
+        // position: absolute;
+        // right: 12px;
+        // top: 12px;
     }
 
     @at-root #{&}__checkbox {
@@ -58,22 +93,6 @@
         margin-top: 20px;
     }
 
-    @at-root #{&}__quizicon {
-        width: $quizIcon;
-        height: $quizIcon;
-        border-radius: 100%;
-        margin: 5px;
-        display: inline-block;
-        float: left;
-        font-size: $quizIcon - 10px;
-        text-align: center;
-        line-height: $quizIcon;
-        color: #FFF;
-        background-size: cover;
-        background-position: center center;
-        img { width: 100%; }
-
-    }
 
     @at-root #{&}__quizname {
         font-weight: bold;
@@ -104,13 +123,9 @@
         margin: 2px;
     }
 
-    @at-root #{&}__extras {
-        position: absolute;
-        right: 12px;
-        top: 12px;
-    }
 
-    @at-root #{&}__pagination {
+
+    &__pagination {
         text-align: center;
         margin: 20px;
     }

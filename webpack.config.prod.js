@@ -12,7 +12,7 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
-        vendor: ['fastclick', 'react', 'superagent', 'object-assign']
+        vendor: ['fastclick', 'react', 'superagent']
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
@@ -35,7 +35,10 @@ module.exports = {
                 loader: 'babel?optional[]=runtime',
                 exclude: /(node_modules|bower_components)/
             },
-
+            {
+                test: /\.json$/,
+                loader: 'json'
+            },
             {
                 test: /\.es6\.js$/,
                 loader: 'babel?optional[]=runtime',
@@ -50,11 +53,12 @@ module.exports = {
                 loader: 'style!css?sourceMap!autoprefixer-loader?browsers=last 2 version'
             },
             { test: /\.png$/, loader: "url-loader?limit=100000" },
-            { test: /\.jpg$/, loader: "url-loader" }
+            { test: /\.jpg$/, loader: "url-loader" },
+            { test: /\.svg$/, loader: "url-loader?limit=100000" }
         ]
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.scss'],
+        extensions: ['', '.webpack.js', '.web.js', '.es6.js', '.js', '.jsx', '.json', '.scss'],
         modulesDirectories: ['node_modules', 'scripts'],
         alias: {
             'ie': 'component-ie'

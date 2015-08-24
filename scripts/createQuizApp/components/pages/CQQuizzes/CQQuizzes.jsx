@@ -5,6 +5,7 @@ var React = require('react');
 
 var router          = require(`./../../../config/router`);
 
+var TransactionActions = require(`./../../../actions/TransactionActions`);
 var QuizActions     = require(`./../../../actions/QuizActions`);
 var QuizStore       = require(`./../../../stores/QuizStore`);
 var GroupStore      = require(`./../../../stores/GroupStore`);
@@ -28,7 +29,8 @@ type State = {
 var CQQuizzes = React.createClass({
 
     propTypes: {
-        appMode: React.PropTypes.bool
+        appMode: React.PropTypes.bool,
+        quizCode: React.PropTypes.string
     },
 
     getInitialState: function() {
@@ -40,6 +42,12 @@ var CQQuizzes = React.createClass({
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+
+        // let's check if there's a quiz refered
+        console.log('PROPS', this.props);
+        if (this.props.quizCode){
+            TransactionActions.getSharedQuiz(this.props.quizCode);
+        }
     },
 
     componentWillUnmount: function() {
@@ -92,6 +100,10 @@ var CQQuizzes = React.createClass({
         }
     },
 
+    handleNew: function(){
+            router.setRoute(`/quiz/create`);
+    },
+
     handleClick: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
@@ -113,6 +125,15 @@ var CQQuizzes = React.createClass({
 
     handleSelect: function(selectedQuizzes: Array<Quiz>){
         this.setState({selectedQuizzes});
+    },
+
+    handleShare: function(quiz: Quiz){
+        router.setRoute(`/quiz/published/${quiz.uuid}/share`);
+    },
+
+    handlePreview: function(quiz: Quiz){
+        sessionStorage.setItem('mode', 'teacher');
+        window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
     },
 
     render: function() {
@@ -191,11 +212,11 @@ var CQQuizzes = React.createClass({
                 </h2>
                 {emptyState}
 
-                <div className="cq-quizzes__actions">
+                <div className="cq-quizzes__actions" >
                     {newApp}&nbsp;
-                    <CQLink href="/quiz/create" className="btn btn-primary cq-quizzes__create">
+                    <button  onClick={this.handleNew} className="btn btn-primary cq-quizzes__create">
                         <i className="fa fa-plus"></i> New quiz
-                    </CQLink>
+                    </button>
                 </div>
 
                 <p>
@@ -214,17 +235,25 @@ var CQQuizzes = React.createClass({
                     sortBy='time'
                     sortOptions={this.state.isAdmin}
                     onAssign={this.handleAssign}
-                    onEdit={this.handleEdit}
                     onDelete={this.handleDelete}>
 
                     <CQPublishQuiz className="cq-quizzes__button--publish"/>
+
+
+                    <button className="cq-quizzes__button--share" onClick={this.handleShare}>
+                        <span className="fa fa-share"></span> Share
+                    </button>
 
                     <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
                         <span className="fa fa-pencil"></span> Edit
                     </button>
 
+                    <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
+                        <span className="fa fa-search"></span> Play
+                    </button>
+
                     <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
-                        <span className="fa fa-users"></span> Use quiz in class
+                        <span className="fa fa-users"></span> Play in class
                     </button>
 
                     <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>

@@ -1,5 +1,4 @@
 var Dispatcher = require('flux').Dispatcher;
-var assign = require('object-assign');
 
 var vomitify = function(f) {
     return function() {
@@ -12,7 +11,7 @@ var vomitify = function(f) {
 };
 
 
-var AppDispatcher = assign(new Dispatcher(), {
+var AppDispatcher = Object.assign(new Dispatcher(), {
 
     handleViewAction: function(action) {
         this.dispatch({

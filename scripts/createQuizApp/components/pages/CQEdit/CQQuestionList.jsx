@@ -1,55 +1,67 @@
+/* @flow */
 var React = require('react');
-var router = require('createQuizApp/config/router');
-var CQEditNormal = require('./CQEditNormal');
+var router = require('./../../../config/router');
+import CQEditNormal from './CQEditNormal';
 
-var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
+var CQLatexString = require('react-latex');
+import type {QuizComplete, Question} from './../../../stores/QuizStore';
 
-var CQQuestionList = React.createClass({
-    propTypes: {
-        quiz: React.PropTypes.object.isRequired,
-        handleSave: React.PropTypes.func.isRequired,
-        questionIndex: React.PropTypes.number,
-        handleQuestion: React.PropTypes.func,
-        handleRemoveQuestion: React.PropTypes.func,
-        setSaveMode: React.PropTypes.func
-    },
+type Props = {
+    quiz: QuizComplete;
+    handleSave: Function;
+    questionIndex: number;
+    handleQuestion: Function;
+    handleRemoveQuestion: Function;
+    setSaveMode: Function;
+}
 
-    getDefaultProps: function() {
-        return {
-            questions: []
-        };
-    },
+class CQQuestionList extends React.Component {
 
-    getInitialState: function() {
-        return {
-            canAddQuestion: true
-        };
-    },
-    setSaveMode: function(canBeSaved){
+    props: Props;
+
+    constructor(props:Props) {
+        super(props);
+
+
+        this.setSaveMode = this.setSaveMode.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleQuestion = this.handleQuestion.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+    }
+    setSaveMode(canBeSaved: boolean) {
         this.props.setSaveMode(canBeSaved);
-        this.setState({canAddQuestion: canBeSaved});
-    },
+    }
 
-    handleSave: function(){
+    handleSave(){
         this.props.handleSave();
-        this.setState({canAddQuestion: false});
-    },
+    }
 
-    handleQuestion: function(question){
+    handleQuestion (question: Question){
         this.props.handleQuestion(question);
-    },
+    }
 
-    handleRemove: function(question, event){
+    handleRemove(question: Question, event: Object){
         this.props.handleRemoveQuestion(question, event);
-    },
+    }
 
-    handleEdit: function(index){
+    handleEdit(index : number){
         if (this.props.questionIndex !== index){
             router.setRoute(`/quiz/create/${this.props.quiz.uuid}/${index}`);
         }
-    },
+    }
 
-    render: function() {
+    canAddQuestion() : boolean {
+        var {quiz} = this.props;
+        // we filter questions with no content
+        if (quiz.payload.questions){
+            var emptyQuestions = quiz.payload.questions.filter( q => q.question.length === 0 || q.answer.length === 0);
+        }
+        console.log('emptyQuestions', emptyQuestions);
+        return emptyQuestions.length === 0;
+    }
+
+    render() : any {
 
         var questions;
         var newQuestionEditor;
@@ -129,7 +141,7 @@ var CQQuestionList = React.createClass({
 
                     <button type='button'
                         className="btn btn-default cq-questionlist__button"
-                        disabled={!this.state.canAddQuestion}
+                        disabled={!this.canAddQuestion()}
                         onClick={this.handleSave}>
                         <span className="glyphicon glyphicon-plus"></span> Add a new question
                     </button>
@@ -139,6 +151,15 @@ var CQQuestionList = React.createClass({
         );
     }
 
-});
+}
+
+CQQuestionList.propTypes = {
+    quiz: React.PropTypes.object.isRequired,
+    handleSave: React.PropTypes.func.isRequired,
+    questionIndex: React.PropTypes.number,
+    handleQuestion: React.PropTypes.func,
+    handleRemoveQuestion: React.PropTypes.func,
+    setSaveMode: React.PropTypes.func
+};
 
 module.exports = CQQuestionList;

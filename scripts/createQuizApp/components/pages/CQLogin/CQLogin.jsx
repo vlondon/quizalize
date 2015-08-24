@@ -4,17 +4,16 @@ var React = require('react');
 var CQPageTemplate  = require('./../../../components/CQPageTemplate');
 var CQLoginForm     = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink          = require('./../../../components/utils/CQLink');
-var CQZzishLogin    = require('./../../../components/pages/shared/CQZzishLogin');
+
 var UserActions     = require('./../../../actions/UserActions');
+
 
 var CQLogin = React.createClass({
 
     getInitialState: function() {
-        return {
-            email: '',
-            password: ''
-        };
+        return {};
     },
+
 
     handleChange: function(property:string, event:Object) {
 
