@@ -97,7 +97,7 @@ export default class CQSettings extends React.Component {
         if (this.state.isNew) {
             sendEvent('register', 'details', 'filled');
         }
-        UserActions.search({qurl: this.state.user.attributes.qurl})
+        UserActions.search({profileUrl: this.state.user.attributes.profileUrl})
             .then( (users) => {
                 //am i one of the bunch
                 var found = false;
@@ -225,19 +225,19 @@ export default class CQSettings extends React.Component {
                     <div>
                         <div className={`cq-settings__profile-item${classNameError(5)} form-group`}>
                             <label htmlFor="url">Quizalize URL</label>
-                            <input type="text" id="url"
+                            <input type="text" id="profileUrl"
                                 className="form-control"
                                 placeholder = "e.g. Your own personal Quizalize URL"
-                                onChange={this.handleChange.bind(this, 'qurl')}
-                                value={this.state.user.attributes.qurl}/>
+                                onChange={this.handleChange.bind(this, 'profileUrl')}
+                                value={this.state.user.attributes.profileUrl}/>
                         </div>
                         <div className={`cq-settings__profile-item${classNameError(6)} form-group`}>
                             <label htmlFor="url">Quizalize Banner URL</label>
-                            <input type="text" id="banner_url"
+                            <input type="text" id="bannerUrl"
                                 className="form-control"
                                 placeholder = "e.g. Your own personal Quizalize Banner URL"
-                                onChange={this.handleChange.bind(this, 'banner_url')}
-                                value={this.state.user.attributes.banner_url}/>
+                                onChange={this.handleChange.bind(this, 'bannerUrl')}
+                                value={this.state.user.attributes.bannerUrl}/>
                         </div>
                     </div>
                 );

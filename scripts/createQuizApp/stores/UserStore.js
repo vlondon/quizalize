@@ -12,6 +12,8 @@ type UserAttributes = {
     url?: string;
     subjectTaught?: string;
     ageTaught?: string;
+    profileUrl?: string;
+    bannerUrl?: string;
 };
 export type User = {
     uuid: string;
@@ -137,7 +139,7 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_PUBLIC_LOADED_URL:
             console.log('UserConstants.USER_PUBLIC_LOADED_URL', action);
             var user = action.payload;
-            _usersByUrl[user.attributes.qurl] = user.uuid;
+            _usersByUrl[user.attributes.profileUrl] = user.uuid;
             _users[user.uuid] = user;
             userStore.emitChange();
             break;

@@ -228,7 +228,7 @@ var UserActions = {
 
     getPublicUserByUrl: function(url){
         return new Promise(function(resolve, reject){
-            UserApi.search({qurl: url})
+            UserApi.search({profileUrl: url})
                 .then(function(users){
                     if (users.length > 0) {
                         AppDispatcher.dispatch({
