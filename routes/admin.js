@@ -96,19 +96,19 @@ exports.index = function(req, res){
 };
 
 exports.pendingQuizzes = function(req, res){
-    // db.findDocuments("subject",{}, -1, function(err, subjects) {
+    // db.findDocuments("subject",{}, 1, function(err, subjects) {
     //     var subjectArray = subjects.map(function(item) {
     //         return {uuid: item.uuid, name: item.name};
     //     });
     //     //subjectArray = [];
     //     console.log("I got subjects", subjectArray.length);
-    //     db.findDocuments("contentcategory",{subjectId: {$exists: true}}, -1, function(err, categories) {
+    //     db.findDocuments("contentcategory",{subjectId: {$exists: true}}, 1, function(err, categories) {
     //         var categoryArray = categories.map(function(item) {
     //             return {uuid: item.uuid, name: item.name};
     //         });
     //         //categoryArray = [];
     //         console.log("I got categories", categoryArray.length);
-    //         db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
+    //         db.findDocuments("content", {"meta.published": "pending"}, 1, function(err, pending) {
     //             var contentArray = pending.map(function(item) {
     //                 return {uuid: item.uuid, meta: item.meta, updated: item.updated, type: item.type};
     //             });
@@ -124,21 +124,21 @@ exports.pendingQuizzes = function(req, res){
     //         });
     //     });
     // });
-    // db.findDocuments("contentcategory",{subjectId: {$exists: true}}, -1, function(err, categories) {
+    // db.findDocuments("contentcategory",{subjectId: {$exists: true}}, 1, function(err, categories) {
     //     var categoryArray = categories.map(function(item) {
     //         return {uuid: item.uuid, name: item.name};
     //     });
     //     categoryArray = categoryArray.slice(0,5);
     //     //categoryArray = [];
     //     console.log("I got categories", categoryArray.length);
-    //     db.findDocuments("subject",{}, -1, function(err, subjects) {
+    //     db.findDocuments("subject",{}, 1, function(err, subjects) {
     //         var subjectArray = subjects.map(function(item) {
     //             return {uuid: item.uuid, name: item.name};
     //         });
     //         subjectArray = subjectArray.slice(0,5);
     //         //subjectArray = [];
     //         console.log("I got subjects", subjectArray.length);
-    //         db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
+    //         db.findDocuments("content", {"meta.published": "pending"}, 1, function(err, pending) {
     //             var contentArray = pending.map(function(item) {
     //                 return {uuid: item.uuid, meta: item.meta, updated: item.updated, type: item.type};
     //             });
@@ -157,7 +157,7 @@ exports.pendingQuizzes = function(req, res){
     // });
     zzish_db.secure.post("db/contentcategory/query/",{"query": "{}"}, function(err, categories){
         //console.log(categories.length.payload);
-        zzish_db.secure.post("db/subject/query/",{"query": "{subjectId: {$exists: true}}"}, function(err, subjects){
+        zzish_db.secure.post("db/subject/query/",{"query": "{}"}, function(err, subjects){
             zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
                 res.render("admin/pending", { pending: JSON.parse(pending.payload), categories: JSON.parse(categories.payload), subjects: JSON.parse(subjects.payload)});
             });
@@ -166,11 +166,81 @@ exports.pendingQuizzes = function(req, res){
 };
 
 exports.approved = function(req, res){
+    // db.aggregateDocuments("contentcategory", [{ $project: {"uuid": 1, "name": 1}}], function(errCategory, categories){
+    // if (!errCategory){
+    //     db.findDocuments("content", {"meta.published": "published"}, 1, function(errContent, approved) {
+    //         if (!errContent) {
+    //             approved.sort(function(x, y){
+    //                 if (!x.updated) {
+    //                     return 1;
+    //                 }
+    //                 if (!y.updated) {
+    //                     return 1;
+    //                 }
+    //                 return y.updated  x.updated;
+    //             });
+    //             res.render("admin/approved", {approved: approved, categories: categories});
+    //         }
+    //         else {
+    //             res.render("admin/error", {error: errContent});
+    //         }
+    //     });
+    // }
+    // else {
+    //     res.render("admin/error", {error: errCategory});
+    // }
+
     zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'published'}"}, function(err, pending) {
         res.render("admin/approved", {approved: JSON.parse(pending.payload)});
     });
 
+//});
 };
+
+
+// exports.stats = function(req, res){
+//     db.aggregateDocuments("content", [
+//         { $match: {"meta.published": "published", "ownerId": "72064f1f2cf84819a3d51193e52d928c"}},
+//         { $project: {"profileId": 1, "name": 1, "type": 1, "created": 1, "updated": 1}}], function(errContent, published){
+//                 if (!errContent){
+//                 db.aggregateDocuments("user", [
+//                     { $match: {"profile.appToken": "72064f1f2cf84819a3d51193e52d928c", "profile": { $exists: true}}},
+//                     { $project: { "uuid": 1, "profile": 1}}], function(errUser, users){
+//                     if(!errUser){
+//                         db.aggregateDocuments("usergroup", [
+//                             { $project: { "uuid": 1, "ownerId": 1}}],
+//                             function(errGroup, usergroup){
+//                                 if (!errGroup){
+//                                     db.aggregateDocuments("activityinstance", [
+//                                         { $match: {"ownerId": "72064f1f2cf84819a3d51193e52d928c", "contentId": {$exists: true}, "status": "ACTIVITY_INSTANCE_COMPLETED"}},
+//                                         { $project: { "timestamp": 1, "contentId": 1, "groupId": 1}}],
+//                                         function(errActivity, mergedActivities){
+//                                             if (!errActivity) {
+//                                                 res.render("admin/stats", {activities: mergedActivities, userGroups: usergroup, users: users, published: published});
+//                                             }
+//                                             else {
+//                                                 res.render("admin/error", {error: errActivity});
+//                                             }
+//                                     });
+//                                 }
+//                                 else{
+//                                     res.render("admin/error", {error: errGroup});
+//                                 }
+//
+//                         });
+//                     }
+//                     else {
+//                         res.render("admin/error", {error: errUser});
+//
+//                     }
+//                 });
+//                 }
+//                 else {
+//                     res.render("admin/error", {error: errContent});
+//                 }
+//         });
+//  };
+
 
 exports.approve = function(req, res){
   approveDocument(req, res, 'published');
