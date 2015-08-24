@@ -34,6 +34,7 @@ var QLMultiple = React.createClass({
         latexEnabled: React.PropTypes.bool,
         imageEnabled: React.PropTypes.bool,
         startTime: React.PropTypes.number,
+        videoQuiz: React.PropTypes.object
     },
 
     getInitialState: function() {
@@ -42,8 +43,7 @@ var QLMultiple = React.createClass({
         return {
             cssState: cssStates[cssStateIndex],
             answered: null,
-            startTime: Date.now(),
-            hasLatex: this.props.currentQuiz.latexEnabled
+            startTime: Date.now()
         };
     },
 
@@ -102,7 +102,7 @@ var QLMultiple = React.createClass({
             } else {
                 return (<span>{string}</span>);
             }
-        }
+        };
 
         var showAnswer, showQuestions, showCountdown;
 
@@ -120,6 +120,8 @@ var QLMultiple = React.createClass({
             var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
             showAnswer = (
                 <QLAnswerScreen
+                    videoQuiz={this.props.videoQuiz}
+                    questionIndex={this.props.questionIndex}
                     questionData={this.props.questionData}
                     answerData={currentAnswer}
                     onNext={this.props.onNext}/>

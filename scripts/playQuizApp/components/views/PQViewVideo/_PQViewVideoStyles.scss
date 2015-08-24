@@ -1,0 +1,69 @@
+@import './../../../../shared/scss/variables';
+@import './../../../../shared/scss/mixins';
+// @import './../../shared/scss/layout';
+
+@keyframes intro {
+    from {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.pq-viewvideo {
+    position: fixed;
+    background: $brand-color-grey;
+    width: 800px;
+    margin: auto;
+    text-align: center;
+    border-radius: 20px;
+    padding: 20px;
+    left: 0;
+    right: 0;
+    z-index: 11;
+
+    &.enter {
+        animation: intro 300ms ease-out;
+        animation-fill-mode: both;
+    }
+    &.exit {
+        animation: intro 300ms ease-out;
+        animation-direction: reverse;
+        animation-fill-mode: both;
+    }
+
+
+    &__extras {
+        max-width: 640px;
+        display: block;
+        margin: auto;
+        @include clearfix();
+    }
+
+    &__totaltime {
+        width: 33%;
+        float: left;
+        text-align: left;
+    }
+
+    &__skip {
+        width: 33%;
+        float: left;
+        text-align: center;
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover {
+            color: #FFF;
+        }
+    }
+
+    &__timeremaining {
+        width: 33%;
+        float: left;
+        text-align: right;
+    }
+}

@@ -3,6 +3,7 @@ var settings = require('quizApp/config/settings');
 var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
+
     if(typeof zzish === 'undefined') {
         $log.error("Require zzish.js to use zzish");
     }

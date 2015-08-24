@@ -1,8 +1,8 @@
 angular.module('quizApp')
-    .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
+    .controller('MultipleController', function(QuizData, ExtraData, $log,  $routeParams, $location, $scope){
 
         var React = require('react');
-        var QLMultiple = require('quizApp/components/QLMultiple');
+        var QLVideoPlayer = require('quizApp/components/QLVideoPlayer');
 
         var self = this;
         var startTime = (new Date()).getTime();
@@ -17,7 +17,7 @@ angular.module('quizApp')
 
         var renderReactComponent = function(){
             React.render(
-                React.createElement(QLMultiple, {
+                React.createElement(QLVideoPlayer, {
                     currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
                     questionData: self.questionData,
@@ -27,6 +27,7 @@ angular.module('quizApp')
                     latexEnabled: self.latexEnabled,
                     imageEnabled: self.imageEnabled,
                     startTime: QuizData.logQuestion(self.questionData),
+                    videoQuiz: self.videoQuizData,
                     onSelect: function(index){
                         $scope.$apply(() => self.select(index) );
                     },
@@ -41,6 +42,7 @@ angular.module('quizApp')
 
         var addReactComponent = function(){
 
+
             setTimeout(renderReactComponent, 200);
 
             $scope.$on('$destroy', function(){
@@ -52,7 +54,11 @@ angular.module('quizApp')
         QuizData.loadQuiz(self.catId, self.id, function(data) {
 
             //$scope.$apply(function(){
-                self.currentQuiz = data;
+                var extraQuizData = ExtraData.videoQuizHandler(data);
+                self.currentQuiz = extraQuizData.quiz;
+                self.videoQuizData = extraQuizData.extra;
+
+
 
                 self.score = QuizData.currentQuizResult().totalScore;
                 self.questionCount = QuizData.currentQuizResult().questionCount;

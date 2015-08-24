@@ -1,5 +1,7 @@
 var React = require('react');
+
 var QLLatex = require('quizApp/components/QLLatex');
+var PQViewVideo = require('playQuizApp/components/views/PQViewVideo');
 
 var toSeconds = function(ms){
     return Math.round(ms / 10) / 100 + 's';
@@ -55,6 +57,9 @@ var QLAnswerScreen = React.createClass({
         questionData: React.PropTypes.object.isRequired,
         onNext: React.PropTypes.func
     },
+    getInitialState: function() {
+        return {};
+    },
 
     handleClick: function(){
         if (this.props.onNext){
@@ -62,8 +67,21 @@ var QLAnswerScreen = React.createClass({
         }
     },
 
+    handleVideoAnswer: function(){
+        console.log('should answer video');
+        this.setState({
+            videoOpen: true
+        });
+    },
+
+    handleVideoComplete: function(){
+        console.log('video is finished');
+        this.setState({videoOpen: false});
+    },
+
     render: function() {
         var stars = [];
+        var correctAnswer, viewVideo, videoPlayer, explanation;
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
@@ -71,7 +89,6 @@ var QLAnswerScreen = React.createClass({
             }
         }
 
-        var correctAnswer;
 
         if (!this.props.answerData.correct){
             correctAnswer = (
@@ -88,7 +105,6 @@ var QLAnswerScreen = React.createClass({
             );
         }
 
-        var explanation;
 
         if (this.props.questionData.answerExplanation && this.props.questionData.answerExplanation.length > 0) {
             explanation = (<blockquote className="description">
@@ -98,8 +114,27 @@ var QLAnswerScreen = React.createClass({
             </blockquote>);
         }
 
+        viewVideo = (
+            <div className="view-video">
+                <img src="/img/ui-quiz/youtube-player.png" alt="" onClick={this.handleVideoAnswer}/>
+            </div>
+        );
+
+        if (this.state.videoOpen === true){
+            var start = this.props.videoQuiz.answerSnippets[this.props.questionIndex].start;
+            var end = this.props.videoQuiz.answerSnippets[this.props.questionIndex].end;
+            videoPlayer = (
+                <PQViewVideo
+                    start={start}
+                    end={end}
+                    onComplete={this.handleVideoComplete}
+                />
+            )
+        }
+
         return (
             <div className='ql-answer-screen'>
+                {videoPlayer}
                 <div className="star-container">
                     {stars}
                 </div>
@@ -119,6 +154,7 @@ var QLAnswerScreen = React.createClass({
                 </div>
 
                 {correctAnswer}
+                {viewVideo}
                 {explanation}
 
 

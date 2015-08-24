@@ -6,9 +6,40 @@ angular.module('quizApp')
             $log.error("Require zzish.js to use zzish");
         }
 
+        var extraData;
 
 
         var ExtraData = {
+
+            videoQuizHandler: function(quiz){
+                if (extraData) { return extraData; }
+                var isVideoQuiz = quiz && quiz.meta.name.split('|').length > 0;
+                var videoSegments = quiz.meta.name.split('|');
+                videoSegments.shift();
+                videoSegments = videoSegments.map(v => parseInt(v, 10));
+
+
+                var answerSnippets = quiz.payload.questions.map( q => {
+                    var questionArray = q.question.split('|');
+                    var start = questionArray[1] ? parseInt(questionArray[1], 10) : undefined;
+                    var end = questionArray[2] ? parseInt(questionArray[2], 10) : undefined;
+                    return { start, end };
+                });
+
+                quiz.payload.questions.forEach(q=>{
+                    q.question = q.question.split('|')[0];
+                })
+
+                extraData = {
+                    extra: {
+                        isVideoQuiz,
+                        videoSegments,
+                        answerSnippets
+                    },
+                    quiz
+                };
+                return extraData;
+            },
 
             getLeaderBoard: function(quizId, activityId){
 
