@@ -256,8 +256,8 @@ exports.stats = function(req, res){
             "project": "{'profileId': 1, 'name': 1, 'type': 1, 'created': 1, 'updated': 1}"}, function(err, published) {
                 console.log("Fetching content");
                 zzish_db.secure.post("db/usergroup/query/", {"query": "{}", "project":"{'uuid': 1, 'ownerId': 1}"}, function(err, usergroup) {
-                    console.log("Fetching users", JSON.parse(usergroup.payload));
-                    res.render("admin/stats", {activities: JSON.parse(activities.payload), userGroups: JSON.parse(usergroup.payload), published: JSON.parse(published.payload), users: JSON.parse(users.payload) });
+                    console.log("Fetching users");
+                    res.render("admin/stats", {activities: activities.payload, userGroups: usergroup.payload, published: published.payload, users: users.payload });
                 });
             });
         });
