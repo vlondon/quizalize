@@ -100,6 +100,19 @@ exports.findDocuments = function(name,query,limit,callback) {
 	});
 }
 
+exports.aggregateDocuments = function(name, query, callback) {
+	MongoClient.connect(url, function(err, db) {
+		var collection = db.collection(name);
+		collection.aggregate(query).toArray(function(err, docs) {
+			db.close();
+			callback(err,docs);
+		},function(err,result) {
+			db.close();
+			callback(err,result);
+		})
+	});
+}
+
 
 
 exports.findDocument = function(name,query, callback) {

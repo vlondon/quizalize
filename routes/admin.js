@@ -85,34 +85,110 @@ exports.index = function(req, res){
 };
 
 exports.pendingQuizzes = function(req, res){
-    db.findDocuments("subject",{}, -1, function(err, subjects) {
-        db.findDocuments("contentcategory",{}, -1, function(err, categories) {
-            db.findDocuments("content", {"meta.published": "pending"}, -1, function(err, pending) {
-                if (!err) {
-                    res.render("admin/pending", {pending: pending, categories: categories, subjects: subjects});
+    db.findDocuments("subject", {}, -1, function(errSubject, subjects) {
+        if (!errSubject){
+            db.findDocuments("contentcategory", {}, -1, function(errCategory, categories) {
+                if (!errCategory){
+                    db.findDocuments("content", {"meta.published": "pending"}, -1, function(errContent, pending) {
+                        if (!errContent) {
+                            pending.sort(function(x, y){
+                                if (!x.updated) {
+                                    return -1;
+                                }
+                                if (!y.updated) {
+                                    return 1;
+                                }
+                                return y.updated - x.updated;
+                            });
+                            res.render("admin/pending", {pending: pending, categories: categories, subjects: subjects});
+                        }
+                        else {
+                            res.render("admin/error", {error: errContent});
+                        }
+                    });
                 }
-                else {
-                    res.render("admin/error", {error: err});
+                else{
+                    res.render("admin/error", {error: errCategory});
                 }
 
             });
-
-        });
+        }
+        else {
+            res.render("admin/error", {error: errSubject});
+        }
     });
 
 };
 
 exports.approved = function(req, res){
-    db.findDocuments("content", {"meta.published": "published"}, -1, function(err, result) {
-        if (!err) {
-            res.render("admin/approved", {approved: result});
+    db.aggregateDocuments("contentcategory", [{ $project: {"uuid": 1, "name": 1}}], function(errCategory, categories){
+        if (!errCategory){
+            db.findDocuments("content", {"meta.published": "published"}, -1, function(errContent, approved) {
+                if (!errContent) {
+                    approved.sort(function(x, y){
+                        if (!x.updated) {
+                            return -1;
+                        }
+                        if (!y.updated) {
+                            return 1;
+                        }
+                        return y.updated - x.updated;
+                    });
+                    res.render("admin/approved", {approved: approved, categories: categories});
+                }
+                else {
+                    res.render("admin/error", {error: errContent});
+                }
+            });
         }
         else {
-            res.render("admin/error", {error: err});
+            res.render("admin/error", {error: errCategory});
         }
     });
 };
 
+exports.stats = function(req, res){
+    db.aggregateDocuments("content", [
+        { $match: {"meta.published": "published", "ownerId": "72064f1f-2cf8-4819-a3d5-1193e52d928c"}},
+        { $project: {"profileId": 1, "name": 1, "type": 1, "created": 1, "updated": 1}}], function(errContent, published){
+                if (!errContent){
+                db.aggregateDocuments("user", [
+                    { $match: {"profile.appToken": "72064f1f-2cf8-4819-a3d5-1193e52d928c", "profile": { $exists: true}}},
+                    { $project: { "uuid": 1, "profile": 1}}], function(errUser, users){
+                    if(!errUser){
+                        db.aggregateDocuments("usergroup", [
+                            { $project: { "uuid": 1, "ownerId": 1}}],
+                            function(errGroup, usergroup){
+                                if (!errGroup){
+                                    db.aggregateDocuments("activityinstance", [
+                                        { $match: {"ownerId": "72064f1f-2cf8-4819-a3d5-1193e52d928c", "contentId": {$exists: true}, "status": "ACTIVITY_INSTANCE_COMPLETED"}},
+                                        { $project: { "timestamp": 1, "contentId": 1, "groupId": 1}}],
+                                        function(errActivity, mergedActivities){
+                                            if (!errActivity) {
+                                                res.render("admin/stats", {activities: mergedActivities, userGroups: usergroup, users: users, published: published});
+                                            }
+                                            else {
+                                                res.render("admin/error", {error: errActivity});
+                                            }
+                                    });
+                                }
+                                else{
+                                    res.render("admin/error", {error: errGroup});
+                                }
+
+                        });
+                    }
+                    else {
+                        res.render("admin/error", {error: errUser});
+
+                    }
+                });
+                }
+                else {
+                    res.render("admin/error", {error: errContent});
+                }
+        });
+};
 exports.approve = function(req, res){
   approveDocument(req, res, 'published');
 };

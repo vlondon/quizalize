@@ -25,41 +25,83 @@ block body
         var categories = JSON.parse(categoryString);
         var subjects = JSON.parse(subjectString);
         
-        function showCategories(subjectId) {
+        function showCategories(uuid, subId, catId) {
+            var subjectId = $(subId + uuid).val();
             console.log("Subject is now",subjectId);
+            
             var availableCategories = categories.filter(function(category) {
                 return category.subjectId == subjectId;
             });
-            console.log(availableCategories);
+            console.log("available" + JSON.stringify(availableCategories));
+            var selectId = $(catId + uuid)
+            availableCategories.forEach(function(category){
+                selectId.append($("<option />").val(category.uuid).text(category.name));
+            });
         }
+        var categoryNameFromCategoryId = function(categoryId){
+            console.log(categoryId);
+            var category = categories.filter(function(cat) {
+                return cat.uuid == categoryId;
+            });
+            console.log(category);
+            if (category[0] === undefined){
+                return "No valid category";
+                }
+            else if (category[0].name === undefined) {
+                return "No valid category";
+                }    
+            else{
+            return category[0].name;
+            }
+        };
+        $(function() {
+            $(".categoryId").each(function() {
+                var categoryName = categoryNameFromCategoryId($(this).text());
+                console.log(categoryName);
+                $(this).text(categoryName);
+            });
+        });
         
     
-    h1 Pending Quizes
+    h1 Pending Quizzes
     .container-fluid
         .row
-            table(border="1", style="font-size:12px")
+            table(border="1", style="background-color:white;font-size:12px; width:100%")
                 thead
                     th Type
                     th Name
                     th Category
+                    th preview
+                    th Editor
                     th Updated
                     th Set Category And Approve
+                    th Approve first
                 tbody
                 for quiz in pending
                     tr
                         td #{quiz.type}
                         td #{quiz.meta.name}
-                        td #{quiz.meta.categoryId}
+                        td.categoryId #{quiz.meta.categoryId}
+                        td
+                            a(href="https://www.quizalize.com/app#/play/public/#{quiz.uuid}") Preview
+                        td 
+                            a(href="https://www.quizalize.com/quiz/create/#{quiz.uuid}") Editor
                         td #{prettyDate(quiz.updated)} 
                         td
                             form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
-                                select(name="subjectId", onchange="showCategories(this.value)")
+                                select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subject', '#category')", id="subject#{quiz.uuid}")
+                                    option 
                                     for subject in subjects
                                         option(value=subject.uuid) #{subject.name}
-                                select(name="publicCategoryId")
-                                    option(value="") Default
-                                input(type="submit" value="APPROVE")
+                                select(name="publicCategoryId", id="category#{quiz.uuid}")
+                                input(type="submit" value="Approve")
                                     
                         td
                             form(method="POST", action="/admin/approvefirst/#{quiz.type}/#{quiz.uuid}")
+                                select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subjectnew', '#categorynew')", id="subjectnew#{quiz.uuid}")
+                                    option 
+                                    for subject in subjects
+                                        option(value=subject.uuid) #{subject.name}
+                                select(name="publicCategoryId", id="categorynew#{quiz.uuid}")
+                                input(type="submit" value="Approve First")
                                 
