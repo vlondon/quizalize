@@ -162,7 +162,7 @@ export default class CQSettings extends React.Component {
             });
     }
 
-    handleSkip() : boolean {
+    handleSkip() {
         sendEvent('register', 'details', 'skipped');
         var params = urlParams();
         if (params.redirect){
