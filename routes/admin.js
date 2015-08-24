@@ -50,6 +50,7 @@ var finalApproval = function(req, res, type, content, doc) {
 };
 
 var approveDocument = function(req, res, doc) {
+    console.log(zzish);
     var id = req.params.id;
     var type = req.params.type;
 
@@ -157,7 +158,9 @@ exports.pendingQuizzes = function(req, res){
     //         });
     //     });
     // });
+    console.log("Building page", zzish_db);
     zzish_db.secure.post("db/contentcategory/query/",{"query": "{}"}, function(err, categories){
+        console.log("Fetching Categories");
         //console.log(categories.length.payload);
         zzish_db.secure.post("db/subject/query/",{"query": "{}"}, function(err, subjects){
             zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
@@ -200,48 +203,66 @@ exports.approved = function(req, res){
 };
 
 
-// exports.stats = function(req, res){
-//     db.aggregateDocuments("content", [
-//         { $match: {"meta.published": "published", "ownerId": "72064f1f2cf84819a3d51193e52d928c"}},
-//         { $project: {"profileId": 1, "name": 1, "type": 1, "created": 1, "updated": 1}}], function(errContent, published){
-//                 if (!errContent){
-//                 db.aggregateDocuments("user", [
-//                     { $match: {"profile.appToken": "72064f1f2cf84819a3d51193e52d928c", "profile": { $exists: true}}},
-//                     { $project: { "uuid": 1, "profile": 1}}], function(errUser, users){
-//                     if(!errUser){
-//                         db.aggregateDocuments("usergroup", [
-//                             { $project: { "uuid": 1, "ownerId": 1}}],
-//                             function(errGroup, usergroup){
-//                                 if (!errGroup){
-//                                     db.aggregateDocuments("activityinstance", [
-//                                         { $match: {"ownerId": "72064f1f2cf84819a3d51193e52d928c", "contentId": {$exists: true}, "status": "ACTIVITY_INSTANCE_COMPLETED"}},
-//                                         { $project: { "timestamp": 1, "contentId": 1, "groupId": 1}}],
-//                                         function(errActivity, mergedActivities){
-//                                             if (!errActivity) {
-//                                                 res.render("admin/stats", {activities: mergedActivities, userGroups: usergroup, users: users, published: published});
-//                                             }
-//                                             else {
-//                                                 res.render("admin/error", {error: errActivity});
-//                                             }
-//                                     });
-//                                 }
-//                                 else{
-//                                     res.render("admin/error", {error: errGroup});
-//                                 }
-//
-//                         });
-//                     }
-//                     else {
-//                         res.render("admin/error", {error: errUser});
-//
-//                     }
-//                 });
-//                 }
-//                 else {
-//                     res.render("admin/error", {error: errContent});
-//                 }
-//         });
-//  };
+exports.stats = function(req, res){
+        // db.aggregateDocuments("content", [
+        //     { $match: {"meta.published": "published", "ownerId": "72064f1f2cf84819a3d51193e52d928c"}},
+        //     { $project: {"profileId": 1, "name": 1, "type": 1, "created": 1, "updated": 1}}], function(errContent, published){
+        //             if (!errContent){
+        //             db.aggregateDocuments("user", [
+        //                 { $match: {"profile.appToken": "72064f1f2cf84819a3d51193e52d928c", "profile": { $exists: true}}},
+        //                 { $project: { "uuid": 1, "profile": 1}}], function(errUser, users){
+        //                 if(!errUser){
+        //                     db.aggregateDocuments("usergroup", [
+        //                         { $project: { "uuid": 1, "ownerId": 1}}],
+        //                         function(errGroup, usergroup){
+        //                             if (!errGroup){
+        //                                 db.aggregateDocuments("activityinstance", [
+        //                                     { $match: {"ownerId": "72064f1f2cf84819a3d51193e52d928c", "contentId": {$exists: true}, "status": "ACTIVITY_INSTANCE_COMPLETED"}},
+        //                                     { $project: { "timestamp": 1, "contentId": 1, "groupId": 1}}],
+        //                                     function(errActivity, mergedActivities){
+        //                                         if (!errActivity) {
+        //                                             res.render("admin/stats", {activities: mergedActivities, userGroups: usergroup, users: users, published: published});
+        //                                         }
+        //                                         else {
+        //                                             res.render("admin/error", {error: errActivity});
+        //                                         }
+        //                                 });
+        //                             }
+        //                             else{
+        //                                 res.render("admin/error", {error: errGroup});
+        //                             }
+        //
+        //                     });
+        //                 }
+        //                 else {
+        //                     res.render("admin/error", {error: errUser});
+        //
+        //                 }
+        //             });
+        //             }
+        //             else {
+        //                 res.render("admin/error", {error: errContent});
+        //             }
+        //     });
+    var activityQuery = {"query":"{'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'contentId': {$exists: true}, 'status': 'ACTIVITY_INSTANCE_COMPLETED'}",
+    "project":"{'timestamp': 1, 'contentId': 1, 'groupId': 1}"};
+
+    zzish_db.secure.post("db/activityinstance/query/", activityQuery, function(err, activities){
+        console.log("Fetching activities");
+        zzish_db.secure.post("db/user/query/", {"query": "{'profile.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
+                        "project": "{ 'uuid': 1, 'profile': 1}"}, function(err, users){
+            console.log("Fetching users");
+            zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'published', 'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c'}",
+            "project": "{'profileId': 1, 'name': 1, 'type': 1, 'created': 1, 'updated': 1}"}, function(err, published) {
+                console.log("Fetching content");
+                zzish_db.secure.post("db/usergroup/query/", {"query": "{}", "project":"{'uuid': 1, 'ownerId': 1}"}, function(err, usergroup) {
+                    console.log("Fetching users", JSON.parse(usergroup.payload));
+                    res.render("admin/stats", {activities: JSON.parse(activities.payload), userGroups: JSON.parse(usergroup.payload), published: JSON.parse(published.payload), users: JSON.parse(users.payload) });
+                });
+            });
+        });
+    });
+};
 
 
 exports.approve = function(req, res){

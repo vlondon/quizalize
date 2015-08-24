@@ -118,7 +118,7 @@ if (process.env.admin === "true") {
     app.get('/admin/', admin.index);
     app.get('/admin/approved', admin.approved);
     app.get('/admin/pending', admin.pendingQuizzes);
-    //app.get('/admin/stats', admin.stats);
+    app.get('/admin/stats', admin.stats);
     app.post('/admin/approve/:type/:id', admin.approve);
     app.post('/admin/approvefirst/:type/:id', admin.approvefirst);
 }
