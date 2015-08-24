@@ -140,8 +140,7 @@ class QuizStore extends Store {
 
     }
 
-    getQuiz(quizId?): QuizComplete{
-        console.trace('getQuiz', quizId);
+    getQuiz(quizId?): QuizComplete {
         var fullQuiz;
 
         if (quizId){

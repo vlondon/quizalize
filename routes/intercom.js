@@ -9,12 +9,12 @@ var options = {
 };
 
 var intercom;
-if (process.env.intercom == "true") {
+if (process.env.intercom === "true") {
   intercom = new Intercom(options);
 }
 
 exports.createUser = function(user, callback){
-  if (process.env.intercom == "true") {
+  if (process.env.intercom === "true") {
     intercom.createUser(user, function(err, resp) {
       if (callback) callback(err, resp);
     });
@@ -22,7 +22,7 @@ exports.createUser = function(user, callback){
 };
 
 exports.updateUser = function(user, callback) {
-  if (process.env.intercom == "true") {
+  if (process.env.intercom === "true") {
     intercom.updateUser(user, function(err, resp) {
       if (callback) callback(err, resp);
     });
@@ -31,7 +31,7 @@ exports.updateUser = function(user, callback) {
 
 
 exports.trackEvent = function(userId, event_name, meta, callback){
-  if (process.env.intercom == "true") {
+  if (process.env.intercom === "true") {
     var event = {};
     if (!event.created_at) event.created_at = parseInt(Date.now() / 1000);
 

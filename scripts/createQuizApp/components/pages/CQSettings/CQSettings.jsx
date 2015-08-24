@@ -32,6 +32,7 @@ export default class CQSettings extends React.Component {
 
     constructor (props: any) {
         super(props);
+
         var user:User = UserStore.getUser();
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
@@ -50,6 +51,7 @@ export default class CQSettings extends React.Component {
     }
 
     componentDidMount() {
+        console.log("redirecting to after?", urlParams().redirect);
         facebookSDK.load();
     }
 
@@ -96,8 +98,9 @@ export default class CQSettings extends React.Component {
         }
         UserActions.update(this.state.user)
             .then( ()=> {
-                if (this.state.params.redirect){
-                    router.setRoute(this.state.params.redirect);
+                var params = urlParams();
+                if (params.redirect){
+                    router.setRoute(window.decodeURIComponent(params.redirect));
                 } else {
                     router.setRoute('/quiz/quizzes');
                 }
@@ -138,9 +141,15 @@ export default class CQSettings extends React.Component {
             });
     }
 
-    skipRegister(){
-        console.log('registering', sendEvent);
+    handleSkip() : boolean {
         sendEvent('register', 'details', 'skipped');
+        var params = urlParams();
+        if (params.redirect){
+            // window.location = window.decodeURIComponent(params.redirect);
+            router.setRoute(window.decodeURIComponent(params.redirect));
+            // return true;
+        }
+        return false;
     }
 
     render() {
@@ -178,11 +187,10 @@ export default class CQSettings extends React.Component {
             );
         } else {
             skipButton = (
-                <CQLink href='/quiz/quizzes' onClick={this.skipRegister}>
-                    <button className="btn btn-danger btn-sm">
-                        Skip
-                    </button>
-                </CQLink>
+                <button className="btn btn-danger btn-sm"
+                    onClick={this.handleSkip}>
+                    Skip
+                </button>
             );
         }
 

@@ -17,7 +17,6 @@ class CQEditDurationPicker extends React.Component {
         this.handleSelect = this.handleSelect.bind(this);
     }
     componentWillReceiveProps(nextProps : Props) {
-        console.log('nextProps', nextProps);
         this.setState({selected: nextProps.duration});
     }
 

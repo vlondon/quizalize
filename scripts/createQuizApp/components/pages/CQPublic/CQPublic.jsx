@@ -11,9 +11,11 @@ import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
+import urlParams from './../../../utils/urlParams';
 
 var TransactionActions = require('./../../../actions/TransactionActions');
 
+import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';
 import AppStore from './../../../stores/AppStore';
 import UserStore from './../../../stores/UserStore';
@@ -47,7 +49,6 @@ export default class CQPublic extends React.Component {
             }
         };
         this.onChange = this.onChange.bind(this);
-        this.handleBuy = this.handleBuy.bind(this);
         this.handleViewChange = this.handleViewChange.bind(this);
         this.handleDetails = this.handleDetails.bind(this);
         this.handleDetailsClose = this.handleDetailsClose.bind(this);
@@ -57,6 +58,10 @@ export default class CQPublic extends React.Component {
     componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
         AppStore.addChangeListener(this.onChange);
+        var quizId = urlParams().quid;
+        if (quizId) {
+            QuizActions.loadPublicQuiz(quizId).then(TransactionActions.buyQuiz);
+        }
     }
 
     componentWillUnmount() {
@@ -83,24 +88,6 @@ export default class CQPublic extends React.Component {
         router.setRoute(`/quiz/published/${quiz.uuid}`);
     }
 
-    handleBuy(quiz : Quiz){
-        console.log("should we buy????");
-        if (!this.state.user) {
-            swal({
-                title: 'You need to be logged in',
-                text: `In order to buy this item you need to log into Quizalize`,
-                type: 'info',
-                confirmButtonText: 'Log in',
-                showCancelButton: true
-            }, function(isConfirm){
-                if (isConfirm){
-                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
-                }
-            });
-        } else {
-            TransactionActions.buyQuiz(quiz);
-        }
-    }
 
     handleViewChange(options: string){
         switch (options){
@@ -172,7 +159,7 @@ export default class CQPublic extends React.Component {
                             Play
                         </span>
 
-                        <CQViewQuizPrice className='cq-public__button' onClick={this.handleBuy}/>
+                        <CQViewQuizPrice className='cq-public__button'/>
 
                     </CQViewQuizList>
                 </div>

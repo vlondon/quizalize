@@ -92,10 +92,6 @@ export default class CQEdit extends React.Component {
         this.onChange(nextProps);
     }
 
-    componentWillUnmount() {
-        QuizActions.newQuiz(this.state.quiz);
-    }
-
     onChange(props : ?Props){
 
         props = props || this.props;
@@ -163,14 +159,17 @@ export default class CQEdit extends React.Component {
 
     handleSaveNewQuestion(){
         // new question
-
+        console.log('handleSaveNewQuestion', this.state.questionIndex, this.state.quiz);
         var nextQuestion;
+
         if (this.state.questionIndex) {
             nextQuestion = this.state.questionIndex + 1;
         } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
-            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         }
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
+        });
 
     }
 
@@ -196,10 +195,15 @@ export default class CQEdit extends React.Component {
 
     handleFinished(){
         UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
-        router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
+        });
     }
 
     handleSaveButton(){
+        if (this.state.quiz.meta.name === "") {
+            this.state.quiz.meta.name = this.state.quiz.payload.questions[0].question;
+        }
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
         });
@@ -239,10 +243,9 @@ export default class CQEdit extends React.Component {
 
         if (this.state.quiz){
 
-            var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0;
-            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question : '';
+            var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0;
+            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question + ("...Change this anytime") : 'e.g. Enter a quiz name';
             var topics = TopicStore.getTopicTree();
-            console.log('placeholderForName', placeholderForName);
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">
@@ -284,7 +287,7 @@ export default class CQEdit extends React.Component {
                         <div className="cq-edit__footer-inner">
 
                             <button onClick={this.handlePreview}
-                                disabled={!previewEnabled}
+                                disabled={!previewEnabled || !this.state.saveEnabled}
 
                                 target="zzishgame"
                                 className="btn btn-info">
@@ -299,7 +302,7 @@ export default class CQEdit extends React.Component {
                             </button>
 
                             <button
-                                disabled={!previewEnabled}
+                                disabled={!previewEnabled || !this.state.saveEnabled}
                                 id='finishQuiz'
                                 className="btn btn-primary"
                                 onClick={this.handleFinished}>

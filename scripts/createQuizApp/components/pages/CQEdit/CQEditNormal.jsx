@@ -205,7 +205,6 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleGetTopics () {
-        console.info('SUBTOPIC LIST REFRESHED');
         return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
     }
 

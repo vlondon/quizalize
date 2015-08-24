@@ -30,38 +30,42 @@ export default class CQViewQuizPrice extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(ev : Object){
+    handleClick(owned: boolean, ev : Object){
         ev.stopPropagation();
-        if (!UserStore.isLoggedIn()) {
-            swal({
-                title: 'You need to be logged in',
-                text: `In order to buy this item you need to log into Quizalize`,
-                type: 'info',
-                confirmButtonText: 'Log in',
-                showCancelButton: true
-            }, function(isConfirm){
-                if (isConfirm){
-                    router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
-                }
-            });
+        if (owned){
+            router.setRoute(`/quiz/published/${this.props.quiz.uuid}/assign`);
         } else {
+            if (!UserStore.isLoggedIn()) {
+                swal({
+                    title: 'You need to have an account to use this quiz in a class',
+                    text: `It takes seconds to create an account`,
+                    type: 'info',
+                    confirmButtonText: 'Create an account',
+                    showCancelButton: true
+                }, (isConfirm) => {
+                    if (isConfirm){
+                        router.setRoute(`/quiz/register?redirect=${window.encodeURIComponent('/quiz/marketplace?quid=' + this.props.quiz.uuid)}`);
+                    }
+                });
+            } else {
                 TransactionActions.buyQuiz(this.props.quiz);
+            }
         }
     }
 
     render() : any {
-        var price;
+        var price, owned = false;
         var OwnedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
-        console.log('OwnedQuiz', OwnedQuiz, this.props.quiz.meta.price);
         if (OwnedQuiz){
-            price = 'Owned';
+            price = 'Play in class';
+            owned = true;
         } else if (this.props.quiz.meta.price && this.props.quiz.meta.price > 0){
             price = 'Classroom version ' + priceFormat(this.props.quiz.meta.price, '$', 'us');
         } else {
             price = 'Play in class';
         }
         return (
-            <span className={this.props.className} onClick={this.handleClick}>
+            <span className={this.props.className} onClick={this.handleClick.bind(this, owned)}>
                 {price}
             </span>
         );
