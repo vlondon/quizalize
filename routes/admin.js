@@ -1,5 +1,5 @@
 //general zzish config
-var zzish = require("../zzish"); //initialized zzish
+var zzish = require("../zzisha"); //initialized zzish
 var config = require("../config"); //initialized zzish
 var email              = require('../email');
 var APP_CONTENT_TYPE    = "app";
