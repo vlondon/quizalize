@@ -200,6 +200,16 @@ var UserActions = {
         });
     },
 
+    search: function(attributes) {
+        return new Promise(function(resolve, reject){
+            UserApi.search(attributes)
+                .then(function(users){
+                    resolve(users);
+                })
+                .catch(reject);
+        });
+    },
+
     getPublicUser: function(userId){
         return new Promise(function(resolve, reject){
             UserApi.getPublic(userId)
@@ -210,6 +220,24 @@ var UserActions = {
                     });
                     console.log('will load', userId, user);
                     resolve(user);
+                })
+                .catch(reject);
+        });
+
+    },
+
+    getPublicUserByUrl: function(url){
+        return new Promise(function(resolve, reject){
+            UserApi.search({qurl: url})
+                .then(function(users){
+                    if (users.length > 0) {
+                        AppDispatcher.dispatch({
+                            actionType: UserConstants.USER_PUBLIC_LOADED_URL,
+                            payload: users[0]
+                        });
+                        console.log('will load', url, users[0]);
+                        resolve(users[0]);
+                    }
                 })
                 .catch(reject);
         });

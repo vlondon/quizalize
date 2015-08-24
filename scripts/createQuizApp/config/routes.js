@@ -64,7 +64,18 @@ var pagesArray: Array<Page> = [
             );
         }
     },
-
+    {
+        name: 'profileUrlPage',
+        path: '/profile/:profileUrl',
+        pathRegEx: /\/profile\/([\w\-]+)/,
+        needsLogin: undefined,
+        renderer: function(profileUrl: string){
+            React.render(
+                React.createElement(CQProfile, {profileUrl}),
+                document.getElementById('reactApp')
+            );
+        }
+    },
     {
         name: 'profilePage',
         path: '/quiz/user/:profileId',
