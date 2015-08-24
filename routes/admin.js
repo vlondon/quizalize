@@ -1,21 +1,23 @@
 //general zzish config
-var zzish = require("../zzish"); //initialized zzish
+var zzish = require("../zzisha"); //initialized zzish
 var config = require("../config"); //initialized zzish
 var email              = require('../email');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
 var QUIZ_CONTENT_TYPE   = "quiz";
 
-var Zzish = require('zzish');
-var zzish_db = new Zzish();
-var adminResult = {
-    apiUrl: config.apiUrlAdmin,
-    appToken: config.appTokenAdmin,
-    wso2: "true",
-    log: false
-};
-console.log("Init", adminResult);
-zzish_db.init(adminResult);
+if (process.env.admin=="true") {
+    var Zzish = require('zzish');
+    var zzish_db = new Zzish();
+    var adminResult = {
+        apiUrl: config.apiUrlAdmin,
+        appToken: config.appTokenAdmin,
+        wso2: "true",
+        log: false
+    };
+    console.log("Init", adminResult);
+    zzish_db.init(adminResult);
+}
 
 
 

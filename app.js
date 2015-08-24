@@ -73,6 +73,7 @@ app.post('/users/complete', user.completeRegistration);
 app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 app.get('/user/:profileId', user.details);
+app.post('/user/search', user.search);
 app.post('/user/:profileId', user.saveUser);
 app.post('/email/', email.sendDocumentEmail);
 
@@ -87,6 +88,7 @@ app.get('/quiz/public', function(req, res){
     res.redirect(301, '/quiz/marketplace');
 });
 app.get('/quiz/*', checkForIE, quiz.create);
+app.get('/profile/*', checkForIE, quiz.create);
 app.get('/quiz', checkForIE, quiz.create);
 
 

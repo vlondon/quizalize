@@ -19,6 +19,7 @@ var CQProfile = React.createClass({
 
     propTypes: {
         profileId: React.PropTypes.string,
+        profileUrl: React.PropTypes.string,
         quizCode: React.PropTypes.string
     },
 
@@ -46,8 +47,9 @@ var CQProfile = React.createClass({
         if (!foundToken) {
             newState.showQuizzes = true;
             newState.user = UserStore.getUser();
-            var profileId = this.props.profileId || UserStore.getUser().uuid;
-            QuizActions.searchPublicQuizzes('', '', profileId);
+            if (this.props.profileUrl) {
+                UserActions.getPublicUserByUrl(this.props.profileUrl);
+            }
         }
         return newState;
     },
@@ -66,15 +68,21 @@ var CQProfile = React.createClass({
 
     getState: function(props){
         props = props || this.props;
-        var profileId = props.profileId || UserStore.getUser().uuid;
+        var profileId;
+        if (props.profileUrl) {
+            profileId = UserStore.getPublicUserByUrl(props.profileUrl);
+        }
+        else {
+            profileId = props.profileId || UserStore.getUser().uuid;
+        }
         var quizzes = QuizStore.getQuizzesForProfile(profileId);
 
-        if (quizzes) {
+        if (quizzes && props.quizCode) {
             var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
         }
         var puser;
-        if (props.profileId) {
-            puser = UserStore.getPublicUser(props.profileId);
+        if (profileId) {
+            puser = UserStore.getPublicUser(profileId);
         } else {
             puser = UserStore.getUser();
         }
@@ -112,9 +120,9 @@ var CQProfile = React.createClass({
                 showCancelButton: true
             }, function(isConfirm){
                 if (isConfirm){
-                    var url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.props.profileId)}`;
+                    var url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.state.puser.uuid)}`;
                     if (quizCode) {
-                        url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.props.profileId + '/' + this.props.quizCode)}`;
+                        url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.state.puser.uuid + '/' + this.props.quizCode)}`;
                     }
                     router.setRoute(url);
                 }

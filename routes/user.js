@@ -2,7 +2,6 @@ var logger = require('../logger.js');  // logger
 var email = require("../email"); //for sending emails
 var zzish = require("../zzish"); //initialized zzish
 var crypto = require('crypto'); //create encrypted password
-var uuid = require('node-uuid'); //uuid generator
 var intercom = require("./intercom");
 
 var algorithm = 'aes-256-ctr';
@@ -53,6 +52,18 @@ exports.saveUser = function(req, res) {
 exports.details = function(req, res) {
     var profileId = req.params.profileId;
     zzish.user(profileId, function(err, data){
+        if (!err && typeof data === 'object') {
+            res.status(200);
+        }
+        else {
+            res.status(err);
+        }
+        res.send(data);
+    });
+};
+
+exports.search = function(req, res) {
+    zzish.userByAttributes(req.body, function(err, data){
         if (!err && typeof data === 'object') {
             res.status(200);
         }

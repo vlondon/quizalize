@@ -22,7 +22,7 @@ var performQuery = function(mongoQuery,res) {
             res.status(500).send(err);
         }
     });
-}
+};
 
 
 exports.getQuizzes = function(req, res){

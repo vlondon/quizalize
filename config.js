@@ -22,6 +22,7 @@ config.zzishInit = process.env.ZZISHINIT;
 
 config.apiUrlAdmin = process.env.ZZISHAPIADMIN;
 config.appTokenAdmin = process.env.ZZISHTOKENADMIN;
+config.zzishInitAdmin = process.env.ZZISHINITADMIN;
 
 
 module.exports = config;
