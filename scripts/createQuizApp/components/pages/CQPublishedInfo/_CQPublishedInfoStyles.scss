@@ -1,5 +1,10 @@
 .cq-publishedinfo {
     background: none;
+
+    &__frame {
+        width: 100%;
+        min-height: 400px;
+    }
     &__teacher,
     &__player {
         background: rgba(#FFF, .8);

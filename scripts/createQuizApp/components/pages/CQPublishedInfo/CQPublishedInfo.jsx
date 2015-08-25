@@ -10,10 +10,11 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 
 
 
-var CQPUblishedInfo = React.createClass({
+var CQPublishedInfo = React.createClass({
 
     propTypes: {
-        classCode: React.PropTypes.string
+        classCode: React.PropTypes.string,
+        quizId: React.PropTypes.string
     },
 
     getInitialState: function() {
@@ -37,13 +38,22 @@ var CQPUblishedInfo = React.createClass({
 
 
     getState: function(){
+
+        var updateClassLink = function(classLink){
+            // hardcoded link
+            console.log('encoding', classLink);
+            classLink = classLink.replace('classroom', 'class');
+            classLink = classLink.replace('test.zzish.com', 'localhost:3000');
+            return classLink;
+
+        };
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
         console.log('groups', groups, groupsContent);
         var currentClass = groups.filter( g => g.code === this.props.classCode)[0];
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.quizId)[0];
-        var classLink = currentClass ? currentClass.link : undefined;
+        var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
 
@@ -84,6 +94,8 @@ var CQPUblishedInfo = React.createClass({
     render: function() {
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
+                {this.state.classLink}
+                <iframe src={this.state.classLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
                 <div className="cq-publishedinfo__player">
                     <center>
@@ -118,4 +130,4 @@ var CQPUblishedInfo = React.createClass({
 
 });
 
-module.exports = CQPUblishedInfo;
+module.exports = CQPublishedInfo;
