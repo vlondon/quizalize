@@ -39,21 +39,18 @@ var CQPublishedInfo = React.createClass({
 
     getState: function(){
 
-        var updateClassLink = function(classLink){
-            // hardcoded link
-            console.log('encoding', classLink);
-            classLink = classLink.replace('classroom', 'class');
-            classLink = classLink.replace('test.zzish.com', 'localhost:3000');
-            return classLink;
-
-        };
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
         console.log('groups', groups, groupsContent);
         var currentClass = groups.filter( g => g.code === this.props.classCode)[0];
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.quizId)[0];
-        var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
+
+        // var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
+        var classLink = currentClass ? currentClass.link : undefined;
+        // var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
+        var fullLink = currentClass.link;
+
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
 
@@ -64,7 +61,8 @@ var CQPublishedInfo = React.createClass({
             quizzes,
             currentClass,
             classLink,
-            currentQuiz
+            currentQuiz,
+            fullLink
         };
 
         return newState;
@@ -94,8 +92,8 @@ var CQPublishedInfo = React.createClass({
     render: function() {
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
-                {this.state.classLink}
-                <iframe src={this.state.classLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
+                <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
+                {this.state.fullLink}
 
                 <div className="cq-publishedinfo__player">
                     <center>
@@ -114,7 +112,7 @@ var CQPublishedInfo = React.createClass({
                         <h1>Teacher get ready!</h1>
                         <p>Open your learning dashboard here:</p><br/><br/>
                         <center>
-                            <a type="button" id='openDashboard' disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
+                            <a type="button" id='openDashboard' disabled={!this.state.fullLink} href={this.state.fullLink} target="zzishld" className="btn btn-primary btn-lg">
                                 Open Teacher Dashboard
                             </a>
                         </center>

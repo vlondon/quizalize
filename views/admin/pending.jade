@@ -24,7 +24,7 @@ block body
         
         var categories = JSON.parse(categoryString);
         var subjects = JSON.parse(subjectString);
-        
+        console.log("subjects", subjects);
         function showCategories(uuid, subId, catId) {
             var subjectId = $(subId + uuid).val();
             console.log("Subject is now",subjectId);
@@ -77,6 +77,16 @@ block body
                     th Set Category And Approve
                     th Approve first
                 tbody
+                    -pending.sort(function(x, y){
+                        -if (!x.updated) {
+                            -return -1;
+                        -}
+                        -if (!y.updated) {
+                            -return 1;
+                        -}
+                        -return y.updated - x.updated;
+                    -});
+
                 for quiz in pending
                     tr
                         td #{quiz.type}

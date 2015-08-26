@@ -14,158 +14,160 @@ block body
                 p#publishedApps
                 p#quizPublishers
                 p#appPublishers
-
+        
     script.
-        var activitiesString = "#{JSON.stringify(activities)}";
-        activitiesString = activitiesString.replace(/&quot;/g, '"');
-        var activities = JSON.parse(activitiesString);
-
-        var usergroupString = "#{JSON.stringify(userGroups)}";
-        usergroupString = usergroupString.replace(/&quot;/g, '"');
-        var userGroups = JSON.parse(usergroupString);
-
-        var usersString = "#{JSON.stringify(users)}";
+        var usersString = "#{users}";
         usersString = usersString.replace(/&quot;/g, '"');
-        var users = JSON.parse(usersString);
-
-        var publishedString = "#{JSON.stringify(published)}";
+        //var users = JSON.parse(usersString);
+        
+        var activitiesString = "#{activities}";
+        activitiesString = activitiesString.replace(/&quot;/g, '"');
+        //var activities = JSON.parse(activitiesString);
+        
+        var userGroupString = "#{userGroup}";
+        userGroupString = userGroupString.replace(/&quot;/g, '"');
+        //var userGroups = JSON.parse(userGroupString);
+        
+        var publishedString = "#{published}";
         publishedString = publishedString.replace(/&quot;/g, '"');
-        var published = JSON.parse(publishedString);
-
-        var lastWeek = Date.now() - 60 * 24 * 60 * 60 * 1000;
-        var stats = {};
-        stats.activityWeek = 0;
-        stats.totalActivities = 0;
-        stats.totalQuizPlayed = activities.length;
-
-        var activityIndex = 0;
-        var activityGroup = {};
-        var activeClasses = 0;
-        var activeTeachers = {};
-
-        var ownerIdFromGroupId = function (groupId){
-            var userGroup = userGroups.filter(function (group){
-                return group.uuid === groupId;
-            })[0];
-            if (userGroup.ownerId === undefined){
-                return false;
-            }
-            else {
-
-                return userGroup.ownerId;
-            }
-        };
-        var emailFromOwnerId = function (ownerId, users){
-            var user = users.filter(function (teacher){
-                return teacher.uuid === ownerId;
-            })[0];
-            if (user === undefined){
-                return undefined;
-            }
-            else {
-                return user.profile.email;
-            }
-        }
-
-
-        activities.forEach(function(activity){
-            if (activity.timestamp > lastWeek){
-                stats.activityWeek ++;
-                if (activity.groupId !== undefined){
-                    if (activityGroup[activity.groupId] === undefined){
-                        activityGroup[activity.groupId] = {count: 1};
-                    }
-                    else {
-                        activityGroup[activity.groupId].count++ ;
-                    }
-                }
-
-            }
-        });
-        for (var groupId in activityGroup){
-            if (activityGroup[groupId].count > 1){
-                activeClasses++;
-                var ownerId = ownerIdFromGroupId(groupId);
-                activityGroup[groupId].ownerId = ownerId;
-                var teacherEmail = emailFromOwnerId(ownerId, users);
-                if(activeTeachers[ownerId] === undefined){
-                    activeTeachers[ownerId] = {activeClassCount: 1};
-                }
-                else {
-                    activeTeachers[ownerId].activeClassCount++;
-                }
-            }
-        };
-        var powerUsersFromTeachers = function(activeTeachers) {
-            var powerUsers = {};
-            for (var teacher in activeTeachers){
-                if (activeTeachers[teacher].activeClassCount > 1){
-                    powerUsers[teacher] = activeTeachers[teacher];
-                    }
-                }
-            return powerUsers;
-        }
-        var powerUsers = powerUsersFromTeachers(activeTeachers);
-        var powerUsersTally = Object.keys(powerUsers).length;
-        var publishedCounter = function (published, date, type){
-            var count = 0;
-            published.forEach(function(content){
-                if (content.created > date && content.type === type){
-                    count++;
-                    }
-            });
-            return count;
-        };
-        var publishersFromContent = function (published, date, type, users){
-            var publishers = {};
-            published.forEach(function(content){
-                if (content.created > date && content.type === type){
-                    if(publishers[content.profileId] === undefined){
-                        publishers[content.profileId] = {content: 1, profileId: content.profileId, email: undefined};
-                    }
-                    else {
-                        publishers[content.profileId].content++;
-                    }
-                }
-            });
-            console.log("publishers", publishers);
-            for (var publisher in publishers){
-                var email = emailFromOwnerId(publishers[publisher].profileId, users);
-                console.log("email", email);
-                publishers[publisher].email = email;
-                }
-                console.log("publishersfinal", publishers);
-
-            return publishers;
-        }
-        var publishedQuizThisWeek = publishedCounter(published, lastWeek, "quiz");
-        var publishedAppThisWeek = publishedCounter(published, lastWeek, "app");
-        var publishedQuizzes = published.length;
-        var quizPublishers = publishersFromContent(published, lastWeek, "quiz", users);
-        var quizPublishersCount = Object.keys(quizPublishers).length;
-        var appPublishers = publishersFromContent(published, lastWeek, "app", users);
-        var appPublishersCount = Object.keys(appPublishers).length;
-        console.log("quizweek", publishedQuizThisWeek);
-        console.log("powerUsers", Object.keys(powerUsers).length);
-
-
-
-
-
-        console.log("activityGroup", activityGroup);
-        console.log("activeTeachers", activeTeachers);
-
-        console.log(stats.totalActivities);
-        console.log(Object.keys(activeTeachers).length);
-        $(function() {
-            $("#totalActivities").text("Total Quizzes Completed " + stats.activityWeek);
-            $("#totalQuizPlayed").text("Total Activities " + stats.totalQuizPlayed);
-            $("#activeClasses").text("Total Active Classes " + activeClasses);
-            $("#activeTeachers").text("Total Active Teachers " + Object.keys(activeTeachers).length);
-            $("#powerUsers").text("Total Power Users " + Object.keys(powerUsers).length);
-            $('#publishedQuizzes').text("Total Published Quizzes " + publishedQuizThisWeek);
-            $('#publishedApps').text("Total Published Apps " + publishedAppThisWeek);
-            $('#quizPublishers').text("Quiz Publishers " + quizPublishersCount);
-            $('#appPublishers').text("App Publishers " + appPublishersCount);
-
-        });
+        //var published = JSON.parse(publishedString);
+        
+        
+        //- var lastWeek = Date.now() - 60 * 24 * 60 * 60 * 1000;
+        //- var stats = {};
+        //- stats.activityWeek = 0;
+        //- stats.totalActivities = 0;
+        //- stats.totalQuizPlayed = activities.length;
+        //- 
+        //- var activityIndex = 0;
+        //- var activityGroup = {};
+        //- var activeClasses = 0;
+        //- var activeTeachers = {};
+        //- 
+        //- var ownerIdFromGroupId = function (groupId){
+        //-     var userGroup = userGroups.filter(function (group){
+        //-         return group.uuid === groupId;
+        //-     })[0];
+        //-     if (userGroup.ownerId === undefined){
+        //-         return false;
+        //-     }
+        //-     else {
+        //- 
+        //-         return userGroup.ownerId;
+        //-     }
+        //- };
+        //- var emailFromOwnerId = function (ownerId, users){
+        //-     var user = users.filter(function (teacher){
+        //-         return teacher.uuid === ownerId;
+        //-     })[0];
+        //-     if (user === undefined){
+        //-         return undefined;
+        //-     }
+        //-     else {
+        //-         return user.profile.email;
+        //-     }
+        //- }
+        //- 
+        //- 
+        //- activities.forEach(function(activity){
+        //-     if (activity.timestamp > lastWeek){
+        //-         stats.activityWeek ++;
+        //-         if (activity.groupId !== undefined){
+        //-             if (activityGroup[activity.groupId] === undefined){
+        //-                 activityGroup[activity.groupId] = {count: 1};
+        //-             }
+        //-             else {
+        //-                 activityGroup[activity.groupId].count++ ;
+        //-             }
+        //-         }
+        //- 
+        //-     }
+        //- });
+        //- for (var groupId in activityGroup){
+        //-     if (activityGroup[groupId].count > 1){
+        //-         activeClasses++;
+        //-         var ownerId = ownerIdFromGroupId(groupId);
+        //-         activityGroup[groupId].ownerId = ownerId;
+        //-         var teacherEmail = emailFromOwnerId(ownerId, users);
+        //-         if(activeTeachers[ownerId] === undefined){
+        //-             activeTeachers[ownerId] = {activeClassCount: 1};
+        //-         }
+        //-         else {
+        //-             activeTeachers[ownerId].activeClassCount++;
+        //-         }
+        //-     }
+        //- };
+        //- var powerUsersFromTeachers = function(activeTeachers) {
+        //-     var powerUsers = {};
+        //-     for (var teacher in activeTeachers){
+        //-         if (activeTeachers[teacher].activeClassCount > 1){
+        //-             powerUsers[teacher] = activeTeachers[teacher];
+        //-             }
+        //-         }
+        //-     return powerUsers;
+        //- }
+        //- var powerUsers = powerUsersFromTeachers(activeTeachers);
+        //- var powerUsersTally = Object.keys(powerUsers).length;
+        //- var publishedCounter = function (published, date, type){
+        //-     var count = 0;
+        //-     published.forEach(function(content){
+        //-         if (content.created > date && content.type === type){
+        //-             count++;
+        //-             }
+        //-     });
+        //-     return count;
+        //- };
+        //- var publishersFromContent = function (published, date, type, users){
+        //-     var publishers = {};
+        //-     published.forEach(function(content){
+        //-         if (content.created > date && content.type === type){
+        //-             if(publishers[content.profileId] === undefined){
+        //-                 publishers[content.profileId] = {content: 1, profileId: content.profileId, email: undefined};
+        //-             }
+        //-             else {
+        //-                 publishers[content.profileId].content++;
+        //-             }
+        //-         }
+        //-     });
+        //-     console.log("publishers", publishers);
+        //-     for (var publisher in publishers){
+        //-         var email = emailFromOwnerId(publishers[publisher].profileId, users);
+        //-         console.log("email", email);
+        //-         publishers[publisher].email = email;
+        //-         }
+        //-         console.log("publishersfinal", publishers);
+        //- 
+        //-     return publishers;
+        //- }
+        //- var publishedQuizThisWeek = publishedCounter(published, lastWeek, "quiz");
+        //- var publishedAppThisWeek = publishedCounter(published, lastWeek, "app");
+        //- var publishedQuizzes = published.length;
+        //- var quizPublishers = publishersFromContent(published, lastWeek, "quiz", users);
+        //- var quizPublishersCount = Object.keys(quizPublishers).length;
+        //- var appPublishers = publishersFromContent(published, lastWeek, "app", users);
+        //- var appPublishersCount = Object.keys(appPublishers).length;
+        //- console.log("quizweek", publishedQuizThisWeek);
+        //- console.log("powerUsers", Object.keys(powerUsers).length);
+        //- 
+        //- 
+        //- 
+        //- 
+        //- 
+        //- console.log("activityGroup", activityGroup);
+        //- console.log("activeTeachers", activeTeachers);
+        //- 
+        //- console.log(stats.totalActivities);
+        //- console.log(Object.keys(activeTeachers).length);
+        //- $(function() {
+        //-     
+        //-     $("#totalActivities").text("Total Quizzes Completed " + stats.activityWeek);
+        //-     $("#totalQuizPlayed").text("Total Activities " + stats.totalQuizPlayed);
+        //-     $("#activeClasses").text("Total Active Classes " + activeClasses);
+        //-     $("#activeTeachers").text("Total Active Teachers " + Object.keys(activeTeachers).length);
+        //-     $("#powerUsers").text("Total Power Users " + Object.keys(powerUsers).length);
+        //-     $('#publishedQuizzes').text("Total Published Quizzes " + publishedQuizThisWeek);
+        //-     $('#publishedApps').text("Total Published Apps " + publishedAppThisWeek);
+        //-     $('#quizPublishers').text("Quiz Publishers " + quizPublishersCount);
+        //-     $('#appPublishers').text("App Publishers " + appPublishersCount);
+        //- 
+        //- });

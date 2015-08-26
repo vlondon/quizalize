@@ -118,6 +118,9 @@ class CQQuestionList extends React.Component {
                         </div>
                         <div className="col-sm-2 icons">
 
+                            <button type='button' className="btn btn-info btn-xs">
+                                <span className="glyphicon glyphicon-pencil"></span>
+                            </button>
                             <button type='button' className="btn btn-danger btn-xs" onClick={this.handleRemove.bind(this, item)}>
                                 <span className="glyphicon glyphicon-remove"></span>
                             </button>
