@@ -15,17 +15,35 @@
     @include ql-container;
     @include clearfix;
 
+    &__bannerpicture {
+        width: 100%;
+        // height: 200px;
+        background-size: cover;
+        background-position: center center;
 
-
-
-    @at-root #{&}__profilepicture {
-
-        float: left;
-        /* background: rgba(green, .5); */
-        padding: 10px;
+        &.no-banner {
+            height: 20px;
+        }
+        &.banner {
+            padding-top: 200px;
+        }
     }
 
-    @at-root #{&}__dashboard {
+
+    &__profilepicture {
+        // float: left;
+        /* background: rgba(green, .5); */
+        // padding: 10px;
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+
+    &__profileinfo {
+        padding-left: 20px;
+        margin-top: 20px;
+    }
+
+    &__dashboard {
         width: 100%;
         /* background: rgba(red, .5); */
         float: left;
@@ -35,7 +53,7 @@
         }
     }
 
-    @at-root #{&}__qofd {
+    &__qofd {
         height: 200px;
         margin-bottom: 20px;
         h3 {
@@ -43,14 +61,14 @@
         }
     }
 
-    @at-root #{&}__profilepic {
+    &__profilepic {
         border-radius: 10px;
         max-width: 220px;
         max-height: 220px;
         width: 100%;
     }
 
-    @at-root #{&}__details {
+    &__details {
         /* margin: 0; */
         /* padding: 0 4px; */
         padding-left: 10px;
@@ -59,7 +77,7 @@
         li{ text-indent:-5px; }
     }
 
-    @at-root #{&}__createquiz {
+    &__createquiz {
         float: right;
         background: $brand-color-red;
         border-radius: 5px;
@@ -70,7 +88,7 @@
     }
 
 
-    @at-root #{&}__quizlist {
+    &__quizlist {
         color: #444;
         border: 1px solid #CCC;
         border-radius: 5px;
@@ -94,7 +112,7 @@
 
     }
 
-    @at-root #{&}__quiz {
+    &__quiz {
         border-bottom: 1px solid #CCC;
         padding: 10px;
         padding-left: 40px;
@@ -106,7 +124,7 @@
 
     }
 
-    @at-root #{&}__quizname {
+    &__quizname {
         position: relative;
         color: $brand-color-red;
 
@@ -120,7 +138,7 @@
         }
     }
 
-    @at-root #{&}__quizdown {
+    &__quizdown {
         padding-top: 5px;
         font-size: 12px;
         color: #444;
@@ -131,7 +149,7 @@
         /* color: $brand-color-blue; */
     }
 
-    @at-root #{&}__empty {
+    &__empty {
         text-align: center;
         padding: 20px;
         background: rgba(#000, .1);

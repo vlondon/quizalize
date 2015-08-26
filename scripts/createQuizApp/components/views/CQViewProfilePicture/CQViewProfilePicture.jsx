@@ -34,7 +34,8 @@ var CQViewProfilePicture = React.createClass({
     getDefaultProps: function() {
         return {
             width: 150,
-            height: 150
+            height: 150,
+            className: ''
         };
     },
 
@@ -81,7 +82,7 @@ var CQViewProfilePicture = React.createClass({
 
 
         return (
-            <div className={`cq-viewprofilepicture ${this.props.className}`} style={style}>
+            <div className={`cq-viewprofilepicture ${this.props.className} height-${this.state.height}`} style={style}>
                 {image}
             </div>
         );

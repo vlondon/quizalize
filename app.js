@@ -15,14 +15,14 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
-var admin      = require('./routes/admin');
+var admin       = require('./routes/admin');
 var marketplace      = require('./routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
 var intercom = require('./routes/intercom');
-
+var upload      = multer({ dest: './uploads/' });
 
 
 
@@ -52,7 +52,7 @@ app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({dest: './uploads/'})); // Image uploads
+// app.use(multer({dest: './uploads/'})); // Image uploads
 app.use(compression());
 
 //The static pages:
@@ -111,7 +111,7 @@ app.get('/create/:profileId/apps/:id', appContent.get);
 app.post('/create/:profileId/apps/:id/delete', appContent.delete);
 app.post('/create/:profileId/apps', appContent.post);
 app.post('/create/:profileId/apps/:id', appContent.post);
-app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
+app.post('/create/:profileId/apps/:id/icon', upload.single('image'), appContent.postIcon);
 app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishToMarketplace);
 
 if (process.env.admin === "true") {

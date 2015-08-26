@@ -143,14 +143,8 @@ var CQProfile = React.createClass({
 
     render: function() {
 
-        var quizList, quizDetails, bannerUrl;
+        var quizList, quizDetails;
 
-        if (this.state.user.attributes.bannerUrl){
-            bannerUrl = (<div className="cq-profile__banner">
-                            <img src={this.state.user.attributes.bannerUrl}></img>
-                        </div>
-                        );
-        }
         if (this.state.quizDetails) {
             quizDetails = (<CQViewQuizDetails
                 onClose={this.handleDetailsClose}
@@ -173,9 +167,8 @@ var CQProfile = React.createClass({
         }
         return (
             <CQPageTemplate className="cq-container cq-profile">
-                {bannerUrl}
+                <CQDashboardProfile user={this.state.puser}/>
                 <div className="cq-profile__left">
-                    <CQDashboardProfile user={this.state.puser}/>
                 </div>
                 <div className="cq-profile__right">
                     <h3>Viewing public quizzes from {this.state.puser && this.state.puser.name}</h3>
