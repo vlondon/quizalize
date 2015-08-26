@@ -41,7 +41,7 @@ var CQDashboardProfile = React.createClass({
     },
 
     render: function() {
-        var profile, bannerStyles, school;
+        var profile, bannerStyles, school, profileUrl;
 
 
         if (this.state.user){
@@ -50,6 +50,12 @@ var CQDashboardProfile = React.createClass({
                     backgroundImage: `url(${this.state.user.attributes.bannerUrl})`,
                     height: 300
                 };
+            }
+            if (this.state.user.attributes.profileUrl){
+                profileUrl = "https://www.quizalize.com/profile/" + this.state.user.attributes.profileUrl;
+            }
+            else {
+                profileUrl = "https://www.quizalize.com/quiz/user/"+ this.state.user.uuid;
             }
 
             if (this.state.user.attributes.url) {
@@ -87,6 +93,11 @@ var CQDashboardProfile = React.createClass({
                         <div>
                             <small>City</small>
                             {this.state.user.attributes.location}
+                        </div>
+                        <div>
+                            <a href={profileUrl}>
+                            <small>Link to Quizalize Profile</small>
+                            </a>
                         </div>
                     </div>
 
