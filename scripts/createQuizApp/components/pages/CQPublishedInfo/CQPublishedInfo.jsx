@@ -48,9 +48,9 @@ var CQPublishedInfo = React.createClass({
 
         // var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
         var classLink = currentClass ? currentClass.link : undefined;
-        // var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
-        var fullLink = currentClass.link;
-        var fullLiveLink = currentClass.link + "one";
+        var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
+        //var fullLink = currentClass.link;
+        var fullLiveLink = classLink + 'one/';
 
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
