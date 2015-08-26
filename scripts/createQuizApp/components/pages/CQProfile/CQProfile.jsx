@@ -167,8 +167,8 @@ var CQProfile = React.createClass({
         }
         return (
             <CQPageTemplate className="cq-container cq-profile">
+                <CQDashboardProfile user={this.state.puser}/>
                 <div className="cq-profile__left">
-                    <CQDashboardProfile user={this.state.puser}/>
                 </div>
                 <div className="cq-profile__right">
                     <h3>Viewing public quizzes from {this.state.puser && this.state.puser.name}</h3>

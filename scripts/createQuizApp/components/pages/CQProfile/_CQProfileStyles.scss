@@ -1,6 +1,7 @@
 .cq-profile {
     margin-top: 40px;
     position: relative;
+    padding: 0;
     @include clearfix();
 
     &__left {
@@ -19,6 +20,10 @@
     &__right {
         width: 100%;
         padding: 10px;
+        padding-left: 20px;
+        h3 {
+            padding-top: 15px;
+        }
         @include media($size-mobile) {
             width: auto;
             margin-left: 220px;

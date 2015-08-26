@@ -4,13 +4,15 @@
     display: inline-block;
     text-align: center;
     background-size: cover;
-    
-    @at-root #{&}__placeholder {
+    background-color: #FFF;
+    display: flex;
+    justify-content: center;
+
+    &__placeholder {
         color: #FFF;
         font-size: 72px;
-        line-height: 100%;
-        margin-top: 40px;
         display: block;
+        align-self: center;
 
     }
 }
