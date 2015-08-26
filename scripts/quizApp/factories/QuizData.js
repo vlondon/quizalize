@@ -43,12 +43,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             localStorage.setItem("uuid", userUuid);
             localStorage.setItem("userName", userName);
         }
-    }
+    };
 
     var setClassCode = function(code) {
         classCode = code;
         localStorage.setItem("classCode",classCode);
-    }
+    };
 
     var registerWithGroup = function(code,callback) {
         setClassCode(code);
@@ -58,8 +58,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
             callback(err, resp);
             $rootScope.$digest();
-        })
-    }
+        });
+    };
 
     var loadPlayerQuizzes = function(callback) {
         if (userUuid && classCode) {
@@ -71,7 +71,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 $rootScope.$digest();
             });
         }
-    }
+    };
 
     var processQuizData = function(result, privateMode) {
 
@@ -120,7 +120,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             topicsLoaded = true;
             topics[result.categories[i].uuid] = result.categories[i];
         }
-    }
+    };
 
     var processQuizCategories = function(result) {
         for (var i in result.categories) {
@@ -280,7 +280,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
         return result;
-    }
+    };
 
     var getPublicContent = function(quizId, callback) {
         zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizId,function (err,message) {
@@ -290,8 +290,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             setQuiz(message);
             callback(err, message);
             $rootScope.$digest();
-        })
-    }
+        });
+    };
 
 
     var selectQuiz = function(type, quizId, callback) {
@@ -356,7 +356,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         //     });
         // }
 
-    }
+    };
 
     var calculateScore = function(correct, duration, questionDuration){
         // Something a bit like (below not clear... probably meant 20000 etc), will go with 100 as max... can obviously easily change this

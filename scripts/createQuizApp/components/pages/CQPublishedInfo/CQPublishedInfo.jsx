@@ -45,7 +45,8 @@ var CQPUblishedInfo = React.createClass({
         var currentClass = groups.filter( g => g.code === this.props.classCode)[0];
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.quizId)[0];
         var classLink = currentClass ? currentClass.link : undefined;
-        var fullLink = currentQuiz ? classLink+"/"+currentQuiz.uuid : classLink;
+        //var fullLink = currentQuiz ? classLink+"/"+currentQuiz.uuid : classLink;
+        var fullLink = currentClass.link;
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
 
