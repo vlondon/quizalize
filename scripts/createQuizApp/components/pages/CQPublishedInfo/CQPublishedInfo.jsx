@@ -50,6 +50,7 @@ var CQPublishedInfo = React.createClass({
         var classLink = currentClass ? currentClass.link : undefined;
         // var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
         var fullLink = currentClass.link;
+        var fullLiveLink = currentClass.link + "one";
 
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
@@ -62,7 +63,8 @@ var CQPublishedInfo = React.createClass({
             currentClass,
             classLink,
             currentQuiz,
-            fullLink
+            fullLink,
+            fullLiveLink
         };
 
         return newState;
@@ -93,7 +95,6 @@ var CQPublishedInfo = React.createClass({
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
                 <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
-                {this.state.fullLink}
 
                 <div className="cq-publishedinfo__player">
                     <center>
@@ -112,7 +113,7 @@ var CQPublishedInfo = React.createClass({
                         <h1>Teacher get ready!</h1>
                         <p>Open your learning dashboard here:</p><br/><br/>
                         <center>
-                            <a type="button" id='openDashboard' disabled={!this.state.fullLink} href={this.state.fullLink} target="zzishld" className="btn btn-primary btn-lg">
+                            <a type="button" id='openDashboard' disabled={!this.state.fullLiveLink} href={this.state.fullLiveLink} target="zzishld" className="btn btn-primary btn-lg">
                                 Open Teacher Dashboard
                             </a>
                         </center>
