@@ -86,7 +86,7 @@ var CQRegister = React.createClass({
                 </CQPageTemplate>
             );
         } else {
-            return <CQSettings isRedirect={true}/>;
+            return <CQSettings isRedirect={true} isRegister={true}/>;
         }
     }
 

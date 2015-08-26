@@ -50,6 +50,22 @@ var UserApi = {
         });
     },
 
+    search: function(attributes){
+        return new Promise((resolve, reject) => {
+
+            request.post(`/user/search`)
+                .send(attributes)
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+
+        });
+    },
+
     post: function(user){
         return new Promise((resolve, reject) => {
             var uuid = localStorage.getItem('cqUuid');

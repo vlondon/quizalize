@@ -93,18 +93,39 @@ export default class CQSettings extends React.Component {
 
     handleSave(){
 
+        var currentUserId = this.state.user.uuid;
         if (this.state.isNew) {
             sendEvent('register', 'details', 'filled');
         }
-        UserActions.update(this.state.user)
-            .then( ()=> {
-                var params = urlParams();
-                if (params.redirect){
-                    router.setRoute(window.decodeURIComponent(params.redirect));
-                } else {
-                    router.setRoute('/quiz/quizzes');
+        UserActions.search({profileUrl: this.state.user.attributes.profileUrl})
+            .then( (users) => {
+                //am i one of the bunch
+                var found = false;
+                users.forEach(function(user) {
+                    if (user.uuid === currentUserId) {
+                        found = true;
+                    }
+                });
+                if (!found && users.length > 0) {
+                    swal('Already Taken', 'Sorry that Quizalize URL is already taken. Please try again');
                 }
-            });
+                else {
+                    UserActions.update(this.state.user)
+                        .then( ()=> {
+                            var params = urlParams();
+                            if (params.redirect){
+                                router.setRoute(window.decodeURIComponent(params.redirect));
+                            } else {
+                                if (this.state.isNew) {
+                                    router.setRoute('/quiz/quizzes');
+                                }
+                                else {
+                                    router.setRoute('/quiz/user');
+                                }
+                            }
+                    });
+                }
+        });
     }
 
     handleChange(field: string, event: Object){
@@ -141,7 +162,7 @@ export default class CQSettings extends React.Component {
             });
     }
 
-    handleSkip() : boolean {
+    handleSkip() {
         sendEvent('register', 'details', 'skipped');
         var params = urlParams();
         if (params.redirect){
@@ -149,7 +170,9 @@ export default class CQSettings extends React.Component {
             router.setRoute(window.decodeURIComponent(params.redirect));
             // return true;
         }
-        return false;
+        else {
+            router.setRoute("/quiz/quizzes");
+        }
     }
 
     render() {
@@ -195,6 +218,32 @@ export default class CQSettings extends React.Component {
         }
 
         message = this.state.isNew ? 'We need some extra information' : 'Settings';
+
+        var editProfile = () => {
+            if (!this.state.isNew) {
+                return (
+                    <div>
+                        <div className={`cq-settings__profile-item${classNameError(5)} form-group`}>
+                            <label htmlFor="url">Quizalize Profile URL</label>
+                            <input type="text" id="profileUrl"
+                                className="form-control"
+                                placeholder = "e.g. Your own personal Quizalize URL"
+                                onChange={this.handleChange.bind(this, 'profileUrl')}
+                                value={this.state.user.attributes.profileUrl}/>
+                        </div>
+                        <div className={`cq-settings__profile-item${classNameError(6)} form-group`}>
+                            <label htmlFor="url">Quizalize Banner URL</label>
+                            <input type="text" id="bannerUrl"
+                                className="form-control"
+                                placeholder = "e.g. Your own personal Quizalize Banner URL"
+                                onChange={this.handleChange.bind(this, 'bannerUrl')}
+                                value={this.state.user.attributes.bannerUrl}/>
+                        </div>
+                    </div>
+                );
+            }
+        };
+
         return (
             <CQPageTemplate className="cq-container cq-settings">
 
@@ -254,6 +303,7 @@ export default class CQSettings extends React.Component {
                             value={this.state.user.attributes.subjectTaught}/>
                     </div>
 
+                    {editProfile()}
 
                     {profilePicture}
 

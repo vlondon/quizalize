@@ -10,10 +10,11 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 
 
 
-var CQPUblishedInfo = React.createClass({
+var CQPublishedInfo = React.createClass({
 
     propTypes: {
-        classCode: React.PropTypes.string
+        classCode: React.PropTypes.string,
+        quizId: React.PropTypes.string
     },
 
     getInitialState: function() {
@@ -37,13 +38,20 @@ var CQPUblishedInfo = React.createClass({
 
 
     getState: function(){
+
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
         console.log('groups', groups, groupsContent);
         var currentClass = groups.filter( g => g.code === this.props.classCode)[0];
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.quizId)[0];
+
+        // var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
         var classLink = currentClass ? currentClass.link : undefined;
+        // var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
+        var fullLink = currentClass.link;
+        var fullLiveLink = currentClass.link + "one";
+
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
 
@@ -54,7 +62,9 @@ var CQPUblishedInfo = React.createClass({
             quizzes,
             currentClass,
             classLink,
-            currentQuiz
+            currentQuiz,
+            fullLink,
+            fullLiveLink
         };
 
         return newState;
@@ -84,6 +94,7 @@ var CQPUblishedInfo = React.createClass({
     render: function() {
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
+                <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
                 <div className="cq-publishedinfo__player">
                     <center>
@@ -102,7 +113,7 @@ var CQPUblishedInfo = React.createClass({
                         <h1>Teacher get ready!</h1>
                         <p>Open your learning dashboard here:</p><br/><br/>
                         <center>
-                            <a type="button" id='openDashboard' disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
+                            <a type="button" id='openDashboard' disabled={!this.state.fullLiveLink} href={this.state.fullLiveLink} target="zzishld" className="btn btn-primary btn-lg">
                                 Open Teacher Dashboard
                             </a>
                         </center>
@@ -118,4 +129,4 @@ var CQPUblishedInfo = React.createClass({
 
 });
 
-module.exports = CQPUblishedInfo;
+module.exports = CQPublishedInfo;
