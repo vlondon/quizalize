@@ -1,5 +1,6 @@
 .cq-profile {
     margin-top: 40px;
+    min-height: 900px;
     position: relative;
     padding: 0;
     @include clearfix();
@@ -19,8 +20,8 @@
 
     &__right {
         width: 100%;
-        padding: 10px;
-        padding-left: 20px;
+        padding: 40px;
+        // padding-left: 20px;
         h3 {
             padding-top: 15px;
         }
