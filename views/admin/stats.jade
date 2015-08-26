@@ -3,9 +3,74 @@ extends ./layout
 block body
     .container-fluid
         .row
-            .col-md-6.col-md-offset-3
+            .col-md-8.col-md-offset-2
                 h1 Stats
-                p#totalActivities
+                table(border="1px solid  #7a7", style="background-color:white;font-size:15px; width:100%")
+                    thead
+                        th 
+                        th Last Week 
+                        th Two Weeks Ago 
+                        th Three Weeks Ago 
+                        th Four Weeks Ago
+                        th Last 30 Days 
+                    tbody
+                        tr
+                            td Active Teachers
+                            td #{stats.activeTeachersLastWeek}
+                            td #{stats.activeTeachersTwoWeeksAgo}
+                            td #{stats.activeTeachersThreeWeeksAgo}
+                            td #{stats.activeTeachersFourWeeksAgo}
+                            td #{stats.activeTeachersLastMonth}
+                        tr
+                            td Active Classes
+                            td #{stats.activeClassesLastWeek}
+                            td #{stats.activeClassesTwoWeeksAgo}
+                            td #{stats.activeClassesThreeWeeksAgo}
+                            td #{stats.activeClassesFourWeeksAgo}
+                            td #{stats.activeClassesLastMonth}
+                        tr 
+                            td Completed Quiz Instances
+                            td #{stats.activityLastWeek}
+                            td #{stats.activityTwoWeeksAgo}
+                            td #{stats.activityThreeWeeksAgo}
+                            td #{stats.activityFourWeeksAgo}
+                            td #{stats.activityLastMonth}
+                        tr 
+                            td Active Students 
+                            td 
+                            td 
+                            td 
+                            td 
+                            td #{stats.studentsLastMonth}
+                        tr 
+                            td Repeat Students
+                            td 
+                            td 
+                            td 
+                            td 
+                            td #{stats.repeatStudentsLastMonth}
+                        tr
+                            td Power users (>1 class)
+                            td #{stats.powerUsersLastWeek}
+                            td #{stats.powerUsersTwoWeeksAgo}
+                        tr
+                            td Published Apps
+                            td #{stats.publishedAppThisWeek}
+                        tr 
+                            td Published Quizzes 
+                            td #{stats.publishedQuizThisWeek}
+                        tr 
+                            td Total Published Quizzes (all time)
+                            td #{stats.publishedQuizzes}
+                        tr 
+                            td Publishers (all time)
+                            td #{stats.quizPublishersCount}
+                        tr
+                            td Total Quizzes Completed
+                            td #{stats.totalQuizPlayed}
+                        
+                            
+                p#totalActivities 
                 p#totalQuizPlayed
                 p#activeClasses
                 p#activeTeachers
@@ -15,159 +80,17 @@ block body
                 p#quizPublishers
                 p#appPublishers
         
-    script.
-        //- var usersString = "#{JSON.stringify(users)}";
-        //- usersString = usersString.replace(/&quot;/g, '"');
+    
+    //- $(function() {
         //- 
-        //- var activitiesString = "#{JSON.stringify(activities)}";
-        //- activitiesString = activitiesString.replace(/&quot;/g, '"');
-        //- 
-        //- var userGroupString = "#{JSON.stringify(userGroup)}";
-        //- userGroupString = userGroupString.replace(/&quot;/g, '"');
-        //- 
-        //- var publishedString = "#{JSON.stringify(published)}";
-        //- publishedString = publishedString.replace(/&quot;/g, '"');
-        var userGroups = #{userGroups};
-        var users = #{users};
-        var activities = #{activities};
-        var published = #{published} ;
-        //- 
-        //- 
-        //- var lastWeek = Date.now() - 60 * 24 * 60 * 60 * 1000;
-        //- var stats = {};
-        //- stats.activityWeek = 0;
-        //- stats.totalActivities = 0;
-        //- stats.totalQuizPlayed = activities.length;
-        //- 
-        //- var activityIndex = 0;
-        //- var activityGroup = {};
-        //- var activeClasses = 0;
-        //- var activeTeachers = {};
-        //- 
-        //- var ownerIdFromGroupId = function (groupId){
-        //-     var userGroup = userGroups.filter(function (group){
-        //-         return group.uuid === groupId;
-        //-     })[0];
-        //-     if (userGroup.ownerId === undefined){
-        //-         return false;
-        //-     }
-        //-     else {
-        //- 
-        //-         return userGroup.ownerId;
-        //-     }
-        //- };
-        //- var emailFromOwnerId = function (ownerId, users){
-        //-     var user = users.filter(function (teacher){
-        //-         return teacher.uuid === ownerId;
-        //-     })[0];
-        //-     if (user === undefined){
-        //-         return undefined;
-        //-     }
-        //-     else {
-        //-         return user.profile.email;
-        //-     }
-        //- }
-        //- 
-        //- 
-        //- activities.forEach(function(activity){
-        //-     if (activity.timestamp > lastWeek){
-        //-         stats.activityWeek ++;
-        //-         if (activity.groupId !== undefined){
-        //-             if (activityGroup[activity.groupId] === undefined){
-        //-                 activityGroup[activity.groupId] = {count: 1};
-        //-             }
-        //-             else {
-        //-                 activityGroup[activity.groupId].count++ ;
-        //-             }
-        //-         }
-        //- 
-        //-     }
-        //- });
-        //- for (var groupId in activityGroup){
-        //-     if (activityGroup[groupId].count > 1){
-        //-         activeClasses++;
-        //-         var ownerId = ownerIdFromGroupId(groupId);
-        //-         activityGroup[groupId].ownerId = ownerId;
-        //-         var teacherEmail = emailFromOwnerId(ownerId, users);
-        //-         if(activeTeachers[ownerId] === undefined){
-        //-             activeTeachers[ownerId] = {activeClassCount: 1};
-        //-         }
-        //-         else {
-        //-             activeTeachers[ownerId].activeClassCount++;
-        //-         }
-        //-     }
-        //- };
-        //- var powerUsersFromTeachers = function(activeTeachers) {
-        //-     var powerUsers = {};
-        //-     for (var teacher in activeTeachers){
-        //-         if (activeTeachers[teacher].activeClassCount > 1){
-        //-             powerUsers[teacher] = activeTeachers[teacher];
-        //-             }
-        //-         }
-        //-     return powerUsers;
-        //- }
-        //- var powerUsers = powerUsersFromTeachers(activeTeachers);
-        //- var powerUsersTally = Object.keys(powerUsers).length;
-        //- var publishedCounter = function (published, date, type){
-        //-     var count = 0;
-        //-     published.forEach(function(content){
-        //-         if (content.created > date && content.type === type){
-        //-             count++;
-        //-             }
-        //-     });
-        //-     return count;
-        //- };
-        //- var publishersFromContent = function (published, date, type, users){
-        //-     var publishers = {};
-        //-     published.forEach(function(content){
-        //-         if (content.created > date && content.type === type){
-        //-             if(publishers[content.profileId] === undefined){
-        //-                 publishers[content.profileId] = {content: 1, profileId: content.profileId, email: undefined};
-        //-             }
-        //-             else {
-        //-                 publishers[content.profileId].content++;
-        //-             }
-        //-         }
-        //-     });
-        //-     console.log("publishers", publishers);
-        //-     for (var publisher in publishers){
-        //-         var email = emailFromOwnerId(publishers[publisher].profileId, users);
-        //-         console.log("email", email);
-        //-         publishers[publisher].email = email;
-        //-         }
-        //-         console.log("publishersfinal", publishers);
-        //- 
-        //-     return publishers;
-        //- }
-        //- var publishedQuizThisWeek = publishedCounter(published, lastWeek, "quiz");
-        //- var publishedAppThisWeek = publishedCounter(published, lastWeek, "app");
-        //- var publishedQuizzes = published.length;
-        //- var quizPublishers = publishersFromContent(published, lastWeek, "quiz", users);
-        //- var quizPublishersCount = Object.keys(quizPublishers).length;
-        //- var appPublishers = publishersFromContent(published, lastWeek, "app", users);
-        //- var appPublishersCount = Object.keys(appPublishers).length;
-        //- console.log("quizweek", publishedQuizThisWeek);
-        //- console.log("powerUsers", Object.keys(powerUsers).length);
-        //- 
-        //- 
-        //- 
-        //- 
-        //- 
-        //- console.log("activityGroup", activityGroup);
-        //- console.log("activeTeachers", activeTeachers);
-        //- 
-        //- console.log(stats.totalActivities);
-        //- console.log(Object.keys(activeTeachers).length);
-        //- $(function() {
-            
-            //- $("#totalActivities").text("Total Quizzes Completed " + stats.activityWeek);
-            //- $("#totalQuizPlayed").text("Total Activities " + stats.totalQuizPlayed);
-            //- $("#activeClasses").text("Total Active Classes " + activeClasses);
-            //- $("#activeTeachers").text("Total Active Teachers " + Object.keys(activeTeachers).length);
-            //- $("#powerUsers").text("Total Power Users " + Object.keys(powerUsers).length);
-            //- $('#publishedQuizzes').text("Total Published Quizzes " + publishedQuizThisWeek);
-            //- $('#publishedApps').text("Total Published Apps " + publishedAppThisWeek);
-            //- $('#quizPublishers').text("Quiz Publishers " + quizPublishersCount);
-            //- $('#appPublishers').text("App Publishers " + appPublishersCount);
-        
-        //- });
+        //- $("#totalActivities").text("Total Quizzes Completed " + stats.activityWeek);
+        //- $("#totalQuizPlayed").text("Total Activities " + stats.totalQuizPlayed);
+        //- $("#activeClasses").text("Total Active Classes " + activeClasses);
+        //- $("#activeTeachers").text("Total Active Teachers " + Object.keys(activeTeachers).length);
+        //- $("#powerUsers").text("Total Power Users " + Object.keys(powerUsers).length);
+        //- $('#publishedQuizzes').text("Total Published Quizzes " + publishedQuizThisWeek);
+        //- $('#publishedApps').text("Total Published Apps " + publishedAppThisWeek);
+        //- $('#quizPublishers').text("Quiz Publishers " + quizPublishersCount);
+        //- $('#appPublishers').text("App Publishers " + appPublishersCount);
+    //- 
+    //- });
