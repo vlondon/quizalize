@@ -137,7 +137,7 @@ exports.post = function(req, res){
 
 
 exports.postIcon = function(req, res){
-    var path = req.file;
+    var path = req.files.image.path;
 
     fs.readFile(path, function(err, fileBuffer){
         if (err){
