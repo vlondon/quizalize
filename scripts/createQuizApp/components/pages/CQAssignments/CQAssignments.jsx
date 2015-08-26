@@ -94,6 +94,7 @@ var CQAssignments = React.createClass({
                 <p>Here are the quizzes which you have set to your classes</p>
 
                     {this.state.groups.map(classN => {
+                        classN.fulllink = classN.link+"one";
                         var noQuizzes;
 
                         if (this._getAssignments(classN.code).length === 0) {
@@ -109,8 +110,8 @@ var CQAssignments = React.createClass({
                             <div className="cq-classes__class">
                                 <h3 className="cq-classes__class__name">
                                     {classN.name}
-                                    <a href={classN.link} target="_blank" className="btn btn-info pull-right">
-                                        Open {classN.name} Dashboard
+                                    <a href={classN.fulllink} target="_blank" className="btn btn-info pull-right">
+                                        Open {classN.name} Zzish Dashboard
                                     </a>
                                 </h3>
                                 <p className="cq-classes__class__code" ng-style="color: #2a7ed0; font-size: 16px">
