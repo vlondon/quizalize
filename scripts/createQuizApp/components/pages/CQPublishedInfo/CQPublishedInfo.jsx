@@ -96,33 +96,6 @@ var CQPublishedInfo = React.createClass({
             <CQPageTemplate className="cq-container cq-publishedinfo">
                 <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
-                <div className="cq-publishedinfo__player">
-                    <center>
-                        <h1>Players get ready!</h1>
-                        <h3>Browse to <strong>http://<span old-style="color: red; font-size: 32px">quizal.me</span></strong><br/>and join this class</h3>
-                        <center>
-                            <div className="class-code">
-                                {this.props.classCode}
-                            </div>
-                        </center><br/>
-                        <p>You can play on any mobile, tablet or computer.</p>
-                    </center>
-                </div>
-                <div className="cq-publishedinfo__teacher">
-                    <center>
-                        <h1>Teacher get ready!</h1>
-                        <p>Open your learning dashboard here:</p><br/><br/>
-                        <center>
-                            <a type="button" id='openDashboard' disabled={!this.state.fullLiveLink} href={this.state.fullLiveLink} target="zzishld" className="btn btn-primary btn-lg">
-                                Open Teacher Dashboard
-                            </a>
-                        </center>
-                        <br/>
-                        <p>You can see live results as your students play.</p>
-                    </center>
-                </div>
-
-
             </CQPageTemplate>
         );
     }
