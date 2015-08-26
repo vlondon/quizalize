@@ -224,7 +224,7 @@ export default class CQSettings extends React.Component {
                 return (
                     <div>
                         <div className={`cq-settings__profile-item${classNameError(5)} form-group`}>
-                            <label htmlFor="url">Quizalize URL</label>
+                            <label htmlFor="url">Quizalize Profile URL</label>
                             <input type="text" id="profileUrl"
                                 className="form-control"
                                 placeholder = "e.g. Your own personal Quizalize URL"
