@@ -57,6 +57,10 @@
         text-align: center;
         margin: 40px auto;
         white-space: pre;
+        word-break:     break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens:    auto;
+        hyphens:         auto;        
         font-size: 48px;
     }
 
