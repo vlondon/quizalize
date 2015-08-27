@@ -9,7 +9,6 @@ var QuizStore  = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 
-
 var CQPublishedInfo = React.createClass({
 
     propTypes: {
@@ -92,8 +91,16 @@ var CQPublishedInfo = React.createClass({
     },
 
     render: function() {
+        var className = this.state.currentClass ? this.state.currentClass.name : 'Teacher';
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
+                <div className="cq-publishedinfo__openbutton">
+
+                    <a type="button" id='openDashboard' disabled={!this.state.fullLiveLink} href={this.state.fullLiveLink} target="zzishld" className="btn btn-primary">
+                        Open {className} Dashboard
+                    </a>
+                </div>
+
                 <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
             </CQPageTemplate>
