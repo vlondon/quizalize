@@ -37,9 +37,9 @@ export default class CQViewShareQuizInput extends React.Component {
 
     componentDidMount() {
 
-        setTimeout(() => {
-            this.focusField();
-        }, 700);
+        // setTimeout(() => {
+        //     this.focusField();
+        // }, 700);
 
     }
 

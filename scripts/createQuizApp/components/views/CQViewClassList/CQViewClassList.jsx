@@ -4,6 +4,7 @@ var router = require('createQuizApp/config/router');
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var GroupActions = require('createQuizApp/actions/GroupActions');
 var UserApi = require('createQuizApp/actions/api/UserApi');
+var QuizActions = require('createQuizApp/actions/QuizActions');
 
 var CQViewClassList = React.createClass({
 
@@ -33,6 +34,43 @@ var CQViewClassList = React.createClass({
     getState: function(){
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
+        var quizId = this.props.quizId;
+        QuizActions.loadQuiz(quizId).then( (quiz) => {
+            if (!quiz.meta.name || quiz.meta.name.length === 0) {
+                swal(
+                    {   title: "Please specify a quiz name",
+                        text: "Your students will be able to identify it easier",
+                        type: "input",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        closeOnCancel: false,
+                        animation: "slide-from-top",
+                        inputPlaceholder: "e.g. End of Unit Quiz"
+                    },
+                function(inputValue) {
+                    if (inputValue === false) {
+                        swal({
+                                title: "Error",
+                                text: "You will need to specifiy a quiz name to continue"
+                            },function() {
+                                router.setRoute("/quiz/quizzes");
+                            });
+                        return false;
+                    }
+                    else if (inputValue === "") {
+                        swal.showInputError("Please specify a quiz name to continue");
+                        return false;
+                    }
+                    else {
+
+                            quiz.meta.name = inputValue;
+                            QuizActions.newQuiz(quiz).then( ()=> {
+                                swal("Thanks!", "You can now use this quiz in your class");
+                            });
+                        }
+                    });                
+            }
+        });
         console.log('groupsContent', groups, groupsContent);
         // group code
         var groupsUsed = groups

@@ -194,9 +194,6 @@ export default class CQEdit extends React.Component {
     }
 
     handleFinished(){
-        if (this.state.quiz.meta.name === "") {
-            this.state.quiz.meta.name = this.state.quiz.payload.questions[0].question;
-        }
         UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
@@ -204,18 +201,12 @@ export default class CQEdit extends React.Component {
     }
 
     handleSaveButton(){
-        if (this.state.quiz.meta.name === "") {
-            this.state.quiz.meta.name = this.state.quiz.payload.questions[0].question;
-        }
         QuizActions.newQuiz(this.state.quiz).then(()=>{
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
         });
     }
 
     handlePreview(){
-        if (this.state.quiz.meta.name === "") {
-            this.state.quiz.meta.name = this.state.quiz.payload.questions[0].question;
-        }
         sessionStorage.setItem('mode', 'teacher');
         window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
@@ -250,7 +241,8 @@ export default class CQEdit extends React.Component {
         if (this.state.quiz){
 
             var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0;
-            var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question + ("...Change this anytime") : 'e.g. Enter a quiz name';
+            //var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question + ("...Change this anytime") : 'e.g. Enter a quiz name';
+            var placeholderForName = 'e.g. Enter a quiz name';
             var topics = TopicStore.getTopicTree();
 
             return (
