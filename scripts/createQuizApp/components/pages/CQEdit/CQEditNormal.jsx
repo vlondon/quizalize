@@ -92,7 +92,7 @@ export default class CQEditNormal extends React.Component{
         var ref;
         var refs = this.getRefs();
 
-        if (event.keyCode === 13) {
+        if (event.keyCode === 13 && !event.ctrlKey) {
 
             if (index !== undefined){
                 ref = this.refs[property + index];
