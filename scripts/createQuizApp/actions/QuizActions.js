@@ -224,11 +224,11 @@ var QuizActions = {
             var updatedQuiz = !!quiz.uuid;
             quiz.uuid = quiz.uuid || uuid.v4();
 
-            if (quiz.meta.name === "") {
-                quiz.meta.name = quiz.payload.questions[0].question;
-            }
+            // if (quiz.meta.name === "") {
+            //     quiz.meta.name = quiz.payload.questions[0].question;
+            // }
 
-            quiz.meta.categoryId = addOrCreateCategory();
+            quiz.meta.categoryId = quiz.meta.categoryId || addOrCreateCategory();
             // we filter questions with no content
             if (quiz.payload.questions){
                 quiz.payload.questions = quiz.payload.questions.filter( q => q.question.length > 0 && q.answer.length > 0);

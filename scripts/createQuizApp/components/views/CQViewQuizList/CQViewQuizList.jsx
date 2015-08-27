@@ -366,14 +366,14 @@ export default class CQViewQuizList extends React.Component {
 
                                 {select(quiz)}
 
-                                <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.meta.name} image={quiz.meta.imageUrl}>
+                                <CQQuizIcon className="cq-viewquizlist__quizicon" name={quiz.meta.name || "Untitled Quiz"} image={quiz.meta.imageUrl}>
                                     <i className="zz-ic_quizalize"/>
                                 </CQQuizIcon>
 
 
                                 <div className="cq-viewquizlist__quiz-inner">
                                     {TopicStore.getTopicName(quiz.meta.publicCategoryId || quiz.meta.categoryId)}<br/>
-                                    <div className="cq-viewquizlist__quizname">{quiz.meta.name}</div><br/>
+                                    <div className="cq-viewquizlist__quizname">{quiz.meta.name || "Untitled Quiz"}</div><br/>
                                     {author(quiz)}
 
 
