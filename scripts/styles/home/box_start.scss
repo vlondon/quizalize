@@ -1,0 +1,16 @@
+.q-home__start {
+    @include boxHome;
+    // background: #FFF;
+    // color: $brand-color-purple;
+
+    padding: 40px;
+
+    &__cta {
+        margin: 20px auto;
+        background: red;
+        border-radius: 30px;
+        padding: 12px 40px;
+        display: inline-block;
+    }
+
+}
