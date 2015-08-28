@@ -1,0 +1,31 @@
+.q-home__player {
+    @include boxHome;
+    &__graphic {
+        margin-top: 20px;
+        height: 300px;
+        overflow: hidden;
+    }
+
+    &__devices {
+        padding-top: 80px;
+        width: 160px;
+        position: absolute;
+        left: 20px;
+        img {
+            margin-bottom: 20px;
+        }
+    }
+    &__device {
+        padding: 30px;
+        background: darken($brand-color-purple, 20%);
+        margin: auto;
+        width: 285px;
+        border-radius: 20px;
+        &__screen {
+            width: 225px;
+            height: 334px;
+            background-image: url(./../assets/player_screen.png);
+            background-size: 225px 334px;
+        }
+    }
+}

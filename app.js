@@ -171,6 +171,7 @@ app.get('/faq', quiz.faq);
 app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);
 app.get('/COPPA-policy', quiz.coppa);
+app.get('/landing', quiz.landing);
 
 /*
 
@@ -179,8 +180,8 @@ app.get('/COPPA-policy', quiz.coppa);
 Endpoints for students: actually we are making this client side
  */
 
-app.get('/', checkForIE, quiz.landingpage5);
-app.get('/mobile', quiz.landingpage5);
+
+app.get('/', quiz.landingpage);
 app.get('/ie', quiz.landingpage3);
 app.get('/ks4-gcse-maths', quiz.landingpage4);
 app.get('/maths', quiz.maths);
@@ -222,15 +223,12 @@ function isIE(req) {
 }
 
 
-// note: the next method param is passed as well
-function checkForIE(req, res, next) {
-    // check to see if the caller is a mobile device
-
-    if (isIE(req)) {
-        logger.info("Going IE");
+function checkForIE(req, res, next){
+    if (isIE(req)){
+        logger.info('Redirecting to IE');
         res.redirect('/ie');
-    } else {
-        // if we didn't detect mobile, call the next method, which will eventually call the desktop route
+    }
+    else {
         return next();
     }
 }

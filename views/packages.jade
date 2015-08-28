@@ -1,6 +1,7 @@
 extends baseLayout2
 
 block body
+	include navbar
 	section.color-dark#our-packages
 		.container.packages
 			row.text-center
@@ -120,85 +121,5 @@ block body
 					button
 						h3.text-center.teach-acct Get your free account
 				p.text-center Or contact us below
-	section#contact.home-section.nopadd-bot.color-dark.bg-dark.text-center
-		a#sendForm(name='sendForm')
-			.container.marginbot-50
-				.col-md-12
-					.section-heading.text-center
-						h1
-							strong Get in touch
-			#helpForm.container
-				.row.marginbot-80
-					.col-md-12
-						form#contact-form(onSubmit='return submitForm()')
-							.row.marginbot-20
-								.col-md-6.xs-marginbot-20
-									input#ename.form-control.input-lg(type='text', placeholder='Enter name')
-								.col-md-6
-									input#email.form-control.input-lg(type='email', placeholder='Enter email', required='')
-							.row
-								.col-md-12
-									.form-group
-										textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
-									input#btnContactUs.btn-lg.btn-block(type='submit', value='Send')
-			#helpSent.container(style='display: none;')
-				.row.marginbot-80
-					.col-md-8.col-md-offset-2
-						h3 Thanks for getting in touch. We'll get back to you ASAP!
+	include form
 	include about
-	section.popover-title.color-dark.bg-gray2
-		.container
-			.row
-				.text-center(style='margin:10px')
-					h3(style='font-size:20px')
-						| Powered by 
-						a(href='http://zzish.com', style='color:purple') Zzish
-	script.
-		function submitForm() {
-			$.ajax({
-				url: "/quizHelp",
-				method: "post",
-				success: function(data,textstatus,jqXHR){
-					$('#helpForm').slideUp();
-					$("#helpSent").slideDown();
-					},
-					error: function(){
-						console.log("Error Posting Form details");
-						},
-						data: {
-							name: $('#ename').val(),
-							email: $('#email').val(),
-							message: $('#message').val()
-						}
-						});
-			return false;
-		}
-		function ask(type) {
-			if (type=="demo") {
-				$("#message").val("I want a demo at my school");
-			}
-			else if (type =="question") {
-				$("#message").val("");
-			}
-			else if (type=="order") {
-				$("#message").val("I would like an information pack sent to my school");
-			}
-			else if (type=="wholeschool") {
-				$("#message").val("I would like to sign up to the whole school package");
-			}
-			else if (type=="quiz-day") {
-				$("#message").val("I would like to ask about a Quizalize day at my school");
-			}
-			else if (type=="cpd") {
-				$("#message").val("I would like to ask about CPD training at my school");
-			}
-			else if (type=="referral") {
-				$("#message").val("I would like to join the Quizalize referral program");
-			}
-			ask2("#sendForm")
-		}
-		function ask2(type) {
-			$('html, body').animate({
-				scrollTop: $(type).offset().top
-				}, 2000);
-		}

@@ -50,6 +50,7 @@ var CQViewHeader = React.createClass({
     getState: function(){
         var isLoggedIn = UserStore.isLoggedIn();
         var home = UserStore.isLoggedIn() ? "/quiz/quizzes" : "/";
+
         return {
             isLoggedIn,
             home

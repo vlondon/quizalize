@@ -1,0 +1,65 @@
+@import './../shared/scss/variables';
+@import './../shared/scss/mixins';
+@import './../shared/scss/layout';
+
+
+.q-home {
+	font-size: 16px;
+	color: $brand-color-grey-dark;
+
+	background: $brand-color-blue;
+	background-image: url(./../assets/bg-mountain.jpg);
+	background-attachment: fixed;
+	background-position: center center;
+	background-size: cover;
+
+	font-family: 'Lato';
+	img {
+		max-width: 100%;
+	}
+
+	&__section {
+		padding-top: 40px;
+		padding-bottom: 40px;
+		&__inner {
+			max-width: 1120px;
+			padding: 20px;
+			margin: auto;
+			text-align: center;
+
+			h1 {
+				color: $brand-color-blue;
+				padding: 20px 10px;
+			}
+			p { padding: 10px; }
+		}
+	}
+}
+
+@mixin boxHome {
+	position: relative;
+	max-width: 700px;
+	margin: auto;
+	background: $brand-color-purple;
+	color: #FFF;
+	text-align: center;
+	padding-top: 40px;
+	@include clearfix();
+}
+// @import './../createQuizApp/components/views/CQViewHeader/CQViewHeaderStyles';
+@import 'home/header';
+@import 'home/brand';
+@import 'home/intro';
+@import 'home/player';
+@import 'home/dashboard';
+@import 'home/questionlist';
+@import 'home/box_features';
+@import 'home/box_students';
+@import 'home/box_start';
+@import 'home/box_zzish';
+
+@import 'home/hero';
+@import 'home/whatis';
+@import 'home/howitworks';
+@import 'home/features';
+@import 'home/tutorial';
