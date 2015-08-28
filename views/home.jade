@@ -301,7 +301,8 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             url: "/quizHelp",
             method: "post",
             success: function(data,textstatus,jqXHR){
-            $('#helpForm').slideUp();
+            console.log("Sent details");
+            $('#sendForm').slideUp();
             $("#helpSent").slideDown();
             },
             error: function(){
@@ -329,7 +330,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             }
             function ask2(type) {
             $('html, body').animate({
-            scrollTop: $(type).offset().top
+            scrollTop: $(type).offset().top-200
             }, 2000);
             }
         script.

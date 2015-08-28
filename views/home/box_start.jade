@@ -2,11 +2,13 @@
     h1 Start here - it’s free
     p You can be ready to go in seconds
 
-    span.q-home__start__cta Start here : Choose a topic
+    span.q-home__start__cta 
+        a(href="/quiz/create") Start here : Choose a topic
+        
     
     
     h1 or ask us anything
-    form#contact-form(onsubmit='return submitForm()')
+    form#sendForm(onsubmit='return submitForm()')
         .row
             .col-md-12
                 input#ename.form-control.input-lg(type='text', placeholder='Enter name')
@@ -17,3 +19,5 @@
                 .form-group
                     textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
                 input#btnContactUs.btn-lg.btn-danger.btn-block(type='submit', value='Send')
+                    
+    h2#helpSent We got! We'll get back to you ASAP
