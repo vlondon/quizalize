@@ -3,17 +3,24 @@
 @import './../shared/scss/layout';
 
 @import url("//fonts.googleapis.com/css?family=Lato:400,700,900,400italic");
-.q-home {
-	font-size: 16px;
-	color: $brand-color-grey-dark;
-
+body {
 	background: $brand-color-blue;
 	background-image: url(./../assets/bg-mountain.jpg);
 	background-attachment: fixed;
 	background-position: center center;
 	background-size: cover;
-
 	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
+}
+.q-home {
+	font-size: 16px;
+	color: $brand-color-grey-dark;
+
+	// background: $brand-color-blue;
+	// background-image: url(./../assets/bg-mountain.jpg);
+	// background-attachment: fixed;
+	// background-position: center center;
+	// background-size: cover;
+
 
 	min-width: 320px;
 
