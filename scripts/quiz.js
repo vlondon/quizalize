@@ -42,8 +42,7 @@ function login (){
             classcode: 1,
             optionstoshow: ';student;teacher;',
             redirectURL: url + '/app#/list',
-            verify: 1,
-            showGoogle: true
+            verify: 1
         };
     var type = "redirect"; //can be a popup instead
 
