@@ -42,8 +42,7 @@ var QLMultiple = React.createClass({
         return {
             cssState: cssStates[cssStateIndex],
             answered: null,
-            startTime: Date.now(),
-            hasLatex: this.props.currentQuiz.latexEnabled
+            startTime: Date.now()
         };
     },
 
@@ -102,7 +101,7 @@ var QLMultiple = React.createClass({
             } else {
                 return (<span>{string}</span>);
             }
-        }
+        };
 
         var showAnswer, showQuestions, showCountdown;
 
@@ -130,9 +129,7 @@ var QLMultiple = React.createClass({
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
                     <p className='question'>
-
                         {latexWrapper(this.props.question)}
-
                     </p>
                     {this.props.imageURL && this.props.imageEnabled ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
