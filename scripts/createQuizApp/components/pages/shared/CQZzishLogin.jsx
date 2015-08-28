@@ -51,7 +51,8 @@ var CQZzishLogin = React.createClass({
             classcode: 0,
             optionstoshow: ';teacher;student;',
             redirectURL: url + '/quiz/',
-            verify: 0
+            verify: 0,
+            showGoogle: true
         };
         login(options);
     },

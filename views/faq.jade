@@ -1,7 +1,6 @@
 extends baseLayout2
 
 block body
-	include navbar
 	section.color-dark
 		.container.packages
 			row.text-center
@@ -179,43 +178,5 @@ block body
 						|Otherwise, 
 						a(href="mailto:team@zzish.com?subject=I would like Quizalize in my school") contact one of our team 
 						|for chat and advice. We’re friendly! Promise!
-	include form
-	include about
-	script.
-		function submitForm() {
-			$.ajax({
-				url: "/quizHelp",
-				method: "post",
-				success: function(data,textstatus,jqXHR){
-					$('#helpForm').slideUp();
-					$("#helpSent").slideDown();
-					},
-					error: function(){
-						console.log("Error Posting Form details");
-						},
-						data: {
-							name: $('#ename').val(),
-							email: $('#email').val(),
-							message: $('#message').val()
-						}
-						});
-			return false;
-		}
-		function ask(type) {
-			if (type=="demo") {
-				$("#message").val("I want a demo at my school");
-			}
-			else if (type =="question") {
-				$("#message").val("");
-			}
-			else if (type=="order") {
-				$("#message").val("I would like an information pack sent to my school");
-			}
-			ask2("#sendForm")
-		}
-		function ask2(type) {
-			$('html, body').animate({
-				scrollTop: $(type).offset().top
-				}, 2000);
-		}
-
+	include ./home/footer.jade
+	
