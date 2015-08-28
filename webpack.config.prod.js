@@ -11,6 +11,7 @@ module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
+        home: 'home.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['fastclick', 'react', 'superagent']
     },

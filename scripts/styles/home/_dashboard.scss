@@ -1,0 +1,11 @@
+.q-home__dashboard {
+    @include boxHome;
+    background: $brand-color-purple-light;
+
+    &__image {
+        margin-top: 40px;
+        height: 360px;
+        overflow: hidden;
+    }
+
+}

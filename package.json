@@ -80,7 +80,7 @@
         "react-components": "^0.2.0",
         "react-hot-loader": "^1.2.7",
         "react-latex": "0.0.8",
-        "sass-loader": "^1.0.2",
+        "sass-loader": "^2.0.1",
         "style-loader": "^0.10.2",
         "superagent": "^1.2.0",
         "superagent-no-cache": "^0.1.0",

@@ -1,6 +1,7 @@
 extends baseLayout2
 
 block body
+	include navbar
 	section.color-dark
 		.container.packages
 			row.text-center
@@ -178,47 +179,8 @@ block body
 						|Otherwise, 
 						a(href="mailto:team@zzish.com?subject=I would like Quizalize in my school") contact one of our team 
 						|for chat and advice. We’re friendly! Promise!
-
-	section#contact.home-section.nopadd-bot.color-dark.bg-dark.text-center
-		a#sendForm(name='sendForm')
-			.container.marginbot-50
-				.col-md-12
-					.section-heading.text-center
-						h1
-							strong Get in touch
-			.row
-				.col-md-4
-					a.cta4(onClick="ask('order')") Request an info pack
-				.col-md-4
-					a.cta4(onClick="ask('question')") Ask a question
-				.col-md-4
-					a.cta4(onClick="ask('demo')") Book a demo
-			#helpForm.container
-				.row.marginbot-80
-					.col-md-12
-						form#contact-form(onSubmit='return submitForm()')
-							.row.marginbot-20
-								.col-md-6.xs-marginbot-20
-									input#ename.form-control.input-lg(type='text', placeholder='Enter name')
-								.col-md-6
-									input#email.form-control.input-lg(type='email', placeholder='Enter email', required='')
-							.row
-								.col-md-12
-									.form-group
-										textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
-									input#btnContactUs.btn-lg.btn-block(type='submit', value='Send')
-			#helpSent.container(style='display: none;')
-				.row.marginbot-80
-					.col-md-8.col-md-offset-2
-						h3 Thanks for getting in touch. We'll get back to you ASAP!
+	include form
 	include about
-	section.popover-title.color-dark.bg-gray2
-		.container
-			.row
-				.text-center(style='margin:10px')
-					h3(style='font-size:20px')
-						| Powered by 
-						a(href='http://zzish.com', style='color:purple') Zzish
 	script.
 		function submitForm() {
 			$.ajax({

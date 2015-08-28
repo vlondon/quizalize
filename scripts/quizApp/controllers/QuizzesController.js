@@ -40,7 +40,10 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         $location.path("/");
     };
 
-    if(typeof ($location.search()).token != 'undefined'){
+    if (typeof($location.search()).cancel != 'undefined' && $location.search().cancel){
+        localStorage.removeItem("token");
+    }
+    else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
         self.token = $location.search().token;
     }
@@ -54,7 +57,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
                 QuizData.setUser(message);
                 QuizData.registerUserWithGroup(message.attributes.groupCode,function() {
                     loadQuizzes();
-                })
+                });
             }
             else {
                 QuizData.unsetUser();

@@ -1,0 +1,9 @@
+.q-home__questionlist {
+    @include boxHome;
+
+    &__image {
+        padding-top: 40px;
+    }
+    // background: $brand-color-purple-light;
+
+}

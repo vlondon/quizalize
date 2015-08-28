@@ -1,0 +1,69 @@
+.q-home__intro {
+    position: relative;
+    max-width: 700px;
+    margin: auto;
+    height: 460px;
+    background-image: url(./../assets/home_kid2.jpg);
+    overflow: hidden;
+    &__bubble {
+        color: rgba($brand-color-purple, .7);
+        font-size: 28px;
+        left: 20px;
+        padding: 20px;
+        background: rgba(#FFF, .7);
+        position: absolute;
+        &__alt {
+            color: $brand-color-purple;
+        }
+    }
+
+    &__explanation {
+        position: absolute;
+        right: 20px;
+        width: 260px;
+        font-size: 18px;
+        color: #FFF;
+        top: 160px;
+        background: $brand-color-purple;
+        padding: 20px 40px;
+
+        &__cta {
+            width: 220px;
+            margin-left: -20px;
+            margin-top: 20px;
+            background: #FFF;
+            color: $brand-color-purple;
+            text-align: center;
+            padding: 5px;
+            border-radius: 20px;
+        }
+    }
+
+    &__attribution {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 5px;
+        color: rgba(#FFF, .6);
+        transition: background 200ms linear;
+        @include clearfix;
+        &__icon {
+            float: left;
+        }
+        &__author {
+            float: left;
+            opacity: 0.2;
+            transform: translate(-400px, 0);
+            transition: transform 200ms ease-in-out;
+        }
+        &:hover {
+            color: #FFF;
+            background: rgba($brand-color-purple-light, .5);
+            // left: 2px;
+            .q-home__intro__attribution__author {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+        }
+    }
+}

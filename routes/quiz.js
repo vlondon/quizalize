@@ -113,12 +113,9 @@ exports.create =  function(req, res) {
 };
 
 exports.landingpage =  function(req, res) {
-    res.sendFile('cquiz/index.html', { root: 'public' });
+    res.render('home');
 };
 
-exports.landingpage2 =  function(req, res) {
-    res.sendFile('cquiz/index2.html', { root: 'public' });
-};
 
 exports.landingpage3 =  function(req, res) {
     res.sendFile('cquiz/index3.html', { root: 'public' });
@@ -128,9 +125,7 @@ exports.landingpage4 =  function(req, res) {
     res.sendFile('cquiz/index5.html', { root: 'public' });
 };
 
-exports.landingpage5 =  function(req, res) {
-    res.sendFile('cquiz/landing11.html', { root: 'public' });
-};
+
 exports.brightonlanding =  function(req, res) {
     res.sendFile('cquiz/brighton.html', { root: 'public' });
 };
@@ -165,6 +160,9 @@ exports.packages = function (req, res){
 
 exports.faq = function(req, res){
     res.render('faq');
+};
+exports.landing = function(req, res){
+    res.render('landing');
 };
 
 
