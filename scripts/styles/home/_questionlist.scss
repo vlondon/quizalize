@@ -1,8 +1,15 @@
 .q-home__questionlist {
     @include boxHome;
-
+    margin-bottom: -20px;
     &__image {
+        padding: 0 10px;
         padding-top: 40px;
+        img {
+            width: 100%;
+            height: 100%;
+            max-width: 650px;
+            max-height: 301px;
+        }
     }
     // background: $brand-color-purple-light;
 

@@ -3,6 +3,10 @@
     padding-top: 20px;
     background: rgba($brand-color-purple, .75);
     color: #FFF;
+    text-align: center;
+    @include media($size-tablet) {
+        text-align: auto;
+    }
     a { color: #FFF; }
 
     @include clearfix;
@@ -14,20 +18,34 @@
     }
 
     li {
-        display: inline-block;
         margin: 10px;
+        @include media($size-tablet) {
+            display: inline-block;
+        }
     }
     &__left {
-        float: left;
+        @include media($size-tablet) {
+            float: left;
+        }
     }
 
     &__right {
-        float: right;
         position: relative;
+        margin-top: 40px;
+        @include media($size-tablet) {
+            margin-top: auto;
+            float: right;
+        }
+        li {
+            display: inline-block;
+        }
         &__title {
-            position: absolute;
-            top: -20px;
-            left: 0;
+            @include media($size-tablet) {
+                padding: 10px;
+                position: absolute;
+                top: -30px;
+                left: 0;
+            }
         }
     }
 }

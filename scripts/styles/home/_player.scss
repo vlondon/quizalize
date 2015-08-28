@@ -7,10 +7,14 @@
     }
 
     &__devices {
-        padding-top: 80px;
+
         width: 160px;
-        position: absolute;
-        left: 20px;
+        margin: 20px auto;
+
+        @include media($size-tablet) {
+            position: absolute;
+            left: 20px;
+        }
         img {
             margin-bottom: 20px;
         }
