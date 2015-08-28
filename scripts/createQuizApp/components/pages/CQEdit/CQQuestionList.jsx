@@ -98,6 +98,24 @@ class CQQuestionList extends React.Component {
             newQuestionEditor = (<div/>);
         }
 
+        var questionText = (question) => {
+            if (question.latexEnabled) {
+                return (<CQLatexString>{question.question}</CQLatexString>);
+            }
+            else {
+                return (<div>{question.question}</div>);
+            }
+        };
+
+        var answerText = (question) => {
+            if (question.latexEnabled) {
+                return (<CQLatexString>{question.answer}</CQLatexString>);
+            }
+            else {
+                return (<div>{question.answer}</div>);
+            }
+        };
+
         if (this.props.quiz.payload.questions.length > 0) {
 
             questions = this.props.quiz.payload.questions.map((item, index) => {
@@ -110,11 +128,11 @@ class CQQuestionList extends React.Component {
                     <div className={className} key={index} onClick={this.handleEdit.bind(this, index)}>
                         <div className="col-sm-6 cq-edit__listquestion">
                             <span className="label label-primary">Q</span>&nbsp;
-                            <CQLatexString>{item.question}</CQLatexString>
+                            {questionText(item)}
                         </div>
                         <div className="col-sm-4 cq-edit__listanswer">
                             <span className="label label-warning">A</span>&nbsp;
-                            <CQLatexString>{item.answer}</CQLatexString>
+                            {answerText(item)}
                         </div>
                         <div className="col-sm-2 icons">
 
