@@ -14,6 +14,8 @@
 	background-size: cover;
 
 	font-family: 'Lato';
+
+	min-width: 700px;
 	img {
 		max-width: 100%;
 	}
@@ -58,8 +60,10 @@
 @import 'home/box_start';
 @import 'home/box_zzish';
 
-@import 'home/hero';
-@import 'home/whatis';
-@import 'home/howitworks';
-@import 'home/features';
-@import 'home/tutorial';
+@import 'home/footer';
+
+// @import 'home/hero';
+// @import 'home/whatis';
+// @import 'home/howitworks';
+// @import 'home/features';
+// @import 'home/tutorial';
