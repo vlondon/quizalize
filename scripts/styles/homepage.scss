@@ -6,6 +6,12 @@
 .q-home {
 	font-size: 16px;
 	color: $brand-color-grey-dark;
+
+	background: $brand-color-blue;
+	background-image: url(./../assets/bg-mountain.jpg);
+	background-attachment: fixed;
+	background-position: center center;
+	background-size: cover;
 	img {
 		max-width: 100%;
 	}
@@ -36,7 +42,7 @@
 	}
 }
 
-@import './../createQuizApp/components/views/CQViewHeader/CQViewHeaderStyles';
+// @import './../createQuizApp/components/views/CQViewHeader/CQViewHeaderStyles';
 @import 'home/hero';
 @import 'home/whatis';
 @import 'home/howitworks';

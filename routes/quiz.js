@@ -113,7 +113,7 @@ exports.create =  function(req, res) {
 };
 
 exports.landingpage =  function(req, res) {
-    res.sendFile('cquiz/index.html', { root: 'public' });
+    res.render('home');
 };
 
 

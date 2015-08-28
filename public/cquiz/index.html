@@ -30,7 +30,7 @@
         <link href="/cquiz/css/style.css" rel="stylesheet">
 
 
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+
         <script type="text/javascript" src="http://localhost:7071/webpack-dev-server.js"></script>
         <script src="/js/vendor.js"></script>
         <script src="/js/home.js"></script>
@@ -47,6 +47,11 @@
                     </a>
                 </div>
                 <ul class="cq-header__buttons">
+                    <li>
+                        <a href="">
+                            Make a Classroom Quiz
+                        </a>
+                    </li>
                     <li>
                         <a onclick="ask('order')" class="navbar-btn">
                             Info pack
@@ -527,15 +532,7 @@
         </script>
 
 
-        <script>
-        //   var el = document.getElementById("flash");
-        //   console.log('we flash ', el);
-        var flashvars = {},
-        params = {wmode:"transparent"},
-        attributes = {};
-        swfobject.embedSWF("img/qz-homepage-demo.swf", "flash", "100%", "100%", "10.0.0", undefined, flashvars, params, attributes);
-        //   swfobject.embedSWF("/img/qz-homepage-demo.swf", el, 300, 120, 10);
-        </script>
+
 
 
         <script type="text/javascript">
