@@ -73,6 +73,9 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         script(src='/cquiz/js/bootstrap.min.js')
         script(src='//zzish.github.io/zzishsdk-js/zzish.js')
         script.
+            $(function() {
+                $("#helpSent").hide();
+            });
             function submitForm() {
             $.ajax({
             url: "/quizHelp",
