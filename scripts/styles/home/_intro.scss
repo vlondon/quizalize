@@ -5,13 +5,18 @@
     height: 460px;
     background-image: url(./../assets/home_kid2.jpg);
     overflow: hidden;
+
     &__bubble {
-        color: rgba($brand-color-purple, .7);
-        font-size: 28px;
-        left: 20px;
-        padding: 20px;
-        background: rgba(#FFF, .7);
-        position: absolute;
+
+        @include media($size-tablet) {
+
+            color: rgba($brand-color-purple, .7);
+            font-size: 28px;
+            left: 20px;
+            padding: 20px;
+            background: rgba(#FFF, .7);
+            position: absolute;
+        }
         &__alt {
             color: $brand-color-purple;
         }
