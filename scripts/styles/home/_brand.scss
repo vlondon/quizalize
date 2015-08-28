@@ -1,12 +1,17 @@
 .q-home__brand {
 
     max-width: 700px;
-    margin: auto;
+    margin: 60px auto;
     text-align: center;
-    margin-top: 120px;
     color: $brand-color-purple;
+
+
     &__logo {
         width: 380px;
+    }
+    &__text {
+        margin-top: 0;
+        font-weight: bold;
     }
 
 }
