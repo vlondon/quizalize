@@ -1,5 +1,10 @@
 .cq-publishedinfo {
     background: none;
+
+    &__frame {
+        width: 100%;
+        min-height: 800px;
+    }
     &__teacher,
     &__player {
         background: rgba(#FFF, .8);
@@ -8,6 +13,62 @@
         padding: 20px;
         border-radius: 10px;
         float: left;
+    }
+
+    &__openbutton {
+        padding: 4px 0;
+        text-align: right;
+        float: right;
+        .btn {
+            background: $brand-color-zzish-light;
+            border: none;
+        }
+    }
+
+    &__instructions {
+        background: $brand-color-zzish-light;
+        max-width: 490px;
+        margin-bottom: 20px;
+        float: left;
+        min-width: 120px;
+
+        &--closed {
+            .cq-publishedinfo__instructions__body {
+                display: none;
+            }
+            .cq-publishedinfo__instructions__help__close {
+                display: none;
+            }
+        }
+        &--open {
+            .cq-publishedinfo__instructions__help__open {
+                display: none;
+            }
+        }
+
+        &__help {
+            color: #FFF;
+            padding: 5px;
+            &__close,
+            &__open {
+                float: right;
+                cursor: pointer;
+                &:hover {
+                    opacity: .6;
+                }
+            }
+        }
+        &__image {
+            padding: 20px;
+            width: 450px;
+        }
+        &__code {
+            background: #FFF;
+            font-weight: bold;
+            text-align: center;
+            font-size: 26px;
+            padding: 5px;
+        }
     }
 
     .class-code {

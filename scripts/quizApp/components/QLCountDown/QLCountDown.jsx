@@ -5,7 +5,7 @@ var timeout;
 var updateInterval = 100;
 var startInterval = 60;
 var buffer = 2;
-var CountDown = React.createClass({
+var QLCountDown = React.createClass({
 
     propTypes: {
         duration: React.PropTypes.number,
@@ -66,4 +66,4 @@ var CountDown = React.createClass({
 
 });
 
-module.exports = CountDown;
+module.exports = QLCountDown;

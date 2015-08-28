@@ -7,7 +7,7 @@ var uuid            = require('node-uuid');
 var AppDispatcher   = require('./../dispatcher/CQDispatcher');
 var QuizConstants   = require('./../constants/QuizConstants');
 var QuizActions     = require('./../actions/QuizActions');
-var TopicStore      = require('./../stores/TopicStore');
+import TopicStore from './../stores/TopicStore';
 
 
 type QuizCategory = {
@@ -15,30 +15,32 @@ type QuizCategory = {
     title: string;
 }
 type QuizMeta = {
-    authorId: string;
-    categoryId: string;
-    code: string;
+    authorId?: string;
+    categoryId?: string;
+    code?: string;
+    comment?: any;
     created: number;
     imageUrl?: string;
     name: string;
     originalQuizId?: string;
+    price: number;
     profileId: string;
+    published?: string;
     random: boolean;
+    review?: any;
     subject?: string;
     updated: number;
-    review?: any;
-    comment?: any;
-    price: number;
-    published: string;
 };
 
-type Question = {
+export type Question = {
     uuid: string;
     question: string;
     answer: string;
     topicId?: string;
     latexEnabled: boolean;
     imageEnabled: boolean;
+    duration: number;
+    alternatives: Array<string>
 }
 
 type QuizPayload = {
@@ -46,6 +48,7 @@ type QuizPayload = {
 }
 
 export type QuizComplete = {
+    _temp?: boolean;
     uuid: string;
     meta: QuizMeta;
     payload: QuizPayload;
@@ -57,10 +60,7 @@ export type Quiz = {
     _category?: QuizCategory;
 }
 
-
-
 var _quizzes: Array<Quiz> = [];
-
 var _publicQuizzes = [];
 var _fullQuizzes = {};
 var _fullPublicQuizzes = {};
@@ -74,15 +74,38 @@ UserStore.addChangeListener(function(){
 
 });
 
+var QuizObject = function() : QuizComplete {
+    var quiz : QuizComplete = {
+        uuid: uuid.v4(),
+        meta: {
+            categoryId: undefined,
+            featured: false,
+            live: false,
+            name: '',
+            profileId: UserStore.getUserId(),
+            price: 0,
+            random: false,
+            created: Date.now(),
+            updated: Date.now()
+        },
+        payload: {
+            questions: []
+        }
+
+    };
+    return quiz;
+};
+
 
 var QuestionObject = function(quiz){
 
-    var question:Question = {
+    var question : Question = {
         alternatives: ['', '', ''],
         question: '',
         answer: '',
         latexEnabled: false,
         imageEnabled: false,
+        duration: 60,
         uuid: uuid.v4()
     };
 
@@ -117,12 +140,37 @@ class QuizStore extends Store {
 
     }
 
-    getQuiz(quizId): QuizComplete{
-        var fullQuiz = _fullQuizzes[quizId];
-        if (fullQuiz === undefined){
-            QuizActions.loadQuiz(quizId);
+    getQuiz(quizId?): QuizComplete {
+        var fullQuiz;
+
+        if (quizId){
+            fullQuiz = _fullQuizzes[quizId];
+            if (fullQuiz === undefined){
+                QuizActions.loadQuiz(quizId)
+                    .catch(()=>{
+                        console.log('new quiz');
+                        fullQuiz = new QuizObject();
+                        if (quizId){
+                            fullQuiz.uuid = quizId;
+                            fullQuiz._temp = true;
+                            _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+                        }
+                        this.emitChange();
+                    });
+                //create empty quiz?
+            }
+        } else {
+            fullQuiz = new QuizObject();
+            _fullQuizzes[fullQuiz.uuid] = fullQuiz;
         }
         return fullQuiz;
+    }
+
+    getOwnedQuizByOriginalQuizId(quizId: string) : ?Quiz{
+        var ownedQuiz = _quizzes.filter( q => q.meta.originalQuizId === quizId);
+        if (ownedQuiz.length > 0){
+            return ownedQuiz[0];
+        }
     }
 
     getPublicQuiz(quizId): QuizComplete{
@@ -133,9 +181,11 @@ class QuizStore extends Store {
         return fullPublicQuiz;
     }
 
-    getQuestion(quizId, questionIndex){
+    getQuestion(quizId, questionIndex) : Question{
         var quiz = this.getQuiz(quizId);
         var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
+        // adding new properties to the object
+        question.duration = question.duration || 60;
         return question;
     }
 
@@ -182,16 +232,17 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case QuizConstants.QUIZZES_LOADED:
             AppDispatcher.waitFor([
-                TopicStore.dispatchToken
+                TopicStore.token
             ]);
             _quizzes = action.payload.quizzes;
+
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
             quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZ_LOADED:
             AppDispatcher.waitFor([
-                TopicStore.dispatchToken
+                TopicStore.token
             ]);
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
@@ -200,12 +251,14 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_PUBLIC_LOADED:
             var publicQuiz = action.payload;
+            publicQuiz.meta.price = publicQuiz.meta.price || 0;
             _fullPublicQuizzes[publicQuiz.uuid] = publicQuiz;
             quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZZES_PUBLIC_LOADED:
             _publicQuizzes = action.payload;
+            _publicQuizzes.forEach(quiz => quiz.meta.price = quiz.meta.price || 0);
             quizStoreInstance.emitChange();
             break;
 

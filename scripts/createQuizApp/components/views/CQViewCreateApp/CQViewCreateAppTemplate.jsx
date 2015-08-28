@@ -1,5 +1,4 @@
 var React = require('react');
-var assign = require('object-assign');
 
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
@@ -58,7 +57,7 @@ var CQViewCreateAppTemplate = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        var appInfo = assign({}, this.state.appInfo, nextProps.app);
+        var appInfo = Object.assign({}, this.state.appInfo, nextProps.app);
         var quizzes = nextProps.quizzes.map(qId => QuizStore.getQuizMeta(qId));
         this.setState({ appInfo, quizzes });
     },
@@ -76,7 +75,7 @@ var CQViewCreateAppTemplate = React.createClass({
         } else {
             style.position = 'relative';
         }
-        var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price)}`;
+        var buySentence = Number(this.state.appInfo.meta.price) === 0 ? 'Use for free' : `Get it for ${priceFormat(this.state.appInfo.meta.price, '$', 'us')}`;
         return (
             <div>
                 <div ref="cqApptemplate"></div>
@@ -90,7 +89,7 @@ var CQViewCreateAppTemplate = React.createClass({
 
                         <div className="cq-app__info">
                             <h2>{this.state.appInfo.meta.name}</h2>
-                            <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price)}</div>
+                            <div className="cq-app__price">{priceFormat(this.state.appInfo.meta.price, '$', 'us')}</div>
                             <button className="cq-app__button" onClick={this.handleBuy}>
                                 {buySentence}
                             </button>

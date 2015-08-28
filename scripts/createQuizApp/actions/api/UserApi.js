@@ -1,5 +1,4 @@
 var request = require('superagent');
-var Promise = require('es6-promise').Promise;
 
 var UserApi = {
 
@@ -51,6 +50,22 @@ var UserApi = {
         });
     },
 
+    search: function(attributes){
+        return new Promise((resolve, reject) => {
+
+            request.post(`/user/search`)
+                .send(attributes)
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+
+        });
+    },
+
     post: function(user){
         return new Promise((resolve, reject) => {
             var uuid = localStorage.getItem('cqUuid');
@@ -98,6 +113,22 @@ var UserApi = {
         return new Promise(function(resolve, reject){
             request.post('/user/authenticate')
                 .send(data)
+                .end(function(error, res){
+                    if (error){
+                        reject(error);
+                    } else {
+                        // TODO Move this to a more convenient place
+                        localStorage.setItem('cqUuid', res.body.uuid);
+                        resolve(res.body);
+                    }
+                });
+        });
+    },
+
+    loginWithToken: function(token){
+        return new Promise(function(resolve, reject){
+            request.post('/user/token/')
+                .send({token: token})
                 .end(function(error, res){
                     if (error){
                         reject(error);

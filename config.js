@@ -20,5 +20,9 @@ config.stripeSecret = process.env.STRIPE_SECRET;
 //Zzish Init (Either QATOKEN OR an object with lots of params)
 config.zzishInit = process.env.ZZISHINIT;
 
+config.apiUrlAdmin = process.env.ZZISHAPIADMIN;
+config.appTokenAdmin = process.env.ZZISHTOKENADMIN;
+config.zzishInitAdmin = process.env.ZZISHINITADMIN;
+
 
 module.exports = config;

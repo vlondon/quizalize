@@ -79,26 +79,31 @@
     }
 
 
+    %button-blue {
+        @include button($brand-color-blue);
+    }
     &__button--delete {
         @include button($brand-color-red);
 
+        min-width: 30px;
+        padding: 5px;
     }
 
     &__button--assign {
         @include button($brand-color-blue);
+        background: rgba($brand-color-blue, .8);
+        // background: $brand-color-blue;
+        color: #FFF;
+
+        &:hover,
+        &:focus {
+        }
 
     }
-
-    &__button--edit {
-        @include button($brand-color-blue);
-    }
-
-    &__button--publish {
-        @include button($brand-color-blue);
-    }
-
-    &__button--review {
-        @include button($brand-color-blue);
-    }
+    &__button--preview { @extend %button-blue; }
+    &__button--share { @extend %button-blue; }
+    &__button--edit { @extend %button-blue; }
+    &__button--publish { @extend %button-blue; }
+    &__button--review { @extend %button-blue; }
 
 }

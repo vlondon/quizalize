@@ -1,0 +1,6 @@
+{
+    "ignore": [
+        "public/lib/**",
+        "public/cquiz/js/**"
+    ]
+}

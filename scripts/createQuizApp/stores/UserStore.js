@@ -12,9 +12,11 @@ type UserAttributes = {
     url?: string;
     subjectTaught?: string;
     ageTaught?: string;
+    profileUrl?: string;
+    bannerUrl?: string;
 };
 export type User = {
-    uuid?: string;
+    uuid: string;
     avatar: string;
     email: string;
     name: string;
@@ -22,7 +24,7 @@ export type User = {
 }
 
 var noUser:User = {
-    uuid: undefined,
+    uuid: '-1',
     avatar: '',
     email: '',
     name: '',
@@ -32,6 +34,8 @@ var noUser:User = {
 var storeInit = false;
 var _user:User = noUser;
 var _users = {};
+var _usersByUrl = {};
+var _loginEmail = '';
 
 class UserStore extends Store {
 
@@ -39,13 +43,21 @@ class UserStore extends Store {
         super();
     }
 
+    getUserLoginEmail() : string{
+        return _loginEmail;
+    }
+
     getUser():User {
         return _user;
     }
 
+    getUserId(): string {
+        return _user.uuid;
+    }
+
 
     isLoggedIn(): boolean {
-        return (_user && _user.uuid) ? true : false;
+        return (_user && _user.uuid && _user.uuid !== '-1') ? true : false;
     }
 
 
@@ -56,6 +68,15 @@ class UserStore extends Store {
             _users[userId] = null;
         }
         return user;
+    }
+
+    getPublicUserByUrl(url: string): Object{
+        var userId = _usersByUrl[url];
+        if (userId === undefined){
+            UserActions.getPublicUserByUrl(url);
+            _usersByUrl[url] = null;
+        }
+        return userId;
     }
 
     isAdmin(): boolean {
@@ -115,6 +136,18 @@ AppDispatcher.register(function(action) {
             userStore.emitChange();
             break;
 
+        case UserConstants.USER_PUBLIC_LOADED_URL:
+            console.log('UserConstants.USER_PUBLIC_LOADED_URL', action);
+            var user = action.payload;
+            _usersByUrl[user.attributes.profileUrl] = user.uuid;
+            _users[user.uuid] = user;
+            userStore.emitChange();
+            break;
+
+        case UserConstants.USER_LOGIN_EMAIL_ADDED:
+            _loginEmail = action.payload;
+            // userStore.emitChange();
+            break;
 
 
         default:

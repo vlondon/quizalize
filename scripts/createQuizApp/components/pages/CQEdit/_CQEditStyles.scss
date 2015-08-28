@@ -1,16 +1,43 @@
 .cq-edit {
     margin-bottom: 80px;
 
+    padding: 20px;
     .btn {
         margin-left: 5px;
     }
     &__header {
         font-weight: bold;
-        text-align: center;
+        margin-bottom: 20px;
+
         h1, h2, h3, h4 {
             font-weight: bold;
         }
+        .cq-autofill {
+            display: inline-block;
+            width: 500px;
+            border: 0;
+            border-bottom: 1px solid $brand-color-grey-lighter;
+
+            // TODO: Remove this when Bootstrap gets removed
+            .form-control {
+                border: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
     }
+    &__input-topic,
+    &__input-header {
+        border: 0;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        color: red;
+        width: 500px;
+    }
+    &__input-topic {
+        border-bottom: 0;
+    }
+
 
     &__footer {
         position: relative;
@@ -92,6 +119,32 @@
         margin-right: 20px;
     }
 
+    & .cq-duration {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        z-index: 10;
+        position: relative;
+        &__time--selected,
+        &__time {
+            border: 2px solid $brand-color-grey;
+            border-radius: 10px;
+            margin: 3px 0;
+            text-align: center;
+            max-width: 40px;
+            user-select: none;
+            &--selected {
+                background: $brand-color-grey;
+                color: #FFF;
+            }
+        }
+        &__time {
+            &:hover {
+                background: $brand-color-grey-lighter;
+            }
+        }
+    }
+
 }
 .cq-questionlist {
     margin-bottom: 20px;
@@ -167,12 +220,7 @@
         float: left;
 
     }
-    /* .entry-input,
-    .incorrect-answers,
-    .entry-input-full-width {
-        transition: width 300ms ease-in-out;
-    }
-     */
+
     .latex-field {
         padding: 12px;
         float: left;

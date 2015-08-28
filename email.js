@@ -18,54 +18,55 @@ exports.sendEmail = function(from, toArray, subject, body){
 
 exports.sendActualEmail = function(from, toArray, subject, html, text) {
 	//"var emailCheck = process.env.sendEmail;
-	var emailCheck = true;
-	if (config.aws_enabled && emailCheck) {
-		// load AWS SES
-		var ses = new awssdk.SES();
+	var sendEmail = function(to){
 
-		var dest = { ToAddresses: toArray };
-		if (config.webUrl === "https://www.zzish.com/") {
-			dest.BccAddresses = ['team@quizalize.com'];
-		}
-		else if (config.webUrl === "https://test.zzish.com/") {
-			dest.CcAddresses = ['frabusiello@gmail.com'];
-		}
-		// if (process.env.vini === "true") {
-		// 	logger.info("Sending to Vini");
-		// 	dest.BccAddresses =  ['vini@zzish.com','team@'];
-		// }
+		var emailCheck = true;
+		if (config.aws_enabled && emailCheck) {
+			// load AWS SES
+			var ses = new awssdk.SES();
 
-		// this sends the email
-		ses.sendEmail(
-			{
-				Source: from,
-				Destination: dest,
-				Message: {
-					Subject: {
-						Data: subject
-					},
-					Body: {
-						Text: {
-							Data: text
+			var dest = { ToAddresses: [to] };
+			if (config.webUrl === "https://www.zzish.com/") {
+				dest.BccAddresses = ['team@quizalize.com'];
+			}
+			else if (config.webUrl === "https://test.zzish.com/") {
+				dest.CcAddresses = ['frabusiello@gmail.com'];
+			}
+
+
+			// this sends the email
+			ses.sendEmail(
+				{
+					Source: from,
+					Destination: dest,
+					Message: {
+						Subject: {
+							Data: subject
 						},
-						Html: {
-							Data: html
+						Body: {
+							Text: {
+								Data: text
+							},
+							Html: {
+								Data: html
+							}
 						}
 					}
 				}
-			}
-		, function(err, data) {
-			if(err) {
-				logger.error('Error sending email: ' + err);
-			} else {
-				logger.info('Email sent:');
-				logger.info(data);
-			}
-		});
-	}
-	else {
-		logger.warn("Email not enabled");
-	}
+			, function(err, data) {
+				if(err) {
+					logger.error('Error sending email: ' + err);
+				} else {
+					logger.info('Email sent:');
+					logger.info(data);
+				}
+			});
+		}
+		else {
+			logger.warn("Email not enabled");
+		}
+	};
+	toArray.forEach(sendEmail);
 };
 
 
@@ -86,6 +87,7 @@ exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlPara
 				fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err2, contents2) {
 					var txtText = contents2;
 					if (!htmlParams) htmlParams = params;
+
 					exports.sendActualEmail(from, email, subject, parseData(htmlText, htmlParams), parseData(txtText, params));
 				});
 			});

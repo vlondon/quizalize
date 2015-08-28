@@ -13,11 +13,13 @@ var QuizActions  = require('createQuizApp/actions/QuizActions');
 var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
+var UserActions  = require('createQuizApp/actions/UserActions');
 
 var CQProfile = React.createClass({
 
     propTypes: {
         profileId: React.PropTypes.string,
+        profileUrl: React.PropTypes.string,
         quizCode: React.PropTypes.string
     },
 
@@ -26,11 +28,29 @@ var CQProfile = React.createClass({
     },
 
     getInitialState: function() {
+        var foundToken = false;
         var newState =  this.getState();
-        newState.showQuizzes = true;
-        newState.user = UserStore.getUser();
-        var profileId = this.props.profileId || UserStore.getUser().uuid;
-        QuizActions.searchPublicQuizzes('', '', profileId);
+        if (location.search) {
+            var params = location.search.substring(1).split('&');
+            if (params) {
+                params.forEach(function(param) {
+                    var splitToken = param.split("=");
+                    if (splitToken[0] === "token") {
+                        UserActions.loginWithToken(splitToken[1]).then(function(user){
+                            router.setRoute("/quiz/quizzes");
+                            foundToken = true;
+                        });
+                    }
+                });
+            }
+        }
+        if (!foundToken) {
+            newState.showQuizzes = true;
+            newState.user = UserStore.getUser();
+            if (this.props.profileUrl) {
+                UserActions.getPublicUserByUrl(this.props.profileUrl);
+            }
+        }
         return newState;
     },
 
@@ -48,15 +68,21 @@ var CQProfile = React.createClass({
 
     getState: function(props){
         props = props || this.props;
-        var profileId = props.profileId || UserStore.getUser().uuid;
+        var profileId;
+        if (props.profileUrl) {
+            profileId = UserStore.getPublicUserByUrl(props.profileUrl);
+        }
+        else {
+            profileId = props.profileId || UserStore.getUser().uuid;
+        }
         var quizzes = QuizStore.getQuizzesForProfile(profileId);
 
-        if (quizzes) {
+        if (quizzes && props.quizCode) {
             var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
         }
         var puser;
-        if (props.profileId) {
-            puser = UserStore.getPublicUser(props.profileId);
+        if (profileId) {
+            puser = UserStore.getPublicUser(profileId);
         } else {
             puser = UserStore.getUser();
         }
@@ -94,9 +120,9 @@ var CQProfile = React.createClass({
                 showCancelButton: true
             }, function(isConfirm){
                 if (isConfirm){
-                    var url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.props.profileId)}`;
+                    var url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.state.puser.uuid)}`;
                     if (quizCode) {
-                        url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.props.profileId + '/' + this.props.quizCode)}`;
+                        url = `/quiz/login?redirect=${window.encodeURIComponent('/quiz/user/' + this.state.puser.uuid + '/' + this.props.quizCode)}`;
                     }
                     router.setRoute(url);
                 }
@@ -141,8 +167,8 @@ var CQProfile = React.createClass({
         }
         return (
             <CQPageTemplate className="cq-container cq-profile">
+                <CQDashboardProfile user={this.state.puser}/>
                 <div className="cq-profile__left">
-                    <CQDashboardProfile user={this.state.puser}/>
                 </div>
                 <div className="cq-profile__right">
                     <h3>Viewing public quizzes from {this.state.puser && this.state.puser.name}</h3>

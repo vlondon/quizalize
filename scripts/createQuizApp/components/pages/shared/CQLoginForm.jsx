@@ -1,7 +1,10 @@
 /* @flow */
 var React = require('react');
-var assign = require('object-assign');
 var CQZzishLogin = require('./CQZzishLogin');
+
+import UserStore from './../../../stores/UserStore';
+import UserActions from './../../../actions/UserActions';
+
 type State = {
     email: string;
     password: string;
@@ -31,7 +34,7 @@ var CQLoginForm = React.createClass({
 
     getInitialState: function():State {
         return {
-            email: '',
+            email: UserStore.getUserLoginEmail(),
             password: '',
             isReady: false,
             buttonLabel: this.props.buttonLabel || ''
@@ -46,8 +49,12 @@ var CQLoginForm = React.createClass({
 
     handleChange: function(property: string, event: Object) {
 
-        var newState = assign({}, this.state);
+        var newState = Object.assign({}, this.state);
         newState[property] = event.target.value;
+
+        if (property === 'email'){
+            UserActions.setLoginEmail(event.target.value);
+        }
 
         if (this.props.showPasswordField && this.props.showEmailField) {
             newState.isReady = newState.email.length > 0 && newState.password.length > 0;
@@ -130,6 +137,7 @@ var CQLoginForm = React.createClass({
                         <button
                             disabled={!this.state.isReady || !this.props.enabled}
                             type='submit'
+                            id='loginButton'
                             className="btn btn-primary btn-block">
 
                             <span>{this.props.buttonLabel}</span>

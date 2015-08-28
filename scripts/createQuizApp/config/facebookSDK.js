@@ -1,6 +1,4 @@
-var Promise = require('es6-promise').Promise;
 var loaded = false;
-
 
 var load = function(){
     if (loaded) { return; }

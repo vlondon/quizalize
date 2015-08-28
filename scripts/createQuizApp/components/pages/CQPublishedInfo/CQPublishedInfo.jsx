@@ -9,16 +9,17 @@ var QuizStore  = require('createQuizApp/stores/QuizStore');
 var QuizActions = require('createQuizApp/actions/QuizActions');
 
 
-
-var CQPUblishedInfo = React.createClass({
+var CQPublishedInfo = React.createClass({
 
     propTypes: {
-        classCode: React.PropTypes.string
+        classCode: React.PropTypes.string,
+        quizId: React.PropTypes.string
     },
 
     getInitialState: function() {
         return {
-            classLink: undefined
+            classLink: undefined,
+            showHelp: true
         };
     },
 
@@ -37,16 +38,21 @@ var CQPUblishedInfo = React.createClass({
 
 
     getState: function(){
+
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
         console.log('groups', groups, groupsContent);
         var currentClass = groups.filter( g => g.code === this.props.classCode)[0];
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.quizId)[0];
+
+        // var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
         var classLink = currentClass ? currentClass.link : undefined;
+        var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
+        //var fullLink = currentClass.link;
+        var fullLiveLink = classLink + 'one/';
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
-
 
         var newState = {
             groups,
@@ -54,7 +60,9 @@ var CQPUblishedInfo = React.createClass({
             quizzes,
             currentClass,
             classLink,
-            currentQuiz
+            currentQuiz,
+            fullLink,
+            fullLiveLink
         };
 
         return newState;
@@ -81,36 +89,52 @@ var CQPUblishedInfo = React.createClass({
         this.setState({shareEmails: ev.target.value});
     },
 
+    handleCloseInstructions: function(){
+        this.setState({showHelp: false});
+    },
+
+    handleOpenInstructions: function(){
+        this.setState({showHelp: true});
+    },
+
     render: function() {
+        var className = this.state.currentClass ? this.state.currentClass.name : 'Teacher';
+        var classCode = this.state.currentClass ? this.state.currentClass.code : '';
+        var helpStatus = this.state.showHelp ? 'open' : 'closed';
+
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
-
-                <div className="cq-publishedinfo__player">
-                    <center>
-                        <h1>Players get ready!</h1>
-                        <h3>Browse to <strong>http://<span old-style="color: red; font-size: 32px">quizal.me</span></strong><br/>and join this class</h3>
-                        <center>
-                            <div className="class-code">
-                                {this.props.classCode}
-                            </div>
-                        </center><br/>
-                        <p>You can play on any mobile, tablet or computer.</p>
-                    </center>
-                </div>
-                <div className="cq-publishedinfo__teacher">
-                    <center>
-                        <h1>Teacher get ready!</h1>
-                        <p>Open your learning dashboard here:</p><br/><br/>
-                        <center>
-                            <a type="button" disabled={!this.state.classLink} href={this.state.classLink} target="zzishld" className="btn btn-primary btn-lg">
-                                Open Teacher Dashboard
-                            </a>
-                        </center>
-                        <br/>
-                        <p>You can see live results as your students play.</p>
-                    </center>
+                <div className="cq-publishedinfo__openbutton">
+                    <a type="button" id='openDashboard' disabled={!this.state.fullLiveLink} href={this.state.fullLiveLink} target="zzishld" className="btn btn-primary">
+                        Open {className} Dashboard
+                    </a>
                 </div>
 
+                <div className={`cq-publishedinfo__instructions cq-publishedinfo__instructions--${helpStatus}`}>
+
+                    <div className="cq-publishedinfo__instructions__help">
+
+                        <i className="fa fa-info-circle"/> Help
+
+                        <div className="cq-publishedinfo__instructions__help__close" onClick={this.handleCloseInstructions}>
+                            <i className="fa fa-times-circle"></i>
+                        </div>
+
+                        <div className="cq-publishedinfo__instructions__help__open" onClick={this.handleOpenInstructions}>
+                            <i className="fa fa-chevron-circle-down"></i>
+                        </div>
+
+                    </div>
+                    <div className="cq-publishedinfo__instructions__body">
+
+                        <img src="/img/quizalize_dashboard_instructions.png" alt="" className="cq-publishedinfo__instructions__image"/>
+                        <div className="cq-publishedinfo__instructions__code">
+                            {classCode}
+                        </div>
+                    </div>
+                </div>
+
+                <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
             </CQPageTemplate>
         );
@@ -118,4 +142,4 @@ var CQPUblishedInfo = React.createClass({
 
 });
 
-module.exports = CQPUblishedInfo;
+module.exports = CQPublishedInfo;
