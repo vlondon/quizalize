@@ -407,6 +407,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 setClassCode(code);
                 registerWithGroup(code,callback);
             }
+            else {
+                callback("No Code");
+            }
+            $rootScope.$digest();
         },
         getCategories: function() {
             return categories;

@@ -23,7 +23,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
                 $log.error("Unable to refresh quizzes", err);
             }
        });
-    }
+   };
 
     self.reloadQuizzes = function(){
         $log.debug("Reloading Quizzes");
@@ -55,8 +55,14 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         zzish.getCurrentUser(self.token, function(err,message) {
             if (!err) {
                 QuizData.setUser(message);
-                QuizData.registerUserWithGroup(message.attributes.groupCode,function() {
-                    loadQuizzes();
+                QuizData.registerUserWithGroup(message.attributes.groupCode,function(err) {
+                    if (!err) {
+                        loadQuizzes();
+                    }
+                    else {
+                        QuizData.unsetUser();
+                        $location.path("/app#");                        
+                    }
                 });
             }
             else {

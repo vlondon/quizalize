@@ -35,7 +35,7 @@ var CQProfile = React.createClass({
             window.location.href = "/quiz/login";
         }
         else if (params.token) {
-            UserActions.loginWithToken(splitToken[1]).then(function(user){
+            UserActions.loginWithToken(params.token).then(function(user){
                 router.setRoute("/quiz/quizzes");
             });
         }

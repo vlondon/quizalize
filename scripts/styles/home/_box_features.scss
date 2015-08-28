@@ -2,17 +2,27 @@
     @include boxHome;
     background: #FFF;
     color: $brand-color-purple;
+    // margin-bottom: -20px;
 
     &__feature {
-        padding-left: 100px;
         text-align: left;
         position: relative;
         // max-width: 500px;
-        margin: 0 80px 40px;
+        margin: 40px 40px;
+        text-align: center;
+        // padding: 20px;
+
+
+        @include media($size-tablet) {
+            padding-left: 100px;
+
+        }
 
         img {
-            position: absolute;
-            left: 0;
+            @include media($size-tablet) {
+                position: absolute;
+                left: 0;
+            }
         }
 
         p {

@@ -2,7 +2,7 @@
     @include boxHome;
     background: #FFF;
     color: $brand-color-purple;
-
+    vertical-align: top;
     &__quote {
         display: inline-block;
         background: url(./../assets/home_bubble.png);
