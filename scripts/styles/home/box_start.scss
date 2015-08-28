@@ -11,6 +11,14 @@
         border-radius: 30px;
         padding: 12px 40px;
         display: inline-block;
+        color: #FFF;
+
+        &:hover {
+            background: rgba(red, .7);
+        }
+
+        // a {
+        // }
     }
 
 }

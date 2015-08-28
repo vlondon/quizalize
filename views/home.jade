@@ -121,11 +121,11 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         script.
             (function(f,b){
             var c;
-            f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
-            f._hjSettings={hjid:45670, hjsv:4};
-            c=b.createElement("script");c.async=1;
-            c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
-            b.getElementsByTagName("head")[0].appendChild(c);
+                f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
+                f._hjSettings={hjid:45670, hjsv:4};
+                c=b.createElement("script");c.async=1;
+                c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
+                b.getElementsByTagName("head")[0].appendChild(c);
             })(window,document);
         script(type='text/javascript').
             /* <![CDATA[ */
@@ -166,7 +166,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             window._fbq.push(['track', 'PixelInitialized', {}]);
             var userId = localStorage.getItem("userId");
             if (userId!=undefined) {
-            $("#LoginButton").attr("href","/quiz/quizzes");
+                $("#LoginButton").attr("href","/quiz/quizzes");
             }
         noscript
             img(height='1', width='1', alt='', style='display:none', src='https://www.facebook.com/tr?id=832854753469486&ev=PixelInitialized')
