@@ -77,7 +77,7 @@ var CQAssignments = React.createClass({
         var editClass = "";
 
         if (this.state.groups.length > 0) {
-            var dashboard = `${this.state.groups[0].link}/dashboard`;
+            var dashboard = `${this.state.groups[0].link}/dashboard/list`;
             editClass = (
                 <a href={dashboard} target="_blank" className="btn btn-info pull-right">
                     Edit Classes
