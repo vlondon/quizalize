@@ -12,16 +12,10 @@
 	background-attachment: fixed;
 	background-position: center center;
 	background-size: cover;
+
+	font-family: 'Lato';
 	img {
 		max-width: 100%;
-	}
-
-	&__header {
-		width: 100%;
-		top: 0;
-		height: 70px;
-		position: fixed;
-		background: $brand-color-blue;
 	}
 
 	&__section {
@@ -42,7 +36,26 @@
 	}
 }
 
+@mixin boxHome {
+	position: relative;
+	max-width: 700px;
+	margin: auto;
+	background: $brand-color-purple;
+	color: #FFF;
+	text-align: center;
+	padding-top: 40px;
+	@include clearfix();
+}
 // @import './../createQuizApp/components/views/CQViewHeader/CQViewHeaderStyles';
+@import 'home/header';
+@import 'home/brand';
+@import 'home/intro';
+@import 'home/player';
+@import 'home/dashboard';
+@import 'home/questionlist';
+@import 'home/box_features';
+@import 'home/box_students';
+
 @import 'home/hero';
 @import 'home/whatis';
 @import 'home/howitworks';

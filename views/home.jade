@@ -30,28 +30,23 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         script(src='/js/home.js')
     body#page-top.q-home
         // Navigation
-        #navigation.q-home__header.cq-header
-            .cq-header__container
-                .cq-header__brand
-                    a.brand(href='/')
-                        img.cq-brand(src='/cquiz/img/logo 2.png')
-                ul.cq-header__buttons
-                    li
-                        a(href='')
-                            | Make a Classroom Quiz
-                    li
-                        a.navbar-btn(onclick="ask('order')")
-                            | Info pack
-                    li
-                        a.navbar-btn(onclick="ask('demo')")
-                            | Book a demo
-                    li
-                        a#StudentLogin.navbar-btn(href='/app')
-                            | Student Login
-                    li
-                        a#LoginButton.navbar-btn(href='/quiz/login')
-                            | Teacher Login
-        // /Navigation
+        
+        include ./home/menu.jade
+        
+        include ./home/brand.jade
+        
+        include ./home/box_intro.jade
+        
+        include ./home/box_player.jade
+        
+        include ./home/box_dashboard.jade
+        
+        include ./home/box_questionlist.jade
+        
+        include ./home/box_features.jade
+        
+        include ./home/box_studentopinions.jade
+        
         section#what_is.q-home__section.q-home__hero
             .q-home__section__inner
                 .aled-made-me-hack-this

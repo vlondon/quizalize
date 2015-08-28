@@ -1,0 +1,37 @@
+.q-home__intro {
+    position: relative;
+    max-width: 700px;
+    margin: auto;
+    height: 460px;
+    background-image: url(./../assets/home_kid.png);
+    &__bubble {
+        color: rgba(#FFF, .7);
+        font-size: 28px;
+        padding-left: 40px;
+        padding-top: 20px;
+        &__alt {
+            color: #FFF;
+        }
+    }
+
+    &__explanation {
+        position: absolute;
+        right: 20px;
+        width: 260px;
+        font-size: 18px;
+        color: #FFF;
+        background: $brand-color-purple;
+        padding: 20px 40px;
+
+        &__cta {
+            width: 220px;
+            margin-left: -20px;
+            margin-top: 20px;
+            background: #FFF;
+            color: $brand-color-purple;
+            text-align: center;
+            padding: 5px;
+            border-radius: 20px;
+        }
+    }
+}
