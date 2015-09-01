@@ -1,13 +1,12 @@
 .q-home__intro {
-    position: relative;
-    max-width: 700px;
-    margin: auto;
+    @include boxHome;
+
     height: 460px;
     background-image: url(./../assets/home_kid2.jpg);
     background-size: cover;
     background-position: center;
     margin-top: 180px;
-    // overflow: hidden;
+    overflow: hidden;
     @include media($size-tablet) {
         margin-top: 0;
     }

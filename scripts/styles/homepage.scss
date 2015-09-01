@@ -3,10 +3,9 @@
 @import './../shared/scss/layout';
 
 @import url("//fonts.googleapis.com/css?family=Lato:400,700,900,400italic");
-body {
+html, body {
 	background: $brand-color-blue;
 	background-image: url(./../assets/bg-mountain.jpg);
-	background-attachment: fixed;
 	background-position: center center;
 	background-size: cover;
 	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
@@ -48,7 +47,7 @@ body {
 
 @mixin boxHome {
 	position: relative;
-	max-width: 700px;
+	max-width: 840px;
 	margin: auto;
 	background: $brand-color-purple;
 	color: #FFF;
