@@ -442,7 +442,7 @@ exports.stats = function(req, res){
                     };
                     var repeatUsers = function (teacherArray){
                             teacherArray.forEach(function(teacher){
-                                
+
                             });
                     };
                     stats.activityLastWeek = activityCountFromActivities(activities, lastWeek, today);
@@ -504,7 +504,9 @@ exports.stats = function(req, res){
         });
     });
 };
-
+exports.metrics = function (req, res){
+    res.render("admin/metrics", {});
+};
 
 exports.approve = function(req, res){
   approveDocument(req, res, 'published');
