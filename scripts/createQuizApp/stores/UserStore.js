@@ -104,7 +104,7 @@ class UserStore extends Store {
 }
 
 var userStore = new UserStore();
-
+export default userStore;
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
@@ -158,6 +158,3 @@ AppDispatcher.register(function(action) {
             // no op
     }
 });
-
-
-module.exports = userStore;
