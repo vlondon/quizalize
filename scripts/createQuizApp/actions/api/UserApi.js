@@ -2,13 +2,16 @@
 var request = require('superagent');
 
 import UserStore from './../../stores/UserStore';
-
+import cookies from './../../utils/cookies';
 
 var UserApi = {
 
     get: function() : Promise {
+        console.info('local UUIDA', UserStore);
         return new Promise((resolve, reject) => {
-            var uuid = localStorage.getItem('cqUuid');
+            var localUuid = UserStore ? UserStore.getUserId() : undefined;
+            console.info('local UUID', localUuid);
+            var uuid = localUuid ? localUuid : cookies.getItem('cqUuid');
             var token = localStorage.getItem('token');
 
             if (!uuid && !token){
@@ -104,7 +107,9 @@ var UserApi = {
                             localStorage.removeItem('token');
                             reject();
                         } else {
-                            localStorage.setItem('cqUuid', res.body.uuid);
+                            var oneYear = new Date(new Date().setYear(new Date().getFullYear() + 1));
+                            cookies.setItem('cqUuid', res.body.uuid, oneYear);
+                            console.log('local SET COOKIE', res.body.uuid, oneYear);
                             resolve(res.body);
                         }
                     }
@@ -122,7 +127,9 @@ var UserApi = {
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place
-                        localStorage.setItem('cqUuid', res.body.uuid);
+                        // localStorage.setItem('cqUuid', res.body.uuid);
+                        var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
+                        cookies.setItem('cqUuid', res.body.uuid, oneYear);
                         resolve(res.body);
                     }
                 });
