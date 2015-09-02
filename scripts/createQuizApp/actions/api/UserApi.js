@@ -107,9 +107,8 @@ var UserApi = {
                             localStorage.removeItem('token');
                             reject();
                         } else {
-                            var oneYear = new Date(new Date().setYear(new Date().getFullYear() + 1));
+                            var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
                             cookies.setItem('cqUuid', res.body.uuid, oneYear);
-                            console.log('local SET COOKIE', res.body.uuid, oneYear);
                             resolve(res.body);
                         }
                     }
