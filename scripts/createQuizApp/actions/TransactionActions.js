@@ -14,18 +14,8 @@ import priceFormat  from './../utils/priceFormat';
 
 import type {Quiz}  from './../stores/QuizStore';
 import type {App}   from './../stores/AppStore';
+import type {Transaction}   from './../stores/TransactionStore';
 
-type TransactionMeta = {
-    type: string;
-    quizId?: string;
-    appId?: string;
-    profileId: string;
-    price: number
-}
-type Transaction = {
-    meta: TransactionMeta;
-    _token?: Object;
-}
 var purchaseComplete = function(){
     swal({
         title: 'Purchase complete!',
