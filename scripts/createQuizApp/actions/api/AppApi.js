@@ -1,16 +1,19 @@
+/* @flow */
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
+import type {App} from './../../stores/AppStore';
+import UserStore from './../../stores/UserStore';
 
 var AppApi = {
 
-    get: function(){
+    get: function() : Promise{
         return new Promise(function(resolve, reject){
 
 
             // reject();
 
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -29,7 +32,7 @@ var AppApi = {
 
     },
 
-    getInfo: function(appId){
+    getInfo: function(appId: string) : Promise{
         return new Promise(function(resolve, reject){
 
             // reject();
@@ -39,7 +42,7 @@ var AppApi = {
             // if (!uuid) {
                 // reject();
             // } else {
-                request.get(`/apps/${appId}`)
+            request.get(`/apps/${appId}`)
                 .use(noCache)
                 .end(function(error, res){
                     if (error) {
@@ -52,11 +55,11 @@ var AppApi = {
         });
     },
 
-    delete: function(app){
+    delete: function(app : App) : Promise{
         return new Promise(function(resolve, reject){
             // reject();
 
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -74,13 +77,13 @@ var AppApi = {
 
     },
 
-    putApp: function(app){
+    putApp: function(app : App) : Promise {
         return new Promise(function(resolve, reject){
 
 
             // reject();
 
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -98,10 +101,10 @@ var AppApi = {
         });
 
     },
-    uploadMedia: function(appId, file){
+    uploadMedia: function(appId : string, file : Object) : Promise{
         return new Promise(function(resolve, reject){
             console.log('about to upload', file);
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -120,7 +123,7 @@ var AppApi = {
         });
     },
 
-    searchApps: function(search = '', categoryId){
+    searchApps: function(search : string = '', categoryId : string) : Promise{
         return new Promise(function(resolve, reject){
             request.post(`/search/apps`)
                 .send({search, categoryId})
@@ -135,9 +138,9 @@ var AppApi = {
 
         });
     },
-    publishApp: function(app) {
+    publishApp: function(app : App) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
