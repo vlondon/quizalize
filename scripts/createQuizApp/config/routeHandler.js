@@ -6,10 +6,8 @@ var pagesArray          = require('./routes').pagesArray;
 var settings            = require('./settings');
 var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
-// import UserStore        from './../stores/UserStore';
-var UserStore           = require('./../stores/UserStore');
+import UserStore        from './../stores/UserStore';
 
-console.info('userstore', UserStore);
 var urlParams           = require('./../utils/urlParams');
 
 var user = null;

@@ -2,15 +2,14 @@
 var React = require('react');
 
 import type {User} from './../../../stores/UserStore';
-import CQLink from './../../../components/utils/CQLink';
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePicture');
-var UserStore = require('./../../../stores/UserStore');
 var UserActions = require('./../../../actions/UserActions');
 var router = require('./../../../config/router');
 
 var facebookSDK = require('./../../../config/facebookSDK');
 
+import UserStore from './../../../stores/UserStore';
 import {urlParams} from './../../../utils';
 import {sendEvent} from './../../../actions/AnalyticsActions';
 
