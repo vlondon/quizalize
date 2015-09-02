@@ -51,8 +51,12 @@ class UserStore extends Store {
         return _user;
     }
 
-    getUserId(): string {
-        return _user.uuid;
+    getUserId(): ?string {
+        if (this.isLoggedIn()){
+            return _user.uuid;
+        } else {
+            return undefined;
+        }
     }
 
 

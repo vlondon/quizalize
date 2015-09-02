@@ -1,10 +1,17 @@
+/* @flow */
 var request = require('superagent');
+
+import UserStore from './../../stores/UserStore';
+import cookies from './../../utils/cookies';
 
 var UserApi = {
 
-    get: function(){
+    get: function() : Promise {
+        console.info('local UUIDA', UserStore);
         return new Promise((resolve, reject) => {
-            var uuid = localStorage.getItem('cqUuid');
+            var localUuid = UserStore ? UserStore.getUserId() : undefined;
+            console.info('local UUID', localUuid);
+            var uuid = localUuid ? localUuid : cookies.getItem('cqUuid');
             var token = localStorage.getItem('token');
 
             if (!uuid && !token){
@@ -29,7 +36,7 @@ var UserApi = {
         });
     },
 
-    getPublic: function(userId){
+    getPublic: function(userId : string) : Promise {
         return new Promise((resolve, reject) => {
 
             if (!userId){
@@ -50,7 +57,7 @@ var UserApi = {
         });
     },
 
-    search: function(attributes){
+    search: function(attributes : Object) : Promise {
         return new Promise((resolve, reject) => {
 
             request.post(`/user/search`)
@@ -66,9 +73,9 @@ var UserApi = {
         });
     },
 
-    post: function(user){
+    post: function(user : Object) : Promise {
         return new Promise((resolve, reject) => {
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
             if (!uuid){
                 reject();
             } else {
@@ -87,7 +94,7 @@ var UserApi = {
         });
     },
 
-    getZzishUser: function(token) {
+    getZzishUser: function(token : string) : Promise {
 
         return new Promise(function(resolve, reject){
             request.get(`/quiz/token/${token}`)
@@ -100,7 +107,8 @@ var UserApi = {
                             localStorage.removeItem('token');
                             reject();
                         } else {
-                            localStorage.setItem('cqUuid', res.body.uuid);
+                            var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
+                            cookies.setItem('cqUuid', res.body.uuid, oneYear);
                             resolve(res.body);
                         }
                     }
@@ -109,7 +117,7 @@ var UserApi = {
         });
     },
 
-    login: function(data){
+    login: function(data : Object) : Promise {
         return new Promise(function(resolve, reject){
             request.post('/user/authenticate')
                 .send(data)
@@ -118,14 +126,16 @@ var UserApi = {
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place
-                        localStorage.setItem('cqUuid', res.body.uuid);
+                        // localStorage.setItem('cqUuid', res.body.uuid);
+                        var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
+                        cookies.setItem('cqUuid', res.body.uuid, oneYear);
                         resolve(res.body);
                     }
                 });
         });
     },
 
-    loginWithToken: function(token){
+    loginWithToken: function(token : string) : Promise {
         return new Promise(function(resolve, reject){
             request.post('/user/token/')
                 .send({token: token})
@@ -141,7 +151,7 @@ var UserApi = {
         });
     },
 
-    register: function(data){
+    register: function(data : Object) : Promise {
         return new Promise(function(resolve, reject){
             request.post('/user/register')
                 .send(data)
@@ -160,7 +170,7 @@ var UserApi = {
         });
     },
 
-    recover: function(email){
+    recover: function(email : string) : Promise {
         return new Promise(function(resolve, reject){
             request.post('/user/forget')
                 .send({email})
@@ -174,7 +184,7 @@ var UserApi = {
         });
     },
 
-    reset: function(code, password){
+    reset: function(code : string, password : string) : Promise {
         return new Promise(function(resolve, reject){
             request.post('/users/complete')
                 .send({
@@ -192,15 +202,13 @@ var UserApi = {
         });
     },
 
-    trackEvent: function(name, meta){
-        var uuid = localStorage.getItem('cqUuid');
+    trackEvent: function(name : string, meta: Object){
+        var uuid = UserStore.getUserId();
         if (uuid) {
             console.log(`/user/${uuid}/events/${name}`);
             request.post(`/user/${uuid}/events/${name}`)
                 .send(meta)
-                .end(function(error, res){
-
-                });
+                .end();
         }
     }
 };
