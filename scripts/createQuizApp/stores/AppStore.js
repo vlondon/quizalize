@@ -114,6 +114,16 @@ class AppStore extends Store {
         return new AppObject();
     }
 
+    getAppFromQuizId(quizId?: string): ?App {
+        if (_publicApps && quizId){
+            var apps = _publicApps.filter( app => {
+                return app.meta.quizzes.indexOf(quizId) !== -1;
+            });
+
+            return apps[0];
+        }
+    }
+
 
     addChangeListener (callback) {
         if (!storeInit) {

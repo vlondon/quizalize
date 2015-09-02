@@ -9,6 +9,7 @@ var TransactionActions = require(`./../../../actions/TransactionActions`);
 var QuizActions     = require(`./../../../actions/QuizActions`);
 var QuizStore       = require(`./../../../stores/QuizStore`);
 var GroupStore      = require(`./../../../stores/GroupStore`);
+var AppStore      = require(`./../../../stores/AppStore`);
 
 var UserStore       = require(`./../../../stores/UserStore`);
 
@@ -42,6 +43,7 @@ var CQQuizzes = React.createClass({
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+        AppStore.addChangeListener(this.onChange);
 
         // let's check if there's a quiz refered
         console.log('PROPS', this.props);
@@ -53,6 +55,7 @@ var CQQuizzes = React.createClass({
     componentWillUnmount: function() {
         GroupStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
+        AppStore.addChangeListener(this.onChange);
     },
 
     onChange: function(){
@@ -61,12 +64,13 @@ var CQQuizzes = React.createClass({
 
     getState: function():State{
 
-        var quizzes = QuizStore.getQuizzes();
+        var quizzes = QuizStore.getPersonalQuizzes();
+        var boughtQuizzes = QuizStore.getBoughtQuizzes();
         var isAdmin: boolean = UserStore.isAdmin();
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
-        return { quizzes,  isAdmin };
+        return { quizzes,  isAdmin, boughtQuizzes };
     },
 
     handleDelete: function(quiz: Object){
@@ -230,6 +234,47 @@ var CQQuizzes = React.createClass({
                     showAuthor={false}
                     showReviewButton={false}
                     quizzes={this.state.quizzes}
+                    selectMode={this.props.appMode === true}
+                    onSelect={this.handleSelect}
+                    sortBy='time'
+                    sortOptions={this.state.isAdmin}
+                    onAssign={this.handleAssign}
+                    onDelete={this.handleDelete}>
+
+                    <CQPublishQuiz className="cq-quizzes__button--publish"/>
+
+
+                    <button className="cq-quizzes__button--share" onClick={this.handleShare}>
+                        <span className="fa fa-share"></span> Share
+                    </button>
+
+                    <button className="cq-quizzes__button--edit" onClick={this.handleEdit}>
+                        <span className="fa fa-pencil"></span> Edit
+                    </button>
+
+                    <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
+                        <span className="fa fa-search"></span> Play
+                    </button>
+
+                    <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
+                        <span className="fa fa-users"></span> Play in class
+                    </button>
+
+                    <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>
+                        <span className="fa fa-trash-o"></span>
+                    </button>
+
+                </CQViewQuizList>
+
+
+                <h1>Bought Quizzes</h1>
+
+
+                <CQViewQuizList
+                    onQuizClick={this.handleClick}
+                    showAuthor={false}
+                    showReviewButton={false}
+                    quizzes={this.state.boughtQuizzes}
                     selectMode={this.props.appMode === true}
                     onSelect={this.handleSelect}
                     sortBy='time'

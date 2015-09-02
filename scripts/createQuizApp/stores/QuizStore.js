@@ -8,7 +8,8 @@ var AppDispatcher   = require('./../dispatcher/CQDispatcher');
 var QuizConstants   = require('./../constants/QuizConstants');
 var QuizActions     = require('./../actions/QuizActions');
 import TopicStore from './../stores/TopicStore';
-
+import AppStore from './../stores/AppStore';
+import type {App} from './../stores/AppStore';
 
 type QuizCategory = {
     name: string;
@@ -30,6 +31,10 @@ type QuizMeta = {
     review?: any;
     subject?: string;
     updated: number;
+};
+
+type QuizExtra = {
+    app?: App
 };
 
 export type Question = {
@@ -58,6 +63,7 @@ export type Quiz = {
     uuid: string;
     meta: QuizMeta;
     _category?: QuizCategory;
+    _extra?: QuizExtra;
 }
 
 var _quizzes: Array<Quiz> = [];
@@ -114,7 +120,6 @@ var QuestionObject = function(quiz){
         question.latexEnabled = lastQuestion.latexEnabled || false;
         question.imageEnabled = lastQuestion.imageEnabled || false;
         question.topicId = lastQuestion.topicId;
-        console.log('question', question, lastQuestion);
     }
 
     return question;
@@ -134,11 +139,25 @@ class QuizStore extends Store {
         return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined);
     }
 
+    getBoughtQuizzes(): Array<Quiz> {
+        var quizzes =  _quizzes.slice().filter( q => q.meta.originalQuizId !== undefined);
+        quizzes.forEach(quiz => {
+            var app = AppStore.getAppFromQuizId(quiz.meta.originalQuizId);
+            console.log('app??', app);
+            if (app){
+                quiz._extra = { app };
+            }
+
+        });
+        return quizzes;
+    }
+
     getQuizMeta(quizId): Quiz {
         var result = _quizzes.filter(t => t.uuid === quizId);
         return result.length === 1 ? result.slice()[0] : _fullQuizzes[quizId];
 
     }
+
 
     getQuiz(quizId?): QuizComplete {
         var fullQuiz;
