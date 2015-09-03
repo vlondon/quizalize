@@ -9,6 +9,12 @@ import QuizStore from './../../../stores/QuizStore';
 import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditDurationPicker from './CQEditDurationPicker';
 import TopicStore from './../../../stores/TopicStore';
+import CQImageUploader from './../../../components/utils/CQImageUploader';
+
+import MediaActions from './../../../actions/MediaActions';
+
+import imageUrlParser from './../../../utils/imageUrlParser';
+
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {
@@ -44,6 +50,8 @@ export default class CQEditNormal extends React.Component{
         this.handleCheckbox = this.handleCheckbox.bind(this);
         this.handleGetTopics = this.handleGetTopics.bind(this);
         this.handleDuration = this.handleDuration.bind(this);
+
+        this.handleQuestionImageFile = this.handleQuestionImageFile.bind(this);
 
         this.state = this.getState();
     }
@@ -208,6 +216,20 @@ export default class CQEditNormal extends React.Component{
         return TopicStore.getTopicTreeForTopic(this.props.quiz.meta.categoryId);
     }
 
+    handleQuestionImageFile(questionImageFile : File){
+        this.setState({questionImageFile});
+        MediaActions.uploadPicture(questionImageFile, 'question', 1200, 1200, false).then((imageURL)=>{
+
+            var question = this.state.question;
+            question.imageURL = imageURL;
+
+            this.setState({question}, ()=>{
+                this.props.onSave(this.state.question);
+            });
+
+        });
+    }
+
     render() : any {
 
         var imageLink;
@@ -219,24 +241,29 @@ export default class CQEditNormal extends React.Component{
                     <label className="left control-label">
                         Image Link&nbsp;
                         <a data-toggle="popover" title="Image Link" data-content="Provide an optional link to an image you would like to display."  data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
+
                     </label>
                     <div className="right">
 
-                        <div className="entry-input-full-width">
-                            <textarea
-                                id='imageBox'
-                                value={this.state.question.imageURL}
-                                onChange={this.handleChange.bind(this, 'imageURL', undefined)}
-                                onKeyDown={this.handleNext.bind(this, 'imageURL', undefined)}
-                                ref='imageURL'
-                                placeholder="e.g. http://www.quizalize.com/graph.png"
-                                autofocus="true"
-                                tabIndex="1"
-                                rows="1"
-                                cols="40"
-                                className="autogrow-short form-control"/>
-                        </div>
+                        <div className="entry-input-full-width cq-questionlist__image">
 
+
+
+                            <div className="cq-questionlist__image__img">
+                                <img src={imageUrlParser(this.state.question.imageURL)} className="" alt=""/>
+                            </div>
+
+                            <button className="btn btn-default cq-questionlist__image__button">
+                                <CQImageUploader
+                                    id="imageUploader"
+                                    className="cq-settings__upload__input"
+                                    onImageData={this.handleQuestionImageData}
+                                    onImageFile={this.handleQuestionImageFile}
+                                />
+                                Upload a picture
+                            </button>
+
+                        </div>
 
                     </div>
                 </div>

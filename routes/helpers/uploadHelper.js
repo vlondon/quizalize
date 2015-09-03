@@ -6,25 +6,44 @@ var Promise         = require('es6-promise').Promise;
 var logger          = require('../../logger');
 
 
-exports.resizeImage = function(path, processed, sizeX, sizeY){
+exports.resizeImage = function(path, processed, sizeX, sizeY, crop){
     return new Promise(function(resolve, reject){
+        logger.trace('resizeImage options', path, processed, sizeX, sizeY, crop);
+        if (crop === true) {
 
-        gm(path)
-            .options({imageMagick: true})
-            .geometry(sizeX, sizeY, '^')
-            .gravity('Center')
-            .crop(sizeX, sizeY)
-            .noProfile()
-            .quality(80)
-            .write(processed, function(errImageProcessed){
-                console.log('success?', errImageProcessed);
-                if (errImageProcessed) {
-                    reject(errImageProcessed);
-                } else {
-                    resolve(processed);
-                }
+            gm(path)
+                .options({imageMagick: true})
+                .geometry(sizeX, sizeY, '^')
+                .gravity('Center')
+                .crop(sizeX, sizeY)
+                .noProfile()
+                .quality(80)
+                .write(processed, function(errImageProcessed){
+                    console.log('success?', errImageProcessed);
+                    if (errImageProcessed) {
+                        reject(errImageProcessed);
+                    } else {
+                        resolve(processed);
+                    }
 
-            });
+                });
+        } else {
+            logger.trace('resizing');
+            gm(path)
+                .options({imageMagick: true})
+                .resize(sizeX, sizeY, '>')
+                .noProfile()
+                .quality(80)
+                .write(processed, function(errImageProcessed){
+                    console.log('success?', errImageProcessed);
+                    if (errImageProcessed) {
+                        reject(errImageProcessed);
+                    } else {
+                        resolve(processed);
+                    }
+
+                });
+        }
     });
 };
 

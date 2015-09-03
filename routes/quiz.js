@@ -532,16 +532,19 @@ exports.uploadMedia = function(req, res){
     var path = req.files.image.path;
 
     var hash = crypto.randomBytes(20).toString('hex');
-    var newName =  hash + '.png';
+    var extension = path.split('.')[1];
+    var newName =  hash + '.' + extension;
     var profileId = req.params.profileId;
     var sizeX = req.body.sizeX || 600;
     var sizeY = req.body.sizeY || 600;
+    var crop = req.body.crop !== undefined ? req.body.crop : true;
+    logger.trace('Image crop', crop);
     var folder = req.body.folder || 'quiz';
 
     uploadHelper.uploadPicture(profileId, path, newName, folder, 'original').then(function(){
         logger.trace('Image scaled start', path);
 
-        uploadHelper.resizeImage(path, newName, sizeX, sizeY).then(function(processedPath){
+        uploadHelper.resizeImage(path, newName, sizeX, sizeY, crop).then(function(processedPath){
             logger.trace('Image scaled successfully', processedPath);
 
             uploadHelper.uploadPicture(profileId, processedPath, newName, folder).then(function(result){

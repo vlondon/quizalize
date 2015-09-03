@@ -19,6 +19,7 @@
             }
         }
         &__label {
+
             position: absolute;
             background: rgba(#000, .5);
             display: block;
@@ -46,6 +47,7 @@
             }
         }
         &__component {
+            box-shadow: 2px 2px 4px 2px rgba(#000, .2);
             width: 100px;
             height: 100px;
             // display: inline-block;
@@ -223,6 +225,22 @@
         margin: 20px;
     }
 
+    &__image {
+        max-width: 200px;
+        max-height: 200px;
+        img {
+            width: 100%;
+        }
+
+        &__img {
+            float: left;
+        }
+
+        &__button {
+            margin-top: 2px;
+            float: left;
+        }
+    }
     .no-questions {
         text-align: center;
         h1, h2, h3 {
