@@ -12,6 +12,39 @@
         display: block;
         float: left;
         margin-right: 10px;
+        position: relative;
+        &:hover {
+            .cq-edit__icon__label {
+                display: block;
+            }
+        }
+        &__label {
+            position: absolute;
+            background: rgba(#000, .5);
+            display: block;
+            color: #FFF;
+            top: 0;
+            bottom: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 100%;
+            margin: 0;
+            padding-top: 25px;
+            font-size: 24px;
+            text-align: center;
+            display: none;
+            &__input {
+                position: absolute;
+                top: 0;
+                opacity: 0;
+                // bottom: 0;
+                left: 0;
+                // right: 0;
+                height: 100%;
+                width: 100%;
+                border-radius: 100%;
+            }
+        }
         &__component {
             width: 100px;
             height: 100px;

@@ -1,4 +1,9 @@
 /* eslint no-extra-boolean-cast: 0 */
+var fs              = require('fs');
+var AWS             = require('./../awssdk');
+var gm              = require('gm');
+var Promise         = require('es6-promise').Promise;
+var crypto          = require('crypto');
 //general zzish config
 var config          = require('../config.js');
 var email           = require("../email");
@@ -472,7 +477,7 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                             var params = {
                                 name: quiz.meta.name,
                                 link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
-                            }
+                            };
                             email.sendEmailTemplate('team@quizalize.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
@@ -500,13 +505,13 @@ exports.help = function(req, res){
     }
     var params = {
         name: name
-    }
+    };
     email.sendEmailTemplate('team@quizalize.com', [req.body.email], 'Quizalize Help', 'help', params);
     var params2 = {
         name: req.body.name,
         message: req.body.message,
         email: req.body.email
-    }
+    };
     email.sendEmailTemplate('admin@zzish.com', ['developers@zzish.com'], 'Help from Quizalize', 'dhelp', params2);
     res.send(true);
 };
@@ -521,4 +526,89 @@ exports.getQuizResults = function(req, res) {
 
 exports.quizoftheday = function(req, res) {
     res.render('quizoftheday', {quiz: { title: 'Space'}});
+};
+
+
+exports.uploadMedia = function(req, res){
+
+
+
+    var resizeImage = function(path, processed){
+        return new Promise(function(resolve, reject){
+
+            gm(path)
+                .options({imageMagick: true})
+                .geometry(500, 500, '^')
+                .gravity('Center')
+                .crop(500, 500)
+                .noProfile()
+                .quality(80)
+                .write(processed, function(errImageProcessed){
+                    console.log('success?', errImageProcessed);
+                    if (errImageProcessed) {
+                        reject(errImageProcessed);
+                    } else {
+                        resolve(processed);
+                    }
+
+                });
+        });
+    };
+
+    var uploadPicture = function(pathToUpload, newName, nameSuffix){
+
+        return new Promise(function(resolve, reject){
+            fs.readFile(pathToUpload, function(err, fileBuffer){
+                if (err){
+                    reject(err);
+                } else {
+
+                    var profileId = req.params.profileId;
+                    logger.trace('About to upload picture for quiz', id);
+
+                    var s3 = new AWS.S3();
+
+                    nameSuffix = nameSuffix ? '_' + nameSuffix : '';
+
+                    var params = {
+                        Bucket: 'zzish-upload-assets',
+                        Key: profileId + '/quiz/' + newName + nameSuffix +'.' + path.split('.')[1],
+                        Body: fileBuffer,
+                        ACL: 'public-read'
+                    };
+
+                    s3.putObject(params, function (perr, data) {
+                        if (perr) {
+                            logger.error('Error uploading data: ', perr);
+                            reject();
+                        } else {
+                            logger.trace('Successfully uploaded data to myBucket/myKey', data);
+                            resolve(params.Key);
+                        }
+                        // fs.unlink(pathToUpload);
+                    });
+                }
+            });
+        });
+    };
+    var deleteFile = function(path){
+        fs.unlink(path);
+    };
+
+    var path = req.files.image.path;
+    var id = req.body.id;
+    var hash = crypto.randomBytes(20).toString('hex');
+    var newName =  hash + '_icon';
+
+    uploadPicture(path, newName, 'original').then(function(){
+        logger.trace('Image scaled start', path);
+        resizeImage(path, newName).then(function(processedPath){
+            logger.trace('Image scaled successfully', processedPath);
+            uploadPicture(processedPath, newName).then(function(result){
+                res.json(result);
+                deleteFile(path);
+                deleteFile(processedPath);
+            });
+        }).catch(function(){ res.json(false); });
+    }).catch(function(){ res.json(false); });
 };

@@ -30,13 +30,16 @@ class CQImageUploader extends React.Component {
 
     }
 
+
+
     render () : any {
         return (
             <input type="file"
-                className="form-control"
                 ref="profilePicture"
                 accept="image/*"
+                id={this.props.id}
                 onChange={this.handlePicture}
+                className={`form-control ${this.props.className}`}
             />
         );
     }
@@ -44,12 +47,15 @@ class CQImageUploader extends React.Component {
 }
 CQImageUploader.propTypes = {
     onImageData: React.PropTypes.func,
-    onImageFile: React.PropTypes.func
+    onImageFile: React.PropTypes.func,
+    id: React.PropTypes.string.required,
+    className: React.PropTypes.string
 };
 
 CQImageUploader.defaultProps = {
     onImageData: function(){},
-    onImageFile: function(){}
+    onImageFile: function(){},
+    className: ''
 };
 
 

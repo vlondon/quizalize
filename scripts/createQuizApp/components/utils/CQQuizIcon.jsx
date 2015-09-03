@@ -49,12 +49,19 @@ var CQQuizIcon = React.createClass({
 
         var image = props.image;
         if (props.image && props.image.indexOf('http') === -1) {
-            image = 'https://s3-eu-west-1.amazonaws.com/zzish-upload-assets/' + this.props.image;
+            image = 'https://d15tuytjqnsden.cloudfront.net/' + this.props.image;
         }
 
         return {image};
 
     },
+
+    resetLocalImage: function(){
+        var image = undefined;
+        var imageData = undefined;
+        this.setState({image, imageData});
+    },
+
     render: function() {
         var randomIndex, image;
         if (this.props.name){
@@ -76,14 +83,15 @@ var CQQuizIcon = React.createClass({
             return img.indexOf("youtube") === -1 ? img : '//img.youtube.com/vi/' + img.split('/')[4] + "/0.jpg";
         };
 
-        if (this.state.image){
-            style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
-        } else if (this.props.children) {
-            image = this.props.children;
-        } else if (this.state.imageData) {
+        if (this.state.imageData) {
             //image = (<img src={this.state.imageData}/>);
             style.backgroundImage = `url(${this.state.imageData})`;
             console.info('this.props.imageData', this.props.imageData);
+        } else if (this.state.image){
+            style.backgroundImage = `url(${detectYoutubeThumbnail(this.state.image)})`;
+        } else if (this.props.children) {
+            image = this.props.children;
+
         } else {
             image = (<img src="/img/ui-create/icon_base.png" alt="" width="100%" height="100%"/>);
         }

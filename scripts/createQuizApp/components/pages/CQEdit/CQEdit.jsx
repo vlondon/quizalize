@@ -63,6 +63,7 @@ export default class CQEdit extends React.Component {
         this.getQuiz = this.getQuiz.bind(this);
         this.handleTopic = this.handleTopic.bind(this);
         this.handleName = this.handleName.bind(this);
+        this.handleIcon = this.handleIcon.bind(this);
 
     }
 
@@ -172,10 +173,14 @@ export default class CQEdit extends React.Component {
         } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
         }
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+        this.save().then( ()=> {
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         });
 
+    }
+
+    save(){
+        return QuizActions.newQuiz(this.state.quiz);
     }
 
     handleRemoveQuestion(question : Question, event : Object){
@@ -242,6 +247,14 @@ export default class CQEdit extends React.Component {
         this.setState({quiz});
     }
 
+    handleIcon(iconUrl: string) {
+        var quiz = this.state.quiz;
+        quiz.meta.imageUrl = iconUrl;
+        this.setState({quiz}, ()=>{
+            this.save();
+        });
+    }
+
     render() {
 
         if (this.state.quiz){
@@ -256,7 +269,8 @@ export default class CQEdit extends React.Component {
                     <div className="cq-edit__top">
 
                         <div className="cq-edit__icon">
-                            <CQEditIcon quiz={this.state.quiz}/>
+                            <CQEditIcon quiz={this.state.quiz}
+                                onIcon={this.handleIcon}/>
                         </div>
                         <div className="cq-edit__header">
 
