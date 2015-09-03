@@ -4,14 +4,16 @@ import UserStore from './../../stores/UserStore';
 
 var MediaApi = {
 
-    uploadPicture (quizId: string, file: Object) : Promise {
+    uploadPicture (file: Object, folder: string, sizeX: number = 600, sizeY:number = 600) : Promise {
 
         return new Promise((resolve, reject)=>{
             var uuid = UserStore.getUserId();
 
             request
                 .post(`/create/${uuid}/media`)
-                .field('id', quizId)
+                .field('folder', folder)
+                .field('sizeX', sizeX)
+                .field('sizeY', sizeY)
                 .attach('image', file, file.name)
                 .end(function(err, res){
                     if (err) {

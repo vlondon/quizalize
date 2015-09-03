@@ -2,6 +2,10 @@ var React = require('react');
 var UserStore = require('createQuizApp/stores/UserStore');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
+
+import imageUrlParser from './../../../../utils/imageUrlParser';
+
+
 var CQDashboardProfile = React.createClass({
 
     propTypes: {
@@ -47,7 +51,7 @@ var CQDashboardProfile = React.createClass({
         if (this.state.user){
             if (this.state.user.attributes.bannerUrl){
                 bannerStyles = {
-                    backgroundImage: `url(${this.state.user.attributes.bannerUrl})`,
+                    backgroundImage: `url(${imageUrlParser(this.state.user.attributes.bannerUrl)})`,
                     height: 300
                 };
             }

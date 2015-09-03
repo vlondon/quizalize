@@ -1,5 +1,6 @@
 var React = require('react');
 var kolor = require('kolor');
+import imageUrlParser from './../../utils/imageUrlParser';
 
 var colours = [
     '#E16EC3',
@@ -47,10 +48,7 @@ var CQQuizIcon = React.createClass({
     getImage: function(props){
         props = props || this.props;
 
-        var image = props.image;
-        if (props.image && props.image.indexOf('http') === -1) {
-            image = 'https://d15tuytjqnsden.cloudfront.net/' + this.props.image;
-        }
+        var image = imageUrlParser(props.image);
 
         return {image};
 

@@ -14,7 +14,8 @@ var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions  = require('createQuizApp/actions/UserActions');
-var urlParams           = require('createQuizApp/utils/urlParams');
+var urlParams = require('createQuizApp/utils/urlParams');
+
 
 var CQProfile = React.createClass({
 
