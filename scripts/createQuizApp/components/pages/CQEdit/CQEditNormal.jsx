@@ -224,7 +224,7 @@ export default class CQEditNormal extends React.Component{
             question.imageURL = imageURL;
 
             this.setState({question}, ()=>{
-                this.props.onSave(this.state.question);
+                // this.props.onSave(this.state.question);
             });
 
         });
