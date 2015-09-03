@@ -22,8 +22,8 @@ var colours = [
 ];
 
 
-
 var CQQuizIcon = React.createClass({
+
     propTypes: {
         className: React.PropTypes.string,
         name: React.PropTypes.string,
@@ -85,7 +85,7 @@ var CQQuizIcon = React.createClass({
             style.backgroundImage = `url(${this.state.imageData})`;
             console.info('this.props.imageData', this.props.imageData);
         } else {
-            image = (<img src="/img/ui-create/icon_base.png" alt=""/>);
+            image = (<img src="/img/ui-create/icon_base.png" alt="" width="100%" height="100%"/>);
         }
 
 

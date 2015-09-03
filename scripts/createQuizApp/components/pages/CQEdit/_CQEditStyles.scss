@@ -5,12 +5,32 @@
     .btn {
         margin-left: 5px;
     }
+    &__top {
+        @include clearfix;
+    }
+    &__icon {
+        display: block;
+        float: left;
+        margin-right: 10px;
+        &__component {
+            width: 100px;
+            height: 100px;
+            // display: inline-block;
+            border-radius: 100%;
+            overflow: hidden;
+
+            background-size: cover;
+            background-position: center;
+        }
+    }
     &__header {
         font-weight: bold;
         margin-bottom: 20px;
+        display: inline-block;
 
         h1, h2, h3, h4 {
             font-weight: bold;
+            margin-top: 0;
         }
         .cq-autofill {
             display: inline-block;
