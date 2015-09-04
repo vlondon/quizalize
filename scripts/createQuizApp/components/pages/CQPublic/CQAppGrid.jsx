@@ -1,3 +1,4 @@
+/* @flow */
 var React = require('react');
 var router = require('createQuizApp/config/router');
 
@@ -7,6 +8,7 @@ var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
 
 var CQPagination = require('createQuizApp/components/utils/CQPagination');
 
+import CQLink from './../../../components/utils/CQLink';
 import priceFormat from './../../../utils/priceFormat';
 
 var CQAppGrid = React.createClass({
@@ -148,6 +150,9 @@ var CQAppGrid = React.createClass({
                                     <div className="cq-appgrid__appdetails">
                                         <div className="cq-appgrid__appname">
                                             {app.meta.name}
+                                        </div>
+                                        <div className="cq-appgrid__author">
+                                            <CQLink href={`/quiz/user/${app.extra.author.uuid}`}>by {app.extra.author.name}</CQLink>
                                         </div>
                                         <div className="cq-appgrid__appquizzes">
                                             {howManyQuizzes(app.meta.quizzes.length)}

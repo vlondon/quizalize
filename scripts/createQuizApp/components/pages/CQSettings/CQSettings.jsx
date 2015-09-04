@@ -209,13 +209,14 @@ export default class CQSettings extends React.Component {
 
     handleBannerImageFile(bannerImageFile : Object) {
         this.setState({bannerImageFile});
-        MediaActions.uploadPicture(bannerImageFile, 'banner', 1070, 300).then((bannerUrl)=>{
-            var user = this.state.user;
-            user.attributes.bannerUrl = bannerUrl;
-            this.setState({user}, ()=>{
-                UserActions.update(this.state.user);
+        MediaActions.uploadPicture(bannerImageFile, 'banner', 1070, 1070, false)
+            .then((bannerUrl)=>{
+                var user = this.state.user;
+                user.attributes.bannerUrl = bannerUrl;
+                this.setState({user}, ()=>{
+                    UserActions.update(this.state.user);
+                });
             });
-        });
     }
 
 
