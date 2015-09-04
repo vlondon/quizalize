@@ -105,10 +105,13 @@ exports.indexQuiz =  function(req, res) {
 };
 
 exports.create =  function(req, res) {
+    var intercomId = process.env.intercomAppId || 'mnacdt52';
+    logger.trace('intercom Id', intercomId);
     res.render('create', {
         zzishapi: getZzishParam(),
         devServer: process.env.ZZISH_DEVMODE,
-        publicConfig: publicConfig
+        publicConfig: publicConfig,
+        intercomId: intercomId
     });
 };
 

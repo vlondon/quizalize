@@ -5,11 +5,11 @@ var image = require('assets/qz-mkt-header-cta-bggraphic.png');
 
 class CQPublicHeader extends React.Component {
     handleClick () {
-        /*eslint-disable */
+
         if (window.Intercom){
             window.Intercom('showNewMessage');
         }
-        /*eslint-enable */
+        
     }
     render () : any {
         return (
