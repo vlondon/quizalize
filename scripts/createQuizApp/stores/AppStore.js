@@ -15,7 +15,7 @@ type AppMeta = {
     name: string;
     price: number;
     profileId: string;
-    quizzes: string;
+    quizzes: Array<string>;
     updated: number;
 };
 
@@ -51,7 +51,6 @@ var _appInfo = {};
 var storeInit = false;
 var storeInitPublic = false;
 
-
 var AppObject = function():AppComplete{
     var user:Object = UserStore.getUser();
     var profileId = user.uuid || undefined;
@@ -65,7 +64,7 @@ var AppObject = function():AppComplete{
             name: '',
             price: 0,
             profileId,
-            quizzes: '',
+            quizzes: [],
             updated: Date.now()
         },
         payload: {

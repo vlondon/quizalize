@@ -1,56 +1,83 @@
 /* @flow */
-var React = require('react');
-var router = require('createQuizApp/config/router');
+import React from 'react';
+import router from './../../../config/router';
 
-var AppStore = require('createQuizApp/stores/AppStore');
-var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
+import AppStore from './../../../stores/AppStore';
+import type {App} from './../../../stores/AppStore';
+import CQQuizIcon from './../../../components/utils/CQQuizIcon';
+import CQSpinner from './../../../components/utils/CQSpinner';
 
-var CQPagination = require('createQuizApp/components/utils/CQPagination');
+import CQPagination from './../../../components/utils/CQPagination';
 
 import CQLink from './../../../components/utils/CQLink';
 import priceFormat from './../../../utils/priceFormat';
 
-var CQAppGrid = React.createClass({
+type Props = {
+    className: string;
+    appsPerPage: number;
+}
 
-    propTypes: {
-        className: React.PropTypes.string,
-        appsPerPage: React.PropTypes.number
-    },
+type State = {
+    apps: Array<App>;
+    pages?: number;
+    page: number;
+};
 
-    getDefaultProps: function() {
-        return {
-            appsPerPage: 10,
-            className: ''
-        };
-    },
+class CQAppGrid extends React.Component {
 
-    getInitialState: function() {
+    props: Props;
+    state: State;
+
+    constructor(props: Props) {
+        super(props);
         var initialState = this.getState(undefined, 1);
-        return initialState;
-    },
+        this.state = initialState;
 
-    componentWillReceiveProps: function(nextProps) {
+        this.getState = this.getState.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handlePagination = this.handlePagination.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
         this.setState(this.getState(nextProps));
-    },
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
         AppStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         AppStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    getState: function(props, page){
+    getState(props?: Props, page?: number) : State {
 
 
         var appCreate = function(apps){
-            var appPlaceholder = {
+
+            // code?: string;
+            // colour: string;
+            // created: number;
+            // description: string;
+            // iconURL: ?string;
+            // name: string;
+            // price: number;
+            // profileId: string;
+            // quizzes: Array<string>;
+            // updated: number;
+            //
+            var appPlaceholder:App = {
                 uuid: 'new',
                 meta: {
                     name: 'Create your own App',
-                    quizzes: []
+                    colour: '#FFFFFF',
+                    created: Date.now(),
+                    description: '',
+                    price: 0,
+                    profileId: '-1',
+                    iconURL: undefined,
+                    quizzes: [],
+                    updated: Date.now()
                 }
             };
             if (apps.filter(a => a.uuid === 'new').length === 0){
@@ -82,29 +109,32 @@ var CQAppGrid = React.createClass({
                 page
             };
         } else {
-            return { page: 1 };
+            return {
+                apps: [],
+                page: 1
+            };
         }
-    },
+    }
 
-    onChange: function(props, page){
+    onChange(props : Props, page : number ){
 
         this.setState(this.getState(props, page));
 
-    },
+    }
 
-    handleClick: function(app){
+    handleClick(app : App){
         if (app.uuid === 'new'){
             router.setRoute(`apps`);
         } else {
             router.setRoute(`/quiz/app/${app.uuid}`);
         }
-    },
+    }
 
-    handlePagination: function(page){
+    handlePagination(page : number){
         this.onChange(this.props, page);
-    },
+    }
 
-    render: function() {
+    render() : any  {
 
         var emptyState = this.state.apps && this.state.apps.length === 0;
         var loading = this.state.apps === undefined;
@@ -143,6 +173,15 @@ var CQAppGrid = React.createClass({
                 <div className={`cq-appgrid ${this.props.className} cq-appgrid__n${this.props.appsPerPage}`}>
                     <ul>
                         {this.state.apps.map((app) => {
+
+                            var author;
+                            if (app.extra && app.extra.author) {
+                                author = (
+                                    <div className="cq-appgrid__author">
+                                        <CQLink href={`/quiz/user/${app.extra.author.uuid}`}>by {app.extra.author.name}</CQLink>
+                                    </div>
+                                );
+                            }
                             return (
                                 <li className="cq-appgrid__app" key={app.uuid} onClick={this.handleClick.bind(this, app)}>
                                     <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
@@ -151,12 +190,12 @@ var CQAppGrid = React.createClass({
                                         <div className="cq-appgrid__appname">
                                             {app.meta.name}
                                         </div>
-                                        <div className="cq-appgrid__author">
-                                            <CQLink href={`/quiz/user/${app.extra.author.uuid}`}>by {app.extra.author.name}</CQLink>
-                                        </div>
+
                                         <div className="cq-appgrid__appquizzes">
                                             {howManyQuizzes(app.meta.quizzes.length)}
                                         </div>
+
+                                        {author}
 
                                         <div className="cq-appgrid__appprice">
                                             {app.uuid !== 'new' ? priceFormat(app.meta.price, '$', 'us') : ''}
@@ -178,7 +217,17 @@ var CQAppGrid = React.createClass({
 
 
     }
+}
 
-});
 
-module.exports = CQAppGrid;
+CQAppGrid.propTypes = {
+    className: React.PropTypes.string,
+    appsPerPage: React.PropTypes.number
+};
+
+CQAppGrid.defaultProps = {
+    appsPerPage: 10,
+    className: ''
+};
+
+export default CQAppGrid;
