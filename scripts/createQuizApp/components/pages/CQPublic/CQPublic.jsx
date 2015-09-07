@@ -134,7 +134,7 @@ export default class CQPublic extends React.Component {
                 onClose={this.handleDetailsClose}
                 quizId={this.state.quizDetails}/>);
         }
-        if (this.state.showApps ){
+        if (this.state.showApps){
             appGrid = (
                 <div>
                     <CQAppGrid appsPerPage={appsPerPage}/>

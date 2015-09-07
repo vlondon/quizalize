@@ -152,7 +152,7 @@ AppDispatcher.register(function(action) {
         case AppConstants.APP_SEARCH_LOADED:
             _publicApps = action.payload;
             _publicApps.forEach(function(app){
-                if (app.meta.quizzes) {
+                if (typeof app.meta.quizzes === 'string') {
                     app.meta.quizzes = app.meta.quizzes.split(',');
                 }
             });

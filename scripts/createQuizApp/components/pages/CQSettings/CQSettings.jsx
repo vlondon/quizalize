@@ -143,7 +143,9 @@ export default class CQSettings extends React.Component {
     handleChange(field: string, event: Object){
 
         var user = Object.assign({}, this.state.user);
+
         user.attributes[field] = event.target.value;
+
         var {canSave, errors} = this.isFormValid(user);
         this.setState({user, canSave, errors});
 
@@ -258,7 +260,7 @@ export default class CQSettings extends React.Component {
 
             schoolWebsite = (
                 <div className="cq-settings__profile-item form-group">
-                   <label htmlFor="url">School Website</label>
+                   <label htmlFor="url">Your website</label>
                    <input type="url" id="url"
                        className="form-control"
                        placeholder="e.g. http://www.school.com"
@@ -282,7 +284,8 @@ export default class CQSettings extends React.Component {
                 return (
                     <div>
                         <div className={`cq-settings__profile-item${classNameError(5)} form-group`}>
-                            <label htmlFor="url">Quizalize Profile URL</label>
+                            <label htmlFor="url">Your personal Quizalize url www.quizalize.com/profile/…</label>
+
                             <input type="text" id="profileUrl"
                                 className="form-control"
                                 placeholder = "e.g. Your own personal Quizalize URL"
@@ -290,7 +293,7 @@ export default class CQSettings extends React.Component {
                                 value={this.state.user.attributes.profileUrl}/>
                         </div>
                         <div className={`cq-settings__profile-item${classNameError(6)} form-group`}>
-                            <label htmlFor="url">Quizalize Banner URL <i>(suggested size is 1070 x 300)</i></label>
+                            <label htmlFor="url">Quizalize Banner URL <i>(suggested size is 1070px x 300px)</i></label>
 
                             <img src={imageUrlParser(this.state.user.attributes.bannerUrl)} className="cq-settings__banner"/>
                             <div className="cq-settings__upload">

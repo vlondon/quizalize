@@ -123,21 +123,37 @@ var AppApi = {
         });
     },
 
-    searchApps: function(search : string = '', categoryId : string) : Promise{
-        return new Promise(function(resolve, reject){
-            request.post(`/search/apps`)
-                .send({search, categoryId})
-                .end(function(error, res){
-                    if (error) {
-                        reject();
-                    } else {
-                        resolve(res.body);
-                    }
+    searchApps: (function(){
+
+        var promises = [];
+
+        return function(search : string = '', categoryId : string) : Promise {
+
+            var chosenPromise = promises.filter(p => p.search === search && p.categoryId === categoryId)[0];
+
+            if (chosenPromise){
+                return chosenPromise.promise;
+            } else {
+                var promise = new Promise(function(resolve, reject){
+                    request.post(`/search/apps`)
+                        .send({search, categoryId})
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+
+                        });
 
                 });
+                promises.push({ categoryId, search, promise });
+                return promise;
+            }
 
-        });
-    },
+        };
+    })(),
+    
     publishApp: function(app : App) : Promise {
         return new Promise(function(resolve, reject){
             var uuid = UserStore.getUserId();
