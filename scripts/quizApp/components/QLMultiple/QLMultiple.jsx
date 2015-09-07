@@ -3,6 +3,7 @@ var React = require('react');
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
 var QLLatex = require('quizApp/components/QLLatex');
+var QLImage = require('./../QLImage');
 
 var cssStates = [
     {
@@ -131,7 +132,7 @@ var QLMultiple = React.createClass({
                     <p className='question'>
                         {latexWrapper(this.props.question)}
                     </p>
-                    {this.props.imageURL && this.props.imageEnabled ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
+                    {this.props.imageURL && this.props.imageEnabled ? <QLImage src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers alternatives">
                         {showAnswer}
