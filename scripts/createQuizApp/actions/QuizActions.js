@@ -156,7 +156,7 @@ var QuizActions = {
     },
 
 
-    searchPublicQuizzes: debounce((searchString = '', categoryId) => {
+    searchPublicQuizzes: debounce((searchString = '', categoryId = '') => {
 
         QuizApi.searchQuizzes(searchString, categoryId)
             .then(function(quizzes){

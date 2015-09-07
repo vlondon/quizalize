@@ -13,7 +13,7 @@ import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
 import urlParams from './../../../utils/urlParams';
 
-var TransactionActions = require('./../../../actions/TransactionActions');
+import TransactionActions from './../../../actions/TransactionActions';
 
 import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';

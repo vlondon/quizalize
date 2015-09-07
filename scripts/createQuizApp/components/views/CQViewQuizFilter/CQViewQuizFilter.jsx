@@ -45,6 +45,8 @@ class CQViewQuizFilter extends React.Component {
     }
 
     componentDidMount() {
+        QuizActions.searchPublicQuizzes();
+        AppActions.searchPublicApps();
         TopicStore.addChangeListener(this.onChange);
     }
 

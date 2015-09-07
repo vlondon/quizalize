@@ -101,7 +101,7 @@ var AppActions = {
         return AppApi.uploadMedia(appId, file);
     },
 
-    searchPublicApps: debounce((searchString = '', categoryId, profileId) => {
+    searchPublicApps: debounce((searchString = '', categoryId = '', profileId) => {
 
         QuizApi.searchQuizzes(searchString, categoryId, profileId)
             .then(function(quizzes){
