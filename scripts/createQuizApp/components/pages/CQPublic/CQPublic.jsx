@@ -11,6 +11,7 @@ import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
+import CQPublicNoResults from './CQPublicNoResults';
 import urlParams from './../../../utils/urlParams';
 
 import TransactionActions from './../../../actions/TransactionActions';
@@ -165,6 +166,14 @@ export default class CQPublic extends React.Component {
                 </div>
             );
         }
+
+        var noContent;
+        if (this.state.noContent) {
+            noContent = <CQPublicNoResults/>;
+            appGrid = quizList = undefined;
+
+        }
+
         return (
             <CQPageTemplate className="cq-container cq-public">
                 <CQPublicHeader/>
@@ -177,6 +186,7 @@ export default class CQPublic extends React.Component {
                     allTopics={true}/>
 
 
+                {noContent}
                 {appGrid}
                 {quizList}
 
