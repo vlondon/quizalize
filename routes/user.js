@@ -113,7 +113,7 @@ exports.register =  function(req, res) {
             intercom.createUser({
                 'email': userEmail,
                 'user_id': data.uuid,
-                'created_at': Date.now()
+                'created_at': Date.now() / 1000
             });
             email.sendEmailTemplate('team@zzish.com', [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
         }
