@@ -60,7 +60,7 @@ export default class CQViewQuizPrice extends React.Component {
             price = 'Play in class';
             owned = true;
         } else if (this.props.quiz.meta.price && this.props.quiz.meta.price > 0){
-            price = 'Classroom version ' + priceFormat(this.props.quiz.meta.price, '$', 'us');
+            price = 'Play in class for '  + priceFormat(this.props.quiz.meta.price, '$', 'us');
         } else {
             price = 'Play in class';
         }

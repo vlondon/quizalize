@@ -2,11 +2,13 @@
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
+import UserStore from './../../stores/UserStore';
+
 var GroupApi = {
 
     getGroups: function() : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -28,7 +30,8 @@ var GroupApi = {
 
     getGroupContents: function() : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -50,7 +53,7 @@ var GroupApi = {
 
     unpublishQuiz: function(quizId : string, groupCode : string) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -72,7 +75,7 @@ var GroupApi = {
     publishNewAssignment: function(quizId : string, data : Object ) : Promise {
         return new Promise(function(resolve, reject){
 
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -95,7 +98,7 @@ var GroupApi = {
     publishAssignment: function(quizId : string, data : Object) : Promise {
         return new Promise(function(resolve, reject){
 
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();

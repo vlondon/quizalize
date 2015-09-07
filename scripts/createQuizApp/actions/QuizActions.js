@@ -1,4 +1,3 @@
-/* @flow */
 import type {Quiz, QuizComplete} from './../stores/QuizStore';
 var uuid                = require('node-uuid');
 
@@ -67,16 +66,16 @@ var QuizActions = {
             });
     },
 
-    loadQuizByCode: function(quizCode: string) : Promise{
-        return new Promise((resolve, reject)=>{
-
-        QuizApi.getQuizByCode(quizCode)
-            .then((quiz)=>{
-                resolve(quiz);
-            })
-            .catch(reject);
-        });
-    },
+    // loadQuizByCode: function(quizCode: string) : Promise{
+    //     return new Promise((resolve, reject)=>{
+    //
+    //     QuizApi.getQuizByCode(quizCode)
+    //         .then((quiz)=>{
+    //             resolve(quiz);
+    //         })
+    //         .catch(reject);
+    //     });
+    // },
 
     loadQuiz: function(quizId : string) : Promise {
         return new Promise((resolve, reject)=>{
@@ -124,7 +123,9 @@ var QuizActions = {
         return new Promise(function(resolve, reject){
 
             var savePurchased = QuizApi.putQuiz(purchased);
-            var getOriginal = QuizApi.getQuiz(purchased.meta.originalQuizId);
+            if (purchased.meta.originalQuizId) {
+                var getOriginal = QuizApi.getQuiz(purchased.meta.originalQuizId);
+            }
 
             Promise.all([savePurchased, getOriginal])
                 .then((value) => {
@@ -155,7 +156,7 @@ var QuizActions = {
     },
 
 
-    searchPublicQuizzes: debounce((searchString = '', categoryId) => {
+    searchPublicQuizzes: debounce((searchString = '', categoryId = '') => {
 
         QuizApi.searchQuizzes(searchString, categoryId)
             .then(function(quizzes){

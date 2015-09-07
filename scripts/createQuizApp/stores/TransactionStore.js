@@ -5,6 +5,19 @@ import AppDispatcher from './../dispatcher/CQDispatcher';
 
 var defaultCurrency = 'uk';
 
+type TransactionMeta = {
+    type: string;
+    quizId?: string;
+    appId?: string;
+    profileId: string;
+    price: number
+}
+export type Transaction = {
+    meta: TransactionMeta;
+    _token?: Object;
+}
+
+
 var us:Array<number> = [
     0,
     0.99,

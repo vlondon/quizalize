@@ -99,6 +99,7 @@ app.get('/create/:profileId/topics/', quiz.getUserTopics);
 app.get('/create/topics/', quiz.getTopics);
 app.post('/create/:profileId/topics/', quiz.postTopic);
 app.post('/create/:profileId/topics/:id/delete', quiz.deleteTopic);
+app.post('/create/:profileId/media/', quiz.uploadMedia);
 
 app.get('/create/:profileId/quizzes/', quiz.getMyQuizzes);
 app.get('/create/:profileId/quizzes/:id', quiz.getQuiz);
@@ -119,6 +120,7 @@ if (process.env.admin === "true") {
     app.get('/admin/approved', admin.approved);
     app.get('/admin/pending', admin.pendingQuizzes);
     app.get('/admin/stats', admin.stats);
+    app.get('/admin/metrics', admin.metrics);
     app.post('/admin/approve/:type/:id', admin.approve);
     app.post('/admin/approvefirst/:type/:id', admin.approvefirst);
 }

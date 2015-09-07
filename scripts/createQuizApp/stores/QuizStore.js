@@ -82,7 +82,7 @@ var QuizObject = function() : QuizComplete {
             featured: false,
             live: false,
             name: '',
-            profileId: UserStore.getUserId(),
+            profileId: UserStore.getUserId() || '-1',
             price: 0,
             random: false,
             created: Date.now(),

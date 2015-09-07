@@ -51,8 +51,12 @@ class UserStore extends Store {
         return _user;
     }
 
-    getUserId(): string {
-        return _user.uuid;
+    getUserId(): ?string {
+        if (this.isLoggedIn()){
+            return _user.uuid;
+        } else {
+            return undefined;
+        }
     }
 
 
@@ -100,7 +104,7 @@ class UserStore extends Store {
 }
 
 var userStore = new UserStore();
-
+export default userStore;
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
@@ -154,6 +158,3 @@ AppDispatcher.register(function(action) {
             // no op
     }
 });
-
-
-module.exports = userStore;

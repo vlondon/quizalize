@@ -1,13 +1,17 @@
+/* @flow */
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
+import type {Transaction} from './../../stores/TransactionStore';
+import UserStore from './../../stores/UserStore';
+
 var AppApi = {
 
-    get: function(){
+    get: function() : Promise {
         return new Promise(function(resolve, reject){
 
             // reject();
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -26,10 +30,10 @@ var AppApi = {
     },
 
 
-    put: function(transaction){
+    put: function(transaction : Transaction) : Promise {
         return new Promise(function(resolve, reject){
 
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -48,9 +52,9 @@ var AppApi = {
         });
     },
 
-    decrypt: function(token){
+    decrypt: function(token : string ) : Promise {
         return new Promise((resolve, reject)=>{
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = UserStore.getUserId();
 
             if (!uuid) {
                 reject();

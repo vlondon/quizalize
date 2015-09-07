@@ -45,6 +45,8 @@ class CQViewQuizFilter extends React.Component {
     }
 
     componentDidMount() {
+        QuizActions.searchPublicQuizzes();
+        AppActions.searchPublicApps();
         TopicStore.addChangeListener(this.onChange);
     }
 
@@ -200,7 +202,7 @@ class CQViewQuizFilter extends React.Component {
 
                 <div className="cq-quizfilter__context">
 
-                    {/*<div className="cq-quizfilter__search form-inline">
+                    <div className="cq-quizfilter__search form-inline">
                         <div className="form-group">
                             <div className="input-group">
 
@@ -212,7 +214,7 @@ class CQViewQuizFilter extends React.Component {
                                     value={this.state.searchString}/>
                             </div>
                         </div>
-                    </div>*/}
+                    </div>
 
                     {quizDropDown()}
                     {topicsDropDown()}

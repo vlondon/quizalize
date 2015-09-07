@@ -5,27 +5,17 @@ var router                  = require('./../config/router');
 var TransactionApi          = require('./../actions/api/TransactionApi');
 var TransactionConstants    = require('./../constants/TransactionConstants');
 var QuizActions             = require('./../actions/QuizActions');
-var UserStore               = require('./../stores/UserStore');
 var stripeSDK               = require('./../config/stripeSDK');
 var UserApi                 = require('./../actions/api/UserApi');
 var TransactionStore        = require('./../stores/TransactionStore');
 
+import UserStore    from './../stores/UserStore';
 import priceFormat  from './../utils/priceFormat';
 
 import type {Quiz}  from './../stores/QuizStore';
 import type {App}   from './../stores/AppStore';
+import type {Transaction}   from './../stores/TransactionStore';
 
-type TransactionMeta = {
-    type: string;
-    quizId?: string;
-    appId?: string;
-    profileId: string;
-    price: number
-}
-type Transaction = {
-    meta: TransactionMeta;
-    _token?: Object;
-}
 var purchaseComplete = function(){
     swal({
         title: 'Purchase complete!',
@@ -141,7 +131,7 @@ var TransactionActions = {
 
             swal({
                     title: 'Confirm Purchase',
-                    text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>${priceTag}</b>`,
+                    text: `Buy this quiz for ${priceTag} and use it as many times as you need with your classes`,
                     showCancelButton: true,
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
