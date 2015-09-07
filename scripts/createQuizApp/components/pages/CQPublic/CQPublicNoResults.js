@@ -53,7 +53,7 @@ class CQPublicNoResults extends React.Component {
         return (
             <div className="cq-public__noresult">
                 <h1>
-                    We coundl't find any content
+                    We couldn't find any content
                 </h1>
                 <p>You can create it yourself</p>
                 <p>Talk to us!</p>
