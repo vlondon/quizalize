@@ -1,10 +1,12 @@
 /* @flow */
 
 import Store from './Store';
+import UserIdStore from './UserIdStore';
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
 var UserActions = require('./../actions/UserActions');
+
 
 type UserAttributes = {
     location?: string;
@@ -117,6 +119,7 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_PROFILE_UPDATED:
         case UserConstants.USER_REGISTERED:
             _user = action.payload;
+            UserIdStore.setUserId(_user.uuid);
             userStore.emitChange();
             break;
         //

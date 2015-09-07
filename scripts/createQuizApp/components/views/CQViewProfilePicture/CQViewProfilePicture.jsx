@@ -61,7 +61,6 @@ var CQViewProfilePicture = React.createClass({
         var width = parseInt(props.width, 10);
         var height = parseInt(props.height, 10);
 
-
         return {picture, width, height};
 
     },

@@ -1,15 +1,15 @@
 /* @flow */
 var request = require('superagent');
 
-import UserStore from './../../stores/UserStore';
+import UserIdStore from './../../stores/UserIdStore';
 import cookies from './../../utils/cookies';
 
 var UserApi = {
 
     get: function() : Promise {
-        console.info('local UUIDA', UserStore);
+        console.info('local UUIDA', UserIdStore);
         return new Promise((resolve, reject) => {
-            var localUuid = UserStore ? UserStore.getUserId() : undefined;
+            var localUuid = UserIdStore ? UserIdStore.getUserId() : undefined;
             console.info('local UUID', localUuid);
             var uuid = localUuid ? localUuid : cookies.getItem('cqUuid');
             var token = localStorage.getItem('token');
@@ -75,7 +75,7 @@ var UserApi = {
 
     post: function(user : Object) : Promise {
         return new Promise((resolve, reject) => {
-            var uuid = UserStore.getUserId();
+            var uuid = UserIdStore.getUserId();
             if (!uuid){
                 reject();
             } else {
@@ -203,7 +203,7 @@ var UserApi = {
     },
 
     trackEvent: function(name : string, meta: Object){
-        var uuid = UserStore.getUserId();
+        var uuid = UserIdStore.getUserId();
         if (uuid) {
             console.log(`/user/${uuid}/events/${name}`);
             request.post(`/user/${uuid}/events/${name}`)

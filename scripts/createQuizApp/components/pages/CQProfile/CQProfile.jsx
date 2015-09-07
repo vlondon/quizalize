@@ -77,9 +77,11 @@ var CQProfile = React.createClass({
             var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
         }
         var puser;
-        if (profileId) {
+        if (profileId && profileId !== UserStore.getUserId()) {
             puser = UserStore.getPublicUser(profileId);
+            console.warn('Loading public profile');
         } else {
+            console.warn('Loading own profile');
             puser = UserStore.getUser();
         }
         var newState = { puser, quizzes };
