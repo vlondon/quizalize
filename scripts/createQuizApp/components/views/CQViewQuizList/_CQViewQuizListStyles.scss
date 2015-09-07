@@ -38,22 +38,23 @@
         border-bottom: 1px solid $brand-color-grey-lighter;
         padding: 5px;
         width: 100%;
-
         background: #FFF;
-        margin-bottom: 5px;
+        padding-bottom: 10px;
+        border-radius: 5px;
+        // margin: 2px;
 
-
-
+        @include clearfix();
         &.interactive {
             cursor: pointer;
             &:hover {
-                background: $brand-color-grey-lighter;
+                background: rgba($brand-color-grey-lighter, .4);
             }
         }
+
         &:hover {
             /* background: lighten($brand-color-grey-lighter, 10%); */
         }
-        @include clearfix();
+
     }
 
     @at-root #{&}__quizicon {

@@ -1,4 +1,6 @@
 /* eslint no-extra-boolean-cast: 0 */
+
+var crypto          = require('crypto');
 //general zzish config
 var config          = require('../config.js');
 var email           = require("../email");
@@ -6,6 +8,7 @@ var querystring     = require('querystring');
 var zzish           = require("zzishsdk");
 var crypto          = require('crypto');
 var logger          = require('../logger');
+var uploadHelper    = require('./helpers/uploadHelper');
 
 var algorithm = 'aes-256-ctr';
 var password = '##34dsadfasdf££FE';
@@ -475,7 +478,7 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                             var params = {
                                 name: quiz.meta.name,
                                 link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
-                            }
+                            };
                             email.sendEmailTemplate('team@quizalize.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
@@ -503,13 +506,13 @@ exports.help = function(req, res){
     }
     var params = {
         name: name
-    }
+    };
     email.sendEmailTemplate('team@quizalize.com', [req.body.email], 'Quizalize Help', 'help', params);
     var params2 = {
         name: req.body.name,
         message: req.body.message,
         email: req.body.email
-    }
+    };
     email.sendEmailTemplate('admin@zzish.com', ['developers@zzish.com'], 'Help from Quizalize', 'dhelp', params2);
     res.send(true);
 };
@@ -524,4 +527,36 @@ exports.getQuizResults = function(req, res) {
 
 exports.quizoftheday = function(req, res) {
     res.render('quizoftheday', {quiz: { title: 'Space'}});
+};
+
+
+exports.uploadMedia = function(req, res){
+
+    var path = req.files.image.path;
+
+    var hash = crypto.randomBytes(20).toString('hex');
+    var extension = path.split('.')[1];
+    var newName =  hash + '.' + extension;
+    var profileId = req.params.profileId;
+    var sizeX = req.body.sizeX || 600;
+    var sizeY = req.body.sizeY || 600;
+    var crop = req.body.crop !== undefined ? req.body.crop : true;
+    logger.trace('Image crop', crop);
+    var folder = req.body.folder || 'quiz';
+
+    uploadHelper.uploadPicture(profileId, path, newName, folder, 'original').then(function(){
+        logger.trace('Image scaled start', path);
+
+        uploadHelper.resizeImage(path, newName, sizeX, sizeY, crop).then(function(processedPath){
+            logger.trace('Image scaled successfully', processedPath);
+
+            uploadHelper.uploadPicture(profileId, processedPath, newName, folder).then(function(result){
+                res.json(result);
+                uploadHelper.deleteFile(path);
+                uploadHelper.deleteFile(processedPath);
+            });
+
+        }).catch(function(){ res.json(false); });
+
+    }).catch(function(){ res.json(false); });
 };

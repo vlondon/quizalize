@@ -131,7 +131,7 @@ var TransactionActions = {
 
             swal({
                     title: 'Confirm Purchase',
-                    text: `Are you sure you want to purchase <br/><b>${quiz.meta.name}</b> <br/> for <b>${priceTag}</b>`,
+                    text: `Buy this quiz for ${priceTag} and use it as many times as you need with your classes`,
                     showCancelButton: true,
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',

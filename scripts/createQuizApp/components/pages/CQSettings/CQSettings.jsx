@@ -13,6 +13,12 @@ import UserStore from './../../../stores/UserStore';
 import {urlParams} from './../../../utils';
 import {sendEvent} from './../../../actions/AnalyticsActions';
 
+import CQImageUploader from './../../../components/utils/CQImageUploader';
+import MediaActions from './../../../actions/MediaActions';
+import imageUrlParser from './../../../utils/imageUrlParser';
+
+
+
 type Params = {
     redirect: string;
 }
@@ -22,6 +28,8 @@ type State = {
     canSave: boolean;
     errors: Array<boolean>;
     isNew: boolean;
+    profileImageFile?: Object;
+    profileImageData?: string;
 }
 
 
@@ -47,6 +55,11 @@ export default class CQSettings extends React.Component {
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
+
+        this.handleProfileImageData = this.handleProfileImageData.bind(this);
+        this.handleProfileImageFile = this.handleProfileImageFile.bind(this);
+        this.handleBannerImageData = this.handleBannerImageData.bind(this);
+        this.handleBannerImageFile = this.handleBannerImageFile.bind(this);
     }
 
     componentDidMount() {
@@ -130,7 +143,9 @@ export default class CQSettings extends React.Component {
     handleChange(field: string, event: Object){
 
         var user = Object.assign({}, this.state.user);
+
         user.attributes[field] = event.target.value;
+
         var {canSave, errors} = this.isFormValid(user);
         this.setState({user, canSave, errors});
 
@@ -174,6 +189,39 @@ export default class CQSettings extends React.Component {
         }
     }
 
+    handleProfileImageData(profileImageData : string) {
+        this.setState({profileImageData});
+    }
+
+    handleProfileImageFile(profileImageFile : Object) {
+        console.log('image file', profileImageFile);
+        this.setState({profileImageFile});
+        MediaActions.uploadPicture(profileImageFile, 'profile').then((avatarUrl)=>{
+            var user = this.state.user;
+            user.avatar = avatarUrl;
+            this.setState({user}, ()=>{
+                UserActions.update(this.state.user);
+            });
+        });
+    }
+
+    handleBannerImageData(bannerImageData : string) {
+        this.setState({bannerImageData});
+    }
+
+    handleBannerImageFile(bannerImageFile : Object) {
+        this.setState({bannerImageFile});
+        MediaActions.uploadPicture(bannerImageFile, 'banner', 1070, 1070, false)
+            .then((bannerUrl)=>{
+                var user = this.state.user;
+                user.attributes.bannerUrl = bannerUrl;
+                this.setState({user}, ()=>{
+                    UserActions.update(this.state.user);
+                });
+            });
+    }
+
+
     render() {
 
         var message, profilePicture, schoolWebsite, skipButton;
@@ -191,15 +239,28 @@ export default class CQSettings extends React.Component {
                             width="150"
                             height="150"
                             name={this.state.user.name}
-                            picture={this.state.user.avatar}/>
+                            picture={this.state.user.avatar}
+                            pictureData={this.state.profileImageData}/>
+
                     </div>
-                    <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
+                    <div className=" cq-settings__facebook">
+                        <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
+                    </div>
+                    <div className="cq-settings__upload">
+                        <CQImageUploader
+                            id="imageUploader"
+                            className="cq-settings__upload__input"
+                            onImageData={this.handleProfileImageData}
+                            onImageFile={this.handleProfileImageFile}
+                        />
+                        <button className="btn btn-danger " onClick={this.handleProfilePicture}>Upload a picture</button>
+                    </div>
                 </div>
             );
 
             schoolWebsite = (
                 <div className="cq-settings__profile-item form-group">
-                   <label htmlFor="url">School Website</label>
+                   <label htmlFor="url">Your website</label>
                    <input type="url" id="url"
                        className="form-control"
                        placeholder="e.g. http://www.school.com"
@@ -223,7 +284,8 @@ export default class CQSettings extends React.Component {
                 return (
                     <div>
                         <div className={`cq-settings__profile-item${classNameError(5)} form-group`}>
-                            <label htmlFor="url">Quizalize Profile URL</label>
+                            <label htmlFor="url">Your personal Quizalize url www.quizalize.com/profile/…</label>
+
                             <input type="text" id="profileUrl"
                                 className="form-control"
                                 placeholder = "e.g. Your own personal Quizalize URL"
@@ -231,12 +293,19 @@ export default class CQSettings extends React.Component {
                                 value={this.state.user.attributes.profileUrl}/>
                         </div>
                         <div className={`cq-settings__profile-item${classNameError(6)} form-group`}>
-                            <label htmlFor="url">Quizalize Banner URL</label>
-                            <input type="text" id="bannerUrl"
-                                className="form-control"
-                                placeholder = "e.g. Your own personal Quizalize Banner URL"
-                                onChange={this.handleChange.bind(this, 'bannerUrl')}
-                                value={this.state.user.attributes.bannerUrl}/>
+                            <label htmlFor="url">Quizalize Banner URL <i>(suggested size is 1070px x 300px)</i></label>
+
+                            <img src={imageUrlParser(this.state.user.attributes.bannerUrl)} className="cq-settings__banner"/>
+                            <div className="cq-settings__upload">
+                                <CQImageUploader
+                                    id="bannerUploader"
+                                    className="cq-settings__upload__input"
+                                    onImageData={this.handleBannerImageData}
+                                    onImageFile={this.handleBannerImageFile}
+                                />
+                                <button className="btn btn-danger">Upload a banner</button>
+                            </div>
+
                         </div>
                     </div>
                 );

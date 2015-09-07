@@ -1,4 +1,3 @@
-/* @flow */
 import type {Quiz, QuizComplete} from './../stores/QuizStore';
 var uuid                = require('node-uuid');
 

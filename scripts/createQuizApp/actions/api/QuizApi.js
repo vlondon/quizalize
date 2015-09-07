@@ -1,3 +1,4 @@
+/* @flow */
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
@@ -31,24 +32,32 @@ var QuizApi = {
     },
 
     searchQuizzes: (function(){
-        var promises = {};
+
+        var promises = [];
 
         return function(search: string = '', categoryId: string, profileId: string) : Promise {
-            var promise = promises[categoryId] || new Promise(function(resolve, reject){
-                request.post(`/search/quizzes`)
-                    .send({search, categoryId, profileId})
-                    .end(function(error, res){
-                        if (error) {
-                            reject();
-                        } else {
-                            resolve(res.body);
-                        }
+
+            var chosenPromise = promises.filter(p => p.search === search && p.categoryId === categoryId)[0];
+            if (chosenPromise){
+                return chosenPromise.promise;
+            } else {
+                var promise = new Promise(function(resolve, reject){
+                    request.post(`/search/quizzes`)
+                        .send({search, categoryId, profileId})
+                        .end(function(error, res){
+                            if (error) {
+                                reject();
+                            } else {
+                                resolve(res.body);
+                            }
+
+                        });
 
                     });
 
-            });
-            promises[categoryId] = promise;
-            return promise;
+                promises.push({ categoryId, search, promise });
+                return promise;
+            }
         };
     })(),
 

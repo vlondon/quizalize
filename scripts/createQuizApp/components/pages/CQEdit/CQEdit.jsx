@@ -6,6 +6,8 @@ import router from './../../../config/router';
 import CQPageTemplate from './../../../components/CQPageTemplate';
 import CQQuestionList from './CQQuestionList';
 import CQAutofill from './../../../components/utils/CQAutofill';
+import CQEditIcon from './CQEditIcon';
+
 
 import QuizStore from './../../../stores/QuizStore';
 import type {QuizComplete, Question} from './../../../stores/QuizStore';
@@ -26,7 +28,9 @@ type State = {
     quiz: QuizComplete;
     mode: string;
     saveEnabled: boolean;
-}
+    quizImageData?: string;
+    quizImageFile?: Object;
+};
 
 export default class CQEdit extends React.Component {
 
@@ -59,6 +63,8 @@ export default class CQEdit extends React.Component {
         this.getQuiz = this.getQuiz.bind(this);
         this.handleTopic = this.handleTopic.bind(this);
         this.handleName = this.handleName.bind(this);
+        this.handleIcon = this.handleIcon.bind(this);
+
     }
 
     getQuiz() : QuizComplete {
@@ -167,10 +173,14 @@ export default class CQEdit extends React.Component {
         } else if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
         }
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+        this.save().then( ()=> {
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         });
 
+    }
+
+    save(){
+        return QuizActions.newQuiz(this.state.quiz);
     }
 
     handleRemoveQuestion(question : Question, event : Object){
@@ -221,6 +231,7 @@ export default class CQEdit extends React.Component {
         this.setState({quiz});
     }
 
+
     enableDisableSave(saveEnabled: boolean){
         this.setState({saveEnabled});
 
@@ -236,6 +247,14 @@ export default class CQEdit extends React.Component {
         this.setState({quiz});
     }
 
+    handleIcon(iconUrl: string) {
+        var quiz = this.state.quiz;
+        quiz.meta.imageUrl = iconUrl;
+        this.setState({quiz}, ()=>{
+            this.save();
+        });
+    }
+
     render() {
 
         if (this.state.quiz){
@@ -247,29 +266,37 @@ export default class CQEdit extends React.Component {
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">
+                    <div className="cq-edit__top">
 
-                    <div className="cq-edit__header">
-                        <h3>Now editing quiz&nbsp;
-                            <input
-                                type="text"
-                                className="cq-edit__input-header"
-                                value={this.state.quiz.meta.name}
-                                onChange={this.handleName}
-                                placeholder={placeholderForName}
+                        <div className="cq-edit__icon">
+                            <CQEditIcon quiz={this.state.quiz}
+                                onIcon={this.handleIcon}/>
+                        </div>
+                        <div className="cq-edit__header">
+
+
+                            <h3>Now editing quiz&nbsp;
+                                <input
+                                    type="text"
+                                    className="cq-edit__input-header"
+                                    value={this.state.quiz.meta.name}
+                                    onChange={this.handleName}
+                                    placeholder={placeholderForName}
+                                />
+                            </h3>
+
+                            Using the topic&nbsp;
+                            <CQAutofill
+                                id="subject"
+                                value={this.state.quiz.meta.categoryId}
+                                onChange={this.handleTopic}
+                                data={topics}
+                                className="cq-edit__input-topic"
+                                placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
                             />
-                        </h3>
+                        </div>
 
-                        Using the topic&nbsp;
-                        <CQAutofill
-                            id="subject"
-                            value={this.state.quiz.meta.categoryId}
-                            onChange={this.handleTopic}
-                            data={topics}
-                            className="cq-edit__input-topic"
-                            placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
-                        />
                     </div>
-
 
                     <h4>Your questions</h4>
 
