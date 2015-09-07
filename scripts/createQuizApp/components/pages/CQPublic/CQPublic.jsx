@@ -17,7 +17,6 @@ import TransactionActions from './../../../actions/TransactionActions';
 
 import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';
-import AppStore from './../../../stores/AppStore';
 import UserStore from './../../../stores/UserStore';
 
 import type {Quiz} from './../../../stores/QuizStore';
@@ -30,6 +29,7 @@ type State = {
     showQuizzes: boolean;
     quizDetails: ?string;
     currentCategory: Object;
+    noContent: boolean;
 };
 
 export default class CQPublic extends React.Component {
@@ -38,12 +38,14 @@ export default class CQPublic extends React.Component {
 
     constructor(props : Object) {
         super(props);
+        var quizzes = QuizStore.getPublicQuizzes() || [];
         this.state = {
-            quizzes: QuizStore.getPublicQuizzes(),
+            quizzes,
             user: UserStore.getUser(),
             showApps: true,
             showQuizzes: true,
             quizDetails: undefined,
+            noContent: false,
             currentCategory: {
                 value: 'all'
             }
@@ -57,7 +59,6 @@ export default class CQPublic extends React.Component {
 
     componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
-        AppStore.addChangeListener(this.onChange);
         var quizId = urlParams().quid;
         if (quizId) {
             QuizActions.loadPublicQuiz(quizId).then(TransactionActions.buyQuiz);
@@ -66,22 +67,21 @@ export default class CQPublic extends React.Component {
 
     componentWillUnmount() {
         QuizStore.removeChangeListener(this.onChange);
-        AppStore.removeChangeListener(this.onChange);
-    }
-
-    getState(): Object {
-        var quizzes = QuizStore.getPublicQuizzes();
-        return { quizzes };
     }
 
     onChange(){
-        this.setState(this.getState());
+        var quizzes = QuizStore.getPublicQuizzes();
+        var noContent = false;
+        if (quizzes && quizzes.length === 0){
+            noContent = true;
+        }
+        this.setState({quizzes, noContent});
+
     }
 
     handlePreview(quiz : Quiz){
         sessionStorage.setItem('mode', 'preview');
         window.open(`/app#/play/public/${quiz.uuid}`);
-
     }
 
     handleSet(quiz : Quiz){
