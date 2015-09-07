@@ -47,7 +47,7 @@ app.use(function(req, res, next){
     next();
 });
 
-app.use(express.limit('4M'));
+
 app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
