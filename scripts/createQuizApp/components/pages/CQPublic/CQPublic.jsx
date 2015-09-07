@@ -31,6 +31,7 @@ type State = {
     quizDetails: ?string;
     currentCategory: Object;
     noContent: boolean;
+    search: string;
 };
 
 export default class CQPublic extends React.Component {
@@ -47,6 +48,7 @@ export default class CQPublic extends React.Component {
             showQuizzes: true,
             quizDetails: undefined,
             noContent: false,
+            search: '',
             currentCategory: {
                 value: 'all'
             }
@@ -56,6 +58,7 @@ export default class CQPublic extends React.Component {
         this.handleDetails = this.handleDetails.bind(this);
         this.handleDetailsClose = this.handleDetailsClose.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
+        this.handleSearchInput = this.handleSearchInput.bind(this);
     }
 
     componentDidMount() {
@@ -116,6 +119,9 @@ export default class CQPublic extends React.Component {
     handleCategoryChange(currentCategory : Object) {
         this.setState({currentCategory});
     }
+    handleSearchInput(search: string){
+        this.setState({search});
+    }
 
     handleDetails(quiz: Quiz){
         this.setState({quizDetails: quiz.uuid});
@@ -169,7 +175,8 @@ export default class CQPublic extends React.Component {
 
         var noContent;
         if (this.state.noContent) {
-            noContent = <CQPublicNoResults/>;
+            console.log('no content');
+            noContent = <CQPublicNoResults keyword={this.state.search}/>;
             appGrid = quizList = undefined;
 
         }
@@ -183,6 +190,7 @@ export default class CQPublic extends React.Component {
                     appEnabled={true}
                     onViewChange={this.handleViewChange}
                     onCategoryChange={this.handleCategoryChange}
+                    onSearchInput={this.handleSearchInput}
                     allTopics={true}/>
 
 
