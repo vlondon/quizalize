@@ -30,8 +30,9 @@ exports.getQuizzes = function(req, res){
     var profileId = req.body.profileId;
 
     var subjects = req.body.subjects;
+    var patt = new RegExp(searchString,"i");
     var usedSubs = subjects.filter(function(subject) {
-        return searchString!=='' && subject.name.match(searchString);
+        return searchString!=='' && patt.test(subject.name);
     });
 
     var now = Date.now();
