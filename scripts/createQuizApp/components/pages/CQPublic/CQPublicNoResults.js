@@ -3,6 +3,7 @@ import React from 'react';
 
 import AnalyticsActions from './../../../actions/AnalyticsActions';
 import debounce from './../../../utils/debounce';
+import CQLink from './../../../components/utils/CQLink';
 
 type Props = {
     keyword: string;
@@ -49,15 +50,34 @@ class CQPublicNoResults extends React.Component {
         sendEvent(this.state.keyword);
     }
 
+    handleTellUs(){
+        console.log('handleTellUs');
+        window.Intercom('showNewMessage');
+    }
+
+    handleSearchAgain(){
+        document.getElementById('marketplaceSearch').focus();
+    }
+
     render (): any {
         return (
             <div className="cq-public__noresult">
                 <h1>
-                    We couldn't find any content
+                    You’re the first!
                 </h1>
-                <p>You can create it yourself</p>
-                <p>Talk to us!</p>
-                <p>Search something else</p>
+                <h3>
+                    No-one has made a quiz about <span className="cq-public__noresult__keyword">{this.state.keyword}</span> yet,
+                    so just <CQLink href="/quiz/create">click here to make one for your class</CQLink> - it’s very easy.
+                    Just type your questions and play...
+                </h3>
+                <p>
+                    We’ll gladly help  - <CQLink href="#" onClick={this.handleTellUs}>tell us</CQLink> what you need
+
+                </p>
+                <p>
+                    or just try a <CQLink href="#" onClick={this.handleSearchAgain}>different search</CQLink>
+                </p>
+
             </div>
         );
 
