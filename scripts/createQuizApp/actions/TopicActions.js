@@ -32,6 +32,9 @@ var TopicActions = {
                     actionType: TopicConstants.PUBLIC_TOPICS_LOADED,
                     payload: topics
                 });
+            })
+            .catch(function(error){
+                console.error('there has been an error', error);
             });
     },
 
@@ -43,6 +46,9 @@ var TopicActions = {
                     actionType: TopicConstants.TOPICS_LOADED,
                     payload: topics
                 });
+            })
+            .catch(function(error){
+                console.error('there has been an error', error);
             });
     }
 };

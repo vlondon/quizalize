@@ -143,7 +143,8 @@ var QuizApi = {
                     .use(noCache)
                     .end(function(error, res){
                         if (error) {
-                            reject();
+                            console.error('there has been an error', error);
+                            reject('getTopics failed');
                         } else {
                             resolve(res.body);
                         }
@@ -161,16 +162,17 @@ var QuizApi = {
         return function() : Promise {
 
             promise = promise || new Promise(function(resolve, reject){
-                var uuid = localStorage.getItem('cqUuid');
+                var uuid = UserStore.getUserId();
 
                 if (!uuid) {
-                    reject();
+                    reject('getUserTopics: no uuid has been defined');
                 } else {
                     request.get(`/create/${uuid}/topics/`)
                         .use(noCache)
                         .end(function(error, res){
                             if (error) {
-                                reject();
+                                console.error('there has been an error', error);
+                                reject('getUserTopics failed', error);
                             } else {
                                 resolve(res.body);
                             }
