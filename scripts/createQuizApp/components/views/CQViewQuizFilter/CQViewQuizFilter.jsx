@@ -69,9 +69,10 @@ class CQViewQuizFilter extends React.Component {
     }
 
     handleSearch(ev : Object){
-
+        var searchString = ev.target.value;
+        this.props.onSearchInput(searchString);
         this.setState({
-            searchString: ev.target.value
+            searchString
         }, this.performSearch);
 
     }

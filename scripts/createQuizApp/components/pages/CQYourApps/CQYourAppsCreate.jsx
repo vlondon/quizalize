@@ -60,7 +60,8 @@ export default class CQYourAppsCreate extends React.Component{
             </CQLink>
         );
 
-        var numOfQuizzes = QuizStore.getPublicQuizzes().length;
+        var quizzes = QuizStore.getPublicQuizzes();
+        var numOfQuizzes = quizzes  ? quizzes.length : 0;
 
         var edit = this.props.appId ? <CQViewCreateApp appId={this.props.appId}/> : undefined;
         var create = this.props.newApp === true ? <CQViewCreateApp/> : undefined;
