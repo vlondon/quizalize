@@ -20,7 +20,6 @@ var CQAnalytics = React.createClass({
     componentDidMount: function() {
         AnalyticsStore.addChangeListener(this.onChange);
         UserStore.addChangeListener(this.onChange);
-        console.log('TRIGGERING INTERCOM', this.state.user, window.intercomSettings);
         if (this.state.user){
             window.intercomSettings = {
                 name: (this.state.currentUser.name || this.state.currentUser.email),
@@ -42,6 +41,7 @@ var CQAnalytics = React.createClass({
             /* eslint-enable */
         }
 
+        console.log('TRIGGERING INTERCOM', this.state.user, window.intercomSettings);
     },
 
     componentWillUnmount: function() {
