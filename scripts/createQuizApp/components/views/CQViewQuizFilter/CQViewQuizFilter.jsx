@@ -211,6 +211,7 @@ class CQViewQuizFilter extends React.Component {
                                     <i className="fa fa-search"></i>
                                 </span>
                                 <input type="text" className="form-control"
+                                    id="marketplaceSearch"
                                     onChange={this.handleSearch}
                                     value={this.state.searchString}/>
                             </div>
