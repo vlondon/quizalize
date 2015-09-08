@@ -41,9 +41,11 @@ var QuizApi = {
             if (chosenPromise){
                 return chosenPromise.promise;
             } else {
+                var TopicStore = require('./../../stores/TopicStore');
+                var subjects = TopicStore.getPublicSubjects();
                 var promise = new Promise(function(resolve, reject){
                     request.post(`/search/quizzes`)
-                        .send({search, categoryId, profileId})
+                        .send({search, categoryId, profileId, subjects})
                         .end(function(error, res){
                             if (error) {
                                 reject();
