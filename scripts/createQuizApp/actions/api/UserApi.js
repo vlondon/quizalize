@@ -163,7 +163,8 @@ var UserApi = {
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place
-                        localStorage.setItem('cqUuid', res.body.uuid);
+                        cookies.setItem('cqUuid', res.body.uuid, oneYear);
+                        // localStorage.setItem('cqUuid', res.body.uuid);
                         resolve(res.body);
                     }
                 });
