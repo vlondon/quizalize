@@ -20,7 +20,7 @@ var CQAnalytics = React.createClass({
     componentDidMount: function() {
         AnalyticsStore.addChangeListener(this.onChange);
         UserStore.addChangeListener(this.onChange);
-
+        console.log('TRIGGERING INTERCOM');
         if (this.state.user){
             window.intercomSettings = {
               name: (this.state.currentUser.name || this.state.currentUser.email),

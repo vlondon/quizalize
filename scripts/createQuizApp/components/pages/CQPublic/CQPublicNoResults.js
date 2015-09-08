@@ -14,8 +14,8 @@ type State = {
 var mounted = false;
 var sendEvent = debounce((keyword)=>{
     if (mounted){
-
         AnalyticsActions.sendEvent('marketplace_search', 'no_content', keyword);
+        AnalyticsActions.sendIntercomEvent('marketplace_search_no_result', {keyword});
     }
 }, 600);
 
