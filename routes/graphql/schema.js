@@ -7,7 +7,7 @@ import {
     GraphQLNonNull
 } from 'graphql/type';
 
-import graphQLUser from './graphql/graphQLUser';
+import graphQLUser from './graphQLUser';
 //console.log('GraphQLObjectType', GraphQLObjectType);
 let count = 0;
 
@@ -73,6 +73,9 @@ let userType = new GraphQLObjectType({
         email: {
             type: GraphQLString,
             description: 'User email'
+        },
+        attributes: {
+            type: GraphQLUserAttributes
         }
     })
 
