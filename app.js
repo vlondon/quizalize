@@ -120,6 +120,10 @@ if (process.env.admin === "true") {
     app.get('/admin/pending', admin.pendingQuizzes);
     app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
+    app.get('/admin/newmetric', admin.newMetric);
+    app.post('/admin/metrics', admin.data);
+    app.post('/admin/submitmetrics', admin.submitmetrics);
+
     app.post('/admin/approve/:type/:id', admin.approve);
     app.post('/admin/approvefirst/:type/:id', admin.approvefirst);
 }

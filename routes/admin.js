@@ -4,6 +4,7 @@ var config = require("../config"); //initialized zzish
 var email              = require('../email');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
+var db = require('./db');
 var QUIZ_CONTENT_TYPE   = "quiz";
 
 if (process.env.admin=="true") {
@@ -250,7 +251,7 @@ exports.stats = function(req, res){
     zzish_db.secure.post("db/activityinstance/query/", activityQuery, function(err, activityinstances){
         console.log("Fetching activities");
         zzish_db.secure.post("db/user/query/", {"query": "{'profile.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
-                        "project": "{ 'uuid': 1, 'profile': 1}"}, function(err, userList){
+                        "project": "{ 'uuid': 1, 'profile': 1, 'email': 1}"}, function(err, userList){
             zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'published', 'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c'}",
             "project": "{'profileId': 1, 'name': 1, 'type': 1, 'created': 1, 'updated': 1}"}, function(err, publishedList) {
                 console.log("Fetching content");
@@ -273,12 +274,13 @@ exports.stats = function(req, res){
                     var published = JSON.parse(publishedList.payload);
 
                     var today = Date.now();
-                    var lastWeek = Date.now() - 8 * 24 * 60 * 60 * 1000;
-                    var twoWeeksAgo = Date.now() - 15 * 24 * 60 * 60 * 1000;
-                    var threeWeeksAgo = Date.now() - 22 * 24 * 60 * 60 * 1000;
-                    var fourWeeksAgo = Date.now() - 29 * 24 * 60 * 60 * 1000;
-                    var lastMonth = Date.now() - 31 * 24 * 60 * 60 * 1000;
-                    var twoMonthsAgo = Date.now() - 61 * 24 * 60 * 60 * 1000;
+                    var lastWeek = Date.now() - 7 * 24 * 60 * 60 * 1000;
+                    var twoWeeksAgo = Date.now() - 14 * 24 * 60 * 60 * 1000;
+                    var threeWeeksAgo = Date.now() - 21 * 24 * 60 * 60 * 1000;
+                    var fourWeeksAgo = Date.now() - 28 * 24 * 60 * 60 * 1000;
+                    var lastMonth = Date.now() - 30 * 24 * 60 * 60 * 1000;
+                    var twoMonthsAgo = Date.now() - 60 * 24 * 60 * 60 * 1000;
+                    var threeMonthsAgo = Date.now() - 91 * 24 * 60 * 60 * 1000;
 
                     var stats = {};
                     stats.activityWeek = 0;
@@ -324,6 +326,35 @@ exports.stats = function(req, res){
                             }
                         });
                         return students;
+                    };
+                    var previewersFromActivities = function (activities, periodStart, periodEnd){
+                        var previewers = {};
+                        activities.forEach(function(activity){
+                            if (activity.timestamp < periodEnd && activity.timestamp > periodStart){
+                                if (activity.profileId !== undefined && activity.groupId == undefined){
+                                    if (previewers[activity.profileId] === undefined){
+                                        previewers[activity.profileId] = {count: 1};
+                                    }
+                                    else {
+                                        previewers[activity.profileId].count++ ;
+                                    }
+                                }
+
+                            }
+                        });
+                        return previewers;
+                    };
+                    var teacherPreviewers = function(previewers, users){
+                        var count = 0;
+                        for (var previewer in previewers){
+                            console.log("previewer", previewer);
+                            users.forEach(function(user){
+                                if(user.uuid === previewer && user.email !== undefined){
+                                    count++;
+                                }
+                            });
+                        }
+                        return count;
                     };
                     var totalStudents = function(students){
                         var studentCount = 0;
@@ -374,7 +405,7 @@ exports.stats = function(req, res){
                     var activeClassesFromActivityGroup = function (activityGroup){
                         var activeClasses = 0;
                         for (var groupId in activityGroup){
-                            if (activityGroup[groupId].count > 2){
+                            if (activityGroup[groupId].count > 1){
                                 activeClasses++;
                             }
                         }
@@ -483,6 +514,10 @@ exports.stats = function(req, res){
                     var studentsLastMonth = studentsFromActivities(activities, lastMonth, today);
                     stats.studentsLastMonth = totalStudents(studentsLastMonth);
                     console.log("students", stats.studentsLastMonth);
+                    var previewersThreeMonths = previewersFromActivities(activities, threeMonthsAgo, today);
+                    console.log("previewers", Object.keys(previewersThreeMonths).length);
+                    var teachPrevThree = teacherPreviewers (previewersThreeMonths, users);
+                    console.log("teachPrev", teachPrevThree);
 
                     stats.repeatStudentsLastMonth = repeatStudents(studentsLastMonth);
 
@@ -505,7 +540,233 @@ exports.stats = function(req, res){
     });
 };
 exports.metrics = function (req, res){
-    res.render("admin/metrics", {});
+    db.findDocuments("metrics",{}, -1, function(err, metrics) {
+        metrics.sort(function(x, y){
+            if (!x._id) {
+                return -1;
+            }
+            if (!y._id) {
+                return 1;
+            }
+            return y._id - x._id;
+        });
+        res.render("admin/metrics", {metrics: metrics});
+
+
+    });
+};
+
+var generateData = function(chosenWeek, callback) {
+    var activityQuery = {"query":"{'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'contentId': {$exists: true}, 'status': 'ACTIVITY_INSTANCE_COMPLETED'}",
+    "project":"{'timestamp': 1, 'contentId': 1, 'groupId': 1, 'profileId': 1}"};
+    zzish_db.secure.post("db/activityinstance/query/", activityQuery, function(err, activityinstances){
+        console.log("Fetching activities");
+        zzish_db.secure.post("db/user/query/", {"query": "{'profile.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
+                        "project": "{ 'uuid': 1, 'profile': 1, 'created': 1, 'email': 1}"}, function(err, userList){
+
+                zzish_db.secure.post("db/usergroup/query/", {"query": "{}", "project":"{'uuid': 1, 'ownerId': 1}"}, function(err, usergroup) {
+                    // var usersString = "#{JSON.stringify(users)}";
+                    // usersString = usersString.replace(/&quot;/g, '"');
+                    //
+                    // var activitiesString = "#{JSON.stringify(activities)}";
+                    // activitiesString = activitiesString.replace(/&quot;/g, '"');
+                    //
+                    // var userGroupString = "#{JSON.stringify(userGroup)}";
+                    // userGroupString = userGroupString.replace(/&quot;/g, '"');
+                    //
+                    // var publishedString = "#{JSON.stringify(published)}";
+                    // publishedString = publishedString.replace(/&quot;/g, '"');
+
+                    var userGroups = JSON.parse(usergroup.payload);
+                    var users = JSON.parse(userList.payload);
+                    var activities = JSON.parse(activityinstances.payload);
+
+                    var oneWeekBefore = chosenWeek - 7 * 24 * 60 * 60 * 1000;
+                    var twoWeeksBefore = chosenWeek - 14 * 24 * 60 * 60 * 1000;
+                    var fourWeeksBefore = chosenWeek - 28 * 24 * 60 * 60 * 1000;
+
+
+                    var signUps = function(users, periodStart, periodEnd){
+                        var count = 0;
+                        users.forEach(function(user){
+                            if(user.created > periodStart && user.created < periodEnd && user.email !== undefined) {
+                                count++;
+                            }
+                        });
+                        return count;
+                    };
+
+                    var signUpsGroup = function(users, periodStart, periodEnd){
+                        var signUpTeachers = {};
+                        users.forEach(function(user){
+                            if(user.created > periodStart && user.created < periodEnd && user.email !== undefined) {
+                                signUpTeachers[user.uuid]= {uuid: user.uuid, created: user.created};
+                            }
+                        });
+                        return signUpTeachers;
+                    };
+
+                    var ownerIdFromGroupId = function (groupId, userGroups){
+                        var userGroup = userGroups.filter(function (group){
+                            return group.uuid === groupId;
+                        })[0];
+                        if (userGroup.ownerId === undefined){
+                            return undefined;
+                        }
+                        else {
+
+                            return userGroup.ownerId;
+                        }
+                    };
+
+                    var activityGroupFromActivities = function (activities, periodStart, periodEnd){
+                        var activityGroup = {};
+                        activities.forEach(function(activity){
+                            if (activity.timestamp < periodEnd && activity.timestamp > periodStart){
+                                if (activity.groupId !== undefined){
+                                    if (activityGroup[activity.groupId] === undefined){
+                                        activityGroup[activity.groupId] = {count: 1};
+                                    }
+                                    else {
+                                        activityGroup[activity.groupId].count++ ;
+                                    }
+                                }
+
+                            }
+                        });
+                        return activityGroup;
+
+                    };
+
+
+
+
+                    var activeTeachersFromActivityGroup = function (activityGroup, userGroups){
+                        var activeTeachers = {};
+                        for (var groupId in activityGroup){
+                            if (activityGroup[groupId].count > 2){
+                                var ownerId = ownerIdFromGroupId(groupId, userGroups);
+                                activityGroup[groupId].ownerId = ownerId;
+                                if(activeTeachers[ownerId] === undefined){
+                                    activeTeachers[ownerId] = {activeClassCount: 1, ownerId: ownerId};
+                                }
+                                else {
+                                    activeTeachers[ownerId].activeClassCount++;
+                                }
+                            }
+                        };
+                        return activeTeachers;
+                    };
+
+
+
+                    var repeatUsers = function (teacherArray){
+                            var teacherWeek = teacherArray[0];
+                            var teacherMonth = teacherArray[1];
+                            var repeat = {};
+                            for (var teacher in teacherWeek){
+                                for (var oldTeacher in teacherMonth){
+                                    if (teacher === oldTeacher){
+                                        if (repeat[teacher] === undefined){
+                                            repeat[teacher] = {ownerId : teacher};
+                                        }
+                                    }
+
+                                };
+                            };
+                            console.log("repeat", repeat);
+                            return repeat;
+
+                    };
+
+                    var retainedUsers = function (repeat, users, periodStart, periodEnd){
+                        var signUpsMonth = signUpsGroup(users, periodStart, periodEnd);
+                        console.log("running retained");
+                        var count = 0;
+                        for (var rep in repeat){
+                            for (var sign in signUpsMonth){
+                                if(signUpsMonth[sign].uuid === repeat[rep].ownerId){
+                                    count++;
+                                }
+                            }
+
+                        }
+                        return count;
+                    };
+
+                    var activatedThisWeek = function (activeTeachers, signUps){
+                        var count;
+                        for (var teacher in activeTeachers){
+                            for (var signUp in signUps){
+                                if (activeTeachers[teacher].ownerId === signUps[signUp].uuid){
+                                    count++;
+                                }
+                            }
+                        }
+                        return count;
+                    };
+
+                    //Active Classes
+                    var activityGroup = [];
+                    activityGroup[0] = activityGroupFromActivities(activities, oneWeekBefore, chosenWeek);
+                    activityGroup[1] = activityGroupFromActivities(activities, twoWeeksBefore, oneWeekBefore);
+
+                    //Active Teachers
+                    var activeTeachers = [];
+                    activeTeachers[0] = activeTeachersFromActivityGroup(activityGroup[0], userGroups);
+                    activeTeachers[1] = activeTeachersFromActivityGroup(activityGroup[1], userGroups);
+                    var repeatGroup = repeatUsers(activeTeachers);
+                    var repeat = Object.keys(repeatGroup).length;
+                    var activated = Object.keys(activeTeachers[0]).length;
+                    console.log("activated", activated);
+                    console.log("repeat",repeat);
+                    var signUpThisWeek = signUps(users, oneWeekBefore, chosenWeek);
+                    console.log("SignUpThisWeek", signUpThisWeek);
+                    var retained = retainedUsers(repeatGroup, users, 0, fourWeeksBefore);
+                    console.log("retained", retained);
+                    var activatedWeek = activatedThisWeek(activeTeachers[0], signUpThisWeek);
+
+
+                    var calculatedMetrics = {
+                        "signups": signUpThisWeek,
+                        "active": repeat,
+                        "activated": activated,
+                        "retained": retained
+                    };
+                    console.log(calculatedMetrics);
+                    callback(calculatedMetrics);
+
+                });
+
+        });
+    });
+
+
+};
+
+exports.data = function (req, res){
+    generateData(req.body.timestamp,function(result) {
+        res.send(result);
+    });
+};
+
+exports.newMetric = function(req, res){
+    res.render('admin/newMetric');
+};
+
+exports.submitmetrics = function(req, res){
+    var result = req.body;
+    generateData(result._id, function(data) {
+        console.log("data",data);
+        for (var i in data) {
+            result[i] = data[i];
+        };
+        console.log(result);
+
+        db.saveDocument("metrics", result, function(err, result) {
+            res.send("OK"+" err:" + err + " result:" + result);
+        });
+    });
 };
 
 exports.approve = function(req, res){
