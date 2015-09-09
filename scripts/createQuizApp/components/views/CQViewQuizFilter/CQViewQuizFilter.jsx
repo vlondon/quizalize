@@ -69,9 +69,10 @@ class CQViewQuizFilter extends React.Component {
     }
 
     handleSearch(ev : Object){
-
+        var searchString = ev.target.value;
+        this.props.onSearchInput(searchString);
         this.setState({
-            searchString: ev.target.value
+            searchString
         }, this.performSearch);
 
     }
@@ -168,7 +169,7 @@ class CQViewQuizFilter extends React.Component {
             if (!this.props.appEnabled)
             {
                 return (
-                    <span>Show classroom quizzes for any age</span>
+                    <span>Show classroom quizzes</span>
                 );
             }
             else {
@@ -210,6 +211,7 @@ class CQViewQuizFilter extends React.Component {
                                     <i className="fa fa-search"></i>
                                 </span>
                                 <input type="text" className="form-control"
+                                    id="marketplaceSearch"
                                     onChange={this.handleSearch}
                                     value={this.state.searchString}/>
                             </div>

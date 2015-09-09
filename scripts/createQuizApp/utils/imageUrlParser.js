@@ -1,7 +1,7 @@
 var imageUrlParser = function(url){
     var CDNURL = 'https://d15tuytjqnsden.cloudfront.net/';
 
-    if (url && url.indexOf('http') === -1) {
+    if ((url && url.indexOf('http') === -1) && (url && url.indexOf('//') !== 0)) {
         url = CDNURL + url;
     }
 

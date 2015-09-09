@@ -162,8 +162,10 @@ var UserApi = {
                     } else if (error){
                         reject(error);
                     } else {
-                        // TODO Move this to a more convenient place
-                        localStorage.setItem('cqUuid', res.body.uuid);
+
+                        var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
+                        cookies.setItem('cqUuid', res.body.uuid, oneYear);
+
                         resolve(res.body);
                     }
                 });

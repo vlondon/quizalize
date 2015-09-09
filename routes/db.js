@@ -3,8 +3,8 @@ var MongoClient = require('mongodb').MongoClient;
 var async = require('async');
 
 //DB STUFF
-var dbname = "zzishdb";
-var port = "13017";
+var dbname = "quizadmin";
+var port = "27017";
 var dburl = "mongodb://localhost:"+port;
 
 var url = dburl + "/" + dbname;

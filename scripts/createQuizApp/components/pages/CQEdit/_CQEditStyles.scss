@@ -226,13 +226,20 @@
     }
 
     &__image {
-        max-width: 200px;
-        max-height: 200px;
+
+        float: none !important;
+        display: flex;
+        align-items: center;
+        @include clearfix;
         img {
-            width: 100%;
+
+            max-width: 200px;
+            max-height: 200px;
         }
 
         &__img {
+            max-width: 200px;
+            max-height: 200px;
             float: left;
         }
 
