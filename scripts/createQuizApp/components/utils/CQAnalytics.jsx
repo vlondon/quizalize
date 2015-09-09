@@ -50,6 +50,7 @@ var CQAnalytics = React.createClass({
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
         var intercomSettings;
         if (UserStore.isLoggedIn()){
+            var currentUser = UserStore.getUser();
             intercomSettings = {
                 name: (currentUser.name || currentUser.email),
                 email: (currentUser.email),
