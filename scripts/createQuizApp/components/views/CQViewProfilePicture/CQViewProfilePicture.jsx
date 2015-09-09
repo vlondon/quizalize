@@ -1,6 +1,8 @@
 var React = require('react');
 var kolor = require('kolor');
 
+import imageUrlParser from './../../../utils/imageUrlParser';
+
 var colours = [
     '#E16EC3',
     '#D4434A',
@@ -27,7 +29,8 @@ var CQViewProfilePicture = React.createClass({
     propTypes: {
         className: React.PropTypes.string,
         name: React.PropTypes.string,
-        picture: React.PropTypes.string
+        picture: React.PropTypes.string,
+        pictureData: React.PropTypes.string
     },
 
 
@@ -39,19 +42,25 @@ var CQViewProfilePicture = React.createClass({
         };
     },
 
+
     getInitialState: function() {
         return this.getImage();
     },
 
     componentWillReceiveProps: function(nextProps) {
-        this.setState(this.getImage(nextProps));
+        if (nextProps.pictureData){
+            this.setState({pictureData: nextProps.pictureData});
+        } else {
+            this.setState(this.getImage(nextProps));
+        }
     },
 
     getImage: function(props){
         props = props || this.props;
-        var picture = props.picture;
+        var picture = imageUrlParser(props.picture);
         var width = parseInt(props.width, 10);
         var height = parseInt(props.height, 10);
+
         return {picture, width, height};
 
     },
@@ -73,8 +82,9 @@ var CQViewProfilePicture = React.createClass({
             height: this.state.height
         };
 
-
-        if (this.state.picture){
+        if (this.state.pictureData) {
+            style.backgroundImage = `url(${this.state.pictureData})`;
+        } else if (this.state.picture){
             style.backgroundImage = `url(${this.state.picture})`;
         } else {
             image = (<i className="zz-ic_quizalize cq-viewprofilepicture__placeholder"/>);

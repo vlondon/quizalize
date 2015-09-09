@@ -2,6 +2,7 @@ var React = require('react');
 
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
+var QLImage = require('./../QLImage');
 
 var cssStates = [
     {
@@ -203,7 +204,7 @@ var QLScrambled = React.createClass({
                     <h3 className='question'>
                         {this.props.question}
                     </h3>
-                    {this.props.imageURL ? <img src={this.props.imageURL} className='ql-question-img'/> : null}
+                    {this.props.imageURL ? <QLImage src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers options">
                         {showAnswer}

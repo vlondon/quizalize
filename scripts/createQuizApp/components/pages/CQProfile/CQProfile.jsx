@@ -14,7 +14,8 @@ var QuizStore  = require('createQuizApp/stores/QuizStore');
 var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 var UserActions  = require('createQuizApp/actions/UserActions');
-var urlParams           = require('createQuizApp/utils/urlParams');
+var urlParams = require('createQuizApp/utils/urlParams');
+
 
 var CQProfile = React.createClass({
 
@@ -76,9 +77,11 @@ var CQProfile = React.createClass({
             var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
         }
         var puser;
-        if (profileId) {
+        if (profileId && profileId !== UserStore.getUserId()) {
             puser = UserStore.getPublicUser(profileId);
+            console.warn('Loading public profile');
         } else {
+            console.warn('Loading own profile');
             puser = UserStore.getUser();
         }
         var newState = { puser, quizzes };

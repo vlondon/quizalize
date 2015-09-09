@@ -70,14 +70,17 @@ var CQLink = React.createClass({
         if (this.props.onClick){
             this.props.onClick(ev);
         }
-        if (commandPressed === true){
-            window.open(this.props.href);
+        if (this.props.href !== '#'){
+            if (commandPressed === true){
+                window.open(this.props.href);
+            }
+            else {
+                router.setRoute(this.props.href);
+            }
         }
-        else {
 
-            router.setRoute(this.props.href);
-        }
     },
+
 
     render: function(){
         return (

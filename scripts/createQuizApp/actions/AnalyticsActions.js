@@ -1,5 +1,6 @@
 /* @flow */
 import AppDispatcher       from './../dispatcher/CQDispatcher';
+import UserApi from './../actions/api/UserApi';
 import AnalyticsConstants  from './../constants/AnalyticsConstants';
 
 export var sendEvent = function(category: string, action: string, label: string) {
@@ -22,16 +23,16 @@ export var trackPageView = function() {
 
 class AnalyticsActions {
 
-
-
-
     sendEvent(category: string, action: string, label: string){
-
         if (window.ga){
             window.ga('send', 'event', category, action, label);
         } else {
             console.warn('No GA object found');
         }
+    }
+
+    sendIntercomEvent(eventName : string, meta : Object){
+        UserApi.trackEvent(eventName, meta);
     }
 
 

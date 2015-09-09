@@ -1,6 +1,11 @@
 .cq-public {
+    padding: 20px;
 
     $quizIcon: 40px;
+    h1 {
+        margin-top: 0;
+        margin-bottom: 30px;
+    }
 
     &__headercta {
         position: relative;
@@ -24,8 +29,8 @@
             background: #D3EAE0;
             position: relative;
 
-            margin: 0 -10px;
-            padding: 10px;
+            margin: 0 -20px;
+            padding: 10px 30px;
             button {
                 /* Rectangle 4: */
                 @include button-filled(#FF6B00);
@@ -186,6 +191,23 @@
         &:hover {
             // background: $brand-color-grey;
             // color: $brand-color-grey-lighter;
+        }
+    }
+
+    &__noresult {
+        max-width: 600px;
+        color: #025D69;
+        h1 {
+            font-weight: bold;
+        }
+        h3 {
+            color: #6DBACA;
+        }
+        a {
+            color: #FF6B00;
+        }
+        &__keyword {
+            color: #025D69;
         }
     }
 }

@@ -12,7 +12,8 @@ html
         meta(name="apple-mobile-web-app-status-bar-style", content="black")
     
         script.
-            var publicConfig = !{JSON.stringify(publicConfig)}
+            var publicConfig = !{JSON.stringify(publicConfig)};
+            var intercomId = '!{intercomId}';
             
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/uuid.js')
@@ -29,7 +30,7 @@ html
 
         block header
 
-        script(src='#{session.zzishsdkurl}/zzish.js')        
+        script(src='/lib/zzish.js')        
              
         script(src='/lib/autogrow.js')
         script(src="/lib/Chart.js")
@@ -62,6 +63,9 @@ html
                 c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
                 b.getElementsByTagName("head")[0].appendChild(c); 
             })(window,document);
+            
+        script.
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
             
         script(src='//www.google-analytics.com/cx/api.js?experiment=IQFbtcIHT6-8sjOXWY1AYw')
             

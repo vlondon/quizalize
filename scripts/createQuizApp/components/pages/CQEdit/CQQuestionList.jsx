@@ -103,7 +103,7 @@ class CQQuestionList extends React.Component {
                 return (<CQLatexString>{question.question}</CQLatexString>);
             }
             else {
-                return (<div>{question.question}</div>);
+                return (<span>{question.question}</span>);
             }
         };
 
@@ -112,7 +112,7 @@ class CQQuestionList extends React.Component {
                 return (<CQLatexString>{question.answer}</CQLatexString>);
             }
             else {
-                return (<div>{question.answer}</div>);
+                return (<span>{question.answer}</span>);
             }
         };
 

@@ -61,7 +61,7 @@ export type Quiz = {
 }
 
 var _quizzes: Array<Quiz> = [];
-var _publicQuizzes = [];
+var _publicQuizzes;
 var _fullQuizzes = {};
 var _fullPublicQuizzes = {};
 var storeInit = false;
@@ -82,7 +82,7 @@ var QuizObject = function() : QuizComplete {
             featured: false,
             live: false,
             name: '',
-            profileId: UserStore.getUserId(),
+            profileId: UserStore.getUserId() || '-1',
             price: 0,
             random: false,
             created: Date.now(),
@@ -190,11 +190,15 @@ class QuizStore extends Store {
     }
 
     getPublicQuizzes(){
-        return _publicQuizzes.slice().reverse();
+        if (_publicQuizzes) {
+            return _publicQuizzes.slice().reverse();
+        }
     }
 
     getQuizzesForProfile(profileId) {
-        return _publicQuizzes.filter(quiz => quiz.meta.profileId === profileId).slice().reverse();
+        if (_publicQuizzes){
+            return _publicQuizzes.filter(quiz => quiz.meta.profileId === profileId).slice().reverse();
+        }
     }
 
     addChangeListener(callback){

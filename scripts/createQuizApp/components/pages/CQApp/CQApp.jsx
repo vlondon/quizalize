@@ -12,7 +12,7 @@ var TransactionActions = require('./../../../actions/TransactionActions');
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
-var UserStore = require('./../../../stores/UserStore');
+import UserStore from './../../../stores/UserStore';
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {App} from './../../../stores/AppStore';

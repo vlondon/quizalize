@@ -12,7 +12,7 @@ var CQPagination = require('./../../../components/utils/CQPagination');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 
 import TopicStore from './../../../stores/TopicStore';
-var UserStore = require('./../../../stores/UserStore');
+import UserStore from './../../../stores/UserStore';
 
 
 type Props = {
