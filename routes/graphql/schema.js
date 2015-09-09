@@ -6,6 +6,8 @@ import {
     GraphQLInterfaceType,
     GraphQLNonNull
 } from 'graphql/type';
+
+import graphQLUser from './graphql/graphQLUser';
 //console.log('GraphQLObjectType', GraphQLObjectType);
 let count = 0;
 
@@ -98,12 +100,13 @@ let schema = new GraphQLSchema({
                         email: 'b',
                         name: 'c'
                     };
-                    return new Promise(function(resolve){
-                        setTimeout(()=>{
-                            resolve(noUser);
-                        }, 200);
-                    });
-                    console.log('returning ', noUser); 
+                    return graphQLUser.getUserByid(uuid);
+                    // return new Promise(function(resolve){
+                    //     setTimeout(()=>{
+                    //         resolve(noUser);
+                    //     }, 200);
+                    // });
+                    // console.log('returning ', noUser);
                     // return noUser;
                     // return 'a';
                 }
