@@ -23,7 +23,7 @@ var CQAnalytics = React.createClass({
         var currentUser = UserStore.getUser();
         console.log('UserStore.isLoggedIn()', UserStore.isLoggedIn());
         if (UserStore.isLoggedIn()){
-            var intercomSettings = {
+            window.intercomSettings = {
                 name: (currentUser.name || currentUser.email),
                 email: (currentUser.email),
                 created_at: (this.state.currentUser.created / 1000),
@@ -36,9 +36,8 @@ var CQAnalytics = React.createClass({
                 app_id: intercomId
             };
         }
-
-        window.Intercom('boot', intercomSettings);
-        console.log('TRIGGERING INTERCOM', intercomSettings);
+        window.Intercom('boot', window.intercomSettings);
+        console.log('TRIGGERING INTERCOM', window.intercomSettings);
     },
 
     componentWillUnmount: function() {
@@ -48,6 +47,22 @@ var CQAnalytics = React.createClass({
 
     onChange: function(){
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
+        if (UserStore.isLoggedIn()){
+            var currentUser = UserStore.getUser();
+            window.intercomSettings = {
+                name: (currentUser.name || currentUser.email),
+                email: (currentUser.email),
+                created_at: (this.state.currentUser.created / 1000),
+                app_id: intercomId
+            };
+
+        }
+        else {
+            window.intercomSettings = {
+                app_id: intercomId
+            };
+        }
+        window.Intercom('update', window.intercomSettings);
         this.setState({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,
