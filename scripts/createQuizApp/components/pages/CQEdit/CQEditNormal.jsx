@@ -239,8 +239,8 @@ export default class CQEditNormal extends React.Component{
                 <div className='block clearfix'>
 
                     <label className="left control-label">
-                        Image Link&nbsp;
-                        <a data-toggle="popover" title="Image Link" data-content="Provide an optional link to an image you would like to display."  data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
+                        Image&nbsp;
+                        <a data-toggle="popover" title="Image" data-content="Upload an image you would like to display."  data-trigger="focus" data-placement="auto left" data-container="body" role="button" tabIndex="8" className="glyphicon glyphicon-question-sign"/>
 
                     </label>
                     <div className="right">
