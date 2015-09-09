@@ -49,6 +49,7 @@ type QuizPayload = {
 
 export type QuizComplete = {
     _temp?: boolean;
+    _new?: boolean;
     uuid: string;
     meta: QuizMeta;
     payload: QuizPayload;
