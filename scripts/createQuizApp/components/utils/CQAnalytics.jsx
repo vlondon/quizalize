@@ -22,9 +22,8 @@ var CQAnalytics = React.createClass({
         UserStore.addChangeListener(this.onChange);
         var currentUser = UserStore.getUser();
         console.log('UserStore.isLoggedIn()', UserStore.isLoggedIn());
-        var intercomSettings;
         if (UserStore.isLoggedIn()){
-            intercomSettings = {
+            window.intercomSettings = {
                 name: (currentUser.name || currentUser.email),
                 email: (currentUser.email),
                 created_at: (this.state.currentUser.created / 1000),
@@ -33,12 +32,12 @@ var CQAnalytics = React.createClass({
 
         }
         else {
-            intercomSettings = {
+            window.intercomSettings = {
                 app_id: intercomId
             };
         }
-        window.Intercom('boot', intercomSettings);
-        console.log('TRIGGERING INTERCOM', intercomSettings);
+        window.Intercom('boot', window.intercomSettings);
+        console.log('TRIGGERING INTERCOM', window.intercomSettings);
     },
 
     componentWillUnmount: function() {
@@ -48,10 +47,9 @@ var CQAnalytics = React.createClass({
 
     onChange: function(){
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
-        var intercomSettings;
         if (UserStore.isLoggedIn()){
             var currentUser = UserStore.getUser();
-            intercomSettings = {
+            window.intercomSettings = {
                 name: (currentUser.name || currentUser.email),
                 email: (currentUser.email),
                 created_at: (this.state.currentUser.created / 1000),
@@ -60,11 +58,11 @@ var CQAnalytics = React.createClass({
 
         }
         else {
-            intercomSettings = {
+            window.intercomSettings = {
                 app_id: intercomId
             };
         }
-        window.Intercom('update', intercomSettings);
+        window.Intercom('update', window.intercomSettings);
         this.setState({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,
