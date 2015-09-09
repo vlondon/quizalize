@@ -10,7 +10,7 @@ var intercom = require('./../utils/intercom');
 
 var intercomId = window.intercomId;
 var intercomAdded = false;
-
+var localIntercom;
 
 type UserAttributes = {
     location?: string;
@@ -126,17 +126,20 @@ class UserStore extends Store {
                 created_at: Math.round((currentUser.created / 1000)),
                 app_id: intercomId
             };
+
+            if (intercomAdded === false){
+                intercom('boot', window.intercomSettings);
+            }
+
+            intercom('update', window.intercomSettings);
+            console.log('intercom', value, window.intercomSettings);
+            intercomAdded = true;
         } else {
             window.intercomSettings = {
                 app_id: intercomId
             };
         }
 
-        var value = intercomAdded ? 'updated' : 'boot';
-
-        console.log('intercom', value, window.intercomSettings);
-        intercom(value, window.intercomSettings);
-        intercomAdded = true;
 
     }
 }
