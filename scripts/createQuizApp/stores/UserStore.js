@@ -6,6 +6,10 @@ import UserIdStore from './UserIdStore';
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
 var UserActions = require('./../actions/UserActions');
+var intercom = require('./../utils/intercom');
+
+var intercomId = window.intercomId;
+var intercomAdded = false;
 
 
 type UserAttributes = {
@@ -23,6 +27,7 @@ export type User = {
     email: string;
     name: string;
     attributes: UserAttributes;
+    created: number;
 }
 
 var noUser:User = {
@@ -30,7 +35,8 @@ var noUser:User = {
     avatar: '',
     email: '',
     name: '',
-    attributes: {}
+    attributes: {},
+    created: Date.now()
 };
 
 var storeInit = false;
@@ -101,6 +107,36 @@ class UserStore extends Store {
             UserActions.request();
         }
         super.addChangeListener(callback);
+
+    }
+
+    emitChange(){
+        super.emitChange();
+        this.addIntercom();
+    }
+
+    addIntercom(){
+
+        var currentUser = this.getUser();
+
+        if (this.isLoggedIn()){
+            window.intercomSettings = {
+                name: (currentUser.name || currentUser.email),
+                email: (currentUser.email),
+                created_at: Math.round((currentUser.created / 1000)),
+                app_id: intercomId
+            };
+        } else {
+            window.intercomSettings = {
+                app_id: intercomId
+            };
+        }
+
+        var value = intercomAdded ? 'updated' : 'boot';
+
+        console.log('intercom', value, window.intercomSettings);
+        intercom(value, window.intercomSettings);
+        intercomAdded = true;
 
     }
 }
