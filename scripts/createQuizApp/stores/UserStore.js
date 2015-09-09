@@ -132,7 +132,7 @@ class UserStore extends Store {
             }
 
             intercom('update', window.intercomSettings);
-            console.log('intercom', value, window.intercomSettings);
+            
             intercomAdded = true;
         } else {
             window.intercomSettings = {
