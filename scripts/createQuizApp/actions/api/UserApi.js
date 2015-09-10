@@ -54,7 +54,7 @@ var UserApi = {
                             categoryId,
                             imageUrl,
                             price,
-                            update
+                            updated
                         }
                     },
                     apps {

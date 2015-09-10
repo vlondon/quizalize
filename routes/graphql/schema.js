@@ -108,7 +108,7 @@ var quizMeta = new GraphQLObjectType({
         price: {
             type: GraphQLFloat
         },
-        update: {
+        updated: {
             type: GraphQLInt
         }
     }
