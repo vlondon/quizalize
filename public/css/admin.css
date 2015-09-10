@@ -1,0 +1,49 @@
+#test {
+    color: blue;
+}
+#metrics {
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+    width: 800px;
+    margin: 0 auto;
+    font-family: Arial;
+}
+#metrics tbody tr td {
+    border-style: solid;
+    border-color: white;
+    width: 200px;
+    height: 100px;
+    position: relative;
+    color:white;
+}
+#metrics thead th {
+    width: 200px;
+    height: 100px;
+    text-align: center;
+
+}
+
+.change {
+    font-size:18px;
+
+    position: absolute;
+    top:0;
+    right: 0;
+}
+.big {
+    font-size:40px;
+    text-align: center;
+
+}
+.metric-title {
+    font-size:18px;
+    position: absolute;
+    bottom: 0;
+    left:0;
+    width: 100%;
+}
+#dateSelector{
+    width: 50px;
+    margin-left: 400px;
+}

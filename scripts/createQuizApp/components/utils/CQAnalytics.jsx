@@ -3,7 +3,7 @@ var React = require('react');
 var AnalyticsStore = require('createQuizApp/stores/AnalyticsStore');
 var UserStore = require('createQuizApp/stores/UserStore');
 
-var intercomId = window.intercomId;
+
 var CQAnalytics = React.createClass({
 
     getInitialState: function() {
@@ -20,25 +20,24 @@ var CQAnalytics = React.createClass({
     componentDidMount: function() {
         AnalyticsStore.addChangeListener(this.onChange);
         UserStore.addChangeListener(this.onChange);
-        var currentUser = UserStore.getUser();
-        console.log('UserStore.isLoggedIn()', UserStore.isLoggedIn());
-        if (UserStore.isLoggedIn()){
-            var intercomSettings = {
-                name: (currentUser.name || currentUser.email),
-                email: (currentUser.email),
-                created_at: (this.state.currentUser.created / 1000),
-                app_id: intercomId
-            };
-
-        }
-        else {
-            window.intercomSettings = {
-                app_id: intercomId
-            };
-        }
-
-        window.Intercom('boot', intercomSettings);
-        console.log('TRIGGERING INTERCOM', intercomSettings);
+        // var currentUser = UserStore.getUser();
+        // console.log('UserStore.isLoggedIn()', UserStore.isLoggedIn());
+        // if (UserStore.isLoggedIn()){
+        //     window.intercomSettings = {
+        //         name: (currentUser.name || currentUser.email),
+        //         email: (currentUser.email),
+        //         created_at: (currentUser.created / 1000),
+        //         app_id: intercomId
+        //     };
+        //
+        // }
+        // else {
+        //     window.intercomSettings = {
+        //         app_id: intercomId
+        //     };
+        // }
+        // window.Intercom('boot', window.intercomSettings);
+        // console.log('TRIGGERING INTERCOM', window.intercomSettings);
     },
 
     componentWillUnmount: function() {
@@ -48,6 +47,23 @@ var CQAnalytics = React.createClass({
 
     onChange: function(){
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
+        // if (UserStore.isLoggedIn()){
+        //     var currentUser = UserStore.getUser();
+        //     window.intercomSettings = {
+        //         name: (currentUser.name || currentUser.email),
+        //         email: (currentUser.email),
+        //         created_at: (currentUser.created / 1000),
+        //         app_id: intercomId
+        //     };
+        //
+        // }
+        // else {
+        //     window.intercomSettings = {
+        //         app_id: intercomId
+        //     };
+        // }
+        // console.log('Intercom updated', window.intercomSettings);
+        // window.Intercom('update', window.intercomSettings);
         this.setState({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,

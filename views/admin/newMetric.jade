@@ -1,0 +1,88 @@
+extends ./layout
+
+block body
+    script.
+        $(function() {
+            function prettyDate(dateString){
+                //if it's already a date object and not a string you don't need this line:
+                if (dateString=="" || dateString=="0") return "";
+                var date = new Date(dateString);
+                var d = date.getDate();
+                var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+                var m = monthNames[date.getMonth()];
+                var y = date.getFullYear();
+                var result = d+' '+m+' '+y;
+                if(result=="1 Jan 1970") return "";
+                return result;
+            };
+            var dateArray = [];
+            var monday = new Date(Date.UTC(2015, 8, 28, 0, 0 ,0));
+            console.log(monday);
+            var week = 7 * 24 * 60 * 60 * 1000;
+            console.log(monday-week);
+            for (var i = 0; i<10; i++){
+                    dateArray[i] = monday - i * week;
+                };
+            console.log(dateArray);
+            dateArray.forEach(function(date){
+                $('#monday').append($("<option />").val(date).text(prettyDate(date)));
+            });
+        });
+        
+    form(method="POST",action="/admin/submitmetrics")
+        div
+            label Current Monday Date
+                select(name="_id")#monday
+                    option 
+        div Communication
+            ul
+                li
+                    label Intercom
+                        input(name="intercom")
+                li
+                    label Email 
+                        input(name="email")
+                li
+                    label Social 
+                        input(name="social")
+                li
+                    label Real Life
+                        input(name="realLife")
+                li
+                    label Countries
+                        input(name="countries")
+        div Convert
+            ul
+                li
+                    label Visitors
+                        input(name="visitors")
+        div Share
+            ul
+                li
+                    label Followers
+                        input(name="followers")
+                li 
+                    label Sharers
+                        input(name="sharers")
+                li 
+                    label Reach 
+                        input(name="reach")
+                li
+                    label Schools
+                        input(name="schools")
+                li 
+                    label Schools with multiple teachers
+                        input(name="schoolsMulti")
+                li 
+                    label Reviews
+                        input(name="reviews")
+        div
+            input(type="submit")
+                    
+                        
+                    
+                
+            
+                
+            
+        

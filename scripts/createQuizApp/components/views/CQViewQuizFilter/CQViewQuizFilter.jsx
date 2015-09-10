@@ -94,7 +94,7 @@ class CQViewQuizFilter extends React.Component {
         this.props.onViewChange(kind.value);
     }
 
-    performSearch(){        
+    performSearch(){
 
         var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
         console.log('searchign for', this.state.searchString, category, this.props.profileId);
@@ -169,7 +169,7 @@ class CQViewQuizFilter extends React.Component {
             if (!this.props.appEnabled)
             {
                 return (
-                    <span>Show classroom quizzes for any age</span>
+                    <span>Show classroom quizzes</span>
                 );
             }
             else {
