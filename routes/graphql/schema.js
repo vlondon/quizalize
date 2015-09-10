@@ -18,7 +18,7 @@ var count = 0;
 
 var appMeta = new GraphQLObjectType({
     name: 'AppMeta',
-    fields: {
+    fields: () => ({
         code: {
             type: GraphQLString,
             name: 'App internal code'
@@ -54,15 +54,15 @@ var appMeta = new GraphQLObjectType({
         quizzes: {
             type: new GraphQLList(GraphQLString),
             resolve: (obj)=>{
-                console.log('obj', obj);
-                return obj.quizzes.split(',');
+                var quizzesID = obj.quizzes.split(',');
+                return quizzesID;
             }
         },
         updated: {
             type: GraphQLString,
             name: 'App updated'
         }
-    }
+    })
 });
 
 
