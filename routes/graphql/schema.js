@@ -1,19 +1,97 @@
+/* @flow */
 import {
     GraphQLObjectType,
     GraphQLSchema,
     GraphQLInt,
     GraphQLString,
-    GraphQLInterfaceType,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLFloat
 } from 'graphql/type';
 
 import graphQLUser from './graphQLUser';
 import graphQLQuiz from './graphQLQuiz';
+import graphQLApps from './graphQLApps';
 //console.log('GraphQLObjectType', GraphQLObjectType);
-let count = 0;
 
-let quizMeta = new GraphQLObjectType({
+var count = 0;
+
+// code?: string;
+// colour: string;
+// created: number;
+// description: string;
+// iconURL: ?string;
+// name: string;
+// price: number;
+// profileId: string;
+// quizzes: Array<string>;
+// updated: number;
+
+var appMeta = new GraphQLObjectType({
+    name: 'AppMeta',
+    fields: {
+        code: {
+            type: GraphQLString,
+            name: 'App internal code'
+        },
+        colour: {
+            type: GraphQLString,
+            name: 'App user defined colour'
+        },
+        created: {
+            type: GraphQLInt,
+            name: 'App creation timestamp'
+        },
+        description: {
+            type: GraphQLString,
+            name: 'App description'
+        },
+        iconURL: {
+            type: GraphQLString,
+            name: 'App icon url'
+        },
+        name: {
+            type: GraphQLString,
+            name: 'App name'
+        },
+        price: {
+            type: GraphQLFloat,
+            name: 'App price'
+        },
+        profileId: {
+            type: GraphQLString,
+            name: 'Author user id'
+        },
+        quizzes: {
+            type: new GraphQLList(GraphQLString),
+            resolve: (obj)=>{
+                console.log('obj', obj);
+                return obj.quizzes.split(',');
+            }
+        },
+        updated: {
+            type: GraphQLString,
+            name: 'App updated'
+        }
+    }
+});
+
+
+var appType = new GraphQLObjectType({
+    name: 'App',
+    fields: {
+        uuid: {
+            type: GraphQLString,
+            description: 'App id'
+        },
+        meta: {
+            type: appMeta,
+            descrition: 'App meta information'
+        }
+    }
+});
+
+var quizMeta = new GraphQLObjectType({
     name: 'QuizMeta',
     fields: {
         authorId: {
@@ -39,7 +117,7 @@ let quizMeta = new GraphQLObjectType({
 });
 
 
-let quizType = new GraphQLObjectType({
+var quizType = new GraphQLObjectType({
     name: 'Quiz',
     description: 'A character in the Star Wars Trilogy',
     fields: ()=>({
@@ -55,7 +133,7 @@ let quizType = new GraphQLObjectType({
 
 
 
-let GraphQLUserAttributes = new GraphQLObjectType({
+var userAttributes = new GraphQLObjectType({
     name: 'UserAttributes',
     fields: {
         location: {
@@ -98,7 +176,7 @@ let GraphQLUserAttributes = new GraphQLObjectType({
 
 
 
-let userType = new GraphQLObjectType({
+var userType = new GraphQLObjectType({
     name: 'UserType',
     description: 'UserType test',
     fields: () => ({
@@ -119,8 +197,10 @@ let userType = new GraphQLObjectType({
             description: 'User email'
         },
         attributes: {
-            type: GraphQLUserAttributes
+            type: userAttributes
         },
+
+        // dynamic data
         quizzes: {
             type: new GraphQLList(quizType),
             resolve: ({uuid})=>{
@@ -129,6 +209,14 @@ let userType = new GraphQLObjectType({
                 return graphQLQuiz.getUserQuizzes(uuid);
                 // return [];
             }
+        },
+
+        apps: {
+            type: new GraphQLList(appType),
+            resolve: ({uuid}) => {
+                console.log('getting apps', uuid);
+                return graphQLApps.getUserApps(uuid);
+            }
         }
     })
 
@@ -136,7 +224,7 @@ let userType = new GraphQLObjectType({
 });
 
 
-let schema = new GraphQLSchema({
+var schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'RootQueryType',
         fields: {
@@ -149,22 +237,7 @@ let schema = new GraphQLSchema({
                     }
                 },
                 resolve: (root, {uuid}) => {
-                    console.log('root, ', root, uuid);
-                    var noUser = {
-                        uuid: '-1',
-                        avatar: 'a',
-                        email: 'b',
-                        name: 'c'
-                    };
                     return graphQLUser.getUserByid(uuid);
-                    // return new Promise(function(resolve){
-                    //     setTimeout(()=>{
-                    //         resolve(noUser);
-                    //     }, 200);
-                    // });
-                    // console.log('returning ', noUser);
-                    // return noUser;
-                    // return 'a';
                 }
             },
             count: {

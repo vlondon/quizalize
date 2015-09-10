@@ -1,5 +1,4 @@
 var zzish = require("../../zzish");
-// var user = require('./../../user');
 
 class User {
 
@@ -11,7 +10,7 @@ class User {
     }
 
     toJSON(){
-        return this;
+        return this.user;
     }
 
     getUserQuizzes(){
@@ -64,8 +63,12 @@ class Users {
     loadUser(userId){
         return new Promise((resolve, reject) => {
             zzish.user(userId, (err, data) => {
-               if (err) {
-                   reject(err);
+                if (err) {
+                    console.log('User not found', err);
+                    if (err === "404") {
+                        reject('User not found');
+                    }
+                    reject(err);
                 } else {
                     var user = new User(data);
                     this.users.push(user);
