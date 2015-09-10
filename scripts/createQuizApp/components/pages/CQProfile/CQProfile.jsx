@@ -9,11 +9,11 @@ var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetail
 
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
-var QuizActions  = require('createQuizApp/actions/QuizActions');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-var AppStore = require('createQuizApp/stores/AppStore');
+// var QuizActions  = require('createQuizApp/actions/QuizActions');
+// var QuizStore  = require('createQuizApp/stores/QuizStore');
+// var AppStore = require('createQuizApp/stores/AppStore');
 var UserStore = require('createQuizApp/stores/UserStore');
-var UserActions  = require('createQuizApp/actions/UserActions');
+var UserActions = require('createQuizApp/actions/UserActions');
 var urlParams = require('createQuizApp/utils/urlParams');
 
 
@@ -26,73 +26,35 @@ var CQProfile = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        this.setState(this.getState(nextProps));
+        // this.setState(this.getState(nextProps));
     },
 
     getInitialState: function() {
-        var newState =  this.getState();
-        var params = urlParams();
-        if (params.cancel) {
-            window.location.href = "/quiz/login";
-        }
-        else if (params.token) {
-            UserActions.loginWithToken(params.token).then(function(user){
-                router.setRoute("/quiz/quizzes");
-            });
-        }
-        else {
-            newState.showQuizzes = true;
-            newState.user = UserStore.getUser();
-            if (this.props.profileUrl) {
-                UserActions.getPublicUserByUrl(this.props.profileUrl);
-            }
-        }
-        return newState;
+        return this.getState();
     },
 
     componentDidMount: function() {
-        QuizStore.addChangeListener(this.onChange);
-        AppStore.addChangeListener(this.onChange);
+        // QuizStore.addChangeListener(this.onChange);
+        // AppStore.addChangeListener(this.onChange);
         UserStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
-        QuizStore.removeChangeListener(this.onChange);
-        AppStore.removeChangeListener(this.onChange);
+        // QuizStore.removeChangeListener(this.onChange);
+        // AppStore.removeChangeListener(this.onChange);
         UserStore.removeChangeListener(this.onChange);
     },
 
     getState: function(props){
         props = props || this.props;
-        var profileId;
-        if (props.profileUrl) {
-            profileId = UserStore.getPublicUserByUrl(props.profileUrl);
-        }
-        else {
-            profileId = props.profileId || UserStore.getUser().uuid;
-        }
-        var quizzes = QuizStore.getQuizzesForProfile(profileId);
+        console.log('calling getPublicUser');
+        var profile = UserStore.getPublicUser(props.profileId);
 
-        if (quizzes && props.quizCode) {
-            var quiz = quizzes.filter( f => f.meta.code === props.quizCode )[0];
-        }
-        var puser;
-        if (profileId && profileId !== UserStore.getUserId()) {
-            puser = UserStore.getPublicUser(profileId);
-            console.warn('Loading public profile');
-        } else {
-            console.warn('Loading own profile');
-            puser = UserStore.getUser();
-        }
-        var newState = { puser, quizzes };
-
-        if (quiz && props.quizCode) {
-            newState.quizDetails = quiz.uuid;
-        }
-        return newState;
+        return {profile};
     },
 
     onChange: function(){
+
         this.setState(this.getState());
     },
 
@@ -150,22 +112,19 @@ var CQProfile = React.createClass({
                 quizId={this.state.quizDetails}/>);
         }
 
-        if (this.state.showQuizzes) {
-
-            quizList = (
-                <CQViewQuizList
-                    isQuizInteractive={true}
-                    isPaginated={true}
-                    onQuizClick={this.handleDetails}
-                    quizCode={this.props.quizCode}
-                    quizzes={this.state.quizzes}
-                    className="cq-public__list"
-                    sortBy="time"/>
-            );
-        }
+        quizList = (
+            <CQViewQuizList
+                isQuizInteractive={true}
+                isPaginated={true}
+                onQuizClick={this.handleDetails}
+                quizCode={this.props.quizCode}
+                quizzes={this.state.profile.quizzes}
+                className="cq-public__list"
+                sortBy="time"/>
+        );
         return (
             <CQPageTemplate className="cq-container cq-profile">
-                <CQDashboardProfile user={this.state.puser}/>
+                <CQDashboardProfile user={this.state.profile}/>
                 <div className="cq-profile__left">
                 </div>
                 <div className="cq-profile__right">

@@ -1,6 +1,7 @@
 /* @flow */
 import AppDispatcher       from './../dispatcher/CQDispatcher';
 import UserApi from './../actions/api/UserApi';
+
 import AnalyticsConstants  from './../constants/AnalyticsConstants';
 
 export var sendEvent = function(category: string, action: string, label: string) {
@@ -30,6 +31,7 @@ class AnalyticsActions {
             console.warn('No GA object found');
         }
     }
+
 
     sendIntercomEvent(eventName : string, meta : Object){
         UserApi.trackEvent(eventName, meta);
@@ -118,5 +120,6 @@ class AnalyticsActions {
     }
 }
 var instanceAnalyticsActions = new AnalyticsActions();
+
 
 export default instanceAnalyticsActions;

@@ -49,6 +49,7 @@ type QuizPayload = {
 
 export type QuizComplete = {
     _temp?: boolean;
+    _new?: boolean;
     uuid: string;
     meta: QuizMeta;
     payload: QuizPayload;
@@ -77,6 +78,7 @@ UserStore.addChangeListener(function(){
 var QuizObject = function() : QuizComplete {
     var quiz : QuizComplete = {
         uuid: uuid.v4(),
+        _new: true,
         meta: {
             categoryId: undefined,
             featured: false,
@@ -152,6 +154,7 @@ class QuizStore extends Store {
                         fullQuiz = new QuizObject();
                         if (quizId){
                             fullQuiz.uuid = quizId;
+                            fullQuiz._new = false;
                             fullQuiz._temp = true;
                             _fullQuizzes[fullQuiz.uuid] = fullQuiz;
                         }

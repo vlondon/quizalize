@@ -119,7 +119,9 @@ exports.create =  function(req, res) {
 };
 
 exports.landingpage =  function(req, res) {
-    res.render('home');
+    res.render('home', {
+        devServer: process.env.ZZISH_DEVMODE
+    });
 };
 
 

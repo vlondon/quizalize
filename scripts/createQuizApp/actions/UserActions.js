@@ -5,6 +5,7 @@ var urlParams           = require('createQuizApp/utils/urlParams');
 import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
 import router from './../config/router';
 import cookies from './../utils/cookies';
+import intercom from './../utils/intercom';
 
 var handleRedirect = function(){
     var params = urlParams();
@@ -122,6 +123,7 @@ var UserActions = {
 
         var logoutEnd = function(){
             localStorage.clear();
+            intercom('shutdown');
             cookies.removeItem('cqUuid');
             AppDispatcher.dispatch({
                 actionType: UserConstants.USER_LOGOUT
@@ -252,6 +254,7 @@ var UserActions = {
             payload: email
         });
     }
+
 };
 
 module.exports = UserActions;

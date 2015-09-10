@@ -222,9 +222,6 @@ var QuizActions = {
 
         return new Promise((resolve, reject) => {
 
-            var updatedQuiz = !!quiz.uuid;
-            quiz.uuid = quiz.uuid || uuid.v4();
-
             // if (quiz.meta.name === "") {
             //     quiz.meta.name = quiz.payload.questions[0].question;
             // }
@@ -239,7 +236,8 @@ var QuizActions = {
             delete quiz._temp;
             var promise = QuizApi.putQuiz(quiz);
 
-            if (!updatedQuiz) {
+            if (quiz._new) {
+                delete quiz._new;
                 UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             }
 

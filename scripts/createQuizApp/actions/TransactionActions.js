@@ -180,7 +180,7 @@ var TransactionActions = {
         }, (isConfirm) => {
 
             if (isConfirm){
-                UserApi.trackEvent('buy_quiz', {uuid: app.uuid, name: app.meta.name});
+                UserApi.trackEvent('buy_app', {uuid: app.uuid, name: app.meta.name});
                 setTimeout(()=>{
 
                     var newTransaction = {
