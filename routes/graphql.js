@@ -6,7 +6,7 @@ exports.graphql = function(req, res){
 
     graphql(schema, req.body)
         .then((result) => {
-            res.send(JSON.stringify(result, null, 2));
+            res.send(result);
         });
 
 };

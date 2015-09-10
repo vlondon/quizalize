@@ -101,6 +101,15 @@ var quizMeta = new GraphQLObjectType({
         },
         name: {
             type: GraphQLString
+        },
+        imageUrl: {
+            type: GraphQLString
+        },
+        price: {
+            type: GraphQLFloat
+        },
+        update: {
+            type: GraphQLInt
         }
     }
 });

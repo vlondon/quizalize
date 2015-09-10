@@ -37,18 +37,57 @@ var UserApi = {
     },
 
     getPublic: function(userId : string) : Promise {
+        var query = `
+            {
+                user(uuid: "${userId}") {
+                    name,
+                    avatar,
+                    uuid,
+                    attributes {
+                        location,
+                        profileUrl
+                    },
+                    quizzes {
+                        uuid,
+                        meta {
+                            name,
+                            categoryId,
+                            imageUrl,
+                            price,
+                            update
+                        }
+                    },
+                    apps {
+                        uuid,
+                        meta {
+                            name,
+                            iconURL,
+                            created,
+                            price,
+                            quizzes,
+                            description
+                        }
+                   }
+                }
+            }`;
+            console.log('query GRAPHQL', query);
         return new Promise((resolve, reject) => {
 
             if (!userId){
                 reject();
 
             } else {
-                request.get(`/user/${userId}`)
+                request.post(`/graphql/`)
+                    .set('Content-Type', 'application/graphql')
+                    .send(query)
                     .end(function(error, res){
                         if (error) {
                             reject();
+                        // } else if (res.body) {
+                            // reject();
                         } else {
-                            resolve(res.body);
+                            console.log('res', res);
+                            resolve(res.body.data.user);
                         }
                     });
 
