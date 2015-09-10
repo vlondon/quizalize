@@ -12,20 +12,9 @@ import {
 import graphQLUser from './graphQLUser';
 import graphQLQuiz from './graphQLQuiz';
 import graphQLApps from './graphQLApps';
-//console.log('GraphQLObjectType', GraphQLObjectType);
+
 
 var count = 0;
-
-// code?: string;
-// colour: string;
-// created: number;
-// description: string;
-// iconURL: ?string;
-// name: string;
-// price: number;
-// profileId: string;
-// quizzes: Array<string>;
-// updated: number;
 
 var appMeta = new GraphQLObjectType({
     name: 'AppMeta',
@@ -238,6 +227,19 @@ var schema = new GraphQLSchema({
                 },
                 resolve: (root, {uuid}) => {
                     return graphQLUser.getUserByid(uuid);
+                }
+            },
+            app: {
+                type: appType,
+                args: {
+                    uuid: {
+                        name: 'uuid',
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve: (root, {uuid}) => {
+                    console.log('graphQLApps',graphQLApps );
+                    return graphQLApps.getApp(uuid);
                 }
             },
             count: {

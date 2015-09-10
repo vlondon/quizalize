@@ -22,6 +22,17 @@ var Apps = {
                 }
             });
         });
+    },
+    getApp: (appId) => {
+        return new Promise((resolve, reject)=>{
+            zzish.getPublicContent('app', appId, (err, resp) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(resp);
+                }
+            });
+        });
     }
 };
 
