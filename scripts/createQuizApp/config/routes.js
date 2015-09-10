@@ -4,6 +4,7 @@ var React               = require('react');
 
 var CQPublic            = require('./../components/pages/CQPublic');
 var CQProfile           = require('./../components/pages/CQProfile');
+var CQOwnProfile        = require('./../components/pages/CQProfile/CQOwnProfile');
 var CQNotFound          = require('./../components/pages/CQNotFound');
 var CQLogin             = require('./../components/pages/CQLogin');
 var CQRegister          = require('./../components/pages/CQRegister');
@@ -59,7 +60,7 @@ var pagesArray: Array<Page> = [
         needsLogin: true,
         renderer: function(){
             React.render(
-                React.createElement(CQProfile),
+                React.createElement(CQOwnProfile),
                 document.getElementById('reactApp')
             );
         }
