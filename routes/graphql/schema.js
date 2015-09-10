@@ -4,12 +4,56 @@ import {
     GraphQLInt,
     GraphQLString,
     GraphQLInterfaceType,
+    GraphQLList,
     GraphQLNonNull
 } from 'graphql/type';
 
 import graphQLUser from './graphQLUser';
+import graphQLQuiz from './graphQLQuiz';
 //console.log('GraphQLObjectType', GraphQLObjectType);
 let count = 0;
+
+let quizMeta = new GraphQLObjectType({
+    name: 'QuizMeta',
+    fields: {
+        authorId: {
+            type: GraphQLString,
+            description: 'User name'
+        },
+        categoryId: {
+            type: GraphQLString,
+            description: 'User categoryId'
+        },
+        code: {
+            type: GraphQLString,
+            description: 'User categoryId'
+        },
+        created: {
+            type: GraphQLInt,
+            description: 'User categoryId'
+        },
+        name: {
+            type: GraphQLString
+        }
+    }
+});
+
+
+let quizType = new GraphQLObjectType({
+    name: 'Quiz',
+    description: 'A character in the Star Wars Trilogy',
+    fields: ()=>({
+        uuid: {
+            type: GraphQLString
+        },
+        meta: {
+            type: quizMeta,
+            description: 'Quiz meta information'
+        }
+    })
+});
+
+
 
 let GraphQLUserAttributes = new GraphQLObjectType({
     name: 'UserAttributes',
@@ -76,6 +120,15 @@ let userType = new GraphQLObjectType({
         },
         attributes: {
             type: GraphQLUserAttributes
+        },
+        quizzes: {
+            type: new GraphQLList(quizType),
+            resolve: ({uuid})=>{
+                // this has user
+                console.log('getting quizzes', uuid);
+                return graphQLQuiz.getUserQuizzes(uuid);
+                // return [];
+            }
         }
     })
 
