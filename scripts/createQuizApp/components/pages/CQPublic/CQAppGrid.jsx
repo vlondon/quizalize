@@ -52,20 +52,8 @@ class CQAppGrid extends React.Component {
 
     getState(props?: Props, page?: number) : State {
 
-
         var appCreate = function(apps){
 
-            // code?: string;
-            // colour: string;
-            // created: number;
-            // description: string;
-            // iconURL: ?string;
-            // name: string;
-            // price: number;
-            // profileId: string;
-            // quizzes: Array<string>;
-            // updated: number;
-            //
             var appPlaceholder:App = {
                 uuid: 'new',
                 meta: {

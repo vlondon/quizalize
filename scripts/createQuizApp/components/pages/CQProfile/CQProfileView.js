@@ -4,6 +4,7 @@ var router = require('./../../../config/router');
 
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
+import CQViewAppGrid from './../../views/CQViewAppGrid';
 
 var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
 // var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
@@ -92,6 +93,7 @@ class CQProfileView extends React.Component {
                 <div className="cq-profile__left">
                 </div>
                 <div className="cq-profile__right">
+                    <CQViewAppGrid apps={this.props.apps}/>
                     <h3>Viewing public quizzes from {this.props.profile && this.props.profile.name}</h3>
                     {quizDetails}
                     {quizList}
