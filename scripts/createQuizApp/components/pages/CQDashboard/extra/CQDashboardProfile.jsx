@@ -75,36 +75,44 @@ var CQDashboardProfile = React.createClass({
             var name = this.state.user.name && this.state.user.name.length !== 0 ? this.state.user.name : 'Quizalize user';
 
             profile = (
-                <div className={`cq-dashboard__bannerpicture ${className}`} style={bannerStyles}>
-                    <div className="cq-dashboard__profilepicture">
-                        <CQViewProfilePicture
-                            width="200"
-                            height="200"
-                            name={name}
-
-                            picture={this.state.user.avatar}/>
+                <div>
+                    <div className={`cq-dashboard__bannerpicture ${className}`} style={bannerStyles}>
                     </div>
-                    <div className="cq-dashboard__profileinfo">
+                    <div className="cq-dashboard__profile__extra">
 
-                        <h3>{name}</h3>
+                        <div className="cq-dashboard__profile__picture">
+                            <CQViewProfilePicture
+                                width="200"
+                                height="200"
+                                name={name}
 
-                        <div>
-                            <small>
-                                School
-                            </small>
-                            {school}
+                                picture={this.state.user.avatar}/>
                         </div>
-                        <div>
-                            <small>City</small>
-                            {this.state.user.attributes.location}
+                        <div className="cq-dashboard__profile__info">
+
+                            <div className="cq-dashboard__profile__info__entry">
+                                <h3>{name}</h3>
+                            </div>
+
+                            <div className="cq-dashboard__profile__info__entry">
+                                <small>
+                                    School
+                                </small>
+                                {school}
+                            </div>
+                            <div  className="cq-dashboard__profile__info__entry">
+                                <small>City</small>
+                                {this.state.user.attributes.location}
+                            </div>
+                            <div className="cq-dashboard__profile__info__entry">
+                                <a href={profileUrl}>
+                                    <small>Link to Quizalize Profile</small>
+                                </a>
+                            </div>
                         </div>
-                        <div>
-                            <a href={profileUrl}>
-                            <small>Link to Quizalize Profile</small>
-                            </a>
-                        </div>
+
+
                     </div>
-
                 </div>
             );
         }

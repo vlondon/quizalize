@@ -1,4 +1,5 @@
 // set variables for environment
+require('babel/register');
 require('pmx').init();
 var express     = require('express');
 var app         = express();
@@ -15,15 +16,15 @@ var appContent  = require('./routes/appContent');
 var transaction = require('./routes/transaction');
 var user        = require('./routes/user');
 var search      = require('./routes/search');
-var admin      = require('./routes/admin');
-var marketplace      = require('./routes/marketplace');
+var admin       = require('./routes/admin');
+var marketplace = require('./routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
 var intercom = require('./routes/intercom');
 
-
+var graphql = require('./routes/graphql').graphql;
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -51,9 +52,13 @@ app.use(function(req, res, next){
 app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
+app.use(bodyParser.text({ type: 'application/graphql' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({dest: './uploads/'})); // Image uploads
 app.use(compression());
+
+// graphql
+app.post('/graphql', graphql);
 
 //The static pages:
 app.get('/quiz/view/:page', function(req, res){

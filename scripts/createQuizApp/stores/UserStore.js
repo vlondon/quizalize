@@ -75,6 +75,7 @@ class UserStore extends Store {
 
     getPublicUser(userId: string): Object{
         var user = _users[userId];
+        console.log('getPublicUser', user, _users);
         if (user === undefined){
             UserActions.getPublicUser(userId);
             _users[userId] = null;
@@ -132,7 +133,7 @@ class UserStore extends Store {
             }
 
             intercom('update', window.intercomSettings);
-            
+
             intercomAdded = true;
         } else {
             window.intercomSettings = {
