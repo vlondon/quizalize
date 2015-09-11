@@ -802,6 +802,23 @@
     };
 
     /**
+     * Searchs a user by Attributes
+     *
+     * @param attributes - A set of attributes to search for on user. String key/value pairs
+     * @param callback - An optional callback after user has been saved on server
+     */
+    Zzish.userByAttributes = function (attributes, callback) {
+        var request = {
+            method: "POST",
+            url: getBaseUrl() + "profiles/authenticate/search",
+            data: attributes
+        };
+        sendData(request, function (err, data) {
+            callCallBack(err, data, callback);
+        })
+    };
+
+    /**
      * Creates a user object on the Zzish User Database. Email and password is at least required.
      *
      * @param email - The email of the user
@@ -858,6 +875,55 @@
         })
     };
 
+    /**
+     * Authorizes user to log in straight from the developer's app by authorizing the user. An email will be sent
+     *
+     * @param userId - The Developer User Id
+     * @param email - The email of the user
+     * @param name - The optional name fo the user
+     * @param callback - An optional callback after user has been saved on server
+     */
+    Zzish.registerUserWithZzish = function (userId, email, name, callback) {
+        var message = {
+            email: email,
+            profile: {
+                uuid: userId,
+                name: name
+            }
+        };
+        var request = {
+            method: "POST",
+            url: getBaseUrl() + "profiles/authenticate/eregister",
+            data: message
+        };
+        sendData(request, function (err, data) {
+            callCallBack(err, data, callback);
+        });
+    };
+
+    /**
+     * Returns a token to be used for accessing Zzish website
+     *
+     * @param userId - The Developer User Id
+     * @param callback - An optional callback after user has been saved on server
+     */
+    Zzish.getTokenForUser = function (userId, callback) {
+        var message = {
+            uuid: userId
+        };
+        var request = {
+            method: "POST",
+            url: getBaseUrl() + "profiles/authenticate/token",
+            data: message
+        };
+        sendData(request, function (err, data) {
+            callCallBack(err, data, function(err, message) {
+                var url = webUrl + "account/app/" + message + "/token";
+                callback(err, url);
+            });
+        });
+    };
+
     /**** BACKEND CONTENT STUFF ***/
 
     /**
@@ -904,17 +970,18 @@
 
     var formatContentObject = function(content,includePayload) {
         if (content) {
-        var result = {
-            uuid: content.uuid,
-            meta : content.meta
-        };
-        if (includePayload && content.payload!==undefined && content.payload!="") {
-            result.payload = JSON.parse(content.payload);
+            var result = {
+                uuid: content.uuid,
+                meta : content.meta,
+                attributes: content.attributes
+            };
+            if (includePayload && content.payload!==undefined && content.payload!="") {
+                result.payload = JSON.parse(content.payload);
+            }
+            return result;
         }
-        return result;
-    }
         return null;
-    }
+    };
 
     var formatListContents = function(data,includePayload) {
         var list = [];
@@ -922,9 +989,9 @@
             for (var i in data.payload) {
                 list.push(formatContentObject(data.payload[i],includePayload));
             }
-        };
+        }
         return list;
-    }
+    };
 
     var formatListCategoryContents = function(data) {
         if (data && data.payload.contents){
@@ -934,9 +1001,9 @@
                 list.push(result);
             }
             data.payload.contents = list;
-        };
+        }
         return data.payload;
-    }
+    };
 
     /**
      * Get a Zzish content object

@@ -1,0 +1,54 @@
+block header
+    style.
+        .ng-hide-add, .ng-hide-remove {
+           /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+        }
+        .cssFade {
+            transition: 0.2s linear all;
+            opacity: 1;
+        }
+        .cssFade.ng-hide {
+            opacity: 0;
+        }
+
+
+nav.navbar.navbar-default.navbar-fixed-top
+    .container-fluid
+        .navbar-header
+            img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+        .navbar-collapse.collapse#navbar
+            ul.nav.navbar-nav.navbar-right(ng-controller="AnswerController as actrl")
+                li
+                    btn.btn.btn-info.pull-right(ng-click="actrl.cancel()", style=" margin-top:9px;") Cancel Quiz
+
+
+.container
+    .ql-score
+        .score
+            h2 {{quiz.score}} pts
+        .questions
+            h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
+    #reactContainer
+
+
+
+    .row.multiple-row
+        .col-x-12.col-sm-8.col-sm-offset-2
+            .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
+                .text-center.wrapword
+                    p.math.quizQuestion#quizQuestion {{quiz.question}}
+                    br
+                    span(ng-show="quiz.imageURL")
+                        img(ng-src="{{quiz.imageURL}}",width="80%")
+                        br
+                        br
+                .row
+
+                    div.math(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
+                        button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") {{alternative}}

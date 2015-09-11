@@ -84,10 +84,14 @@ var GroupActions = {
     publishAssignment: function(quizId : string, code : string , settings : Object ) : Promise {
 
         return new Promise((resolve, reject) => {
+            var UserStore = require('./../stores/UserStore');
             var dataToSend = {
                 access: -1,
                 code
             };
+            if (UserStore.getUser().attributes && UserStore.getUser().attributes.button === "true") {
+                dataToSend['button'] = true;
+            }
 
             var data = Object.assign({}, settings, dataToSend);
 

@@ -36,6 +36,11 @@ angular.module('quizApp')
             controller: "ScrambledController",
             controllerAs: "quiz"
         })
+        .when('/quiz/:catId/:quizId/freetext/:questionId', {
+            templateUrl: "/quiz/view/freetext",
+            controller: "FreetextController",
+            controllerAs: "quiz"
+        })
         .when('/quiz/:catId/:quizId/answer/:questionId', {
             templateUrl: "/quiz/view/answer",
             controller: "AnswerController",

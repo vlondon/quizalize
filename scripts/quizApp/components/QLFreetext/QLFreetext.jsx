@@ -21,11 +21,10 @@ var cssStates = [
 
 var cssStateIndex = 0;
 
-var QLMultiple = React.createClass({
+var QLFreetext = React.createClass({
 
     propTypes: {
         question: React.PropTypes.string.isRequired,
-        alternatives: React.PropTypes.array.isRequired,
         onSelect: React.PropTypes.func,
         onNext: React.PropTypes.func,
         attributes: React.PropTypes.object,
@@ -82,16 +81,16 @@ var QLMultiple = React.createClass({
         }
     },
 
-    handleClick: function(index){
+    handleClick: function(){
+
+        var answer = $("#freetextInputAnswer").val();
 
         this.handleCssState(2, () => {
-            this.setState({
-                answer: this.props.alternatives[index]
-            });
+            this.setState({answer});
         });
 
         if (this.props.onSelect) {
-            this.props.onSelect(index);
+            this.props.onSelect(answer);
         }
     },
 
@@ -109,19 +108,19 @@ var QLMultiple = React.createClass({
 
         if (!this.state.answer) {
             showCountdown = <QLCountDown startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
-            showQuestions = this.props.alternatives.map(function(alternative, index){
-                return (
-                <div className="alternative-wrapper" key={index}>
-                    <button type="button" className={`btn alternative alternative-${index} wrapword`} onClick={this.handleClick.bind(this, index)}>
-                        {latexWrapper(alternative)}
-                    </button>
-                </div>);
-            }, this);
+                showQuestions = (
+                    <div>
+                        <input type="text" name="freetextInputAnswer" id="freetextInputAnswer"/>
+                        <button type="button" className="btn" onClick={this.handleClick}>
+                            Submit
+                        </button>
+                    </div>);
         } else {
             var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
             showAnswer = (
                 <QLAnswerScreen
                     questionData={this.props.questionData}
+                    attributes={this.props.attributes}
                     answerData={currentAnswer}
                     onNext={this.props.onNext}/>
             );
@@ -131,11 +130,14 @@ var QLMultiple = React.createClass({
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
                     <p className='question'>
-                        {latexWrapper(this.props.question)}
+                        <audio controls="true" autoplay="true">
+                          <source src={this.props.question} type="audio/mpeg"/>
+                          Your browser does not support the audio element.
+                        </audio>
                     </p>
                     {this.props.imageURL && this.props.imageEnabled ? <QLImage src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
-                    <div className="answers alternatives">
+                    <div className="answers">
                         {showAnswer}
                         {showQuestions}
                     </div>
@@ -146,4 +148,4 @@ var QLMultiple = React.createClass({
 
 });
 
-module.exports = QLMultiple;
+module.exports = QLFreetext;

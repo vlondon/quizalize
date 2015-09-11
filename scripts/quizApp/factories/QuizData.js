@@ -146,9 +146,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
         return numAlternatives;
-    }
+    };
 
     var selectQuestionType = function(index) {
+        if (currentQuiz.attributes.button === "true") {
+            //we got button
+            return "freetext";
+        }
         var currentQuestion = currentQuiz.payload.questions[index];
         var indexOfSpace = currentQuestion.answer.indexOf(" ");
         var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
@@ -163,13 +167,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var ran = Math.floor(Math.random()*options.length);
             return "scrambled";
         }
-    }
+    };
 
     var initQuizResult = function() {
         currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.payload.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
         localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
-    }
+    };
 
     var setQuiz = function(quiz) {
         currentQuiz = quiz;
@@ -305,8 +309,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
             else {
                 zzish.getContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quizId, function (err, result) {
-                    setQuiz(result);
-                    callback(err,result);
+                    quiz.payload = result.payload;
+                    setQuiz(quiz);
+                    callback(err,quiz);
                     $rootScope.$digest();
                 });
             }

@@ -53,7 +53,8 @@ var QLAnswerScreen = React.createClass({
     propTypes: {
         answerData: React.PropTypes.object.isRequired,
         questionData: React.PropTypes.object.isRequired,
-        onNext: React.PropTypes.func
+        onNext: React.PropTypes.func,
+        attributes: React.PropTypes.object.isRequired
     },
 
     handleClick: function(){
@@ -91,11 +92,23 @@ var QLAnswerScreen = React.createClass({
         var explanation;
 
         if (this.props.questionData.answerExplanation && this.props.questionData.answerExplanation.length > 0) {
-            explanation = (<blockquote className="description">
-                <p>
-                    {this.props.questionData.answerExplanation}
-                </p>
-            </blockquote>);
+            if (!this.props.attributes || this.props.attributes.button !== "true" || !this.props.answerData.correct) {
+                var explaination1 = this.props.questionData.answerExplanation;
+                if (explaination1.indexOf("video://") === 0) {
+                    var url = "http://" + explaination1.substring(8);
+                    explanation = (<video width="320" height="240" controls>
+                      <source src={url} type="video/mp4"/>
+                    Your browser does not support the video tag.
+                    </video>);
+                }
+                else {
+                    explanation = (<blockquote className="description">
+                        <p>
+                            {explaination1}
+                        </p>
+                    </blockquote>);
+                }
+            }
         }
 
         return (
