@@ -2,7 +2,7 @@
 var React               = require('react');
 // var settings        = require('utils/settings');
 
-var CQPublic            = require('./../components/pages/CQPublic');
+var CQMarketplace            = require('./../components/pages/CQMarketplace');
 var CQProfile           = require('./../components/pages/CQProfile');
 var CQProfileSlug       = require('./../components/pages/CQProfile/CQProfileSlug');
 var CQOwnProfile        = require('./../components/pages/CQProfile/CQOwnProfile');
@@ -39,7 +39,7 @@ var pagesArray: Array<Page> = [
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQProfile, null),
+                React.createElement(CQOwnProfile),
                 document.getElementById('reactApp')
             );
         }
@@ -119,7 +119,7 @@ var pagesArray: Array<Page> = [
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQPublic, null),
+                React.createElement(CQMarketplace, null),
                 document.getElementById('reactApp')
             );
         }

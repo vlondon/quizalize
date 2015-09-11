@@ -10,6 +10,7 @@ import CQSpinner from './../../../components/utils/CQSpinner';
 import CQPagination from './../../../components/utils/CQPagination';
 
 import CQLink from './../../../components/utils/CQLink';
+import CQLinkToUser from './../../../components/utils/CQLinkToUser';
 import priceFormat from './../../../utils/priceFormat';
 
 type Props = {
@@ -166,7 +167,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        <CQLink href={`/quiz/user/${app.extra.author.uuid}`}>by {app.extra.author.name}</CQLink>
+                                        <CQLinkToUser uuid={app.extra.author.uuid}>by {app.extra.author.name}</CQLinkToUser>
                                     </div>
                                 );
                             }

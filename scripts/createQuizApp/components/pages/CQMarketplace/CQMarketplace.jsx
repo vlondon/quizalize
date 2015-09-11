@@ -183,6 +183,7 @@ export default class CQPublic extends React.Component {
 
         return (
             <CQPageTemplate className="cq-container cq-public">
+
                 <CQPublicHeader/>
                 {quizDetails}
 
