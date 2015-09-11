@@ -167,7 +167,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        <CQLinkToUser uuid={app.extra.author.uuid}>by {app.extra.author.name}</CQLinkToUser>
+                                        <CQLinkToUser uuid={app.extra.author.uuid} slug={app.extra.author.profileUrl}>by {app.extra.author.name}</CQLinkToUser>
                                     </div>
                                 );
                             }

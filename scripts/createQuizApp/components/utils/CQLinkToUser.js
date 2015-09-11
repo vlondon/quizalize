@@ -14,15 +14,8 @@ class CQLinkToUser extends React.Component {
 
     getUrl (uuid: string) : string {
 
-        var getUserSlug = () => {
-            var user = UserStore.getPublicUser(uuid);
-            if (user) {
-                return user.attributes.profileUrl;
-            }
-        };
 
-
-        var slug = getUserSlug();
+        var slug = this.props.slug;
         var url;
 
         if (slug){
@@ -44,7 +37,8 @@ class CQLinkToUser extends React.Component {
 
 CQLinkToUser.propTypes = {
     uuid: PropTypes.string,
-    children: PropTypes.element
+    children: PropTypes.element,
+    slug: PropTypes.string,
 };
 
 export default CQLinkToUser;
