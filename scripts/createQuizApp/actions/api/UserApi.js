@@ -36,16 +36,19 @@ var UserApi = {
         });
     },
 
-    getPublic: function(userId : string) : Promise {
+    getPublic: function(userId : string, key: string = 'uuid') : Promise {
         var query = `
             {
-                user(uuid: "${userId}") {
+                user(${key}: "${userId}") {
                     name,
                     avatar,
                     uuid,
                     attributes {
                         location,
-                        profileUrl
+                        profileUrl,
+                        bannerUrl,
+                        profileUrl,
+                        school
                     },
                     quizzes {
                         uuid,

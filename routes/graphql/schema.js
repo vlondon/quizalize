@@ -137,32 +137,32 @@ var userAttributes = new GraphQLObjectType({
         location: {
             type: GraphQLString,
             description: 'Location',
-            resolve: (obj) => obj.location
+
         },
         school: {
             type: GraphQLString,
             description: 'School',
-            resolve: (obj) => obj.school
+
         },
         url: {
             type: GraphQLString,
             description: 'Url',
-            resolve: (obj) => obj.url
+
         },
         subjectTaught: {
             type: GraphQLString,
             description: 'subjectTaught',
-            resolve: (obj) => obj.subjectTaught
+
         },
         ageTaught: {
             type: GraphQLString,
             description: 'ageTaught',
-            resolve: (obj) => obj.ageTaught
+
         },
         profileUrl: {
             type: GraphQLString,
             description: 'profileUrl',
-            resolve: (obj) => obj.profileUrl
+
         },
         bannerUrl: {
             type: GraphQLString,
@@ -231,11 +231,22 @@ var schema = new GraphQLSchema({
                 args: {
                     uuid: {
                         name: 'uuid',
-                        type: new GraphQLNonNull(GraphQLString)
+                        type: GraphQLString
+                    },
+                    name: {
+                        name: 'name',
+                        type: GraphQLString
                     }
                 },
-                resolve: (root, {uuid}) => {
-                    return graphQLUser.getUserByid(uuid);
+                resolve: (root, {uuid, name}) => {
+                    console.log('uuid', uuid);
+                    console.log('name', name);
+                    if (name) {
+                        return graphQLUser.getUserBySlug(name);
+                    } else if (uuid) {
+
+                        return graphQLUser.getUserByid(uuid);
+                    }
                 }
             },
             app: {
