@@ -232,16 +232,15 @@ var UserActions = {
 
     getPublicUserByUrl: function(url){
         return new Promise(function(resolve, reject){
-            UserApi.search({profileUrl: url})
-                .then(function(users){
-                    if (users.length > 0) {
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_PUBLIC_LOADED_URL,
-                            payload: users[0]
-                        });
-                        console.log('will load', url, users[0]);
-                        resolve(users[0]);
-                    }
+            UserApi.getPublic(url, 'name')
+                .then(function(user){
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_PUBLIC_LOADED_URL,
+                        payload: user
+                    });
+                    console.log('response', user);
+                    resolve(user);
+
                 })
                 .catch(reject);
         });
