@@ -52,10 +52,10 @@ var appMeta = new GraphQLObjectType({
             name: 'Author user id'
         },
         quizzes: {
-            type: new GraphQLList(GraphQLString),
-            resolve: (obj)=>{
-                var quizzesID = obj.quizzes.split(',');
-                return quizzesID;
+            type: new GraphQLList(quizType),
+            resolve: ({quizzes, profileId})=>{
+                var quizzesID = quizzes.split(',');
+                return graphQLQuiz.getQuizzes(profileId, quizzesID);
             }
         },
         updated: {

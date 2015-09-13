@@ -48,6 +48,36 @@ class Quizzes {
 
     }
 
+    getQuizzes (profileId, quizIds){
+
+
+
+        return new Promise((resolve, reject)=>{
+            zzish.getContents(profileId, 'quiz', quizIds, (err, quizzes) => {
+                console.log('quizzes', err, quizzes);
+                if (err){
+                    reject(err);
+                } else {
+                    resolve(quizzes);
+                }
+            });
+        });
+
+        let aLongTimeAgo = 1;
+
+        var mongoQuery = {
+            uuid: {$in: quizIds},
+            updated: {
+                $gt: aLongTimeAgo
+            },
+            published: "published"
+        };
+
+        console.log('query', mongoQuery);
+
+        return performQuery(mongoQuery);
+    }
+
     getUserQuizzes (profileId){
 
         let now = Date.now();
@@ -65,8 +95,6 @@ class Quizzes {
 
         };
 
-
-
         return performQuery(mongoQuery);
     }
 
@@ -77,6 +105,7 @@ var performQuery = function(mongoQuery) {
 
     return new Promise((resolve, reject)=>{
         zzish.searchPublicContent('quiz', mongoQuery, function(err, resp){
+            console.log('answer', resp, err);
             if (resp) {
                 resolve(resp);
             } else {

@@ -7,6 +7,7 @@ var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
 import CQViewAppGrid from './../../views/CQViewAppGrid';
 
 var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
+import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
 // var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
 
 var TransactionActions = require('./../../../actions/TransactionActions');
@@ -90,6 +91,7 @@ class CQProfileView extends React.Component {
         return (
             <CQPageTemplate className="cq-container cq-profile">
                 <CQDashboardProfile user={this.props.profile}/>
+                <CQViewAppQuizList apps={this.props.apps}/>
                 <div className="cq-profile__left">
                 </div>
                 <div className="cq-profile__right">

@@ -67,8 +67,18 @@ var UserApi = {
                             iconURL,
                             created,
                             price,
-                            quizzes,
-                            description
+                            description,
+                            colour,
+                            quizzes {
+                                uuid,
+                                meta {
+                                    name,
+                                    categoryId,
+                                    imageUrl,
+                                    price,
+                                    updated
+                                }
+                            }
                         }
                    }
                 }
