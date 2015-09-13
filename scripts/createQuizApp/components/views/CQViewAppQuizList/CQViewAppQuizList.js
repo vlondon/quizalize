@@ -6,7 +6,7 @@ import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import kolor from 'kolor';
 
 class CQViewAppQuizList extends React.Component {
-    render () {
+    render () : any {
         return (
             <div className="appquizlist">
                 <h3>
