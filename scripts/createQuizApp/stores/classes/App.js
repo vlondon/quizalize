@@ -1,4 +1,3 @@
-
 import QuizStore from './../QuizStore';
 
 class App extends Object {
@@ -7,8 +6,8 @@ class App extends Object {
 
         super(properties);
         Object.assign(this, properties);
-        this.meta.quizzes = this.meta.quizzes.split(';').map(q => QuizStore.getQuiz(q));
-        
+        this.meta.quizzes = this.meta.quizzes.split(';');
+
     }
 
 }

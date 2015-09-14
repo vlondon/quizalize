@@ -53,9 +53,13 @@ exports.details = function(req, res) {
     var profileId = req.params.profileId;
     zzish.user(profileId, function(err, data){
         if (!err && typeof data === 'object') {
+            console.log('we got user', data);
+            var uuid = data.uuid;
+            req.session.userUUID = uuid;
             res.status(200);
         }
         else {
+            req.userUUID = undefined;
             res.status(err);
         }
         res.send(data);

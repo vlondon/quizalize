@@ -50,7 +50,7 @@ class Quizzes {
 
     getQuizzes (profileId, quizIds){
 
-
+        
 
         return new Promise((resolve, reject)=>{
             zzish.getContents(profileId, 'quiz', quizIds, (err, quizzes) => {

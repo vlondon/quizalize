@@ -18,7 +18,7 @@ class CQViewAppQuizList extends React.Component {
                         var appColor = kolor(app.meta.colour);
                         var quizzes = [];
                         if (app.meta.quizzes) {
-                            console.log('app.meta.quizzes', app.meta.quizzes);
+                            console.log('app.meta.quizzes', app, app.meta.quizzes);
                             quizzes = app.meta.quizzes.map((q)=>{
                                 if (typeof q === 'Object'){
                                     return q;

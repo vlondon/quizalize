@@ -123,6 +123,20 @@ class Users {
         // return new Promise((resolve, reject)=>{
         // });
     }
+
+    getMyUser(profileId){
+        return new Promise((resolve, reject)=>{
+            console.log('getting profile', profileId);
+            zzish.user(profileId, function(err, data){
+                if (!err && typeof data === 'object') {
+                    resolve(data);
+                }
+                else {
+                    reject(err);
+                }
+            });
+        });
+    }
 }
 var users = new Users();
 export default users;

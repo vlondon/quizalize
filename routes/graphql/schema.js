@@ -6,7 +6,8 @@ import {
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLBoolean
 } from 'graphql/type';
 
 import graphQLUser from './graphQLUser';
@@ -174,6 +175,7 @@ var userAttributes = new GraphQLObjectType({
 
 
 
+
 var userType = new GraphQLObjectType({
     name: 'UserType',
     description: 'UserType test',
@@ -192,7 +194,12 @@ var userType = new GraphQLObjectType({
         },
         email: {
             type: GraphQLString,
-            description: 'User email'
+            description: 'User email',
+            resolve: (source, args, {rootValue})=>{
+                if (source.uuid === rootValue) {    
+                    return source.email;
+                }
+            }
         },
         attributes: {
             type: userAttributes
@@ -236,16 +243,20 @@ var schema = new GraphQLSchema({
                     name: {
                         name: 'name',
                         type: GraphQLString
+                    },
+                    me: {
+                        name: 'me',
+                        type: GraphQLBoolean
                     }
                 },
                 resolve: (root, {uuid, name}) => {
-                    console.log('uuid', uuid);
-                    console.log('name', name);
+
                     if (name) {
                         return graphQLUser.getUserBySlug(name);
                     } else if (uuid) {
-
                         return graphQLUser.getUserByid(uuid);
+                    } else {
+                        return graphQLUser.getMyUser(root);
                     }
                 }
             },

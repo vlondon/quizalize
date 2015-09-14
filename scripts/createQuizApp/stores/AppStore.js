@@ -155,6 +155,7 @@ AppDispatcher.register(function(action) {
             _publicApps = action.payload;
             _publicApps.forEach(function(app){
                 if (typeof app.meta.quizzes === 'string') {
+                    console.log('splitting', app.meta.quizzes);
                     app.meta.quizzes = app.meta.quizzes.split(',');
                 }
             });
