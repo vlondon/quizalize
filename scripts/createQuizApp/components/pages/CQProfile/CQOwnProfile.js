@@ -48,15 +48,21 @@ class CQOwnProfile extends React.Component {
     getState (profile : Object = {}) : State {
         var apps = profile ? profile.apps : [];
         var quizzes = profile ? profile.quizzes : [];
-        
-        console.log('profile, apps, quizzes', profile, apps, quizzes);
-        return { profile, apps, quizzes };
 
+        return { profile, apps, quizzes };
     }
 
     render () {
         if (this.state.profile.uuid){
+            var quizzesWithoutApps = this.state.quizzes.filter(q=>{
+                var isInApp = this.state.apps.filter(a=>{
+                    console.log('AAAA', a.meta.quizzes);
+                    return a.meta.quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
+                });
+                return isInApp === 0;
+            });
 
+            console.log('quizzesWithoutApps', quizzesWithoutApps);
             return (
                 <CQProfileView
                     profile={this.state.profile}

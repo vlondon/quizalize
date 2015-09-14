@@ -55,8 +55,13 @@ var appMeta = new GraphQLObjectType({
         quizzes: {
             type: new GraphQLList(quizType),
             resolve: ({quizzes, profileId})=>{
-                var quizzesID = quizzes.split(',');
-                return graphQLQuiz.getQuizzes(profileId, quizzesID);
+                console.log('RESOLVING ', quizzes);
+                if (typeof quizzes === 'string') {
+                    var quizzesID = quizzes.split(',');
+                    return graphQLQuiz.getQuizzes(profileId, quizzesID);
+                } else {
+                    return [];
+                }
             }
         },
         updated: {
@@ -211,9 +216,15 @@ var userType = new GraphQLObjectType({
         // dynamic data
         quizzes: {
             type: new GraphQLList(quizType),
-            resolve: ({uuid})=>{
+            resolve: ({uuid}, a, {rootValue})=>{
                 // this has user
-                return graphQLQuiz.getUserQuizzes(uuid);
+                console.log('uuid,', uuid, rootValue);
+                if (uuid === rootValue) {
+                    return graphQLQuiz.getMyQuizzes(uuid);
+                } else {
+
+                    return graphQLQuiz.getUserQuizzes(uuid);
+                }
                 // return [];
             }
         },
