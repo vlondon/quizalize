@@ -94,12 +94,13 @@ class CQProfileView extends React.Component {
 
                 <CQViewAppQuizList
                     apps={this.props.apps}
+                    own={this.props.own}
                 />
 
                 <div className="cq-profile__left"/>
 
                 <div className="cq-profile__right">
-                    <CQViewAppGrid apps={this.props.apps}/>
+                    <CQViewAppGrid apps={this.props.apps} own={this.props.own}/>
                     <h3>Viewing public quizzes from {this.props.profile && this.props.profile.name}</h3>
                     {quizDetails}
                     {quizList}
@@ -116,13 +117,15 @@ type Props = {
     apps: Array<AppType>;
     quizzes: Array<Quiz>;
     quizCode: string;
+    own: boolean;
 }
 
 CQProfileView.propTypes = {
     profile: React.PropTypes.oject,
     apps: React.PropTypes.array,
     quizzes: React.PropTypes.array,
-    quizCode: React.PropTypes.string
+    quizCode: React.PropTypes.string,
+    own: React.PropTypes.boolean
 };
 
 module.exports = CQProfileView;

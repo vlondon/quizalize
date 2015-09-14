@@ -5,11 +5,21 @@ import CQViewQuizList from './../CQViewQuizList';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import QuizStore from './../../../stores/QuizStore';
 import CQQuizzesProfile from './../../../components/pages/CQQuizzes/CQQuizzesProfile';
+import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 
 import kolor from 'kolor';
 
 class CQViewAppQuizList extends React.Component {
+
+
     render () : any {
+        var quizButtons;
+
+        if (this.props.own) {
+            quizButtons = (<CQQuizzesProfile/>);
+        } else {
+            quizButtons = (<CQViewQuizPrice/>);
+        }
         return (
             <div className="appquizlist">
                 <h3>
@@ -40,7 +50,7 @@ class CQViewAppQuizList extends React.Component {
                                     </div>
 
                                     <CQViewQuizList quizzes={quizzes} classname="appquizlist__list">
-                                        <CQQuizzesProfile/>
+                                        {quizButtons}
                                     </CQViewQuizList>
                                 </div>
                             </li>
@@ -54,7 +64,8 @@ class CQViewAppQuizList extends React.Component {
 }
 
 CQViewAppQuizList.propTypes = {
-    apps: PropTypes.array
+    apps: PropTypes.array,
+    own: PropTypes.bool
 };
 
 export default CQViewAppQuizList;

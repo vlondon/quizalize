@@ -40,7 +40,6 @@ class CQProfileSlug extends React.Component {
 
     getState () : State {
         var profile = UserStore.getPublicUserByUrl(this.props.profileUrl);
-        console.warn('CQProfileSlugCQProfileSlugCQProfileSlugCQProfileSlug', profile);
         var apps = profile ? profile.apps : [];
         var quizzes = profile ? profile.quizzes : [];
         return { profile, apps, quizzes };
