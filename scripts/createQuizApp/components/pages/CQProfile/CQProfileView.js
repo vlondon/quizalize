@@ -91,9 +91,13 @@ class CQProfileView extends React.Component {
         return (
             <CQPageTemplate className="cq-container cq-profile">
                 <CQDashboardProfile user={this.props.profile}/>
-                <CQViewAppQuizList apps={this.props.apps}/>
-                <div className="cq-profile__left">
-                </div>
+
+                <CQViewAppQuizList
+                    apps={this.props.apps}
+                />
+
+                <div className="cq-profile__left"/>
+
                 <div className="cq-profile__right">
                     <CQViewAppGrid apps={this.props.apps}/>
                     <h3>Viewing public quizzes from {this.props.profile && this.props.profile.name}</h3>

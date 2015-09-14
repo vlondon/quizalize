@@ -4,6 +4,8 @@ import React, { PropTypes } from 'react';
 import CQViewQuizList from './../CQViewQuizList';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import QuizStore from './../../../stores/QuizStore';
+import CQQuizzesProfile from './../../../components/pages/CQQuizzes/CQQuizzesProfile';
+
 import kolor from 'kolor';
 
 class CQViewAppQuizList extends React.Component {
@@ -18,18 +20,11 @@ class CQViewAppQuizList extends React.Component {
                         var appColor = kolor(app.meta.colour);
                         var quizzes = [];
                         if (app.meta.quizzes) {
-                            console.log('app.meta.quizzes', app, app.meta.quizzes);
-                            quizzes = app.meta.quizzes.map((q)=>{
-                                if (typeof q === 'Object'){
-                                    return q;
-                                } else {
-                                    return QuizStore.getQuiz(q);
-                                }
-                            });
+                            quizzes = app.meta.quizzes;
                         }
 
                         return (
-                            <li className="appquizlist__app" style={{backgroundColor: appColor.fadeOut(0.5)}}>
+                            <li className="appquizlist__app" style={{backgroundColor: appColor.fadeOut(0.7)}}>
                                 <CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>
                                 <div className="appquizlist__left">
 
@@ -44,7 +39,9 @@ class CQViewAppQuizList extends React.Component {
                                         </div>
                                     </div>
 
-                                    <CQViewQuizList quizzes={quizzes} classname="appquizlist__list" />
+                                    <CQViewQuizList quizzes={quizzes} classname="appquizlist__list">
+                                        <CQQuizzesProfile/>
+                                    </CQViewQuizList>
                                 </div>
                             </li>
                         );

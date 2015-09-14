@@ -4,6 +4,7 @@ class User {
 
     constructor(user){
         // Object.assign(this, user);
+        console.log('user', user);
         this.user = user;
         this.uuid = user.uuid;
         this._userQuizzesInit = false;
@@ -85,7 +86,7 @@ class Users {
             console.log('loading user', {profileUrl: slug});
             zzish.userByAttributes({profileUrl: slug}, (err, data) => {
                 console.log('response', err, data);
-                if (!err && typeof data === 'object') {
+                if (!err && typeof data === 'object' && data.length > 0) {
                     var user = new User(data[0]);
                     this.users.push(user);
                     resolve(user.toJSON());

@@ -111,6 +111,9 @@ var quizMeta = new GraphQLObjectType({
         },
         updated: {
             type: GraphQLInt
+        },
+        published: {
+            type: GraphQLString
         }
     }
 });
