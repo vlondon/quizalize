@@ -3,6 +3,7 @@ import React from 'react';
 import CQProfileView from './CQProfileView';
 
 import UserStore from './../../../stores/UserStore';
+import UserActions from './../../../actions/UserActions';
 import QuizStore from './../../../stores/QuizStore';
 import AppStore from './../../../stores/AppStore';
 
@@ -20,7 +21,12 @@ class CQOwnProfile extends React.Component {
 
     constructor(props: Props) {
         super(props);
-        this.state = this.getState();
+        this.state = {};
+
+        UserActions.getOwn().then((user)=>{
+            console.log('we got ', user);
+            this.setState({ user });
+        });
 
         this.onChange = this.onChange.bind(this);
         this.getState = this.getState.bind(this);
@@ -28,25 +34,22 @@ class CQOwnProfile extends React.Component {
 
     componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
-        AppStore.addChangeListener(this.onChange);
-        UserStore.addChangeListener(this.onChange);
+
     }
 
     componentWillUnmount() {
         QuizStore.removeChangeListener(this.onChange);
-        AppStore.removeChangeListener(this.onChange);
-        UserStore.removeChangeListener(this.onChange);
     }
 
     onChange(){
         this.setState(this.getState());
     }
 
-    getState () : State {
-        var profile = UserStore.getUser();
-        var apps = AppStore.getApps();
-        var quizzes = QuizStore.getQuizzes();
-        return { profile, apps, quizzes };
+    getState () : any {
+        // var profile = UserStore.getUser();
+        // var apps = AppStore.getApps();
+        // var quizzes = QuizStore.getQuizzes();
+        // return { profile, apps, quizzes };
     }
 
     render () {

@@ -40,6 +40,10 @@ var UserActions = {
         });
     },
 
+    getOwn: function(){
+        return UserApi.getOwn();
+    },
+
     update: function(user){
         return new Promise(function(resolve, reject){
 

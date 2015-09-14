@@ -48,9 +48,21 @@ class Quizzes {
 
     }
 
+    getMyQuizes (profileId){
+        return new Promise((resolve, reject) => {
+            zzish.listContent(profileId, QUIZ_CONTENT_TYPE, function(err, resp){
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(resp);
+                }
+            });
+        });
+    }
+
     getQuizzes (profileId, quizIds){
 
-        
+
 
         return new Promise((resolve, reject)=>{
             zzish.getContents(profileId, 'quiz', quizIds, (err, quizzes) => {

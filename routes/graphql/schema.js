@@ -195,9 +195,9 @@ var userType = new GraphQLObjectType({
         email: {
             type: GraphQLString,
             description: 'User email',
-            resolve: (source, args, {rootValue})=>{
-                if (source.uuid === rootValue) {    
-                    return source.email;
+            resolve: ({uuid, email}, args, {rootValue})=>{
+                if (uuid === rootValue) {
+                    return email;
                 }
             }
         },
@@ -210,7 +210,6 @@ var userType = new GraphQLObjectType({
             type: new GraphQLList(quizType),
             resolve: ({uuid})=>{
                 // this has user
-                console.log('getting quizzes', uuid);
                 return graphQLQuiz.getUserQuizzes(uuid);
                 // return [];
             }
