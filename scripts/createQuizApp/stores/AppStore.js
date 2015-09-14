@@ -146,7 +146,8 @@ AppDispatcher.register(function(action) {
 
 
         case AppConstants.APP_LIST_LOADED:
-            _apps = action.payload.map((app)=> { new App(app); });
+            _apps = action.payload.map(app => new App(app));
+            console.log('_apps', _apps);
             appStoreInstance.emitChange();
             break;
 
