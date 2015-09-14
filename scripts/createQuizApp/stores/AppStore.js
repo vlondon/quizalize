@@ -1,6 +1,7 @@
 /* @flow */
 import Store from './Store';
 import UserStore from './UserStore';
+import App from './classes/App';
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var AppConstants = require('./../constants/AppConstants');
 var AppActions = require('./../actions/AppActions');
@@ -29,7 +30,7 @@ type AppExtra = {
     quizzes: Array<Object>;
 };
 
-export type App = {
+export type AppType = {
     uuid: string;
     meta: AppMeta;
     payload?: AppPayload;
@@ -145,7 +146,7 @@ AppDispatcher.register(function(action) {
 
 
         case AppConstants.APP_LIST_LOADED:
-            _apps = action.payload;
+            _apps = action.payload.map((app)=> { new App(app); });
             appStoreInstance.emitChange();
             break;
 

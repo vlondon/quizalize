@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 
 import CQViewQuizList from './../CQViewQuizList';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
+import QuizStore from './../../../stores/QuizStore';
 import kolor from 'kolor';
 
 class CQViewAppQuizList extends React.Component {
@@ -15,6 +16,18 @@ class CQViewAppQuizList extends React.Component {
                 <ul class="appquizlist__list">
                     {this.props.apps.map(app=>{
                         var appColor = kolor(app.meta.colour);
+                        var quizzes = [];
+                        if (app.meta.quizzes) {
+                            console.log('app.meta.quizzes', app.meta.quizzes);
+                            quizzes = app.meta.quizzes.map((q)=>{
+                                if (typeof q === 'Object'){
+                                    return q;
+                                } else {
+                                    return QuizStore.getQuiz(q);
+                                }
+                            });
+                        }
+
                         return (
                             <li className="appquizlist__app" style={{backgroundColor: appColor.fadeOut(0.5)}}>
                                 <CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>
@@ -31,7 +44,7 @@ class CQViewAppQuizList extends React.Component {
                                         </div>
                                     </div>
 
-                                    <CQViewQuizList quizzes={app.meta.quizzes} classname="appquizlist__list" />
+                                    <CQViewQuizList quizzes={quizzes} classname="appquizlist__list" />
                                 </div>
                             </li>
                         );

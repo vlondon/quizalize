@@ -3,13 +3,12 @@ import React from 'react';
 import router from './../../../config/router';
 
 import AppStore from './../../../stores/AppStore';
-import type {App} from './../../../stores/AppStore';
+import type {AppType} from './../../../stores/AppStore';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import CQSpinner from './../../../components/utils/CQSpinner';
 
 import CQPagination from './../../../components/utils/CQPagination';
 
-import CQLink from './../../../components/utils/CQLink';
 import CQLinkToUser from './../../../components/utils/CQLinkToUser';
 import priceFormat from './../../../utils/priceFormat';
 
@@ -19,7 +18,7 @@ type Props = {
 }
 
 type State = {
-    apps: Array<App>;
+    apps: Array<AppType>;
     pages?: number;
     page: number;
 };
@@ -55,7 +54,7 @@ class CQAppGrid extends React.Component {
 
         var appCreate = function(apps){
 
-            var appPlaceholder:App = {
+            var appPlaceholder:AppType = {
                 uuid: 'new',
                 meta: {
                     name: 'Create your own App',
@@ -111,7 +110,7 @@ class CQAppGrid extends React.Component {
 
     }
 
-    handleClick(app : App){
+    handleClick(app : AppType){
         if (app.uuid === 'new'){
             router.setRoute(`apps`);
         } else {

@@ -13,7 +13,7 @@ import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
 var TransactionActions = require('./../../../actions/TransactionActions');
 
 import type {Quiz} from './../../../stores/QuizStore';
-import type {App} from './../../../stores/AppStore';
+import type {AppType} from './../../../stores/AppStore';
 
 
 
@@ -109,7 +109,7 @@ class CQProfileView extends React.Component {
 
 type Props = {
     profile: Object;
-    apps: Array<App>;
+    apps: Array<AppType>;
     quizzes: Array<Quiz>;
     quizCode: string;
 }

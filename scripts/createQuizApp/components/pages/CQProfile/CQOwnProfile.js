@@ -14,7 +14,7 @@ type State = {
     quizzes: Array<Object>;
 }
 
-class CQProfile extends React.Component {
+class CQOwnProfile extends React.Component {
 
     props: Props;
 
@@ -61,4 +61,4 @@ class CQProfile extends React.Component {
 
 }
 
-export default CQProfile;
+export default CQOwnProfile;
