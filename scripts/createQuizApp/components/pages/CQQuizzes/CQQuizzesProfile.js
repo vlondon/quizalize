@@ -15,6 +15,10 @@ class CQQuizzesProfile extends React.Component {
     constructor(props: Props){
         super(props);
         this.handleShare = this.handleShare.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handlePreview = this.handlePreview.bind(this);
+        this.handleAssign = this.handleAssign.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
     handleShare(){
         router.setRoute(`/quiz/published/${this.props.quiz.uuid}/share`);

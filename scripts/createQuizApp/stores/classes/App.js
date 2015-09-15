@@ -6,7 +6,7 @@ class App extends Object {
 
         super(properties);
         Object.assign(this, properties);
-        this.meta.quizzes = this.meta.quizzes.split(';');
+        // this.meta.quizzes = this.meta.quizzes.split(';');
 
     }
 

@@ -2,8 +2,9 @@
 import React from 'react';
 import CQProfileView from './CQProfileView';
 
-// import UserStore from './../../../stores/UserStore';
+import AppStore from './../../../stores/AppStore';
 import UserActions from './../../../actions/UserActions';
+
 
 
 type Props = {};
@@ -56,13 +57,24 @@ class CQOwnProfile extends React.Component {
         if (this.state.profile.uuid){
             var quizzesWithoutApps = this.state.quizzes.filter(q=>{
                 var isInApp = this.state.apps.filter(a=>{
-                    console.log('AAAA', a.meta.quizzes);
-                    return a.meta.quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
+                    var quizzes = a.meta.quizzes || [];
+                    return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
                 });
-                return isInApp === 0;
+                console.log('quizzesWithoutApps inapp', isInApp);
+                return isInApp.length === 0;
             });
 
+            var appPlaceholder:Object = AppStore.getNewApp();
+            appPlaceholder.uuid = 'own';
+            appPlaceholder.meta.quizzes = quizzesWithoutApps;
+            appPlaceholder.meta.colour = '#FFFFFF';
+            appPlaceholder.meta.name = 'Your Quizzes';
+            appPlaceholder.meta.description = "This is a description of your quizzes that don't belong to any app";
+
+            console.log('quizzesWithoutApps app', appPlaceholder);
             console.log('quizzesWithoutApps', quizzesWithoutApps);
+            var apps = this.state.apps;
+            apps.push(appPlaceholder);
             return (
                 <CQProfileView
                     profile={this.state.profile}

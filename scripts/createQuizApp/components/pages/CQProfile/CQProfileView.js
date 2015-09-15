@@ -69,8 +69,23 @@ class CQProfileView extends React.Component {
 
     render() {
 
-        var quizList, quizDetails;
+        var quizList, quizDetails, headerCta;
 
+        if (this.props.own) {
+
+            headerCta = (
+                <div className="cq-profile__cta">
+                    <button  onClick={this.handleNew} className="btn btn-primary cq-profile__cta__app">
+                        <i className="fa fa-plus"></i> New app
+                    </button>
+                    &nbsp;
+                    <button  onClick={this.handleNew} className="btn btn-primary ">
+                        <i className="fa fa-plus"></i> New quiz
+                    </button>
+
+                </div>
+            );
+        }
         // if (this.state.quizDetails) {
         //     quizDetails = (<CQViewQuizDetails
         //         onClose={this.handleDetailsClose}
@@ -91,7 +106,7 @@ class CQProfileView extends React.Component {
         return (
             <CQPageTemplate className="cq-container cq-profile">
                 <CQDashboardProfile user={this.props.profile}/>
-
+                {headerCta}
                 <CQViewAppQuizList
                     apps={this.props.apps}
                     own={this.props.own}
