@@ -55,7 +55,6 @@ var CQDashboard = React.createClass({
                     <div className="cq-dashboard">
                         <CQDashboardProfile user={this.state.user}/>
                         <div className="cq-dashboard__dashboard">
-
                             <CQDashboardQuizzes user={this.state.user}/>
 
                         </div>

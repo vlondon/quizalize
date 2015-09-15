@@ -3,13 +3,13 @@ import React from 'react';
 import router from './../../../config/router';
 
 import AppStore from './../../../stores/AppStore';
-import type {App} from './../../../stores/AppStore';
+import type {AppType} from './../../../stores/AppStore';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import CQSpinner from './../../../components/utils/CQSpinner';
 
 import CQPagination from './../../../components/utils/CQPagination';
 
-import CQLink from './../../../components/utils/CQLink';
+import CQLinkToUser from './../../../components/utils/CQLinkToUser';
 import priceFormat from './../../../utils/priceFormat';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 }
 
 type State = {
-    apps: Array<App>;
+    apps: Array<AppType>;
     pages?: number;
     page: number;
 };
@@ -52,21 +52,9 @@ class CQAppGrid extends React.Component {
 
     getState(props?: Props, page?: number) : State {
 
-
         var appCreate = function(apps){
 
-            // code?: string;
-            // colour: string;
-            // created: number;
-            // description: string;
-            // iconURL: ?string;
-            // name: string;
-            // price: number;
-            // profileId: string;
-            // quizzes: Array<string>;
-            // updated: number;
-            //
-            var appPlaceholder:App = {
+            var appPlaceholder:AppType = {
                 uuid: 'new',
                 meta: {
                     name: 'Create your own App',
@@ -122,7 +110,7 @@ class CQAppGrid extends React.Component {
 
     }
 
-    handleClick(app : App){
+    handleClick(app : AppType){
         if (app.uuid === 'new'){
             router.setRoute(`apps`);
         } else {
@@ -178,7 +166,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        <CQLink href={`/quiz/user/${app.extra.author.uuid}`}>by {app.extra.author.name}</CQLink>
+                                        <CQLinkToUser uuid={app.extra.author.uuid} slug={app.extra.author.profileUrl}>by {app.extra.author.name}</CQLinkToUser>
                                     </div>
                                 );
                             }

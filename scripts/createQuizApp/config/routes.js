@@ -2,8 +2,10 @@
 var React               = require('react');
 // var settings        = require('utils/settings');
 
-var CQPublic            = require('./../components/pages/CQPublic');
+var CQMarketplace            = require('./../components/pages/CQMarketplace');
 var CQProfile           = require('./../components/pages/CQProfile');
+var CQProfileSlug       = require('./../components/pages/CQProfile/CQProfileSlug');
+var CQOwnProfile        = require('./../components/pages/CQProfile/CQOwnProfile');
 var CQNotFound          = require('./../components/pages/CQNotFound');
 var CQLogin             = require('./../components/pages/CQLogin');
 var CQRegister          = require('./../components/pages/CQRegister');
@@ -37,7 +39,7 @@ var pagesArray: Array<Page> = [
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQProfile, null),
+                React.createElement(CQOwnProfile),
                 document.getElementById('reactApp')
             );
         }
@@ -59,7 +61,7 @@ var pagesArray: Array<Page> = [
         needsLogin: true,
         renderer: function(){
             React.render(
-                React.createElement(CQProfile),
+                React.createElement(CQOwnProfile),
                 document.getElementById('reactApp')
             );
         }
@@ -71,7 +73,7 @@ var pagesArray: Array<Page> = [
         needsLogin: undefined,
         renderer: function(profileUrl: string){
             React.render(
-                React.createElement(CQProfile, {profileUrl}),
+                React.createElement(CQProfileSlug, {profileUrl}),
                 document.getElementById('reactApp')
             );
         }
@@ -117,7 +119,7 @@ var pagesArray: Array<Page> = [
         needsLogin: undefined,
         renderer: function(){
             React.render(
-                React.createElement(CQPublic, null),
+                React.createElement(CQMarketplace, null),
                 document.getElementById('reactApp')
             );
         }

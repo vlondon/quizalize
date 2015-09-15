@@ -123,7 +123,7 @@ var CQDashboardQuizzes = React.createClass({
                 </CQLink>
 
                 <h3>
-                    <CQLink href="/quiz/quizzes">
+                    <CQLink href="/quiz/user">
                         <i className="zz-ic_quizalize"/> Your Quizzes
                     </CQLink>
                 </h3>

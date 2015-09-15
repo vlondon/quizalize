@@ -2,7 +2,7 @@
 
 var defaultSettings = {
     apiDomain: '/',
-    defaultLoggedPage: '/quiz/quizzes',
+    defaultLoggedPage: '/quiz/user',
     type: 'quiz'
 };
 

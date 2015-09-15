@@ -1,6 +1,6 @@
 .cq-viewquizlist {
 
-    $quizIcon: 60px;
+    $quizIcon: 45px;
     display: flex;
     flex-direction: row wrap;
     flex-wrap: wrap;
@@ -19,7 +19,7 @@
         color: $brand-color-grey-light;
     }
 
-    @at-root #{&}__quiz-cta {
+    &__quiz-cta {
         text-align: center;
         margin: 0;
         padding: 0;
@@ -30,16 +30,15 @@
         }
 
     }
-    @at-root #{&}__quiz {
+    &__quiz {
         display: flex;
         flex-grow: 2;
         align-items: center;
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;
-        padding: 5px;
+        padding: 2px;
         width: 100%;
-        background: #FFF;
-        padding-bottom: 10px;
+        background: rgba(#FFF, .8);
         border-radius: 5px;
         // margin: 2px;
 
@@ -57,7 +56,7 @@
 
     }
 
-    @at-root #{&}__quizicon {
+    &__quizicon {
         min-width: $quizIcon;
         width: $quizIcon;
         height: $quizIcon;
@@ -75,44 +74,44 @@
         img { width: 100%; }
 
     }
-    @at-root #{&}__quiz-inner {
+    &__quiz-inner {
 
         flex: 1;
         width: 100%;
     }
 
-    @at-root #{&}__extras {
+    &__extras {
 
         // position: absolute;
         // right: 12px;
         // top: 12px;
     }
 
-    @at-root #{&}__checkbox {
+    &__checkbox {
         display: block;
         float: left;
         margin-top: 20px;
     }
 
 
-    @at-root #{&}__quizname {
+    &__quizname {
         font-weight: bold;
         display: inline;
         font-size: 18px;
     }
 
-    @at-root #{&}__quizauthor {
+    &__quizauthor {
         display: inline;
     }
 
-    @at-root #{&}__quizdate {
+    &__quizdate {
         font-weight: 100;
         color: $brand-color-grey;
     }
 
 
 
-    @at-root #{&}__quizcategory {
+    &__quizcategory {
         display: inline-block;
         font-weight: 100;
         color: $brand-color-grey;

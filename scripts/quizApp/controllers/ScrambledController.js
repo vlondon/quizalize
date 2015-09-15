@@ -17,7 +17,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     var getUserAnswer = function(n){
         var ans = [];
         for(var i=0; i < n; i++){
-            ans.push("_");
+            ans.push("AAA");
         }
         return ans;
     };
@@ -32,10 +32,6 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             }
         }
         return true;
-    };
-
-    var replaceSpaces = function(s){
-        return s.replace(/\s+/g, "_");
     };
 
     var renderReactComponent = function(){
@@ -102,7 +98,8 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             QuizData.getQuestion(self.questionId, function(data){
                 self.question = data.question;
                 self.questionData = data;
-                self.answer = replaceSpaces(data.answer);
+                //self.answer = replaceSpaces(data.answer);
+                self.answer = data.answer;
                 self.imageURL = data.imageURL;
                 self.imageEnabled = data.imageEnabled;
                 self.letters = getLetters(self.answer);
@@ -121,7 +118,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
 
     var updateLastEmpty = function(){
         for(var i=0; i < self.userAnswerLetters.length; i++){
-            if(self.userAnswerLetters[i] == "_"){
+            if(self.userAnswerLetters[i] == "AAA"){
                 lastEmpty = i;
                 return;
             }
@@ -151,9 +148,9 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
 
     self.removeLetter = function(idx){
         var letter = self.userAnswerLetters[idx];
-        if(letter != "_") {
+        if(idx < lastEmpty) {
             self.letters.push(letter);
-            self.userAnswerLetters[idx] = "_";
+            self.userAnswerLetters[idx] = "AAA";
             updateLastEmpty();
         }
         renderReactComponent();

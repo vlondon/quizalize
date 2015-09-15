@@ -129,7 +129,7 @@ export default class CQSettings extends React.Component {
                                 router.setRoute(window.decodeURIComponent(params.redirect));
                             } else {
                                 if (this.state.isNew) {
-                                    router.setRoute('/quiz/quizzes');
+                                    router.setRoute('/quiz/user');
                                 }
                                 else {
                                     router.setRoute('/quiz/user');
@@ -185,7 +185,7 @@ export default class CQSettings extends React.Component {
             // return true;
         }
         else {
-            router.setRoute("/quiz/quizzes");
+            router.setRoute("/quiz/user");
         }
     }
 
@@ -293,7 +293,7 @@ export default class CQSettings extends React.Component {
                                 value={this.state.user.attributes.profileUrl}/>
                         </div>
                         <div className={`cq-settings__profile-item${classNameError(6)} form-group`}>
-                            <label htmlFor="url">Quizalize Banner URL <i>(suggested size is 1070px x 300px)</i></label>
+                            <label htmlFor="url">Quizalize Banner <i>(suggested size is 1070px x 300px)</i></label>
 
                             <img src={imageUrlParser(this.state.user.attributes.bannerUrl)} className="cq-settings__banner"/>
                             <div className="cq-settings__upload">

@@ -15,7 +15,7 @@ var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
 import UserStore from './../../../stores/UserStore';
 
 import type {Quiz} from './../../../stores/QuizStore';
-import type {App} from './../../../stores/AppStore';
+import type {AppType} from './../../../stores/AppStore';
 
 
 
@@ -38,7 +38,7 @@ type Props = {
 }
 
 type State = {
-    appInfo: ?App;
+    appInfo: ?AppType;
 }
 
 export default class CQApp extends React.Component {

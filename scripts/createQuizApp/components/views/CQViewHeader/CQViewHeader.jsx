@@ -15,6 +15,9 @@ var sections = {
         'quizzes',
         'create'
     ],
+    user: [
+        'user'
+    ],
     classes: [
         'assignments'
     ],
@@ -70,8 +73,8 @@ var CQViewHeader = React.createClass({
         if (this.state.isLoggedIn){
             buttons.push((
                 <li id="cq-quizzes" key='cq-quizzes'>
-                    <CQLink href="/quiz/quizzes" className={isActive('quiz') ? 'navbar-btn active' : 'navbar-btn'}>
-                        <i className="fa fa-th-large"></i> Your quizzes
+                    <CQLink href="/quiz/user" className={isActive('user') ? 'navbar-btn active' : 'navbar-btn'}>
+                        <i className="fa fa-th-large"></i> Your Profile
                     </CQLink>
                 </li>));
 

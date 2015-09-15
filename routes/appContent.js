@@ -62,11 +62,12 @@ exports.getPublic = function(req, res){
         return new Promise(function(resolve, reject){
             logger.trace('trying to load', quizId);
             zzish.getPublicContent(QUIZ_CONTENT_TYPE, quizId, function(err, resp){
-                if (!err) {
+                logger.trace('trying to response', typeof resp);
+                if (!err &&  resp !== null) {
                     delete resp.payload;
                     resolve(resp);
                 } else {
-                    reject();
+                    resolve(undefined);
                 }
             });
         });
@@ -82,6 +83,7 @@ exports.getPublic = function(req, res){
                 var promises = resp.payload.quizzes.map(function(quiz){ return getQuiz(quiz); });
                 Promise.all(promises)
                     .then(function(values){
+                        console.log('all quizzes', values);
                         resp.extra = {
                             quizzes: values
                         };
@@ -93,6 +95,9 @@ exports.getPublic = function(req, res){
                                 res.status(500).send(error);
                             });
                         // res.send(resp);
+                    })
+                    .catch((err)=>{
+                        console.warn('there has been an error', err);
                     });
 
             } else {

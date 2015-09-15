@@ -283,6 +283,7 @@ export default class CQViewQuizList extends React.Component {
         var updated = function(){};
 
         var childActionHandler = function(child, quiz){
+            console.log('child????', typeof child);
             if (child && child.length && child.length > 0) {
                 return child.map(function(c) {
 
@@ -298,6 +299,18 @@ export default class CQViewQuizList extends React.Component {
                     });
                     return clonedChildren;
                 });
+            } else if (child) {
+                var clonedChildren = React.cloneElement(child, {
+                    onClick: function(ev){
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        if (child.props.onClick){
+                            child.props.onClick(quiz);
+                        }
+                    },
+                    quiz: quiz
+                });
+                return clonedChildren;
             }
             return child;
         };
@@ -343,9 +356,9 @@ export default class CQViewQuizList extends React.Component {
 
         return (
 
-            <div>
+            <div className={`${this.props.className}`}>
                 {sort}
-                <ul className={`cq-viewquizlist ${this.props.className}`}>
+                <ul className={`cq-viewquizlist`}>
                     {this.state.quizzes.map((quiz) => {
                         if (quiz.uuid === 'new'){
                             return (

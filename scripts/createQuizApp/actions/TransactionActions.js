@@ -13,7 +13,7 @@ import UserStore    from './../stores/UserStore';
 import priceFormat  from './../utils/priceFormat';
 
 import type {Quiz}  from './../stores/QuizStore';
-import type {App}   from './../stores/AppStore';
+import type {AppType}   from './../stores/AppStore';
 import type {Transaction}   from './../stores/TransactionStore';
 
 var purchaseComplete = function(){
@@ -23,7 +23,7 @@ var purchaseComplete = function(){
         type: 'success'
     }, ()=>{
 
-        router.setRoute('/quiz/quizzes');
+        router.setRoute('/quiz/user');
     });
 };
 
@@ -104,7 +104,7 @@ var TransactionActions = {
                 };
                 TransactionActions.saveNewTransaction(newTransaction)
                     .then(()=>{
-                        router.setRoute('/quiz/quizzes');
+                        router.setRoute('/quiz/user');
                     });
             });
     },
@@ -163,7 +163,7 @@ var TransactionActions = {
 
     },
 
-    buyApp: function(app : App, free : ?boolean) {
+    buyApp: function(app : AppType, free : ?boolean) {
         var price = 0;
         var priceTag = "free";
         if ((app.meta.price && app.meta.price !== 0) && !free) {

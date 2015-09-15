@@ -4,6 +4,7 @@ class User {
 
     constructor(user){
         // Object.assign(this, user);
+        console.log('user', user);
         this.user = user;
         this.uuid = user.uuid;
         this._userQuizzesInit = false;
@@ -70,6 +71,7 @@ class Users {
                     }
                     reject(err);
                 } else {
+                    console.log('NEW USER LOADE', data);
                     var user = new User(data);
                     this.users.push(user);
                     resolve(user.toJSON());
@@ -79,9 +81,38 @@ class Users {
         });
     }
 
+    loadUserBySlug(slug){
+        return new Promise((resolve, reject) => {
+            console.log('loading user', {profileUrl: slug});
+            zzish.userByAttributes({profileUrl: slug}, (err, data) => {
+                console.log('response', err, data);
+                if (!err && typeof data === 'object' && data.length > 0) {
+                    var user = new User(data[0]);
+                    this.users.push(user);
+                    resolve(user.toJSON());
+                }
+                else {
+                    if (err === "404") {
+                        reject('User not found');
+                    }
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    getUserBySlug(slug) {
+        console.log('users', this.users);
+        var user = this.users.filter(u=> slug === u.user.attributes.profileUrl)[0];
+        if (user === undefined) {
+            return this.loadUserBySlug(slug);
+        } else {
+            return user.toJSON();
+        }
+    }
 
     getUserByid(userId){
-        var user = this.users.filter(u=> userId === u.uuid)[0];
+        var user = this.users.filter(u=> userId === u.user.uuid)[0];
         console.log('users?', this.users, user);
         if (user === undefined){
             console.log('form zzish');
@@ -92,6 +123,20 @@ class Users {
         }
         // return new Promise((resolve, reject)=>{
         // });
+    }
+
+    getMyUser(profileId){
+        return new Promise((resolve, reject)=>{
+            console.log('getting profile', profileId);
+            zzish.user(profileId, function(err, data){
+                if (!err && typeof data === 'object') {
+                    resolve(data);
+                }
+                else {
+                    reject(err);
+                }
+            });
+        });
     }
 }
 var users = new Users();

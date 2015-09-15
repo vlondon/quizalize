@@ -24,10 +24,13 @@ export default class CQViewQuizPrice extends React.Component {
     state: State;
     constructor(props : Props) {
         super(props);
+
         this.state = {
             user: UserStore.getUser()
         };
+
         this.handleClick = this.handleClick.bind(this);
+        this.handlePreview = this.handlePreview.bind(this);
     }
 
     handleClick(owned: boolean, ev : Object){
@@ -52,6 +55,11 @@ export default class CQViewQuizPrice extends React.Component {
             }
         }
     }
+    handlePreview(){
+        var quiz = this.props.quiz;
+        sessionStorage.setItem('mode', 'preview');
+        window.open(`/app#/play/public/${quiz.uuid}`);
+    }
 
     render() : any {
         var price, owned = false;
@@ -65,9 +73,15 @@ export default class CQViewQuizPrice extends React.Component {
             price = 'Play in class';
         }
         return (
-            <span className={this.props.className} onClick={this.handleClick.bind(this, owned)}>
-                {price}
-            </span>
+            <div>
+
+                <span className='cq-public__button' onClick={this.handlePreview}>
+                    Play
+                </span>
+                <span className='cq-public__button' onClick={this.handleClick.bind(this, owned)}>
+                    {price}
+                </span>
+            </div>
         );
     }
 

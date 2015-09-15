@@ -53,7 +53,7 @@ var CQViewClassList = React.createClass({
                                 title: "Error",
                                 text: "You will need to specifiy a quiz name to continue"
                             },function() {
-                                router.setRoute("/quiz/quizzes");
+                                router.setRoute("/quiz/user");
                             });
                         return false;
                     }

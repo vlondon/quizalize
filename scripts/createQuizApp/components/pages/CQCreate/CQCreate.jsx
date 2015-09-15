@@ -232,7 +232,7 @@ var CQCreate = React.createClass({
                             </button>
 
 
-                            <CQLink href="/quiz/quizzes" className="cq-create__cancel">
+                            <CQLink href="/quiz/user" className="cq-create__cancel">
                                 Cancel and go back to your quizzes
                             </CQLink>
 

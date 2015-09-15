@@ -1,13 +1,11 @@
 .cq-viewprofilepicture {
-    border-radius: 10px;
-    overflow: hidden;
-    display: inline-block;
-    text-align: center;
-    background-size: cover;
-    background-color: #FFF;
+
     background-position: center;
-    display: flex;
-    justify-content: center;
+    background-size: cover;
+
+    border-radius: 100%;
+    box-shadow: inset 0 0 6px rgba(#000, .7);
+
 
     &__placeholder {
         color: #FFF;

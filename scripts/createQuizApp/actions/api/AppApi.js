@@ -2,7 +2,7 @@
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
-import type {App} from './../../stores/AppStore';
+import type {AppType} from './../../stores/AppStore';
 import UserStore from './../../stores/UserStore';
 
 var AppApi = {
@@ -55,7 +55,7 @@ var AppApi = {
         });
     },
 
-    delete: function(app : App) : Promise{
+    delete: function(app : AppType ) : Promise{
         return new Promise(function(resolve, reject){
             // reject();
 
@@ -77,7 +77,7 @@ var AppApi = {
 
     },
 
-    putApp: function(app : App) : Promise {
+    putApp: function(app : AppType) : Promise {
         return new Promise(function(resolve, reject){
 
 
@@ -153,8 +153,8 @@ var AppApi = {
 
         };
     })(),
-    
-    publishApp: function(app : App) : Promise {
+
+    publishApp: function(app : AppType) : Promise {
         return new Promise(function(resolve, reject){
             var uuid = UserStore.getUserId();
 
