@@ -98,19 +98,15 @@ var CQDashboardProfile = React.createClass({
 
                             <div className="cq-dashboard__profile__info__entry">
                                 <small>
-                                    School
+                                    Affiliation
                                 </small>
                                 {school}
                             </div>
                             <div  className="cq-dashboard__profile__info__entry">
-                                <small>City</small>
+                                <small>Location</small>
                                 {this.state.user.attributes.location}
                             </div>
-                            <div className="cq-dashboard__profile__info__entry">
-                                <a href={profileUrl}>
-                                    <small>Link to Quizalize Profile</small>
-                                </a>
-                            </div>
+
                         </div>
 
 

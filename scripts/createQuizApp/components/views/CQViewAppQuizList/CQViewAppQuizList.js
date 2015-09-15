@@ -111,9 +111,9 @@ class CQViewAppQuizList extends React.Component {
                                     });
                                     quizPrice = quizPrice / 100;
                                     var appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
-                                    console.log('quiz Price', quizPrice);
+
                                     return (<span style={{padding: 5}}>
-                                        Save  <b>{appQuizDifference}%</b> when buying the App
+                                        Save  <b>{appQuizDifference}%</b> when buying the app
                                     </span>
                                     );
                                 }
@@ -123,9 +123,8 @@ class CQViewAppQuizList extends React.Component {
                                         <button className="appquizlist__app__button">
                                             {buyAppLabel}
                                         </button>
-                                        <p>
-                                            {getSave()}
-                                        </p>
+                                        {getSave()}
+
                                     </span>
                                 );
                             }
