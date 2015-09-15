@@ -23,7 +23,7 @@ var purchaseComplete = function(){
         type: 'success'
     }, ()=>{
 
-        router.setRoute('/quiz/quizzes');
+        router.setRoute('/quiz/user');
     });
 };
 
@@ -104,7 +104,7 @@ var TransactionActions = {
                 };
                 TransactionActions.saveNewTransaction(newTransaction)
                     .then(()=>{
-                        router.setRoute('/quiz/quizzes');
+                        router.setRoute('/quiz/user');
                     });
             });
     },
