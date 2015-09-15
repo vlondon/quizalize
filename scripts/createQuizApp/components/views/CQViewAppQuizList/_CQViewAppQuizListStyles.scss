@@ -9,6 +9,8 @@
         width: 100%;
     }
 
+
+
     &__info {
 
     }
@@ -28,6 +30,32 @@
         margin-bottom: 20px;
         padding: 10px;
         border-radius: 10px;
+
+
+        &__button {
+            color: $brand-color-black;
+            margin: 5px 0;
+            padding: 5px;
+            font-weight: bold;
+            text-size: 21px;
+
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            background: #FFF;
+            box-shadow: 0px 2px  0 $brand-color-black;
+
+            &:focus,
+            &:hover {
+                background: $brand-color-grey-lighter;
+                /* color: $brand-color-grey-lighter; */
+            }
+
+            &:active {
+                background: $brand-color-grey-light;
+                box-shadow: inset 0 2px 0 $brand-color-black;
+            }
+        }
 
         &__infowrapper {
             display: flex;

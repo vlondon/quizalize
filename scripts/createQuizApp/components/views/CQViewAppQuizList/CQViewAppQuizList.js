@@ -5,11 +5,12 @@ import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import QuizStore from './../../../stores/QuizStore';
 import CQQuizzesProfile from './../../../components/pages/CQQuizzes/CQQuizzesProfile';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
-
+import priceFormat from './../../../utils/priceFormat';
 import kolor from 'kolor';
 
 type Props = Object;
 type State = Object;
+
 class CQViewAppQuizList extends React.Component {
 
     props: Props;
@@ -65,7 +66,7 @@ class CQViewAppQuizList extends React.Component {
 
                 <ul class="appquizlist__list">
                     {this.state.apps.map(app=>{
-                        var quizIcon;
+                        var quizIcon, buyApp;
                         var appColor = kolor(app.meta.colour);
                         var quizzes = [];
                         if (app.meta.quizzes) {
@@ -73,6 +74,15 @@ class CQViewAppQuizList extends React.Component {
                         }
                         if (app.uuid !== 'own'){
                             quizIcon = <CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>
+                            if (this.props.own === false){
+
+                                var buyAppLabel = app.meta.price && app.meta.price > 0 ? 'Get it for ' + priceFormat(app.meta.price, '$', 'us') : 'Save app to your profile';
+                                buyApp = (
+                                    <button className="appquizlist__app__button">
+                                        {buyAppLabel}
+                                    </button>
+                                );
+                            }
                         }
 
                         return (
@@ -90,11 +100,8 @@ class CQViewAppQuizList extends React.Component {
                                                 <p>
                                                     {app.meta.description}
                                                 </p>
-                                                <p>
-                                                    <button class="cq-app__button">
-                                                        
-                                                    </button>
-                                                </p>
+                                                {buyApp}
+
                                             </div>
                                         </div>
 
