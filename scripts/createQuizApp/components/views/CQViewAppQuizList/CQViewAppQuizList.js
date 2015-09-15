@@ -28,7 +28,7 @@ class CQViewAppQuizList extends React.Component {
         props = props || this.props;
 
         var apps = props.apps;
-        console.log('props', props);
+
         apps.forEach(app => {
             app.meta.quizzes.sort((a, b)=> {
                 return a.meta.name.toLowerCase() > b.meta.name.toLowerCase() ? 1 : -1;
@@ -74,13 +74,35 @@ class CQViewAppQuizList extends React.Component {
                         }
                         if (app.uuid !== 'own'){
                             quizIcon = <CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>
-                            if (this.props.own === false){
+                            if (this.props.own !== true){
 
-                                var buyAppLabel = app.meta.price && app.meta.price > 0 ? 'Get it for ' + priceFormat(app.meta.price, '$', 'us') : 'Save app to your profile';
+                                var buyAppLabel = app.meta.price && app.meta.price > 0 ? `Get all ${app.meta.quizzes.length} quizzes for ${priceFormat(app.meta.price, '$', 'us')} ` : 'Save app to your profile';
+                                var getSave = function(){
+                                    var appPrice = app.meta.price;
+                                    var quizPrice = 0;
+                                    app.meta.quizzes.forEach(q=> {
+                                        quizPrice += (q.meta.price * 100);
+                                    });
+                                    quizPrice = quizPrice / 100;
+                                    var appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
+                                    console.log('quiz Price', quizPrice);
+                                    return (<span style={{padding: 5}}>
+                                        Save  <b>{appQuizDifference}%</b> when buying the App
+                                    </span>
+                                    );
+
+
+                                }
+                                getSave();
                                 buyApp = (
-                                    <button className="appquizlist__app__button">
-                                        {buyAppLabel}
-                                    </button>
+                                    <span>
+                                        <button className="appquizlist__app__button">
+                                            {buyAppLabel}
+                                        </button>
+                                        <p>
+                                            {getSave()}
+                                        </p>
+                                    </span>
                                 );
                             }
                         }
