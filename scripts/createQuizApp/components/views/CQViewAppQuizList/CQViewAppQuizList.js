@@ -9,32 +9,47 @@ import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import kolor from 'kolor';
 
 type Props = Object;
+type State = Object;
 class CQViewAppQuizList extends React.Component {
 
     props: Props;
 
     constructor(props: Props) {
         super(props);
+
+        // console.log('apps sorting', apps);
+        this.getState = this.getState.bind(this);
+        this.state = this.getState(props);
+
+    }
+
+    getState(props : Props) : State {
+        props = props || this.props;
+
         var apps = props.apps;
+        console.log('props', props);
         apps.forEach(app => {
             app.meta.quizzes.sort((a, b)=> {
-                console.log('sorting quizzes', a.meta.name, b.meta.name);
                 return a.meta.name.toLowerCase() > b.meta.name.toLowerCase() ? 1 : -1;
             });
         });
-        apps.sort((a, b)=>{
+        if (apps.length >= 2){
+            apps.sort((a, b)=>{
+                console.log('sorting, ', a, b);
 
-            // this puts "own quizzes" on top;
-            if (a.uuid === 'own') { return -1; }
-            if (b.uuid === 'own') { return 1; }
+                // this puts "own quizzes" on top;
+                if (a.uuid === 'own') { return -1; }
+                if (b.uuid === 'own') { return 1; }
 
-            return a.meta.name.toLowerCase() > b.meta.name.toLowerCase() ? 1 : -1;
+                return a.meta.name.toLowerCase() > b.meta.name.toLowerCase() ? 1 : -1;
 
-        });
-        // console.log('apps sorting', apps);
-        console.log('test app', apps)
-        this.state = { apps };
+            });
+        }
+        return {apps};
+    }
 
+    componentWillReceiveProps(nextProps : Props) {
+        this.setState(this.getState(nextProps));
     }
 
     render () : any {
@@ -47,9 +62,7 @@ class CQViewAppQuizList extends React.Component {
         }
         return (
             <div className="appquizlist">
-                <h3>
-                    Apps
-                </h3>
+
                 <ul class="appquizlist__list">
                     {this.state.apps.map(app=>{
                         var quizIcon;
@@ -64,24 +77,32 @@ class CQViewAppQuizList extends React.Component {
 
                         return (
                             <li className="appquizlist__app" style={{backgroundColor: appColor.fadeOut(0.7)}}>
-                                {quizIcon}
-                                <div className="appquizlist__left">
+                                <div className="appquizlist__app__infowrapper">
 
-                                    <div className="appquizlist__app__info">
-                                        <div className="appquizlist__app__info__text">
-                                            <h3 className="appquizlist__app__name">
-                                                {app.meta.name}
-                                            </h3>
-                                            <p>
-                                                {app.meta.description}
-                                            </p>
+                                    {quizIcon}
+                                    <div className="appquizlist__left">
+
+                                        <div className="appquizlist__app__info">
+                                            <div className="appquizlist__app__info__text">
+                                                <h3 className="appquizlist__app__name">
+                                                    {app.meta.name}
+                                                </h3>
+                                                <p>
+                                                    {app.meta.description}
+                                                </p>
+                                                <p>
+                                                    <button class="cq-app__button">
+                                                        
+                                                    </button>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <CQViewQuizList quizzes={quizzes} classname="appquizlist__list">
-                                        {quizButtons}
-                                    </CQViewQuizList>
+                                    </div>
                                 </div>
+                                <CQViewQuizList quizzes={quizzes} className="appquizlist__list">
+                                    {quizButtons}
+                                </CQViewQuizList>
                             </li>
                         );
                     })}

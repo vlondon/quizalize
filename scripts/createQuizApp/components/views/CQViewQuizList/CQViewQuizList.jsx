@@ -356,9 +356,9 @@ export default class CQViewQuizList extends React.Component {
 
         return (
 
-            <div>
+            <div className={`${this.props.className}`}>
                 {sort}
-                <ul className={`cq-viewquizlist ${this.props.className}`}>
+                <ul className={`cq-viewquizlist`}>
                     {this.state.quizzes.map((quiz) => {
                         if (quiz.uuid === 'new'){
                             return (

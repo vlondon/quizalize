@@ -2,6 +2,8 @@
 var React = require('react');
 var router = require('./../../../config/router');
 
+import AppStore from './../../../stores/AppStore';
+
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
 import CQViewAppGrid from './../../views/CQViewAppGrid';
@@ -21,7 +23,46 @@ class CQProfileView extends React.Component {
 
     constructor(props : Props){
         super(props);
-        this.state = {};
+        console.log('props', props);
+
+        this.getState = this.getState.bind(this);
+        this.state = this.getState(props);
+
+    }
+
+    getState(props: Object) : Object {
+        props = props || this.props;
+        var quizzesWithoutApps = props.quizzes.filter(q=>{
+            var isInApp = props.apps.filter(a=>{
+                var quizzes = a.meta.quizzes || [];
+                return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
+            });
+            console.log('quizzesWithoutApps inapp', isInApp);
+            return isInApp.length === 0;
+        });
+
+        var appPlaceholder: ?Object;
+        console.log('thissssisisisis', this);
+        var state = this.state || {};
+        if (!state.appPlaceholder) {
+            appPlaceholder = AppStore.getNewApp();
+            appPlaceholder.uuid = 'own';
+            appPlaceholder.meta.quizzes = quizzesWithoutApps;
+            appPlaceholder.meta.colour = '#FFFFFF';
+            appPlaceholder.meta.name = 'Your Quizzes';
+            appPlaceholder.meta.description = "This is a description of your quizzes that don't belong to any app";
+            var apps = props.apps;
+            apps.push(appPlaceholder);
+        } else {
+            appPlaceholder = state.appPlaceholder;
+        }
+
+        return {apps, appPlaceholder };
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        console.log('nextProps', nextProps)
+        this.setState(this.getState(nextProps));
     }
 
     handlePreview(quiz : Quiz){
@@ -105,21 +146,16 @@ class CQProfileView extends React.Component {
         );
         return (
             <CQPageTemplate className="cq-container cq-profile">
+
                 <CQDashboardProfile user={this.props.profile}/>
+
                 {headerCta}
+
                 <CQViewAppQuizList
                     apps={this.props.apps}
                     own={this.props.own}
                 />
 
-                <div className="cq-profile__left"/>
-
-                <div className="cq-profile__right">
-                    <CQViewAppGrid apps={this.props.apps} own={this.props.own}/>
-                    <h3>Viewing public quizzes from {this.props.profile && this.props.profile.name}</h3>
-                    {quizDetails}
-                    {quizList}
-                </div>
 
 
             </CQPageTemplate>

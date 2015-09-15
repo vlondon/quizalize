@@ -46,9 +46,9 @@ var CQDashboardProfile = React.createClass({
 
     render: function() {
         var profile, bannerStyles, school, profileUrl;
-        console.log('this.state.user.attributes', this.state.user.attributes);
 
         if (this.state.user){
+            console.log('this.state.user.attributes', this.state.user.attributes);
             if (this.state.user.attributes.bannerUrl){
                 bannerStyles = {
                     backgroundImage: `url(${imageUrlParser(this.state.user.attributes.bannerUrl)})`,

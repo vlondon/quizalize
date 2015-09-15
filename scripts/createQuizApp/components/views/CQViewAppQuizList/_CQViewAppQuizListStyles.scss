@@ -4,9 +4,15 @@
         list-style: none;
         padding: 0;
     }
+
     .cq-viewquizlist {
         width: 100%;
     }
+
+    &__info {
+
+    }
+
     &__left {
         // float: left;
         // flex: 0 0 auto;
@@ -14,17 +20,26 @@
         width: 100%;
     }
 
+    &__list {
+        flex: 1 100%;
+    }
+
     &__app {
         margin-bottom: 20px;
-        display: flex;
         padding: 10px;
         border-radius: 10px;
+
+        &__infowrapper {
+            display: flex;
+            padding-bottom: 10px;
+        }
+
         &__info {
-            height: 100px;
             display: flex;
             margin-bottom: 10px;
-
-            p {margin-bottom: 0;}
+            p {
+                margin-bottom: 0;
+            }
             &__text {
                 align-self: flex-end;
             }

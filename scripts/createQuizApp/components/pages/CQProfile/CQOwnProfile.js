@@ -55,26 +55,7 @@ class CQOwnProfile extends React.Component {
 
     render () {
         if (this.state.profile.uuid){
-            var quizzesWithoutApps = this.state.quizzes.filter(q=>{
-                var isInApp = this.state.apps.filter(a=>{
-                    var quizzes = a.meta.quizzes || [];
-                    return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
-                });
-                console.log('quizzesWithoutApps inapp', isInApp);
-                return isInApp.length === 0;
-            });
-
-            var appPlaceholder:Object = AppStore.getNewApp();
-            appPlaceholder.uuid = 'own';
-            appPlaceholder.meta.quizzes = quizzesWithoutApps;
-            appPlaceholder.meta.colour = '#FFFFFF';
-            appPlaceholder.meta.name = 'Your Quizzes';
-            appPlaceholder.meta.description = "This is a description of your quizzes that don't belong to any app";
-
-            console.log('quizzesWithoutApps app', appPlaceholder);
-            console.log('quizzesWithoutApps', quizzesWithoutApps);
-            var apps = this.state.apps;
-            apps.push(appPlaceholder);
+            
             return (
                 <CQProfileView
                     profile={this.state.profile}
