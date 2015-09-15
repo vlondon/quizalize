@@ -5,8 +5,11 @@ import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import QuizStore from './../../../stores/QuizStore';
 import CQQuizzesProfile from './../../../components/pages/CQQuizzes/CQQuizzesProfile';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
+import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
+
 import priceFormat from './../../../utils/priceFormat';
 import kolor from 'kolor';
+import router from './../../../config/router';
 
 type Props = Object;
 type State = Object;
@@ -20,6 +23,8 @@ class CQViewAppQuizList extends React.Component {
 
         // console.log('apps sorting', apps);
         this.getState = this.getState.bind(this);
+        this.handleQuizClick = this.handleQuizClick.bind(this);
+        this.handleDetailsClose = this.handleDetailsClose.bind(this);
         this.state = this.getState(props);
 
     }
@@ -53,17 +58,38 @@ class CQViewAppQuizList extends React.Component {
         this.setState(this.getState(nextProps));
     }
 
+    handleQuizClick(quiz: Object){
+        console.log('quizId clicked', quiz);
+        if (this.props.own){
+
+            router.setRoute(`/quiz/create/${quiz.uuid}`);
+        } else {
+
+            this.setState({quizDetails: quiz.uuid});
+        }
+    }
+    handleDetailsClose(){
+        this.setState({quizDetails: undefined});
+    }
+
     render () : any {
-        var quizButtons;
+        var quizButtons, quizDetails;
 
         if (this.props.own) {
             quizButtons = (<CQQuizzesProfile/>);
         } else {
             quizButtons = (<CQViewQuizPrice/>);
         }
+
+        if (this.state.quizDetails) {
+            quizDetails = (<CQViewQuizDetails
+                onClose={this.handleDetailsClose}
+                quizId={this.state.quizDetails}/>);
+        }
+
         return (
             <div className="appquizlist">
-
+                {quizDetails}
                 <ul class="appquizlist__list">
                     {this.state.apps.map(app=>{
                         var quizIcon, buyApp;
@@ -90,8 +116,6 @@ class CQViewAppQuizList extends React.Component {
                                         Save  <b>{appQuizDifference}%</b> when buying the App
                                     </span>
                                     );
-
-
                                 }
                                 getSave();
                                 buyApp = (
@@ -129,7 +153,11 @@ class CQViewAppQuizList extends React.Component {
 
                                     </div>
                                 </div>
-                                <CQViewQuizList quizzes={quizzes} className="appquizlist__list">
+                                <CQViewQuizList
+                                    quizzes={quizzes}
+                                    className="appquizlist__list"
+                                    onQuizClick={this.handleQuizClick}
+                                >
                                     {quizButtons}
                                 </CQViewQuizList>
                             </li>
