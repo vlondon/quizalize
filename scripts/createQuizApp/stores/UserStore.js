@@ -69,6 +69,7 @@ class UserStore extends Store {
 
 
     isLoggedIn(): boolean {
+        console.log('isLoggedIn', _user, _user.uuid);
         return (_user && _user.uuid && _user.uuid !== '-1') ? true : false;
     }
 

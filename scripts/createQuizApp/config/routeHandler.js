@@ -51,7 +51,7 @@ var newUrl = function(requestedUrl){
         if (page.needsLogin === undefined){
             return requestedUrl;
         }
-        console.log('we are logged in?', user);
+        console.log('we are logged in?', user, UserStore.isLoggedIn());
         if (!page.needsLogin) {
             if (UserStore.isLoggedIn() && !page.public) {
                 var params = urlParams();

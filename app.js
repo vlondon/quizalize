@@ -24,7 +24,7 @@ var multer      = require('multer');
 var compression = require('compression');
 var intercom = require('./routes/intercom');
 
-var graphql = require('./routes/graphql').graphql;
+var graphql = require('./routes/graphql').endpoint;
 
 
 app.set('views', path.join(__dirname, 'views'));

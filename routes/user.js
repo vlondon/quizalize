@@ -3,9 +3,11 @@ var email = require("../email"); //for sending emails
 var zzish = require("../zzish"); //initialized zzish
 var crypto = require('crypto'); //create encrypted password
 var intercom = require("./intercom");
+var graphQlQuery = require('./graphql.js').graphQlQuery;
 
 var algorithm = 'aes-256-ctr';
 var password = '##34dsadfasdf££FE';
+
 
 var handleError = function(err, res){
     if (err){
@@ -51,19 +53,45 @@ exports.saveUser = function(req, res) {
 
 exports.details = function(req, res) {
     var profileId = req.params.profileId;
-    zzish.user(profileId, function(err, data){
-        if (!err && typeof data === 'object') {
-            console.log('we got user', data);
-            var uuid = data.uuid;
-            req.session.userUUID = uuid;
-            res.status(200);
+    var query = `
+    {
+        user(uuid: "${profileId}") {
+            name,
+            avatar,
+            uuid,
+            email
+            attributes {
+                location,
+                profileUrl,
+                bannerUrl,
+                profileUrl,
+                school
+            }
         }
-        else {
-            req.userUUID = undefined;
-            res.status(err);
-        }
-        res.send(data);
+    }
+    `;
+    var queryR = graphQlQuery(query, profileId);
+
+    graphQlQuery(query, profileId).then((result)=> {
+        var user = result.data.user;
+        req.session.userUUID = user.uuid;
+        res.status(200).send(user);
+    }).catch((err)=>{
+        console.err('err', err);
+        res.status(500).send(err);
     });
+
+    // zzish.user(profileId, function(err, data){
+    //     if (!err && typeof data === 'object') {
+    //         console.log('we got user', data);
+    //         res.status(200);
+    //     }
+    //     else {
+    //         req.userUUID = undefined;
+    //         res.status(err);
+    //     }
+    //     res.send(data);
+    // });
 };
 
 exports.search = function(req, res) {
