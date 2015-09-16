@@ -119,7 +119,9 @@ exports.create =  function(req, res) {
 };
 
 exports.landingpage =  function(req, res) {
+    var intercomId = process.env.intercomAppId || 'mnacdt52';
     res.render('home', {
+        intercomId: intercomId,
         devServer: process.env.ZZISH_DEVMODE
     });
 };
