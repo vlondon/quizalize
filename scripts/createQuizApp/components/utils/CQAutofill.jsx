@@ -202,7 +202,8 @@ export default class CQAutofill extends React.Component {
                 occurrences,
                 selected
             }, function() {
-                this.props.onChange(selected.uuid);
+                var uuid = selected ? selected.uuid : undefined;
+                this.props.onChange(uuid);
             });
         }
     }
@@ -215,7 +216,8 @@ export default class CQAutofill extends React.Component {
                 searchString: option.name,
                 selecting: false
             },function() {
-                this.props.onChange(option.uuid);
+                var uuid = option ? option.uuid : undefined;
+                this.props.onChange(uuid);
             });
 
         } else {
@@ -322,8 +324,10 @@ export default class CQAutofill extends React.Component {
         //     optionSelected = occurrences[indexSelected];
         // }
 
-        var {occurrences} = this.state;
-        optionSelected = occurrences[indexSelected];
+        var {occurrences, indexSelected} = this.state;
+        if (indexSelected) {
+            optionSelected = occurrences[indexSelected];
+        }
 
         this.selectOption(optionSelected);
     }
