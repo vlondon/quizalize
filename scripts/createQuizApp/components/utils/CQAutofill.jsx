@@ -93,7 +93,6 @@ export default class CQAutofill extends React.Component {
     }
 
     onChange(){
-        //console.trace('CQAutofill onChange');
         this.setState(this.getState());
     }
 
@@ -163,8 +162,7 @@ export default class CQAutofill extends React.Component {
 
                 return data.filter(checkData);
             };
-
-
+            var indexSelected = -1;
             var searchString = ev.target.value;
             var searchArray = searchString.split(' ');
             var occurrences = this.state.topicsAutofill.slice();
@@ -173,28 +171,39 @@ export default class CQAutofill extends React.Component {
 
             occurrences = occurrences.length > this.props.limit ? occurrences.slice(0, this.props.limit) : occurrences;
 
-            var selected = this.getState().selected || occurrences[0];
+            //check for index Match
+            var indexMatch = -1;
+            occurrences.forEach(function(item, i) {
+                if (item.name === searchString) indexMatch = i;
+            });
 
-            if (occurrences.length === 0 && searchString.length > 0) {
-
+            var selected;
+            if (indexMatch === -1) {
+                //no exact match
                 var option = {
                     uuid: "-1",
                     name: searchString
                 };
                 TopicActions.createTemporaryTopic(option);
-                occurrences = [option];
-
+                occurrences.unshift(option);
+                selected = option;
+                indexSelected = 0;
             }
-
+            else {
+                indexSelected = indexMatch;
+                //we have a match
+                selected = occurrences[indexMatch];
+            }
 
             this.setState({
                 selecting: true,
-                indexSelected: undefined,
+                indexSelected,
                 searchString,
                 occurrences,
                 selected
+            }, function() {
+                this.props.onChange(selected.uuid);
             });
-
         }
     }
 
@@ -205,17 +214,19 @@ export default class CQAutofill extends React.Component {
                 selected: option,
                 searchString: option.name,
                 selecting: false
+            },function() {
+                this.props.onChange(option.uuid);
             });
-            this.props.onChange(option.uuid);
+
         } else {
             this.setState({
                 selected: undefined,
                 searchString: '',
                 selecting: false
+            }, function() {
+                this.props.onChange(undefined);
             });
-            this.props.onChange(undefined);
         }
-
     }
 
 
@@ -236,7 +247,6 @@ export default class CQAutofill extends React.Component {
 
         var list = [];
         var {occurrences, selecting, indexSelected} = this.state;
-
         if (occurrences && selecting){
 
             var getClassName = (index, className) => {
@@ -293,57 +303,60 @@ export default class CQAutofill extends React.Component {
     }
 
     handleAssign(){
-        //console.trace('CQAutofill handleAssign');
-        var {indexSelected, occurrences, searchString} = this.state;
+        console.trace('CQAutofill handleAssign');
+        //var {indexSelected, occurrences, searchString} = this.state;
         var optionSelected;
 
-        if (indexSelected === undefined) {
-            if (searchString.length !== 0){
-                var option = {
-                    uuid: '-1',
-                    name: searchString
-                };
-                TopicActions.createTemporaryTopic(option);
-                optionSelected = option;
-            } else {
-                optionSelected = undefined;
-            }
-        } else {
-            optionSelected = occurrences[indexSelected];
-        }
+        // if (indexSelected === undefined) {
+        //     if (searchString.length !== 0){
+        //         var option = {
+        //             uuid: '-1',
+        //             name: searchString
+        //         };
+        //         TopicActions.createTemporaryTopic(option);
+        //         optionSelected = option;
+        //     } else {
+        //         optionSelected = undefined;
+        //     }
+        // } else {
+        //     optionSelected = occurrences[indexSelected];
+        // }
 
+        var {occurrences} = this.state;
+        optionSelected = occurrences[indexSelected];
 
         this.selectOption(optionSelected);
     }
 
     handleBlur(){
         console.trace('CQAutofill handleBlur', this);
+        //this.selectOption(this.state.selected);
         // this.handleAssign();
-        setTimeout(()=>{
-            if (this.state.selecting) {
-
-                if (this.state.searchString.trim() === '') {
-                    console.log('option should be undefined');
-                    this.selectOption(undefined);
-                }  else {
-                    var option = this.state.selected;
-                    if (option) {
-                        this.selectOption(option);
-                    }
-
-                }
-                // this.setState({
-                //     selecting: false
-                // });
-            }
-        }, 500);
+        // setTimeout(()=>{
+        //     if (this.state.selecting) {
+        //
+        //         if (this.state.searchString.trim() === '') {
+        //             console.log('option should be undefined');
+        //             this.selectOption(undefined);
+        //         }  else {
+        //             var option = this.state.selected;
+        //             if (option) {
+        //                 this.selectOption(option);
+        //             }
+        //
+        //         }
+        //         // this.setState({
+        //         //     selecting: false
+        //         // });
+        //     }
+        // }, 500);
     }
 
     handleClick(option:?Object){
-        //console.trace('CQAutofill handleClick');
-        console.log('CLICK', option);
+        console.trace('CQAutofill handleClick');
         option = option || this.state.selected;
         if (option) {
+            console.log("Clicked on ", option);
             this.selectOption(option);
         }
     }

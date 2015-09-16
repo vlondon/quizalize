@@ -68,7 +68,7 @@ var CQViewClassList = React.createClass({
                                 swal("Thanks!", "You can now use this quiz in your class");
                             });
                         }
-                    });                
+                    });
             }
         });
         console.log('groupsContent', groups, groupsContent);
@@ -137,7 +137,7 @@ var CQViewClassList = React.createClass({
         console.log('handleClassName', ev.target.value);
         this.setState({
             newClassName: ev.target.value,
-            canSaveNewClass: ev.target.value.length > 3,
+            canSaveNewClass: ev.target.value.length > 0,
             groupsUsed: []
         });
     },
@@ -162,14 +162,12 @@ var CQViewClassList = React.createClass({
     },
 
     render: function() {
-        return (
-            <div className='cq-viewclass'>
-                <h3>
-                    <span className="cq-viewclass__icon">
-                        <i className="fa fa-users"></i>
-                    </span> Set as a class game (or homework)…
-                </h3>
-                <div className="cq-viewclass__list">
+        var newTitle = "Create a new class";
+        var existingClasses = (() => {
+            newTitle = "...or create a new class";
+            if (this._showGroupsList().length > 0) {
+                return (<div>
+                    <h4>Your current classes:</h4>
                     <ul className="list-unstyled">
                         {this._showGroupsList().map( (classN) => {
                             return (
@@ -192,7 +190,21 @@ var CQViewClassList = React.createClass({
                         onClick={this.handleDone}>
                         Done - Use this class
                     </button>
+                </div>);
+            }
+        });
 
+
+        return (
+            <div className='cq-viewclass'>
+                <h3>
+                    <span className="cq-viewclass__icon">
+                        <i className="fa fa-users"></i>
+                    </span>Set as a class game (or homework)…
+                </h3>
+                <div className="cq-viewclass__list">
+                    {existingClasses()}
+                    <h4>{newTitle}</h4>
                     <form className="form-inline cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
                             id='newClassBox'
@@ -200,7 +212,7 @@ var CQViewClassList = React.createClass({
                             className="form-control"
                             value={this.state.newClassName}
                             onChange={this.handleClassName}
-                            placeholder="Enter a new class name"/>
+                            placeholder="new class name"/>
                         <button className={this.state.canSaveNewClass ? "btn btn-primary" : "btn btn-default"}
                             id='createNewClass'
                             type="submit"
@@ -208,8 +220,6 @@ var CQViewClassList = React.createClass({
                             Create and use in class
                         </button>
                     </form>
-
-
                 </div>
             </div>
         );

@@ -183,7 +183,6 @@ export default class CQEditNormal extends React.Component{
     }
 
     handleTopic (topicId: string) {
-        console.log('we got new topic', topicId);
         var newQuestionState = Object.assign({}, this.state.question);
         newQuestionState.topicId = topicId;
 

@@ -239,7 +239,6 @@ var CQQuizzes = React.createClass({
 
                     <CQPublishQuiz className="cq-quizzes__button--publish"/>
 
-
                     <button className="cq-quizzes__button--share" onClick={this.handleShare}>
                         <span className="fa fa-share"></span> Share
                     </button>

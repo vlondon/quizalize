@@ -89,11 +89,23 @@
         padding: 5px;
     }
 
+    &__button--save {
+        @include button($brand-color-blue);
+        //background: rgba($brand-color-blue, .8);
+        background: $brand-color-grey-dark;
+        color: #FFF;
+
+        &:hover,
+        &:focus {
+        }
+
+    }
+
     &__button--assign {
         @include button($brand-color-blue);
-        background: rgba($brand-color-blue, .8);
+        //background: rgba($brand-color-blue, .8);
         // background: $brand-color-blue;
-        color: #FFF;
+        //color: #FFF;
 
         &:hover,
         &:focus {
@@ -105,5 +117,4 @@
     &__button--edit { @extend %button-blue; }
     &__button--publish { @extend %button-blue; }
     &__button--review { @extend %button-blue; }
-
 }
