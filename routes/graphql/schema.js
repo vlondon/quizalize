@@ -269,6 +269,7 @@ var schema = new GraphQLSchema({
                     } else if (uuid) {
                         return graphQLUser.getUserByid(uuid);
                     } else {
+                        console.log('querying usgin ', root);
                         return graphQLUser.getMyUser(root);
                     }
                 }
