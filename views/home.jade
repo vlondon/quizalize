@@ -31,32 +31,34 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         script(src='/js/home.js')
     body#page-top.q-home
         // Navigation
+        .q-home__background
+        .q-home__foreground
+            
+            include ./home/menu.jade
+            
+            include ./home/brand.jade
+            
+            include ./home/box_intro.jade
+            
+            include ./home/box_player.jade
+            
+            include ./home/box_dashboard.jade
+            
+            include ./home/box_questionlist.jade
+            
+            include ./home/box_features.jade
+            
+            include ./home/box_studentopinions.jade
+            
+            include ./home/box_start.jade
+            
+            include ./home/box_zzish.jade
+            
+            include ./home/footer.jade
         
-        include ./home/menu.jade
         
-        include ./home/brand.jade
-        
-        include ./home/box_intro.jade
-        
-        include ./home/box_player.jade
-        
-        include ./home/box_dashboard.jade
-        
-        include ./home/box_questionlist.jade
-        
-        include ./home/box_features.jade
-        
-        include ./home/box_studentopinions.jade
-        
-        include ./home/box_start.jade
-        
-        include ./home/box_zzish.jade
-        
-        include ./home/footer.jade
-        
-        
-        // /Section: contact
-        #outdated
+            // /Section: contact
+            #outdated
         // Core JavaScript Files
         script.
             function showQuiz(id) {
@@ -184,3 +186,4 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         noscript
             div(style='display:inline;')
                 img(height='1', width='1', style='border-style:none;', alt='', src='//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&guid=ON&script=0')
+        
