@@ -184,7 +184,7 @@ class CQViewQuizFilter extends React.Component {
             }
         };
 
-        mappedTopics.unshift({value: 'all', name: 'any subject'});
+        mappedTopics.unshift({value: 'all', name: 'topics'});
         var topicsDropDown = () => {
             if (mappedTopics.length > 1)
             {
@@ -199,14 +199,11 @@ class CQViewQuizFilter extends React.Component {
 
         return (
             <div className='cq-quizfilter'>
-
-
                 <div className="cq-quizfilter__context">
 
                     <div className="cq-quizfilter__search form-inline">
                         <div className="form-group">
                             <div className="input-group">
-
                                 <span className="input-group-addon">
                                     <i className="fa fa-search"></i>
                                 </span>
@@ -218,12 +215,11 @@ class CQViewQuizFilter extends React.Component {
                         </div>
                     </div>
 
-                    {quizDropDown()}
+                    Browse
                     {topicsDropDown()}
+                    or make your own quiz game in minutes
 
                 </div>
-
-
             </div>
         );
     }

@@ -1,13 +1,14 @@
 .cq-quizfilter {
     width: 100%;
-    @include clearfix();
+    @include clearfix;
 
-    @at-root #{&}__context {
+    &__context {
         padding: 15px 0;
         font-size: 24px;
+        font-weight: bold;
         color: $brand-color-grey;
     }
-    @at-root #{&}__search {
+    &__search {
         float: right;
     }
     .react-textselect {

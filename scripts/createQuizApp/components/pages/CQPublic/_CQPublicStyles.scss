@@ -1,5 +1,11 @@
 .cq-public {
     padding: 20px;
+    min-width: 980px;
+    max-width: 1170px;
+    margin: auto;
+    .cq-container {
+        border-radius: 5px 5px 0 0;
+    }
     a {
         color: $brand-color-grey;
     }
@@ -9,9 +15,60 @@
         margin-top: 0;
         margin-bottom: 30px;
     }
+    &__footer {
+        padding: 30px 60px;
+        color: rgba(#FFF, .6);
+        background: $brand-color-purple;
+        font-weight: bold;
+        display: flex;
+        border-radius: 0 0 5px 5px;
+        &__cta {
+            width: 400px;
+            flex: 1 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &__button {
+                @include roundedButton;
+                font-size: 28px;
+                padding: 10px 40px;
+                border-radius: 100px;
+
+            }
+        }
+        a {
+            color: #FFF;
+        }
+        &__title {
+            color: #FFF;
+            font-weight: bold;
+        }
+        &__text {
+            font-size: 26px;
+        }
+        h5 {
+            font-weight: bold;
+            font-size: 14px;
+            color: #FFF;
+        }
+    }
 
     &__headercta {
         position: relative;
+
+        color: #FFF;
+        h1 {
+            font-weight: black;
+            font-size: 44px;
+
+            @include media(1170px) {
+                font-size: 50px;
+            }
+
+            b {
+                color: $brand-color-black;
+            }
+        }
         a { cursor: pointer; color: #FF6B00; }
         &__background {
             position: absolute;
@@ -93,7 +150,6 @@
 
     .cq-viewquizlist__quiz {
         width: 50%;
-
     }
 
     &__header {
@@ -105,9 +161,6 @@
         margin: 0;
         padding: 0;
     }
-
-
-
 
     &__quiz {
         text-align: left;
