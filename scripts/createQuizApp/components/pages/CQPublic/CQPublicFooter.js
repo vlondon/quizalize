@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
 import CQLink from './../../utils/CQLink';
+var router = require('createQuizApp/config/router');
+
 
 class CQPublicFooter extends React.Component {
+    handleClick() {
+        router.setRoute(`/quiz/create`);
+    }
     render () {
         return (
             <div className="cq-public__footer">
@@ -20,7 +25,7 @@ class CQPublicFooter extends React.Component {
                     </h5>
                 </div>
                 <div className="cq-public__footer__cta">
-                    <button type="button" className="cq-public__footer__cta__button">
+                    <button type="button" className="cq-public__footer__cta__button" onClick={this.handleClick}>
                         Make a quiz game
 
                     </button>
