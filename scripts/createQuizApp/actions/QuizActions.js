@@ -160,7 +160,10 @@ var QuizActions = {
 
         QuizApi.searchQuizzes(searchString, categoryId)
             .then(function(quizzes){
-
+                if (searchString !== ''){
+                    AnalyticsActions.sendEvent('marketplace_search_quiz', searchString, quizzes.length);
+                    AnalyticsActions.sendIntercomEvent('marketplace_search_result', {keyword: searchString, quizzes: quizzes.length});
+                }
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZZES_PUBLIC_LOADED,
                     payload: quizzes
