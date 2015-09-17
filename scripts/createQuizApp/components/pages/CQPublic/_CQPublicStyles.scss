@@ -192,6 +192,16 @@
             // background: $brand-color-grey;
             // color: $brand-color-grey-lighter;
         }
+
+        &__main  {
+            & {
+
+                @include button(darken($brand-color-orange, 20));
+                background: $brand-color-orange;
+                color: #FFF;
+                border-color: #FFF;
+            }
+        }
     }
 
     &__noresult {
