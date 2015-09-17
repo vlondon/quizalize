@@ -5,6 +5,8 @@ var AppActions = require('./../../../actions/AppActions');
 
 var CQDropdown = require('./../../../components/utils/CQDropdown');
 import TopicStore from './../../../stores/TopicStore';
+import CQLink from './../../utils/CQLink';
+
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {Topic} from './../../../stores/TopicStore';
@@ -217,7 +219,7 @@ class CQViewQuizFilter extends React.Component {
 
                     Browse
                     {topicsDropDown()}
-                    or make your own quiz game in minutes
+                    or <CQLink href="/quiz/create" className="cq-quizfilter__make">make your own</CQLink> quiz game in minutes
 
                 </div>
             </div>
