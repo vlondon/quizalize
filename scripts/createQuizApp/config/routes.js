@@ -123,7 +123,7 @@ var pagesArray: Array<Page> = [
         }
     },
     {
-        name: 'publicPage',
+        name: 'publicMarketplacePage',
         path: '/quiz/lmarketplace',
         needsLogin: true,
         renderer: function(){
