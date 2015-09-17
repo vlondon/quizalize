@@ -641,6 +641,16 @@ var generateData = function(chosenWeek, callback) {
                             return schools;
                     };
 
+                    var multiSchools = function (schools){
+                        var schoolCount = 0;
+                        for (var school in schools){
+                            if (schools[school].count > 1){
+                                schoolCount++;
+                            }
+                        }
+                        return schoolCount;
+                    }
+
                     var signUpsGroup = function(users, periodStart, periodEnd){
                         var signUpTeachers = {};
                         users.forEach(function(user){
@@ -809,6 +819,8 @@ var generateData = function(chosenWeek, callback) {
                     };
                     var schools = activeSchools(users, chosenWeek);
                     console.log("school", Object.keys(schools).length);
+                    var schoolsMulti = multiSchools(schools);
+                    console.log("schoolsMulti", schoolsMulti);
                     var emailList = activatedList(activeTeachers[0], users);
                     console.log("activatedList", emailList);
                     var activeList = activatedList(repeatGroup, users);
@@ -819,7 +831,9 @@ var generateData = function(chosenWeek, callback) {
                         "activated": activated,
                         "retained": retained,
                         "activatedList": emailList,
-                        "activeList": activeList
+                        "activeList": activeList,
+                        "schools": schools,
+                        "schoolsMulti": schoolsMulti
                     };
 
                     console.log(calculatedMetrics);
