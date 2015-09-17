@@ -170,7 +170,7 @@ export default class CQPublic extends React.Component {
                             Play
                         </span>
 
-                        <CQViewQuizPrice className='cq-public__button'/>
+                        <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
 
                     </CQViewQuizList>
                 </div>

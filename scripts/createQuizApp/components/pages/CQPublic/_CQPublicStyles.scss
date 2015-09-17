@@ -1,5 +1,8 @@
 .cq-public {
     padding: 20px;
+    a {
+        color: $brand-color-grey;
+    }
 
     $quizIcon: 40px;
     h1 {
@@ -191,6 +194,16 @@
         &:hover {
             // background: $brand-color-grey;
             // color: $brand-color-grey-lighter;
+        }
+
+        &__main  {
+            & {
+
+                @include button(darken($brand-color-orange, 20));
+                background: $brand-color-orange;
+                color: #FFF;
+                border-color: #FFF;
+            }
         }
     }
 
