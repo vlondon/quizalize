@@ -4,6 +4,55 @@ var request = require('superagent');
 import UserIdStore from './../../stores/UserIdStore';
 import cookies from './../../utils/cookies';
 
+var getGraphQLUserQuery = function(key, value){
+    return `
+        {
+            user(${key}: ${value}) {
+                name,
+                avatar,
+                uuid,
+                attributes {
+                    location,
+                    profileUrl,
+                    bannerUrl,
+                    profileUrl,
+                    school
+                },
+                quizzes {
+                    uuid,
+                    meta {
+                        name,
+                        categoryId,
+                        imageUrl,
+                        price,
+                        updated
+                    }
+                },
+                apps {
+                    uuid,
+                    meta {
+                        name,
+                        iconURL,
+                        created,
+                        price,
+                        description,
+                        colour,
+                        quizzes {
+                            uuid,
+                            meta {
+                                name,
+                                categoryId,
+                                imageUrl,
+                                price,
+                                updated
+                            }
+                        }
+                    }
+               }
+            }
+        }`;
+};
+
 var UserApi = {
 
     get: function() : Promise {
@@ -36,41 +85,76 @@ var UserApi = {
         });
     },
 
-    getPublic: function(userId : string) : Promise {
-        var query = `
-            {
-                user(uuid: "${userId}") {
-                    name,
-                    avatar,
+    getOwn: function() : Promise {
+        var query = `{
+            user(me: true) {
+                name,
+                avatar,
+                uuid,
+                email
+                attributes {
+                    location,
+                    profileUrl,
+                    bannerUrl,
+                    profileUrl,
+                    school
+                },
+                quizzes {
                     uuid,
-                    attributes {
-                        location,
-                        profileUrl
-                    },
-                    quizzes {
-                        uuid,
-                        meta {
-                            name,
-                            categoryId,
-                            imageUrl,
-                            price,
-                            updated
+                    meta {
+                        name,
+                        categoryId,
+                        imageUrl,
+                        price,
+                        updated,
+                        published
+                    }
+                },
+                apps {
+                    uuid,
+                    meta {
+                        name,
+                        iconURL,
+                        created,
+                        price,
+                        description,
+                        colour,
+                        quizzes {
+                            uuid,
+                            meta {
+                                name,
+                                categoryId,
+                                imageUrl,
+                                price,
+                                updated,
+                                published
+                            }
                         }
-                    },
-                    apps {
-                        uuid,
-                        meta {
-                            name,
-                            iconURL,
-                            created,
-                            price,
-                            quizzes,
-                            description
-                        }
-                   }
-                }
-            }`;
-            console.log('query GRAPHQL', query);
+                    }
+               }
+            }
+        }`;
+        return new Promise((resolve, reject)=>{
+            request.post(`/graphql/`)
+                .set('Content-Type', 'application/graphql')
+                .send(query)
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    // } else if (res.body) {
+                        // reject();
+                    } else {
+                        console.log('res', res);
+                        resolve(res.body.data.user);
+                    }
+                });
+
+        });
+    },
+
+    getPublic: function(userId : string, key: string = 'uuid') : Promise {
+        var query = getGraphQLUserQuery(key, `"${userId}"`);
+
         return new Promise((resolve, reject) => {
 
             if (!userId){

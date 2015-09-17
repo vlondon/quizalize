@@ -168,11 +168,12 @@ var QLScrambled = React.createClass({
         if (this.props.letters.length > 0) {
             showCountdown = <QLCountDown startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showTargets = this.props.answer.map(function(letter, index){
+                var selected = letter === "AAA" ? "btn-info": "btn-danger";
                 return (
-                    <button className="letterTile btn-info ng-binding ng-scope solution"
+                    <button className={`letterTile ng-binding ng-scope solution ${selected}`}
                         onClick={this.handleRemoveLetter.bind(this, index)}
                         key={index}>
-                        {letter}
+                        {letter === "AAA" ? "_": letter}
                     </button>
                 );
             }, this);

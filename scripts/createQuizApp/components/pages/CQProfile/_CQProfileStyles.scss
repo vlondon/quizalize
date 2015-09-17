@@ -5,6 +5,16 @@
     padding: 0;
     @include clearfix();
 
+    &__cta {
+        padding: 20px;
+        text-align: right;
+
+        &__app {
+            background: transparent;
+            color: red;
+        }
+    }
+
     &__left {
         width: 100%;
         padding: 0 10px;
@@ -16,6 +26,8 @@
             display: block;
         }
     }
+
+
 
 
     &__right {

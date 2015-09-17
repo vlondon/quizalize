@@ -111,8 +111,11 @@ var AppActions = {
 
                     apps = apps.filter(app => {
                         var found = false;
+                        if (typeof app.meta.quizzes !== 'string'){
+                            console.warn('problem with the app', app);
+                        }
                         quizzes.forEach(quiz => {
-                            if (app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
+                            if (typeof app.meta.quizzes === 'string' && app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
                                 found = true;
                             }
                         });

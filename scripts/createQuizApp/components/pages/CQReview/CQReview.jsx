@@ -105,7 +105,7 @@ var CQReview = React.createClass({
         QuizActions.saveReview(this.state.quiz)
             .then(function(quiz) {
                 console.log('we\'re saving review new quiz', quiz);
-                router.setRoute('/quiz/quizzes');
+                router.setRoute('/quiz/user');
             })
             .catch(function(){
                 swal('Error saving your review', 'There has been an error, please try again later');

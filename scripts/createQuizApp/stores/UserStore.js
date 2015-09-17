@@ -88,8 +88,11 @@ class UserStore extends Store {
         if (userId === undefined){
             UserActions.getPublicUserByUrl(url);
             _usersByUrl[url] = null;
+
         }
-        return userId;
+        console.info('_usersByUrl', _usersByUrl);
+        console.info('getPublicUserByUrl', userId);
+        return _users[userId];
     }
 
     isAdmin(): boolean {

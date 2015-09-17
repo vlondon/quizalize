@@ -7,12 +7,10 @@
 @import './CQBaseStyles';
 
 
-
-
-
 // views
 @import './../components/views/CQViewAppColourPicker/CQViewAppColourPickerStyles';
 @import './../components/views/CQViewAppGrid/CQViewAppGridStyles';
+@import './../components/views/CQViewAppQuizList/CQViewAppQuizListStyles';
 @import './../components/views/CQViewClassList/CQViewClassListStyles';
 @import './../components/views/CQViewQuizMarketplaceOptions/CQViewQuizMarketplaceOptionsStyles';
 @import './../components/views/CQViewCreateApp/CQViewCreateAppStyles';
@@ -34,7 +32,7 @@
 @import './../components/pages/CQLogin/CQLoginStyles';
 @import './../components/pages/CQNotFound/CQNotFoundStyles';
 @import './../components/pages/CQProfile/CQProfileStyles';
-@import './../components/pages/CQPublic/CQPublicStyles';
+@import './../components/pages/CQMarketplace/CQMarketplaceStyles';
 @import './../components/pages/CQPublished/CQPublishedStyles';
 @import './../components/pages/CQPublishedInfo/CQPublishedInfoStyles';
 @import './../components/pages/CQQuizzes/CQQuizzesStyles';

@@ -6,7 +6,8 @@ import {
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLBoolean
 } from 'graphql/type';
 
 import graphQLUser from './graphQLUser';
@@ -52,10 +53,15 @@ var appMeta = new GraphQLObjectType({
             name: 'Author user id'
         },
         quizzes: {
-            type: new GraphQLList(GraphQLString),
-            resolve: (obj)=>{
-                var quizzesID = obj.quizzes.split(',');
-                return quizzesID;
+            type: new GraphQLList(quizType),
+            resolve: ({quizzes, profileId})=>{
+                console.log('RESOLVING ', quizzes);
+                if (typeof quizzes === 'string') {
+                    var quizzesID = quizzes.split(',');
+                    return graphQLQuiz.getQuizzes(profileId, quizzesID);
+                } else {
+                    return [];
+                }
             }
         },
         updated: {
@@ -110,6 +116,9 @@ var quizMeta = new GraphQLObjectType({
         },
         updated: {
             type: GraphQLInt
+        },
+        published: {
+            type: GraphQLString
         }
     }
 });
@@ -137,32 +146,32 @@ var userAttributes = new GraphQLObjectType({
         location: {
             type: GraphQLString,
             description: 'Location',
-            resolve: (obj) => obj.location
+
         },
         school: {
             type: GraphQLString,
             description: 'School',
-            resolve: (obj) => obj.school
+
         },
         url: {
             type: GraphQLString,
             description: 'Url',
-            resolve: (obj) => obj.url
+
         },
         subjectTaught: {
             type: GraphQLString,
             description: 'subjectTaught',
-            resolve: (obj) => obj.subjectTaught
+
         },
         ageTaught: {
             type: GraphQLString,
             description: 'ageTaught',
-            resolve: (obj) => obj.ageTaught
+
         },
         profileUrl: {
             type: GraphQLString,
             description: 'profileUrl',
-            resolve: (obj) => obj.profileUrl
+
         },
         bannerUrl: {
             type: GraphQLString,
@@ -171,6 +180,7 @@ var userAttributes = new GraphQLObjectType({
         }
     }
 });
+
 
 
 
@@ -192,7 +202,12 @@ var userType = new GraphQLObjectType({
         },
         email: {
             type: GraphQLString,
-            description: 'User email'
+            description: 'User email',
+            resolve: ({uuid, email}, args, {rootValue})=>{
+                if (uuid === rootValue) {
+                    return email;
+                }
+            }
         },
         attributes: {
             type: userAttributes
@@ -201,10 +216,15 @@ var userType = new GraphQLObjectType({
         // dynamic data
         quizzes: {
             type: new GraphQLList(quizType),
-            resolve: ({uuid})=>{
+            resolve: ({uuid}, a, {rootValue})=>{
                 // this has user
-                console.log('getting quizzes', uuid);
-                return graphQLQuiz.getUserQuizzes(uuid);
+                console.log('uuid,', uuid, rootValue);
+                if (uuid === rootValue) {
+                    return graphQLQuiz.getMyQuizzes(uuid);
+                } else {
+
+                    return graphQLQuiz.getUserQuizzes(uuid);
+                }
                 // return [];
             }
         },
@@ -231,11 +251,26 @@ var schema = new GraphQLSchema({
                 args: {
                     uuid: {
                         name: 'uuid',
-                        type: new GraphQLNonNull(GraphQLString)
+                        type: GraphQLString
+                    },
+                    name: {
+                        name: 'name',
+                        type: GraphQLString
+                    },
+                    me: {
+                        name: 'me',
+                        type: GraphQLBoolean
                     }
                 },
-                resolve: (root, {uuid}) => {
-                    return graphQLUser.getUserByid(uuid);
+                resolve: (root, {uuid, name}) => {
+
+                    if (name) {
+                        return graphQLUser.getUserBySlug(name);
+                    } else if (uuid) {
+                        return graphQLUser.getUserByid(uuid);
+                    } else {
+                        return graphQLUser.getMyUser(root);
+                    }
                 }
             },
             app: {

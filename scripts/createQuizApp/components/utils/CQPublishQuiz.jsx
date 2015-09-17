@@ -2,6 +2,7 @@
 import React from 'react';
 import router from './../../config/router';
 import UserStore from './../../stores/UserStore';
+import priceFormat from './../../utils/priceFormat';
 
 var CQPublishQuiz = React.createClass({
 
@@ -46,25 +47,33 @@ var CQPublishQuiz = React.createClass({
     },
 
     render: function(): any {
-        var publishButton = (() => {
-            if (!this.props.quiz.meta.originalQuizId) {
-                if (this.props.quiz.meta.published === "pending") {
-                    return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
+        var publishButton;
+
+        if (!this.props.quiz.meta.originalQuizId) {
+            if (this.props.quiz.meta.published === "pending") {
+                publishButton = (
+                    <button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
                         <span className="fa fa-shopping-cart"></span> Published Pending
-                    </button>);
-                }
-                else if (this.props.quiz.meta.published === "published") {
-                    return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
-                        <span className="fa fa-shopping-cart"></span> Published to Marketplace
-                    </button>);
-                }
-                else {
-                    return (<button className="cq-quizzes__button--publish" onClick={this.handlePublish}>
-                        <span className="fa fa-shopping-cart"></span> Publish to Marketplace
-                    </button>);
-                }
+                    </button>
+                );
             }
-        })();
+            else if (this.props.quiz.meta.published === "published") {
+                var price = this.props.quiz.meta.price ? 'Available for ' + priceFormat(this.props.quiz.meta.price, '$', 'us') : 'Public';
+                publishButton = (
+                    <button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
+                        {price}
+                    </button>
+                );
+            }
+            else {
+                publishButton = (
+                    <button className="cq-quizzes__button--publish" onClick={this.handlePublish}>
+                        <span className="fa fa-lock"></span> Make Public
+                    </button>
+                );
+            }
+        }
+
 
         return (
             <span>
