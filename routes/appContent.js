@@ -96,7 +96,7 @@ exports.getPublic = function(req, res){
                             });
                         // res.send(resp);
                     })
-                    .catch((err)=>{
+                    .catch(function(err){
                         console.warn('there has been an error', err);
                     });
 
