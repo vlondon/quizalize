@@ -91,7 +91,7 @@ class AppStore extends Store {
         return _apps;
     }
 
-    getAppsLoaded() : Boolean {
+    getAppsLoaded() : boolean {
         return _appLoaded;
     }
 
