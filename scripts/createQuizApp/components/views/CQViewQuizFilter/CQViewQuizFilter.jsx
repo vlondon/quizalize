@@ -5,6 +5,8 @@ var AppActions = require('./../../../actions/AppActions');
 
 var CQDropdown = require('./../../../components/utils/CQDropdown');
 import TopicStore from './../../../stores/TopicStore';
+import CQLink from './../../utils/CQLink';
+
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {Topic} from './../../../stores/TopicStore';
@@ -184,7 +186,7 @@ class CQViewQuizFilter extends React.Component {
             }
         };
 
-        mappedTopics.unshift({value: 'all', name: 'any subject'});
+        mappedTopics.unshift({value: 'all', name: 'topics'});
         var topicsDropDown = () => {
             if (mappedTopics.length > 1)
             {
@@ -199,14 +201,11 @@ class CQViewQuizFilter extends React.Component {
 
         return (
             <div className='cq-quizfilter'>
-
-
                 <div className="cq-quizfilter__context">
 
                     <div className="cq-quizfilter__search form-inline">
                         <div className="form-group">
                             <div className="input-group">
-
                                 <span className="input-group-addon">
                                     <i className="fa fa-search"></i>
                                 </span>
@@ -218,12 +217,11 @@ class CQViewQuizFilter extends React.Component {
                         </div>
                     </div>
 
-                    {quizDropDown()}
+                    Browse
                     {topicsDropDown()}
+                    or <CQLink href="/quiz/create" className="cq-quizfilter__make">make your own</CQLink> quiz game in minutes
 
                 </div>
-
-
             </div>
         );
     }

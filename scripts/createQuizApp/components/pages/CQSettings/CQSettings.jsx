@@ -129,7 +129,7 @@ export default class CQSettings extends React.Component {
                                 router.setRoute(window.decodeURIComponent(params.redirect));
                             } else {
                                 if (this.state.isNew) {
-                                    router.setRoute('/quiz/quizzes');
+                                    router.setRoute('/quiz/marketplace');
                                 }
                                 else {
                                     router.setRoute('/quiz/user');
@@ -185,7 +185,7 @@ export default class CQSettings extends React.Component {
             // return true;
         }
         else {
-            router.setRoute("/quiz/quizzes");
+            router.setRoute("/quiz/marketplace");
         }
     }
 

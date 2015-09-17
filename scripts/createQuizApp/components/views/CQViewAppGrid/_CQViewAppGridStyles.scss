@@ -1,5 +1,4 @@
 .cq-appgrid {
-
     $appIcon: 140px;
     $quizIcon: 40px;
     min-height: 330px;
@@ -7,6 +6,9 @@
     padding: 0;
     text-align: center;
     position: relative;
+    padding-bottom: 100px;
+
+    @include clearfix;
 
     ul {
         padding: 0;
@@ -24,7 +26,7 @@
     &.cq-appgrid__n5 {
         min-height: 330px;
     }
-    @at-root #{&}__app {
+    &__app {
         display: inline-block;
         vertical-align: bottom;
         width: $appIcon + 30px;
@@ -32,7 +34,7 @@
         margin: 10px;
     }
 
-    @at-root #{&}__appicon {
+    &__appicon {
         border-radius: 100%;
         overflow: hidden;
         width: $appIcon;
@@ -51,29 +53,29 @@
         }
     }
 
-    @at-root #{&}__appname {
+    &__appname {
         font-weight: bold;
         font-size: 16px;
     }
-    @at-root #{&}__appdetails {
+    &__appdetails {
         text-align: center;
     }
 
-    @at-root #{&}__appquizzes {
+    &__appquizzes {
         color: $brand-color-red-light;
     }
 
-    @at-root #{&}__appprice {
+    &__appprice {
         text-transform: uppercase;
         font-size: 13px;
         color: $brand-color-grey-light;
     }
 
 
-    @at-root #{&}__appauthor {
+    &__appauthor {
         line-height: 30px;
     }
-    @at-root #{&}__appauthor--avatar {
+    &__appauthor--avatar {
         display: inline-block;
         vertical-align: bottom;
         width: 30px;
@@ -85,11 +87,13 @@
         border: 1px solid $brand-color-grey-lighter;
     }
 
-    @at-root #{&}__pagination {
+    &__pagination {
         position: absolute;
         width: 100%;
         bottom: 0;
         text-align: center;
+        margin-bottom: 20px;
+        padding-top: 20px;
     }
 
 }

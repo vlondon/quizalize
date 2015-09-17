@@ -137,7 +137,7 @@ class CQAppGrid extends React.Component {
     render() : any  {
 
         var emptyState = this.state.apps && this.state.apps.length === 0;
-        var loading = this.state.apps === undefined;
+        var loading = AppStore.getAppsLoaded() === false;
 
         if (loading){
             return (

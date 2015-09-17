@@ -4,13 +4,13 @@ import router from './../../../config/router';
 
 import CQPageTemplate from './../../../components/CQPageTemplate';
 
-
 import CQAppGrid from './CQAppGrid';
 import CQViewQuizList from './../../../components/views/CQViewQuizList';
 import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
+import CQPublicFooter from './CQPublicFooter';
 import CQPublicNoResults from './CQPublicNoResults';
 import urlParams from './../../../utils/urlParams';
 
@@ -76,10 +76,15 @@ export default class CQPublic extends React.Component {
     onChange(){
         var quizzes = QuizStore.getPublicQuizzes();
         var noContent = false;
+
         if (quizzes && quizzes.length === 0){
             noContent = true;
         }
-        this.setState({quizzes, noContent});
+
+        this.setState({
+            quizzes,
+            noContent
+        });
 
     }
 
@@ -166,7 +171,7 @@ export default class CQPublic extends React.Component {
                             Play
                         </span>
 
-                        <CQViewQuizPrice className='cq-public__button'/>
+                        <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
 
                     </CQViewQuizList>
                 </div>
@@ -180,24 +185,28 @@ export default class CQPublic extends React.Component {
             appGrid = quizList = undefined;
 
         }
+        var header = UserStore.isLoggedIn() ? <CQPublicHeader/> : <CQPublicHeader/>;
 
         return (
-            <CQPageTemplate className="cq-container cq-public">
-                <CQPublicHeader/>
-                {quizDetails}
+            <CQPageTemplate className="cq-public">
+                {header}
+                <div className="cq-container">
 
-                <CQViewQuizFilter
-                    appEnabled={true}
-                    onViewChange={this.handleViewChange}
-                    onCategoryChange={this.handleCategoryChange}
-                    onSearchInput={this.handleSearchInput}
-                    allTopics={true}/>
+                    {quizDetails}
+
+                    <CQViewQuizFilter
+                        appEnabled={true}
+                        onViewChange={this.handleViewChange}
+                        onCategoryChange={this.handleCategoryChange}
+                        onSearchInput={this.handleSearchInput}
+                        allTopics={true}/>
 
 
-                {noContent}
-                {appGrid}
-                {quizList}
-
+                    {noContent}
+                    {appGrid}
+                    {quizList}
+                </div>
+            <CQPublicFooter/>
             </CQPageTemplate>
         );
     }
