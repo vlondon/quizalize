@@ -11,6 +11,7 @@ import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
+import CQPublicHeaderUserLoggedIn from './CQPublicHeaderUserLoggedIn';
 import CQPublicNoResults from './CQPublicNoResults';
 import urlParams from './../../../utils/urlParams';
 
@@ -79,7 +80,10 @@ export default class CQPublic extends React.Component {
         if (quizzes && quizzes.length === 0){
             noContent = true;
         }
-        this.setState({quizzes, noContent});
+        this.setState({
+            quizzes,
+            noContent
+        });
 
     }
 
@@ -180,10 +184,11 @@ export default class CQPublic extends React.Component {
             appGrid = quizList = undefined;
 
         }
+        var header = UserStore.isLoggedIn() ? <CQPublicHeaderUserLoggedIn/> : <CQPublicHeader/>;
 
         return (
             <CQPageTemplate className="cq-container cq-public">
-                <CQPublicHeader/>
+                {header}
                 {quizDetails}
 
                 <CQViewQuizFilter

@@ -185,7 +185,7 @@ export default class CQSettings extends React.Component {
             // return true;
         }
         else {
-            router.setRoute("/quiz/quizzes");
+            router.setRoute("/quiz/marketplace");
         }
     }
 
