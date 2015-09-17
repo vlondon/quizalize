@@ -163,9 +163,9 @@ var CQViewClassList = React.createClass({
 
     render: function() {
         var newTitle = "Create a new class";
-        var existingClasses = (() => {
-            newTitle = "...or create a new class";
+        var existingClasses = (() => {            
             if (this._showGroupsList().length > 0) {
+                newTitle = "...or create a new class";
                 return (<div>
                     <h4>Your current classes:</h4>
                     <ul className="list-unstyled">
