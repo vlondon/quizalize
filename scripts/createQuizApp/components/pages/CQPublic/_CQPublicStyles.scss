@@ -1,5 +1,8 @@
 .cq-public {
     padding: 20px;
+    a {
+        color: $brand-color-grey;
+    }
 
     $quizIcon: 40px;
     h1 {
