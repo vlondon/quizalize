@@ -405,7 +405,7 @@ exports.stats = function(req, res){
                     var activeClassesFromActivityGroup = function (activityGroup){
                         var activeClasses = 0;
                         for (var groupId in activityGroup){
-                            if (activityGroup[groupId].count > 1){
+                            if (activityGroup[groupId].count > 0){
                                 activeClasses++;
                             }
                         }
@@ -484,6 +484,7 @@ exports.stats = function(req, res){
 
                     //Active Classes
                     var activityGroupLastWeek = activityGroupFromActivities(activities, lastWeek, today);
+                    console.log("activity", activityGroupLastWeek);
                     var activityGroupTwoWeeksAgo = activityGroupFromActivities(activities, twoWeeksAgo, lastWeek);
                     var activityGroupThreeWeeksAgo = activityGroupFromActivities(activities, threeWeeksAgo, twoWeeksAgo);
                     var activityGroupFourWeeksAgo = activityGroupFromActivities(activities, fourWeeksAgo , threeWeeksAgo);
@@ -555,16 +556,34 @@ exports.metrics = function (req, res){
 
     });
 };
+exports.emailList = function (req, res){
+    db.findDocuments("metrics",{}, -1, function(err, metrics) {
+        metrics.sort(function(x, y){
+            if (!x._id) {
+                return -1;
+            }
+            if (!y._id) {
+                return 1;
+            }
+            return y._id - x._id;
+        });
+        res.render("admin/emailList", {metrics: metrics});
+
+
+    });
+};
 
 var generateData = function(chosenWeek, callback) {
     var activityQuery = {"query":"{'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'contentId': {$exists: true}, 'status': 'ACTIVITY_INSTANCE_COMPLETED'}",
     "project":"{'timestamp': 1, 'contentId': 1, 'groupId': 1, 'profileId': 1}"};
+    console.log("Generating data");
     zzish_db.secure.post("db/activityinstance/query/", activityQuery, function(err, activityinstances){
-        console.log("Fetching activities");
-        zzish_db.secure.post("db/user/query/", {"query": "{'profile.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
-                        "project": "{ 'uuid': 1, 'profile': 1, 'created': 1, 'email': 1}"}, function(err, userList){
-
+        console.log(err, "Fetching activities");
+        zzish_db.secure.post("db/user/query/", {"query": "{'profiles.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
+                        "project": "{ 'uuid': 1, 'profiles':1, 'created': 1, 'email': 1}"}, function(err, userList){
+                console.log("Fetching Users");
                 zzish_db.secure.post("db/usergroup/query/", {"query": "{}", "project":"{'uuid': 1, 'ownerId': 1}"}, function(err, usergroup) {
+                    console.log("Got Groups");
                     // var usersString = "#{JSON.stringify(users)}";
                     // usersString = usersString.replace(/&quot;/g, '"');
                     //
@@ -594,6 +613,32 @@ var generateData = function(chosenWeek, callback) {
                             }
                         });
                         return count;
+                    };
+                    var activeSchools = function (users, periodEnd){
+                            var schools = {};
+                            users.forEach(function(user){
+                                if(user.email !== undefined && user.created < periodEnd){
+                                    var domain = user.email.split("@")[1];
+                                    if (schools[domain] === undefined){
+                                        schools[domain] = {domain: domain, count: 1};
+
+                                    }
+                                    else {
+                                        schools[domain].count++;
+                                    }
+                                }
+                                else if (user.profiles.email !== undefined && user.created < periodEnd){
+                                    var domain = user.email.split("@")[1];
+                                    if (schools[domain] === undefined){
+                                        schools[domain] = {domain: domain, count: 1};
+
+                                    }
+                                    else {
+                                        schools[domain].count++;
+                                    }
+                                }
+                            });
+                            return schools;
                     };
 
                     var signUpsGroup = function(users, periodStart, periodEnd){
@@ -644,7 +689,7 @@ var generateData = function(chosenWeek, callback) {
                     var activeTeachersFromActivityGroup = function (activityGroup, userGroups){
                         var activeTeachers = {};
                         for (var groupId in activityGroup){
-                            if (activityGroup[groupId].count > 2){
+                            if (activityGroup[groupId].count > 0){
                                 var ownerId = ownerIdFromGroupId(groupId, userGroups);
                                 activityGroup[groupId].ownerId = ownerId;
                                 if(activeTeachers[ownerId] === undefined){
@@ -694,17 +739,17 @@ var generateData = function(chosenWeek, callback) {
                         return count;
                     };
 
-                    var activatedThisWeek = function (activeTeachers, signUps){
-                        var count;
-                        for (var teacher in activeTeachers){
-                            for (var signUp in signUps){
-                                if (activeTeachers[teacher].ownerId === signUps[signUp].uuid){
-                                    count++;
-                                }
-                            }
-                        }
-                        return count;
-                    };
+                    // var activatedThisWeek = function (activeTeachers, signUps){
+                    //     var count;
+                    //     for (var teacher in activeTeachers){
+                    //         for (var signUp in signUps){
+                    //             if (activeTeachers[teacher].ownerId === signUps[signUp].uuid){
+                    //                 count++;
+                    //             }
+                    //         }
+                    //     }
+                    //     return count;
+                    // };
 
                     //Active Classes
                     var activityGroup = [];
@@ -714,6 +759,7 @@ var generateData = function(chosenWeek, callback) {
                     //Active Teachers
                     var activeTeachers = [];
                     activeTeachers[0] = activeTeachersFromActivityGroup(activityGroup[0], userGroups);
+                    console.log("activeTeachers", activeTeachers[0]);
                     activeTeachers[1] = activeTeachersFromActivityGroup(activityGroup[1], userGroups);
                     var repeatGroup = repeatUsers(activeTeachers);
                     var repeat = Object.keys(repeatGroup).length;
@@ -724,15 +770,58 @@ var generateData = function(chosenWeek, callback) {
                     console.log("SignUpThisWeek", signUpThisWeek);
                     var retained = retainedUsers(repeatGroup, users, 0, fourWeeksBefore);
                     console.log("retained", retained);
-                    var activatedWeek = activatedThisWeek(activeTeachers[0], signUpThisWeek);
+                    // var activatedWeek = activatedThisWeek(activeTeachers[0], signUpThisWeek);
 
-
+                    var activatedList = function(activeTeachers, users){
+                        var list = [];
+                        for (var teacher in activeTeachers){
+                            console.log("teacher", teacher);
+                            var matches = users.filter(function(user) {
+                                return user.uuid == activeTeachers[teacher].ownerId;
+                            });
+                            var fmatches = matches.map(function(user) {
+                                for (var i in user.profiles) {
+                                    var profile = user.profiles[i];
+                                    if (profile.appToken === '72064f1f-2cf8-4819-a3d5-1193e52d928c') {
+                                        return {email: profile.email || user.email, name: profile.name};
+                                    }
+                                }
+                            });
+                            //console.log(fmatches.length);
+                            //console.log(matches[0]);
+                            list.push(fmatches[0]);
+                            // fmatches.forEach(function(match) {
+                            //     console.log(match);
+                            // });
+                            //
+                            // for (var user in users){
+                            //     if (activeTeachers[teacher].ownerId === users[user].uuid){
+                            //         console.log("YES!");
+                            //         // var userProfile = users[user].profiles;
+                            //         // for (var profile in userProfile){
+                            //         //     list.push({email: userProfile[profile].email, name: userProfile[profile].name});
+                            //         //
+                            //         // }
+                            //     }
+                            // }
+                        }
+                        return list;
+                    };
+                    var schools = activeSchools(users, chosenWeek);
+                    console.log("school", Object.keys(schools).length);
+                    var emailList = activatedList(activeTeachers[0], users);
+                    console.log("activatedList", emailList);
+                    var activeList = activatedList(repeatGroup, users);
+                    console.log ("active", activeList);
                     var calculatedMetrics = {
                         "signups": signUpThisWeek,
                         "active": repeat,
                         "activated": activated,
-                        "retained": retained
+                        "retained": retained,
+                        "activatedList": emailList,
+                        "activeList": activeList
                     };
+
                     console.log(calculatedMetrics);
                     callback(calculatedMetrics);
 
@@ -754,10 +843,14 @@ exports.newMetric = function(req, res){
     res.render('admin/newMetric');
 };
 
+
+
+
 exports.submitmetrics = function(req, res){
     var result = req.body;
+    console.log("Submitting");
     generateData(result._id, function(data) {
-        console.log("data",data);
+        //console.log("data",data);
         for (var i in data) {
             result[i] = data[i];
         };

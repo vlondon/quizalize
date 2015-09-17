@@ -126,6 +126,7 @@ if (process.env.admin === "true") {
     app.get('/admin/pending', admin.pendingQuizzes);
     app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
+    app.get('/admin/emails', admin.emailList);
     app.get('/admin/newmetric', admin.newMetric);
     app.post('/admin/metrics', admin.data);
     app.post('/admin/submitmetrics', admin.submitmetrics);
