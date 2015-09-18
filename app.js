@@ -7,24 +7,24 @@ var path        = require('path');
 var favicon     = require('serve-favicon');
 var session     = require('express-session');
 var bodyParser  = require('body-parser');
-var logger      = require('./logger');
+var logger      = require('./src/server/logger');
 
-var config      = require('./config');
-var email       = require('./email');
-var quiz        = require('./routes/quiz');
-var appContent  = require('./routes/appContent');
-var transaction = require('./routes/transaction');
-var user        = require('./routes/user');
-var search      = require('./routes/search');
-var admin       = require('./routes/admin');
-var marketplace = require('./routes/marketplace');
+var config      = require('./src/server/config');
+var email       = require('./src/server/email');
+var quiz        = require('./src/server/routes/quiz');
+var appContent  = require('./src/server/routes/appContent');
+var transaction = require('./src/server/routes/transaction');
+var user        = require('./src/server/routes/user');
+var search      = require('./src/server/routes/search');
+var admin       = require('./src/server/routes/admin');
+var marketplace = require('./src/server/routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
-var intercom = require('./routes/intercom');
+var intercom = require('./src/server/routes/intercom');
 
-var graphql = require('./routes/graphql').graphql;
+var graphql = require('./src/server/routes/graphql').graphql;
 
 
 app.set('views', path.join(__dirname, 'views'));

@@ -1,0 +1,280 @@
+.cq-public {
+    padding: 20px;
+    min-width: 980px;
+    max-width: 1170px;
+    margin: auto;
+    .cq-container {
+        border-radius: 5px 5px 0 0;
+        min-height: 700px;
+    }
+    a {
+        color: $brand-color-grey;
+    }
+
+    $quizIcon: 40px;
+    h1 {
+        margin-top: 0;
+        margin-bottom: 30px;
+    }
+    &__footer {
+        padding: 30px 60px;
+        color: rgba(#FFF, .6);
+        background: $brand-color-purple;
+        font-weight: bold;
+        display: flex;
+        border-radius: 0 0 5px 5px;
+        &__cta {
+            width: 400px;
+            flex: 1 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &__button {
+                @include roundedButton;
+                font-size: 28px;
+                padding: 10px 40px;
+                border-radius: 100px;
+
+            }
+        }
+        a {
+            color: #FFF;
+        }
+        &__title {
+            color: #FFF;
+            font-weight: bold;
+        }
+        &__text {
+            font-size: 26px;
+        }
+        h5 {
+            font-weight: bold;
+            font-size: 14px;
+            color: #FFF;
+        }
+    }
+
+    &__headercta {
+        position: relative;
+
+        color: #FFF;
+        h1 {
+            font-weight: black;
+            font-size: 44px;
+
+            @include media(1170px) {
+                font-size: 50px;
+            }
+
+            b {
+                color: $brand-color-black;
+            }
+        }
+        a { cursor: pointer; color: #FF6B00; }
+        &__background {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 215px;
+            z-index: 2;
+            // height: 279px;
+        }
+        h5 {
+            /* Quick start: */
+
+            font-size: 14.97px;
+            color: #5CB3C5;
+            line-height: 18px;
+        }
+        &__box {
+            background: #D3EAE0;
+            position: relative;
+
+            margin: 0 -20px;
+            padding: 10px 30px;
+            button {
+                /* Rectangle 4: */
+                @include button-filled(#FF6B00);
+                // background: #FF6B00;
+                width: 270px;
+                height: 70px;
+                box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.50);
+                border-radius: 9px;
+                margin-top: -20px;
+            }
+
+            ul {
+                position: relative;
+                z-index: 3;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                @include clearfix();
+                li {
+                    display: block;
+                    float: left;
+                    width: 180px;
+
+                    /* Write questions: */
+                    // font-family: Lato-Bold;
+                    font-size: 28.97px;
+                    color: #565656;
+                    line-height: 26px;
+                    position: relative;
+                    padding-right: 30px;
+                    margin-left: 30px;
+                    &:after {
+                        content: url(./../../assets/caret.svg);
+                        position: absolute;
+                        right: 0;
+                        top: 20px;
+                    }
+                    &:first-child {
+                        font-weight: bold;
+                        color: #FF6B00;
+                        margin-left: 0;
+                    }
+                    &:last-child {
+                        width: 400px;
+                        &:after {
+                            content: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__info {
+            min-height: 40px;
+        }
+    }
+
+    .cq-viewquizlist__quiz {
+        width: 50%;
+    }
+
+    &__header {
+        @include cq-header;
+    }
+
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__quiz {
+        text-align: left;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        margin: 5px;
+        padding: 5px;
+        @include clearfix();
+    }
+
+    &__quiz-inner {
+        text-align: left;
+        float: left;
+    }
+
+    &__quizicon {
+        width: $quizIcon;
+        height: $quizIcon;
+        border-radius: 100%;
+        margin: 5px;
+        display: inline-block;
+        float: left;
+        font-size: $quizIcon - 10px;
+        text-align: center;
+        line-height: $quizIcon;
+        color: #FFF;
+        background-size: cover;
+        background-position: center center;
+        img { width: 100%; }
+
+    }
+    &__quizname {
+        font-weight: bold;
+        display: inline;
+        font-size: 18px;
+    }
+
+    &__quizauthor {
+        display: inline;
+    }
+
+    &__quizdate {
+        font-weight: 100;
+        color: $brand-color-grey;
+    }
+
+    &__quizextra {
+        text-align: center;
+        margin: 12px 0;
+        float: right;
+    }
+
+    &__quizcategory {
+        display: inline-block;
+        font-weight: 100;
+        color: $brand-color-grey;
+        font-size: 10px;
+        line-height: 10px;
+        border: 1px solid $brand-color-grey;
+        padding: 5px;
+        border-radius: 10px;
+        margin: 2px;
+    }
+
+    &__sort {
+        float: left;
+        width: 300px;
+        min-height: 400px;
+        background: $brand-color-grey-lighter;
+    }
+
+
+    &__list {
+        width: 100%;
+    }
+
+    &__button {
+        @include button($brand-color-blue);
+        // background: $brand-color-grey-light;
+        // color: $brand-color-grey-dark;
+        margin: 5px;
+        padding: 5px;
+        cursor: pointer;
+
+        &:hover {
+            // background: $brand-color-grey;
+            // color: $brand-color-grey-lighter;
+        }
+
+        &__main  {
+            & {
+
+                @include button(darken($brand-color-orange, 20));
+                background: $brand-color-orange;
+                color: #FFF;
+                border-color: #FFF;
+            }
+        }
+    }
+
+    &__noresult {
+        max-width: 600px;
+        color: #025D69;
+        h1 {
+            font-weight: bold;
+        }
+        h3 {
+            color: #6DBACA;
+        }
+        a {
+            color: #FF6B00;
+        }
+        &__keyword {
+            color: #025D69;
+        }
+    }
+}

@@ -1,0 +1,364 @@
+.cq-edit {
+    margin-bottom: 80px;
+
+    padding: 20px;
+    .btn {
+        margin-left: 5px;
+    }
+    &__top {
+        @include clearfix;
+    }
+    &__icon {
+        display: block;
+        float: left;
+        margin-right: 10px;
+        position: relative;
+        &:hover {
+            .cq-edit__icon__label {
+                display: block;
+            }
+        }
+        &__label {
+
+            position: absolute;
+            background: rgba(#000, .5);
+            display: block;
+            color: #FFF;
+            top: 0;
+            bottom: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 100%;
+            margin: 0;
+            padding-top: 25px;
+            font-size: 24px;
+            text-align: center;
+            display: none;
+            &__input {
+                position: absolute;
+                top: 0;
+                opacity: 0;
+                // bottom: 0;
+                left: 0;
+                // right: 0;
+                height: 100%;
+                width: 100%;
+                border-radius: 100%;
+            }
+        }
+        &__component {
+            box-shadow: 2px 2px 4px 2px rgba(#000, .2);
+            width: 100px;
+            height: 100px;
+            // display: inline-block;
+            border-radius: 100%;
+            overflow: hidden;
+
+            background-size: cover;
+            background-position: center;
+        }
+    }
+    &__header {
+        font-weight: bold;
+        margin-bottom: 20px;
+        display: inline-block;
+
+        h1, h2, h3, h4 {
+            font-weight: bold;
+            margin-top: 0;
+        }
+        .cq-autofill {
+            display: inline-block;
+            width: 500px;
+            border: 0;
+            border-bottom: 1px solid $brand-color-grey-lighter;
+
+            // TODO: Remove this when Bootstrap gets removed
+            .form-control {
+                border: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+    }
+    &__input-topic,
+    &__input-header {
+        border: 0;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        color: red;
+        width: 500px;
+    }
+    &__input-topic {
+        border-bottom: 0;
+    }
+
+
+    &__footer {
+        position: relative;
+        // bottom: 0;
+        // right: 0;
+        // left: 0;
+        // padding: 0;
+        background: rgba($brand-color-grey, .3);
+
+    }
+
+    &__footer-inner {
+        max-width: 1170px;
+        margin: auto;
+        padding: 10px;
+        text-align: right;
+    }
+
+
+    &__quiz {
+        border-bottom: 1px solid $brand-color-grey-lighter;
+
+        padding: 10px 0;
+        cursor: pointer;
+
+        &--unselected {
+            &:hover {
+                background: $brand-color-grey-lighter;
+            }
+            .icons-un { display: none; }
+            .icons-se {
+                display: block;
+                text-align: right;
+            }
+        }
+        &--selected {
+            font-weight: bold;
+            background: $brand-color-grey-lighter;
+            .icons-un { display: block; }
+            .icons-se { display: none; }
+        }
+    }
+
+
+
+    &__listquestion{
+        font-weight: bold;
+        -ms-word-break: break-all;
+        word-break:     break-word;
+        -webkit-hyphens: auto;
+        white-space: pre-line;
+        -moz-hyphens:    auto;
+        -ms-hyphens: auto;
+        hyphens:         auto;
+    }
+
+    &__listanswer{
+        -ms-word-break: break-all;
+        word-break:     break-word;
+        -webkit-hyphens: auto;
+        white-space: pre-line;
+        -moz-hyphens:    auto;
+        -ms-hyphens: auto;
+        hyphens:         auto;
+    }
+
+    .create-question {
+        position: relative;
+    }
+    .quiz-extras {
+        float: right;
+        font-size: 12px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+
+        .math-mode,
+        .image-mode {
+            margin-bottom: 20px;
+        }
+    }
+    .new-question-cta {
+        text-align: center;
+        a { color: #FFF; }
+    }
+    .new-question {
+        padding: 20px 0;
+        @include clearfix();
+        i {
+            color: #999;
+        }
+    }
+    .cq-edit__quiz {
+        position: relative;
+    }
+    .optional {
+        line-height: 12px;
+        margin-top: -8px;
+        font-weight: normal;
+        font-style: italic;
+        opacity: 0.6;
+        margin-right: 20px;
+    }
+
+    & .cq-duration {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        z-index: 10;
+        position: relative;
+        &__time--selected,
+        &__time {
+            border: 2px solid $brand-color-grey;
+            border-radius: 10px;
+            margin: 3px 0;
+            text-align: center;
+            max-width: 40px;
+            user-select: none;
+            &--selected {
+                background: $brand-color-grey;
+                color: #FFF;
+            }
+        }
+        &__time {
+            &:hover {
+                background: $brand-color-grey-lighter;
+            }
+        }
+    }
+
+}
+.cq-questionlist {
+    margin-bottom: 20px;
+
+    &__button {
+        margin: 20px;
+    }
+
+    &__image {
+
+        float: none !important;
+        display: flex;
+        align-items: center;
+        @include clearfix;
+        img {
+
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        &__img {
+            max-width: 200px;
+            max-height: 200px;
+            float: left;
+        }
+
+        &__button {
+            margin-top: 2px;
+            float: left;
+        }
+    }
+    .no-questions {
+        text-align: center;
+        h1, h2, h3 {
+            color: #999;
+            margin: 20px auto;
+        }
+    }
+
+    .create-question {
+        background: #FFF;
+        margin: 20px;
+        border-radius: 5px;
+        font-weight: normal;
+        color: $brand-color-black;
+    }
+    .icons {
+        text-align: right;
+    }
+
+    .intro {
+        text-align: left;
+    }
+
+
+
+
+    .left {
+        padding: 10px;
+        width: 25%;
+        float: left;
+        text-align: right;
+    }
+
+    .right {
+        padding: 10px;
+        width: 75%;
+        float: left;
+    }
+    .field {
+        width: 33.33333333%;
+        position: relative;
+        min-height: 1px;
+        padding: 10px ;
+
+        float: left;
+    }
+
+    label {
+        line-height: 45px;
+    }
+
+
+    .entry-input {
+        width: 100%;
+        position: relative;
+        min-height: 1px;
+
+        float: left;
+    }
+    .entry-input-full-width {
+        width: 100%;
+        position: relative;
+        min-height: 1px;
+
+        float: left;
+
+    }
+
+    .latex-field {
+        padding: 12px;
+        float: left;
+        width: 50%;
+
+        display: none;
+    }
+    .no-left-margin {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0;
+    }
+    .save {
+        margin-bottom: 40px;
+        .btn {
+            width: auto;
+            margin: auto;
+        }
+    }
+
+
+    .latex-enabled {
+        .field {
+            width: 100%;
+            padding-bottom: 10px;
+            @include clearfix;
+        }
+        .latex-field {
+            display: block;
+        }
+        .entry-input {
+            width: 50%;
+        }
+        .incorrect-answers {
+            width: 50%;
+            float: left;
+        }
+    }
+
+}

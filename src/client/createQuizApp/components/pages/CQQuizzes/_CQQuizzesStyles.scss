@@ -1,0 +1,119 @@
+.cq-quizzes {
+    position: relative;
+    &__buttonbar {
+        margin: 10px 0;
+    }
+
+    &__header {
+        @include cq-header();
+        margin-bottom: 20px;
+    }
+
+
+    &__actions {
+        text-align: right;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+
+    &__edit {
+        display: none;
+        /* display: inline-block; */
+        padding: 0 10px;
+        color: $brand-color-grey-light;
+    }
+    .cq-viewquizlist__quiz {
+
+        &:hover {
+            .cq-quizzes__edit { display: inline-block; }
+        }
+    }
+
+    .cq-quizzes__extras {
+        &:hover {
+            .cq-quizzes__edit { display: none !important; }
+        }
+    }
+
+    .cq-quizzes__empty {
+        font-size: 18px;
+        margin-top: 20px;
+        vertical-align: top;
+        @include clearfix();
+        .quizalize-icon {
+            width: 100px;
+            height: 100px;
+            background: $brand-color-red;
+            border-radius: 100%;
+            color: #FFF;
+            font-size: 80px;
+            text-align: center;
+            display: inline-block;
+            float: left;
+            margin-right: 20px;
+            .zz-ic_quizalize {
+                line-height: 100px;
+            }
+        }
+        .extra {
+            float: left;
+            display: inline-block;
+        }
+
+        .intro {
+            margin-bottom: 20px;
+        }
+    }
+
+    .cq-quizzes__emptylist {
+        background: $brand-color-grey-lighter;
+        text-align: center;
+        font-size: 18px;
+        padding: 40px 20px;
+
+        p {
+            margin: 10px 0;
+        }
+    }
+
+
+    &__button--delete {
+        @include button($brand-color-red);
+
+        min-width: 30px;
+        padding: 5px;
+    }
+
+    &__button--save {
+        @include button($brand-color-blue);
+        //background: rgba($brand-color-blue, .8);
+        background: $brand-color-grey-dark;
+        color: #FFF;
+
+        &:hover,
+        &:focus {
+        }
+
+    }
+
+    &__button--assign {
+        @include button($brand-color-blue);
+        //background: rgba($brand-color-blue, .8);
+        // background: $brand-color-blue;
+        //color: #FFF;
+
+        &:hover,
+        &:focus {
+        }
+
+    }
+
+    &__button--preview { @extend %button-blue; }
+    &__button--share { @extend %button-blue; }
+    &__button--edit { @extend %button-blue; }
+    &__button--publish { @extend %button-blue; }
+    &__button--review { @extend %button-blue; }
+
+}

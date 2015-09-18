@@ -27,36 +27,50 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         link(href='/cquiz/css/style.css', rel='stylesheet')
         if (devServer=='true')
             script(src="http://localhost:7071/webpack-dev-server.js")
+        else
+            link(href='/js/home.css', rel='stylesheet')
         script(src='/js/vendor.js')
         script(src='/js/home.js')
+            
+        script.
+            var intercomId = '!{intercomId}';
+            
+            window.intercomSettings = {
+                app_id: intercomId
+            };
+    
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+            
     body#page-top.q-home
         // Navigation
+        .q-home__background
+        .q-home__foreground
+            
+            include ./home/menu.jade
+            
+            include ./home/brand.jade
+            
+            include ./home/box_intro.jade
+            
+            include ./home/box_player.jade
+            
+            include ./home/box_dashboard.jade
+            
+            include ./home/box_questionlist.jade
+            
+            include ./home/box_features.jade
+            
+            include ./home/box_studentopinions.jade
+            
+            include ./home/box_start.jade
+            
+            include ./home/box_zzish.jade
+            
+            include ./home/footer.jade
         
-        include ./home/menu.jade
         
-        include ./home/brand.jade
-        
-        include ./home/box_intro.jade
-        
-        include ./home/box_player.jade
-        
-        include ./home/box_dashboard.jade
-        
-        include ./home/box_questionlist.jade
-        
-        include ./home/box_features.jade
-        
-        include ./home/box_studentopinions.jade
-        
-        include ./home/box_start.jade
-        
-        include ./home/box_zzish.jade
-        
-        include ./home/footer.jade
-        
-        
-        // /Section: contact
-        #outdated
+            // /Section: contact
+            #outdated
         // Core JavaScript Files
         script.
             function showQuiz(id) {
@@ -184,3 +198,4 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         noscript
             div(style='display:inline;')
                 img(height='1', width='1', style='border-style:none;', alt='', src='//googleads.g.doubleclick.net/pagead/viewthroughconversion/1034680765/?value=0&guid=ON&script=0')
+        
