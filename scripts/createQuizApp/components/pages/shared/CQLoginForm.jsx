@@ -123,16 +123,13 @@ var CQLoginForm = React.createClass({
             </div>);
         }
         return (
-            <form role="form" className="form-horizontal" onSubmit={this.handleSubmit}>
+            <form role="form" className="cq-login__form form-horizontal" onSubmit={this.handleSubmit}>
 
-                {emailField}
-                {passwordField}
 
                 <div className="cq-login__cta">
+                    {emailField}
+                    {passwordField}
 
-                    <div className="cq-login__extra">
-                        {this.props.children}
-                    </div>
                     <div className="cq-login__button">
                         <button
                             disabled={!this.state.isReady || !this.props.enabled}
@@ -144,14 +141,10 @@ var CQLoginForm = React.createClass({
                         </button>
 
                     </div>
+                    <div className="cq-login__extra">
+                        {this.props.children}
+                    </div>
                 </div>
-                <div className="cq-login__zzish">
-
-
-                    <CQZzishLogin/>
-
-                </div>
-
 
 
 
