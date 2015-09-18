@@ -5,6 +5,7 @@ var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink = require('./../../../components/utils/CQLink');
 var CQSettings = require('./../../../components/pages/CQSettings');
+var CQZzishLogin = require('./../../../components/pages/shared/CQZzishLogin');
 
 var UserActions = require('./../../../actions/UserActions');
 
@@ -13,7 +14,6 @@ import {urlParams} from './../../../utils';
 var CQRegister = React.createClass({
 
     getInitialState: function() {
-
 
         var willRedirect = true;
         return {
@@ -83,6 +83,9 @@ var CQRegister = React.createClass({
                             </div>
                         </CQLoginForm>
                     </div>
+
+                    <CQZzishLogin/>
+
                 </CQPageTemplate>
             );
         } else {

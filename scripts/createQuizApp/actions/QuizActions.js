@@ -229,7 +229,7 @@ var QuizActions = {
             //     quiz.meta.name = quiz.payload.questions[0].question;
             // }
 
-            quiz.meta.categoryId = quiz.meta.categoryId || addOrCreateCategory();
+            quiz.meta.categoryId = addOrCreateCategory();
             // we filter questions with no content
             if (quiz.payload.questions){
                 quiz.payload.questions = quiz.payload.questions.filter( q => q.question.length > 0 && q.answer.length > 0);

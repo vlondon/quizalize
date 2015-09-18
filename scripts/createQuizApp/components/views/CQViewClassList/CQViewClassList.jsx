@@ -146,7 +146,7 @@ var CQViewClassList = React.createClass({
         ev.preventDefault();
 
         var className = this.state.newClassName;
-        if (className.length > 3) {
+        if (className.length > 0) {
 
             GroupActions.publishNewAssignment(this.props.quizId, className)
                 .then((response) =>{
