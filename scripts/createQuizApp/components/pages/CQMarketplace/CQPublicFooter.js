@@ -16,7 +16,7 @@ class CQPublicFooter extends React.Component {
                     <p className="cq-public__footer__text">
                         This service is brand new, and you might be the first to use
                         it for your topic. Why not <CQLink href="/quiz/create">make one
-                        for your class</CQLink> - it’s very easy, Just type your
+                        for your class</CQLink> - it’s very easy, just type your
                         questions and play…
                     </p>
                     <h5>

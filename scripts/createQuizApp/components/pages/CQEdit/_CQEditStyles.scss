@@ -123,7 +123,10 @@
                 background: $brand-color-grey-lighter;
             }
             .icons-un { display: none; }
-            .icons-se { display: block; }
+            .icons-se {
+                display: block;
+                text-align: right;
+            }
         }
         &--selected {
             font-weight: bold;
