@@ -1,4 +1,5 @@
 var config = require('../config.js');
+var zzish = require("../zzish"); //initialized zzish
 
 //general zzish config
 var Intercom = require('intercom.io');
@@ -37,7 +38,6 @@ exports.updateUser = function(user, callback) {
     }
 };
 
-
 exports.trackEvent = function(userId, event_name, meta, callback){
     console.log("Intercom trackEvent ENV", process.env.intercom);
 
@@ -53,9 +53,46 @@ exports.trackEvent = function(userId, event_name, meta, callback){
         if (meta) event.metadata = meta;
         console.log("event meta", meta);
         intercom.createEvent(event, function(err, resp) {
-            console.log("Intercom trackEvent createEvent err, response", err, resp);
+            console.log("Intercom trackEvent createEvent err, response");
+            var result = "" + err;
+            try {
+                if (err) {
+                    if (result.indexOf("IntercomError") !== -1) {
+                        result = "{\"IntercomError\"" + result.substring(13)  + "}";
+                    }
+                    result = JSON.parse(result);
+                    if (result.IntercomError.errors.length > 0 && result.IntercomError.errors[0].code === "not_found") {
+                        console.log("USER doesnt exist on intercom");
+                        zzish.user(userId, function(err, data){
+                            if (!err && typeof data === 'object') {
+                                console.log("USER", data);
+                                var user = {
+                                    user_id: data.uuid,
+                                    name: data.name,
+                                    email: data.email,
+                                    custom_attributes: data.attributes
+                                };
+                                exports.createUser(user, function(err) {
+                                    if (!err) {
+                                        intercom.createEvent(event, function(err, resp) {
+                                            if (callback) callback(err, resp);
+                                        });
+                                    }
+                                });
+                            }
+                            else {
+                                if (callback) callback(err, resp);
+                            }
+                        });
+                    }
+                }
+                else {
+                    if (callback) callback(err, resp);
+                }
+            }
+            catch (e) {
 
-            if (callback) callback(err, resp);
+            }
         });
     }
 };
@@ -63,7 +100,7 @@ exports.trackEvent = function(userId, event_name, meta, callback){
 exports.events = function(req, res){
 
     exports.trackEvent(req.params.uuid, req.params.name, req.body, function(err, resp) {
-        console.log("Intercom events", req);
+        console.log("Intercom events respones");
         if (!err) {
             res.send(resp);
         }
