@@ -603,8 +603,47 @@ var generateData = function(chosenWeek, callback) {
                     var oneWeekBefore = chosenWeek - 7 * 24 * 60 * 60 * 1000;
                     var twoWeeksBefore = chosenWeek - 14 * 24 * 60 * 60 * 1000;
                     var fourWeeksBefore = chosenWeek - 28 * 24 * 60 * 60 * 1000;
-
-
+                    var createDateArray = function(chosenStart){
+                            var dateArray = [];
+                            var oneWeek = 7 * 24 * 60 * 60 * 1000;
+                            var i = 0;
+                            while (i < 4){
+                                dateArray[i] = chosenStart - i * oneWeek;
+                                i++;
+                            }
+                            console.log("dateArray", dateArray);
+                        return dateArray;
+                    };
+                    var multipleTeacherArrays = function (chosenWeek, activities, userGroups){
+                            var dateArray = createDateArray(chosenWeek);
+                            var i = 0;
+                            console.log(dateArray.length, "long");
+                            var teachArray = [];
+                            while (i < dateArray.length){
+                                    console.log(i);
+                                    var activeGroup = activityGroupFromActivities(activities, dateArray[i+1], dateArray[i]);
+                                    console.log(activeGroup);
+                                    teachArray[i] = activeTeachersFromActivityGroup(activeGroup, userGroups);
+                                    console.log(i, "array", teachArray);
+                                    i++;
+                            };
+                        console.log("teachArray", teachArray);
+                        return teachArray;
+                    };
+                    var monthlyActives = function (teachArray){
+                        var dayActive = {};
+                        teachArray.forEach(function(teach){
+                            for (var ownerId in teach){
+                                if (dayActive[ownerId] === undefined){
+                                    dayActive[ownerId] = {ownerId: ownerId, count: 1};
+                                }
+                                else {
+                                    dayActive[ownerId].count++;
+                                }
+                            }
+                        });
+                        console.log("dayActive", dayActive);
+                    }
                     var signUps = function(users, periodStart, periodEnd){
                         var count = 0;
                         users.forEach(function(user){
@@ -616,7 +655,6 @@ var generateData = function(chosenWeek, callback) {
                     };
                     var activeSchools = function (users, periodEnd){
                             var schools = {};
-                            var something = 0;
                             var domains = ["gmail", "yahoo", "hotmail", "zzish", "katamail", "live", "chasemail", "purplegator", "leafinvestments", "blaiprat", "test", "aol", "outlook", "libero", "mac", "yardstudio", "itslearning", "touchpress", "msn"];
                             users.forEach(function(user){
                                 if(user.email !== undefined && user.created < periodEnd){
@@ -639,18 +677,14 @@ var generateData = function(chosenWeek, callback) {
                                     var profile = user.profiles.filter(function(prof){
                                         return prof.appToken == '72064f1f-2cf8-4819-a3d5-1193e52d928c';
                                     });
-                                    console.log("profile email", profile[0].email);
-                                    console.log("user created", user.created);
+
                                     if (profile[0].email !== undefined && user.created < periodEnd){
-                                        console.log("inside IF");
                                         var domain = profile[0].email.split("@")[1];
                                         if (domain !== undefined){
                                             domain = domain.toLowerCase();
                                             if (domains.join(",").indexOf(domain.split(".")[0]) === -1){
                                                 if (schools[domain] === undefined){
                                                     schools[domain] = {domain: domain, count: 1};
-                                                    console.log("schooldomain", schools[domain]);
-                                                    something++;
                                                 }
                                                 else {
                                                     schools[domain].count++;
@@ -663,7 +697,6 @@ var generateData = function(chosenWeek, callback) {
                                     }
                                 }
                             });
-                            console.log("something", something);
                             return schools;
                     };
 
@@ -725,7 +758,7 @@ var generateData = function(chosenWeek, callback) {
                     var activeTeachersFromActivityGroup = function (activityGroup, userGroups){
                         var activeTeachers = {};
                         for (var groupId in activityGroup){
-                            if (activityGroup[groupId].count > 0){
+                            if (activityGroup[groupId].count > 2){
                                 var ownerId = ownerIdFromGroupId(groupId, userGroups);
                                 activityGroup[groupId].ownerId = ownerId;
                                 if(activeTeachers[ownerId] === undefined){
@@ -755,14 +788,12 @@ var generateData = function(chosenWeek, callback) {
 
                                 };
                             };
-                            console.log("repeat", repeat);
                             return repeat;
 
                     };
 
                     var retainedUsers = function (repeat, users, periodStart, periodEnd){
                         var signUpsMonth = signUpsGroup(users, periodStart, periodEnd);
-                        console.log("running retained");
                         var count = 0;
                         for (var rep in repeat){
                             for (var sign in signUpsMonth){
@@ -795,23 +826,17 @@ var generateData = function(chosenWeek, callback) {
                     //Active Teachers
                     var activeTeachers = [];
                     activeTeachers[0] = activeTeachersFromActivityGroup(activityGroup[0], userGroups);
-                    console.log("activeTeachers", activeTeachers[0]);
                     activeTeachers[1] = activeTeachersFromActivityGroup(activityGroup[1], userGroups);
                     var repeatGroup = repeatUsers(activeTeachers);
                     var repeat = Object.keys(repeatGroup).length;
                     var activated = Object.keys(activeTeachers[0]).length;
-                    console.log("activated", activated);
-                    console.log("repeat",repeat);
                     var signUpThisWeek = signUps(users, oneWeekBefore, chosenWeek);
-                    console.log("SignUpThisWeek", signUpThisWeek);
                     var retained = retainedUsers(repeatGroup, users, 0, fourWeeksBefore);
-                    console.log("retained", retained);
                     // var activatedWeek = activatedThisWeek(activeTeachers[0], signUpThisWeek);
 
                     var activatedList = function(activeTeachers, users){
                         var list = [];
                         for (var teacher in activeTeachers){
-                            console.log("teacher", teacher);
                             var matches = users.filter(function(user) {
                                 return user.uuid == activeTeachers[teacher].ownerId;
                             });
@@ -844,13 +869,14 @@ var generateData = function(chosenWeek, callback) {
                         return list;
                     };
                     var schools = activeSchools(users, chosenWeek);
-                    console.log("school emails", schools);
                     var schoolsMulti = multiSchools(schools);
                     console.log("schoolsMulti", schoolsMulti);
                     var emailList = activatedList(activeTeachers[0], users);
                     console.log("activatedList", emailList);
                     var activeList = activatedList(repeatGroup, users);
                     console.log ("active", activeList);
+                    var monthlyTeachers = multipleTeacherArrays(chosenWeek, activities, userGroups);
+                    var dayActives = monthlyActives(monthlyTeachers);
                     var calculatedMetrics = {
                         "signups": signUpThisWeek,
                         "active": repeat,
