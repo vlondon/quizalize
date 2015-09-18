@@ -2,6 +2,7 @@
 
 import Store from './Store';
 import UserIdStore from './UserIdStore';
+import type {UserType} from './../../../types/UserType';
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
@@ -12,25 +13,8 @@ var intercomId = window.intercomId;
 var intercomAdded = false;
 var localIntercom;
 
-type UserAttributes = {
-    location?: string;
-    school?: string;
-    url?: string;
-    subjectTaught?: string;
-    ageTaught?: string;
-    profileUrl?: string;
-    bannerUrl?: string;
-};
-export type User = {
-    uuid: string;
-    avatar: string;
-    email: string;
-    name: string;
-    attributes: UserAttributes;
-    created: number;
-}
 
-var noUser:User = {
+var noUser:UserType = {
     uuid: '-1',
     avatar: '',
     email: '',
@@ -40,7 +24,7 @@ var noUser:User = {
 };
 
 var storeInit = false;
-var _user:User = noUser;
+var _user:UserType = noUser;
 var _users = {};
 var _usersByUrl = {};
 var _loginEmail = '';
@@ -55,7 +39,7 @@ class UserStore extends Store {
         return _loginEmail;
     }
 
-    getUser():User {
+    getUser():UserType {
         return _user;
     }
 

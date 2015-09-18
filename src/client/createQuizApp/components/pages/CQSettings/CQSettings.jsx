@@ -1,7 +1,7 @@
 /* @flow */
 var React = require('react');
 
-import type {User} from './../../../stores/UserStore';
+import type {UserType} from './../../../../../types/UserType';
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePicture');
 var UserActions = require('./../../../actions/UserActions');
@@ -24,7 +24,7 @@ type Params = {
     redirect: string;
 }
 type State = {
-    user: User;
+    user: UserType;
     params: Params;
     canSave: boolean;
     errors: Array<boolean>;
@@ -41,7 +41,7 @@ export default class CQSettings extends React.Component {
     constructor (props: any) {
         super(props);
 
-        var user:User = MeStore.getState();
+        var user:UserType = MeStore.getState();
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;

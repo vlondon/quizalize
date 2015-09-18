@@ -3,9 +3,9 @@ import Store from './Store';
 import Immutable, {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import UserConstants from './../constants/UserConstants';
+import type {UserType} from './../../../types/UserType';
 
-
-var noUser:User = {
+var noUser:UserType = {
     uuid: '-1',
     avatar: '',
     email: '',
@@ -16,13 +16,13 @@ var noUser:User = {
 
 var meRecord = Record(noUser);
 class Me extends Store {
-
-    constructor(state = noUser){
+    state: UserType;
+    constructor(state: UserType = noUser){
         super(state);
         this.state = new meRecord();
     }
 
-    getState () {
+    getState (): UserType {
         return this.state;
     }
 
