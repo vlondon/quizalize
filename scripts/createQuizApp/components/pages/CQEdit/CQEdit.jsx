@@ -202,7 +202,7 @@ export default class CQEdit extends React.Component {
                 console.log('about to remove question', this.state.questionIndex, quiz.payload.questions.length);
                 this.setState({quiz}, ()=> {
                     QuizActions.newQuiz(quiz);
-                    if (this.state.questionIndex >= quiz.payload.questions.length) {
+                    if (this.state.questionIndex && this.state.questionIndex >= quiz.payload.questions.length) {
                         router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${quiz.payload.questions.length}`);
                     }
                 });
@@ -235,8 +235,13 @@ export default class CQEdit extends React.Component {
     }
 
     handleSaveButton(){
-        if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[this.state.questionIndex].question.length > 0 && this.state.quiz.payload.questions[this.state.questionIndex].answer.length > 0) {
-            QuizActions.newQuiz(this.state.quiz).then(()=>{
+        var {quiz} = this.state;
+        var questionIndex = this.state.questionIndex || 0;
+        if (quiz.payload.questions &&
+            quiz.payload.questions.length > 0 &&
+            quiz.payload.questions[questionIndex].question.length > 0 &&
+            quiz.payload.questions[questionIndex].answer.length > 0) {
+            QuizActions.newQuiz(quiz).then(()=>{
                 swal("Quiz Saved!", "Your quiz has been saved!");
                 router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
             });
