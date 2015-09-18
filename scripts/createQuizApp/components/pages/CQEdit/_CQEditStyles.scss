@@ -100,7 +100,7 @@
         // right: 0;
         // left: 0;
         // padding: 0;
-        background: rgba($brand-color-black, .3);
+        background: rgba($brand-color-grey, .3);
 
     }
 
@@ -122,11 +122,14 @@
             &:hover {
                 background: $brand-color-grey-lighter;
             }
+            .icons-un { display: none; }
+            .icons-se { display: block; }
         }
         &--selected {
             font-weight: bold;
             background: $brand-color-grey-lighter;
-            .icons { display: none; }
+            .icons-un { display: block; }
+            .icons-se { display: none; }
         }
     }
 

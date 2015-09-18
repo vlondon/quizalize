@@ -1,12 +1,14 @@
 .q-home__intro {
+
     @include boxHome;
 
-    height: 460px;
+    height: 420px;
     background-image: url(./../assets/home_kid2.jpg);
     background-size: cover;
     background-position: center;
     margin-top: 180px;
     overflow: hidden;
+
     @include media($size-tablet) {
         margin-top: 0;
     }
@@ -22,11 +24,12 @@
         left: 0;
         padding: 10px;
         text-align: center;
+
         &__alt {
             color: $brand-color-purple;
         }
         @include media($size-tablet) {
-            top: auto;
+            top: 20px;
             right: auto;
             height: auto;
             left: 20px;
@@ -48,7 +51,7 @@
         @include media($size-tablet) {
             // background: rgba($brand-color-purple, 1);
             text-align: left;
-            top: 240px;
+            top: 20px;
             right: 20px;
             width: 260px;
             bottom: auto;

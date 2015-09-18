@@ -2,9 +2,9 @@ angular.module('quizApp')
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider
         .when('/', {
-            templateUrl: "/quiz/view/index",
-            controller: "StartController",
-            controllerAs: "start"
+            templateUrl: "/quiz/view/plogin",
+            controller: "LoginController",
+            controllerAs: "login"
         })
         .when('/class', {
             templateUrl: "/quiz/view/plogin",
