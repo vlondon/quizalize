@@ -16,13 +16,14 @@ var noUser:User = {
 
 var meRecord = Record(noUser);
 class Me extends Store {
+
     constructor(state = noUser){
         super(state);
-        this.test = true;
+        this.state = new meRecord();
     }
-    get(){
-        console.log('returning this', this);
-        return this;
+
+    getState () {
+        return this.state;
     }
 
 }
@@ -35,9 +36,9 @@ export default meStore;
 AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
-            var me = Immutable.fromJS(action.payload);
-            meStore.me  = me;
-            console.log('we created new user record', me, meStore);
+            // var me = Immutable.fromJS(action.payload);
+            meStore.state  = new meRecord(action.payload);
+
             break;
     };
 });

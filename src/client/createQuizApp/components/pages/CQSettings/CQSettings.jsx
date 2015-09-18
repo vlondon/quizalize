@@ -10,6 +10,7 @@ var router = require('./../../../config/router');
 var facebookSDK = require('./../../../config/facebookSDK');
 
 import UserStore from './../../../stores/UserStore';
+import MeStore from './../../../stores/MeStore';
 import {urlParams} from './../../../utils';
 import {sendEvent} from './../../../actions/AnalyticsActions';
 
@@ -40,7 +41,7 @@ export default class CQSettings extends React.Component {
     constructor (props: any) {
         super(props);
 
-        var user:User = UserStore.getUser();
+        var user:User = MeStore.getState();
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;

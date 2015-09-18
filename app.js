@@ -6,6 +6,7 @@ var app         = express();
 var path        = require('path');
 var favicon     = require('serve-favicon');
 var session     = require('express-session');
+var FileStore   = require('session-file-store')(session);
 var bodyParser  = require('body-parser');
 var logger      = require('./src/server/logger');
 
@@ -34,8 +35,9 @@ app.use(favicon(path.join(__dirname, '/public/favcq.png')));
 app.use(
     session(
         {
+            store: new FileStore,
             secret: 'zzishdvsheep',
-            cookie: { maxAge: 1000 * 60 * 60 },
+            cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 * 2 },
             resave: true,
             saveUninitialized: true
         }
