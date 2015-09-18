@@ -616,28 +616,54 @@ var generateData = function(chosenWeek, callback) {
                     };
                     var activeSchools = function (users, periodEnd){
                             var schools = {};
+                            var something = 0;
+                            var domains = ["gmail", "yahoo", "hotmail", "zzish", "katamail", "live", "chasemail", "purplegator", "leafinvestments", "blaiprat", "test", "aol", "outlook", "libero", "mac", "yardstudio", "itslearning", "touchpress", "msn"];
                             users.forEach(function(user){
                                 if(user.email !== undefined && user.created < periodEnd){
                                     var domain = user.email.split("@")[1];
-                                    if (schools[domain] === undefined){
-                                        schools[domain] = {domain: domain, count: 1};
+                                    if (domain !== undefined){
+                                        domain = domain.toLowerCase();
+                                        if (domains.join(",").indexOf(domain.split(".")[0]) === -1){
+                                            if (schools[domain] === undefined){
+                                                schools[domain] = {domain: domain, count: 1};
 
-                                    }
-                                    else {
-                                        schools[domain].count++;
+                                            }
+                                            else {
+                                                schools[domain].count++;
+                                            }
+
+                                        }
                                     }
                                 }
-                                else if (user.profiles.email !== undefined && user.created < periodEnd){
-                                    var domain = user.email.split("@")[1];
-                                    if (schools[domain] === undefined){
-                                        schools[domain] = {domain: domain, count: 1};
+                                else {
+                                    var profile = user.profiles.filter(function(prof){
+                                        return prof.appToken == '72064f1f-2cf8-4819-a3d5-1193e52d928c';
+                                    });
+                                    console.log("profile email", profile[0].email);
+                                    console.log("user created", user.created);
+                                    if (profile[0].email !== undefined && user.created < periodEnd){
+                                        console.log("inside IF");
+                                        var domain = profile[0].email.split("@")[1];
+                                        if (domain !== undefined){
+                                            domain = domain.toLowerCase();
+                                            if (domains.join(",").indexOf(domain.split(".")[0]) === -1){
+                                                if (schools[domain] === undefined){
+                                                    schools[domain] = {domain: domain, count: 1};
+                                                    console.log("schooldomain", schools[domain]);
+                                                    something++;
+                                                }
+                                                else {
+                                                    schools[domain].count++;
+                                                }
+                                            }
+                                        }
 
-                                    }
-                                    else {
-                                        schools[domain].count++;
+
+
                                     }
                                 }
                             });
+                            console.log("something", something);
                             return schools;
                     };
 
@@ -649,7 +675,7 @@ var generateData = function(chosenWeek, callback) {
                             }
                         }
                         return schoolCount;
-                    }
+                    };
 
                     var signUpsGroup = function(users, periodStart, periodEnd){
                         var signUpTeachers = {};
@@ -818,7 +844,7 @@ var generateData = function(chosenWeek, callback) {
                         return list;
                     };
                     var schools = activeSchools(users, chosenWeek);
-                    console.log("school", Object.keys(schools).length);
+                    console.log("school emails", schools);
                     var schoolsMulti = multiSchools(schools);
                     console.log("schoolsMulti", schoolsMulti);
                     var emailList = activatedList(activeTeachers[0], users);
@@ -832,8 +858,9 @@ var generateData = function(chosenWeek, callback) {
                         "retained": retained,
                         "activatedList": emailList,
                         "activeList": activeList,
-                        "schools": schools,
-                        "schoolsMulti": schoolsMulti
+                        "schools": Object.keys(schools).length,
+                        "schoolsMulti": schoolsMulti,
+                        "activatedRatio": Math.floor((activated/signUpThisWeek)*100)
                     };
 
                     console.log(calculatedMetrics);
