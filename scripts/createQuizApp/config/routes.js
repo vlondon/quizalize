@@ -130,7 +130,7 @@ var pagesArray: Array<Page> = [
         needsLogin: true,
         renderer: function(){
             React.render(
-                React.createElement(CQPublic, null),
+                React.createElement(CQMarketplace, null),
                 document.getElementById('reactApp')
             );
         }
