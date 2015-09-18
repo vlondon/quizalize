@@ -36,6 +36,15 @@ var _subjects = [];
 var _subjectHash = {};
 var _temporaryTopic : ?Topic;
 
+var _emptyTopic: Topic = {
+    attributes: {},
+    created: Date.now(),
+    name: '',
+    timestamp: Date.now(),
+    title: '',
+    uuid: '-1'
+};
+
 var loadPublicTopics = function(data) {
     _subjects = data.psubjects;
     _subjects.sort((a, b)=> (a.name > b.name) ? 1 : -1 );
@@ -109,14 +118,19 @@ class TopicStore extends Store {
         }
     }
 
+
     getTopicByName(name) {
-        if (_temporaryTopic && _temporaryTopic.name === name) {
+        var result = this.getAllTopics().filter(t => t.name === name);
+        if (result.length === 1) {
+            return result.slice()[0];
+        } else {
+            _temporaryTopic = {
+                uuid: '-1',
+                name
+            };
             return _temporaryTopic;
         }
-        else {
-            var result = this.getAllTopics().filter(t => t.name === name);
-            return result.length === 1 ? result.slice()[0] : undefined;
-        }
+
     }
 
     getTopicName(topicId) {
