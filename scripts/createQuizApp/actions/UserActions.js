@@ -41,7 +41,12 @@ var UserActions = {
     },
 
     getOwn: function(){
-        return UserApi.getOwn();
+        return UserApi.getOwn().then( user => {
+            AppDispatcher.dispatch({
+                actionType: UserConstants.USER_OWN_LOADED,
+                payload: user
+            });
+        });
     },
 
     update: function(user){

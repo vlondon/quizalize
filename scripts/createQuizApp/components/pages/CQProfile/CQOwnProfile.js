@@ -3,6 +3,7 @@ import React from 'react';
 import CQProfileView from './CQProfileView';
 
 import AppStore from './../../../stores/AppStore';
+import MeStore from './../../../stores/MeStore';
 import UserActions from './../../../actions/UserActions';
 
 
@@ -23,6 +24,7 @@ class CQOwnProfile extends React.Component {
     constructor(props: Props) {
         super(props);
         this.state = this.getState();
+        console.log('MeStore', MeStore);
 
         UserActions.getOwn().then((profile)=>{
             console.log('we got ', profile);
@@ -55,7 +57,7 @@ class CQOwnProfile extends React.Component {
 
     render () {
         if (this.state.profile.uuid){
-            
+
             return (
                 <CQProfileView
                     profile={this.state.profile}
