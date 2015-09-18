@@ -75,7 +75,10 @@
 
     }
     &__quiz-inner {
+<<<<<<< HEAD
 
+=======
+>>>>>>> hotfix/TeacherCreatorFlow
         flex: 1;
         width: 100%;
     }
@@ -100,10 +103,12 @@
         font-size: 18px;
     }
 
+
     &__quizauthor {
         display: inline;
+        font-size: 12px;
     }
-
+    &__quiztopic,
     &__quizdate {
         font-weight: 100;
         color: $brand-color-grey;

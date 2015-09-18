@@ -8,7 +8,8 @@ var CQPublishQuiz = React.createClass({
 
     propTypes: {
         quiz: React.PropTypes.object.isRequired,
-        className: React.PropTypes.string
+        className: React.PropTypes.string,
+        disabled: React.PropTypes.boolean
     },
 
     handleIgnore: function(ev:Object) {
@@ -17,33 +18,36 @@ var CQPublishQuiz = React.createClass({
     },
 
     handlePublish: function(ev:Object){
-        console.log('ev', ev);
-        ev.preventDefault();
-        ev.stopPropagation();
-        // we check if the user has the details
-        var quiz = this.props.quiz;
-        var user = UserStore.getUser();
-        if (user && user.name && user.name.length > 0) {
-            console.log('we got user with name', user.name);
-            if (quiz){
-                router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
-            }
-        } else {
-
-            swal({
-                title: 'You have an incomplete profile',
-                text: `To publish to the marketplace you must complete your profile.`,
-                type: 'info',
-                confirmButtonText: 'Enter details',
-                showCancelButton: false
-            }, function(isConfirm){
-                if (isConfirm){
-                    router.setRoute(`/quiz/settings?redirect=${window.encodeURIComponent(`/quiz/published/${quiz.uuid}/publish`)}`);
+        if (this.props.quiz.payload.questions && this.props.quiz.payload.questions.length > 3 && this.props.quiz.payload.questions[0].question.length > 0) {
+            console.log('ev', ev);
+            ev.preventDefault();
+            ev.stopPropagation();
+            // we check if the user has the details
+            var quiz = this.props.quiz;
+            var user = UserStore.getUser();
+            if (user && user.name && user.name.length > 0) {
+                console.log('we got user with name', user.name);
+                if (quiz){
+                    router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
                 }
-            });
+            } else {
+
+                swal({
+                    title: 'You have an incomplete profile',
+                    text: `To publish to the marketplace you must complete your profile.`,
+                    type: 'info',
+                    confirmButtonText: 'Enter details',
+                    showCancelButton: false
+                }, function(isConfirm){
+                    if (isConfirm){
+                        router.setRoute(`/quiz/settings?redirect=${window.encodeURIComponent(`/quiz/published/${quiz.uuid}/publish`)}`);
+                    }
+                });
+            }
         }
-
-
+        else {
+            swal("Whoops!", "You need to have at least three questions before you can publish this quiz");
+        }
     },
 
     render: function(): any {

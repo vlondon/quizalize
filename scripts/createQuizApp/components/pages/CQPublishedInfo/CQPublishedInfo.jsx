@@ -104,36 +104,6 @@ var CQPublishedInfo = React.createClass({
 
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
-                <div className="cq-publishedinfo__openbutton">
-                    <a type="button" id='openDashboard' disabled={!this.state.fullLiveLink} href={this.state.fullLiveLink} target="zzishld" className="btn btn-primary">
-                        Open {className} Dashboard
-                    </a>
-                </div>
-
-                <div className={`cq-publishedinfo__instructions cq-publishedinfo__instructions--${helpStatus}`}>
-
-                    <div className="cq-publishedinfo__instructions__help">
-
-                        <i className="fa fa-info-circle"/> Help
-
-                        <div className="cq-publishedinfo__instructions__help__close" onClick={this.handleCloseInstructions}>
-                            <i className="fa fa-times-circle"></i>
-                        </div>
-
-                        <div className="cq-publishedinfo__instructions__help__open" onClick={this.handleOpenInstructions}>
-                            <i className="fa fa-chevron-circle-down"></i>
-                        </div>
-
-                    </div>
-                    <div className="cq-publishedinfo__instructions__body">
-
-                        <img src="/img/quizalize_dashboard_instructions.png" alt="" className="cq-publishedinfo__instructions__image"/>
-                        <div className="cq-publishedinfo__instructions__code">
-                            {classCode}
-                        </div>
-                    </div>
-                </div>
-
                 <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
             </CQPageTemplate>

@@ -125,6 +125,17 @@ var pagesArray: Array<Page> = [
         }
     },
     {
+        name: 'publicMarketplacePage',
+        path: '/quiz/lmarketplace',
+        needsLogin: true,
+        renderer: function(){
+            React.render(
+                React.createElement(CQPublic, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    {
         name: 'loginPage',
         path: '/quiz/login',
         needsLogin: false,

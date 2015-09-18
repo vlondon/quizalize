@@ -46,6 +46,7 @@ export type AppComplete = {
 
 var _publicApps: ?Array<App>;
 var _apps: Array<App> = [];
+var _appLoaded = false;
 
 var _appInfo = {};
 
@@ -89,6 +90,10 @@ class AppStore extends Store {
 
     getApps() {
         return _apps;
+    }
+
+    getAppsLoaded() : boolean {
+        return _appLoaded;
     }
 
     getAppById(appId):?App {
@@ -153,6 +158,7 @@ AppDispatcher.register(function(action) {
 
         case AppConstants.APP_SEARCH_LOADED:
             _publicApps = action.payload;
+            _appLoaded = true;
             _publicApps.forEach(function(app){
                 if (typeof app.meta.quizzes === 'string') {
                     console.log('splitting', app.meta.quizzes);

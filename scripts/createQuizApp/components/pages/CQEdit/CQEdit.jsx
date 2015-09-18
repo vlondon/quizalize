@@ -12,6 +12,7 @@ import CQEditIcon from './CQEditIcon';
 import QuizStore from './../../../stores/QuizStore';
 import type {QuizComplete, Question} from './../../../stores/QuizStore';
 import QuizActions from './../../../actions/QuizActions';
+var CQPublishQuiz   = require(`./../../../components/utils/CQPublishQuiz`);
 
 import TopicStore from './../../../stores/TopicStore';
 import UserApi from './../../../actions/api/UserApi';
@@ -57,6 +58,7 @@ export default class CQEdit extends React.Component {
         this.handleQuestion = this.handleQuestion.bind(this);
         this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
         this.handleFinished = this.handleFinished.bind(this);
+        this.handleShare = this.handleShare.bind(this);
         this.handleSaveButton = this.handleSaveButton.bind(this);
         this.handlePreview = this.handlePreview.bind(this);
         this.enableDisableSave = this.enableDisableSave.bind(this);
@@ -203,25 +205,48 @@ export default class CQEdit extends React.Component {
         });
     }
 
-    handleFinished(){
-        UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            router.setRoute(`/quiz/published/${this.state.quiz.uuid}`);
-        });
+    handleShare() {
+        if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
+            UserApi.trackEvent('share_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
+            QuizActions.newQuiz(this.state.quiz).then( ()=> {
+                router.setRoute(`/quiz/published/${this.state.quiz.uuid}/share`);
+            });
+        }
+        else {
+            swal("Whoops!", "You need to have at least one question before you can share this quiz");
+        }
+    }
+
+    handleFinished() {
+        if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
+            UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
+            QuizActions.newQuiz(this.state.quiz).then( ()=> {
+                router.setRoute(`/quiz/published/${this.state.quiz.uuid}/assign`);
+            });
+        }
+        else {
+            swal("Whoops!", "You need to have at least one question before you can play this quiz in the class");
+        }
     }
 
     handleSaveButton(){
         QuizActions.newQuiz(this.state.quiz).then(()=>{
+            swal("Quiz Saved!", "Your quiz has been saved!");
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
         });
     }
 
     handlePreview(){
-        sessionStorage.setItem('mode', 'teacher');
-        window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+        if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
+            sessionStorage.setItem('mode', 'teacher');
             window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
-        });
+            QuizActions.newQuiz(this.state.quiz).then( ()=> {
+                window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
+            });
+        }
+        else{
+            swal("Whoops!", "You need to have at least one question before you can play this quiz");
+        }
     }
 
     handleName(ev:Object){
@@ -259,10 +284,28 @@ export default class CQEdit extends React.Component {
 
         if (this.state.quiz){
 
-            var previewEnabled = this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0;
-            //var placeholderForName = previewEnabled ? this.state.quiz.payload.questions[0].question + ("...Change this anytime") : 'e.g. Enter a quiz name';
             var placeholderForName = 'e.g. Enter a quiz name';
             var topics = TopicStore.getTopicTree();
+
+            var publishButton = (() => {
+                if (!this.state.quiz.meta.originalQuizId) {
+                    if (this.state.quiz.meta.published === "pending") {
+                        return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
+                            <span className="fa fa-shopping-cart"></span> Published Pending
+                        </button>);
+                    }
+                    else if (this.state.quiz.meta.published === "published") {
+                        return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
+                            <span className="fa fa-shopping-cart"></span> Published to Marketplace
+                        </button>);
+                    }
+                    else {
+                        return (<button className="cq-quizzes__button--publish" onClick={this.handlePublish}>
+                            <span className="fa fa-shopping-cart"></span> Publish to Marketplace
+                        </button>);
+                    }
+                }
+            })();
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">
@@ -309,29 +352,30 @@ export default class CQEdit extends React.Component {
                         handleSave={this.handleSaveNewQuestion}/>
 
                     <div className="cq-edit__footer">
-                        <div className="cq-edit__footer-inner">
+                        <div className="cq-edit__footer-inner cq-quizzes">
 
-                            <button onClick={this.handlePreview}
-                                disabled={!previewEnabled || !this.state.saveEnabled}
+                            <CQPublishQuiz quiz={this.state.quiz} className="cq-quizzes__button--publish"/>
 
+                            <button className="cq-quizzes__button--share"
+                                onClick={this.handleShare}>
+                                <span className="fa fa-share"></span> Share
+                            </button>
+
+                            <button
                                 target="zzishgame"
-                                className="btn btn-info">
-                                Preview
+                                className="cq-quizzes__button--preview" onClick={this.handlePreview}>
+                                <span className="fa fa-search"></span> Play
                             </button>
 
                             <button
-                                disabled={!previewEnabled || !this.state.saveEnabled}
-                                className="btn btn-primary"
+                                className="cq-quizzes__button--assign" onClick={this.handleFinished}>
+                                <span className="fa fa-users"></span> Play in class
+                            </button>
+
+                            <button
+                                className="cq-quizzes__button--save"
                                 onClick={this.handleSaveButton}>
-                                Save
-                            </button>
-
-                            <button
-                                disabled={!previewEnabled || !this.state.saveEnabled}
-                                id='finishQuiz'
-                                className="btn btn-primary"
-                                onClick={this.handleFinished}>
-                                Let's finish!
+                                <span className="fa fa-save"></span> Save
                             </button>
 
                         </div>

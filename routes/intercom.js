@@ -50,7 +50,7 @@ exports.trackEvent = function(userId, event_name, meta, callback){
         event.event_name = event_name;
         console.log("Intercom trackEvent event", event);
 
-        if (meta) event.meta_data = meta;
+        if (meta) event.metadata = meta;
         console.log("event meta", meta);
         intercom.createEvent(event, function(err, resp) {
             console.log("Intercom trackEvent createEvent err, response", err, resp);
