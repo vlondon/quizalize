@@ -7,6 +7,6 @@
 ./scripts
 
 [libs]
-interfaces/
+./src/interfaces/
 
 [options]
