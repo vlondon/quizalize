@@ -17,8 +17,9 @@ var CQPublishQuiz = React.createClass({
     },
 
     handlePublish: function(ev:Object){
-        if (this.props.quiz.payload.questions && this.props.quiz.payload.questions.length > 3 && this.props.quiz.payload.questions[0].question.length > 0) {
-            console.log('ev', ev);
+        if (this.props.quiz.payload.questions &&
+            this.props.quiz.payload.questions.length >= 3 &&
+            this.props.quiz.payload.questions[0].question.length > 0) {
             ev.preventDefault();
             ev.stopPropagation();
             // we check if the user has the details

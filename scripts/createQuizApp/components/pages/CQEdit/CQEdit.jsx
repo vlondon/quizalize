@@ -351,6 +351,7 @@ export default class CQEdit extends React.Component {
                                 data={topics}
                                 className="cq-edit__input-topic"
                                 placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
+                                labels={['Create a new topic', 'Pick one below or continue typing to create a new topic']}
                             />
                         </div>
 

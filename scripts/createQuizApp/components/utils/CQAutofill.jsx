@@ -139,7 +139,6 @@ export default class CQAutofill extends React.Component {
 
             case 13:
                 var topic = occurrences[indexSelected];
-                console.log('topic', topic);
                 this.handleAssign(topic);
 
                 break;
@@ -149,11 +148,6 @@ export default class CQAutofill extends React.Component {
 
     handleChange(ev:Object){
         var topic = TopicStore.getTopicByName(ev.target.value);
-        console.log('input field changed',  topic);
-        // this.setState({
-        //     topic,
-        //
-        // });
         this.handleAssign(topic);
     }
 
@@ -201,7 +195,7 @@ export default class CQAutofill extends React.Component {
             }
 
             if (topic.uuid === '-1'){
-                var copy = occurrences.length === 0 ? 'Create a new topic' : 'Pick one below or continue typing to create a new topic';
+                var copy = occurrences.length === 0 ? this.props.labels[0] : this.props.labels[1];
                 list.unshift((
                     <li key={topic.uuid}
                         className={getClassName('-1', 'cq-autofill__option')}>
@@ -318,11 +312,13 @@ CQAutofill.propTypes = {
     value: React.PropTypes.string,
     onChange: React.PropTypes.func.isRequired,
     onKeyDown: React.PropTypes.func,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    labels: React.PropTypes.array
 };
 
 CQAutofill.defaultProps = {
     limit: 30,
     onChange: function(){},
-    className: 'form-control'
+    className: 'form-control',
+    labels: ['Create a new topic', 'Pick one below or continue typing to create a new topic']
 };

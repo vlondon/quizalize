@@ -480,6 +480,7 @@ export default class CQEditNormal extends React.Component{
                                 ref='topicId'
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
+                                labels={['Create a new subtopic', 'Pick one below or continue typing to create a new subtopic']}
                                 tabIndex="6"/>
                         </div>
                     </div>
