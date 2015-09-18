@@ -230,10 +230,15 @@ export default class CQEdit extends React.Component {
     }
 
     handleSaveButton(){
-        QuizActions.newQuiz(this.state.quiz).then(()=>{
-            swal("Quiz Saved!", "Your quiz has been saved!");
-            router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
-        });
+        if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[this.state.questionIndex].question.length > 0 && this.state.quiz.payload.questions[this.state.questionIndex].answer.length > 0) {
+            QuizActions.newQuiz(this.state.quiz).then(()=>{
+                swal("Quiz Saved!", "Your quiz has been saved!");
+                router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
+            });
+        }
+        else{
+            swal("Whoops!", "Please enter at least a question and an answer before saving the quiz");
+        }
     }
 
     handlePreview(){
