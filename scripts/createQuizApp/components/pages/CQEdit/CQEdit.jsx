@@ -199,8 +199,13 @@ export default class CQEdit extends React.Component {
                 var quiz = Object.assign({}, this.state.quiz);
                 quiz.payload.questions = this.state.quiz.payload.questions;
                 quiz.payload.questions.splice(questionIndex, 1);
-                console.log('about to remove question', quiz.payload.questions);
-                this.setState({quiz}, ()=> QuizActions.newQuiz(this.state.quiz) );
+                console.log('about to remove question', this.state.questionIndex, quiz.payload.questions.length);
+                this.setState({quiz}, ()=> {
+                    QuizActions.newQuiz(quiz);
+                    if (this.state.questionIndex >= quiz.payload.questions.length) {
+                        router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${quiz.payload.questions.length}`);
+                    }
+                });
             }
         });
     }
