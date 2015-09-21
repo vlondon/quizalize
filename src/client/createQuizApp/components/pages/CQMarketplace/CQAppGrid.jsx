@@ -3,6 +3,7 @@ import React from 'react';
 import router from './../../../config/router';
 
 import AppStore from './../../../stores/AppStore';
+import AppActions from './../../../actions/AppActions';
 import type {AppType} from './../../../stores/AppStore';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import CQSpinner from './../../../components/utils/CQSpinner';
@@ -125,9 +126,10 @@ class CQAppGrid extends React.Component {
     render() : any  {
 
         var emptyState = this.state.apps && this.state.apps.length === 0;
-        var loading = AppStore.getAppsLoaded() === false;
+        var loading1 = AppStore.getAppsLoaded() === false;
+        var loading2 = AppActions.isSearching();
 
-        if (loading){
+        if (loading1 || loading2){
             return (
                 <ul className={`cq-appgrid empty ${this.props.className}`}>
                     <CQSpinner/>

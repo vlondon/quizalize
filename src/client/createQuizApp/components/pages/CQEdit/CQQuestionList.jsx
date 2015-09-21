@@ -63,7 +63,7 @@ class CQQuestionList extends React.Component {
                     index = i;
                 }
             });
-            if (index === -1 || index === q.questions.length -1) {
+            if (index === -1 || index === quiz.payload.questions.length - 1) {
                 this.props.handleSave();
             }
             else {

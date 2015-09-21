@@ -5,7 +5,7 @@ var uuid                = require('node-uuid');
 
 var router              = require('./../config/router');
 var debounce            = require('./../utils/debounce');
-
+var searching = false;
 
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var AppApi              = require('./../actions/api/AppApi');
@@ -14,6 +14,10 @@ var AppConstants        = require('./../constants/AppConstants');
 var UserApi             = require('./../actions/api/UserApi');
 
 var AppActions = {
+
+    isSearching: function() {
+        return searching;
+    },
 
     loadApps: function(){
         AppApi.get()
@@ -102,14 +106,19 @@ var AppActions = {
     },
 
     searchPublicApps: debounce((searchString = '', categoryId = '', profileId) => {
-
+        searching = true;
+        AppDispatcher.dispatch({
+            actionType: AppConstants.APP_SEARCH_LOADED,
+            payload: []
+        });
+        
         QuizApi.searchQuizzes(searchString, categoryId, profileId)
             .then(function(quizzes){
 
             AppApi.searchApps('', '')
                 .then(function(apps){
 
-                    apps = apps.filter(app => {
+                    var sapps = apps.filter(app => {
                         var found = false;
                         if (typeof app.meta.quizzes !== 'string'){
                             console.warn('problem with the app', app);
@@ -118,8 +127,11 @@ var AppActions = {
                             if (typeof app.meta.quizzes === 'string' && app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
                                 found = true;
                             }
+                            else if (typeof app.meta.quizzes === 'object') {
+                                found = app.meta.quizzes.filter(function(q) { return q == quiz.uuid; }).length > 0;
+                            }
                         });
-                        return found && app.meta.published === "published";
+                        return app.meta.published === "published" && (found || app.meta.name.toLowerCase().indexOf(searchString.toLowerCase()) >= 0);
                     });
 
 
@@ -127,10 +139,10 @@ var AppActions = {
                     //     console.log("Going through app",app);
                     //     return false;
                     // });
-
+                    searching = false;
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,
-                        payload: apps
+                        payload: sapps
                     });
 
                 });
