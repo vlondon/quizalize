@@ -3,3 +3,4 @@ public/js/**
 .DS_Store
 .idea
 uploads
+sessions
