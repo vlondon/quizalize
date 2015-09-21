@@ -63,13 +63,13 @@ class CQQuestionList extends React.Component {
                     index = i;
                 }
             });
-            if (index === -1 || index === q.questions.length -1) {
+            if (index === -1 || index === quiz.payload.questions.length - 1) {
                 this.props.handleSave();
             }
             else {
                 swal({
                     title: 'Whoops',
-                    text: "Please enter at least a question and an answer before adding a new question 2222",
+                    text: "Please enter at least a question and an answer before adding a new question",
                     type: 'info',
                     confirmButtonText: 'OK',
                     showCancelButton: false
