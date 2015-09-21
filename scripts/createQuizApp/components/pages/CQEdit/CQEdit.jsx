@@ -247,7 +247,8 @@ export default class CQEdit extends React.Component {
             });
         }
         else{
-            if (this.state.questionIndex === (quiz.payload.questions.length - 1) ) {
+            if (this.state.questionIndex === (quiz.payload.questions.length - 1) && (quiz.payload.questions[questionIndex].question.length === 0 &&
+            quiz.payload.questions[questionIndex].answer.length === 0) ) {
                 //delete the last question
                 debugger;
                 quiz.payload.questions.splice(this.state.questionIndex,1);
