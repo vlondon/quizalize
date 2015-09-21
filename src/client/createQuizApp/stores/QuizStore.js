@@ -1,6 +1,7 @@
 /* @flow */
 import Store from './Store';
 import UserStore from './UserStore';
+import Immutable, {Record} from 'immutable';
 
 var uuid            = require('node-uuid');
 
@@ -98,6 +99,7 @@ var QuizObject = function() : QuizComplete {
     return quiz;
 };
 
+var quizRecord = Record(QuizObject());
 
 var QuestionObject = function(quiz){
 

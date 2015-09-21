@@ -88,16 +88,6 @@ class UserStore extends Store {
         }
     }
 
-
-    addChangeListener(callback: Function) {
-        if (!storeInit){
-            storeInit = true;
-            UserActions.request();
-        }
-        super.addChangeListener(callback);
-
-    }
-
     emitChange(){
         super.emitChange();
         this.addIntercom();

@@ -40,12 +40,16 @@ var UserActions = {
     },
 
     getOwn: function(){
-        return UserApi.getOwn().then( user => {
-            AppDispatcher.dispatch({
-                actionType: UserConstants.USER_OWN_LOADED,
-                payload: user
-            });
-        });
+        return new Promise((resolve, reject)=>{
+
+            UserApi.getOwn().then( user => {
+                AppDispatcher.dispatch({
+                    actionType: UserConstants.USER_OWN_LOADED,
+                    payload: user
+                });
+                resolve(user);
+            }).catch(reject);
+        })
     },
 
     update: function(user){
@@ -59,6 +63,7 @@ var UserActions = {
                         payload: user
                     });
                     if (handleRedirect() === false){
+                        console.log('resolving', user);
                         resolve(user);
                     }
                 })

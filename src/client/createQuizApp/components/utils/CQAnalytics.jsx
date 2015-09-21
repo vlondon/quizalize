@@ -1,7 +1,7 @@
 var React = require('react');
 
 var AnalyticsStore = require('createQuizApp/stores/AnalyticsStore');
-var UserStore = require('createQuizApp/stores/UserStore');
+var MeStore = require('createQuizApp/stores/MeStore');
 
 
 var CQAnalytics = React.createClass({
@@ -11,15 +11,15 @@ var CQAnalytics = React.createClass({
             googleConversion: false,
             twitterConversion: false,
             facebookConversion: false,
-            user: UserStore.isLoggedIn(),
-            currentUser: UserStore.getUser()
+            user: MeStore.isLoggedIn(),
+            currentUser: MeStore.status
         };
     },
 
 
     componentDidMount: function() {
         AnalyticsStore.addChangeListener(this.onChange);
-        UserStore.addChangeListener(this.onChange);
+        MeStore.addChangeListener(this.onChange);
         // var currentUser = UserStore.getUser();
         // console.log('UserStore.isLoggedIn()', UserStore.isLoggedIn());
         // if (UserStore.isLoggedIn()){
@@ -42,7 +42,7 @@ var CQAnalytics = React.createClass({
 
     componentWillUnmount: function() {
         AnalyticsStore.removeChangeListener(this.onChange);
-        UserStore.removeChangeListener(this.onChange);
+        MeStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){

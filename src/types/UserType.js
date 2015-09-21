@@ -7,7 +7,8 @@ type UserAttributesType = {
     ageTaught?: string;
     profileUrl?: string;
     bannerUrl?: string;
-};
+}
+
 export type UserType = {
     uuid: string;
     avatar: string;

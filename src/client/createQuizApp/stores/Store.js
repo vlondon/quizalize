@@ -9,7 +9,7 @@ class Store extends EventEmitter {
     // getMaxListeners: Function;
     constructor() {
         super();
-        console.log('this', this);
+        console.trace('this', this);
     }
 
     emitChange() {

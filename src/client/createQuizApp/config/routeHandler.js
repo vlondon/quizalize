@@ -1,4 +1,5 @@
 /* @flow */
+import MeStore from './../stores/MeStore';
 
 var router              = require('./router');
 var pages               = require('./routes').pages;
@@ -6,7 +7,6 @@ var pagesArray          = require('./routes').pagesArray;
 var settings            = require('./settings');
 var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
-import UserStore        from './../stores/UserStore';
 
 var urlParams           = require('./../utils/urlParams');
 
@@ -51,9 +51,9 @@ var newUrl = function(requestedUrl){
         if (page.needsLogin === undefined){
             return requestedUrl;
         }
-        console.log('we are logged in?', user);
+        console.log('are we logged in?', MeStore.isLoggedIn());
         if (!page.needsLogin) {
-            if (UserStore.isLoggedIn() && !page.public) {
+            if (MeStore.isLoggedIn() && !page.public) {
                 var params = urlParams();
                 if (params.redirect){
                     return window.decodeURIComponent(params.redirect);;
@@ -69,7 +69,7 @@ var newUrl = function(requestedUrl){
             //just got to page if you;re not logged in. UserActions.login will handle redirectUrl
             // return requestedUrl;
         } else if(page.needsLogin) {
-            if (UserStore.isLoggedIn()){
+            if (MeStore.isLoggedIn()){
                 return requestedUrl;
             } else {
                 return '/quiz/register?redirect=' + window.encodeURIComponent(requestedUrl);
@@ -95,6 +95,7 @@ var options = {
         window.scrollTo(0,0);
     },
     before: function(){
+        console.log('running router');
         var destinationURL = newUrl(router.getPath());
         if (destinationURL === router.getPath()) {
             var next = arguments[arguments.length - 1];
@@ -120,20 +121,20 @@ var options = {
 };
 
 
-// Add user listener
-UserStore.addChangeListener(function(){
-    user = UserStore.getUser();
-    if (routerReady !== true) {
-        router.init();
-        routerReady = true;
-    } else {
-        options.before();
-    }
-
-});
-
 // Initialize router
 router.configure(options);
+// Add user listener
+// UserStore.addChangeListener(function(){
+//     user = UserStore.getUser();
+//
+// });
+if (routerReady !== true) {
+    router.init();
+    routerReady = true;
+} else {
+    options.before();
+}
+
 // Request user status
 
 module.exports = router;

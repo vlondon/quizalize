@@ -23,13 +23,19 @@ class CQOwnProfile extends React.Component {
 
     constructor(props: Props) {
         super(props);
-        this.state = this.getState();
-        console.log('MeStore', MeStore);
+        this.state = {
+            profile: MeStore.state,
+            apps: [],
+            quizzes: []
+        };
+        console.log('MeStore', MeStore.state);
 
-        UserActions.getOwn().then((profile)=>{
-            console.log('we got ', profile);
-            this.setState(this.getState(profile));
-        });
+
+        // UserActions.getOwn().then((profile)=>{
+        //     console.log('we got ', profile);
+        //     this.setState(this.getState(profile));
+        // });
+
 
         this.onChange = this.onChange.bind(this);
         this.getState = this.getState.bind(this);
@@ -61,8 +67,8 @@ class CQOwnProfile extends React.Component {
             return (
                 <CQProfileView
                     profile={this.state.profile}
-                    apps={this.state.apps}
-                    quizzes={this.state.quizzes}
+                    apps={this.state.profile.apps}
+                    quizzes={this.state.profile.quizzes}
                     own={true}
                 />
             );
