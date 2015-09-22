@@ -51,7 +51,7 @@ var pagesArray: Array<Page> = [
         name: 'ownProfilePage',
         path: '/quiz/user',
         needsLogin: true,
-        component: CQProfile,
+        component: CQOwnProfile,
         renderer: function(){
             React.render(
                 React.createElement(CQOwnProfile),

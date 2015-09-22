@@ -2,8 +2,8 @@
 import history from './history';
 
 var router = {
-    setRoute(url: string, replaceState: boolean = true){
-        console.log('setting route', history, url);
+    setRoute(url: string, replaceState: boolean = false){
+        console.log('setting route', url, replaceState);
         if (replaceState){
             history.replaceState({}, url);
         } else {

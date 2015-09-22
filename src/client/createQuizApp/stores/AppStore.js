@@ -53,31 +53,40 @@ var _appInfo = {};
 var storeInit = false;
 var storeInitPublic = false;
 
-var AppObject = function():AppComplete{
-    var user:Object = UserStore.getUser();
-    var profileId = user.uuid || undefined;
-    var app = {
-        uuid: undefined,
-        meta: {
-            colour: '#a204c3',
-            created: Date.now(),
-            description: '',
-            iconURL: undefined,
-            name: '',
-            price: 0,
-            profileId,
-            quizzes: [],
-            updated: Date.now()
-        },
-        payload: {
-            categories: [],
-            quizzes: []
-        }
+class Application {
 
-    };
+    uuid: ?string;
+    meta: AppMeta;
+    payload: AppPayload;
 
-    return app;
-};
+    constructor(appInfo?: AppComplete){
+        var user:Object = UserStore.getUser();
+        var profileId = user.uuid || undefined;
+        var emptyApp = {
+            uuid: undefined,
+            meta:  {
+                colour: '#a204c3',
+                created: Date.now(),
+                description: '',
+                iconURL: undefined,
+                name: '',
+                price: 0,
+                profileId,
+                quizzes: [],
+                updated: Date.now()
+            },
+            payload: {
+                categories: [],
+                quizzes: []
+            }
+        };
+
+        Object.assign(this, emptyApp, appInfo);
+
+
+    }
+
+}
 
 var fixAppTypes = function(app: ?App){
     if (app) {
@@ -115,8 +124,8 @@ class AppStore extends Store {
         // return fixAppTypes(app);
     }
 
-    getNewApp(): AppComplete {
-        return new AppObject();
+    getNewApp(appInfo): AppComplete {
+        return new Application(appInfo);
     }
 
 

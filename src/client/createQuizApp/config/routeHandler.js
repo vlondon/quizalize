@@ -1,6 +1,6 @@
 /* @flow */
 import { Router, Route, Link } from 'react-router';
-
+import MeStore from './../stores/MeStore';
 import React from 'react';
 import history from './history';
 var router              = require('./router');
@@ -24,10 +24,9 @@ var requireAuth = function(nextState, replaceState) {
     //                     return settings.defaultLoggedPage;
     //                 }
     var url =  '/quiz/register?redirect=' + window.encodeURIComponent(nextState.location.pathname);
-    console.log('requireAuth nextState', UserStore.isLoggedIn(), nextState);
+    console.log('requireAuth nextState', MeStore.isLoggedIn(), nextState);
     // var url =  '/quiz/register';
-    if (UserStore.isLoggedIn() === false) {
-        console.log('redirecting to ', url);
+    if (MeStore.isLoggedIn() === false) {
         replaceState({ nextPathname: nextState.location.pathname }, url);
     }
 };
@@ -36,8 +35,8 @@ var notRequireAuth = function(nextState, replaceState){
     var params = urlParams();
     var url =  '/quiz/register?redirect=' + window.encodeURIComponent(nextState.location.pathname);
     // var url =  '/quiz/register';
-    console.log('notRequireAuth nextState',  url);
-    if (UserStore.isLoggedIn() === true) {
+    console.log('notRequireAuth nextState', MeStore.isLoggedIn(), url);
+    if (MeStore.isLoggedIn() === true) {
         replaceState({ nextPathname: nextState.location.pathname }, url);
     }
 };
@@ -167,18 +166,19 @@ var routerReady = false;
 // };
 //
 //
-// // Add user listener
-UserStore.addChangeListener(function(){
-    user = UserStore.getUser();
-    if (routerReady !== true) {
-        // router.init();
-        React.render(<Router routes={paths} history={history}/>, document.getElementById('reactApp'));
-        routerReady = true;
-    // } else {
-        // options.before();
-    }
 
-});
+if (routerReady !== true) {
+    // router.init();
+    React.render(<Router routes={paths} history={history}/>, document.getElementById('reactApp'));
+    routerReady = true;
+}
+// // // Add user listener
+// UserStore.addChangeListener(function(){
+//     // } else {
+//         // options.before();
+//     }
+//
+// });
 
 // Initialize router
 // router.configure(options);

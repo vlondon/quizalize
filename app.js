@@ -32,10 +32,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, '/public/favcq.png')));
+var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
 app.use(
     session(
         {
-            store: new FileStore,
+            store: new FileStore({
+                path: sessionsFolder
+            }),
             secret: 'zzishdvsheep',
             cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 * 2 },
             resave: true,

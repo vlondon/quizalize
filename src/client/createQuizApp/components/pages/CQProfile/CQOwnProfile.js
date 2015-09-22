@@ -28,13 +28,13 @@ class CQOwnProfile extends React.Component {
             apps: [],
             quizzes: []
         };
-        console.log('MeStore', MeStore.state);
 
 
-        // UserActions.getOwn().then((profile)=>{
-        //     console.log('we got ', profile);
-        //     this.setState(this.getState(profile));
-        // });
+
+        UserActions.getOwn().then((profile)=>{
+            // console.log('we got ', profile);
+            // this.setState(this.getState(profile));
+        });
 
 
         this.onChange = this.onChange.bind(this);
@@ -42,16 +42,16 @@ class CQOwnProfile extends React.Component {
     }
 
     componentDidMount() {
-        // QuizStore.addChangeListener(this.onChange);
+        MeStore.addChangeListener(this.onChange);
 
     }
 
     componentWillUnmount() {
-        // QuizStore.removeChangeListener(this.onChange);
+        MeStore.removeChangeListener(this.onChange);
     }
 
     onChange(){
-        // this.setState(this.getState());
+        this.forceUpdate();
     }
 
     getState (profile : Object = {}) : State {
@@ -62,13 +62,13 @@ class CQOwnProfile extends React.Component {
     }
 
     render () {
-        if (this.state.profile.uuid){
+        if (MeStore.state.uuid){
 
             return (
                 <CQProfileView
-                    profile={this.state.profile}
-                    apps={this.state.profile.apps}
-                    quizzes={this.state.profile.quizzes}
+                    profile={MeStore.state}
+                    apps={MeStore.state.apps}
+                    quizzes={MeStore.state.quizzes}
                     own={true}
                 />
             );

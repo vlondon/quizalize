@@ -4,13 +4,13 @@ var noCache = require('superagent-no-cache');
 
 import type {Quiz} from './../../stores/QuizStore';
 import type {Topic} from './../../stores/TopicStore';
-import UserStore from './../../stores/UserStore';
+import MeStore from './../../stores/MeStore';
 
 var QuizApi = {
 
     getQuizzes: function() : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.state.uuid;
 
             if (!uuid) {
                 reject();
@@ -68,7 +68,7 @@ var QuizApi = {
         var promises = {};
         return function(quizId : string) : Promise{
             promises[quizId] = promises[quizId] || new Promise(function(resolve, reject){
-                var uuid = UserStore.getUserId();
+                var uuid = MeStore.state.uuid;
 
 
                 if (!uuid) {
@@ -112,7 +112,7 @@ var QuizApi = {
 
     deleteQuiz: function(quizId : string) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.state.uuid;
 
             if (!uuid) {
                 reject();
@@ -162,7 +162,7 @@ var QuizApi = {
         return function() : Promise {
 
             promise = promise || new Promise(function(resolve, reject){
-                var uuid = UserStore.getUserId();
+                var uuid = MeStore.state.uuid;
 
                 if (!uuid) {
                     reject('getUserTopics: no uuid has been defined');
@@ -187,7 +187,7 @@ var QuizApi = {
 
     putTopic: function(topic : Topic) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.state.uuid;
 
             if (!uuid) {
                 reject();
@@ -207,7 +207,7 @@ var QuizApi = {
 
     putQuiz: function(quiz : Quiz) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.state.uuid;
             if (!uuid) {
                 reject();
             } else {
@@ -227,7 +227,7 @@ var QuizApi = {
     },
     shareQuiz: function(quizId : string, data: Quiz) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.state.uuid;
 
             if (!uuid) {
                 reject();
@@ -246,7 +246,7 @@ var QuizApi = {
     },
     publishQuiz: function(quiz: Quiz) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.state.uuid;
 
             if (!uuid) {
                 reject();

@@ -68,8 +68,8 @@ var CQAnalytics = React.createClass({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,
             facebookConversion: analyticsEnabled,
-            user: UserStore.isLoggedIn(),
-            currentUser: UserStore.getUser()
+            user: MeStore.isLoggedIn(),
+            currentUser: MeStore.state
         });
 
     },
