@@ -1,8 +1,8 @@
 /* @flow */
 import { Router, Route, Link } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
-import React from 'react';
 
+import React from 'react';
+import history from './history';
 var router              = require('./router');
 var pages               = require('./routes').pages;
 var pagesArray          = require('./routes').pagesArray;
@@ -15,16 +15,51 @@ var urlParams           = require('./../utils/urlParams');
 
 var CQProfile           = require('./../components/pages/CQProfile');
 
+var requireAuth = function(nextState, replaceState) {
+    var params = urlParams();
+    //                 if (params.redirect){
+    //                     return window.decodeURIComponent(params.redirect);
+    //                 } else {
+    //
+    //                     return settings.defaultLoggedPage;
+    //                 }
+    var url =  '/quiz/register?redirect=' + window.encodeURIComponent(nextState.location.pathname);
+    console.log('requireAuth nextState', UserStore.isLoggedIn(), nextState);
+    // var url =  '/quiz/register';
+    if (UserStore.isLoggedIn() === false) {
+        console.log('redirecting to ', url);
+        replaceState({ nextPathname: nextState.location.pathname }, url);
+    }
+};
+
+var notRequireAuth = function(nextState, replaceState){
+    var params = urlParams();
+    var url =  '/quiz/register?redirect=' + window.encodeURIComponent(nextState.location.pathname);
+    // var url =  '/quiz/register';
+    console.log('notRequireAuth nextState',  url);
+    if (UserStore.isLoggedIn() === true) {
+        replaceState({ nextPathname: nextState.location.pathname }, url);
+    }
+};
+
 const paths = pagesArray.map(page => {
-    return (<Route path={page.path} component={page.component}/>);
+    let component;
+    if (page.needsLogin === true) {
+        component = (<Route path={page.path} component={page.component} onEnter={requireAuth}/>);
+    } else if (page.needsLogin === false) {
+        component = (<Route path={page.path} component={page.component} onEnter={notRequireAuth}/>);
+    } else {
+        component = (<Route path={page.path} component={page.component}/>);
+    }
+    return component;
 });
 
-const history = createBrowserHistory();
-// console.log('paths', paths, pagesArray);
-React.render(<Router routes={paths} history={history}/>, document.getElementById('reactApp'));
 
-// var user = null;
-// var routerReady = false;
+console.log('paths', paths);
+
+
+var user = null;
+var routerReady = false;
 //
 // var renderPage = (page, properties) => {
 //     properties = properties || {};
@@ -66,12 +101,11 @@ React.render(<Router routes={paths} history={history}/>, document.getElementById
 //         }
 //         console.log('we are logged in?', user);
 //         if (!page.needsLogin) {
-//             if (UserStore.isLoggedIn() && !page.public) {
+//             if (UserStore.isLoggedIn()) {
 //                 var params = urlParams();
 //                 if (params.redirect){
-//                     return window.decodeURIComponent(params.redirect);;
+//                     return window.decodeURIComponent(params.redirect);
 //                 } else {
-//
 //                     return settings.defaultLoggedPage;
 //                 }
 //
@@ -134,16 +168,17 @@ React.render(<Router routes={paths} history={history}/>, document.getElementById
 //
 //
 // // Add user listener
-// UserStore.addChangeListener(function(){
-//     user = UserStore.getUser();
-//     if (routerReady !== true) {
-//         router.init();
-//         routerReady = true;
-//     } else {
-//         options.before();
-//     }
-//
-// });
+UserStore.addChangeListener(function(){
+    user = UserStore.getUser();
+    if (routerReady !== true) {
+        // router.init();
+        React.render(<Router routes={paths} history={history}/>, document.getElementById('reactApp'));
+        routerReady = true;
+    // } else {
+        // options.before();
+    }
+
+});
 
 // Initialize router
 // router.configure(options);

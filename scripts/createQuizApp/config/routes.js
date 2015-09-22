@@ -148,7 +148,7 @@ var pagesArray: Array<Page> = [
     {
         name: 'registerPage',
         path: '/quiz/register',
-        needsLogin: undefined,
+        needsLogin: false,
         component: CQRegister,
         renderer: function(){
             React.render(

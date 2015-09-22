@@ -146,7 +146,6 @@ var CQCreate = React.createClass({
         this.setState({canSave: false});
 
         QuizActions.newQuiz(this.state.quiz).then((quiz)=>{
-            console.log('we got new quiz', this.state.quiz, quiz);
             router.setRoute(`/quiz/create/${quiz.uuid}/0`);
         });
     },

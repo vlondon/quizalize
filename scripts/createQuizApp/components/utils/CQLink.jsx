@@ -1,5 +1,5 @@
 var React = require('react');
-import Link from 'react-router';
+import {Link} from 'react-router';
 
 // var commandPressed = false;
 /* window.addEventListener("keydown", function(ev){
@@ -88,7 +88,7 @@ var CQLink = React.createClass({
                 to={this.props.href}
                 className={this.props.className}
             >
-                Text
+                {this.props.children}
             </Link>
         );
     }
