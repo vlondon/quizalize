@@ -1,4 +1,5 @@
 /* @flow */
+import { Router, Route, Link } from 'react-router';
 
 var router              = require('./router');
 var pages               = require('./routes').pages;

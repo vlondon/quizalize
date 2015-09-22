@@ -6,7 +6,7 @@ var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
 
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
 var CQViewQuizDetails = require('createQuizApp/components/views/CQViewQuizDetails');
-
+import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 
 var QuizActions  = require('createQuizApp/actions/QuizActions');
@@ -160,7 +160,13 @@ var CQProfile = React.createClass({
                     quizCode={this.props.quizCode}
                     quizzes={this.state.quizzes}
                     className="cq-public__list"
-                    sortBy="time"/>
+                    sortBy="time">
+                    <span className='cq-public__button' onClick={this.handlePreview}>
+                        Play
+                    </span>
+
+                    <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
+                </CQViewQuizList>
             );
         }
         return (

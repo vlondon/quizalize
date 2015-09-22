@@ -178,7 +178,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        <CQLink href={`/quiz/user/${app.extra.author.uuid}`}>by {app.extra.author.name}</CQLink>
+                                        {app.extra.author.name}
                                     </div>
                                 );
                             }
@@ -192,7 +192,7 @@ class CQAppGrid extends React.Component {
                                         </div>
 
                                         <div className="cq-appgrid__appquizzes">
-                                            {howManyQuizzes(app.meta.quizzes.length)}
+                                            {howManyQuizzes(app.meta.quizzes.length)} by
                                         </div>
 
                                         {author}
