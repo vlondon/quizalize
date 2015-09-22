@@ -114,7 +114,7 @@ var pagesArray: Array<Page> = [
         name: 'publicPage',
         path: '/quiz/marketplace',
         needsLogin: undefined,
-        component: CQPublic,
+        component: CQMarketplace,
         renderer: function(){
             React.render(
                 React.createElement(CQMarketplace, null),
@@ -126,7 +126,7 @@ var pagesArray: Array<Page> = [
         name: 'publicMarketplacePage',
         path: '/quiz/lmarketplace',
         needsLogin: true,
-        component: CQPublic,
+        component: CQMarketplace,
         renderer: function(){
             React.render(
                 React.createElement(CQMarketplace, null),

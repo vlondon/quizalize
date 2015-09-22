@@ -168,7 +168,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        {app.extra.author.name}
+                                        {app.extra.author.name} 
                                     </div>
                                 );
                             }

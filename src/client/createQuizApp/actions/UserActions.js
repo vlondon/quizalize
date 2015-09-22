@@ -230,9 +230,9 @@ var UserActions = {
         });
     },
 
-    getPublicUser: function(userId: string, key: string) : Promise{
+    getPublicUser: function(userId: string) : Promise{
         return new Promise(function(resolve, reject){
-            UserApi.getPublic(userId, key)
+            UserApi.getPublic(userId)
                 .then(function(user){
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_PUBLIC_LOADED,
