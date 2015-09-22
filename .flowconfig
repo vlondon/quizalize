@@ -2,6 +2,7 @@
 .*/node_modules/invalidPackageJson
 .*/node_modules/match-at
 .*/node_modules/node-sass
+.*/node_modules/flux
 
 
 [include]
