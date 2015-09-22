@@ -1,20 +1,20 @@
-
 .cq-app {
 
     $appIcon: 190px;
     $quizIcon: 40px;
 
     text-align: center;
-    max-width: 500px;
+    max-width: 700px;
     margin: auto;
+    margin-top: 40px;
 
-    @at-root #{&}__list {
+    &__list {
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
-    @at-root #{&}__info {
+    &__info {
         color: #FFF;
         h1, h2, h3 {
             font-weight: bold;
@@ -22,25 +22,24 @@
         }
     }
 
-    @at-root #{&}__price {
+    &__price {
         text-transform: uppercase;
         text-size: 21px;
         margin-bottom: 30px;
         color: #FFF;
     }
 
-    @at-root #{&}__description {
+    &__description {
         color: #FFF;
-        text-align: left;
         margin-bottom: 30px;
     }
 
-    @at-root #{&}__quizlist {
+    &__quizlist {
         small { display: none; }
     }
 
 
-    @at-root #{&}__quiz {
+    &__quiz {
         text-align: left;
         border-bottom: 1px solid $brand-color-grey-lighter;
         margin: 5px;
@@ -48,12 +47,12 @@
         @include clearfix();
     }
 
-    @at-root #{&}__quiz-inner {
+    &__quiz-inner {
         text-align: left;
         float: left;
     }
 
-    @at-root #{&}__icon {
+    &__icon {
         width: $appIcon;
         height: $appIcon;
         border-radius: 100%;
@@ -73,28 +72,33 @@
         }
 
     }
-    @at-root #{&}__quizname {
+    &__author {
+        color: #FFF;
+        margin-bottom: 30px;
+        a { color: #FFF; }
+    }
+    &__quizname {
         font-weight: bold;
         display: inline;
         font-size: 18px;
     }
 
-    @at-root #{&}__quizauthor {
+    &__quizauthor {
         display: inline;
     }
 
-    @at-root #{&}__quizdate {
+    &__quizdate {
         font-weight: 100;
         color: $brand-color-grey;
     }
 
-    @at-root #{&}__quizextra {
+    &__quizextra {
         text-align: center;
         margin: 12px 0;
         float: right;
     }
 
-    @at-root #{&}__quizcategory {
+    &__quizcategory {
         display: inline-block;
         font-weight: 100;
         color: $brand-color-grey;
@@ -106,7 +110,7 @@
         margin: 2px;
     }
 
-    @at-root #{&}__sort {
+    &__sort {
         float: left;
         width: 300px;
         min-height: 400px;
@@ -114,19 +118,19 @@
     }
 
 
-    @at-root #{&}__list {
+    &__list {
 
         width: 100%;
     }
 
-    @at-root #{&}__button {
+    &__button {
 
         color: $brand-color-black;
         margin: 0;
         padding: 5px;
         font-weight: bold;
         text-size: 21px;
-        margin-bottom: 30px;
+        margin-bottom: 5px;
         padding: 10px;
         border-radius: 20px;
         border: none;
@@ -145,7 +149,7 @@
         }
     }
 
-    @at-root #{&}__buttonextra {
+    &__buttonextra {
         background: $brand-color-grey-lighter;
         color: $brand-color-grey;
         margin: 5px;

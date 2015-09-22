@@ -1,11 +1,18 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var UserConstants       = require('createQuizApp/constants/UserConstants');
-var UserApi             = require('createQuizApp/actions/api/UserApi');
-var urlParams           = require('createQuizApp/utils/urlParams');
-import AnalyticsActions from 'createQuizApp/actions/AnalyticsActions';
+/* @flow */
+var AppDispatcher       = require('./../dispatcher/CQDispatcher');
+var UserConstants       = require('./../constants/UserConstants');
+var UserApi             = require('./../actions/api/UserApi');
+var urlParams           = require('./../utils/urlParams');
+import AnalyticsActions from './../actions/AnalyticsActions';
+
 import router from './../config/router';
 import cookies from './../utils/cookies';
 import intercom from './../utils/intercom';
+
+type loginObject = {
+    email: string;
+    password: string;
+};
 
 var handleRedirect = function(){
     var params = urlParams();
@@ -40,11 +47,13 @@ var UserActions = {
         });
     },
 
+
     getOwn: function(){
         return UserApi.getOwn();
     },
 
-    update: function(user){
+    update: function(user: Object) : Promise{
+
         return new Promise(function(resolve, reject){
 
             UserApi.post(user)
@@ -63,7 +72,10 @@ var UserActions = {
     },
 
 
-    login: function(data) {
+    login: function(data: loginObject): Promise {
+        console.log('data', data);
+        // data.email = data.email.trim();
+
         return new Promise(function(resolve, reject){
 
             UserApi.login(data)
@@ -93,10 +105,10 @@ var UserActions = {
         });
     },
 
-    loginWithToken: function(data) {
+    loginWithToken: function(token: string): Promise {
         return new Promise(function(resolve, reject){
 
-            UserApi.loginWithToken(data)
+            UserApi.loginWithToken(token)
                 .then(function(user){
                     // AnalyticsActions.triggerPixels();
                     AppDispatcher.dispatch({
@@ -145,14 +157,14 @@ var UserActions = {
 
         if (token !== null) {
             console.log('zzish logout');
-            Zzish.logout(token, logoutEnd);
+            window.Zzish.logout(token, logoutEnd);
         } else {
             logoutEnd();
         }
 
     },
 
-    register: function(data) {
+    register: function(data: Object) : Promise {
 
         return new Promise(function(resolve, reject){
             console.log('registering', data);
@@ -182,7 +194,7 @@ var UserActions = {
         });
     },
 
-    recover: function(email){
+    recover: function(email: string) : Promise {
         return new Promise(function(resolve, reject){
             UserApi.recover(email)
                 .then(resolve)
@@ -190,7 +202,7 @@ var UserActions = {
         });
     },
 
-    reset: function(code, newPassword) {
+    reset: function(code:string, newPassword: string) : Promise {
         return new Promise(function(resolve, reject){
             UserApi.reset(code, newPassword)
                 .then(function(user){
@@ -208,7 +220,7 @@ var UserActions = {
         });
     },
 
-    search: function(attributes) {
+    search: function(attributes : Object) : Promise {
         return new Promise(function(resolve, reject){
             UserApi.search(attributes)
                 .then(function(users){
@@ -218,7 +230,7 @@ var UserActions = {
         });
     },
 
-    getPublicUser: function(userId, key){
+    getPublicUser: function(userId: string, key: string) : Promise{
         return new Promise(function(resolve, reject){
             UserApi.getPublic(userId, key)
                 .then(function(user){
@@ -234,7 +246,7 @@ var UserActions = {
 
     },
 
-    getPublicUserByUrl: function(url){
+    getPublicUserByUrl: function(url: string) : Promise {
         return new Promise(function(resolve, reject){
             UserApi.getPublic(url, 'name')
                 .then(function(user){
@@ -251,7 +263,7 @@ var UserActions = {
 
     },
 
-    setLoginEmail: function(email){
+    setLoginEmail: function(email: string){
         AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_EMAIL_ADDED,
             payload: email

@@ -64,6 +64,9 @@ var CQLoginForm = React.createClass({
         } else {
             newState.isReady = newState.email.length > 0;
         }
+        newState.email = newState.email.trim();
+        newState.password = newState.password.trim();
+
 
         this.setState(newState);
     },

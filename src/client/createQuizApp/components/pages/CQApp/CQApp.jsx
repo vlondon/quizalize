@@ -4,6 +4,8 @@ var router = require('./../../../config/router');
 
 import AppStore from './../../../stores/AppStore';
 import TopicStore from './../../../stores/TopicStore';
+import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
+import CQLink from './../../../components/utils/CQLink';
 var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
 
 import priceFormat from './../../../utils/priceFormat';
@@ -131,6 +133,15 @@ export default class CQApp extends React.Component {
                 onClose={this.handleDetailsClose}
                 quizId={this.state.quizDetails}/>);
         }
+
+        let author;
+        if (this.state.appInfo && this.state.appInfo.extra && this.state.appInfo.extra.author.name){
+            author = (
+                <span>by <CQLink href={`/quiz/user/${this.state.appInfo.extra.author.uuid}`}>{this.state.appInfo.extra.author.name}</CQLink></span>
+            );
+        }
+        console.log('author', author);
+
         var description = this.state.appInfo ? this.state.appInfo.meta.description : '';
 
         if (this.state.appInfo && this.state.appInfo.meta){
@@ -149,9 +160,12 @@ export default class CQApp extends React.Component {
                             <h2>{this.state.appInfo.meta.name}</h2>
 
                             <button className="cq-app__button" onClick={this.handleBuy.bind(this)}>
-                                Get it for {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
+                                Play all in class for {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
                             </button>
 
+                        </div>
+                        <div className="cq-app__author">
+                            {author}
                         </div>
                         <div className="cq-app__description">
                             <p>{description}</p>
@@ -163,10 +177,12 @@ export default class CQApp extends React.Component {
                                 onQuizClick={this.handleDetails}
                                 quizzes={quizzes}
                                 sortBy="category">
-                                <span className='cq-app__buttonextra' onClick={this.handlePreview}>
-                                    Preview
+
+                                <span className='cq-public__button' onClick={this.handlePreview}>
+                                    Play
                                 </span>
-                                <span></span>
+
+                                <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
                             </CQViewQuizList>
                         </div>
                     </div>
@@ -177,3 +193,6 @@ export default class CQApp extends React.Component {
         }
     }
 }
+CQApp.propTypes = {
+    appId: React.PropTypes.string
+};

@@ -178,7 +178,7 @@ app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 ///// QUIZ OF THE DAY PAGES ////
 
 app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
-app.get('/packages', quiz.packages);
+//app.get('/packages', quiz.packages);
 app.get('/faq', quiz.faq);
 app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);
