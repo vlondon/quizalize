@@ -310,7 +310,7 @@ export default class CQEdit extends React.Component {
         });
     }
 
-    handlePrePublish(callback) {
+    handlePrePublish(callback: Function) {
         QuizActions.newQuiz(this.state.quiz).then( ()=> {
             callback();
         });

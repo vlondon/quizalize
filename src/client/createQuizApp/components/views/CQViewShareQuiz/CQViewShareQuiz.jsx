@@ -19,20 +19,22 @@ class CQViewShareQuiz extends React.Component {
         this.handleInput = this.handleInput.bind(this);
         this.handleEmailInput = this.handleEmailInput.bind(this);
         this.sendShare = this.sendShare.bind(this);
-        QuizActions.loadQuiz(props.quizId).then( (quiz) => {
-            this.setState({
-                quiz
-            });
-            if (quiz.payload.questions.length === 0) {
-                swal({
-                    title: "Error",
-                    text: "You need at least one question in order to be able to share this quiz",
-                    confirmButtonText: 'Edit quiz',
-                },function() {
-                    router.setRoute(`/quiz/create/${quiz.uuid}`);
+        if (props.quizId) {
+            QuizActions.loadQuiz(props.quizId).then( (quiz) => {
+                this.setState({
+                    quiz
                 });
-            }
-        });
+                if (quiz.payload.questions.length === 0) {
+                    swal({
+                        title: "Error",
+                        text: "You need at least one question in order to be able to share this quiz",
+                        confirmButtonText: 'Edit quiz',
+                    },function() {
+                        router.setRoute(`/quiz/create/${quiz.uuid}`);
+                    });
+                }
+            });            
+        }
     }
 
     handleInput(ev : Object){
