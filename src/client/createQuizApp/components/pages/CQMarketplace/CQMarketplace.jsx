@@ -15,6 +15,7 @@ import CQPublicNoResults from './CQPublicNoResults';
 import urlParams from './../../../utils/urlParams';
 
 import TransactionActions from './../../../actions/TransactionActions';
+import UserActions from './../../../actions/UserActions';
 
 import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';
@@ -40,6 +41,12 @@ export default class CQPublic extends React.Component {
 
     constructor(props : Object) {
         super(props);
+        var p = urlParams();
+        if (p.token) {
+            UserActions.loginWithToken(p.token);
+        }
+        //
+
         var quizzes = QuizStore.getPublicQuizzes() || [];
         this.state = {
             quizzes,

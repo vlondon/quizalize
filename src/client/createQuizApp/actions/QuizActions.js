@@ -233,6 +233,10 @@ var QuizActions = {
             // we filter questions with no content
             if (quiz.payload.questions){
                 quiz.payload.questions = quiz.payload.questions.filter( q => q.question.length > 0 && q.answer.length > 0);
+                quiz.payload.questions.forEach(function(q) {
+                    q.question = q.question.trim();
+                    q.answer = q.question.trim();                    
+                });
             }
 
             quiz = createNewTopicsForQuiz(quiz);

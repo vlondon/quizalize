@@ -78,15 +78,15 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                     //getLeaderBoard(self.currentQuiz);
                 }
                 console.log('self.currentQuiz, ', self.currentQuiz);
+                if (self.catId !== 'private'){
+                    QuizData.startCurrentQuiz();
+                }
             }
         }
     });
 
     self.start = function(){
         var url = "/quiz/" + self.catId + '/' + self.id + "/" + QuizData.selectQuestionType(0) + "/0";
-        if (self.catId !== 'private'){
-            QuizData.startCurrentQuiz();
-        }
         $location.path(url);
     };
 
@@ -121,5 +121,4 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
             });
         });
     };
-
 });

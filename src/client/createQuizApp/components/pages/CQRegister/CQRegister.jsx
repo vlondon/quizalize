@@ -40,8 +40,10 @@ var CQRegister = React.createClass({
 
             })
             .catch((error) => {
-                if (error === 'Duplicate Email address'){
-                    swal('Register Error', 'This email has already been used.');
+                if (error === 409){
+                    swal('Already registered', 'This email has already been used.');
+                } else if (error === 412){
+                    swal('Already registered with Zzish', 'It looks like you already used this email when registering with Zzish. You can login with those details by clicking on the button below');
                 } else {
                     swal('Register Error', 'Something went wrong, please try again later.');
                 }
