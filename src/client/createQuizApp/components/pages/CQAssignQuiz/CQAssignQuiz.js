@@ -60,7 +60,7 @@ class CQAssignQuiz extends React.Component {
 }
 
 CQAssignQuiz.propTypes = {
-    marketplaceQuizId: React.PropTypes.stirng
+    marketplaceQuizId: React.PropTypes.string
 };
 
 export default CQAssignQuiz;

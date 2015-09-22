@@ -19,8 +19,21 @@ class CQViewShareQuiz extends React.Component {
         this.handleInput = this.handleInput.bind(this);
         this.handleEmailInput = this.handleEmailInput.bind(this);
         this.sendShare = this.sendShare.bind(this);
+        QuizActions.loadQuiz(props.quizId).then( (quiz) => {
+            this.setState({
+                quiz
+            });
+            if (quiz.payload.questions.length === 0) {
+                swal({
+                    title: "Error",
+                    text: "You need at least one question in order to be able to share this quiz",
+                    confirmButtonText: 'Edit quiz',
+                },function() {
+                    router.setRoute(`/quiz/create/${quiz.uuid}`);
+                });
+            }
+        });
     }
-
 
     handleInput(ev : Object){
         var emailList = ev.target.value;
@@ -34,7 +47,7 @@ class CQViewShareQuiz extends React.Component {
 
     sendShare(){
         console.log('about to send', this.state.emailList);
-        QuizActions.shareQuiz(this.props.quiz, this.props.quiz.meta.name, this.state.emailList)
+        QuizActions.shareQuiz(this.state.quiz, this.state.quiz.meta.name, this.state.emailList)
             .then(()=> {
                 swal({
                     title: 'Quiz shared!',
@@ -73,7 +86,7 @@ class CQViewShareQuiz extends React.Component {
     }
 }
 CQViewShareQuiz.propTypes = {
-    quiz: React.PropTypes.obj
+    quizId: React.PropTypes.string
 };
 
 export default CQViewShareQuiz;

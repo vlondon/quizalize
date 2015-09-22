@@ -73,7 +73,12 @@ exports.sendActualEmail = function(from, toArray, subject, html, text) {
 function parseData(input, params) {
 	for (var i in params) {
 		var patt = new RegExp("%" + i + "%", "g" );
-		input = input.replace(patt, params[i]);
+		if (input === undefined) {
+			console.log("BAD INPUT", input);
+		}
+		else {
+			input = input.replace(patt, params[i]);
+		}		
 	}
 	return input;
 }

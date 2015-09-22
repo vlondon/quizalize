@@ -66,7 +66,7 @@ export default class CQEdit extends React.Component {
         this.handleTopic = this.handleTopic.bind(this);
         this.handleName = this.handleName.bind(this);
         this.handleIcon = this.handleIcon.bind(this);
-
+        this.handlePrePublish = this.handlePrePublish.bind(this);
     }
 
     getQuiz() : QuizComplete {
@@ -310,6 +310,12 @@ export default class CQEdit extends React.Component {
         });
     }
 
+    handlePrePublish(callback) {
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            callback();
+        });
+    }
+
     render() {
 
         if (this.state.quiz){
@@ -385,7 +391,7 @@ export default class CQEdit extends React.Component {
                     <div className="cq-edit__footer">
                         <div className="cq-edit__footer-inner cq-quizzes">
 
-                            <CQPublishQuiz quiz={this.state.quiz} className="cq-quizzes__button--publish"/>
+                            <CQPublishQuiz quiz={this.state.quiz} prePublished={this.handlePrePublish} className="cq-quizzes__button--publish"/>
 
                             <button className="cq-quizzes__button--share"
                                 onClick={this.handleShare}>

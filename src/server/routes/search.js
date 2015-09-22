@@ -93,13 +93,9 @@ exports.getQuizzes = function(req, res){
                 performQuery(mongoQuery2, QUIZ_CONTENT_TYPE, function(err,result2) {
                     if (err === null) {
                         result2.forEach(function(quiz) {
-                            console.log("Result", result.length);
-                            console.log("Result", result2.length);
                             var filtered = result.filter(function(rresult) {
-                                console.log("Checking", rresult.uuid, quiz.uuid);
                                 return rresult.uuid == quiz.uuid;
                             });
-                            console.log("filtered", filtered.length);
                             if (filtered.length == 0) {
                                 result.push(quiz);
                             }
