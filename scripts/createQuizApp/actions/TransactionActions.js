@@ -113,6 +113,7 @@ var TransactionActions = {
     buyQuiz: function(quiz : Quiz, free? : number) {
         var price = 0;
         var priceTag = "free";
+        quiz.meta.price = quiz.meta.price || 0;
         if ((quiz.meta.price && quiz.meta.price !== 0) && !free) {
             price = quiz.meta.price;
             priceTag = priceFormat(quiz.meta.price, '$', 'us');
