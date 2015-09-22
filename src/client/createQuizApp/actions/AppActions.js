@@ -5,7 +5,6 @@ var uuid                = require('node-uuid');
 
 var router              = require('./../config/router');
 var debounce            = require('./../utils/debounce');
-var searching = false;
 
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var AppApi              = require('./../actions/api/AppApi');
@@ -13,9 +12,11 @@ var QuizApi             = require('./../actions/api/QuizApi');
 var AppConstants        = require('./../constants/AppConstants');
 var UserApi             = require('./../actions/api/UserApi');
 
+let searching = false;
+
 var AppActions = {
 
-    isSearching: function() {
+    isSearching: function() : boolean{
         return searching;
     },
 
@@ -111,7 +112,7 @@ var AppActions = {
             actionType: AppConstants.APP_SEARCH_LOADED,
             payload: []
         });
-        
+
         QuizApi.searchQuizzes(searchString, categoryId, profileId)
             .then(function(quizzes){
 
