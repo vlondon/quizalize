@@ -280,8 +280,8 @@ var UserApi = {
                 .send(data)
                 .end(function(error, res){
                     console.log('res', res);
-                    if (res.status === 409) {
-                        reject(res.text);
+                    if (res.status === 409 || res.status === 412) {
+                        reject(res.status);
                     } else if (error){
                         reject(error);
                     } else {

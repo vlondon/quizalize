@@ -25,8 +25,13 @@ var CQLogin = React.createClass({
     handleLogin: function(data:Object){
 
         UserActions.login(data)
-            .catch(function(){
-                swal('Login Error', 'Invalid Details during login');
+            .catch(function(err){
+                if (err == "Error: Failed Dependency") {
+                    swal('Zzish Login Error', 'It looks like you might be using your Zzish details to log into Quizalize. Click below to use Zzish instead');
+                }
+                else {
+                    swal('Login Error', 'Invalid Details during login');
+                }
             });
     },
 
