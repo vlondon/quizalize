@@ -47,7 +47,7 @@ var UserActions = {
     },
 
 
-    getOwn: function(){
+    getOwn: function() : Promise {
         return new Promise((resolve, reject)=>{
 
             UserApi.getOwn().then( user => {
@@ -57,7 +57,7 @@ var UserActions = {
                 });
                 resolve(user);
             }).catch(reject);
-        })
+        });
     },
 
     update: function(user: Object) : Promise{
