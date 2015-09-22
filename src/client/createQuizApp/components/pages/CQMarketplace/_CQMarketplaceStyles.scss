@@ -239,7 +239,7 @@
 
     &__button {
         @include button($brand-color-blue);
-        // background: $brand-color-grey-light;
+        background: #FFF;
         // color: $brand-color-grey-dark;
         margin: 5px;
         padding: 5px;

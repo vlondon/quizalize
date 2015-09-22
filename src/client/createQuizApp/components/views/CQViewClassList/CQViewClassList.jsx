@@ -36,7 +36,15 @@ var CQViewClassList = React.createClass({
         var groupsContent = GroupStore.getGroupsContent();
         var quizId = this.props.quizId;
         QuizActions.loadQuiz(quizId).then( (quiz) => {
-            if (!quiz.meta.name || quiz.meta.name.length === 0) {
+            if (quiz.payload.questions.length === 0) {
+                swal({
+                    title: "Error",
+                    text: "You need at least one question in order to be able to play this quiz"
+                },function() {
+                    router.setRoute(`/quiz/create/${quiz.uuid}`);
+                });
+            }
+            else if (!quiz.meta.name || quiz.meta.name.length === 0) {
                 swal(
                     {   title: "Please specify a quiz name",
                         text: "Your students will be able to identify it easier",
@@ -163,7 +171,7 @@ var CQViewClassList = React.createClass({
 
     render: function() {
         var newTitle = "Create a new class";
-        var existingClasses = (() => {            
+        var existingClasses = (() => {
             if (this._showGroupsList().length > 0) {
                 newTitle = "...or create a new class";
                 return (<div>

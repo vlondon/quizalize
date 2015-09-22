@@ -66,7 +66,7 @@ export default class CQEdit extends React.Component {
         this.handleTopic = this.handleTopic.bind(this);
         this.handleName = this.handleName.bind(this);
         this.handleIcon = this.handleIcon.bind(this);
-
+        this.handlePrePublish = this.handlePrePublish.bind(this);
     }
 
     getQuiz() : QuizComplete {
@@ -247,7 +247,22 @@ export default class CQEdit extends React.Component {
             });
         }
         else{
-            swal("Whoops!", "Please enter at least a question and an answer before saving the quiz");
+            if (this.state.questionIndex === (quiz.payload.questions.length - 1) && (quiz.payload.questions[questionIndex].question.length === 0 &&
+            quiz.payload.questions[questionIndex].answer.length === 0) ) {
+                //delete the last question
+                if (quiz.payload.questions !== undefined) {
+                    quiz.payload.questions.splice(questionIndex,1);
+                }
+                this.setState({quiz}, () => {
+                    QuizActions.newQuiz(quiz).then(()=>{
+                        swal("Quiz Saved!", "Your quiz has been saved!");
+                        router.setRoute(`/quiz/create/${this.state.quiz.uuid}`);
+                    });
+                });
+            }
+            else {
+                swal("Whoops!", "Please enter at least a question and an answer before saving the quiz");
+            }
         }
     }
 
@@ -292,6 +307,12 @@ export default class CQEdit extends React.Component {
         quiz.meta.imageUrl = iconUrl;
         this.setState({quiz}, ()=>{
             this.save();
+        });
+    }
+
+    handlePrePublish(callback: Function) {
+        QuizActions.newQuiz(this.state.quiz).then( ()=> {
+            callback();
         });
     }
 
@@ -370,7 +391,7 @@ export default class CQEdit extends React.Component {
                     <div className="cq-edit__footer">
                         <div className="cq-edit__footer-inner cq-quizzes">
 
-                            <CQPublishQuiz quiz={this.state.quiz} className="cq-quizzes__button--publish"/>
+                            <CQPublishQuiz quiz={this.state.quiz} prePublished={this.handlePrePublish} className="cq-quizzes__button--publish"/>
 
                             <button className="cq-quizzes__button--share"
                                 onClick={this.handleShare}>

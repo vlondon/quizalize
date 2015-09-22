@@ -25,6 +25,7 @@ class CQQuestionList extends React.Component {
 
         this.setSaveMode = this.setSaveMode.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleNewQuestion = this.handleNewQuestion.bind(this);
         this.handleQuestion = this.handleQuestion.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -33,7 +34,7 @@ class CQQuestionList extends React.Component {
         this.props.setSaveMode(canBeSaved);
     }
 
-    handleSave(){
+    handleNewQuestion(){
         var {quiz} = this.props;
         // we filter questions with no content
         if (quiz.payload.questions){
@@ -47,9 +48,28 @@ class CQQuestionList extends React.Component {
                 this.props.handleSave();
             }
             else {
+                router.setRoute(`/quiz/create/${quiz.uuid}/${index}`);
+            }
+        }
+    }
+
+    handleSave(){
+        var {quiz} = this.props;
+        // we filter questions with no content
+        if (quiz.payload.questions){
+            var index = -1;
+            quiz.payload.questions.forEach(function(q, i) {
+                if (q.question.length === 0 || q.answer.length === 0) {
+                    index = i;
+                }
+            });
+            if (index === -1 || index === quiz.payload.questions.length - 1) {
+                this.props.handleSave();
+            }
+            else {
                 swal({
                     title: 'Whoops',
-                    text: "Please enter at least a question and an answer before adding a new question",
+                    text: "Please enter at least a question and an answer before adding a new question 2222",
                     type: 'info',
                     confirmButtonText: 'OK',
                     showCancelButton: false
@@ -148,13 +168,15 @@ class CQQuestionList extends React.Component {
                             <span className="label label-warning">A</span>&nbsp;
                             {answerText(item)}
                         </div>
-                        <div className="col-sm-2 icons-se">
-                            <button type='button' className="btn btn-info btn-xs">
-                                <span className="glyphicon glyphicon-pencil"></span>
-                            </button>
-                            <button type='button' className="btn btn-danger btn-xs" onClick={this.handleRemove.bind(this, item)}>
-                                <span className="glyphicon glyphicon-remove"></span>
-                            </button>
+                        <div className="col-sm-2">
+                            <div className="icons-se">
+                                <button type='button' className="btn btn-info btn-xs">
+                                    <span className="glyphicon glyphicon-pencil"></span>
+                                </button>
+                                <button type='button' className="btn btn-danger btn-xs" onClick={this.handleRemove.bind(this, item)}>
+                                    <span className="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </div>
                         </div>
                         <div className="clearfix"></div>
                         {editor}
@@ -174,7 +196,7 @@ class CQQuestionList extends React.Component {
 
                     <button type='button'
                         className="btn btn-default cq-questionlist__button"
-                        onClick={this.handleSave}>
+                        onClick={this.handleNewQuestion}>
                         <span className="glyphicon glyphicon-plus"></span> Add a new question
                     </button>
 

@@ -32,7 +32,15 @@ class CQQuizzesProfile extends React.Component {
     handlePreview(){
         var quiz = this.props.quiz;
         sessionStorage.setItem('mode', 'teacher');
-        window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
+        QuizActions.loadQuiz(quiz.uuid).then( (quiz) => {
+            if (quiz.payload.questions.length > 0 && quiz.payload.questions[0].question.length > 0 && quiz.payload.questions[0].answer.length > 0) {
+                window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
+            }
+            else {
+                swal('Whoops', 'You need to have at least one question in order to play this quiz');
+            }
+        });
+
     }
 
     handleAssign(){

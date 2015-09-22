@@ -64,6 +64,11 @@ var CQViewQuizDetails = React.createClass({
         }
     },
 
+    handlePreview: function(quiz : Quiz){
+        sessionStorage.setItem('mode', 'preview');
+        window.open(`/app#/play/public/${quiz.uuid}`);
+    },
+
     handleBuy: function(){
         if (this.state.quiz) {
             if (!UserStore.isLoggedIn()){
@@ -90,10 +95,10 @@ var CQViewQuizDetails = React.createClass({
         var tagLine = () => {
             // this.state.quiz.meta.price = 3;
             if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
-                return (<span>{priceFormat(this.state.quiz.meta.price, '$', 'us')} - Buy Now!</span>);
+                return (<span>Play in class for {priceFormat(this.state.quiz.meta.price, '$', 'us')}</span>);
             }
             else {
-                return (<span>Use it - it's free!</span>);
+                return (<span>Play in class</span>);
             }
         };
 
@@ -114,6 +119,10 @@ var CQViewQuizDetails = React.createClass({
                             {this.state.quiz.payload.questions.length} questions.
                         </i>
                         </p>
+
+                        <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, this.state.quiz)}>
+                            Play
+                        </button>
 
                         <button className="cq-quizdetails__button" onClick={this.handleBuy}>
                             {tagLine()}

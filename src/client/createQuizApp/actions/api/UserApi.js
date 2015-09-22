@@ -63,7 +63,7 @@ var UserApi = {
             var token = localStorage.getItem('token');
 
             if (!uuid && !token){
-                reject();
+                reject('Invalid UUID or token');
             // } else if (uuid && token) {
             //     localStorage.clean();
             //     reject();
@@ -71,14 +71,14 @@ var UserApi = {
                 request.get(`/user/${uuid}`)
                     .end(function(error, res){
                         if (error) {
-                            reject();
+                            reject('User not found');
                         } else {
                             resolve(res.body);
                         }
 
                     });
             } else if (token){
-                this.getZzishUser(token).then(resolve).catch(reject);
+                this.getZzishUser(token).then(resolve).catch(()=>{ reject('Invalid Zzish user'); });
             }
 
         });
@@ -139,7 +139,7 @@ var UserApi = {
                 .send(query)
                 .end(function(error, res){
                     if (error) {
-                        reject();
+                        reject('GraphQL: User not loaded');
                     // } else if (res.body) {
                         // reject();
                     } else {
@@ -157,7 +157,7 @@ var UserApi = {
         return new Promise((resolve, reject) => {
 
             if (!userId){
-                reject();
+                reject('UserId Not defined');
 
             } else {
                 request.post(`/graphql/`)
@@ -274,8 +274,8 @@ var UserApi = {
                 .send(data)
                 .end(function(error, res){
                     console.log('res', res);
-                    if (res.status === 409) {
-                        reject(res.text);
+                    if (res.status === 409 || res.status === 412) {
+                        reject(res.status);
                     } else if (error){
                         reject(error);
                     } else {

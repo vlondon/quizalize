@@ -40,7 +40,15 @@ html(ng-app='createQuizApp')
         link(href='/cquiz/css/animate.css', rel='stylesheet')
         link(href='/cquiz/css/style.css', rel='stylesheet')
         link(href='/cquiz/color/default.css', rel='stylesheet')
+        
         script(src='/js/home.js')
+            
+        if (devServer=='true')
+            script(src="http://localhost:7071/webpack-dev-server.js")
+        else
+            link(href='/js/home.css', rel='stylesheet')
+
+
         block header
 body
     include ./home/menu.jade

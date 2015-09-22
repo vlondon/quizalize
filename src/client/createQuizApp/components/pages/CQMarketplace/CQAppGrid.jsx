@@ -3,6 +3,7 @@ import React from 'react';
 import router from './../../../config/router';
 
 import AppStore from './../../../stores/AppStore';
+import AppActions from './../../../actions/AppActions';
 import type {AppType} from './../../../stores/AppStore';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
 import CQSpinner from './../../../components/utils/CQSpinner';
@@ -125,9 +126,10 @@ class CQAppGrid extends React.Component {
     render() : any  {
 
         var emptyState = this.state.apps && this.state.apps.length === 0;
-        var loading = AppStore.getAppsLoaded() === false;
+        var loading1 = AppStore.getAppsLoaded() === false;
+        var loading2 = AppActions.isSearching();
 
-        if (loading){
+        if (loading1 || loading2){
             return (
                 <ul className={`cq-appgrid empty ${this.props.className}`}>
                     <CQSpinner/>
@@ -166,7 +168,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        <CQLinkToUser uuid={app.extra.author.uuid} slug={app.extra.author.profileUrl}>by {app.extra.author.name}</CQLinkToUser>
+                                        {app.extra.author.name} 
                                     </div>
                                 );
                             }
@@ -180,7 +182,7 @@ class CQAppGrid extends React.Component {
                                         </div>
 
                                         <div className="cq-appgrid__appquizzes">
-                                            {howManyQuizzes(app.meta.quizzes.length)}
+                                            {howManyQuizzes(app.meta.quizzes.length)} by
                                         </div>
 
                                         {author}

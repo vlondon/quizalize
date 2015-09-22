@@ -1,7 +1,7 @@
 var React = require('react');
-var router = require('createQuizApp/config/router');
+import {Link} from 'react-router';
 
-var commandPressed = false;
+// var commandPressed = false;
 /* window.addEventListener("keydown", function(ev){
     console.log("event", ev.keyCode);
 }); */
@@ -41,54 +41,55 @@ var CQLink = React.createClass({
         };
     },
 
-    componentDidMount: function() {
-        // window.addEventListener("keydown", onKeyDown);
-        // window.addEventListener("keyup", onKeyUp);
-
-    },
-
-    componentWillUnmount: function() {
-        // window.removeEventListener("keydown", onKeyDown);
-        // window.removeEventListener("keyup", onKeyUp);
-
-    },
-
-    handleKeyDown: function(ev){
-        console.log('ev', ev.keyCode);
-    },
-
-    handleKeyUp: function(ev){
-        console.log('ev', ev.keyCode);
-    },
+    // componentDidMount: function() {
+    //     // window.addEventListener("keydown", onKeyDown);
+    //     // window.addEventListener("keyup", onKeyUp);
+    //
+    // },
+    //
+    // componentWillUnmount: function() {
+    //     // window.removeEventListener("keydown", onKeyDown);
+    //     // window.removeEventListener("keyup", onKeyUp);
+    //
+    // },
+    //
+    // handleKeyDown: function(ev){
+    //     console.log('ev', ev.keyCode);
+    // },
+    //
+    // handleKeyUp: function(ev){
+    //     console.log('ev', ev.keyCode);
+    // },
 
     handleClick: function(ev){
-        ev.preventDefault();
-
+    //     ev.preventDefault();
+    //
         if (this.props.stopPropagation){
             ev.stopPropagation();
         }
-        if (this.props.onClick){
-            this.props.onClick(ev);
-        }
-        if (this.props.href !== '#'){
-            if (commandPressed === true){
-                window.open(this.props.href);
-            }
-            else {
-                router.setRoute(this.props.href);
-            }
-        }
-
+    //     if (this.props.onClick){
+    //         this.props.onClick(ev);
+    //     }
+    //     if (this.props.href !== '#'){
+    //         if (commandPressed === true){
+    //             window.open(this.props.href);
+    //         }
+    //         else {
+    //             router.setRoute(this.props.href);
+    //         }
+    //     }
+    //
     },
 
 
     render: function(){
         return (
-            <a onClick={this.handleClick}
-                href={this.props.href}
-                className={this.props.className}>
+            <Link
+                to={this.props.href}
+                className={this.props.className}
+            >
                 {this.props.children}
-            </a>
+            </Link>
         );
     }
 });

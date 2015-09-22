@@ -19,19 +19,29 @@
         margin: 0 3px;
     }
 
-    &__author {
-        font-size: 12px;
-    }
-
     &.cq-appgrid__n5 {
         min-height: 330px;
     }
     &__app {
         display: inline-block;
-        vertical-align: bottom;
-        width: $appIcon + 30px;
-        height: $appIcon + 100px;
-        margin: 10px;
+        vertical-align: top;
+        width: $appIcon + 40px;
+        min-height: $appIcon + 100px;
+        margin: 0;
+        padding: 10px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: box-shadow 100ms linear;
+        transition-property: box-shadow, border, background;
+        border-radius: 10px;
+
+
+        &:hover {
+            border: 2px solid $brand-color-orange;
+            box-shadow: 2px 2px 5px $brand-color-grey-lighter;
+            background: rgba($brand-color-orange, .2);
+            // background: $brand-color-grey-lighter;
+        }
     }
 
     &__appicon {
@@ -40,7 +50,6 @@
         width: $appIcon;
         height: $appIcon;
         margin: auto;
-        margin-bottom: 10px;
         background-size: cover;
         background-position: center center;
         img {
@@ -61,8 +70,9 @@
         text-align: center;
     }
 
-    &__appquizzes {
-        color: $brand-color-red-light;
+    &__appquizzes,
+    &__author {
+        font-size: 12px;
     }
 
     &__appprice {
