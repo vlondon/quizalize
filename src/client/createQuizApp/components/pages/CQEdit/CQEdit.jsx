@@ -123,8 +123,8 @@ export default class CQEdit extends React.Component {
         if (quiz){
             quiz.payload.questions = quiz.payload.questions || [];
 
-            if (props.questionIndex) {
-                questionIndex = parseInt(props.questionIndex, 10);
+            if (props.routeParams.questionIndex) {
+                questionIndex = parseInt(props.routeParams.questionIndex, 10);
             }
 
             if (quiz.payload.questions.length === 0){
