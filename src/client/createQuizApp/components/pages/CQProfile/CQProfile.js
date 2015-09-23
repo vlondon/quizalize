@@ -5,7 +5,7 @@ import CQProfileView from './CQProfileView';
 import UserStore from './../../../stores/UserStore';
 
 type Props = {
-    profileId: string;
+    routeParams: { profileId: string; }
 }
 type State = {
     profile: Object;
@@ -43,7 +43,7 @@ class CQProfile extends React.Component {
 
     getState (props: ?Props) : State {
         props = props || this.props;
-        var profileId = props.profileId;
+        var profileId = props.routeParams.profileId;
         var profile = UserStore.getPublicUser(profileId);
         var apps = profile ? profile.apps : [];
         var quizzes = profile ? profile.quizzes : [];

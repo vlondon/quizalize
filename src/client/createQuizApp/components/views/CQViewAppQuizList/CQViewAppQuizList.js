@@ -99,10 +99,11 @@ class CQViewAppQuizList extends React.Component {
                             quizzes = app.meta.quizzes;
                         }
                         if (app.uuid !== 'own'){
-                            quizIcon = <CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>
+                            quizIcon = (<CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>);
                             if (this.props.own !== true){
 
                                 var buyAppLabel = app.meta.price && app.meta.price > 0 ? `Get all ${app.meta.quizzes.length} quizzes for ${priceFormat(app.meta.price, '$', 'us')} ` : 'Save app to your profile';
+
                                 var getSave = function(){
                                     var appPrice = app.meta.price;
                                     var quizPrice = 0;
@@ -111,13 +112,15 @@ class CQViewAppQuizList extends React.Component {
                                     });
                                     quizPrice = quizPrice / 100;
                                     var appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
-
-                                    return (<span style={{padding: 5}}>
-                                        Save  <b>{appQuizDifference}%</b> when buying the app
-                                    </span>
-                                    );
-                                }
-                                getSave();
+                                    if (quizPrice !== NaN && quizPrice > 0){
+                                        return (
+                                            <span style={{padding: 5}}>
+                                                Save  <b>{appQuizDifference}%</b> when buying the app
+                                            </span>
+                                        );
+                                    }
+                                };
+                                
                                 buyApp = (
                                     <span>
                                         <button className="appquizlist__app__button">
