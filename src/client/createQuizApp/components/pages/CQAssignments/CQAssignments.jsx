@@ -91,7 +91,7 @@ var CQAssignments = React.createClass({
                     <i className="fa fa-users"/> Your Classes
                     {editClass}
                 </h2>
-                <p>Here are the quizzes which you have set to your classes</p>
+                <p>Here are your classes. You can click on "View Info" to see the strenghts and weaknesses for that quiz.</p>
 
                     {this.state.groups.map(classN => {
                         classN.fulllink = classN.link+"one";
