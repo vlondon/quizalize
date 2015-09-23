@@ -97,7 +97,7 @@ export default class CQApp extends React.Component {
     handleBuy (){
         if (this.state.appInfo){
             var app = this.state.appInfo;
-            if (!UserStore.isLoggedIn()){
+            if (!MeStore.isLoggedIn()){
                 swal({
                     title: 'You need to be logged in',
                     text: `In order to buy this item you need to log into Quizalize`,

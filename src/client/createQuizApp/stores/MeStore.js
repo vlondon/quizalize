@@ -70,6 +70,10 @@ class Me extends Store {
         return (state.uuid !== '-1') ? true : false;
     }
 
+    getUuid(){
+        return this.state.uuid !== '-1' ? this.state.uuid : undefined;
+    }
+
 
 
     toJSON(){

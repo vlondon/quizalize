@@ -190,7 +190,7 @@ export default class CQPublic extends React.Component {
             appGrid = quizList = undefined;
 
         }
-        var header = UserStore.isLoggedIn() ? <CQPublicHeader/> : <CQPublicHeader/>;
+        var header = MeStore.isLoggedIn() ? <CQPublicHeader/> : <CQPublicHeader/>;
 
         return (
 

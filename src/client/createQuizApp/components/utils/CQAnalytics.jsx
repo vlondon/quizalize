@@ -21,8 +21,8 @@ var CQAnalytics = React.createClass({
         AnalyticsStore.addChangeListener(this.onChange);
         MeStore.addChangeListener(this.onChange);
         // var currentUser = UserStore.getUser();
-        // console.log('UserStore.isLoggedIn()', UserStore.isLoggedIn());
-        // if (UserStore.isLoggedIn()){
+        // console.log('MeStore.isLoggedIn()', MeStore.isLoggedIn());
+        // if (MeStore.isLoggedIn()){
         //     window.intercomSettings = {
         //         name: (currentUser.name || currentUser.email),
         //         email: (currentUser.email),
@@ -47,7 +47,7 @@ var CQAnalytics = React.createClass({
 
     onChange: function(){
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
-        // if (UserStore.isLoggedIn()){
+        // if (MeStore.isLoggedIn()){
         //     var currentUser = UserStore.getUser();
         //     window.intercomSettings = {
         //         name: (currentUser.name || currentUser.email),

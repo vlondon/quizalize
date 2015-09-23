@@ -38,7 +38,7 @@ export default class CQViewQuizPrice extends React.Component {
         if (owned){
             router.setRoute(`/quiz/published/${this.props.quiz.uuid}/assign`);
         } else {
-            if (!UserStore.isLoggedIn()) {
+            if (!MeStore.isLoggedIn()) {
                 swal({
                     title: 'You need to have an account to use this quiz in a class',
                     text: `It takes seconds to create an account`,

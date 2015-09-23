@@ -71,7 +71,7 @@ var CQViewQuizDetails = React.createClass({
 
     handleBuy: function(){
         if (this.state.quiz) {
-            if (!UserStore.isLoggedIn()){
+            if (!MeStore.isLoggedIn()){
                 swal({
                     title: 'You need to be logged in',
                     text: `In order to buy this item you need to log into Quizalize`,
