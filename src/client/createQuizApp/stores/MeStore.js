@@ -1,6 +1,6 @@
 /* @flow */
 import Store from './Store';
-import Immutable, {Record} from 'immutable';
+import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import UserConstants from './../constants/UserConstants';
 import type {UserType} from './../../../types/UserType';

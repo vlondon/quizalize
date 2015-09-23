@@ -59,7 +59,7 @@ class Application {
     meta: AppMeta;
     payload: AppPayload;
 
-    constructor(appInfo?: AppComplete){
+    constructor(appInfo: ?AppComplete){
         var user:Object = UserStore.getUser();
         var profileId = user.uuid || undefined;
         var emptyApp = {
@@ -124,7 +124,7 @@ class AppStore extends Store {
         // return fixAppTypes(app);
     }
 
-    getNewApp(appInfo): AppComplete {
+    getNewApp(appInfo: ?AppComplete): AppComplete {
         return new Application(appInfo);
     }
 

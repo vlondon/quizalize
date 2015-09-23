@@ -72,6 +72,7 @@ export default class CQEdit extends React.Component {
     getQuiz() : QuizComplete {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.quizId;
         var quiz = QuizStore.getQuiz(quizId);
+        console.info('quiz quiz quiz', quiz);
         return quiz;
     }
 
