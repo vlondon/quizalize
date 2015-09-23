@@ -98,6 +98,11 @@
 
     }
 
+    &__button--preview,
+    &__button--share,
+    &__button--edit,
+    &__button--publish,
+    &__button--review,
     &__button--assign {
         @include button($brand-color-blue);
         //background: rgba($brand-color-blue, .8);
@@ -110,10 +115,5 @@
 
     }
 
-    &__button--preview { @extend %button-blue; }
-    &__button--share { @extend %button-blue; }
-    &__button--edit { @extend %button-blue; }
-    &__button--publish { @extend %button-blue; }
-    &__button--review { @extend %button-blue; }
 
 }

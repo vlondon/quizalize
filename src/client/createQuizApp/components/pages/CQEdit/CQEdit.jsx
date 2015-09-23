@@ -12,7 +12,7 @@ import CQEditIcon from './CQEditIcon';
 import QuizStore from './../../../stores/QuizStore';
 import type {QuizComplete, Question} from './../../../stores/QuizStore';
 import QuizActions from './../../../actions/QuizActions';
-var CQPublishQuiz   = require(`./../../../components/utils/CQPublishQuiz`);
+import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
 
 import TopicStore from './../../../stores/TopicStore';
 import UserApi from './../../../actions/api/UserApi';
@@ -20,7 +20,7 @@ import UserApi from './../../../actions/api/UserApi';
 import urlParams from './../../../utils/urlParams';
 
 type Props = {
-    quizId: ?string;
+    routeParams: Object;
     questionIndex: ?string;
 };
 
@@ -70,7 +70,7 @@ export default class CQEdit extends React.Component {
     }
 
     getQuiz() : QuizComplete {
-        var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.quizId;
+        var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.routeParams.quizId;
         var quiz = QuizStore.getQuiz(quizId);
         console.info('quiz quiz quiz', quiz);
         return quiz;
@@ -318,7 +318,7 @@ export default class CQEdit extends React.Component {
     }
 
     render() {
-
+        console.log('we have quiZ!!!');
         if (this.state.quiz){
 
             var placeholderForName = 'e.g. Enter a quiz name';
@@ -428,5 +428,5 @@ export default class CQEdit extends React.Component {
     }
 }
 CQEdit.propTypes = {
-    quizId: React.PropTypes.string
+    routeParams: React.PropTypes.object
 };
