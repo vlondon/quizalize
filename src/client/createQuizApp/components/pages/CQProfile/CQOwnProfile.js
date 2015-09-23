@@ -59,7 +59,7 @@ class CQOwnProfile extends React.Component {
     }
 
     render () {
-        if (MeStore.state.uuid){
+        if (MeStore.getUuid()){
 
             return (
                 <CQProfileView
