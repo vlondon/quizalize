@@ -16,6 +16,6 @@ export type UserType = {
     name: string;
     attributes: UserAttributesType;
     created: number;
-    apps: Array<Object>;
-    quizzes: Array<Object>;
+    apps?: Array<Object>;
+    quizzes?: Array<Object>;
 }

@@ -124,7 +124,7 @@ class AppStore extends Store {
         // return fixAppTypes(app);
     }
 
-    getNewApp(appInfo: ?AppComplete): AppComplete {
+    getNewApp(appInfo: ?Object): AppComplete {
         return new Application(appInfo);
     }
 
