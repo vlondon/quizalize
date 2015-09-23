@@ -97,9 +97,7 @@ exports.authenticate =  function(req, res) {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
 
-    console.log('session', session);
     //at least password or code is required
-
     zzish.authenticate(userEmail, encrypt(userPassword), function(err, data) {
         if (!err && typeof data === 'object') {
 

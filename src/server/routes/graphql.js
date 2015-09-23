@@ -3,8 +3,9 @@ import {graphql} from 'graphql';
 
 
 exports.graphql = function(req, res){
-    console.log('req.session', req.session.user.uuid);
-    graphql(schema, req.body, req.session.user.uuid)
+    var sessionUserId = req.session.user ? req.session.user.uuid : undefined;
+    // console.log('req.session', req.session.user.uuid);
+    graphql(schema, req.body, sessionUserId)
         .then((result) => {
             res.send(result);
         });
