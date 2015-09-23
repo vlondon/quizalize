@@ -80,8 +80,8 @@ export default class CQYourAppsCreate extends React.Component{
                         Make apps
                     </h1>
                     <p>
-                        Apps are collections of <CQLink href="/quiz/user">your quizzes</CQLink> made by you, which you can promote
-                        in the <CQLink href="/quiz/marketplace">Marketplace</CQLink>
+                        Apps are collections of <CQLink href="/quiz/user">your quizzes</CQLink>, which you can publish
+                        to the <CQLink href="/quiz/marketplace">Marketplace</CQLink>
                     </p>
 
                 </div>

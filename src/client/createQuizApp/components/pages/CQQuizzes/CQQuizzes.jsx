@@ -196,7 +196,7 @@ var CQQuizzes = React.createClass({
 
             emptyQuizList = (
                 <div className="cq-quizzes__emptylist">
-                    You don't have any quizzes yet on your account, <CQLink href="/quiz/create">why not you create your first one?</CQLink>
+                    You don't have any quizzes yet on your account, <CQLink href="/quiz/create">why not create your first one?</CQLink>
                     <p>or </p>
                     Browse the <CQLink href="/quiz/marketplace">marketplace</CQLink> to get quizzes created by other users
                 </div>
