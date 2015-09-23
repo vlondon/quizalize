@@ -36,7 +36,7 @@ var removeClassName = function(el, className){
 };
 
 type Props = {
-    appId: string;
+    routeParams: { appId: string };
 }
 
 type State = {
@@ -78,8 +78,8 @@ export default class CQApp extends React.Component {
     }
 
     getState(): Object {
-        if (this.props.appId) {
-            var appInfo = AppStore.getAppInfo(this.props.appId);
+        if (this.props.routeParams.appId) {
+            var appInfo = AppStore.getAppInfo(this.props.routeParams.appId);
 
             if (appInfo){
                 if (appInfo.meta && appInfo.meta.colour){
@@ -194,5 +194,5 @@ export default class CQApp extends React.Component {
     }
 }
 CQApp.propTypes = {
-    appId: React.PropTypes.string
+    routeParams: React.PropTypes.object
 };
