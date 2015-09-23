@@ -86,11 +86,6 @@ class Me extends Store {
         return (state.uuid !== '-1') ? true : false;
     }
 
-    mutateState(userData : Object){
-        this.setState(userData);
-        UserActions.update(userData);
-    }
-
     getUuid(){
         return this.state.uuid !== '-1' ? this.state.uuid : undefined;
     }
