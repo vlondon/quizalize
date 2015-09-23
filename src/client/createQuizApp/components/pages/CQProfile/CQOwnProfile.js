@@ -64,8 +64,8 @@ class CQOwnProfile extends React.Component {
             return (
                 <CQProfileView
                     profile={MeStore.state}
-                    apps={MeStore.state.apps}
-                    quizzes={MeStore.state.quizzes}
+                    apps={MeStore.apps}
+                    quizzes={[]}
                     own={true}
                 />
             );

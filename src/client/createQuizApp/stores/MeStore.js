@@ -6,15 +6,24 @@ import UserConstants from './../constants/UserConstants';
 import type {UserType} from './../../../types/UserType';
 import AppStore from './AppStore';
 
+let userAttributes = {
+    school: undefined,
+    url: undefined,
+    profileUrl: undefined,
+    bannerUrl: undefined,
+    location: undefined,
+    ageTaught: undefined,
+    subjectTaught: undefined
+};
+const meAttributesRecord = Record(userAttributes);
+
 let noUser:UserType = {
     uuid: '-1',
     avatar: '',
     email: '',
     name: '',
-    attributes: {},
-    created: Date.now(),
-    quizzes: [],
-    apps: []
+    attributes: new meAttributesRecord(),
+    created: Date.now()
 };
 
 const meRecord = Record(noUser);
@@ -22,10 +31,13 @@ const meRecord = Record(noUser);
 class Me extends Store {
 
     state: UserType;
+    apps: Array<Object>;
 
     constructor(state: UserType = noUser){
         super(state);
+        state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
+        this.apps = state.apps || [];
     }
 
     getState (): UserType {
@@ -59,15 +71,24 @@ class Me extends Store {
         };
         var quizzes = userData.quizzes || [];
         var apps = userData.apps || [];
-        userData.apps = fillApps(apps, quizzes);
+
+        userData.attributes = new meAttributesRecord(userData.attributes);
+
         this.state = new meRecord(userData);
+        this.apps = fillApps(apps, quizzes);
         this.emitChange();
+        console.log('settings stattetet', this.apps);
     }
 
     isLoggedIn() : boolean {
         var state = this.state;
         console.log('this sstate', state.uuid);
         return (state.uuid !== '-1') ? true : false;
+    }
+
+    mutateState(userData : Object){
+        this.setState(userData);
+        UserActions.update(userData);
     }
 
     getUuid(){
@@ -77,6 +98,8 @@ class Me extends Store {
 
 
     toJSON(){
+
+        // console.log('state', state.toJSON(), this.state.toJSON());
 
     }
 

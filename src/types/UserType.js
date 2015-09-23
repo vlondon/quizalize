@@ -18,4 +18,5 @@ export type UserType = {
     created: number;
     apps?: Array<Object>;
     quizzes?: Array<Object>;
+    toJSON?: Function;
 }

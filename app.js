@@ -85,7 +85,7 @@ app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 app.get('/user/:profileId', user.details);
 app.post('/user/search', user.search);
-app.post('/user/:profileId', user.saveUser);
+app.post('/user', user.saveUser);
 app.post('/email/', email.sendDocumentEmail);
 
 app.post('/user/:uuid/events/:name', intercom.events);

@@ -197,21 +197,17 @@ var UserApi = {
 
     post: function(user : Object) : Promise {
         return new Promise((resolve, reject) => {
-            var uuid = UserIdStore.getUserId();
-            if (!uuid){
-                reject();
-            } else {
-                request.post(`/user/${uuid}`)
-                    .send(user)
-                    .end(function(error, res){
-                        if (error) {
-                            reject();
-                        } else {
-                            resolve(res.body);
-                        }
+            request.post(`/user`)
+                .send(user)
+                .end(function(error, res){
+                    if (error) {
+                        reject();
+                    } else {
+                        resolve(res.body);
+                    }
 
-                    });
-            }
+                });
+
 
         });
     },

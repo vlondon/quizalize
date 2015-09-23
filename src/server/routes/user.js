@@ -31,22 +31,26 @@ function decrypt(text){
 
 
 exports.saveUser = function(req, res) {
-    var profileId = req.params.profileId;
-    zzish.saveUser(profileId, req.body, function(err, data){
-        if (!err && typeof data === 'object') {
-            var user = {
-                'user_id': data.uuid,
-                'name': req.body.name,
-                'custom_attributes': req.body.attributes
-            };
-            intercom.updateUser(user);
-            res.status(200);
-        }
-        else {
-            res.status(err);
-        }
-        res.send(data);
-    });
+    if (req.session.user === undefined) {
+        res.status(401).send('Not authorized');
+    } else {
+        var profileId = req.session.user.uuid;
+        zzish.saveUser(profileId, req.body, function(err, data){
+            if (!err && typeof data === 'object') {
+                var user = {
+                    'user_id': data.uuid,
+                    'name': req.body.name,
+                    'custom_attributes': req.body.attributes
+                };
+                intercom.updateUser(user);
+                res.status(200);
+            }
+            else {
+                res.status(err);
+            }
+            res.send(data);
+        });
+    }
 };
 
 exports.details = function(req, res) {

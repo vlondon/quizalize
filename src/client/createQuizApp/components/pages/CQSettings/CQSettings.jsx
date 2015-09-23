@@ -41,10 +41,12 @@ export default class CQSettings extends React.Component {
     constructor (props: any) {
         super(props);
 
-        var user:UserType = MeStore.getState();
+        var user:UserType = MeStore.state;
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;
+        console.log('USER USER', user);
+
         this.state =  {
             user,
             params,
@@ -52,6 +54,7 @@ export default class CQSettings extends React.Component {
             errors,
             isNew
         };
+
         this.handleProfilePicture = this.handleProfilePicture.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -105,58 +108,70 @@ export default class CQSettings extends React.Component {
     }
 
     handleSave(){
-
+        console.log('saving??');
+        // var user = this.state;
+        MeStore.toJSON();
         var currentUserId = this.state.user.uuid;
         if (this.state.isNew) {
             sendEvent('register', 'details', 'filled');
         }
-        UserActions.search({profileUrl: this.state.user.attributes.profileUrl})
-            .then( (users) => {
-                //am i one of the bunch
-                var found = false;
-                users.forEach(function(user) {
-                    if (user.uuid === currentUserId) {
-                        found = true;
+        var doSave = ()=>{
+            UserActions.update(this.state.user.toJSON())
+                .then( ()=> {
+                    var params = urlParams();
+                    if (params.redirect){
+                        router.setRoute(window.decodeURIComponent(params.redirect));
+                    } else {
+                        if (this.state.isNew) {
+                            router.setRoute('/quiz/marketplace');
+                        }
+                        else {
+                            router.setRoute('/quiz/user');
+                        }
                     }
-                });
-                if (!found && users.length > 0) {
-                    swal('Already Taken', 'Sorry that Quizalize URL is already taken. Please try again');
-                }
-                else {
-                    UserActions.update(this.state.user)
-                        .then( ()=> {
-                            var params = urlParams();
-                            if (params.redirect){
-                                router.setRoute(window.decodeURIComponent(params.redirect));
-                            } else {
-                                if (this.state.isNew) {
-                                    router.setRoute('/quiz/marketplace');
-                                }
-                                else {
-                                    router.setRoute('/quiz/user');
-                                }
-                            }
+            });
+        };
+
+        if (this.state.user.attributes.profileUrl.length === 0) {
+            doSave();
+        } else {
+            UserActions.search({profileUrl: this.state.user.attributes.profileUrl})
+                .then( (users) => {
+                    //am i one of the bunch
+                    var found = false;
+                    users.forEach(function(user) {
+                        if (user.uuid === currentUserId) {
+                            found = true;
+                        }
                     });
-                }
-        });
+                    if (!found && users.length > 0) {
+                        swal('Already Taken', 'Sorry that Quizalize URL is already taken. Please try again');
+                    }
+                    else {
+                        doSave();
+                    }
+            });
+        }
     }
 
     handleChange(field: string, event: Object){
 
-        var user = Object.assign({}, this.state.user);
-
-        user.attributes[field] = event.target.value;
+        var {user} = this.state;
+        // console.log('useruseruser', user, user.toJSON());
+        var attributes = user.attributes.set(field, event.target.value);
+        user = user.set('attributes', attributes);
 
         var {canSave, errors} = this.isFormValid(user);
+
         this.setState({user, canSave, errors});
 
     }
 
     handleNameChange(event: Object){
 
-        var user = Object.assign({}, this.state.user);
+        var {user} = this.state;
 
-        user.name = event.target.value;
+        user = user.set('name', event.target.value);
         var {canSave, errors} = this.isFormValid(user);
         this.setState({user, canSave, errors});
 
