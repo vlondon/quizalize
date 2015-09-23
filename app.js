@@ -76,6 +76,7 @@ app.get('/quiz/create', quiz.create);
 //Endpoints for teachers TODO rename appropriately
 
 app.post('/user/authenticate', user.authenticate);
+app.post('/user/logout', user.logout);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
 app.post('/user/token', user.token);

@@ -268,6 +268,20 @@ var UserApi = {
         });
     },
 
+    logout: function() : Promise {
+        return new Promise(function(resolve, reject){
+            request.post('/user/logout')
+                .send()
+                .end(function(error, res){
+                    if (error){
+                        reject(error);
+                    } else {
+                        resolve(res);
+                    }
+                });
+        });
+    },
+
     register: function(data : Object) : Promise {
         return new Promise(function(resolve, reject){
             request.post('/user/register')

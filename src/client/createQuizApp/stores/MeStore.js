@@ -34,9 +34,9 @@ class Me extends Store {
 
     setState(userData : Object) {
 
-        var fillApps = ()=>{
-            var quizzesWithoutApps = userData.quizzes.filter(q=>{
-                var isInApp = userData.apps.filter(a=>{
+        var fillApps = (apps, quizzes)=>{
+            var quizzesWithoutApps = quizzes.filter(q=>{
+                var isInApp = apps.filter(a=>{
                     var quizzes = a.meta.quizzes || [];
                     return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
                 });
@@ -57,8 +57,8 @@ class Me extends Store {
             apps.push(appPlaceholder);
             return apps;
         };
-        var quizzes = userData.quizzes;
-        var apps = userData.apps;
+        var quizzes = userData.quizzes || [];
+        var apps = userData.apps || [];
         userData.apps = fillApps(apps, quizzes);
         this.state = new meRecord(userData);
         this.emitChange();
@@ -70,14 +70,7 @@ class Me extends Store {
         return (state.uuid !== '-1') ? true : false;
     }
 
-    setApps(apps : Array<Object>, quizzes : Array<Object>){
 
-
-    }
-
-    getApps() {
-
-    }
 
     toJSON(){
 
@@ -93,6 +86,7 @@ export default meStore;
 AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
+        case UserConstants.USER_IS_LOGGED:
             // var me = Immutable.fromJS(action.payload);\
             console.log('building me ');
             meStore.setState(action.payload);

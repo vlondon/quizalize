@@ -84,6 +84,7 @@ exports.token =  function(req, res) {
     zzish.getCurrentUser(token, function(err, data) {
         if (!err && typeof data === 'object') {
             intercom.trackEvent(data.uuid, 'logged_in');
+            req.session.user = data;
             res.status(200).send(data);
         }
         else {
@@ -95,14 +96,14 @@ exports.token =  function(req, res) {
 exports.authenticate =  function(req, res) {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
-    var session = req.session;
+
     console.log('session', session);
     //at least password or code is required
 
     zzish.authenticate(userEmail, encrypt(userPassword), function(err, data) {
         if (!err && typeof data === 'object') {
-            console.log('user?', data);
-            session.user = data;
+
+            req.session.user = data;
             intercom.trackEvent(data.uuid, 'logged_in');
             res.status(200).send(data);
         }
@@ -110,6 +111,11 @@ exports.authenticate =  function(req, res) {
             res.status(500).send(err);
         }
     });
+};
+
+exports.logout = function(req, res){
+    req.session.destroy();
+    res.status(200).send();
 };
 
 exports.register =  function(req, res) {

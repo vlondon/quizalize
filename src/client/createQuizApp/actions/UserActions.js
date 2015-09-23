@@ -4,7 +4,7 @@ var UserConstants       = require('./../constants/UserConstants');
 var UserApi             = require('./../actions/api/UserApi');
 var urlParams           = require('./../utils/urlParams');
 import AnalyticsActions from './../actions/AnalyticsActions';
-
+import settings from './../config/settings';
 import router from './../config/router';
 import intercom from './../utils/intercom';
 
@@ -17,9 +17,10 @@ var handleRedirect = function(){
     var params = urlParams();
     if (params.redirect){
         router.setRoute(window.decodeURIComponent(params.redirect));
-        return true;
+    } else {
+        router.setRoute(settings.defaultLoggedPage);
     }
-    return false;
+    return true;
 };
 
 
@@ -147,7 +148,7 @@ var UserActions = {
     logout: function(){
 
         var logoutEnd = function(){
-            localStorage.clear();
+
             intercom('shutdown');
 
             AppDispatcher.dispatch({
@@ -166,9 +167,12 @@ var UserActions = {
 
         if (token !== null) {
             console.log('zzish logout');
-            window.Zzish.logout(token, logoutEnd);
+            window.Zzish.logout(token, function(){
+                UserApi.logout().then(logoutEnd);
+            });
         } else {
-            logoutEnd();
+            UserApi.logout().then(logoutEnd);
+            // logoutEnd();
         }
 
     },
