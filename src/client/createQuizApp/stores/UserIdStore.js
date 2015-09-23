@@ -1,6 +1,6 @@
 /* @flow */
-import cookies from './../utils/cookies';
-var _userId: string = cookies.getItem('cqUuid');;
+
+var _userId:string = window._state.uuid;
 
 class UserIdStore {
     setUserId(userId:string) : string{
@@ -8,7 +8,7 @@ class UserIdStore {
         return _userId;
     }
 
-    getUserId() : string{
+    getUserId() : string {
         return _userId;
     }
 }

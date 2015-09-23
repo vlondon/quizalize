@@ -22,10 +22,10 @@ import QuizStore from './../../../stores/QuizStore';
 import UserStore from './../../../stores/UserStore';
 
 import type {Quiz} from './../../../stores/QuizStore';
-import type {User} from './../../../stores/UserStore';
+import type {UserType} from './../../../../../types/UserType';
 
 type State = {
-    user: User;
+    user: UserType;
     quizzes: Array<Quiz>;
     showApps: boolean;
     showQuizzes: boolean;

@@ -2,7 +2,6 @@
 var request = require('superagent');
 
 import UserIdStore from './../../stores/UserIdStore';
-import cookies from './../../utils/cookies';
 
 var getGraphQLUserQuery = function(key, value){
     return `
@@ -60,7 +59,7 @@ var UserApi = {
         return new Promise((resolve, reject) => {
             var localUuid = UserIdStore ? UserIdStore.getUserId() : undefined;
             console.info('local UUID', localUuid);
-            var uuid = localUuid ? localUuid : cookies.getItem('cqUuid');
+            var uuid = localUuid;
             var token = localStorage.getItem('token');
 
             if (!uuid && !token){
@@ -231,7 +230,7 @@ var UserApi = {
                             reject();
                         } else {
                             var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
-                            cookies.setItem('cqUuid', res.body.uuid, oneYear);
+
                             resolve(res.body);
                         }
                     }
@@ -248,10 +247,6 @@ var UserApi = {
                     if (error){
                         reject(error);
                     } else {
-                        // TODO Move this to a more convenient place
-                        // localStorage.setItem('cqUuid', res.body.uuid);
-                        var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
-                        cookies.setItem('cqUuid', res.body.uuid, oneYear);
                         resolve(res.body);
                     }
                 });
@@ -267,7 +262,6 @@ var UserApi = {
                         reject(error);
                     } else {
                         // TODO Move this to a more convenient place
-                        localStorage.setItem('cqUuid', res.body.uuid);
                         resolve(res.body);
                     }
                 });
@@ -285,10 +279,6 @@ var UserApi = {
                     } else if (error){
                         reject(error);
                     } else {
-
-                        var oneYear = new Date(new Date().setMonth(new Date().getMonth() + 24));
-                        cookies.setItem('cqUuid', res.body.uuid, oneYear);
-
                         resolve(res.body);
                     }
                 });

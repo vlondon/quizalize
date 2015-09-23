@@ -3,6 +3,7 @@ import React from 'react';
 import CQProfileView from './CQProfileView';
 
 import AppStore from './../../../stores/AppStore';
+import MeStore from './../../../stores/MeStore';
 import UserActions from './../../../actions/UserActions';
 
 
@@ -22,28 +23,32 @@ class CQOwnProfile extends React.Component {
 
     constructor(props: Props) {
         super(props);
-        this.state = this.getState();
+        this.state = {
+            profile: MeStore.state,
+            apps: [],
+            quizzes: []
+        };
 
-        UserActions.getOwn().then((profile)=>{
-            console.log('we got ', profile);
-            this.setState(this.getState(profile));
-        });
+
+
+        UserActions.getOwn();
+
 
         this.onChange = this.onChange.bind(this);
         this.getState = this.getState.bind(this);
     }
 
     componentDidMount() {
-        // QuizStore.addChangeListener(this.onChange);
+        MeStore.addChangeListener(this.onChange);
 
     }
 
     componentWillUnmount() {
-        // QuizStore.removeChangeListener(this.onChange);
+        MeStore.removeChangeListener(this.onChange);
     }
 
     onChange(){
-        // this.setState(this.getState());
+        this.forceUpdate();
     }
 
     getState (profile : Object = {}) : State {
@@ -54,13 +59,13 @@ class CQOwnProfile extends React.Component {
     }
 
     render () {
-        if (this.state.profile.uuid){
-            
+        if (MeStore.state.uuid){
+
             return (
                 <CQProfileView
-                    profile={this.state.profile}
-                    apps={this.state.apps}
-                    quizzes={this.state.quizzes}
+                    profile={MeStore.state}
+                    apps={MeStore.state.apps}
+                    quizzes={MeStore.state.quizzes}
                     own={true}
                 />
             );

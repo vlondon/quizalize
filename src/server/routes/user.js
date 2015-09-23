@@ -95,10 +95,14 @@ exports.token =  function(req, res) {
 exports.authenticate =  function(req, res) {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
+    var session = req.session;
+    console.log('session', session);
     //at least password or code is required
 
     zzish.authenticate(userEmail, encrypt(userPassword), function(err, data) {
         if (!err && typeof data === 'object') {
+            console.log('user?', data);
+            session.user = data;
             intercom.trackEvent(data.uuid, 'logged_in');
             res.status(200).send(data);
         }

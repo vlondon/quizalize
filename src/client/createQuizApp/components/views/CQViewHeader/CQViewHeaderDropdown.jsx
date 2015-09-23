@@ -1,7 +1,7 @@
 var React = require('react');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var UserActions = require('createQuizApp/actions/UserActions');
-var UserStore = require('createQuizApp/stores/UserStore');
+var MeStore = require('createQuizApp/stores/MeStore');
 
 var _timeout;
 var CQHeaderDropdown = React.createClass({
@@ -9,22 +9,20 @@ var CQHeaderDropdown = React.createClass({
     getInitialState: function() {
         return {
             open: false,
-            user: UserStore.getUser()
+            user: MeStore.state
         };
     },
 
     componentDidMount: function() {
-        UserStore.addChangeListener(this.onChange);
+        MeStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
-        UserStore.removeChangeListener(this.onChange);
+        MeStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
-        this.setState({
-            user: UserStore.getUser()
-        });
+        this.forceUpdate();
     },
 
     handleOver: function(){
@@ -60,7 +58,7 @@ var CQHeaderDropdown = React.createClass({
         return (
             <li>
                 <div className="navbar-dropdown" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
-                    Hi {this.state.user && this.state.user.name}! <i className="fa fa-caret-down"></i>
+                    Hi {MeStore.state.name}! <i className="fa fa-caret-down"></i>
                     {dropdown}
                 </div>
             </li>

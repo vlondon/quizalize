@@ -4,7 +4,7 @@ var router = require('createQuizApp/config/router');
 var CQLink = require('createQuizApp/components/utils/CQLink');
 var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
 var CQViewHeaderDropdown = require('./CQViewHeaderDropdown');
-var UserStore = require('createQuizApp/stores/UserStore');
+var MeStore = require('createQuizApp/stores/MeStore');
 
 
 var sections = {
@@ -39,11 +39,11 @@ var CQViewHeader = React.createClass({
     },
 
     componentDidMount: function() {
-        UserStore.addChangeListener(this.onChange);
+        MeStore.addChangeListener(this.onChange);
     },
 
     componentWillUnmount: function() {
-        UserStore.removeChangeListener(this.onChange);
+        MeStore.removeChangeListener(this.onChange);
     },
 
     onChange: function(){
@@ -51,8 +51,8 @@ var CQViewHeader = React.createClass({
     },
 
     getState: function(){
-        var isLoggedIn = UserStore.isLoggedIn();
-        var home = UserStore.isLoggedIn() ? "/quiz/quizzes" : "/";
+        var isLoggedIn = MeStore.isLoggedIn();
+        var home = isLoggedIn ? "/quiz/quizzes" : "/";
 
         return {
             isLoggedIn,

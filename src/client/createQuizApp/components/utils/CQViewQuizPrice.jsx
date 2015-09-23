@@ -4,7 +4,7 @@ var router = require('./../../config/router');
 
 import UserStore from './../../stores/UserStore';
 import QuizStore from './../../stores/QuizStore';
-import type {User} from './../../stores/UserStore';
+import type {UserType} from './../../../../types/UserType';
 import type {Quiz} from './../../stores/QuizStore';
 
 import priceFormat from './../../utils/priceFormat';
@@ -15,7 +15,7 @@ type Props = {
     quiz: Quiz;
 }
 type State = {
-    user: User;
+    user: UserType;
 }
 
 export default class CQViewQuizPrice extends React.Component {

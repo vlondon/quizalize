@@ -109,12 +109,15 @@ exports.indexQuiz =  function(req, res) {
 
 exports.create =  function(req, res) {
     var intercomId = process.env.intercomAppId || 'mnacdt52';
+    var session = req.session;
+    var user = session.user || {};
     logger.trace('intercom Id', intercomId);
     res.render('create', {
         zzishapi: getZzishParam(),
         devServer: process.env.ZZISH_DEVMODE,
-        publicConfig: publicConfig,
-        intercomId: intercomId
+        publicConfig,
+        intercomId,
+        user
     });
 };
 

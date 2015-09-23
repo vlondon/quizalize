@@ -6,7 +6,6 @@ var urlParams           = require('./../utils/urlParams');
 import AnalyticsActions from './../actions/AnalyticsActions';
 
 import router from './../config/router';
-import cookies from './../utils/cookies';
 import intercom from './../utils/intercom';
 
 type loginObject = {
@@ -48,8 +47,17 @@ var UserActions = {
     },
 
 
-    getOwn: function(){
-        return UserApi.getOwn();
+    getOwn: function() : Promise {
+        return new Promise((resolve, reject)=>{
+
+            UserApi.getOwn().then( user => {
+                AppDispatcher.dispatch({
+                    actionType: UserConstants.USER_OWN_LOADED,
+                    payload: user
+                });
+                resolve(user);
+            }).catch(reject);
+        });
     },
 
     update: function(user: Object) : Promise{
@@ -64,6 +72,7 @@ var UserActions = {
                         payload: user
                     });
                     if (handleRedirect() === false){
+                        console.log('resolving', user);
                         resolve(user);
                     }
                 })
@@ -140,7 +149,7 @@ var UserActions = {
         var logoutEnd = function(){
             localStorage.clear();
             intercom('shutdown');
-            cookies.removeItem('cqUuid');
+
             AppDispatcher.dispatch({
                 actionType: UserConstants.USER_LOGOUT
             });

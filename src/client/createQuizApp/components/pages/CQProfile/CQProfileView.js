@@ -21,46 +21,6 @@ class CQProfileView extends React.Component {
 
     constructor(props : Props){
         super(props);
-        console.log('props', props);
-
-        this.getState = this.getState.bind(this);
-        this.state = this.getState(props);
-
-    }
-
-    getState(props: Object) : Object {
-        props = props || this.props;
-        var quizzesWithoutApps = props.quizzes.filter(q=>{
-            var isInApp = props.apps.filter(a=>{
-                var quizzes = a.meta.quizzes || [];
-                return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
-            });
-            console.log('quizzesWithoutApps inapp', isInApp);
-            return isInApp.length === 0;
-        });
-
-        var appPlaceholder: ?Object;
-        console.log('thissssisisisis', this);
-        var state = this.state || {};
-        if (!state.appPlaceholder) {
-            appPlaceholder = AppStore.getNewApp();
-            appPlaceholder.uuid = 'own';
-            appPlaceholder.meta.quizzes = quizzesWithoutApps;
-            appPlaceholder.meta.colour = '#FFFFFF';
-            appPlaceholder.meta.name = 'Your Quizzes';
-            appPlaceholder.meta.description = "This is a description of your quizzes that don't belong to any app";
-            var apps = props.apps;
-            apps.push(appPlaceholder);
-        } else {
-            appPlaceholder = state.appPlaceholder;
-        }
-
-        return {apps, appPlaceholder };
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        console.log('nextProps', nextProps)
-        this.setState(this.getState(nextProps));
     }
 
     handlePreview(quiz : Quiz){

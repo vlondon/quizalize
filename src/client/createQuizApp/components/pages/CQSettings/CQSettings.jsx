@@ -1,7 +1,7 @@
 /* @flow */
 var React = require('react');
 
-import type {User} from './../../../stores/UserStore';
+import type {UserType} from './../../../../../types/UserType';
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePicture');
 var UserActions = require('./../../../actions/UserActions');
@@ -10,6 +10,7 @@ var router = require('./../../../config/router');
 var facebookSDK = require('./../../../config/facebookSDK');
 
 import UserStore from './../../../stores/UserStore';
+import MeStore from './../../../stores/MeStore';
 import {urlParams} from './../../../utils';
 import {sendEvent} from './../../../actions/AnalyticsActions';
 
@@ -23,7 +24,7 @@ type Params = {
     redirect: string;
 }
 type State = {
-    user: User;
+    user: UserType;
     params: Params;
     canSave: boolean;
     errors: Array<boolean>;
@@ -40,7 +41,7 @@ export default class CQSettings extends React.Component {
     constructor (props: any) {
         super(props);
 
-        var user:User = UserStore.getUser();
+        var user:UserType = MeStore.getState();
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;
