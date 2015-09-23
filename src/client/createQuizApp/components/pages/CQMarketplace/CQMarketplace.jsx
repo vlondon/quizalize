@@ -20,6 +20,7 @@ import UserActions from './../../../actions/UserActions';
 import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';
 import UserStore from './../../../stores/UserStore';
+import MeStore from './../../../stores/MeStore';
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {UserType} from './../../../../../types/UserType';

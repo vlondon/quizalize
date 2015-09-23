@@ -3,6 +3,7 @@ var React = require('react');
 var router = require('./../../config/router');
 
 import UserStore from './../../stores/UserStore';
+import MeStore from './../../stores/MeStore';
 import QuizStore from './../../stores/QuizStore';
 import type {UserType} from './../../../../types/UserType';
 import type {Quiz} from './../../stores/QuizStore';
