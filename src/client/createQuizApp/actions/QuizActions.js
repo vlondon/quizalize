@@ -1,7 +1,6 @@
 import type {Quiz, QuizComplete} from './../stores/QuizStore';
 var uuid                = require('node-uuid');
 
-import AnalyticsActions from './AnalyticsActions';
 
 var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var QuizConstants       = require('./../constants/QuizConstants');
@@ -10,6 +9,7 @@ var TopicActions        = require('./../actions/TopicActions');
 var router              = require('./../config/router');
 
 var UserApi             = require('./../actions/api/UserApi');
+import AnalyticsActions from './../actions/AnalyticsActions';
 
 import TopicStore from './../stores/TopicStore';
 import MeStore from './../stores/MeStore';
@@ -246,7 +246,8 @@ var QuizActions = {
 
             if (quiz._new) {
                 delete quiz._new;
-                UserApi.trackEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+                AnalyticsActions.sendEvent('quiz', 'new', quiz.meta.name);
+                AnalyticsActions.sendIntercomEvent('new_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             }
 
             promise.then((savedQuiz)=>{
@@ -296,7 +297,8 @@ var QuizActions = {
             data.link = link;
         }
 
-        AnalyticsActions.sendEvent('quiz', 'shared', quizId);
+        AnalyticsActions.sendEvent('quiz', 'shared', quizName);
+        AnalyticsActions.sendIntercomEvent('complete_share_quiz', {uuid: quizId, name:quizName})
 
         return QuizApi.shareQuiz(quizId, data);
 
@@ -306,7 +308,8 @@ var QuizActions = {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
         QuizApi.publishQuiz(quiz);
-        UserApi.trackEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+        AnalyticsActions.sendEvent('quiz', 'publish', quiz.meta.name);
+        AnalyticsActions.sendIntercomEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
         swal({
             title: 'Thanks!',
             text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,

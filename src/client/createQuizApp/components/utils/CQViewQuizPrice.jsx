@@ -10,6 +10,7 @@ import type {Quiz} from './../../stores/QuizStore';
 
 import priceFormat from './../../utils/priceFormat';
 var TransactionActions = require('./../../actions/TransactionActions');
+import AnalyticsActions from './../../actions/AnalyticsActions';
 
 type Props = {
     className: string;
@@ -52,6 +53,8 @@ export default class CQViewQuizPrice extends React.Component {
         var quiz = this.props.quiz;
         sessionStorage.setItem('mode', 'preview');
         window.open(`/app#/play/public/${quiz.uuid}`);
+        AnalyticsActions.sendIntercomEvent('public_preview', {uuid: quiz.uuid, name: quiz.meta.name});
+        AnalyticsActions.sendEvent('quiz','public_preview', quiz.meta.name);
     }
 
     render() : any {

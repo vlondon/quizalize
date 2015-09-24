@@ -17,6 +17,7 @@ import urlParams from './../../../utils/urlParams';
 import TransactionActions from './../../../actions/TransactionActions';
 import UserActions from './../../../actions/UserActions';
 
+
 import QuizActions from './../../../actions/QuizActions';
 import QuizStore from './../../../stores/QuizStore';
 import UserStore from './../../../stores/UserStore';
@@ -94,10 +95,6 @@ export default class CQPublic extends React.Component {
 
     }
 
-    handlePreview(quiz : Quiz){
-        sessionStorage.setItem('mode', 'preview');
-        window.open(`/app#/play/public/${quiz.uuid}`);
-    }
 
     handleSet(quiz : Quiz){
         router.setRoute(`/quiz/published/${quiz.uuid}`);
@@ -172,8 +169,6 @@ export default class CQPublic extends React.Component {
                         showCta={true}
                         className="cq-public__list"
                         sortBy="time">
-
-
 
                         <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
 

@@ -140,7 +140,8 @@ var TransactionActions = {
                 }, (isConfirm) => {
 
                 if (isConfirm){
-                    UserApi.trackEvent('buy_paid_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+                    AnalyticsActions.sendEvent('quiz','buy-paid', quiz.meta.name);
+                    AnalyticsActions.sendIntercomEvent('buy_paid_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
                     setTimeout(()=>{
 
                         swal({
@@ -155,7 +156,8 @@ var TransactionActions = {
                 }
             });
         } else {
-            UserApi.trackEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
+            AnalyticsActions.sendEvent('quiz', 'buy-free', quiz.meta.name);
+            AnalyticsActions.sendIntercomEvent('buy_quiz', {uuid: quiz.uuid, name: quiz.meta.name});
             TransactionActions.saveNewTransaction(newTransaction, false).then(()=>{
                 // TODO : Wrong uuid
                 router.setRoute(`/quiz/multi/${quiz.uuid}`);
@@ -181,7 +183,8 @@ var TransactionActions = {
         }, (isConfirm) => {
 
             if (isConfirm){
-                UserApi.trackEvent('buy_app', {uuid: app.uuid, name: app.meta.name});
+                AnalyticsActions.sendEvent('app', 'buy', app.meta.name);
+                AnalyticsActions.sendIntercomEvent('buy_app', {uuid: app.uuid, name: app.meta.name});
                 setTimeout(()=>{
 
                     var newTransaction = {
