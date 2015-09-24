@@ -1,8 +1,8 @@
 /* @flow */
-import { Router, Route, Link } from 'react-router';
+import { Router, Route } from 'react-router';
+import history from './history';
 import MeStore from './../stores/MeStore';
 import React from 'react';
-import history from './history';
 var router              = require('./router');
 
 var pagesArray          = require('./routes').pagesArray;
@@ -30,7 +30,6 @@ var notRequireAuth = function(nextState, replaceState){
         url = settings.defaultLoggedPage;
     }
 
-    console.log('notRequireAuth nextState', MeStore.isLoggedIn(), url);
     if (MeStore.isLoggedIn() === true) {
         replaceState({ nextPathname: nextState.location.pathname }, url);
     }
@@ -48,7 +47,11 @@ const paths = pagesArray.map(page => {
     return component;
 });
 
-history.listen(AnalyticsActions.trackPageView);
+// history.listen(AnalyticsActions.trackPageView);
+history.listen(function(){
+    AnalyticsActions.trackPageView();
+    // TODO: Add local analaytics calls here
+});
 
 React.render(<Router routes={paths} history={history} />, document.getElementById('reactApp'));
 

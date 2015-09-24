@@ -273,7 +273,6 @@ var UserActions = {
                 })
                 .catch(reject);
         });
-
     },
 
     setLoginEmail: function(email: string){
