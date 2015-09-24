@@ -1,6 +1,6 @@
 /* @flow */
 var React = require('react');
-
+import router from './../../../config/router';
 var CQPageTemplate  = require('./../../../components/CQPageTemplate');
 var CQLoginForm     = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink          = require('./../../../components/utils/CQLink');
@@ -25,6 +25,9 @@ var CQLogin = React.createClass({
     handleLogin: function(data:Object){
 
         UserActions.login(data)
+            .then(function(){
+                router.setRoute('/quiz/user');
+            })
             .catch(function(err){
                 if (err == "Error: Failed Dependency") {
                     swal('Zzish Login Error', 'It looks like you might be using your Zzish details to log into Quizalize. Click below to use Zzish instead');
