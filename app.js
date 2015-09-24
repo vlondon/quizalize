@@ -33,19 +33,19 @@ app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, '/public/favcq.png')));
 var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
-app.use(
-    session(
-        {
-            store: new FileStore({
-                path: sessionsFolder
-            }),
-            secret: 'zzishdvsheep',
-            cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 * 2 },
-            resave: true,
-            saveUninitialized: true
-        }
-    )
-);            // Session support
+
+var sessionOptions = {
+    secret: 'zzishdvsheep',
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 * 2 },
+    resave: true,
+    saveUninitialized: true
+};
+if (process.env.ZZISH_DEVMODE === 'true'){
+    sessionOptions.store = new FileStore({
+        path: sessionsFolder
+    });
+}
+app.use(session(sessionOptions));            // Session support
 
 app.use(function(req, res, next){
     res.locals.session = req.session;
