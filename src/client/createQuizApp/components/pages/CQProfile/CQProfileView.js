@@ -2,11 +2,9 @@
 var React = require('react');
 var router = require('./../../../config/router');
 
-import AppStore from './../../../stores/AppStore';
 
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
-import CQViewAppGrid from './../../views/CQViewAppGrid';
 
 var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
 import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
@@ -60,7 +58,7 @@ class CQProfileView extends React.Component {
         router.setRoute(`/quiz/create`);
     }
     handleNewApp(){
-        router.setRoute(`/quiz/app/new`);
+        router.setRoute(`/quiz/apps/new`);
     }
 
     handleDetails(quiz : Quiz){
@@ -74,7 +72,7 @@ class CQProfileView extends React.Component {
 
     render() {
 
-        var quizList, quizDetails, headerCta;
+        var quizList, headerCta;
 
         if (this.props.own) {
 
