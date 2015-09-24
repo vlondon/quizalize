@@ -13,7 +13,7 @@ class PQQuiz {
         this.questionIndex = 0;
     }
 
-    toObject(){
+    toObject() : Object{
         return this._quiz;
     }
 
