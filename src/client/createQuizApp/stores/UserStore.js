@@ -23,16 +23,6 @@ class UserStore extends Store {
         return _loginEmail;
     }
 
-    getUser() {
-        console.error('UserStore.getUser() is deprecated');
-        return;
-    }
-
-    getUserId() {
-        console.error('UserStore.getUserId() is deprecated');
-        return;
-    }
-
 
     isLoggedIn() {
         console.error('UserStore.isLoggedIn() is deprecated');

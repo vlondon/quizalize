@@ -1,13 +1,13 @@
 /* @flow */
 import request from 'superagent';
-import UserStore from './../../stores/UserStore';
+import MeStore from './../../stores/MeStore';
 
 var MediaApi = {
 
     uploadPicture (file: Object, folder: string, sizeX: number = 600, sizeY:number = 600, crop:boolean = true) : Promise {
 
         return new Promise((resolve, reject)=>{
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.getUserId();
 
             request
                 .post(`/create/${uuid}/media`)
