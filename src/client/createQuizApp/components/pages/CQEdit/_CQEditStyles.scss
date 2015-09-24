@@ -16,8 +16,10 @@
         &:hover {
             .cq-edit__icon__label {
                 display: block;
+                pointer-events: none;
             }
         }
+        label { cursor: pointer; }
         &__label {
 
             position: absolute;
@@ -35,6 +37,7 @@
             text-align: center;
             display: none;
             &__input {
+
                 position: absolute;
                 top: 0;
                 opacity: 0;
