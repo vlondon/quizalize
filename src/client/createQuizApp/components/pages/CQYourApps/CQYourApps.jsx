@@ -6,8 +6,9 @@ import CQPageTemplate          from '../../CQPageTemplate';
 import CQYourAppsCreate        from './CQYourAppsCreate';
 
 type Props = {
-    newApp: boolean;
-    appId: string;
+    routeParams: {
+        appId: string;
+    };
 }
 type State = {
     isAdmin: boolean;
