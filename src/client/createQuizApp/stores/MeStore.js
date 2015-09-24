@@ -52,7 +52,7 @@ class Me extends Store {
     }
 
     setState(userData : Object) {
-
+        console.log('userDatauserDatauserDatauserDatauserData', userData, typeof userData);
         var fillApps = (apps, quizzes)=>{
             var quizzesWithoutApps = quizzes.filter(q=>{
                 var isInApp = apps.filter(a=>{
@@ -78,8 +78,9 @@ class Me extends Store {
         var quizzes = userData.quizzes || [];
         var apps = userData.apps || [];
 
-        userData.attributes = new meAttributesRecord(userData.attributes);
 
+        userData.attributes = new meAttributesRecord(userData.attributes);
+        // userData = userData.set('attributes', attributes);
         this.state = new meRecord(userData);
         this.apps = fillApps(apps, quizzes);
         this.emitChange();

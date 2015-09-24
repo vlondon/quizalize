@@ -155,10 +155,10 @@ export default class CQSettings extends React.Component {
 
                 var user = Object.assign({}, this.state.user);
 
-                user.avatar = profilePictureUrl;
+                user = user.set('avatar', profilePictureUrl);
 
                 this.setState({user}, ()=>{
-                    UserActions.update(this.state.user);
+                    UserActions.update(this.state.user.toJSON());
                 });
 
             });
@@ -186,9 +186,9 @@ export default class CQSettings extends React.Component {
         this.setState({profileImageFile});
         MediaActions.uploadPicture(profileImageFile, 'profile').then((avatarUrl)=>{
             var user = this.state.user;
-            user.avatar = avatarUrl;
+            user = user.set('avatar', avatarUrl);
             this.setState({user}, ()=>{
-                UserActions.update(this.state.user);
+                UserActions.update(this.state.user.toJSON());
             });
         });
     }
@@ -202,9 +202,10 @@ export default class CQSettings extends React.Component {
         MediaActions.uploadPicture(bannerImageFile, 'banner', 1070, 1070, false)
             .then((bannerUrl)=>{
                 var user = this.state.user;
-                user.attributes.bannerUrl = bannerUrl;
+                var attributes = user.attributes.set('bannerUrl', bannerUrl);
+                user = user.set('attributes', attributes);
                 this.setState({user}, ()=>{
-                    UserActions.update(this.state.user);
+                    UserActions.update(this.state.user.toJSON());
                 });
             });
     }

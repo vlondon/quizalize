@@ -17,10 +17,11 @@ var handleRedirect = function(){
     var params = urlParams();
     if (params.redirect){
         router.setRoute(window.decodeURIComponent(params.redirect));
+        return true;
     } else {
-        router.setRoute(settings.defaultLoggedPage);
+        return false;
+        // router.setRoute(settings.defaultLoggedPage);
     }
-    return true;
 };
 
 
@@ -73,7 +74,6 @@ var UserActions = {
                         payload: user
                     });
                     if (handleRedirect() === false){
-                        console.log('resolving', user);
                         resolve(user);
                     }
                 })

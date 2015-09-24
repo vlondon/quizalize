@@ -37,6 +37,7 @@ exports.saveUser = function(req, res) {
         var profileId = req.session.user.uuid;
         zzish.saveUser(profileId, req.body, function(err, data){
             if (!err && typeof data === 'object') {
+                req.session.user = data;
                 var user = {
                     'user_id': data.uuid,
                     'name': req.body.name,
