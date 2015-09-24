@@ -1,9 +1,8 @@
 /* @flow */
-import {Map, Record} from 'immutable';
+import {Map} from 'immutable';
 import Store from './Store';
 import AppStore from './AppStore';
-import UserIdStore from './UserIdStore';
-import type {UserType} from './../../../types/UserType';
+
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
@@ -102,23 +101,7 @@ AppDispatcher.register(function(action) {
     // var text;
     console.info('action', action);
     switch(action.actionType) {
-        case UserConstants.USER_DETAILS:
-        case UserConstants.USER_DETAILS_UPDATED:
-        case UserConstants.USER_IS_LOGGED:
-        case UserConstants.USER_PROFILE_UPDATED:
-        case UserConstants.USER_REGISTERED:
-            _user = action.payload;
-            UserIdStore.setUserId(_user.uuid);
-            userStore.emitChange();
-            break;
-        //
-        //
-        case UserConstants.USER_IS_NOT_LOGGED:
-        case UserConstants.USER_LOGOUT:
-            _user = noUser;
-            userStore.emitChange();
-            break;
-        //
+
         case UserConstants.USER_LOGIN_ERROR:
             console.log('we got USER_LOGIN_ERROR', action);
             // _user = false;

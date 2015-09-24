@@ -72,7 +72,6 @@ class Me extends Store {
                 }
             });
 
-
             apps.push(appPlaceholder);
             return apps;
         };
@@ -131,7 +130,7 @@ class Me extends Store {
 
     }
 
-    getUserId(){
+    getUserId() : string{
         return this.state.uuid;
     }
 
@@ -161,6 +160,9 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_OWN_LOADED:
         case UserConstants.USER_IS_LOGGED:
         case UserConstants.USER_REGISTERED:
+        case UserConstants.USER_DETAILS_UPDATED:
+        case UserConstants.USER_PROFILE_UPDATED:
+
 
             meStore.setState(action.payload);
             break;
