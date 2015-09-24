@@ -15,7 +15,7 @@ import QuizActions from './../../../actions/QuizActions';
 import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
 
 import TopicStore from './../../../stores/TopicStore';
-import UserApi from './../../../actions/api/UserApi';
+import AnalyticsActions from './../../../actions/AnalyticsActions';
 
 import urlParams from './../../../utils/urlParams';
 
@@ -213,7 +213,8 @@ export default class CQEdit extends React.Component {
 
     handleShare() {
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
-            UserApi.trackEvent('share_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
+
+            AnalyticsActions.sendIntercomEvent('share_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
                 router.setRoute(`/quiz/published/${this.state.quiz.uuid}/share`);
             });
@@ -225,7 +226,7 @@ export default class CQEdit extends React.Component {
 
     handleFinished() {
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
-            UserApi.trackEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
+            AnalyticsActions.sendIntercomEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
                 router.setRoute(`/quiz/published/${this.state.quiz.uuid}/assign`);
             });

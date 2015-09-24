@@ -3,8 +3,9 @@ var router = require('createQuizApp/config/router');
 
 var GroupStore  = require('createQuizApp/stores/GroupStore');
 var GroupActions = require('createQuizApp/actions/GroupActions');
-var UserApi = require('createQuizApp/actions/api/UserApi');
 var QuizActions = require('createQuizApp/actions/QuizActions');
+import AnalyticsActions from './../../../actions/AnalyticsActions';
+
 
 var CQViewClassList = React.createClass({
 
@@ -136,7 +137,8 @@ var CQViewClassList = React.createClass({
     handleDone: function() {
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
             .then((response) =>{
-                UserApi.trackEvent('assign_class', {uuid: response.groupCode});
+                AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
+                AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode});
                 router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
             });
     },
@@ -158,8 +160,8 @@ var CQViewClassList = React.createClass({
 
             GroupActions.publishNewAssignment(this.props.quizId, className)
                 .then((response) =>{
-                    UserApi.trackEvent('new_class', {uuid: response.groupCode, name: className});
-                    UserApi.trackEvent('assign_class', {uuid: response.groupCode});
+                    AnalyticsActions.sendIntercomEvent('new_class', {uuid: response.groupCode, name: className});
+                    AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode, name: className});
                     router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
                 });
             this.setState({

@@ -11,6 +11,7 @@ var AppApi              = require('./../actions/api/AppApi');
 var QuizApi             = require('./../actions/api/QuizApi');
 var AppConstants        = require('./../constants/AppConstants');
 var UserApi             = require('./../actions/api/UserApi');
+import AnalyticsActions from './../actions/AnalyticsActions';
 
 let searching = false;
 
@@ -51,7 +52,8 @@ var AppActions = {
     saveNewApp: function(app:Object, appIcon:?Object) : Promise {
         if (!app.uuid) {
             app.uuid = uuid.v4();
-            UserApi.trackEvent('new_app', {uuid: app.uuid, name: app.meta.name});
+            AnalyticsActions.sendEvent('app', 'new', app.meta.name);
+            AnalyticsActions.sendIntercomEvent('new_app', {uuid: app.uuid, name: app.meta.name});
         }
         var handleSave = function(icon){
             return new Promise(function(resolve, reject){
@@ -92,7 +94,8 @@ var AppActions = {
     },
 
     publishApp: function(app:Object) {
-        UserApi.trackEvent('publish_app', {uuid: app.uuid, name: app.meta.name});
+        AnalyticsActions.sendEvent('app', 'publish', app.meta.name);
+        AnalyticsActions.sendIntercomEvent('publish_app', {uuid: app.uuid, name: app.meta.name});
         app.meta.published = "pending";
         AppApi.publishApp(app);
         AppDispatcher.dispatch({
