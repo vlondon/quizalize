@@ -87,7 +87,7 @@ var CQViewProfilePicture = React.createClass({
         } else if (this.state.picture){
             style.backgroundImage = `url(${this.state.picture})`;
         } else {
-            image = (<i className="zz-ic_quizalize cq-viewprofilepicture__placeholder"/>);
+            image = (<div className="cq-viewprofilepicture__placeholder"/>);
         }
 
 
