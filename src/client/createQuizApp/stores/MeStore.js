@@ -77,12 +77,10 @@ class Me extends Store {
         this.state = new meRecord(userData);
         this.apps = fillApps(apps, quizzes);
         this.emitChange();
-        console.log('settings stattetet', this.apps);
     }
 
     isLoggedIn() : boolean {
         var state = this.state;
-        console.log('this sstate', state.uuid);
         return (state.uuid !== '-1') ? true : false;
     }
 
