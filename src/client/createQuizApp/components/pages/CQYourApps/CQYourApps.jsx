@@ -27,13 +27,14 @@ export default class CQYourApps extends React.Component {
     }
 
     render() {
-
+        var newApp = this.props.routeParams.appId === 'new';
+        var appId = this.props.routeParams.appId && this.props.routeParams.appId !== 'new' ? this.props.routeParams.appId : undefined;
         return (
             <CQPageTemplate className="cq-container cq-yourapps">
                 <h2 className='cq-yourapps__header'>
                     <i className="fa fa-archive"/> Your apps
                 </h2>
-                <CQYourAppsCreate newApp={this.props.newApp} appId={this.props.appId}/>
+                <CQYourAppsCreate newApp={newApp} appId={appId}/>
             </CQPageTemplate>
         );
     }
@@ -42,5 +43,5 @@ export default class CQYourApps extends React.Component {
 
 CQYourApps.propTypes = {
     newApp: React.PropTypes.bool,
-    appId: React.PropTypes.string
+    routeParams: React.PropTypes.Object
 };

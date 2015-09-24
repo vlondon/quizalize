@@ -10,7 +10,7 @@ var QuizActions     = require(`./../../../actions/QuizActions`);
 var QuizStore       = require(`./../../../stores/QuizStore`);
 var GroupStore      = require(`./../../../stores/GroupStore`);
 
-var UserStore       = require(`./../../../stores/UserStore`);
+var MeStore       = require(`./../../../stores/MeStore`);
 
 var CQViewQuizList  = require(`./../../../components/views/CQViewQuizList`);
 var CQViewCreateApp = require('./../../../components/views/CQViewCreateApp');
@@ -44,7 +44,6 @@ var CQQuizzes = React.createClass({
         QuizStore.addChangeListener(this.onChange);
 
         // let's check if there's a quiz refered
-        console.log('PROPS', this.props);
         if (this.props.quizCode){
             TransactionActions.getSharedQuiz(this.props.quizCode);
         }
@@ -62,7 +61,7 @@ var CQQuizzes = React.createClass({
     getState: function():State{
 
         var quizzes = QuizStore.getQuizzes();
-        var isAdmin: boolean = UserStore.isAdmin();
+        var isAdmin: boolean = MeStore.isAdmin();
         if (quizzes){
             quizzes.sort((a, b)=> a.timestamp > b.timestamp ? -1 : 1 );
         }
@@ -101,7 +100,7 @@ var CQQuizzes = React.createClass({
     },
 
     handleNew: function(){
-            router.setRoute(`/quiz/create`);
+        router.setRoute(`/quiz/create`);
     },
 
     handleClick: function(quiz: Quiz){
@@ -214,7 +213,7 @@ var CQQuizzes = React.createClass({
 
                 <div className="cq-quizzes__actions" >
                     {newApp}&nbsp;
-                    <button  onClick={this.handleNew} className="btn btn-primary cq-quizzes__create">
+                    <button onClick={this.handleNew} className="btn btn-primary cq-quizzes__create">
                         <i className="fa fa-plus"></i> New quiz
                     </button>
                 </div>

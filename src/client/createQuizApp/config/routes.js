@@ -214,20 +214,6 @@ var pagesArray: Array<Page> = [
     },
 
     {
-        name: 'yourAppsCreate',
-        path: '/quiz/apps/new',
-        needsLogin: true,
-        component: CQYourApps,
-        renderer: function(){
-            var newApp = true;
-            React.render(
-                React.createElement(CQYourApps, {newApp}),
-                document.getElementById('reactApp')
-            );
-        }
-    },
-
-    {
         name: 'yourAppsEdit',
         path: '/quiz/apps/:appId',
         pathRegEx: /\/quiz\/apps\/([\w\-]+)/,

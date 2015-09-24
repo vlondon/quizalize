@@ -20,16 +20,19 @@ class CQQuizzesProfile extends React.Component {
         this.handleAssign = this.handleAssign.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
-    handleShare(){
+    handleShare(ev){
+        ev.stopPropagation();
         router.setRoute(`/quiz/published/${this.props.quiz.uuid}/share`);
     }
-    handleEdit(){
+    handleEdit(ev){
+        ev.stopPropagation();
         if (this.props.quiz){
             router.setRoute(`/quiz/create/${this.props.quiz.uuid}`);
         }
 
     }
-    handlePreview(){
+    handlePreview(ev){
+        ev.stopPropagation();
         var quiz = this.props.quiz;
         sessionStorage.setItem('mode', 'teacher');
         QuizActions.loadQuiz(quiz.uuid).then( (quiz) => {
@@ -43,13 +46,15 @@ class CQQuizzesProfile extends React.Component {
 
     }
 
-    handleAssign(){
+    handleAssign(ev){
+        ev.stopPropagation();
         var quiz = this.props.quiz;
         if (quiz){
             router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
         }
     }
-    handleDelete(){
+    handleDelete(ev){
+        ev.stopPropagation();
         var quiz = this.props.quiz;
         var found = false;
         var groupContents = GroupStore.getGroupsContent();
