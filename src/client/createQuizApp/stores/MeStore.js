@@ -109,6 +109,7 @@ AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
         case UserConstants.USER_IS_LOGGED:
+        case UserConstants.USER_REGISTERED:
             // var me = Immutable.fromJS(action.payload);\
             console.log('building me ');
             meStore.setState(action.payload);

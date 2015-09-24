@@ -132,7 +132,7 @@ export default class CQSettings extends React.Component {
             });
         };
 
-        if (this.state.user.attributes.profileUrl.length === 0) {
+        if (this.state.user.attributes.profileUrl === undefined || this.state.user.attributes.profileUrl.length === 0) {
             doSave();
         } else {
             UserActions.search({profileUrl: this.state.user.attributes.profileUrl})
@@ -157,7 +157,6 @@ export default class CQSettings extends React.Component {
     handleChange(field: string, event: Object){
 
         var {user} = this.state;
-        // console.log('useruseruser', user, user.toJSON());
         var attributes = user.attributes.set(field, event.target.value);
         user = user.set('attributes', attributes);
 
