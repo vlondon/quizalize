@@ -1,0 +1,211 @@
+extends ./layout
+
+block body 
+    script.
+        var metricsString = "#{JSON.stringify(metrics)}";
+        metricsString = metricsString.replace(/&quot;/g, '"');
+        var metrics = JSON.parse(metricsString);
+        console.log("metrics", metrics);
+        //- $.ajax({
+        //-     type: "POST",
+        //-     url: "/admin/metrics",
+        //-     data: {timestamp: 123123123},
+        //-     success: function (result){
+        //-         metrics = result;
+        //-         loadmetrics();
+        //-     }
+        //- });
+        //- 
+        var findColor = function(change){
+            var color = "";
+            if (change > 10){
+                return "#55C25D";
+                }
+            else if (change > 5){
+                return "#FCCE44";
+                }
+            else if (isNaN(change) || change === Infinity || change === undefined){
+                return "#432EFF";
+            }
+            else {
+                return "#F71111";
+                }
+        };
+        
+        var updateTable = function(){
+            var date = $('#date').val();
+            var metric = {};
+            var oldMetric = {};
+            var lastWeek = date - 7 * 24 * 60 * 60 * 1000;
+            metrics.forEach(function(m){
+                if (m._id === date){
+                    metric = m;
+                    }
+            });
+            metrics.forEach(function(m){
+                if (m._id === lastWeek+""){
+                    oldMetric = m;
+                    }
+            });
+            for (var field in metric){
+                var f = field;
+                var change = ((metric[field] - oldMetric[field])/oldMetric[field])*100;
+                change = Math.floor(change);
+                var fieldId = "#" + field;
+                $(fieldId).css({'background-color': findColor(change)});
+                if (!isNaN(change) && change !== Infinity) {
+                    $(fieldId + " .change").text(change+"%");
+                    }
+                $(fieldId + " .big").text(metric[field]);
+                $(fieldId + " .metric-title").text(field);
+                
+                };
+            console.log("vis sign", metric);
+            var signVisitRatio = Math.floor((metric.signups/metric.visitors)*100);
+            console.log("vis sign", metric.signups, metric.visitors);
+            var activatedRatio = Math.floor((metric.activated/metric.signups)*100);
+            console.log("act sign", metric.signups/metric.activated, activatedRatio);
+            $('#activatedRatio .big').text(activatedRatio +"%");   
+            $('#activatedRatio .metric-title').text("activated ratio");
+            $('#activatedRatio').css({'background-color': findColor(activatedRatio)})
+            $('#signUpRatio .big').text(signVisitRatio +"%");   
+            $('#signUpRatio .metric-title').text("sign up ratio");
+            $('#signUpRatio').css({'background-color': findColor(signVisitRatio)})
+            
+        };
+        $(function(){
+            
+            metrics.forEach(function(metric){
+                var date = moment.utc(new Date(+metric._id)).format('MMMM Do YYYY');
+                console.log(metric._id, moment(new Date(+metric._id)).format('MMMM Do YYYY') );
+                $('#date').append($("<option />").val(metric._id).text(date));
+                
+            });
+
+        });
+        var setColor = function (color){
+            
+            if (color === "green"){
+                return color = "#55C25D";
+                }
+            else if (color === "amber"){
+                return color = "#FCCE44";
+                }
+            else {
+                return color = "#F71111";
+                }
+        };
+        
+        //- var loadmetrics = function(){
+        //-     for (var metric in metrics){
+        //-         var metricId = "#" + metric;
+        //-         console.log("metricId", metricId);
+        //-         console.log(metrics[metric]["2 Sep 2015, 14:00"].color);
+        //-         var color = setColor(metrics[metric]["2 Sep 2015, 14:00"].color);
+        //-         $(metricId).css({'background-color': color});
+        //-         $(metricId).text(metric + " " + metrics[metric]["2 Sep 2015, 14:00"].amount);
+        //-     }
+        //-     $("#date").text("2 Sep 2015, 14:00");
+        //- };
+        //- 
+        
+        
+    .container-fluid
+        .row
+            div#dateSelector
+                select#date(onchange="updateTable()")
+                    option
+            table#metrics
+                thead
+                    th Communication
+                    th Convert 
+                    th Retain 
+                    th Share
+                tbody
+                    tr
+                        td#intercom 
+                            .change
+                            .big 
+                            .metric-title    
+                        td#visitors 
+                            .change
+                            .big 
+                            .metric-title
+                        td#active 
+                            .change
+                            .big 
+                            .metric-title
+                        td#followers 
+                            .change
+                            .big 
+                            .metric-title
+                    tr
+                        td#email 
+                            .change
+                            .big 
+                            .metric-title
+                        td#signups 
+                            .change
+                            .big 
+                            .metric-title
+                        td#retained  
+                            .change
+                            .big 
+                            .metric-title
+                        td#sharers 
+                            .change
+                            .big 
+                            .metric-title
+                    tr 
+                        td#social 
+                            .change
+                            .big 
+                            .metric-title
+                        td#signUpRatio 
+                            .change
+                            .big 
+                            .metric-title
+                        td#retainedRatio 
+                            .change
+                            .big 
+                            .metric-title
+                        td#reach
+                            .change
+                            .big 
+                            .metric-title
+                    tr 
+                        td#realLife  
+                            .change
+                            .big 
+                            .metric-title
+                        td#activated 
+                            .change
+                            .big 
+                            .metric-title
+                        td
+                        td#schools 
+                            .change
+                            .big 
+                            .metric-title
+                    tr
+                        td#countries 
+                            .change
+                            .big 
+                            .metric-title
+                        td#activatedRatio
+                            .change
+                            .big
+                            .metric-title
+                        td
+                        td#schoolsMulti 
+                            .change
+                            .big 
+                            .metric-title
+                    tr 
+                        td
+                        td
+                        td
+                        td#reviews 
+                            .change
+                            .big 
+                            .metric-title

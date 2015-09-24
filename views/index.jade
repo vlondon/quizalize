@@ -45,6 +45,10 @@ html(ng-app='quizApp')
                 var domain = document.referrer ? document.referrer.split('/')[2] : undefined;
                 ga('send', 'event', 'quiz-of-the-day', '#{quiz.meta.name}', domain);
 
+        if (devServer=='true')
+            //- script(src="http://localhost:7071/webpack-dev-server.js")
+        else 
+            link(href='/js/quizApp.css', rel='stylesheet')
 
         script.
             var initToken = JSON.parse(!{JSON.stringify(zzishapi)});    
@@ -56,7 +60,7 @@ html(ng-app='quizApp')
         script(src='/lib/angular-route.min.js')
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/uuid.js')
-        script(src='#{session.zzishsdkurl}/zzish.js')
+        script(src='/lib/zzish.js')
         script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')
         script(src='/js/quiz.js')
         script(src='/lib/bootstrap.js')
@@ -68,7 +72,7 @@ html(ng-app='quizApp')
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-            ga('create', 'UA-2402555-23', 'auto');
+            ga('create', 'UA-2402555-24', 'auto');
             ga('send', 'pageview');
             $( document ).ready(function() {
                 outdatedBrowser({
@@ -78,6 +82,7 @@ html(ng-app='quizApp')
                     languagePath: '/outdatedbrowser/lang/en.html'
                 })
             })
+            
         link(href='/css/cq-bootstrap.min.css', rel='stylesheet')
         link(href='/css/quizalize.css', rel='stylesheet')
         link(href='//fonts.googleapis.com/css?family=Source+Code+Pro:500', rel='stylesheet', type='text/css')
@@ -86,14 +91,14 @@ html(ng-app='quizApp')
         <!-- Hotjar Tracking Code for www.quizalize.com -->
         script.
             
-            (function(f,b){
-                var c;
-                f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
-                f._hjSettings={hjid:45670, hjsv:4};
-                c=b.createElement("script");c.async=1;
-                c.src="//static.hotjar.com/c/hotjar-"+f._hjSettings.hjid+".js?sv="+f._hjSettings.hjsv;
-                b.getElementsByTagName("head")[0].appendChild(c); 
-            })(window,document);
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:60604,hjsv:5};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
         
 
 
@@ -230,8 +235,6 @@ html(ng-app='quizApp')
                         p#modalMessage
                     div.modal-footer
                         button.btn.btn-default(data-dismiss="modal")#closeButton Close
-                        button.btn.btn-primary#confirmButton(data-dismiss="modal",ng-click="nctrl.confirmed()") OK
-
+                        button.btn.btn-primary#confirmButton(data-dismiss="modal", ng-click="nctrl.confirmed()") OK
         div(ng-view)
-        if (devServer=='true')
-            //- script(src="http://localhost:7071/webpack-dev-server.js")
+        

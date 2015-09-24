@@ -1,0 +1,106 @@
+.q-home__intro {
+
+    @include boxHome;
+
+    height: 420px;
+    background-image: url(./../assets/home_kid2.jpg);
+    background-size: cover;
+    background-position: center;
+    margin-top: 180px;
+    overflow: hidden;
+
+    @include media($size-tablet) {
+        margin-top: 0;
+    }
+
+    &__bubble {
+        height: 140px;
+        font-size: 28px;
+        background: rgba(#FFF, .7);
+        color: rgba($brand-color-purple, .7);
+        position: absolute;
+        top: -140px;
+        right: 0;
+        left: 0;
+        padding: 10px;
+        text-align: center;
+
+        &__alt {
+            color: $brand-color-purple;
+        }
+        @include media($size-tablet) {
+            top: 20px;
+            right: auto;
+            height: auto;
+            left: 20px;
+            padding: 20px;
+        }
+    }
+
+    &__explanation {
+        position: absolute;
+        font-size: 18px;
+        color: #FFF;
+        background: rgba($brand-color-purple, .9);
+        padding: 20px 40px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        text-align: center;
+
+        @include media($size-tablet) {
+            // background: rgba($brand-color-purple, 1);
+            text-align: left;
+            top: 20px;
+            right: 20px;
+            width: 260px;
+            bottom: auto;
+            left: auto;
+
+        }
+
+        &__cta {
+            width: 220px;
+            margin: auto;
+            margin-top: 20px;
+            background: #FFF;
+            color: $brand-color-purple;
+            text-align: center;
+            padding: 5px;
+            border-radius: 20px;
+
+            @include media($size-tablet) {
+                margin-left: -20px;
+            }
+
+        }
+    }
+
+    &__attribution {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 5px;
+        color: rgba(#FFF, .6);
+        transition: background 200ms linear;
+        @include clearfix;
+        &__icon {
+            float: left;
+        }
+        &__author {
+            float: left;
+            opacity: 0.2;
+            transform: translate(-400px, 0);
+            transition: transform 200ms ease-in-out;
+        }
+        &:hover {
+            color: #FFF;
+            background: rgba($brand-color-purple-light, .5);
+            // left: 2px;
+            .q-home__intro__attribution__author {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+        }
+    }
+}

@@ -1,0 +1,49 @@
+@import './../../../../shared/scss/variables';
+@import './../../../../shared/scss/mixins';
+
+.cq-settings {
+    max-width: 600px;
+    min-width: 300px;
+
+    &__header {
+        @include cq-header();
+        .btn {
+            float: right;
+        }
+    }
+    &__save {
+        text-align: center;
+    }
+    &__upload,
+    &__facebook {
+        margin-top: 20px;
+        position: relative;
+
+    }
+    &__banner {
+        width: 100%;
+    }
+    &__upload {
+        width: 150px;
+        &__input {
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+        }
+    }
+
+    &__profile {
+        padding: 20px;
+
+        &-item {
+            &--error {
+                color: $brand-color-red;
+            }
+        }
+    }
+
+}

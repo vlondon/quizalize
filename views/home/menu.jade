@@ -1,0 +1,23 @@
+#navigation.q-home__header.cq-header
+    .cq-header__container
+        //- .cq-header__brand
+        //-     a.brand(href='/')
+        //-         img.cq-brand(src='/cquiz/img/logo 2.png')
+        ul.cq-header__buttons
+            li
+                a.cq-header__buttons__cta#LoginButton(href='/quiz/lmarketplace')
+                    | Teachers start here        
+            li
+                a.cq-header__buttons__button(href='/quiz/create')
+                    | Make a Classroom Quiz
+            li.cq-header__buttons__limarketplace 
+                a.cq-header__buttons__button(href="/quiz/marketplace")
+                    | Marketplace
+            li.cq-header__buttons__schools
+                a.cq-header__buttons__button(onclick="ask('order')")
+                    | Schools Info pack
+            
+            li.cq-header__buttons__signin
+                a#LoginButton.cq-header__buttons__button(href='/quiz/login')
+                    | Log In
+                    

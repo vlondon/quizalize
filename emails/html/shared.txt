@@ -1,10 +1,10 @@
 <p>Hi there,</p>
 
-<p>you have been shared the quiz %quiz% by %from%. Click on the following link to access this quiz:</p>
+<p>%from% shared the quiz %quiz% with you on Quizalize. </p>
 
-<p>%link%</p>
+<p><a href="%link%">Click here to access the quiz</a></p>
 
-<p>Best Wishes</p>
+<p>Best,</p>
 
 <p>The Quizalize Team.<br/>
 <a href="http://www.quizalize.com">www.quizalize.com</a>

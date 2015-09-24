@@ -14,6 +14,7 @@ html(ng-app='createQuizApp')
         meta(name='twitter:site', content='@quizalizeapp')
         meta(name='twitter:creator', content='@quizalizeapp')
         title('Quizalize')
+        script(src='/js/vendor.js')
         script(src='/lib/jquery-1.11.0.js')
         script(src='/lib/bootstrap.js')
         script.
@@ -24,8 +25,10 @@ html(ng-app='createQuizApp')
 
             ga('create', 'UA-2402555-23', 'auto');
             ga('send', 'pageview');
+            
+            
+            
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-        link(href='//fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
         link(href='/cquiz/css/bootstrap.min.css', rel='stylesheet', type='text/css')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
@@ -37,68 +40,18 @@ html(ng-app='createQuizApp')
         link(href='/cquiz/css/animate.css', rel='stylesheet')
         link(href='/cquiz/css/style.css', rel='stylesheet')
         link(href='/cquiz/color/default.css', rel='stylesheet')
+        
+        script(src='/js/home.js')
+            
+        if (devServer=='true')
+            script(src="http://localhost:7071/webpack-dev-server.js")
+        else
+            link(href='/js/home.css', rel='stylesheet')
+
+
         block header
-        style.
-            body{
-            }
-            .container.ng-enter {
-                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
-                -moz-transition: .3s ease-out all; /* Firefox */
-                -o-transition: .3s ease-out all; /* Opera */
-                transition: .3s ease-out all; /* IE10+ and Future Browsers */
-            }
-
-            .container.ng-enter {
-                opacity: 0;
-            }
-
-            .container.ng-enter.ng-enter-active {
-                opacity: 1;
-            }
-
-            .container.ng-leave {
-                -webkit-transition: .3s ease-out all; /* Safari/Chrome */
-                -moz-transition: .3s ease-out all; /* Firefox */
-                -o-transition: .3s ease-out all; /* Opera */
-                transition: .3s ease-out all; /* IE10+ and Future Browsers */
-            }
-
-            .container.ng-leave {
-                opacity: 1;
-            }
-
-            .container.ng-leave.ng-leave-active {
-                opacity: 0;
-            }
-
-            h1:hover,h2:hover{
-                color: #444;
-            }
-            .quizQuestion, h2.quizQuestion, h3.quizQuestion {
-                font-weight: 700;
-            }
 body
-    #navigation
-            .nav.navbar.navbar-custom.reduced_nav(role='navigation')
-                .container.red_nav
-                    .row
-                        .col-xs-2.site-logo-container
-                            .site-logo
-                                a(href="/")
-                                    img(src='/cquiz/img/logo 2.png')         
-                        .col-xs-10
-                            .navbar-header
-                                button.navbar-toggle(type='button', data-toggle='collapse', data-target='#menu')
-                                    i.fa.fa-bars
-                            #menu.collapse.navbar-collapse
-                                ul.nav.navbar-nav.navbar-right
-                                    li
-                                        a(onclick="ask('order')") Info pack               
-                                    li
-                                        a(onclick="ask('demo')") Book a demo               
-                                    li
-                                        a#StudentLogin(href='/app') Student Login             
-                                    li
-                                        a#LoginButton(href='/quiz/login') Teacher Login
+    include ./home/menu.jade
+
 
     block body

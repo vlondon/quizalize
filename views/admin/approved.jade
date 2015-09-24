@@ -1,0 +1,64 @@
+extends ./layout
+
+block body
+    -function prettyDate(dateString){
+        //if it's already a date object and not a string you don't need this line:
+        -if (dateString=="" || dateString=="0") return "";
+        -var date = new Date(dateString);
+        -var d = date.getDate();
+        -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = monthNames[date.getMonth()];
+        -var y = date.getFullYear();
+        -var result = d+' '+m+' '+y;
+        -if(result=="1 Jan 1970") return "";
+        -return result;
+    -}
+    
+    script.
+        var categoriesString = "#{JSON.stringify(categories)}";
+        categoriesString = categoriesString.replace(/&quot;/g, '"');
+        var categories = JSON.parse(categoriesString);
+        var categoryNameFromCategoryId = function(categoryId){
+            var category = categories.filter(function(cat) {
+                return cat.uuid == categoryId;
+            });
+            if (category[0] === undefined){
+                return "No valid category";
+                }
+            else if (category[0].name === undefined) {
+                return "No valid category";
+                }    
+            else{
+            return category[0].name;
+            }
+        };
+        $(function() {
+            $(".categoryId").each(function() {
+                var categoryName = categoryNameFromCategoryId($(this).text());
+                console.log(categoryName);
+                $(this).text(categoryName);
+            });
+            
+        });
+        
+        
+    h1 Approved Quizzes
+    
+        .container-fluid    
+            .row
+                .col-md-10.col-md-offset-1
+                    table(border="1", style="background-color:white;font-size:12px; width:100%")
+                        thead
+                            th Type
+                            th Name
+                            th Updated
+                            th category
+                            th publicCategoryId
+                        tbody
+                            for quiz in approved
+                                tr
+                                    td #{quiz.type}
+                                    td #{quiz.meta.name}
+                                    td #{prettyDate(quiz.updated)}
+                                    td(value="#{quiz.meta.categoryId}").categoryId #{quiz.meta.categoryId}
+                                    td #{quiz.meta.publicCategoryId}

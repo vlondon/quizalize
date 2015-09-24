@@ -1,0 +1,226 @@
+// vieport dimensions
+// -------------------------
+$size-mobile:               640px;     // Maximum mobile screen width
+$size-tablet:  $size-mobile + 1px;     // Minimum tablet screen width
+$size-desktop:              960px;     // Minimum desktop screen width
+$size-widescreen:          1200px;     // Minimum wide screen width
+$size-facebook-iframe:      760px;     // Facebook iFrame
+$size-iphone-landscape:     480px;     // 480*320 - iPhone Landscpe
+$size-iphone-portrait:      320px;     // 320*480 - iPhone Portrait
+$size-sticky-trigger:       660px;      // Size at which the sticky footer gets triggered
+
+$is-ie: false !default;
+$mobile-ie6: true !default;
+
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+@mixin cq-container {
+    max-width: 1170px;
+    margin: auto;
+}
+
+@mixin cq-header {
+    color: $brand-color-grey;
+    padding-bottom: 8px;
+    margin-top: 10px;
+    color: $brand-color-red;
+    border-bottom: 1px solid $brand-color-red
+}
+
+
+@mixin button($color) {
+    background: none repeat scroll 0 0 transparent;
+    background: rgba($color, 0);
+    border: 1px solid $brand-color-grey-light;
+    min-width: 50px;
+    height: 30px;
+    color: $brand-color-grey;
+    border-radius: 5px;
+    border-spacing: 0;
+
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.42rem;
+    list-style: none outside none;
+    margin: 0 5px;
+    padding: 5px 10px;
+
+    text-decoration: none;
+    text-indent: 0;
+    outline: none;
+
+    &:hover,
+    &:focus {
+        background: darken($color, 0%);
+        border-color: $color;
+        color: #FFF;
+    }
+}
+
+@mixin button-filled($color) {
+    background: none repeat scroll 0 0 transparent;
+    background: rgba($color, 1);
+    border: 1px solid $brand-color-grey-light;
+    min-width: 50px;
+    color: $brand-color-black;
+    border-radius: 25px;
+    height: 50px;
+
+    border-spacing: 0;
+
+    text-align: center;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.42rem;
+    list-style: none outside none;
+    margin: 0 5px;
+    padding: 5px 10px;
+
+    text-decoration: none;
+    text-indent: 0;
+    outline: none;
+    box-shadow: 0px 2px  0 $brand-color-black;
+
+    &:hover,
+    &:focus {
+        background: lighten($color, 20%);
+    }
+    &:active {
+        background: darken($color, 20%);
+
+        box-shadow: inset 0 2px 0 $brand-color-black;
+        /* color: #FFF; */
+    }
+}
+
+@mixin media($size: false, $max-width: false, $min-width: false, $ignore-for-ie: false) {
+    @if $is-ie and ($ignore-for-ie == false) {
+        @if $size != mobile {
+            @if ($ie-version == 6 and $mobile-ie6 == false) or $ie-version > 6 {
+                @content;
+            }
+        }
+    } @else {
+        @if $size == widescreen {
+            @media (min-width: $size-widescreen){
+                @content;
+            }
+        } @else if $size == desktop {
+            @media (min-width: $size-desktop){
+                @content;
+            }
+        } @else if $size == tablet {
+            @media (min-width: $size-tablet){
+                @content;
+            }
+        } @else if $size == mobile {
+            @media (max-width: $size-mobile){
+                @content;
+            }
+        } @else if $size == gt-iphone-landscape {
+            @media (min-width: $size-iphone-landscape + 1px){
+                @content;
+            }
+        } @else if $size == gt-iphone-portrait {
+            @media (min-width: $size-iphone-portrait + 1px){
+                @content;
+            }
+        } @else if $max-width != false {
+            @media (max-width: $max-width){
+                @content;
+            }
+        } @else if $min-width != false {
+            @media (min-width: $min-width){
+                @content;
+            }
+        } @else {
+            @media (min-width: $size){
+                @content
+            }
+        }
+    }
+}
+
+
+@mixin media-height($size: false, $max-height: false, $min-height: false, $ignore-for-ie: false) {
+    @if $is-ie and ($ignore-for-ie == false) {
+        @if $size != mobile {
+            @if ($ie-version == 6 and $mobile-ie6 == false) or $ie-version > 6 {
+                @content;
+            }
+        }
+    } @else {
+        @if $size == widescreen {
+            @media (min-height: $size-widescreen){
+                @content;
+            }
+        } @else if $size == desktop {
+            @media (min-height: $size-desktop){
+                @content;
+            }
+        } @else if $size == tablet {
+            @media (min-height: $size-tablet){
+                @content;
+            }
+        } @else if $size == mobile {
+            @media (min-height: $size-mobile){
+                @content;
+            }
+        } @else if $size == gt-iphone-landscape {
+            @media (min-height: $size-iphone-landscape + 1px){
+                @content;
+            }
+        } @else if $size == gt-iphone-portrait {
+            @media (min-height: $size-iphone-portrait + 1px){
+                @content;
+            }
+        } @else if $max-height != false {
+            @media (max-width: $max-height){
+                @content;
+            }
+        } @else if $min-height != false {
+            @media (min-height: $min-height){
+                @content;
+            }
+        } @else {
+            @media (min-height: $size){
+                @content
+            }
+        }
+    }
+}
+
+@mixin roundedButton() {
+    color: $brand-color-black;
+    margin: 0;
+    padding: 5px;
+    font-weight: bold;
+    text-size: 21px;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: #FFF;
+    box-shadow: 0px 2px  0 $brand-color-black;
+
+    &:focus,
+    &:hover {
+        background: $brand-color-grey-lighter;
+        /* color: $brand-color-grey-lighter; */
+    }
+
+    &:active {
+        background: $brand-color-grey-light;
+        box-shadow: inset 0 2px 0 $brand-color-black;
+    }
+}
