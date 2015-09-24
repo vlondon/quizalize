@@ -12,7 +12,8 @@ var UserApi             = require('./../actions/api/UserApi');
 import AnalyticsActions from './../actions/AnalyticsActions';
 
 import TopicStore from './../stores/TopicStore';
-import UserStore from './../stores/UserStore';
+import MeStore from './../stores/MeStore';
+import UserActions from './UserActions';
 
 var debounce            = require('./../utils/debounce');
 
@@ -147,7 +148,7 @@ var QuizActions = {
     deleteQuiz: function(quizId:string){
         QuizApi.deleteQuiz(quizId)
             .then(function(){
-
+                UserActions.getOwn();
                 AppDispatcher.dispatch({
                     actionType: QuizConstants.QUIZ_DELETED,
                     payload: quizId
@@ -269,7 +270,7 @@ var QuizActions = {
     },
 
     shareQuiz: function(quiz:Quiz, quizName:string, emailList:Array<string>, link?:string) : Promise {
-        var user:Object = UserStore.getUser();
+        var user:Object = MeStore.state;
         var emails = emailList.join(';');
         var tokensSpace = emails.split(' ');
         var tokensColon = emails.split(';');
