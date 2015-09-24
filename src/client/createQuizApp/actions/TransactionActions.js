@@ -9,7 +9,7 @@ var stripeSDK               = require('./../config/stripeSDK');
 var UserApi                 = require('./../actions/api/UserApi');
 var TransactionStore        = require('./../stores/TransactionStore');
 
-import UserStore    from './../stores/UserStore';
+import MeStore    from './../stores/MeStore';
 import priceFormat  from './../utils/priceFormat';
 
 import type {Quiz}  from './../stores/QuizStore';
@@ -64,8 +64,8 @@ var TransactionActions = {
 
             if (transaction.meta.price > 0) {
                 swal.close();
-                var userEmail = UserStore.getUser().email;
-                console.log('creating stripe checkout', UserStore.getUser());
+                var userEmail = MeStore.state.email;
+                console.log('creating stripe checkout', MeStore.state);
                 var localPrice = TransactionStore.getPriceInCurrency(transaction.meta.price, 'us');
                 console.log('localPrice', transaction.meta.price, localPrice);
                 stripeSDK.stripeCheckout(localPrice, userEmail)

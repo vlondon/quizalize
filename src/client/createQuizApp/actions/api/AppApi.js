@@ -3,7 +3,7 @@ var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
 import type {AppType} from './../../stores/AppStore';
-import UserStore from './../../stores/UserStore';
+import MeStore from './../../stores/MeStore';
 
 var AppApi = {
 
@@ -13,7 +13,7 @@ var AppApi = {
 
             // reject();
 
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -59,7 +59,7 @@ var AppApi = {
         return new Promise(function(resolve, reject){
             // reject();
 
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -83,7 +83,7 @@ var AppApi = {
 
             // reject();
 
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -104,7 +104,7 @@ var AppApi = {
     uploadMedia: function(appId : string, file : Object) : Promise{
         return new Promise(function(resolve, reject){
             console.log('about to upload', file);
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.getUserId();
 
             if (!uuid) {
                 reject();
@@ -156,7 +156,7 @@ var AppApi = {
 
     publishApp: function(app : AppType) : Promise {
         return new Promise(function(resolve, reject){
-            var uuid = UserStore.getUserId();
+            var uuid = MeStore.getUserId();
 
             if (!uuid) {
                 reject();

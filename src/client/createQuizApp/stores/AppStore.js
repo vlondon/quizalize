@@ -1,6 +1,6 @@
 /* @flow */
 import Store from './Store';
-import UserStore from './UserStore';
+import MeStore from './MeStore';
 import App from './classes/App';
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var AppConstants = require('./../constants/AppConstants');
@@ -60,7 +60,7 @@ class Application {
     payload: AppPayload;
 
     constructor(appInfo: ?AppComplete){
-        var user:Object = UserStore.getUser();
+        var user:Object = MeStore.state;
         var profileId = user.uuid || undefined;
         var emptyApp = {
             uuid: undefined,

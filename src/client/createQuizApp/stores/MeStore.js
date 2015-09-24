@@ -6,6 +6,13 @@ import UserConstants from './../constants/UserConstants';
 import type {UserType} from './../../../types/UserType';
 import AppStore from './AppStore';
 
+var intercom = require('./../utils/intercom');
+
+var intercomId = window.intercomId;
+var intercomAdded = false;
+
+
+
 let userAttributes = {
     school: undefined,
     url: undefined,
@@ -65,7 +72,6 @@ class Me extends Store {
                 }
             });
 
-
             apps.push(appPlaceholder);
             return apps;
         };
@@ -77,12 +83,10 @@ class Me extends Store {
         this.state = new meRecord(userData);
         this.apps = fillApps(apps, quizzes);
         this.emitChange();
-        console.log('settings stattetet', this.apps);
     }
 
     isLoggedIn() : boolean {
         var state = this.state;
-        console.log('this sstate', state.uuid);
         return (state.uuid !== '-1') ? true : false;
     }
 
@@ -98,6 +102,52 @@ class Me extends Store {
 
     }
 
+    addIntercom(){
+
+        var currentUser = this.state;
+
+        if (this.isLoggedIn()){
+            window.intercomSettings = {
+                name: (currentUser.name || currentUser.email),
+                email: (currentUser.email),
+                created_at: Math.round((currentUser.created / 1000)),
+                app_id: intercomId
+            };
+
+            if (intercomAdded === false){
+                intercom('boot', window.intercomSettings);
+            }
+
+            intercom('update', window.intercomSettings);
+
+            intercomAdded = true;
+        } else {
+            window.intercomSettings = {
+                app_id: intercomId
+            };
+        }
+
+
+    }
+
+    getUserId() : string{
+        return this.state.uuid;
+    }
+
+    emitChange(){
+        super.emitChange();
+        this.addIntercom();
+    }
+
+
+    isAdmin(): boolean {
+        var admins = ['Quizalize Team', 'BlaiZzish', 'Zzish', 'FrancescoZzish', 'SamirZish', 'CharlesZzish'];
+        if (this.state && this.state.name){
+            return admins.indexOf(this.state.name) !== -1;
+        } else {
+            return false;
+        }
+    }
 }
 
 
@@ -109,10 +159,12 @@ AppDispatcher.register(function(action) {
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
         case UserConstants.USER_IS_LOGGED:
-            // var me = Immutable.fromJS(action.payload);\
-            console.log('building me ');
-            meStore.setState(action.payload);
+        case UserConstants.USER_REGISTERED:
+        case UserConstants.USER_DETAILS_UPDATED:
+        case UserConstants.USER_PROFILE_UPDATED:
 
+
+            meStore.setState(action.payload);
             break;
     };
 });

@@ -125,6 +125,7 @@ exports.register =  function(req, res) {
     var userPassword = req.body.password;
     zzish.registerUser(userEmail, encrypt(userPassword), function(err, data) {
         if (!err) {
+            req.session.user = data;
             res.status(200);
             intercom.createUser({
                 'email': userEmail,

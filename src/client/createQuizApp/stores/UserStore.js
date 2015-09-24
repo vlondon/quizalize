@@ -1,31 +1,15 @@
 /* @flow */
-
+import {Map} from 'immutable';
 import Store from './Store';
-import UserIdStore from './UserIdStore';
-import type {UserType} from './../../../types/UserType';
+import AppStore from './AppStore';
+
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var UserConstants = require('./../constants/UserConstants');
 var UserActions = require('./../actions/UserActions');
-var intercom = require('./../utils/intercom');
-
-var intercomId = window.intercomId;
-var intercomAdded = false;
-var localIntercom;
 
 
-var noUser:UserType = {
-    uuid: '-1',
-    avatar: '',
-    email: '',
-    name: '',
-    attributes: {},
-    created: Date.now()
-};
-
-var storeInit = false;
-var _user:UserType = noUser;
-var _users = {};
+var _users = Map();
 var _usersByUrl = {};
 var _loginEmail = '';
 
@@ -39,30 +23,47 @@ class UserStore extends Store {
         return _loginEmail;
     }
 
-    getUser():UserType {
-        return _user;
-    }
 
-    getUserId(): ?string {
-        if (this.isLoggedIn()){
-            return _user.uuid;
-        } else {
-            return undefined;
-        }
-    }
-
-
-    isLoggedIn(): boolean {
-        return (_user && _user.uuid && _user.uuid !== '-1') ? true : false;
+    isLoggedIn() {
+        console.error('UserStore.isLoggedIn() is deprecated');
+        return;
     }
 
 
     getPublicUser(userId: string): Object{
-        var user = _users[userId];
-        console.log('getPublicUser', user, _users);
+        var user = _users.get(userId);
         if (user === undefined){
             UserActions.getPublicUser(userId);
-            _users[userId] = null;
+            _users = _users.set(userId, null);
+        } else if (user !== null && user !== undefined){
+            var fillApps = (apps, quizzes)=>{
+                var quizzesWithoutApps = quizzes.filter(q=>{
+                    var isInApp = apps.filter(a=>{
+                        var quizzes = a.meta.quizzes || [];
+                        return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
+                    });
+                    return isInApp.length === 0;
+                });
+
+                var appPlaceholder = AppStore.getNewApp({
+                    uuid: 'own',
+                    meta: {
+                        quizzes: quizzesWithoutApps,
+                        colour: '#FFF',
+                        name: 'Your Quizzes',
+                        description: 'This is a description of your quizzes that don\'t belong to any app'
+                    }
+                });
+
+                apps.push(appPlaceholder);
+                return apps;
+            };
+
+
+            var apps = fillApps(user.apps, user.quizzes);
+            user = {...user, apps};
+
+
         }
         return user;
     }
@@ -74,52 +75,12 @@ class UserStore extends Store {
             _usersByUrl[url] = null;
 
         }
-        console.info('_usersByUrl', _usersByUrl);
-        console.info('getPublicUserByUrl', userId);
-        return _users[userId];
+        return _users.get(userId);
     }
 
-    isAdmin(): boolean {
-        var admins = ['Quizalize Team', 'BlaiZzish', 'Zzish', 'FrancescoZzish', 'SamirZish', 'CharlesZzish'];
-        if (_user && _user.name){
-            return admins.indexOf(_user.name) !== -1;
-        } else {
-            return false;
-        }
-    }
-
-    emitChange(){
-        super.emitChange();
-        this.addIntercom();
-    }
-
-    addIntercom(){
-
-        var currentUser = this.getUser();
-
-        if (this.isLoggedIn()){
-            window.intercomSettings = {
-                name: (currentUser.name || currentUser.email),
-                email: (currentUser.email),
-                created_at: Math.round((currentUser.created / 1000)),
-                app_id: intercomId
-            };
-
-            if (intercomAdded === false){
-                intercom('boot', window.intercomSettings);
-            }
-
-            intercom('update', window.intercomSettings);
-
-            intercomAdded = true;
-        } else {
-            window.intercomSettings = {
-                app_id: intercomId
-            };
-        }
 
 
-    }
+
 }
 
 var userStore = new UserStore();
@@ -130,23 +91,7 @@ AppDispatcher.register(function(action) {
     // var text;
     console.info('action', action);
     switch(action.actionType) {
-        case UserConstants.USER_DETAILS:
-        case UserConstants.USER_DETAILS_UPDATED:
-        case UserConstants.USER_IS_LOGGED:
-        case UserConstants.USER_PROFILE_UPDATED:
-        case UserConstants.USER_REGISTERED:
-            _user = action.payload;
-            UserIdStore.setUserId(_user.uuid);
-            userStore.emitChange();
-            break;
-        //
-        //
-        case UserConstants.USER_IS_NOT_LOGGED:
-        case UserConstants.USER_LOGOUT:
-            _user = noUser;
-            userStore.emitChange();
-            break;
-        //
+
         case UserConstants.USER_LOGIN_ERROR:
             console.log('we got USER_LOGIN_ERROR', action);
             // _user = false;
@@ -156,7 +101,7 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_PUBLIC_LOADED:
             console.log('UserConstants.USER_PUBLIC_LOADED', action);
             var user = action.payload;
-            _users[user.uuid] = user;
+            _users = _users.set(user.uuid, user);
             userStore.emitChange();
             break;
 
@@ -164,7 +109,7 @@ AppDispatcher.register(function(action) {
             console.log('UserConstants.USER_PUBLIC_LOADED_URL', action);
             var user = action.payload;
             _usersByUrl[user.attributes.profileUrl] = user.uuid;
-            _users[user.uuid] = user;
+            _users.set(user.uuid, user);
             userStore.emitChange();
             break;
 

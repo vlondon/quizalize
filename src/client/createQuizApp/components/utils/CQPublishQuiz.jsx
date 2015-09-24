@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 import router from './../../config/router';
-import UserStore from './../../stores/UserStore';
+import MeStore from './../../stores/MeStore';
 import QuizActions from './../../actions/QuizActions';
 import priceFormat from './../../utils/priceFormat';
 
@@ -31,7 +31,7 @@ var CQPublishQuiz = React.createClass({
                 });
                 if (!error) {
                     // we check if the user has the details
-                    var user = UserStore.getUser();
+                    var user = MeStore.getState();
                     if (user && user.name && user.name.length > 0) {
                         if (quiz){
                             router.setRoute(`/quiz/published/${quiz.uuid}/publish`);

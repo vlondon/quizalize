@@ -26,14 +26,10 @@ class CQProfile extends React.Component {
     }
 
     componentDidMount() {
-        // QuizStore.addChangeListener(this.onChange);
-        // AppStore.addChangeListener(this.onChange);
         UserStore.addChangeListener(this.onChange);
     }
 
     componentWillUnmount() {
-        // QuizStore.removeChangeListener(this.onChange);
-        // AppStore.removeChangeListener(this.onChange);
         UserStore.removeChangeListener(this.onChange);
     }
 
@@ -43,10 +39,14 @@ class CQProfile extends React.Component {
 
     getState (props: ?Props) : State {
         props = props || this.props;
+
         var profileId = props.routeParams.profileId;
+
         var profile = UserStore.getPublicUser(profileId);
         var apps = profile ? profile.apps : [];
         var quizzes = profile ? profile.quizzes : [];
+
+
         return { profile, apps, quizzes };
     }
 

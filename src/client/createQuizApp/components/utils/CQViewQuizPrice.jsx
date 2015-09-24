@@ -2,10 +2,10 @@
 var React = require('react');
 var router = require('./../../config/router');
 
-import UserStore from './../../stores/UserStore';
+
 import MeStore from './../../stores/MeStore';
 import QuizStore from './../../stores/QuizStore';
-import type {UserType} from './../../../../types/UserType';
+
 import type {Quiz} from './../../stores/QuizStore';
 
 import priceFormat from './../../utils/priceFormat';
@@ -16,20 +16,12 @@ type Props = {
     className: string;
     quiz: Quiz;
 }
-type State = {
-    user: UserType;
-}
 
 export default class CQViewQuizPrice extends React.Component {
 
     props: Props;
-    state: State;
     constructor(props : Props) {
         super(props);
-
-        this.state = {
-            user: UserStore.getUser()
-        };
 
         this.handleClick = this.handleClick.bind(this);
         this.handlePreview = this.handlePreview.bind(this);

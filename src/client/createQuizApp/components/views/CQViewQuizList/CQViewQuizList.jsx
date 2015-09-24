@@ -12,7 +12,7 @@ var CQPagination = require('./../../../components/utils/CQPagination');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 
 import TopicStore from './../../../stores/TopicStore';
-import UserStore from './../../../stores/UserStore';
+import MeStore from './../../../stores/MeStore';
 
 
 type Props = {
@@ -162,7 +162,7 @@ export default class CQViewQuizList extends React.Component {
         if (this.props.selectMode) {
             this.handleChange(quiz);
         } else {
-            var user = UserStore.getUser();
+            var user = MeStore.isLoggedIn();
             if (user === false){
                 swal({
                     title: 'You need to be logged in',

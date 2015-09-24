@@ -2,7 +2,7 @@ import Store from './Store';
 
 var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var TopicConstants = require('./../constants/TopicConstants');
-var UserStore = require('./../stores/UserStore');
+var MeStore = require('./../stores/MeStore');
 
 var TopicActions = require('./../actions/TopicActions');
 
@@ -139,7 +139,7 @@ class TopicStore extends Store {
     }
 
     addChangeListener(callback) {
-        if (UserStore.getUser() && !storeInit){
+        if (MeStore.isLoggedIn() && !storeInit){
             storeInit = true;
             TopicActions.loadUserTopics();
         }

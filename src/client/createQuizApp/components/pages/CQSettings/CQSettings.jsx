@@ -9,7 +9,6 @@ var router = require('./../../../config/router');
 
 var facebookSDK = require('./../../../config/facebookSDK');
 
-import UserStore from './../../../stores/UserStore';
 import MeStore from './../../../stores/MeStore';
 import {urlParams} from './../../../utils';
 import {sendEvent} from './../../../actions/AnalyticsActions';
@@ -78,33 +77,7 @@ export default class CQSettings extends React.Component {
         var errors = [false, false, false];
         // var user:User = u || this.state.user;
         return {canSave, errors};
-        // if (!user.name || user.name.length < 2) {
-        //     canSave = false;
-        //     errors[0] = true;
-        //
-        // }
-        //
-        // if (!user.attributes.school || user.attributes.school.length < 2){
-        //     canSave = false;
-        //     errors[1] = true;
-        // }
-        //
-        // if (!user.attributes.location || user.attributes.location.length < 2){
-        //     canSave = false;
-        //     errors[2] = true;
-        // }
-        //
-        // if (!user.attributes.ageTaught || user.attributes.ageTaught.length < 2){
-        //     canSave = false;
-        //     errors[3] = true;
-        // }
-        //
-        // if (!user.attributes.subjectTaught || user.attributes.subjectTaught.length < 2){
-        //     canSave = false;
-        //     errors[4] = true;
-        // }
-        //
-        // return {canSave, errors};
+
     }
 
     handleSave(){
@@ -132,7 +105,7 @@ export default class CQSettings extends React.Component {
             });
         };
 
-        if (this.state.user.attributes.profileUrl.length === 0) {
+        if (this.state.user.attributes.profileUrl === undefined || this.state.user.attributes.profileUrl.length === 0) {
             doSave();
         } else {
             UserActions.search({profileUrl: this.state.user.attributes.profileUrl})
@@ -157,7 +130,6 @@ export default class CQSettings extends React.Component {
     handleChange(field: string, event: Object){
 
         var {user} = this.state;
-        // console.log('useruseruser', user, user.toJSON());
         var attributes = user.attributes.set(field, event.target.value);
         user = user.set('attributes', attributes);
 
