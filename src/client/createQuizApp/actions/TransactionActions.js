@@ -8,6 +8,8 @@ var QuizActions             = require('./../actions/QuizActions');
 var stripeSDK               = require('./../config/stripeSDK');
 var UserApi                 = require('./../actions/api/UserApi');
 var TransactionStore        = require('./../stores/TransactionStore');
+import AnalyticsActions from './../actions/AnalyticsActions';
+
 
 import MeStore    from './../stores/MeStore';
 import priceFormat  from './../utils/priceFormat';
