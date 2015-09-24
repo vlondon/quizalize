@@ -15,9 +15,6 @@ type Props = {
     className: string;
     quiz: Quiz;
 }
-type State = {
-    user: UserType;
-}
 
 export default class CQViewQuizPrice extends React.Component {
 
@@ -26,9 +23,7 @@ export default class CQViewQuizPrice extends React.Component {
     constructor(props : Props) {
         super(props);
 
-        this.state = {
-            user: UserStore.getUser()
-        };
+
 
         this.handleClick = this.handleClick.bind(this);
         this.handlePreview = this.handlePreview.bind(this);

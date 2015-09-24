@@ -26,7 +26,6 @@ import type {Quiz} from './../../../stores/QuizStore';
 import type {UserType} from './../../../../../types/UserType';
 
 type State = {
-    user: UserType;
     quizzes: Array<Quiz>;
     showApps: boolean;
     showQuizzes: boolean;
@@ -51,7 +50,6 @@ export default class CQPublic extends React.Component {
         var quizzes = QuizStore.getPublicQuizzes() || [];
         this.state = {
             quizzes,
-            user: UserStore.getUser(),
             showApps: true,
             showQuizzes: true,
             quizDetails: undefined,

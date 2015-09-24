@@ -6,6 +6,13 @@ import UserConstants from './../constants/UserConstants';
 import type {UserType} from './../../../types/UserType';
 import AppStore from './AppStore';
 
+var intercom = require('./../utils/intercom');
+
+var intercomId = window.intercomId;
+var intercomAdded = false;
+
+
+
 let userAttributes = {
     school: undefined,
     url: undefined,
@@ -96,6 +103,52 @@ class Me extends Store {
 
     }
 
+    addIntercom(){
+
+        var currentUser = this.state;
+
+        if (this.isLoggedIn()){
+            window.intercomSettings = {
+                name: (currentUser.name || currentUser.email),
+                email: (currentUser.email),
+                created_at: Math.round((currentUser.created / 1000)),
+                app_id: intercomId
+            };
+
+            if (intercomAdded === false){
+                intercom('boot', window.intercomSettings);
+            }
+
+            intercom('update', window.intercomSettings);
+
+            intercomAdded = true;
+        } else {
+            window.intercomSettings = {
+                app_id: intercomId
+            };
+        }
+
+
+    }
+
+    getUserId(){
+        return this.state.uuid;
+    }
+
+    emitChange(){
+        super.emitChange();
+        this.addIntercom();
+    }
+
+
+    isAdmin(): boolean {
+        var admins = ['Quizalize Team', 'BlaiZzish', 'Zzish', 'FrancescoZzish', 'SamirZish', 'CharlesZzish'];
+        if (this.state && this.state.name){
+            return admins.indexOf(this.state.name) !== -1;
+        } else {
+            return false;
+        }
+    }
 }
 
 
@@ -108,10 +161,8 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_OWN_LOADED:
         case UserConstants.USER_IS_LOGGED:
         case UserConstants.USER_REGISTERED:
-            // var me = Immutable.fromJS(action.payload);\
-            console.log('building me ');
-            meStore.setState(action.payload);
 
+            meStore.setState(action.payload);
             break;
     };
 });

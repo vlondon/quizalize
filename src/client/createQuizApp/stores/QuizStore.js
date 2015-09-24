@@ -1,12 +1,13 @@
 /* @flow */
 import Store from './Store';
-import UserStore from './UserStore';
+import MeStore from './MeStore';
 import Immutable, {Record} from 'immutable';
 
 var uuid            = require('node-uuid');
 
 var AppDispatcher   = require('./../dispatcher/CQDispatcher');
 var QuizConstants   = require('./../constants/QuizConstants');
+var UserConstants = require('./../constants/UserConstants');
 var QuizActions     = require('./../actions/QuizActions');
 import TopicStore from './../stores/TopicStore';
 
@@ -70,7 +71,7 @@ var storeInit = false;
 var storeInitPublic = false;
 
 // Add user listener
-UserStore.addChangeListener(function(){
+MeStore.addChangeListener(function(){
     storeInit = false;
     storeInitPublic = false;
 
@@ -85,7 +86,7 @@ var QuizObject = function() : QuizComplete {
             featured: false,
             live: false,
             name: '',
-            profileId: UserStore.getUserId() || '-1',
+            profileId: MeStore.getUserId() || '-1',
             price: 0,
             random: false,
             created: Date.now(),
@@ -207,10 +208,6 @@ class QuizStore extends Store {
     }
 
     addChangeListener(callback){
-        if (UserStore.getUser() && !storeInit) {
-            QuizActions.loadQuizzes();
-            storeInit = true;
-        }
         if (!storeInitPublic) {
             QuizActions.searchPublicQuizzes();
             storeInitPublic = true;
@@ -239,10 +236,11 @@ export default quizStoreInstance;
 quizStoreInstance.token = AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
-        case QuizConstants.QUIZZES_LOADED:
-            AppDispatcher.waitFor([
-                TopicStore.token
-            ]);
+        case UserConstants.USER_OWN_LOADED:
+        // case QuizConstants.QUIZZES_LOADED:
+            // AppDispatcher.waitFor([
+            //     TopicStore.token
+            // ]);
             _quizzes = action.payload.quizzes;
 
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );

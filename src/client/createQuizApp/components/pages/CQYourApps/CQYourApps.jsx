@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 
-import UserStore               from '../../../stores/UserStore';
+import MeStore               from '../../../stores/MeStore';
 import CQPageTemplate          from '../../CQPageTemplate';
 import CQYourAppsCreate        from './CQYourAppsCreate';
 
@@ -22,7 +22,7 @@ export default class CQYourApps extends React.Component {
 
         super(props);
         this.state = {
-            isAdmin: UserStore.isAdmin()
+            isAdmin: MeStore.isAdmin()
         };
     }
 
