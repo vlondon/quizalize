@@ -5,6 +5,7 @@ var router                  = require('./../config/router');
 var TransactionApi          = require('./../actions/api/TransactionApi');
 var TransactionConstants    = require('./../constants/TransactionConstants');
 var QuizActions             = require('./../actions/QuizActions');
+var UserActions             = require('./../actions/UserActions');
 var stripeSDK               = require('./../config/stripeSDK');
 var UserApi                 = require('./../actions/api/UserApi');
 var TransactionStore        = require('./../stores/TransactionStore');
@@ -102,6 +103,7 @@ var TransactionActions = {
                 };
                 TransactionActions.saveNewTransaction(newTransaction)
                     .then(()=>{
+                        UserActions.getOwn();
                         router.setRoute('/quiz/user');
                     });
             });

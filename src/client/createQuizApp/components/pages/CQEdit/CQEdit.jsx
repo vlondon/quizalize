@@ -20,8 +20,9 @@ import AnalyticsActions from './../../../actions/AnalyticsActions';
 import urlParams from './../../../utils/urlParams';
 
 type Props = {
-    routeParams: Object;
-    questionIndex: ?string;
+    routeParams: {
+        questionIndex: ?string;
+    };
 };
 
 type State = {

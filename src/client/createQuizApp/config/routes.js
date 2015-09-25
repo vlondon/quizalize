@@ -3,29 +3,30 @@ var React               = require('react');
 
 // var settings        = require('utils/settings');
 
-var CQMarketplace            = require('./../components/pages/CQMarketplace');
-var CQProfile           = require('./../components/pages/CQProfile');
-var CQProfileSlug       = require('./../components/pages/CQProfile/CQProfileSlug');
-var CQOwnProfile        = require('./../components/pages/CQProfile/CQOwnProfile');
-var CQNotFound          = require('./../components/pages/CQNotFound');
-var CQLogin             = require('./../components/pages/CQLogin');
-var CQRegister          = require('./../components/pages/CQRegister');
-var CQRecoverPassword   = require('./../components/pages/CQRecoverPassword');
-var CQRestorePassword   = require('./../components/pages/CQRestorePassword');
-var CQRedirect          = require('./../components/pages/CQRedirect');
-var CQQuizzes           = require('./../components/pages/CQQuizzes');
-var CQCreate            = require('./../components/pages/CQCreate');
-var CQReview            = require('./../components/pages/CQReview');
-var CQEdit              = require('./../components/pages/CQEdit');
-var CQAssignments       = require('./../components/pages/CQAssignments');
-var CQPublished         = require('./../components/pages/CQPublished');
-var CQPublishedAssign   = require('./../components/pages/CQPublished/CQPublishedAssign');
-var CQPublishedShare    = require('./../components/pages/CQPublished/CQPublishedShare');
-var CQPublishedInfo     = require('./../components/pages/CQPublishedInfo');
-var CQSettings          = require('./../components/pages/CQSettings');
-var CQApp               = require('./../components/pages/CQApp');
-var CQYourApps          = require('./../components/pages/CQYourApps');
-var CQAssignQuiz        = require('./../components/pages/CQAssignQuiz');
+var CQMarketplace           = require('./../components/pages/CQMarketplace');
+var CQProfile               = require('./../components/pages/CQProfile');
+var CQProfileSlug           = require('./../components/pages/CQProfile/CQProfileSlug');
+var CQOwnProfile            = require('./../components/pages/CQProfile/CQOwnProfile');
+var CQNotFound              = require('./../components/pages/CQNotFound');
+var CQLogin                 = require('./../components/pages/CQLogin');
+var CQRegister              = require('./../components/pages/CQRegister');
+var CQRecoverPassword       = require('./../components/pages/CQRecoverPassword');
+var CQRestorePassword       = require('./../components/pages/CQRestorePassword');
+var CQRedirect              = require('./../components/pages/CQRedirect');
+var CQQuizzes               = require('./../components/pages/CQQuizzes');
+var CQCreate                = require('./../components/pages/CQCreate');
+var CQReview                = require('./../components/pages/CQReview');
+var CQEdit                  = require('./../components/pages/CQEdit');
+var CQAssignments           = require('./../components/pages/CQAssignments');
+var CQPublished             = require('./../components/pages/CQPublished');
+var CQPublishedPublished    = require('./../components/pages/CQPublished/CQPublishedPublished');
+var CQPublishedAssign       = require('./../components/pages/CQPublished/CQPublishedAssign');
+var CQPublishedShare        = require('./../components/pages/CQPublished/CQPublishedShare');
+var CQPublishedInfo         = require('./../components/pages/CQPublishedInfo');
+var CQSettings              = require('./../components/pages/CQSettings');
+var CQApp                   = require('./../components/pages/CQApp');
+var CQYourApps              = require('./../components/pages/CQYourApps');
+var CQAssignQuiz            = require('./../components/pages/CQAssignQuiz');
 
 export type Page = {
     name: string;
@@ -41,7 +42,7 @@ var pagesArray: Array<Page> = [
         name: 'mainPage',
         path: '/quiz',
         needsLogin: undefined,
-        component: CQProfile,
+        component: CQOwnProfile,
         renderer: function(){
             React.render(
                 React.createElement(CQProfile, null),
@@ -233,7 +234,7 @@ var pagesArray: Array<Page> = [
         name: 'quizzes',
         path: '/quiz/quizzes',
         needsLogin: true,
-        component: CQQuizzes,
+        component: CQOwnProfile,
         renderer: function(){
             React.render(
                 React.createElement(CQQuizzes, null),
@@ -247,7 +248,7 @@ var pagesArray: Array<Page> = [
         path: '/quiz/quizzes/s/:quizCode',
         pathRegEx: /\/quiz\/quizzes\/s\/([\w\-]+)/,
         needsLogin: true,
-        component: CQQuizzes,
+        component: CQOwnProfile,
         renderer: function(quizCode){
             React.render(
                 React.createElement(CQQuizzes, {quizCode}),
@@ -278,18 +279,6 @@ var pagesArray: Array<Page> = [
         renderer: function(){
             React.render(
                 React.createElement(CQEdit, null),
-                document.getElementById('reactApp')
-            );
-        }
-    },
-    {
-        name: 'createApp',
-        path: '/quiz/quizzes/app',
-        needsLogin: true,
-        component: CQQuizzes,
-        renderer: function(){
-            React.render(
-                React.createElement(CQQuizzes, {appMode: true}),
                 document.getElementById('reactApp')
             );
         }
@@ -415,10 +404,10 @@ var pagesArray: Array<Page> = [
         path: '/quiz/published/:quizId/publish',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
-        component: CQPublished,
+        component: CQPublishedPublished,
         renderer: function(quizId: string){
             React.render(
-                React.createElement(CQPublished, {quizId, published: true}),
+                React.createElement(CQPublishedPublished, {quizId, published: true}),
                 document.getElementById('reactApp')
             );
         }

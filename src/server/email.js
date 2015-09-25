@@ -78,18 +78,20 @@ function parseData(input, params) {
 		}
 		else {
 			input = input.replace(patt, params[i]);
-		}		
+		}
 	}
 	return input;
 }
 
 
 exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams) {
-	fs.stat(__dirname + '/emails/html/' + doc + ".txt", function(err) {
+	var emailFolder = __dirname + '/../../emails';
+	logger.info('emailFolder', emailFolder);
+	fs.stat(emailFolder + '/html/' + doc + ".txt", function(err) {
 		if (!err) {
-			fs.readFile(__dirname + '/emails/html/' + doc + ".txt", 'utf-8', function(err1, contents) {
+			fs.readFile(emailFolder + '/html/' + doc + ".txt", 'utf-8', function(err1, contents) {
 				var htmlText = contents;
-				fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err2, contents2) {
+				fs.readFile(emailFolder + '/text/' + doc + ".txt", 'utf-8', function(err2, contents2) {
 					var txtText = contents2;
 					if (!htmlParams) htmlParams = params;
 

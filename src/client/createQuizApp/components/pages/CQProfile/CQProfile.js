@@ -5,7 +5,10 @@ import CQProfileView from './CQProfileView';
 import UserStore from './../../../stores/UserStore';
 
 type Props = {
-    routeParams: { profileId: string; }
+    routeParams: {
+        profileId: string;
+        quizCode: string;
+    }
 }
 type State = {
     profile: Object;
@@ -27,6 +30,7 @@ class CQProfile extends React.Component {
 
     componentDidMount() {
         UserStore.addChangeListener(this.onChange);
+
     }
 
     componentWillUnmount() {

@@ -6,6 +6,7 @@ import AppStore from './../../../stores/AppStore';
 import MeStore from './../../../stores/MeStore';
 import UserActions from './../../../actions/UserActions';
 
+import TransactionActions from './../../../actions/TransactionActions';
 
 
 type Props = {};
@@ -40,6 +41,10 @@ class CQOwnProfile extends React.Component {
 
     componentDidMount() {
         MeStore.addChangeListener(this.onChange);
+        if (this.props.routeParams.quizCode){
+            console.info('GETTING SHARED QUIZ, ', this.props.routeParams.quizCode);
+            TransactionActions.getSharedQuiz(this.props.routeParams.quizCode);
+        }
 
     }
 
@@ -63,6 +68,7 @@ class CQOwnProfile extends React.Component {
 
             return (
                 <CQProfileView
+                    {...this.props}
                     profile={MeStore.state}
                     apps={MeStore.apps}
                     quizzes={[]}

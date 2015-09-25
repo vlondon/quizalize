@@ -19,6 +19,7 @@ type Props = {
     routeParams: { quizId: string };
     assign?: boolean;
     publish?: boolean;
+    share?: boolean;
 }
 
 type State = {
@@ -30,7 +31,7 @@ type State = {
 }
 
 export default class CQPublished extends React.Component {
-
+    props: Props;
     constructor(props : Props) {
         super(props);
 

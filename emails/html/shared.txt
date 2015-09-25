@@ -1,6 +1,6 @@
 <p>Hi there,</p>
 
-<p>%from% shared the quiz %quiz% with you on Quizalize. </p>
+<p>%from% shared the quiz <i>%quiz%</i> with you on Quizalize. </p>
 
 <p><a href="%link%">Click here to access the quiz</a></p>
 
