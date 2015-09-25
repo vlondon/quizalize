@@ -103,6 +103,7 @@ var UserApi = {
                     meta {
                         name,
                         categoryId,
+                        originalQuizId,
                         imageUrl,
                         price,
                         updated,
@@ -123,6 +124,7 @@ var UserApi = {
                             meta {
                                 name,
                                 categoryId,
+                                originalQuizId,
                                 imageUrl,
                                 price,
                                 updated,

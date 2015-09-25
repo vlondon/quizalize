@@ -81,7 +81,7 @@ var CQPublishQuiz = React.createClass({
 
     render: function(): any {
         var publishButton;
-
+        console.log('this.props.quiz.meta.originalQuizId', this.props.quiz.meta.originalQuizId);
         if (!this.props.quiz.meta.originalQuizId) {
             if (this.props.quiz.meta.published === "pending") {
                 publishButton = (
