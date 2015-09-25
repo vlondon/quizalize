@@ -19,6 +19,8 @@ var CQReview            = require('./../components/pages/CQReview');
 var CQEdit              = require('./../components/pages/CQEdit');
 var CQAssignments       = require('./../components/pages/CQAssignments');
 var CQPublished         = require('./../components/pages/CQPublished');
+var CQPublishedAssign   = require('./../components/pages/CQPublished/CQPublishedAssign');
+var CQPublishedShare    = require('./../components/pages/CQPublished/CQPublishedShare');
 var CQPublishedInfo     = require('./../components/pages/CQPublishedInfo');
 var CQSettings          = require('./../components/pages/CQSettings');
 var CQApp               = require('./../components/pages/CQApp');
@@ -30,7 +32,7 @@ export type Page = {
     path: string;
     pathRegEx?: Object;
     needsLogin: ?boolean;
-    renderer: Function;
+    renderer?: Function;
     component: Object;
 }
 
@@ -397,13 +399,7 @@ var pagesArray: Array<Page> = [
         path: '/quiz/published/:quizId/assign',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
-        component: CQPublished,
-        renderer: function(quizId: string){
-            React.render(
-                React.createElement(CQPublished, {quizId, assign: true}),
-                document.getElementById('reactApp')
-            );
-        }
+        component: CQPublishedAssign
     },
 
     {
@@ -411,13 +407,7 @@ var pagesArray: Array<Page> = [
         path: '/quiz/published/:quizId/share',
         pathRegEx: /\/quiz\/published\/([\w\-]+)\/share/,
         needsLogin: true,
-        component: CQPublished,
-        renderer: function(quizId: string){
-            React.render(
-                React.createElement(CQPublished, {quizId, share: true}),
-                document.getElementById('reactApp')
-            );
-        }
+        component: CQPublishedShare
     },
 
     {

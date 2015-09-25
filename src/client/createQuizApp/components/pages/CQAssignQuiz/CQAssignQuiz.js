@@ -8,7 +8,9 @@ import type { Quiz } from './../../../stores/QuizStore';
 import GroupActions from './../../../actions/GroupActions';
 
 type Props = {
-    marketplaceQuizId: string;
+    routeParams: {
+        quizId: string;
+    }
 }
 type State = {
     quiz: ?Quiz;
@@ -22,7 +24,8 @@ class CQAssignQuiz extends React.Component {
 
     constructor(props: Props){
         super(props);
-        var quiz = QuizStore.getOwnedQuizByOriginalQuizId(props.marketplaceQuizId);
+        var marketplaceQuizId = props.routeParams.quizId;
+        var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
         var init = false;
         console.log('QUIZ', quiz);
         this.state = { quiz, init };
@@ -40,7 +43,9 @@ class CQAssignQuiz extends React.Component {
     }
 
     onChange(){
-        var quiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.marketplaceQuizId);
+        var marketplaceQuizId = this.props.routeParams.quizId;
+        var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
+        console.log('marketplaceQuizId', quiz, marketplaceQuizId);
         var groupsLoaded = GroupStore.isLoaded();
 
         var init = this.state.init;

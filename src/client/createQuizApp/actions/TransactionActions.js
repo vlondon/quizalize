@@ -81,10 +81,6 @@ var TransactionActions = {
                 put();
 
             }
-
-            // reject();
-
-
         });
 
 

@@ -24,7 +24,6 @@ var createNewTopicsForQuiz = function(quiz){
 
     var createTopicForQuestion = function(question){
         var topic = TopicStore.getTopicById(question.topicId);
-        console.log("Creating new topic for", topic);
         // we create a new topic and save it
         topic = {
             uuid: uuid.v4(),
