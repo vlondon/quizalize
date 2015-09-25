@@ -16,7 +16,7 @@ import CQViewShareQuiz from './../../../components/views/CQViewShareQuiz';
 
 
 type Props = {
-    quizId: string;
+    routeParams: { quizId: string };
     assign?: boolean;
     publish?: boolean;
 }
@@ -37,7 +37,6 @@ export default class CQPublished extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.getState = this.getState.bind(this);
         this.getQuiz = this.getQuiz.bind(this);
-
 
         this.state = this.getState();
 
@@ -77,7 +76,8 @@ export default class CQPublished extends React.Component {
 
         props = props || this.props;
 
-        var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
+        var quiz = props.routeParams.quizId ? QuizStore.getQuiz(props.routeParams.quizId) : undefined;
+        console.log('props.routeParams.quizId', quiz);
 
         return quiz;
     }
@@ -93,15 +93,15 @@ export default class CQPublished extends React.Component {
         };
 
         if (this.state.selectedClass === 'new') {
-            GroupActions.publishNewAssignment(this.props.quizId, this.state.newClass, this.state.settings)
+            GroupActions.publishNewAssignment(this.props.routeParams.quizId, this.state.newClass, this.state.settings)
                 .then((response) =>{
-                    redirect(this.props.quizId, response.code);
+                    redirect(this.props.routeParams.quizId, response.code);
                 });
 
         } else {
-            GroupActions.publishAssignment(this.props.quizId, this.state.selectedClass, this.state.settings)
+            GroupActions.publishAssignment(this.props.routeParams.quizId, this.state.selectedClass, this.state.settings)
                 .then(()=>{
-                    redirect(this.props.quizId, this.state.selectedClass);
+                    redirect(this.props.routeParams.quizId, this.state.selectedClass);
                 });
         }
     }
@@ -115,13 +115,13 @@ export default class CQPublished extends React.Component {
 
         classList = (
             <CQViewClassList
-                quizId={this.props.quizId}/>
+                quizId={this.props.routeParams.quizId}/>
         );
 
-        shareQuiz = <CQViewShareQuiz quizId={this.props.quizId}/>;
+        shareQuiz = <CQViewShareQuiz quizId={this.props.routeParams.quizId}/>;
 
         if (!this.state.settings.published && !this.state.settings.originalQuizId) {
-            publishQuiz = (<CQViewQuizMarketplaceOptions quizId={this.props.quizId}/>);
+            publishQuiz = (<CQViewQuizMarketplaceOptions quizId={this.props.routeParams.quizId}/>);
         }
 
         if (this.props.assign === true) {
@@ -150,7 +150,7 @@ export default class CQPublished extends React.Component {
                         Your quiz is ready
                     </h3>
                     <p>
-                        Too soon? <CQLink href={`/quiz/create/${this.props.quizId}`} >Continue building</CQLink>
+                        Too soon? <CQLink href={`/quiz/create/${this.props.routeParams.quizId}`} >Continue building</CQLink>
                     </p>
                 </div>
 
@@ -167,7 +167,7 @@ export default class CQPublished extends React.Component {
 }
 
 CQPublished.propTypes = {
-    quizId: React.PropTypes.string.isRequired,
+    routeParams: React.PropTypes.object.isRequired,
     assign: React.PropTypes.bool,
     publish: React.PropTypes.bool,
     share: React.PropTypes.bool

@@ -51,6 +51,7 @@ var CQViewQuizMarketplaceOptions = React.createClass({
 
     handleDone: function(){
 
+        console.log('publishing to marketplace');
         var settings = {
             price: this.state.price
         };

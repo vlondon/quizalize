@@ -315,7 +315,7 @@ var QuizActions = {
             text: `Thanks for publishing your quiz! Our Quizalize team will get back to you within 24 hours!`,
             type: 'success'
         }, ()=>{
-            router.setRoute(`/quiz/quizzes`);
+            router.setRoute(`/quiz/user`);
         });
 
         AppDispatcher.dispatch({
