@@ -246,7 +246,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var seed = Math.floor((Math.random() * 100) + 1);
             if (settings && questions!=undefined && questions.length>1) {
                 if (settings['random']==false) {
-                    seed = quiz.updated;
+                    seed = quiz.meta.updated;
                 }
                 var result2 = [];
                 if (settings['numQuestions']) {
