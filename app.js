@@ -7,6 +7,7 @@ var path        = require('path');
 var favicon     = require('serve-favicon');
 var session     = require('express-session');
 var FileStore   = require('session-file-store')(session);
+var MongoStore  = require('connect-mongo')(session);
 var bodyParser  = require('body-parser');
 var logger      = require('./src/server/logger');
 
@@ -36,7 +37,7 @@ var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
 
 var sessionOptions = {
     secret: 'zzishdvsheep',
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 * 2 },
+    cookie: { maxAge: 365 * 60 * 60 * 24 * 365 * 2 },
     resave: true,
     saveUninitialized: true
 };
@@ -44,6 +45,8 @@ if (process.env.ZZISH_DEVMODE === 'true'){
     sessionOptions.store = new FileStore({
         path: sessionsFolder
     });
+} else {
+    sessionOptions.store = new MongoStore({url: 'mongodb://localhost/quizalize-sessions'});
 }
 app.use(session(sessionOptions));            // Session support
 
