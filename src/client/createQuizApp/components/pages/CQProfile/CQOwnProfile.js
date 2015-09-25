@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import React, {PropTypes} from 'react';
 import CQProfileView from './CQProfileView';
 
 import AppStore from './../../../stores/AppStore';
@@ -9,7 +9,11 @@ import UserActions from './../../../actions/UserActions';
 import TransactionActions from './../../../actions/TransactionActions';
 
 
-type Props = {};
+type Props = {
+    routeParams: {
+        quizCode?: string;
+    }
+};
 
 type State = {
     profile: Object;
@@ -41,8 +45,8 @@ class CQOwnProfile extends React.Component {
 
     componentDidMount() {
         MeStore.addChangeListener(this.onChange);
-        if (this.props.routeParams.quizCode){
-            console.info('GETTING SHARED QUIZ, ', this.props.routeParams.quizCode);
+        if (this.props.routeParams.quizCode !== undefined) {
+            // console.info('GETTING SHARED QUIZ, ', this.props.routeParams.quizCode);
             TransactionActions.getSharedQuiz(this.props.routeParams.quizCode);
         }
 
@@ -81,5 +85,8 @@ class CQOwnProfile extends React.Component {
     }
 
 }
+CQOwnProfile.propTypes = {
+    routeParams: PropTypes.object
+};
 
 export default CQOwnProfile;

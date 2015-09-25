@@ -22,6 +22,7 @@ import urlParams from './../../../utils/urlParams';
 type Props = {
     routeParams: {
         questionIndex: ?string;
+        quizId: string;
     };
 };
 
