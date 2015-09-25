@@ -244,8 +244,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         if (quiz.payload!==undefined) {
             var questions = quiz.payload.questions;
             var seed = Math.floor((Math.random() * 100) + 1);
-            if (settings && quiz.questions!=undefined && quiz.questions.length>1) {
-                if (settings['random']=="false") {
+            if (settings && questions!=undefined && questions.length>1) {
+                if (settings['random']==false) {
                     seed = quiz.updated;
                 }
                 var result2 = [];
@@ -267,7 +267,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 else {
                     result2 = questions;
                 }
-                if (settings['random']=="true") {
+                if (settings['random']==true) {
                     result = shuffle(result2);
                 }
                 else {
