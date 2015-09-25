@@ -8,7 +8,7 @@ var QuizApi             = require('./../actions/api/QuizApi');
 var TopicActions        = require('./../actions/TopicActions');
 var router              = require('./../config/router');
 
-var UserApi             = require('./../actions/api/UserApi');
+
 import AnalyticsActions from './../actions/AnalyticsActions';
 
 import TopicStore from './../stores/TopicStore';
@@ -236,7 +236,7 @@ var QuizActions = {
                 quiz.payload.questions = quiz.payload.questions.filter( q => q.question.length > 0 && q.answer.length > 0);
                 quiz.payload.questions.forEach(function(q) {
                     q.question = q.question.trim();
-                    q.answer = q.question.trim();
+                    q.answer = q.answer.trim();
                 });
             }
 
@@ -298,7 +298,7 @@ var QuizActions = {
         }
 
         AnalyticsActions.sendEvent('quiz', 'shared', quizName);
-        AnalyticsActions.sendIntercomEvent('complete_share_quiz', {uuid: quizId, name:quizName})
+        AnalyticsActions.sendIntercomEvent('complete_share_quiz', {uuid: quizId, name:quizName});
 
         return QuizApi.shareQuiz(quizId, data);
 
