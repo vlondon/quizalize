@@ -146,40 +146,39 @@ var quizType = new GraphQLObjectType({
 var userAttributes = new GraphQLObjectType({
     name: 'UserAttributes',
     fields: {
+        ageTaught: {
+            type: GraphQLString,
+            description: 'ageTaught',
+        },
+        bannerUrl: {
+            type: GraphQLString,
+            description: 'bannerUrl'
+        },
+        imageUrl: {
+            type: GraphQLString,
+            description: 'imageUrl',
+        },
         location: {
             type: GraphQLString,
             description: 'Location',
 
+        },
+        profileUrl: {
+            type: GraphQLString,
+            description: 'profileUrl',
         },
         school: {
             type: GraphQLString,
             description: 'School',
 
         },
-        url: {
-            type: GraphQLString,
-            description: 'Url',
-
-        },
         subjectTaught: {
             type: GraphQLString,
             description: 'subjectTaught',
-
         },
-        ageTaught: {
+        url: {
             type: GraphQLString,
-            description: 'ageTaught',
-
-        },
-        profileUrl: {
-            type: GraphQLString,
-            description: 'profileUrl',
-
-        },
-        bannerUrl: {
-            type: GraphQLString,
-            description: 'bannerUrl',
-            resolve: (obj) => obj.bannerUrl
+            description: 'Url',
         }
     }
 });
