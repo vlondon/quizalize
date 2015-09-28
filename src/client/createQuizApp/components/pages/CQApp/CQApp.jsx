@@ -10,6 +10,7 @@ var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
 
 import priceFormat from './../../../utils/priceFormat';
 var TransactionActions = require('./../../../actions/TransactionActions');
+import TransactionStore from './../../../stores/TransactionStore';
 
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
@@ -143,16 +144,16 @@ export default class CQApp extends React.Component {
         }
         let getSave = function(){
             let app = appInfo;
-            if (app && app.meta && app.extra){
+            if (app && app.meta && app.extra && app.extra.quizzes){
 
-                let appPrice = app.meta.price;
+                let appPrice = TransactionStore.getPriceInCurrency(app.meta.price, 'us');
                 let quizPrice = 0;
                 app.extra.quizzes.forEach(q=> {
-                    quizPrice += (q.meta.price * 100);
+                    quizPrice += (TransactionStore.getPriceInCurrency(q.meta.price, 'us') * 100);
                 });
                 quizPrice = quizPrice / 100;
                 let appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
-                if (quizPrice !== NaN && quizPrice > 0){
+                if (appQuizDifference !== NaN && appQuizDifference > 0){
                     return (
                         <div>
                             <span style={{padding: 5}}>

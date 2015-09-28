@@ -2,10 +2,11 @@
 import React, { PropTypes } from 'react';
 import CQViewQuizList from './../CQViewQuizList';
 import CQQuizIcon from './../../../components/utils/CQQuizIcon';
-import QuizStore from './../../../stores/QuizStore';
+
 import CQQuizzesProfile from './../../../components/pages/CQQuizzes/CQQuizzesProfile';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
+import TransactionStore from './../../../stores/TransactionStore';
 
 import priceFormat from './../../../utils/priceFormat';
 import kolor from 'kolor';
@@ -14,7 +15,7 @@ import router from './../../../config/router';
 type Props = Object;
 type State = Object;
 
-class CQViewAppQuizList extends React.Component {
+        class CQViewAppQuizList extends React.Component {
 
     props: Props;
 
@@ -105,10 +106,10 @@ class CQViewAppQuizList extends React.Component {
                                 var buyAppLabel = app.meta.price && app.meta.price > 0 ? `Get all ${app.meta.quizzes.length} quizzes for ${priceFormat(app.meta.price, '$', 'us')} ` : 'Save app to your profile';
 
                                 var getSave = function(){
-                                    var appPrice = app.meta.price;
+                                    var appPrice = TransactionStore.getPriceInCurrency(app.meta.price, 'us');
                                     var quizPrice = 0;
                                     app.meta.quizzes.forEach(q=> {
-                                        quizPrice += (q.meta.price * 100);
+                                        quizPrice += (TransactionStore.getPriceInCurrency(q.meta.price, 'us') * 100);
                                     });
                                     quizPrice = quizPrice / 100;
                                     var appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
@@ -120,7 +121,7 @@ class CQViewAppQuizList extends React.Component {
                                         );
                                     }
                                 };
-                                
+
                                 buyApp = (
                                     <span>
                                         <button className="appquizlist__app__button">
