@@ -134,13 +134,36 @@ export default class CQApp extends React.Component {
                 quizId={this.state.quizDetails}/>);
         }
 
+        let {appInfo} = this.state;
         let author;
         if (this.state.appInfo && this.state.appInfo.extra && this.state.appInfo.extra.author.name){
             author = (
                 <span>by <CQLink href={`/quiz/user/${this.state.appInfo.extra.author.uuid}`}>{this.state.appInfo.extra.author.name}</CQLink></span>
             );
         }
-        console.log('author', author);
+        let getSave = function(){
+            let app = appInfo;
+            if (app && app.meta && app.extra){
+
+                let appPrice = app.meta.price;
+                let quizPrice = 0;
+                app.extra.quizzes.forEach(q=> {
+                    quizPrice += (q.meta.price * 100);
+                });
+                quizPrice = quizPrice / 100;
+                let appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
+                if (quizPrice !== NaN && quizPrice > 0){
+                    return (
+                        <span style={{padding: 5}}>
+                            Save  <b>{appQuizDifference}%</b> when buying the app
+                        </span>
+                    );
+                }
+            }
+        };
+
+
+
 
         var description = this.state.appInfo ? this.state.appInfo.meta.description : '';
 
@@ -162,6 +185,9 @@ export default class CQApp extends React.Component {
                             <button className="cq-app__button" onClick={this.handleBuy.bind(this)}>
                                 Play all in class for {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
                             </button>
+                            <br/>
+                            {getSave()}
+                            <br/><br/>
 
                         </div>
                         <div className="cq-app__author">
