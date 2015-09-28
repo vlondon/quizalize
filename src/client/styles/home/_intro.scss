@@ -52,13 +52,15 @@
             // background: rgba($brand-color-purple, 1);
             text-align: left;
             top: 20px;
-            right: 20px;
+            // right: 20px;
             width: 260px;
             bottom: auto;
-            left: auto;
+            left: 20px;
 
         }
-
+        &__ctas__1,
+        &__ctas__2,
+        &__ctas__3,
         &__cta {
             width: 220px;
             margin: auto;
