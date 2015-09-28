@@ -154,9 +154,12 @@ export default class CQApp extends React.Component {
                 let appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
                 if (quizPrice !== NaN && quizPrice > 0){
                     return (
-                        <span style={{padding: 5}}>
-                            Save  <b>{appQuizDifference}%</b> when buying the app
-                        </span>
+                        <div>
+                            <span style={{padding: 5}}>
+                                Save  <b>{appQuizDifference}%</b> when buying the app
+                            </span>
+                            <br/><br/>
+                        </div>
                     );
                 }
             }
@@ -187,7 +190,7 @@ export default class CQApp extends React.Component {
                             </button>
                             <br/>
                             {getSave()}
-                            <br/><br/>
+
 
                         </div>
                         <div className="cq-app__author">
