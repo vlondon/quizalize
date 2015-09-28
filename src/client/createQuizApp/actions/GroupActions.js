@@ -40,15 +40,13 @@ var GroupActions = {
             this.publishNewAssignment(quizId, 'Your first class')
                 .then(classResponse => {
                     console.log('class', classResponse);
-                    setTimeout(function(){
-                        router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`);
-                    }, 510);
+                    router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
+
                 });
         } else {
             console.log('a class already exists');
-            setTimeout(function(){
-                router.setRoute(`/quiz/published/${quizId}/assign`);
-            }, 510);
+            router.setRoute(`/quiz/published/${quizId}/assign`, true);
+
         }
     },
 

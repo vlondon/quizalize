@@ -42,7 +42,7 @@ var CQPublishedInfo = React.createClass({
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
-        console.log('groups', groups, groupsContent);
+
         var currentClass = groups.filter( g => g.code === this.props.routeParams.classCode)[0];
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.routeParams.quizId)[0];
 
