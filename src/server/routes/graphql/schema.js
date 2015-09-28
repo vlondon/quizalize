@@ -55,8 +55,8 @@ var appMeta = new GraphQLObjectType({
         quizzes: {
             type: new GraphQLList(quizType),
             resolve: ({quizzes, profileId})=>{
-                console.log('RESOLVING ', quizzes);
-                if (typeof quizzes === 'string') {
+                console.log('RESOLVING ', quizzes, typeof quizzes);
+                if (typeof quizzes === 'string' && quizzes.length > 0) {
                     var quizzesID = quizzes.split(',');
                     return graphQLQuiz.getQuizzes(profileId, quizzesID);
                 } else {
