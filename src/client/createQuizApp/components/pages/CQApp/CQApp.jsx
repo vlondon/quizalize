@@ -146,11 +146,12 @@ export default class CQApp extends React.Component {
             let app = appInfo;
             if (app && app.meta && app.extra && app.extra.quizzes){
 
-                let appPrice = TransactionStore.getPriceInCurrency(app.meta.price, 'us');
                 let quizPrice = 0;
                 app.extra.quizzes.forEach(q=> {
                     quizPrice += (TransactionStore.getPriceInCurrency(q.meta.price, 'us') * 100);
                 });
+
+                let appPrice = TransactionStore.getPriceInCurrency(app.meta.price, 'us');
                 quizPrice = quizPrice / 100;
                 let appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
                 if (appQuizDifference !== NaN && appQuizDifference > 0){
@@ -163,6 +164,7 @@ export default class CQApp extends React.Component {
                         </div>
                     );
                 }
+
             }
         };
 
