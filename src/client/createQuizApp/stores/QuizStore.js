@@ -135,8 +135,10 @@ class QuizStore extends Store {
 
     // this will return all user quizzes that are not bought
     getPersonalQuizzes(): Array<Quiz> {
+        // var ordered = _quizzes.slice().filter( q => (q.meta.originalQuizId === undefined || q.meta.originalQuizId === null));
+        console.log('working with', _quizzes);
         //return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined && q.meta.published === 'published');
-        return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined);
+        return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined || q.meta.originalQuizId === null);
     }
 
     getQuizMeta(quizId): Quiz {
@@ -237,7 +239,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
-        // case QuizConstants.QUIZZES_LOADED:
+        case QuizConstants.QUIZZES_LOADED:
             // AppDispatcher.waitFor([
             //     TopicStore.token
             // ]);

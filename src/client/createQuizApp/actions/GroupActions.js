@@ -31,7 +31,8 @@ var GroupActions = {
     },
 
     createFirstAssignment: function(quizId : string){
-
+        debugger;
+        console.log('createFirstAssignment', quizId);
         // make sure we don't have any class created:
         var groups = GroupStore.getGroups();
         if (groups.length === 0){
@@ -39,15 +40,13 @@ var GroupActions = {
             this.publishNewAssignment(quizId, 'Your first class')
                 .then(classResponse => {
                     console.log('class', classResponse);
-                    setTimeout(function(){
-                        router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`);
-                    }, 510);
+                    router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
+
                 });
         } else {
             console.log('a class already exists');
-            setTimeout(function(){
-                router.setRoute(`/quiz/published/${quizId}/assign`);
-            }, 510);
+            router.setRoute(`/quiz/published/${quizId}/assign`, true);
+
         }
     },
 

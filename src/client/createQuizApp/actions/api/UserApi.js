@@ -92,11 +92,14 @@ var UserApi = {
                 uuid,
                 email
                 attributes {
+                    ageTaught,
+                    bannerUrl,
+                    imageUrl,
                     location,
                     profileUrl,
-                    bannerUrl,
-                    profileUrl,
-                    school
+                    school,
+                    subjectTaught,
+                    url
                 },
                 quizzes {
                     uuid,

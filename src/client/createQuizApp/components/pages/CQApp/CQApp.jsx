@@ -10,6 +10,7 @@ var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
 
 import priceFormat from './../../../utils/priceFormat';
 var TransactionActions = require('./../../../actions/TransactionActions');
+import TransactionStore from './../../../stores/TransactionStore';
 
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
@@ -134,13 +135,41 @@ export default class CQApp extends React.Component {
                 quizId={this.state.quizDetails}/>);
         }
 
+        let {appInfo} = this.state;
         let author;
         if (this.state.appInfo && this.state.appInfo.extra && this.state.appInfo.extra.author.name){
             author = (
                 <span>by <CQLink href={`/quiz/user/${this.state.appInfo.extra.author.uuid}`}>{this.state.appInfo.extra.author.name}</CQLink></span>
             );
         }
-        console.log('author', author);
+        let getSave = function(){
+            let app = appInfo;
+            if (app && app.meta && app.extra && app.extra.quizzes){
+
+                let quizPrice = 0;
+                app.extra.quizzes.forEach(q=> {
+                    quizPrice += (TransactionStore.getPriceInCurrency(q.meta.price, 'us') * 100);
+                });
+
+                let appPrice = TransactionStore.getPriceInCurrency(app.meta.price, 'us');
+                quizPrice = quizPrice / 100;
+                let appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
+                if (appQuizDifference !== NaN && appQuizDifference > 0){
+                    return (
+                        <div>
+                            <span style={{padding: 5}}>
+                                Save  <b>{appQuizDifference}%</b> when buying the app
+                            </span>
+                            <br/><br/>
+                        </div>
+                    );
+                }
+
+            }
+        };
+
+
+
 
         var description = this.state.appInfo ? this.state.appInfo.meta.description : '';
 
@@ -162,6 +191,9 @@ export default class CQApp extends React.Component {
                             <button className="cq-app__button" onClick={this.handleBuy.bind(this)}>
                                 Play all in class for {priceFormat(this.state.appInfo.meta.price, '$', 'us')}
                             </button>
+                            <br/>
+                            {getSave()}
+
 
                         </div>
                         <div className="cq-app__author">
