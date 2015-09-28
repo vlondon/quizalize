@@ -1,0 +1,166 @@
+.cq-app {
+
+    $appIcon: 190px;
+    $quizIcon: 40px;
+
+    text-align: center;
+    max-width: 700px;
+    margin: auto;
+    margin-top: 40px;
+
+    .cq-appgrid { display: inline;}
+
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__info {
+        color: #FFF;
+        h1, h2, h3 {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+    }
+
+    &__price {
+        text-transform: uppercase;
+        text-size: 21px;
+        margin-bottom: 30px;
+        color: #FFF;
+    }
+
+    &__description {
+        color: #FFF;
+        margin-bottom: 30px;
+    }
+
+    &__quizlist {
+        small { display: none; }
+    }
+
+
+    &__quiz {
+        text-align: left;
+        border-bottom: 1px solid $brand-color-grey-lighter;
+        margin: 5px;
+        padding: 5px;
+        @include clearfix();
+    }
+
+    &__quiz-inner {
+        text-align: left;
+        float: left;
+    }
+
+    &__icon {
+        width: $appIcon;
+        height: $appIcon;
+        border-radius: 100%;
+        margin: 5px;
+        display: inline-block;
+
+        font-size: $appIcon - 10px;
+        text-align: center;
+        line-height: $appIcon;
+        color: #FFF;
+        background-size: cover;
+        background-position: center center;
+        overflow: hidden;
+        img {
+            width: 100%;
+            display: block;
+        }
+
+    }
+    &__author {
+        color: #FFF;
+        margin-bottom: 30px;
+        a { color: #FFF; }
+    }
+    &__quizname {
+        font-weight: bold;
+        display: inline;
+        font-size: 18px;
+    }
+
+    &__quizauthor {
+        display: inline;
+    }
+
+    &__quizdate {
+        font-weight: 100;
+        color: $brand-color-grey;
+    }
+
+    &__quizextra {
+        text-align: center;
+        margin: 12px 0;
+        float: right;
+    }
+
+    &__quizcategory {
+        display: inline-block;
+        font-weight: 100;
+        color: $brand-color-grey;
+        font-size: 10px;
+        line-height: 10px;
+        border: 1px solid $brand-color-grey;
+        padding: 5px;
+        border-radius: 10px;
+        margin: 2px;
+    }
+
+    &__sort {
+        float: left;
+        width: 300px;
+        min-height: 400px;
+        background: $brand-color-grey-lighter;
+    }
+
+
+    &__list {
+
+        width: 100%;
+    }
+
+    &__button {
+
+        color: $brand-color-black;
+        margin: 0;
+        padding: 5px;
+        font-weight: bold;
+        text-size: 21px;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 20px;
+        border: none;
+        background: #FFF;
+        box-shadow: 0px 2px  0 $brand-color-black;
+
+        &:focus,
+        &:hover {
+            background: $brand-color-grey-lighter;
+            /* color: $brand-color-grey-lighter; */
+        }
+
+        &:active {
+            background: $brand-color-grey-light;
+            box-shadow: inset 0 2px 0 $brand-color-black;
+        }
+    }
+
+    &__buttonextra {
+        background: $brand-color-grey-lighter;
+        color: $brand-color-grey;
+        margin: 5px;
+        padding: 5px;
+        cursor: pointer;
+
+        &:hover {
+            background: $brand-color-grey;
+            color: $brand-color-grey-lighter;
+        }
+    }
+}

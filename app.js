@@ -1,45 +1,54 @@
 // set variables for environment
+require('babel/register');
 require('pmx').init();
 var express     = require('express');
 var app         = express();
 var path        = require('path');
 var favicon     = require('serve-favicon');
 var session     = require('express-session');
+var FileStore   = require('session-file-store')(session);
+var MongoStore  = require('connect-mongo')(session);
 var bodyParser  = require('body-parser');
-var logger      = require('./logger');
+var logger      = require('./src/server/logger');
 
-var config      = require('./config');
-var email       = require('./email');
-var quiz        = require('./routes/quiz');
-var appContent  = require('./routes/appContent');
-var transaction = require('./routes/transaction');
-var user        = require('./routes/user');
-var search      = require('./routes/search');
-var admin      = require('./routes/admin');
-var marketplace      = require('./routes/marketplace');
+var config      = require('./src/server/config');
+var email       = require('./src/server/email');
+var quiz        = require('./src/server/routes/quiz');
+var appContent  = require('./src/server/routes/appContent');
+var transaction = require('./src/server/routes/transaction');
+var user        = require('./src/server/routes/user');
+var search      = require('./src/server/routes/search');
+var admin       = require('./src/server/routes/admin');
+var marketplace = require('./src/server/routes/marketplace');
 
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
-var intercom = require('./routes/intercom');
+var intercom = require('./src/server/routes/intercom');
 
-
+var graphql = require('./src/server/routes/graphql').graphql;
 
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, '/public/favcq.png')));
-app.use(
-    session(
-        {
-            secret: 'zzishdvsheep',
-            cookie: { maxAge: 1000 * 60 * 60 },
-            resave: true,
-            saveUninitialized: true
-        }
-    )
-);            // Session support
+var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
+
+var sessionOptions = {
+    secret: 'zzishdvsheep',
+    cookie: { maxAge: 365 * 60 * 60 * 24 * 365 * 2 },
+    resave: true,
+    saveUninitialized: true
+};
+if (process.env.ZZISH_DEVMODE === 'true'){
+    sessionOptions.store = new FileStore({
+        path: sessionsFolder
+    });
+} else {
+    sessionOptions.store = new MongoStore({url: 'mongodb://localhost/quizalize-sessions'});
+}
+app.use(session(sessionOptions));            // Session support
 
 app.use(function(req, res, next){
     res.locals.session = req.session;
@@ -51,9 +60,13 @@ app.use(function(req, res, next){
 app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
+app.use(bodyParser.text({ type: 'application/graphql' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({dest: './uploads/'})); // Image uploads
 app.use(compression());
+
+// graphql
+app.post('/graphql', graphql);
 
 //The static pages:
 app.get('/quiz/view/:page', function(req, res){
@@ -66,6 +79,7 @@ app.get('/quiz/create', quiz.create);
 //Endpoints for teachers TODO rename appropriately
 
 app.post('/user/authenticate', user.authenticate);
+app.post('/user/logout', user.logout);
 app.post('/user/register', user.register);
 app.post('/user/forget', user.forget);
 app.post('/user/token', user.token);
@@ -74,7 +88,7 @@ app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 app.get('/user/:profileId', user.details);
 app.post('/user/search', user.search);
-app.post('/user/:profileId', user.saveUser);
+app.post('/user', user.saveUser);
 app.post('/email/', email.sendDocumentEmail);
 
 app.post('/user/:uuid/events/:name', intercom.events);
@@ -121,6 +135,7 @@ if (process.env.admin === "true") {
     app.get('/admin/pending', admin.pendingQuizzes);
     app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
+    app.get('/admin/emails', admin.emailList);
     app.get('/admin/newmetric', admin.newMetric);
     app.post('/admin/metrics', admin.data);
     app.post('/admin/submitmetrics', admin.submitmetrics);
