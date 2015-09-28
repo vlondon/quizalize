@@ -1,10 +1,10 @@
 /* @flow */
 import React from 'react';
 
-import MeStore               from '../../../stores/MeStore';
-import CQPageTemplate          from '../../CQPageTemplate';
-import CQYourAppsCreate        from './CQYourAppsCreate';
-
+import MeStore from './../../../stores/MeStore';
+import CQPageTemplate from './../../CQPageTemplate';
+import CQYourAppsCreate from './CQYourAppsCreate';
+import UserActions from './../../../actions/UserActions';
 type Props = {
     routeParams: {
         appId: string;
@@ -20,11 +20,11 @@ export default class CQYourApps extends React.Component {
     props: Props;
 
     constructor(props:Props) {
-
         super(props);
         this.state = {
             isAdmin: MeStore.isAdmin()
         };
+        UserActions.getOwn();
     }
 
     render() {
