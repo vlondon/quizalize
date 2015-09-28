@@ -239,7 +239,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
-        // case QuizConstants.QUIZZES_LOADED:
+        case QuizConstants.QUIZZES_LOADED:
             // AppDispatcher.waitFor([
             //     TopicStore.token
             // ]);
