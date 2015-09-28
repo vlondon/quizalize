@@ -43,8 +43,8 @@ var CQPublishedInfo = React.createClass({
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
         console.log('groups', groups, groupsContent);
-        var currentClass = groups.filter( g => g.code === this.props.classCode)[0];
-        var currentQuiz = quizzes.filter(q => q.uuid === this.props.quizId)[0];
+        var currentClass = groups.filter( g => g.code === this.props.routeParams.classCode)[0];
+        var currentQuiz = quizzes.filter(q => q.uuid === this.props.routeParams.quizId)[0];
 
         // var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
         var classLink = currentClass ? currentClass.link : undefined;
