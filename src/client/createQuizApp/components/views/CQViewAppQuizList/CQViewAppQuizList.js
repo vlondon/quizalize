@@ -113,7 +113,7 @@ type State = Object;
                                     });
                                     quizPrice = quizPrice / 100;
                                     var appQuizDifference = Math.round((quizPrice - appPrice) / quizPrice * 100);
-                                    if (quizPrice !== NaN && quizPrice > 0){
+                                    if (appQuizDifference !== NaN && appQuizDifference > 0){
                                         return (
                                             <span style={{padding: 5}}>
                                                 Save  <b>{appQuizDifference}%</b> when buying the app
