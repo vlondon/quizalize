@@ -39,7 +39,8 @@ var sessionOptions = {
     secret: 'zzishdvsheep',
     cookie: { maxAge: 365 * 60 * 60 * 24 * 365 * 2 },
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    name: 'quiz_session'
 };
 if (process.env.ZZISH_DEVMODE === 'true'){
     sessionOptions.store = new FileStore({
