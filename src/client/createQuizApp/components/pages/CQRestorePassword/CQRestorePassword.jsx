@@ -18,7 +18,7 @@ var CQRestorePassword = React.createClass({
         };
     },
 
-    handleSubmit: function(data) {
+    handleSubmit: function(data : Object) {
 
         // expects data as an object with
         // email and password
@@ -47,7 +47,7 @@ var CQRestorePassword = React.createClass({
     },
 
 
-    render: function() {
+    render: function() : any {
         return (
             <CQPageTemplate className="cq-login">
 
