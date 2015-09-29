@@ -3,6 +3,7 @@ import { Router, Route } from 'react-router';
 import history from './history';
 import MeStore from './../stores/MeStore';
 import React from 'react';
+
 var router              = require('./router');
 
 var pagesArray          = require('./routes').pagesArray;

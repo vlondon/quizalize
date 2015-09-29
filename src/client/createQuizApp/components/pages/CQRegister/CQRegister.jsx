@@ -37,7 +37,6 @@ var CQRegister = React.createClass({
 
                 this.setState({isRegister: false});
 
-
             })
             .catch((error) => {
                 if (error === 409){

@@ -1,7 +1,7 @@
 /* @flow */
 
 // var settings        = require('utils/settings');
-
+var CQWelcome               = require('./../components/pages/CQWelcome');
 var CQMarketplace           = require('./../components/pages/CQMarketplace');
 var CQProfile               = require('./../components/pages/CQProfile');
 var CQProfileSlug           = require('./../components/pages/CQProfile/CQProfileSlug');
@@ -40,6 +40,12 @@ var pagesArray: Array<Page> = [
         needsLogin: undefined,
         component: CQOwnProfile,
 
+    },
+    {
+        name: 'CQWelcome',
+        path: '/quiz/welcome',
+        needsLogin: true,
+        component: CQWelcome
     },
     {
         name: 'ownProfilePage',
