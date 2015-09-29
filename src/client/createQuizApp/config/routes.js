@@ -1,5 +1,4 @@
 /* @flow */
-var React               = require('react');
 
 // var settings        = require('utils/settings');
 
@@ -13,7 +12,6 @@ var CQRegister              = require('./../components/pages/CQRegister');
 var CQRecoverPassword       = require('./../components/pages/CQRecoverPassword');
 var CQRestorePassword       = require('./../components/pages/CQRestorePassword');
 var CQRedirect              = require('./../components/pages/CQRedirect');
-var CQQuizzes               = require('./../components/pages/CQQuizzes');
 var CQCreate                = require('./../components/pages/CQCreate');
 var CQReview                = require('./../components/pages/CQReview');
 var CQEdit                  = require('./../components/pages/CQEdit');
@@ -31,9 +29,7 @@ var CQAssignQuiz            = require('./../components/pages/CQAssignQuiz');
 export type Page = {
     name: string;
     path: string;
-    pathRegEx?: Object;
     needsLogin: ?boolean;
-    renderer?: Function;
     component: Object;
 }
 
@@ -55,7 +51,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'profileUrlPage',
         path: '/profile/:profileUrl',
-        pathRegEx: /\/profile\/([\w\-]+)/,
         needsLogin: undefined,
         component: CQProfileSlug,
 
@@ -63,7 +58,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'profilePage',
         path: '/quiz/user/:profileId',
-        pathRegEx: /\/quiz\/user\/([\w\-]+)/,
         needsLogin: undefined,
         component: CQProfile,
 
@@ -71,7 +65,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'sharedQuizPage',
         path: '/quiz/user/:profileId/:quizCode',
-        pathRegEx: /\/quiz\/\/user\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: undefined,
         component: CQProfile,
 
@@ -132,7 +125,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'restorePassword',
         path: '/quiz/reset/:code',
-        pathRegEx: /\/quiz\/reset\/([\w\-]+)/,
         needsLogin: false,
         component: CQRestorePassword,
 
@@ -149,7 +141,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'yourAppsEdit',
         path: '/quiz/apps/:appId',
-        pathRegEx: /\/quiz\/apps\/([\w\-]+)/,
         needsLogin: true,
         component: CQYourApps,
 
@@ -166,7 +157,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'quizzesShare',
         path: '/quiz/quizzes/s/:quizCode',
-        pathRegEx: /\/quiz\/quizzes\/s\/([\w\-]+)/,
         needsLogin: true,
         component: CQOwnProfile,
 
@@ -175,7 +165,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'redirect',
         path: '/quiz/playh/:redirectURL',
-        pathRegEx: /\/quiz\/playh\/([\w\-]+)/,
         needsLogin: true,
         component: CQRedirect,
 
@@ -192,7 +181,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'editQuiz',
         path: '/quiz/edit/:quizId',
-        pathRegEx: /\/quiz\/edit\/([\w\-]+)/,
         needsLogin: true,
         component: CQCreate,
 
@@ -201,7 +189,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'reviewQuiz',
         path: '/quiz/review/:quizId',
-        pathRegEx: /\/quiz\/review\/([\w\-]+)/,
         needsLogin: true,
         component: CQReview,
 
@@ -211,7 +198,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'edit',
         path: '/quiz/create/:quizId',
-        pathRegEx: /\/quiz\/create\/([\w\-]+)/,
         needsLogin: true,
         component: CQEdit,
 
@@ -220,7 +206,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'editQuestion',
         path: '/quiz/create/:quizId/:questionIndex',
-        pathRegEx: /\/quiz\/create\/([\w\-]+)\/([\w\-]+)/,
         needsLogin: true,
         component: CQEdit,
 
@@ -237,7 +222,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'multi',
         path: '/quiz/multi/:quizId',
-        pathRegEx: /\/quiz\/multi\/([\w\-]+)/,
         needsLogin: true,
         component: CQAssignQuiz,
 
@@ -247,7 +231,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'published',
         path: '/quiz/published/:quizId',
-        pathRegEx: /\/quiz\/published\/([\w\-]+)/,
         needsLogin: true,
         component: CQPublished,
 
@@ -256,7 +239,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'publishedAssign',
         path: '/quiz/published/:quizId/assign',
-        pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
         component: CQPublishedAssign
     },
@@ -264,7 +246,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'publishedShare',
         path: '/quiz/published/:quizId/share',
-        pathRegEx: /\/quiz\/published\/([\w\-]+)\/share/,
         needsLogin: true,
         component: CQPublishedShare
     },
@@ -272,7 +253,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'publishedPricing',
         path: '/quiz/published/:quizId/publish',
-        pathRegEx: /\/quiz\/published\/([\w\-]+)\/assign/,
         needsLogin: true,
         component: CQPublishedPublished,
 
@@ -282,7 +262,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'publishedInfo',
         path: '/quiz/published/:quizId/:classCode/info',
-        pathRegEx: /\/quiz\/published\/([\w\-]+)\/([\w\-]+)\/info/,
         needsLogin: true,
         component: CQPublishedInfo,
 
@@ -291,7 +270,6 @@ var pagesArray: Array<Page> = [
     {
         name: 'app',
         path: '/quiz/app/:appId',
-        pathRegEx: /\/quiz\/app\/([\w\-]+)/,
         needsLogin: undefined,
         component: CQApp,
 
@@ -302,27 +280,11 @@ var pagesArray: Array<Page> = [
         path: '*',
         needsLogin: false,
         component: CQNotFound,
-        
+
     }
 ];
 
-var pages = {
-    pathParams: {
-        quizId: /([\w\-]+)/,
-        appId: /([\w\-]+)/,
-        quizCode: /([\w\-]+)/,
-        authorId: /([\w\-]+)/,
-        questionIndex: /([\w\-]+)/,
-        classCode: /([\w\-]+)/,
-        redirectURL: /([\w\-]+)/,
-        code: /([\w\-]+)/
-    },
-    pageNotFound: pagesArray.filter((p) => p.name === 'pageNotFound')[0]
 
-};
 
-pagesArray.forEach( p => {
-    pages[p.name] = p;
-});
 
-module.exports = { pages, pagesArray };
+module.exports = { pagesArray };
