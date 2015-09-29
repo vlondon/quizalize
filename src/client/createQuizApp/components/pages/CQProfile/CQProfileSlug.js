@@ -5,7 +5,9 @@ import CQProfileView from './CQProfileView';
 import UserStore from './../../../stores/UserStore';
 
 type Props = {
-    profileUrl: string;
+    routeParams: {
+        profileUrl: string;
+    }
 }
 type State = {
     profile: Object;
@@ -39,9 +41,10 @@ class CQProfileSlug extends React.Component {
     }
 
     getState () : State {
-        var profile = UserStore.getPublicUserByUrl(this.props.profileUrl);
+        var profile = UserStore.getPublicUserByUrl(this.props.routeParams.profileUrl);
         var apps = profile ? profile.apps : [];
         var quizzes = profile ? profile.quizzes : [];
+        console.log('setting state', profile, apps, quizzes);
         return { profile, apps, quizzes };
     }
 
@@ -58,6 +61,6 @@ class CQProfileSlug extends React.Component {
 }
 
 CQProfileSlug.propTypes = {
-    profileUrl: React.PropTypes.string
+    routeParams: React.PropTypes.object
 };
 export default CQProfileSlug;

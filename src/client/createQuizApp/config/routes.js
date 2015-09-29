@@ -67,7 +67,7 @@ var pagesArray: Array<Page> = [
         path: '/profile/:profileUrl',
         pathRegEx: /\/profile\/([\w\-]+)/,
         needsLogin: undefined,
-        component: CQProfile,
+        component: CQProfileSlug,
         renderer: function(profileUrl: string){
             React.render(
                 React.createElement(CQProfileSlug, {profileUrl}),

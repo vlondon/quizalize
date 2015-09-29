@@ -75,6 +75,7 @@ class UserStore extends Store {
             _usersByUrl[url] = null;
 
         }
+        console.log('_users get', _users, userId, _users.get(userId));
         return _users.get(userId);
     }
 
@@ -109,7 +110,8 @@ AppDispatcher.register(function(action) {
             console.log('UserConstants.USER_PUBLIC_LOADED_URL', action);
             var user = action.payload;
             _usersByUrl[user.attributes.profileUrl] = user.uuid;
-            _users.set(user.uuid, user);
+            console.log('_users set', user.attributes.profileUrl, user.uuid, _usersByUrl, user);
+            _users = _users.set(user.uuid, user);
             userStore.emitChange();
             break;
 

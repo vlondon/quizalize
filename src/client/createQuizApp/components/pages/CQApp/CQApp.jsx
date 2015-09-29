@@ -5,7 +5,7 @@ var router = require('./../../../config/router');
 import AppStore from './../../../stores/AppStore';
 import TopicStore from './../../../stores/TopicStore';
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
-import CQLink from './../../../components/utils/CQLink';
+import CQLinkToUser from './../../../components/utils/CQLinkToUser';
 var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
 
 import priceFormat from './../../../utils/priceFormat';
@@ -139,7 +139,7 @@ export default class CQApp extends React.Component {
         let author;
         if (this.state.appInfo && this.state.appInfo.extra && this.state.appInfo.extra.author.name){
             author = (
-                <span>by <CQLink href={`/quiz/user/${this.state.appInfo.extra.author.uuid}`}>{this.state.appInfo.extra.author.name}</CQLink></span>
+                <span>by <CQLinkToUser uuid={this.state.appInfo.extra.author.uuid} slug={this.state.appInfo.extra.author.profileUrl}>{this.state.appInfo.extra.author.name}</CQLinkToUser></span>
             );
         }
         let getSave = function(){
