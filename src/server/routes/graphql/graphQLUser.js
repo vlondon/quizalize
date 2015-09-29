@@ -16,7 +16,7 @@ class User {
 
     getUserQuizzes(){
         if (!this._userQuizzesInit) {
-
+            console.log('GGGOGOGOGOGOGOGOGOGOGOGOOG');
             this.userQuizzes = [];
 
             var performQuery = function(mongoQuery) {

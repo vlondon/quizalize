@@ -38,7 +38,7 @@ class Quizzes {
                     reject(err);
                 } else {
                     var quiz = new Quiz(resp);
-                    console.log('userquizzes', quiz);
+
                     this.quizzes.push(quiz);
                     resolve(quiz);
                 }
@@ -64,7 +64,7 @@ class Quizzes {
 
         return new Promise((resolve, reject)=>{
             zzish.getContents(profileId, 'quiz', quizIds, (err, quizzes) => {
-                console.log('quizzes', err, quizzes);
+
                 if (err){
                     reject(err);
                 } else {
@@ -73,19 +73,18 @@ class Quizzes {
             });
         });
 
-        let aLongTimeAgo = 1;
-
-        var mongoQuery = {
-            uuid: {$in: quizIds},
-            updated: {
-                $gt: aLongTimeAgo
-            },
-            published: "published"
-        };
-
-        console.log('query', mongoQuery);
-
-        return performQuery(mongoQuery);
+        // let aLongTimeAgo = 1;
+        //
+        // var mongoQuery = {
+        //     uuid: {$in: quizIds},
+        //     updated: {
+        //         $gt: aLongTimeAgo
+        //     },
+        //     published: "published"
+        // };
+        //
+        //
+        // return performQuery(mongoQuery);
     }
 
     getUserQuizzes (profileId){
@@ -115,7 +114,7 @@ var performQuery = function(mongoQuery) {
 
     return new Promise((resolve, reject)=>{
         zzish.searchPublicContent('quiz', mongoQuery, function(err, resp){
-            console.log('answer', resp, err);
+
             if (resp) {
                 resolve(resp);
             } else {

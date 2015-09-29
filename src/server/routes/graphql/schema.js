@@ -221,10 +221,16 @@ var userType = new GraphQLObjectType({
         // dynamic data
         quizzes: {
             type: new GraphQLList(quizType),
-            resolve: ({uuid}, a, {rootValue})=>{
+            args: {
+                me: {
+                    name: 'me',
+                    type: GraphQLBoolean
+                }
+            },
+            resolve: ({uuid}, {me})=>{
                 // this has user
-                console.log('uuid,', uuid, rootValue);
-                if (uuid === rootValue) {
+                console.log('uuid,', uuid, me);
+                if (me === true) {
                     return graphQLQuiz.getMyQuizzes(uuid);
                 } else {
 
@@ -236,9 +242,15 @@ var userType = new GraphQLObjectType({
 
         apps: {
             type: new GraphQLList(appType),
-            resolve: ({uuid}) => {
-                console.log('getting apps', uuid);
-                return graphQLApps.getUserApps(uuid);
+            args: {
+                me: {
+                    name: 'me',
+                    type: GraphQLBoolean
+                }
+            },
+            resolve: ({uuid}, {me}, {rootValue}) => {
+                console.log('getting apps', uuid, rootValue, me);
+                return graphQLApps.getUserApps(uuid, me);
             }
         }
     })
@@ -272,6 +284,7 @@ var schema = new GraphQLSchema({
                     if (name) {
                         return graphQLUser.getUserBySlug(name);
                     } else if (uuid) {
+                        console.log('getting user by id', uuid);
                         return graphQLUser.getUserByid(uuid);
                     } else {
                         return graphQLUser.getMyUser(root);
@@ -284,10 +297,15 @@ var schema = new GraphQLSchema({
                     uuid: {
                         name: 'uuid',
                         type: new GraphQLNonNull(GraphQLString)
+                    },
+                    me: {
+                        name: 'me',
+                        type: GraphQLBoolean
                     }
                 },
                 resolve: (root, {uuid}) => {
                     console.log('graphQLApps',graphQLApps );
+
                     return graphQLApps.getApp(uuid);
                 }
             },

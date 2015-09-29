@@ -101,7 +101,7 @@ var UserApi = {
                     subjectTaught,
                     url
                 },
-                quizzes {
+                quizzes(me:true) {
                     uuid,
                     meta {
                         name,
@@ -114,7 +114,7 @@ var UserApi = {
                         published
                     }
                 },
-                apps {
+                apps(me: true) {
                     uuid,
                     meta {
                         name,
