@@ -13,8 +13,6 @@ class CQLinkToUser extends React.Component {
     }
 
     getUrl (uuid: string) : string {
-
-
         var slug = this.props.slug;
         var url;
 
@@ -29,7 +27,7 @@ class CQLinkToUser extends React.Component {
 
     render () {
         return (
-            <CQLink href={this.state.url}>{this.props.children}</CQLink>
+            <CQLink {...this.props} href={this.state.url}>{this.props.children}</CQLink>
         );
     }
 
