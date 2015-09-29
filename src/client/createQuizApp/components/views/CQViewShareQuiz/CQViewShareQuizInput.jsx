@@ -151,6 +151,7 @@ export default class CQViewShareQuizInput extends React.Component {
                     <li className="list-search">
                         { this.state.inputEnabled ? (<input type="text"
                             ref="inputField"
+                            placeholder="Type email here"
                             value={this.state.value}
                             onKeyDown={this.handleKeyDown}
                             onChange={this.handleChange}

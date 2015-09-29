@@ -886,7 +886,7 @@ var generateData = function(chosenWeek, callback) {
                         "activeList": activeList,
                         "schools": Object.keys(schools).length,
                         "schoolsMulti": schoolsMulti,
-                        "activatedRatio": Math.floor((activated/signUpThisWeek)*100)
+                        "activatedRatio": Math.floor(((activated-repeat)/signUpThisWeek)*100)
                     };
 
                     console.log(calculatedMetrics);
