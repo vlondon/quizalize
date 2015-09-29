@@ -31,7 +31,6 @@ var GroupActions = {
     },
 
     createFirstAssignment: function(quizId : string){
-        debugger;
         console.log('createFirstAssignment', quizId);
         // make sure we don't have any class created:
         var groups = GroupStore.getGroups();

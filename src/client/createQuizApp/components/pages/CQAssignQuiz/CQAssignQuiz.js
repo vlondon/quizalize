@@ -43,7 +43,6 @@ class CQAssignQuiz extends React.Component {
     }
 
     onChange(){
-        debugger;
         var marketplaceQuizId = this.props.routeParams.quizId;
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
         console.log('marketplaceQuizId', quiz, marketplaceQuizId);
