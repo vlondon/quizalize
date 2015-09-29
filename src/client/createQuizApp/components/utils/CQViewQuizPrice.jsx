@@ -74,7 +74,7 @@ export default class CQViewQuizPrice extends React.Component {
                 <span className='cq-public__button' onClick={this.handlePreview}>
                     Play
                 </span>
-                <span className='cq-public__button' onClick={this.handleClick.bind(this, owned)}>
+                <span className='cq-public__button__main' onClick={this.handleClick.bind(this, owned)}>
                     {price}
                 </span>
             </div>
