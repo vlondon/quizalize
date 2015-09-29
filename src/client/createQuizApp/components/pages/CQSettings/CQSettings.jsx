@@ -266,7 +266,7 @@ export default class CQSettings extends React.Component {
             );
         }
 
-        message = this.state.isNew ? 'We need some extra information' : 'Settings';
+        message = this.state.isNew ? 'Complete your registration' : 'Settings';
 
         var editProfile = () => {
             if (!this.state.isNew) {
