@@ -170,7 +170,6 @@ AppDispatcher.register(function(action) {
             _appLoaded = true;
             _publicApps.forEach(function(app){
                 if (typeof app.meta.quizzes === 'string') {
-                    console.log('splitting', app.meta.quizzes);
                     app.meta.quizzes = app.meta.quizzes.split(',');
                 }
             });

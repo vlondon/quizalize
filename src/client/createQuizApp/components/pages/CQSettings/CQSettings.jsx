@@ -82,14 +82,15 @@ export default class CQSettings extends React.Component {
 
     handleSave(){
         console.log('saving??');
+        let {user} = this.state;
         // var user = this.state;
         MeStore.toJSON();
-        var currentUserId = this.state.user.uuid;
+        var currentUserId = user.uuid;
         if (this.state.isNew) {
             sendEvent('register', 'details', 'filled');
         }
         var doSave = ()=>{
-            UserActions.update(this.state.user.toJSON())
+            UserActions.update(user.toJSON())
                 .then( ()=> {
                     var params = urlParams();
                     if (params.redirect){
@@ -105,7 +106,7 @@ export default class CQSettings extends React.Component {
             });
         };
 
-        if (this.state.user.attributes.profileUrl === undefined || this.state.user.attributes.profileUrl.length === 0) {
+        if (user.attributes.profileUrl === undefined || user.attributes.profileUrl === null || user.attributes.profileUrl.length === 0) {
             doSave();
         } else {
             UserActions.search({profileUrl: this.state.user.attributes.profileUrl})

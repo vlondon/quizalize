@@ -48,7 +48,7 @@ class CQAssignQuiz extends React.Component {
         console.log('marketplaceQuizId', quiz, marketplaceQuizId);
         var groupsLoaded = GroupStore.isLoaded();
 
-        var init = this.state.init;
+        var {init} = this.state;
         if (quiz && init === false && groupsLoaded){
             init = true;
             GroupActions.createFirstAssignment(quiz.uuid);
@@ -65,7 +65,7 @@ class CQAssignQuiz extends React.Component {
 }
 
 CQAssignQuiz.propTypes = {
-    marketplaceQuizId: React.PropTypes.string
+    routeParams: React.PropTypes.object
 };
 
 export default CQAssignQuiz;

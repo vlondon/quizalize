@@ -468,7 +468,7 @@ exports.shareQuiz = function(req, res){
             link: link
         };
         logger.info('sending email', typeof emails, emails);
-        email.sendEmailTemplate('team@quizalize.com', emails, 'You have been shared a quiz!', 'shared', params);
+        email.sendEmailTemplate('team@quizalize.com', emails, 'Someone shared a quiz with you on Quizalize!', 'shared', params);
     }
     res.send(true);
 };

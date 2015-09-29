@@ -1,10 +1,12 @@
+/* @flow */
 var React = require('react');
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLoginForm = require('createQuizApp/components/pages/shared/CQLoginForm');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import router from './../../../config/router';
+var CQPageTemplate = require('./../../../components/CQPageTemplate');
+var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
+var CQLink = require('./../../../components/utils/CQLink');
 
-var UserActions = require('createQuizApp/actions/UserActions');
+var UserActions = require('./../../../actions/UserActions');
 
 
 var CQRestorePassword = React.createClass({
@@ -16,12 +18,12 @@ var CQRestorePassword = React.createClass({
         };
     },
 
-    handleSubmit: function(data) {
+    handleSubmit: function(data : Object) {
 
         // expects data as an object with
         // email and password
         console.log('form submitted with', data);
-        UserActions.reset(this.props.code, data.password)
+        UserActions.reset(this.props.routeParams.code, data.password)
             .then(function(){
                 console.log('yay');
                 swal({
@@ -31,6 +33,9 @@ var CQRestorePassword = React.createClass({
                     showConfirmButton: false
                 });
 
+                setTimeout(function(){
+                    router.setRoute('/quiz/user', true);
+                }, 3000);
             })
             .catch(function(){
                 console.log('nay');
@@ -42,7 +47,7 @@ var CQRestorePassword = React.createClass({
     },
 
 
-    render: function() {
+    render: function() : any {
         return (
             <CQPageTemplate className="cq-login">
 

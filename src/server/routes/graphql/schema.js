@@ -55,8 +55,8 @@ var appMeta = new GraphQLObjectType({
         quizzes: {
             type: new GraphQLList(quizType),
             resolve: ({quizzes, profileId})=>{
-                console.log('RESOLVING ', quizzes);
-                if (typeof quizzes === 'string') {
+                console.log('RESOLVING ', quizzes, typeof quizzes);
+                if (typeof quizzes === 'string' && quizzes.length > 0) {
                     var quizzesID = quizzes.split(',');
                     return graphQLQuiz.getQuizzes(profileId, quizzesID);
                 } else {
@@ -117,6 +117,9 @@ var quizMeta = new GraphQLObjectType({
         updated: {
             type: GraphQLInt
         },
+        publicCategoryId: {
+            type: GraphQLString
+        },
         published: {
             type: GraphQLString
         },
@@ -146,40 +149,39 @@ var quizType = new GraphQLObjectType({
 var userAttributes = new GraphQLObjectType({
     name: 'UserAttributes',
     fields: {
+        ageTaught: {
+            type: GraphQLString,
+            description: 'ageTaught',
+        },
+        bannerUrl: {
+            type: GraphQLString,
+            description: 'bannerUrl'
+        },
+        imageUrl: {
+            type: GraphQLString,
+            description: 'imageUrl',
+        },
         location: {
             type: GraphQLString,
             description: 'Location',
 
+        },
+        profileUrl: {
+            type: GraphQLString,
+            description: 'profileUrl',
         },
         school: {
             type: GraphQLString,
             description: 'School',
 
         },
-        url: {
-            type: GraphQLString,
-            description: 'Url',
-
-        },
         subjectTaught: {
             type: GraphQLString,
             description: 'subjectTaught',
-
         },
-        ageTaught: {
+        url: {
             type: GraphQLString,
-            description: 'ageTaught',
-
-        },
-        profileUrl: {
-            type: GraphQLString,
-            description: 'profileUrl',
-
-        },
-        bannerUrl: {
-            type: GraphQLString,
-            description: 'bannerUrl',
-            resolve: (obj) => obj.bannerUrl
+            description: 'Url',
         }
     }
 });

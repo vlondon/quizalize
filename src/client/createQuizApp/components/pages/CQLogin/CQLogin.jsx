@@ -1,6 +1,7 @@
 /* @flow */
 var React = require('react');
 import router from './../../../config/router';
+import urlParams from './../../../utils/urlParams';
 var CQPageTemplate  = require('./../../../components/CQPageTemplate');
 var CQLoginForm     = require('./../../../components/pages/shared/CQLoginForm');
 var CQLink          = require('./../../../components/utils/CQLink');
@@ -11,7 +12,8 @@ var UserActions     = require('./../../../actions/UserActions');
 var CQLogin = React.createClass({
 
     getInitialState: function() {
-        return {};
+        var isZzishRedirect = urlParams().token ? true : false;
+        return { isZzishRedirect };
     },
 
 
@@ -40,6 +42,15 @@ var CQLogin = React.createClass({
 
 
     render: function() {
+
+        if (this.state.isZzishRedirect){
+            return (
+                <CQPageTemplate className="cq-login">
+                    <CQZzishLogin/>
+                </CQPageTemplate>
+            );
+        }
+
         return (
             <CQPageTemplate className="cq-login">
 

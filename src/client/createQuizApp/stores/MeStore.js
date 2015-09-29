@@ -14,14 +14,16 @@ var intercomAdded = false;
 
 
 let userAttributes = {
-    school: undefined,
-    url: undefined,
-    profileUrl: undefined,
-    bannerUrl: undefined,
-    location: undefined,
     ageTaught: undefined,
-    subjectTaught: undefined
+    bannerUrl: undefined,
+    imageUrl: undefined,
+    location: undefined,
+    profileUrl: undefined,
+    school: undefined,
+    subjectTaught: undefined,
+    url: undefined,
 };
+
 const meAttributesRecord = Record(userAttributes);
 
 let noUser:UserType = {
