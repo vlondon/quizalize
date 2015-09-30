@@ -1,8 +1,9 @@
 import React from 'react';
 import CQPageTemplate from './../../../components/CQPageTemplate';
+import AnalyticsActions from './../../../actions/AnalyticsActions';
 import MeStore from './../../../stores/MeStore';
 import CQLink from './../../../components/utils/CQLink';
-// import CQLink from './../../../components/utils/CQLink';
+import CQWelcomeVideo from './CQWelcomeVideo';
 
 // assets
 import cta1 from './../../../../assets/welcome_cta1.svg';
@@ -19,13 +20,51 @@ class CQWelcome extends React.Component {
     constructor(props: Object){
         super(props);
         this.state = {
-            user: MeStore.state
+            user: MeStore.state,
+            isVideoOpen: false
         };
+        this.handleWatchVideo = this.handleWatchVideo.bind(this);
+        // this.handleBrowseMarketplace = this.handleBrowseMarketplace.bind(this);
     }
+
+    handlePlayDemo(){
+        AnalyticsActions.sendEvent('welcome_screen', 'play_demo');
+        AnalyticsActions.sendIntercomEvent('welcome_play_demo');
+    }
+
+    handleWatchVideo(){
+        AnalyticsActions.sendEvent('welcome_screen', 'watch_video');
+        AnalyticsActions.sendIntercomEvent('welcome_watch_video');
+        this.setState({isVideoOpen: true});
+    }
+
+    handleReadGuide(){
+        AnalyticsActions.sendEvent('welcome_screen', 'read_guide');
+        AnalyticsActions.sendIntercomEvent('welcome_read_guide');
+
+    }
+
+    handlePreviewDashboard(){
+        AnalyticsActions.sendEvent('welcome_screen', 'preview_dashboard');
+        AnalyticsActions.sendIntercomEvent('welcome_preview_dashboard');
+    }
+
+    handleCreateQuiz(){
+        AnalyticsActions.sendEvent('welcome_screen', 'create_quiz');
+        AnalyticsActions.sendIntercomEvent('welcome_create_quiz');
+    }
+
+    handleBrowseMarketplace(){
+        AnalyticsActions.sendEvent('welcome_screen', 'browse_marketplace');
+        AnalyticsActions.sendIntercomEvent('welcome_browse_marketplace');
+    }
+
     render () {
         var name = this.state.user.name ? ` ${this.state.user.name}` : '';
+        var video = this.state.isVideoOpen ? <CQWelcomeVideo/> : undefined;
         return (
             <CQPageTemplate className="cq-welcome">
+                {video}
                 <img src="/cquiz/img/logo 2.png" className="cq-welcome__brand"/>
                 <h1 className="cq-welcome__header">
                     Welcome{name}! What are you teaching this week?
@@ -44,25 +83,25 @@ class CQWelcome extends React.Component {
                 </div>
 
                 <ul className="cq-welcome__actions">
-                    <li className="cq-welcome__actions__action__1">
+                    <li className="cq-welcome__actions__action__1" onClick={this.handlePlayDemo}>
                         <div className="cq-welcome__actions__image">
                             <img src={cta1} alt="Play"/>
                         </div>
                         Play a demo quiz
                     </li>
-                    <li className="cq-welcome__actions__action__2">
+                    <li className="cq-welcome__actions__action__2" onClick={this.handleWatchVideo}>
                         <div className="cq-welcome__actions__image">
                             <img src={cta2} alt="Watch the video"/>
                         </div>
                         Watch the video
                     </li>
-                    <li className="cq-welcome__actions__action__3">
+                    <li className="cq-welcome__actions__action__3" onClick={this.handleReadGuide}>
                         <div className="cq-welcome__actions__image">
                             <img src={cta3} alt="Printable guide"/>
                         </div>
                         Printable guide
                     </li>
-                    <li className="cq-welcome__actions__action__4">
+                    <li className="cq-welcome__actions__action__4" onClick={this.handlePreviewDashboard}>
                         <div className="cq-welcome__actions__image">
                             <img src={cta4} alt="Preview a dashboard"/>
                         </div>
@@ -83,7 +122,7 @@ class CQWelcome extends React.Component {
                         </div>
 
 
-                        <CQLink href='/quiz/create' className="cq-welcome__box1__button">
+                        <CQLink href='/quiz/create' className="cq-welcome__box1__button" onClick={this.handleCreateQuiz}>
                             <img src={cta5} alt="Create a quiz"/>
                             Create a quiz
                         </CQLink>
@@ -105,7 +144,7 @@ class CQWelcome extends React.Component {
                             </div>
 
                         </div>
-                        <CQLink href='/quiz/marketplace' className="cq-welcome__box2__button">
+                        <CQLink href='/quiz/marketplace' className="cq-welcome__box2__button" onClick={this.handleBrowseMarketplace}>
                             <img src={cta7} alt="Create a quiz"/>
                             <img src={ctaNew} alt="" className="cq-welcome__box2__button__new"/>
                             Browse marketplace
