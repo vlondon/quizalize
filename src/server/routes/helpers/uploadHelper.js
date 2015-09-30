@@ -1,7 +1,7 @@
 var fs              = require('fs');
 var AWS             = require('./../../awssdk');
 var gm              = require('gm');
-var Promise         = require('es6-promise').Promise;
+
 
 var logger          = require('../../logger');
 

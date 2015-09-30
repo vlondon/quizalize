@@ -1,7 +1,6 @@
 //general zzish config
 var uuid                = require('node-uuid');
 var zzish               = require("zzishsdk");
-var Promise             = require('es6-promise').Promise;
 var stripeHelper        = require('./helpers/stripeHelper');
 var logger              = require('../logger');
 

@@ -6,7 +6,7 @@ var APP_CONTENT_TYPE    = "app";
 var QUIZ_CONTENT_TYPE   = "quiz";
 var AWS                 = require('./../awssdk');
 var userHelper          = require('./helpers/userHelper');
-var Promise             = require('es6-promise').Promise;
+
 var logger              = require('../logger');
 var email           = require("../email");
 

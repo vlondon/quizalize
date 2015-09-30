@@ -1,7 +1,5 @@
 var _           = require('lodash');
-var Promise     = require('es6-promise').Promise;
 var zzish       = require('./../../zzish');
-var assign      = require('object-assign');
 
 
 exports.addUserToExtra = function(listOfContent){
@@ -20,7 +18,7 @@ exports.addUserToExtra = function(listOfContent){
             zzish.getUsers(listOfAuthors, function(err, users){
                 if (!err && typeof users === 'object') {
                     var resolvedUsers = users.map(function(u){
-                        var user = assign({}, u.attributes);
+                        var user = Object.assign({}, u.attributes);
                         user.name = u.name;
                         user.uuid = u.uuid;
                         return user;
