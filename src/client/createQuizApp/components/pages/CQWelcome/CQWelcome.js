@@ -31,6 +31,8 @@ class CQWelcome extends React.Component {
     handlePlayDemo(){
         AnalyticsActions.sendEvent('welcome_screen', 'play_demo');
         AnalyticsActions.sendIntercomEvent('welcome_play_demo');
+        window.open('/app#/preview/44ddfbd4-7bec-4691-8089-9bde07766111/3af911c5-755f-445e-9483-0fbb8d6d9194');
+        // window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
     }
 
     handleWatchVideo(){
@@ -42,6 +44,7 @@ class CQWelcome extends React.Component {
     handleReadGuide(){
         AnalyticsActions.sendEvent('welcome_screen', 'read_guide');
         AnalyticsActions.sendIntercomEvent('welcome_read_guide');
+        window.open('https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf');
 
     }
 
@@ -64,6 +67,12 @@ class CQWelcome extends React.Component {
         this.setState({isVideoOpen: false});
     }
 
+    // <li className="cq-welcome__actions__action__4" onClick={this.handlePreviewDashboard}>
+    //     <div className="cq-welcome__actions__image">
+    //         <img src={cta4} alt="Preview a dashboard"/>
+    //     </div>
+    //     Preview a dashboard
+    // </li>
     render () {
         var name = this.state.user.name ? ` ${this.state.user.name}` : '';
         var video = this.state.isVideoOpen ? <CQWelcomeVideo onDismiss={this.handleDismiss}/> : undefined;
@@ -107,12 +116,7 @@ class CQWelcome extends React.Component {
                             </div>
                             Printable guide
                         </li>
-                        <li className="cq-welcome__actions__action__4" onClick={this.handlePreviewDashboard}>
-                            <div className="cq-welcome__actions__image">
-                                <img src={cta4} alt="Preview a dashboard"/>
-                            </div>
-                            Preview a dashboard
-                        </li>
+
                     </ul>
 
                     <div className="cq-welcome__box1__border">
