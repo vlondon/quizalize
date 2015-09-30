@@ -5,13 +5,6 @@ var QuizApi             = require('createQuizApp/actions/api/QuizApi');
 
 var TopicActions = {
 
-    createTemporaryTopic: function(topic){
-        AppDispatcher.dispatch({
-            actionType: TopicConstants.TEMPORARY_TOPIC_ADDED,
-            payload: topic
-        });
-    },
-
     createTopic: function(topic){
         var putTopic = QuizApi.putTopic(topic);
         putTopic
