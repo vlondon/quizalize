@@ -71,7 +71,7 @@ var QLScrambled = React.createClass({
 
     componentDidMount: function() {
         window.addEventListener('resize', this.handleResize);
-        _domElement = this.refs.main.getDOMNode();
+        _domElement = this.refs.main;
         cssStateIndex = 0;
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
@@ -153,12 +153,12 @@ var QLScrambled = React.createClass({
     },
 
     handleClick: function(index){
-        this.props.onAddLetter(index)
+        this.props.onAddLetter(index);
     },
 
 
     handleRemoveLetter: function(index){
-        this.props.onRemoveLetter(index)
+        this.props.onRemoveLetter(index);
     },
 
     render: function() {
