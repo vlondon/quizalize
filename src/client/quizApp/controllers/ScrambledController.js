@@ -1,5 +1,6 @@
 var randomise = require('quizApp/utils/randomise');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var QLScrambled = require('quizApp/components/QLScrambled');
 
 
@@ -35,7 +36,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     };
 
     var renderReactComponent = function(){
-        React.render(
+        ReactDOM.render(
             React.createElement(QLScrambled, {
                 quizData: QuizData.currentQuizResult(),
                 answer: self.userAnswerLetters,
@@ -74,7 +75,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
         setTimeout(renderReactComponent, 200);
 
         $scope.$on('$destroy', function(){
-            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+            ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
         });
 
     };

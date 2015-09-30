@@ -3,6 +3,7 @@ import { Router, Route } from 'react-router';
 import history from './history';
 import MeStore from './../stores/MeStore';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 var router              = require('./router');
 
@@ -55,7 +56,7 @@ history.listen(function(){
     // TODO: Add local analaytics calls here
 });
 
-React.render(<Router routes={paths} history={history} />, document.getElementById('reactApp'));
+ReactDOM.render(<Router routes={paths} history={history} />, document.getElementById('reactApp'));
 
 
 module.exports = router;
