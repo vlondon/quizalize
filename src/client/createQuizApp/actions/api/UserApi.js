@@ -24,6 +24,7 @@ var getGraphQLUserQuery = function(key, value){
                         categoryId,
                         imageUrl,
                         price,
+                        publicCategoryId,
                         updated
                     }
                 },
@@ -41,6 +42,7 @@ var getGraphQLUserQuery = function(key, value){
                             meta {
                                 name,
                                 categoryId,
+                                publicCategoryId,
                                 imageUrl,
                                 price,
                                 updated

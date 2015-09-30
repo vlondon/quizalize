@@ -66,6 +66,7 @@ var CQLink = React.createClass({
     //
         if (this.props.stopPropagation){
             ev.stopPropagation();
+            // ev.preventDefault();
         }
     //     if (this.props.onClick){
     //         this.props.onClick(ev);
@@ -87,6 +88,7 @@ var CQLink = React.createClass({
             <Link
                 to={this.props.href}
                 className={this.props.className}
+                onClick={this.handleClick}
             >
                 {this.props.children}
             </Link>
