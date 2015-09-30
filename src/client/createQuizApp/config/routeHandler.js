@@ -3,6 +3,7 @@ import { Router, Route } from 'react-router';
 import history from './history';
 import MeStore from './../stores/MeStore';
 import React from 'react';
+
 var router              = require('./router');
 
 var pagesArray          = require('./routes').pagesArray;
@@ -50,6 +51,7 @@ const paths = pagesArray.map(page => {
 // history.listen(AnalyticsActions.trackPageView);
 history.listen(function(){
     AnalyticsActions.trackPageView();
+    window.scrollTo(0, 0);
     // TODO: Add local analaytics calls here
 });
 

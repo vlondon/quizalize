@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="22px" height="39px" viewBox="0 0 22 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>welcome_cta5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="welcome-post-registration" sketch:type="MSLayerGroup" transform="translate(-710.000000, -376.000000)" fill="#612C6C">
+            <path d="M714.919813,406.644374 L711.73031,407.331828 C711.419619,406.754885 711.049935,406.17873 710.369561,405.499535 C709.693119,404.82034 709.114997,404.44987 708.536875,404.140359 L709.225115,400.948497 L710.149324,400.025468 C710.149324,400.025468 711.887622,400.060077 713.846158,402.022152 C715.808626,403.98344 715.844021,405.722132 715.844021,405.722132 L714.919813,406.644374 L714.919813,406.644374 Z M734.35572,381.515736 C731.516237,378.677826 729.388591,379.103355 729.388591,379.103355 L708.100334,400.390825 L706.114269,409.756793 L715.47827,407.770335 L736.766527,386.484045 C736.766527,386.484045 737.195203,384.354432 734.35572,381.515736 L734.35572,381.515736 Z" id="welcome_cta5" sketch:type="MSShapeGroup" transform="translate(721.451926, 394.418750) scale(-1, 1) rotate(-23.000000) translate(-721.451926, -394.418750) "></path>
+        </g>
+    </g>
+</svg>

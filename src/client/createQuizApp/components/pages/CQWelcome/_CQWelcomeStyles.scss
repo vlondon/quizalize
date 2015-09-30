@@ -1,0 +1,159 @@
+.cq-welcome {
+    width: 780px;
+    margin: auto;
+    text-align: center;
+    padding-top: 80px;
+    position: relative;
+    &__brand {
+        width: 280px;
+
+    }
+    &__header {
+        margin-top: 20px;
+        color: $brand-color-purple;
+        font-weight: bold;
+        font-size: 28px;
+    }
+    &__star {
+        position: absolute;
+        top: 0;
+        right: -60px;
+        background: url(./../../assets/welcome_cta_star.svg);
+        width: 185px;
+        height: 185px;
+        color: #FFF;
+        display: flex;
+        align-items: center;
+        border-radius: 100%;
+        transform: rotate(15deg);
+        &__content {
+            flex: 1 0;
+        }
+        b {
+            text-transform: uppercase;
+        }
+    }
+    &__actions {
+        margin-top: 20px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        vertical-align: top;
+        display: flex;
+        justify-content: center;
+        color: #FFF;
+        font-weight: bold;
+        font-size: 14px;
+        &__image {
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &__action__1,
+        &__action__2,
+        &__action__3,
+        &__action__4 {
+            width: 120px;
+            height: 120px;
+            // display: inline-block;
+            border: 10px solid rgba(#FFF, .5);
+            border-radius: 100%;
+            margin: 5px;
+            text-align: center;
+            padding: 5px;
+            cursor: pointer;
+            transition: background 150ms linear;
+            transition-property: background, transform;
+            &:hover {
+                background: rgba($brand-color-purple, .2);
+                transform: scale(1.1);
+            }
+        }
+        &__action__1 {
+            img { margin-left: 15px;}
+        }
+    }
+    &__box2,
+    &__box1 {
+        background: #F24185;
+        border-radius: 10px;
+        text-align: left;
+        padding: 30px;
+        color: #FFF;
+        position: relative;
+        &__border {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 20px;
+            background: rgba(#FFF, .5);
+        }
+        &__header {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 0;
+        }
+        &__text {
+            opacity: .7;
+            color: #FFF;
+            &__alt {
+                color: $brand-color-purple;
+            }
+        }
+        &__button {
+            display: block;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            float: right;
+            color: $brand-color-purple;
+            // width: 20px;
+            background: #FFF;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 1px rgba(#000, .5);
+            span { line-height: 32px; }
+            &:hover {
+                text-decoration: none;
+                background: $brand-color-purple-light;
+                color: #FFF;
+            }
+            &:active {
+                box-shadow: 0 -2px 1px rgba(#000, .5);
+            }
+            img {
+                padding-right: 10px;
+            }
+
+        }
+    }
+    &__box2 {
+        // padding-right: 300px;
+        padding-bottom: 100px;
+        background: url('./../../assets/welcome_icons.png') no-repeat bottom left;
+        background-color: $brand-color-purple;
+        background-size: 50%;
+        &__header { color: #FF6FA6; }
+        &__text{
+            opacity: 1;
+            &__alt { color: #FF6FA6; }
+        }
+
+        &__button {
+            top: auto;
+            bottom: 20px;
+            color: #FF6FA6;
+
+            &__new {
+                position: absolute;
+                width: 78px;
+                height: 84px;
+                bottom: 45px;
+                left: 141px;
+            }
+        }
+    }
+}
