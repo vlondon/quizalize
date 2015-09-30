@@ -51,6 +51,7 @@ const paths = pagesArray.map(page => {
 // history.listen(AnalyticsActions.trackPageView);
 history.listen(function(){
     AnalyticsActions.trackPageView();
+    window.scrollTo(0, 0);
     // TODO: Add local analaytics calls here
 });
 

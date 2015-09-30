@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="35px" height="38px" viewBox="0 0 35 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>welcome_cta4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="welcome-post-registration" sketch:type="MSLayerGroup" transform="translate(-752.000000, -204.000000)" fill="#F24185">
+            <g id="Group" transform="translate(309.000000, 191.000000)" sketch:type="MSShapeGroup">
+                <path d="M450.03125,38.28125 L445.425,38.28125 C444.26925,38.28125 443.75,39.2150625 443.75,40.375 L443.75,50.84375 L452.125,50.84375 L452.125,40.375 C452.125,39.2150625 451.187,38.28125 450.03125,38.28125 L450.03125,38.28125 Z M462.59375,25.71875 L457.9875,25.71875 C456.83175,25.71875 456.3125,26.6525625 456.3125,27.8125 L456.3125,50.84375 L464.6875,50.84375 L464.6875,27.8125 C464.6875,26.6525625 463.7495,25.71875 462.59375,25.71875 L462.59375,25.71875 Z M475.15625,13.15625 L470.55,13.15625 C469.39425,13.15625 468.875,14.0900625 468.875,15.25 L468.875,50.84375 L477.25,50.84375 L477.25,15.25 C477.25,14.0900625 476.312,13.15625 475.15625,13.15625 L475.15625,13.15625 Z" id="welcome_cta4"></path>
+            </g>
+        </g>
+    </g>
+</svg>
