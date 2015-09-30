@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
@@ -92,7 +93,7 @@ var QLScrambled = React.createClass({
         var optionSize = 60;
         var containerPadding = 20;
         var numOptions = this.props.letters.length;
-        var spaceAvailable = React.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
+        var spaceAvailable = ReactDOM.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
 
 
         var howManyOptionsFit = spaceAvailable / optionSize;
@@ -115,7 +116,7 @@ var QLScrambled = React.createClass({
         var optionSize = 70;
         var containerPadding = 20;
         var numOptions = this.props.letters.length;
-        var spaceAvailable = React.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
+        var spaceAvailable = ReactDOM.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
 
 
         var howManyOptionsFit = spaceAvailable / optionSize;
