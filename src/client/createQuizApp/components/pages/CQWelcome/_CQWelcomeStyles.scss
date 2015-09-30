@@ -1,15 +1,38 @@
 .cq-welcome {
-    max-width: 780px;
+    width: 780px;
     margin: auto;
     text-align: center;
-    margin-top: 20px;
+    padding-top: 80px;
+    position: relative;
+    &__brand {
+        width: 280px;
+
+    }
     &__header {
         margin-top: 20px;
         color: $brand-color-purple;
         font-weight: bold;
         font-size: 28px;
     }
-
+    &__star {
+        position: absolute;
+        top: 0;
+        right: -60px;
+        background: url(./../../assets/welcome_cta_star.svg);
+        width: 185px;
+        height: 185px;
+        color: #FFF;
+        display: flex;
+        align-items: center;
+        border-radius: 100%;
+        transform: rotate(15deg);
+        &__content {
+            flex: 1 0;
+        }
+        b {
+            text-transform: uppercase;
+        }
+    }
     &__actions {
         margin-top: 20px;
         list-style: none;
@@ -113,15 +136,16 @@
         background: url('./../../assets/welcome_icons.png') no-repeat bottom left;
         background-color: $brand-color-purple;
         background-size: 50%;
-        &__header { color: lighten($brand-color-purple-light, 20%); }
+        &__header { color: #FF6FA6; }
         &__text{
             opacity: 1;
-            &__alt { color: lighten($brand-color-purple-light, 20%); }
+            &__alt { color: #FF6FA6; }
         }
 
         &__button {
             top: auto;
             bottom: 20px;
+            color: #FF6FA6;
 
             &__new {
                 position: absolute;

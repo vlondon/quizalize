@@ -10,7 +10,9 @@ import cta2 from './../../../../assets/welcome_cta2.svg';
 import cta3 from './../../../../assets/welcome_cta3.svg';
 import cta4 from './../../../../assets/welcome_cta4.svg';
 import cta5 from './../../../../assets/welcome_cta5.svg';
+import cta7 from './../../../../assets/welcome_cta7.svg';
 import ctaNew from './../../../../assets/welcome_button_new.png';
+
 
 class CQWelcome extends React.Component {
 
@@ -24,10 +26,22 @@ class CQWelcome extends React.Component {
         var name = this.state.user.name ? ` ${this.state.user.name}` : '';
         return (
             <CQPageTemplate className="cq-welcome">
-                <img src="/cquiz/img/logo 2.png"/>
+                <img src="/cquiz/img/logo 2.png" className="cq-welcome__brand"/>
                 <h1 className="cq-welcome__header">
                     Welcome{name}! What are you teaching this week?
                 </h1>
+
+                <div className="cq-welcome__star">
+                    <div className="cq-welcome__star__content">
+                        <b>We’re <br/>growing fast!</b>
+                        <div>
+                            1000+ schools <br/>
+                            52 countries<br/>
+                            after just<br/>
+                            one month<br/>
+                        </div>
+                    </div>
+                </div>
 
                 <ul className="cq-welcome__actions">
                     <li className="cq-welcome__actions__action__1">
@@ -92,7 +106,7 @@ class CQWelcome extends React.Component {
 
                         </div>
                         <CQLink href='/quiz/marketplace' className="cq-welcome__box2__button">
-                            <img src={cta5} alt="Create a quiz"/>
+                            <img src={cta7} alt="Create a quiz"/>
                             <img src={ctaNew} alt="" className="cq-welcome__box2__button__new"/>
                             Browse marketplace
                         </CQLink>
