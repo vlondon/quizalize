@@ -3,6 +3,8 @@ var zzish               = require("zzishsdk");
 var userHelper          = require('./helpers/userHelper');
 var logger              = require('../logger');
 
+var marketplaceSearch = require('./helpers/marketplaceContent');
+
 var cache = {};
 var cacheCount = 0;
 var maxCache = 5;
@@ -10,14 +12,16 @@ var maxCache = 5;
 var QUIZ_CONTENT_TYPE = 'quiz';
 var APP_CONTENT_TYPE = 'app';
 
-var performQuery = function(mongoQuery,contenType,callback) {
+var performQuery = function(mongoQuery, contenType, callback) {
     var queryString = JSON.stringify(mongoQuery);
+
     console.log("Query", contenType, queryString);
+
     if (!cache[contenType]) {
         cache[contenType] = {};
     }
     if (cache[contenType][queryString]) {
-        callback(null,cache[contenType][queryString]);
+        callback(null, cache[contenType][queryString]);
     }
     else {
         zzish.searchPublicContent(contenType, mongoQuery, function(err, resp){
@@ -30,12 +34,12 @@ var performQuery = function(mongoQuery,contenType,callback) {
                             cache[contenType][queryString] = listOfItems;
                             cacheCount++;
                         }
-                        callback(null,listOfItems);
+                        callback(null, listOfItems);
                     }).catch(function(error){
-                        callback(400,error);
+                        callback(400, error);
                     });
             } else {
-                callback(500,error);
+                callback(500, error);
             }
         });
     }
@@ -50,15 +54,15 @@ exports.getQuizzes = function(req, res){
 
     var subjects = req.body.subjects;
 
+    logger.info('getQuizzes');
+    marketplaceSearch.quiz(searchString);
 
 
-    var patt = new RegExp(searchString,"i");
+    var patt = new RegExp(searchString, 'i');
     var usedSubs = subjects.filter(function(subject) {
         return searchString!=='' && patt.test(subject.name);
     });
 
-    var now = Date.now();
-    //var lastYear = now - 365 * 7 * 24 * 60 * 60 * 1000;
     var mongoQuery = {
         updated: {
             $gt: 1
