@@ -5,7 +5,7 @@ var QuizStore = require('createQuizApp/stores/QuizStore');
 var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
 var TransactionActions = require('createQuizApp/actions/TransactionActions');
 var TopicStore          = require('createQuizApp/stores/TopicStore');
-var UserStore = require('./../../../stores/UserStore');
+var MeStore = require('./../../../stores/MeStore');
 
 var timeouts = [];
 var priceFormat = require('createQuizApp/utils/priceFormat');
