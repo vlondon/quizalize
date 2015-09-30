@@ -293,6 +293,7 @@ style.
                             strong(id="cresponse{{item.questionId}}") {{item.answer}}
                         .col-md-2
                             h4 Score: {{item.roundedScore}}
-                            p(ng-show="item.correct") (You took {{item.seconds}}
+                            p(ng-show="item.correct") ({{item.seconds}}
                                 ng-pluralize(count="item.seconds", when="{1: ' second', other: ' seconds'}")
                                 |)
+                            p(ng-show="item.attempts >1") ({{item.attempts}} attempts)

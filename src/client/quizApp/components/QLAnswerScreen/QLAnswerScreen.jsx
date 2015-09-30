@@ -91,20 +91,18 @@ var QLAnswerScreen = React.createClass({
 
         var explanation;
 
-        if (this.props.questionData.answerExplanation && this.props.questionData.answerExplanation.length > 0) {
-            if (!this.props.attributes || this.props.attributes.button !== "true" || !this.props.answerData.correct) {
-                var explaination1 = this.props.questionData.answerExplanation;
-                if (explaination1.indexOf("video://") === 0) {
-                    var url = "http://" + explaination1.substring(8);
-                    explanation = (<video width="320" height="240" controls>
-                      <source src={url} type="video/mp4"/>
+        if (this.props.questionData.expObject) {
+            if (!this.props.answerData.correct) {
+                if (this.props.questionData.expObject.type == "video") {
+                    explanation = (<video width="320" height="240" controls autoPlay>
+                      <source src={this.props.questionData.expObject.url} type="video/mp4"/>
                     Your browser does not support the video tag.
                     </video>);
                 }
                 else {
                     explanation = (<blockquote className="description">
                         <p>
-                            {explaination1}
+                            {this.props.questionData.expObject.url}
                         </p>
                     </blockquote>);
                 }

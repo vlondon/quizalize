@@ -116,24 +116,35 @@ var QLFreetext = React.createClass({
                         </button>
                     </div>);
         } else {
-            var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
+            var questionId = this.props.questionData.uuid;
+            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
+                return f.questionId == questionId;
+            });
             showAnswer = (
                 <QLAnswerScreen
                     questionData={this.props.questionData}
-                    attributes={this.props.attributes}
-                    answerData={currentAnswer}
+                    answerData={currentAnswerFilter[0]}
                     onNext={this.props.onNext}/>
             );
+        }
+
+        var questionText;
+        if (this.props.questionData.questionObject.type == "audio") {
+            questionText = (
+                <audio controls="true" autoPlay>
+                    <source src={this.props.questionData.questionObject.url} type="audio/mpeg"/>
+                    Your browser does not support the audio element.
+                </audio>);
+        }
+        else {
+            questionText = this.props.questionData.questionObject.url;
         }
 
         return (
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
                     <p className='question'>
-                        <audio controls="true" autoplay="true">
-                          <source src={this.props.question} type="audio/mpeg"/>
-                          Your browser does not support the audio element.
-                        </audio>
+                        {questionText}
                     </p>
                     {this.props.imageURL && this.props.imageEnabled ? <QLImage src={this.props.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}

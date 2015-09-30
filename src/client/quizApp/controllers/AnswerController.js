@@ -21,7 +21,7 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
 
     self.nextQuestion = function(){
         $location.path(QuizData.generateNextQuestionUrl(self.questionId));
-    }
+    };
 
     if (self.data.latexEnabled) {
         self.showButtons = false;
@@ -61,5 +61,5 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
 
             });
         });
-    }
+    };
 }]);

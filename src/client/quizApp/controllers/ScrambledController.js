@@ -3,7 +3,7 @@ var React = require('react');
 var QLScrambled = require('quizApp/components/QLScrambled');
 
 
-angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope',function(QuizData, $log,  $routeParams, $location,$scope){
+angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log', '$routeParams', '$location', '$scope','$route',function(QuizData, $log,  $routeParams, $location,$scope, $route){
     var self = this;
     var getLetters = function(answer){
 
@@ -105,7 +105,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
                 self.letters = getLetters(self.answer);
                 self.answerLetters = self.answer.toUpperCase().split('');
                 self.userAnswerLetters = getUserAnswer(self.answerLetters.length);
-                if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {
+                if (!QuizData.canShowQuestion(self.questionId)) {
                     //we already have this question
                     $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                 }
@@ -132,8 +132,7 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
             self.letters.splice(idx,1);
             updateLastEmpty();
         }
-
-        if(lastEmpty == self.userAnswerLetters.length && QuizData.currentQuizResult().report[self.questionId] == undefined){
+        if(lastEmpty == self.userAnswerLetters.length){
             QuizData.answerQuestion(self.questionId,
                                 self.userAnswerLetters.join("").toUpperCase(),
                                 self.answer.toUpperCase(),
@@ -157,7 +156,15 @@ angular.module('quizApp').controller('ScrambledController', ['QuizData', '$log',
     };
 
     self.nextQuestion = function(){
-        $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+        var nextUrl = QuizData.generateNextQuestionUrl(self.questionId);
+        if (nextUrl) {
+            if (nextUrl === $location.url()) {
+                $route.reload();
+            }
+            else {
+                $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+            }
+        }
     };
 
 

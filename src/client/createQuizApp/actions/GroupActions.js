@@ -87,9 +87,6 @@ var GroupActions = {
                 access: -1,
                 code
             };
-            if (UserStore.getUser().attributes && UserStore.getUser().attributes.button === "true") {
-                dataToSend['button'] = true;
-            }
 
             var data = Object.assign({}, settings, dataToSend);
 

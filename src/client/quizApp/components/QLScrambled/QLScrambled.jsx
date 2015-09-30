@@ -55,6 +55,7 @@ var QLScrambled = React.createClass({
         letters: React.PropTypes.array.isRequired,
         onAddLetter: React.PropTypes.func,
         quizData: React.PropTypes.object,
+        questionData: React.PropTypes.object,
         startTime: React.PropTypes.number,
     },
 
@@ -191,11 +192,14 @@ var QLScrambled = React.createClass({
                 showTargets.splice(this.state.splitPointQuestion, 0, <br/>);
             }
         } else {
-            var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
+            var questionId = this.props.questionData.uuid;
+            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
+                return f.questionId == questionId;
+            });
             showAnswer = (
                 <QLAnswerScreen
                     questionData={this.props.questionData}
-                    answerData={currentAnswer}
+                    answerData={currentAnswerFilter[0]}
                     onNext={this.props.onNext}/>
             );
         }

@@ -1,5 +1,5 @@
 angular.module('quizApp')
-    .controller('FreetextController', function(QuizData, $log,  $routeParams, $location, $scope){
+    .controller('FreetextController', function(QuizData, $log,  $routeParams, $location, $scope, $route){
 
         var React = require('react');
         var QLFreetext = require('quizApp/components/QLFreetext');
@@ -66,7 +66,7 @@ angular.module('quizApp')
                     self.latexEnabled = data.latexEnabled;
                     self.imageEnabled = data.imageEnabled;
 
-                    if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {
+                    if (!QuizData.canShowQuestion(self.questionId)) {
                         //we already have this question
                         $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                     }
@@ -90,7 +90,15 @@ angular.module('quizApp')
         };
 
         self.nextQuestion = function(){
-            $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+            var nextUrl = QuizData.generateNextQuestionUrl(self.questionId);
+            if (nextUrl) {
+                if (nextUrl === $location.url()) {
+                    $route.reload();
+                }
+                else {
+                    $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+                }
+            }
         };
 
         $log.debug('Freetext Controller', self);

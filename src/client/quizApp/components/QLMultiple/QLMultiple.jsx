@@ -118,11 +118,14 @@ var QLMultiple = React.createClass({
                 </div>);
             }, this);
         } else {
-            var currentAnswer = this.props.quizData.report[this.props.quizData.report.length - 1];
+            var questionId = this.props.questionData.uuid;
+            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
+                return f.questionId == questionId;
+            });
             showAnswer = (
                 <QLAnswerScreen
                     questionData={this.props.questionData}
-                    answerData={currentAnswer}
+                    answerData={currentAnswerFilter[0]}
                     onNext={this.props.onNext}/>
             );
         }
