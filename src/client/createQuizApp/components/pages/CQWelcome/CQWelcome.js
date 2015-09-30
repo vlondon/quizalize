@@ -31,7 +31,7 @@ class CQWelcome extends React.Component {
     handlePlayDemo(){
         AnalyticsActions.sendEvent('welcome_screen', 'play_demo');
         AnalyticsActions.sendIntercomEvent('welcome_play_demo');
-        window.open('/app#/play/public/44ddfbd4-7bec-4691-8089-9bde07766111/3af911c5-755f-445e-9483-0fbb8d6d9194');
+        window.open('/app#/play/public/3af911c5-755f-445e-9483-0fbb8d6d9194');
 
         // window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
     }
