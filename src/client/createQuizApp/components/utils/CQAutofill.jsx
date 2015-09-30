@@ -36,11 +36,11 @@ export default class CQAutofill extends React.Component {
         // this.state = this.getState();
         var topic;
         if (props.value) {
-            topic = TopicStore.getTopicById(props.value);
+            topic = TopicStore.getTopicById(props.identifier, props.value);
 
         }
         if (props.value === undefined || topic === undefined){
-            topic = TopicStore.getTopicByName('');
+            topic = TopicStore.getTopicByName(props.identifier,  '');
         }
         console.log('topic', topic);
         var indexSelected = -1;
@@ -96,11 +96,11 @@ export default class CQAutofill extends React.Component {
         var topic;
 
         if (props.value) {
-            topic = TopicStore.getTopicById(props.value);
+            topic = TopicStore.getTopicById(props.identifier, props.value);
 
         }
         if (props.value === undefined || topic === undefined){
-            topic = TopicStore.getTopicByName('');
+            topic = TopicStore.getTopicByName(props.identifier, '');
         }
 
         return topic;
@@ -146,7 +146,7 @@ export default class CQAutofill extends React.Component {
     }
 
     handleChange(ev:Object){
-        var topic = TopicStore.getTopicByName(ev.target.value);
+        var topic = TopicStore.getTopicByName(this.props.identifier, ev.target.value);
         this.handleAssign(topic);
     }
 

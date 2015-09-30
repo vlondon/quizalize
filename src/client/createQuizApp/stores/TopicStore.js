@@ -34,7 +34,7 @@ var _publictopics = [];
 var _usertopics = [];
 var _subjects = [];
 var _subjectHash = {};
-var _temporaryTopic : ?Topic;
+var _temporaryTopic = {};
 
 var _emptyTopic: Topic = {
     attributes: {},
@@ -108,9 +108,9 @@ class TopicStore extends Store {
         return result;
     }
 
-    getTopicById(topicId): ?Topic {
+    getTopicById(identifier, topicId): ?Topic {
         if (topicId === '-1') {
-            return _temporaryTopic;
+            return _temporaryTopic[identifier];
         }
         else {
             var result = this.getAllTopics().filter(t => t.uuid === topicId);
@@ -119,22 +119,22 @@ class TopicStore extends Store {
     }
 
 
-    getTopicByName(name) {
+    getTopicByName(identifier, name) {
         var result = this.getAllTopics().filter(t => t.name === name);
         if (result.length === 1) {
             return result.slice()[0];
         } else {
-            _temporaryTopic = {
+            _temporaryTopic[identifier] = {
                 uuid: '-1',
                 name
             };
-            return _temporaryTopic;
+            return _temporaryTopic[identifier];
         }
 
     }
 
     getTopicName(topicId) {
-        var topic = this.getTopicById(topicId);
+        var topic = this.getTopicById("topic", topicId);
         return topic ? topic.name : '';
     }
 
@@ -170,9 +170,6 @@ topicStoreInstance.token = AppDispatcher.register(function(action) {
         case TopicConstants.TOPIC_ADDED:
             _usertopics.push(action.payload);
             topicStoreInstance.emitChange();
-            break;
-        case TopicConstants.TEMPORARY_TOPIC_ADDED:
-            _temporaryTopic = action.payload;
             break;
         default:
             // no op
