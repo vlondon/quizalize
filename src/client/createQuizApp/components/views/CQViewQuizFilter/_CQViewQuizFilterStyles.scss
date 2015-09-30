@@ -1,0 +1,41 @@
+.cq-quizfilter {
+    width: 100%;
+    @include clearfix;
+
+    &__context {
+        padding: 15px 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: $brand-color-grey;
+    }
+    &__search {
+        float: right;
+    }
+    &__make{
+        color: #ff6b00 !important;
+    }
+    .react-textselect {
+        border-bottom: 1px solid rgba(0, 0, 0, .33);
+        overflow: hidden;
+        background: $brand-color-grey-lighter;
+        color: $brand-color-grey-dark;
+        padding: 5px;
+        margin: 5px;
+        /* padding-right: 1em;
+        margin-right: .17em; */
+        cursor: pointer;
+        position: relative;
+
+
+        &-input {
+            position: absolute;
+            cursor: pointer;
+            top: 10px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            opacity: 0;
+            z-index: 1;
+        }
+    }
+}

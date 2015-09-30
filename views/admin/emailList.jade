@@ -1,0 +1,53 @@
+extends ./layout
+
+block body 
+    script.
+        var metricsString = "#{JSON.stringify(metrics)}";
+        metricsString = metricsString.replace(/&quot;/g, '"');
+        var metrics = JSON.parse(metricsString);
+        console.log("metrics", metrics);
+        var updateTable = function (){
+            var date = $('#date').val();
+            var metric = {};
+
+            metrics.forEach(function(m){
+                if (m._id === date){
+                    metric = m;
+                    }
+            });        
+            var activatedList = metric.activatedList;
+            var activeList = metric.activeList;
+            console.log("activeList",activeList);
+            for (var activated in activatedList){
+                console.log("activated", activatedList[activated].email);
+                $('.activated').append('<p>' + activatedList[activated].email + " , " + activatedList[activated].name + '</p>');
+
+            };
+            for (var active in activeList){
+                console.log("active", activeList[active].email);
+                $('.active').append('<p>' + activeList[active].email + " " + activeList[active].name + '</p>');
+
+            };
+            
+        }
+        $(function(){
+            
+            metrics.forEach(function(metric){
+                var date = moment.utc(new Date(+metric._id)).format('MMMM Do YYYY');
+                console.log(metric._id, moment(new Date(+metric._id)).format('MMMM Do YYYY') );
+                $('#date').append($("<option />").val(metric._id).text(date));
+                
+            });
+
+        });
+    container-fluid
+        .row
+            div#dateSelector
+                select#date(onchange="updateTable()")
+                    option
+            .activated
+                h3 activated
+            .active
+                h3 active
+                
+                                

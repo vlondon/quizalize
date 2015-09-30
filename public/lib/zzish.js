@@ -1052,6 +1052,7 @@
             callCallBack(err, data, function (status, message) {
                 if (!err) {
                     if (data.payload!==undefined && data.payload!=null) {
+                        console.log('we got data????', data);
                         callback(err, formatListContents(data,true));
                     }
                     else {

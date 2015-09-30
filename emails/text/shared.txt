@@ -1,6 +1,6 @@
 Hi there,
 
-you have been shared the quiz %quiz% by %from%. Click on the following link to access this quiz:
+%from% shared the quiz %quiz% with you on Quizalize! Click on the following link to access it:
 
 %link%
 

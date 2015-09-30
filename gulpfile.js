@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var del = require('del');
 var $ = require('gulp-load-plugins')();
-var webpack = require('gulp-webpack');
+var webpack = require('webpack-stream');
 var ngAnnotate = require('gulp-ng-annotate');
 
 

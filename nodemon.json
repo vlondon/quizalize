@@ -1,3 +1,3 @@
 {
-  "ignore": ["scripts/*", "node_modules"]
+  "ignore": ["src/client/*", "node_modules"]
 }
