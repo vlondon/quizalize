@@ -59,28 +59,16 @@ var UserApi = {
 
         return new Promise((resolve, reject) => {
 
+            request.get(`/user`)
+                .end(function(error, res){
+                    if (error) {
+                        reject('User not found');
+                    } else {
+                        resolve(res.body);
+                    }
 
-            var uuid = localUuid;
-            var token = localStorage.getItem('token');
+                });
 
-            if (!uuid && !token){
-                reject('Invalid UUID or token');
-            // } else if (uuid && token) {
-            //     localStorage.clean();
-            //     reject();
-            } else if(uuid) {
-                request.get(`/user/${uuid}`)
-                    .end(function(error, res){
-                        if (error) {
-                            reject('User not found');
-                        } else {
-                            resolve(res.body);
-                        }
-
-                    });
-            } else if (token){
-                this.getZzishUser(token).then(resolve).catch(()=>{ reject('Invalid Zzish user'); });
-            }
 
         });
     },
