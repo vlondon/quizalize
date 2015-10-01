@@ -1,0 +1,59 @@
+script(src='/lib/jquery-1.11.0.js')
+
+script.
+    function submit() {
+    //- [{
+    //-     "name": "Samir",
+    //-     "email": "samir@zzish.com"     
+    //-  },{
+    //-     "name": "Vini",
+    //-     "email": "vini@zzish.com"     
+    //-  }]
+        var emailText = $("#emails").val();
+        emailText = emailText.split("\n");
+        var emails = [];
+        var headerTokens = emailText[0].split("    ");
+        for (var i = 1; i < emailText.length; i++) {
+            var link = emailText[i];
+            var lineTokens = link.split("    ");
+            var object = {};
+            var counter=0;
+            for (var j=0; j< lineTokens.length;j++) {
+                object[headerTokens[j]] = lineTokens[j]; 
+                counter++;
+            }
+            if (counter==headerTokens.length) {
+                emails.push(object);    
+            }            
+        }
+        var data = {    
+          "emails": emails,
+          "subject": $("#subject").val(),
+          "body": $("#body").val(),
+          "params": JSON.parse($("#params").val())
+        };
+        $.ajax({
+            type: "POST",
+            url: "/admin/email",
+            data: data,
+            success: function() {
+                alert("Done");
+            }
+        });
+    }
+
+
+p Subject:
+input(type="text", size="50")#subject
+
+p Body: 
+textarea(rows="10", cols="50")#body
+
+
+p Emails: 
+textarea(rows="10", cols="50")#emails
+
+p Params: 
+textarea(rows="10", cols="50")#params
+
+button(onclick="submit()") Submit

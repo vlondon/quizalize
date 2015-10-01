@@ -75,8 +75,6 @@ exports.getQuizzes = function(req, res){
         mongoQuery.profileId = profileId;
     }
 
-    console.log("I GOT SUBJECTS", usedSubs.length);
-
     if (usedSubs.length > 0) {
         var usedSubsId = usedSubs.map(function(item) {
             return item.uuid;
@@ -129,9 +127,6 @@ exports.getQuizzes = function(req, res){
 
 
 exports.getApps = function(req, res){
-
-    console.log("WHY AM I NO THERE");
-
     var searchString = req.body.search || '';
     var categoryId = req.body.categoryId;
     var appId = req.body.appId;
@@ -141,6 +136,7 @@ exports.getApps = function(req, res){
         updated: {
             $gt: 1
         },
+        published: "published",
         name: {
             $regex: searchString, $options: 'i'
         }
@@ -154,15 +150,12 @@ exports.getApps = function(req, res){
     //     mongoQuery.uuid = appId;
     // }
     logger.trace('searching ', mongoQuery);
-    console.log("Searching1111", mongoQuery);
 
     performQuery(mongoQuery, APP_CONTENT_TYPE, function(err,result) {
         if (err === null) {
-            console.log("IEEEE");
             res.send(result);
         }
         else {
-            console.log("IEEEEEEEEFF");
             res.status(500).send(result);
         }
     });

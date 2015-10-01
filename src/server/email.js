@@ -16,7 +16,7 @@ exports.sendEmail = function(from, toArray, subject, body){
 	exports.sendActualEmail(from, toArray, subject, body, body);
 };
 
-exports.sendActualEmail = function(from, toArray, subject, html, text) {
+exports.sendActualEmail = function(from, toArray, subject, html, text, callback) {
 	//"var emailCheck = process.env.sendEmail;
 	var sendEmail = function(to){
 
@@ -59,6 +59,7 @@ exports.sendActualEmail = function(from, toArray, subject, html, text) {
 				} else {
 					logger.info('Email sent:');
 					logger.info(data);
+					if (callback) callback();
 				}
 			});
 		}
@@ -84,7 +85,7 @@ function parseData(input, params) {
 }
 
 
-exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams) {
+exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams, callback) {
 	var emailFolder = __dirname + '/../../emails';
 	logger.info('emailFolder', emailFolder);
 	fs.stat(emailFolder + '/html/' + doc + ".txt", function(err) {
@@ -95,12 +96,12 @@ exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlPara
 					var txtText = contents2;
 					if (!htmlParams) htmlParams = params;
 
-					exports.sendActualEmail(from, email, subject, parseData(htmlText, htmlParams), parseData(txtText, params));
+					exports.sendActualEmail(from, email, subject, parseData(htmlText, htmlParams), parseData(txtText, params), callback);
 				});
 			});
 		} else {
 			fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
-				exports.sendActualEmail(from, email, subject, parseData(contents, params), parseData(contents, params));
+				exports.sendActualEmail(from, email, subject, parseData(contents, params), parseData(contents, params), callback);
 			});
 		}
 	});

@@ -143,6 +143,10 @@ if (process.env.admin === "true") {
 
     app.post('/admin/approve/:type/:id', admin.approve);
     app.post('/admin/approvefirst/:type/:id', admin.approvefirst);
+
+    app.get('/admin/email', admin.emailpage);
+    app.post('/admin/email', admin.email);
+    app.post('/admin/xlsx', admin.xlsx);
 }
 
 app.get('/create/:profileId/transaction/', transaction.list);

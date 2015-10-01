@@ -5,6 +5,9 @@ var email              = require('../email');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
 var db = require('./db');
+var async = require("async");
+var XLSX = require('xlsx');
+var fs = require('fs');
 var QUIZ_CONTENT_TYPE   = "quiz";
 
 if (process.env.admin=="true") {
@@ -930,9 +933,92 @@ exports.submitmetrics = function(req, res){
 };
 
 exports.approve = function(req, res){
-  approveDocument(req, res, 'published');
+    approveDocument(req, res, 'published');
 };
 
 exports.approvefirst = function(req, res){
-  approveDocument(req, res, 'firstpublished');
+    approveDocument(req, res, 'firstpublished');
+};
+
+//body, link, linktitle
+var parseHash = function(input, params) {
+    for (var i in params) {
+		var patt = new RegExp("%" + i + "%", "g" );
+		if (input !== undefined) {
+			input = input.replace(patt, params[i]);
+		}
+	}
+	return input;
+};
+
+exports.emailpage = function(req, res){
+    res.render("admin/emails");
+};
+
+exports.email = function(req, res){
+    var emails = req.body.emails;
+    var params = req.body.params;
+    var body = req.body.body;
+	body = body.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+    console.log("BODY", req.body);
+
+    async.eachSeries(emails, function(user, callback) {
+        var subject = parseHash(parseHash(req.body.subject,params), user);
+        params.body = parseHash(parseHash(body,params), user);
+        for (var j in user) {
+            params[j] = user[j];
+        }
+        email.sendEmailTemplate('team@quizalize.com', [user.email], subject, "email", params, null, callback);
+    }, function(done) {
+        res.send("Done");
+    });
+};
+
+exports.xlsx = function(req,res) {
+    console.log("XLS");
+    var output = "";
+    var workbook = XLSX.readFile(__dirname + "/" + req.body.filename);
+    for (var j = 62; j< workbook.SheetNames.length;j++) {
+        var first_sheet_name = workbook.SheetNames[j];
+        /* Get worksheet */
+        var worksheet = workbook.Sheets[first_sheet_name];
+        debugger;
+        var currentP = "";
+        for (var row = 1; row < 65; row ++) {
+
+            var address_of_cell = 'A' + row;
+            /* Find desired cell */
+            var desired_cell = worksheet[address_of_cell];
+            if (desired_cell) {
+                /* Get the value */
+                var desired_value = ""+desired_cell.v;
+                if (desired_value.indexOf("Principal:")==0) {
+                    currentP = desired_value.substring(11);
+                }
+                if (desired_value.indexOf("E-mail:")==0) {
+                    output+=currentP + "    " + desired_value.substring(8)+"\n";
+                }
+            }
+        }
+        for (var row =1; row < 65; row ++) {
+            var address_of_cell = 'C' + row;
+
+            /* Find desired cell */
+            var desired_cell = worksheet[address_of_cell];
+            if (desired_cell) {
+                /* Get the value */
+                var desired_value = ""+desired_cell.v;
+                if (desired_value.indexOf("Principal:")==0) {
+                    currentP = desired_value.substring(11);
+                }
+                if (desired_value.indexOf("Email:")==0) {
+                    console.log(desired_value, currentP);
+                    output+=currentP + "    " + desired_value.substring(8)+"\n";
+                }
+            }
+        }
+    }
+    fs.writeFileSync(__dirname + "utah.out", output);
+    res.send("Done");
 };
