@@ -55,24 +55,6 @@ var getGraphQLUserQuery = function(key, value){
 
 var UserApi = {
 
-    get: function() : Promise {
-
-        return new Promise((resolve, reject) => {
-
-            request.get(`/user`)
-                .end(function(error, res){
-                    if (error) {
-                        reject('User not found');
-                    } else {
-                        resolve(res.body);
-                    }
-
-                });
-
-
-        });
-    },
-
     getOwn: function() : Promise {
         var query = `{
             user(me: true) {
