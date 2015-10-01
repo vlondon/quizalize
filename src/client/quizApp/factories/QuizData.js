@@ -735,7 +735,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     if (tmpQ == currentQuiz.payload.questions.length) {
                         tmpQ = 0;
                     }
-                    if (currentQuizResult.report[tmpQ] == undefined || !currentQuizResult.report[tmpQ].correct) {
+                    if (currentQuizResult.report[tmpQ] == undefined || (!currentQuizResult.report[tmpQ].correct && currentQuizResult.report[tmpQ].attempts<=3)) {
                         nextQuestionId = tmpQ;
                         break;
                     }
