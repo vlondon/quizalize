@@ -646,7 +646,7 @@ var generateData = function(chosenWeek, callback) {
                             }
                         });
                         console.log("dayActive", dayActive);
-                    }
+                    };
                     var signUps = function(users, periodStart, periodEnd){
                         var count = 0;
                         users.forEach(function(user){

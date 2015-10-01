@@ -68,9 +68,9 @@ var CQLink = React.createClass({
             ev.stopPropagation();
             // ev.preventDefault();
         }
-    //     if (this.props.onClick){
-    //         this.props.onClick(ev);
-    //     }
+        if (this.props.onClick){
+            this.props.onClick(ev);
+        }
     //     if (this.props.href !== '#'){
     //         if (commandPressed === true){
     //             window.open(this.props.href);

@@ -1,6 +1,6 @@
 var config              = require('./../../config');
 var stripe              = require('stripe')(config.stripeSecret);
-var Promise             = require('es6-promise').Promise;
+
 
 exports.processPayment = function(transaction, stripeToken){
     return new Promise(function(resolve, reject){
