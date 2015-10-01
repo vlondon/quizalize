@@ -1,7 +1,6 @@
 /* @flow */
 var request = require('superagent');
 
-import UserIdStore from './../../stores/UserIdStore';
 
 var getGraphQLUserQuery = function(key, value){
     return `
@@ -57,10 +56,10 @@ var getGraphQLUserQuery = function(key, value){
 var UserApi = {
 
     get: function() : Promise {
-        console.info('local UUIDA', UserIdStore);
+
         return new Promise((resolve, reject) => {
-            var localUuid = UserIdStore ? UserIdStore.getUserId() : undefined;
-            console.info('local UUID', localUuid);
+
+
             var uuid = localUuid;
             var token = localStorage.getItem('token');
 
@@ -336,13 +335,11 @@ var UserApi = {
     },
 
     trackEvent: function(name : string, meta: Object){
-        var uuid = UserIdStore.getUserId();
-        if (uuid) {
-            console.log(`/user/${uuid}/events/${name}`);
-            request.post(`/user/${uuid}/events/${name}`)
-                .send(meta)
-                .end();
-        }
+
+        request.post(`/user/events/${name}`)
+            .send(meta)
+            .end();
+
     }
 };
 
