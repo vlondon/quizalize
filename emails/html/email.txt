@@ -328,5 +328,7 @@ background: #970b0e !important;
               </td>
             </tr></table></center>
         </td>
-      </tr></table></body>
+      </tr></table>
+      <img src="http://www.google-analytics.com/collect?v=1&tid=UA-2402555-23&t=event&ec=email&ea=open&el=%campaignlabel%" />
+      </body>
 </html>

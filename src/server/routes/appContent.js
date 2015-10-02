@@ -187,8 +187,8 @@ exports.publishToMarketplace = function(req, res) {
             var params = {
                 name: name
             };
-            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your app to the Quizalize Marketplace', 'publishrequest', params);
-            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], 'Thanks for submitting your app to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
               profileId: profileId,
               type: 'app',
               id: id
