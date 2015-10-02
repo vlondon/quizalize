@@ -55,20 +55,24 @@ exports.saveUser = function(req, res) {
 };
 
 exports.details = function(req, res) {
-    var profileId = req.params.profileId;
-    zzish.user(profileId, function(err, data){
-        if (!err && typeof data === 'object') {
-            console.log('we got user', data);
-            var uuid = data.uuid;
-            req.session.userUUID = uuid;
-            res.status(200);
-        }
-        else {
-            req.userUUID = undefined;
-            res.status(err);
-        }
-        res.send(data);
-    });
+    if (req.session && req.session.user){
+        var profileId = req.session.user.uuid;
+        zzish.user(profileId, function(err, data){
+            if (!err && typeof data === 'object') {
+                console.log('we got user', data);
+                var uuid = data.uuid;
+                req.session.userUUID = uuid;
+                res.status(200);
+            }
+            else {
+                req.userUUID = undefined;
+                res.status(err);
+            }
+            res.send(data);
+        });
+    } else {
+        res.status(404).send(JSON.stringify('user not found'));
+    }
 };
 
 exports.search = function(req, res) {
