@@ -7,7 +7,6 @@ var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePic
 var UserActions = require('./../../../actions/UserActions');
 var router = require('./../../../config/router');
 
-var facebookSDK = require('./../../../config/facebookSDK');
 
 import MeStore from './../../../stores/MeStore';
 import {urlParams} from './../../../utils';
@@ -56,7 +55,6 @@ export default class CQSettings extends React.Component {
             isNew
         };
 
-        this.handleProfilePicture = this.handleProfilePicture.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.isFormValid = this.isFormValid.bind(this);
@@ -67,10 +65,7 @@ export default class CQSettings extends React.Component {
         this.handleBannerImageFile = this.handleBannerImageFile.bind(this);
     }
 
-    componentDidMount() {
-        console.log("redirecting to after?", urlParams().redirect);
-        facebookSDK.load();
-    }
+
 
     isFormValid(): Object{
         //u?:User
@@ -152,20 +147,6 @@ export default class CQSettings extends React.Component {
 
     }
 
-    handleProfilePicture(){
-        facebookSDK.getProfilePicture()
-            .then((profilePictureUrl) => {
-
-                var user = Object.assign({}, this.state.user);
-
-                user = user.set('avatar', profilePictureUrl);
-
-                this.setState({user}, ()=>{
-                    UserActions.update(this.state.user.toJSON());
-                });
-
-            });
-    }
 
     handleSkip() {
         sendEvent('register', 'details', 'skipped');
@@ -189,6 +170,7 @@ export default class CQSettings extends React.Component {
         this.setState({profileImageFile});
         MediaActions.uploadPicture(profileImageFile, 'profile').then((avatarUrl)=>{
             var user = this.state.user;
+            console.log('we got avatar', avatarUrl);
             user = user.set('avatar', avatarUrl);
             this.setState({user}, ()=>{
                 UserActions.update(this.state.user.toJSON());
@@ -235,9 +217,7 @@ export default class CQSettings extends React.Component {
                             pictureData={this.state.profileImageData}/>
 
                     </div>
-                    <div className=" cq-settings__facebook">
-                        <button className="btn btn-danger" onClick={this.handleProfilePicture}>Get from facebook</button>
-                    </div>
+
                     <div className="cq-settings__upload">
                         <CQImageUploader
                             id="imageUploader"
@@ -245,7 +225,7 @@ export default class CQSettings extends React.Component {
                             onImageData={this.handleProfileImageData}
                             onImageFile={this.handleProfileImageFile}
                         />
-                        <button className="btn btn-danger " onClick={this.handleProfilePicture}>Upload a picture</button>
+                        <button className="btn btn-danger">Upload a picture</button>
                     </div>
                 </div>
             );
