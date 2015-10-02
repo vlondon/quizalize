@@ -13,7 +13,7 @@ import MeStore from './../../../stores/MeStore';
 import priceFormat from './../../../utils/priceFormat';
 import kolor from 'kolor';
 import router from './../../../config/router';
-
+import type {AppType} from './../../../stores/AppStore';
 type Props = Object;
 type State = Object;
 
@@ -78,7 +78,7 @@ type State = Object;
         this.setState({quizDetails: undefined});
     }
 
-    handleBuyApp(app){
+    handleBuyApp(app: AppType){
         console.log('buying app', app);
         if (!MeStore.isLoggedIn()){
             swal({
