@@ -38,7 +38,7 @@ var finalApproval = function(req, res, type, content, doc) {
       if (!err2) {
         zzish.getUser(content.meta.profileId, null, function(err3, quizUser) {
           var name = quizUser.name ? quizUser.name : 'there';
-          email.sendEmailTemplate('team@quizalize.com', [quizUser.email], 'Your ' + type + ' has been approved', type + doc, {
+          email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [quizUser.email], 'Your ' + type + ' has been approved', type + doc, {
             name: name,
             type: type,
             quiz: content.meta.name,
@@ -969,7 +969,7 @@ exports.email = function(req, res){
         for (var j in user) {
             params[j] = user[j];
         }
-        email.sendEmailTemplate('team@quizalize.com', [user.email], subject, "email", params, null, callback);
+        email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], subject, "email", params, null, callback);
     }, function(done) {
         res.send("Done");
     });

@@ -133,7 +133,7 @@ exports.register =  function(req, res) {
                 'user_id': data.uuid,
                 'created_at': Date.now() / 1000
             });
-            email.sendEmailTemplate('team@zzish.com', [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
         }
         else {
             res.status(err);
@@ -148,7 +148,7 @@ exports.forget =  function(req, res) {
         if (!err) {
             res.status(200);
             var link = "http://www.quizalize.com/quiz/reset/" + encrypt(data);
-            email.sendEmailTemplate('team@zzish.com', [userEmail], 'Password Reset', 'passwordreset', {link: link});
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Password Reset', 'passwordreset', {link: link});
         }
         else {
             res.status(err);
