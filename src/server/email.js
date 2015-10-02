@@ -85,7 +85,7 @@ function parseData(input, params) {
 }
 
 exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlParams, callback) {
-	var emailFolder = __dirname + '/../../emails';
+	var emailFolder = process.env.PWD + '/../../emails';
 	logger.info('emailFolder', emailFolder);
 	fs.stat(emailFolder + '/html/' + doc + ".txt", function(err) {
 		if (!err) {
@@ -98,8 +98,7 @@ exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlPara
 				});
 			});
 		} else {
-			fs.readFile(__dirname + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
-				console.log("FFFFF", doc, contents, params);
+			fs.readFile(process.env.PWD + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
 				exports.sendActualEmail(from, email, subject, parseData(contents, params), parseData(contents, params), callback);
 			});
 		}
