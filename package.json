@@ -33,6 +33,7 @@
     "express": "^4.10.3",
     "express-http-proxy": "^0.6.0",
     "express-session": "^1.9.3",
+    "ga": "0.0.2",
     "gm": "^1.18.1",
     "graphql": "0.4.3",
     "intercom.io": "^1.0.10",

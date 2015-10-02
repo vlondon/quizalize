@@ -10,6 +10,12 @@ var XLSX = require('xlsx');
 var fs = require('fs');
 var QUIZ_CONTENT_TYPE   = "quiz";
 
+
+var GoogleAnalytics = require('ga');
+var ua = process.env.QUIZALIZEGA;
+var host = 'www.quizalize.com';
+var ga = new GoogleAnalytics(ua, host);
+
 if (process.env.admin=="true") {
     var Zzish = require('zzish');
     var zzish_db = new Zzish();
@@ -983,7 +989,6 @@ exports.xlsx = function(req,res) {
         var first_sheet_name = workbook.SheetNames[j];
         /* Get worksheet */
         var worksheet = workbook.Sheets[first_sheet_name];
-        debugger;
         var currentP = "";
         for (var row = 1; row < 65; row ++) {
 
@@ -1021,4 +1026,20 @@ exports.xlsx = function(req,res) {
     }
     fs.writeFileSync(__dirname + "utah.out", output);
     res.send("Done");
+};
+
+
+exports.pixeltest = function(req,res) {
+    res.render("admin/pixel");
+};
+
+exports.pixel = function(req,res) {
+    ga.trackEvent(req.query);
+    var buf = new Buffer("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7", 'base64');
+    res.end(buf);
+};
+
+exports.unsubscribe = function(req,res) {
+    email.sendEmailTemplate('team@zzish.com', ['vini@zzish.com'], 'Unsubscribe', 'unsubscribe', {email: req.query.email});
+    res.send("Your email has been unsubscribed.");
 };

@@ -42,13 +42,13 @@ var sessionOptions = {
     saveUninitialized: true,
     name: 'quiz_session'
 };
-if (process.env.ZZISH_DEVMODE === 'true'){
-    sessionOptions.store = new FileStore({
-        path: sessionsFolder
-    });
-} else {
+// if (process.env.ZZISH_DEVMODE === 'true'){
+//     sessionOptions.store = new FileStore({
+//         path: sessionsFolder
+//     });
+// } else {
     sessionOptions.store = new MongoStore({url: 'mongodb://localhost/quizalize-sessions'});
-}
+// }
 app.use(session(sessionOptions));            // Session support
 
 app.use(function(req, res, next){
@@ -147,8 +147,11 @@ if (process.env.admin === "true") {
     app.get('/admin/email', admin.emailpage);
     app.post('/admin/email', admin.email);
     app.post('/admin/xlsx', admin.xlsx);
+    app.get('/admin/pixel', admin.pixeltest);
 }
 
+app.get('/unsubscribe', admin.unsubscribe);
+app.get('/pixel', admin.pixel);
 app.get('/create/:profileId/transaction/', transaction.list);
 app.get('/create/:profileId/transaction/process', transaction.process);
 app.get('/create/:profileId/transaction/:id', transaction.get);
@@ -223,6 +226,8 @@ app.post('/quizHelp/', quiz.help);
 app.get('/quiz/service', quiz.service);
 app.get('/quiz/privacy', quiz.privacy);
 app.get('/quiz/find-a-quiz', quiz.quizFinder);
+
+
 
 if (process.env.ZZISH_DEVMODE === 'true'){
     app.get('/js/*', proxy('http://localhost:7071', {
