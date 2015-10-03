@@ -1,6 +1,6 @@
 {
   "name": "quizalize",
-  "version": "0.13.2",
+  "version": "0.13.4",
   "description": "Quizalize Quizzes",
   "main": "app.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "express": "^4.10.3",
     "express-http-proxy": "^0.6.0",
     "express-session": "^1.9.3",
+    "ga": "0.0.2",
     "gm": "^1.18.1",
     "graphql": "0.4.3",
     "intercom.io": "^1.0.10",
@@ -45,6 +46,7 @@
     "serve-favicon": "^2.1.5",
     "session-file-store": "0.0.20",
     "stripe": "^3.5.0",
+    "xlsx": "^0.8.0",
     "xmlhttprequest": "^1.7.0",
     "zzishsdk": "latest"
   },

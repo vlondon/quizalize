@@ -27,28 +27,6 @@ var handleRedirect = function(){
 
 var UserActions = {
 
-    request: function() {
-
-        UserApi.get()
-            .then(function(user){
-                AppDispatcher.dispatch({
-                    actionType: UserConstants.USER_IS_LOGGED,
-                    payload: user
-                });
-            })
-            .catch(function(){
-                AppDispatcher.dispatch({
-                    actionType: UserConstants.USER_IS_NOT_LOGGED,
-                    user: false
-                });
-            });
-
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USER_LOGIN_REQUEST
-        });
-    },
-
-
     getOwn: function() : Promise {
         return new Promise((resolve, reject)=>{
 

@@ -91,15 +91,15 @@ exports.trackEvent = function(userId, event_name, meta, callback){
                 }
             }
             catch (e) {
-
+                if (callback) callback(e);
             }
         });
     }
 };
 
 exports.events = function(req, res){
-
-    exports.trackEvent(req.params.uuid, req.params.name, req.body, function(err, resp) {
+    var profileId = req.session.user.uuid;
+    exports.trackEvent(profileId, req.params.name, req.body, function(err, resp) {
         console.log("Intercom events respones");
         if (!err) {
             res.send(resp);
