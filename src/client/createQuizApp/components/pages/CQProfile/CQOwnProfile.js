@@ -35,10 +35,6 @@ class CQOwnProfile extends React.Component {
         };
 
 
-
-        UserActions.getOwn();
-
-
         this.onChange = this.onChange.bind(this);
         this.getState = this.getState.bind(this);
     }

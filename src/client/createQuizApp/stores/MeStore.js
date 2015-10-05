@@ -3,6 +3,7 @@ import Store from './Store';
 import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import UserConstants from './../constants/UserConstants';
+import UserActions from './../actions/UserActions';
 import type {UserType} from './../../../types/UserType';
 import AppStore from './AppStore';
 
@@ -47,6 +48,7 @@ class Me extends Store {
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
+        UserActions.getOwn();
     }
 
     getState (): UserType {

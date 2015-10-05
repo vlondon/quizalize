@@ -6,7 +6,6 @@ var app         = express();
 var path        = require('path');
 var favicon     = require('serve-favicon');
 var session     = require('express-session');
-var FileStore   = require('session-file-store')(session);
 var MongoStore  = require('connect-mongo')(session);
 var bodyParser  = require('body-parser');
 var logger      = require('./src/server/logger');
@@ -33,7 +32,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, '/public/favcq.png')));
-var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
+//var FileStore   = require('session-file-store')(session);
+//var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
 
 var sessionOptions = {
     secret: 'zzishdvsheep',
