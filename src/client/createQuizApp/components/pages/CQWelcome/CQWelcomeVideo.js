@@ -22,7 +22,7 @@ class CQWelcomeVideo extends React.Component {
             <div className="cq-welcome__video" onClick={this.handleDismiss}>
                 <div className="cq-welcome__video__iframe">
                     <div className="cq-welcome__video__icon"><i className="fa fa-times"></i></div>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/J3_CWmLcEI0?autoplay=1" frameBorder="0" allowFullScreen></iframe>
+                    <iframe width="800" height="450" src="https://www.youtube.com/embed/RrlMXexiA_c?autoplay=1" frameBorder="0" allowFullScreen></iframe>
                 </div>
             </div>
         );
