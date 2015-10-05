@@ -6,12 +6,32 @@ angular.module('quizApp')
             controller: "LoginController",
             controllerAs: "login"
         })
+        .when('/code/:code', {
+            templateUrl: "/quiz/view/plogin",
+            controller: "LoginController",
+            controllerAs: "login"
+        })
+        .when('/app', {
+            templateUrl: "/quiz/view/alogin",
+            controller: "AppController",
+            controllerAs: "login"
+        })
+        .when('/app/:code', {
+            templateUrl: "/quiz/view/alogin",
+            controller: "AppController",
+            controllerAs: "login"
+        })
         .when('/class', {
             templateUrl: "/quiz/view/plogin",
             controller: "LoginController",
             controllerAs: "login"
         })
         .when('/list', {
+            templateUrl: "/quiz/view/studentCategoryList",
+            controller: "QuizzesController",
+            controllerAs: "quizzes"
+        })
+        .when('/list/:code', {
             templateUrl: "/quiz/view/studentCategoryList",
             controller: "QuizzesController",
             controllerAs: "quizzes"

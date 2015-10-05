@@ -1,4 +1,4 @@
-angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '$location', '$timeout', '$scope', function(QuizData, $log, $location, $timeout,$scope){
+angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '$location', '$timeout', '$scope', '$routeParams', function(QuizData, $log, $location, $timeout,$scope, $routeParams){
     var self = this;
 
     self.loading = true;
@@ -8,11 +8,26 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     self.startQuiz = function(categoryId,quizId){
         $location.path("/quiz/"+categoryId+"/"+quizId);
     };
+    if ($routeParams.code) {
+        self.code = $routeParams.code;
+    }
+    else {
+        try {
+            if (typeof localStorage != 'undefined' && localStorage.getItem("gameCode")) {
+                self.code = localStorage.getItem("gameCode");
+            }
+        }
+        catch (err) {
+
+        }
+    }
+
 
     var loadQuizzes = function() {
         self.user = QuizData.getUser();
         self.name = QuizData.getUsername();
         QuizData.loadPlayerQuizzes(function(err, res){
+            self.hasQuizzes = true;
             if(!err){
                 self.categories = QuizData.getCategories();
                 for (var i in self.categories) {
@@ -33,6 +48,21 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
             self.reloadActive = true;
         }, 2000);
         loadQuizzes();
+    };
+
+    self.iconURL = function() {
+        if (self.app && self.app.iconURL) {
+            return "https://d15tuytjqnsden.cloudfront.net/" + self.app.iconURL;
+        }
+    };
+
+    self.appColour = function() {
+        if (self.app) {
+            return self.app.colour;
+        }
+        else {
+            return "#f2f2f2";
+        }
     };
 
     self.logout = function(){
@@ -61,7 +91,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
                     }
                     else {
                         QuizData.unsetUser();
-                        $location.path("/app#");                        
+                        $location.path("/app#");
                     }
                 });
             }
@@ -74,6 +104,21 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     else {
         if (QuizData.isLoggedIn()) {
             loadQuizzes();
+        }
+        else if (self.code) {
+            QuizData.loadApp(self.code, function(err,resp) {
+                if (!err) {
+                    self.app = resp.meta;
+                    QuizData.loadQuizzes(self.app, function(err, quizzes) {
+                        self.hasQuizzes = true;
+                        self.quizzes = quizzes;
+                        self.categories = QuizData.getCategories();
+                    });
+                }
+                else {
+                    QuizData.showMessage("App Error", "Please check that you entered the code correctly");
+                }
+            });
         }
         else {
             $location.path("/");
