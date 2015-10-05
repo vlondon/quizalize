@@ -51,6 +51,8 @@ var CQPublishedInfo = React.createClass({
         var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
         //var fullLink = currentClass.link;
         var fullLiveLink = classLink + 'one/';
+        console.log("LIVE", fullLink);
+        var fullLinkBoard = currentQuiz ? classLink + 'board/' + currentQuiz.uuid : classLink + "board/";
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
 
@@ -62,7 +64,8 @@ var CQPublishedInfo = React.createClass({
             classLink,
             currentQuiz,
             fullLink,
-            fullLiveLink
+            fullLiveLink,
+            fullLinkBoard
         };
 
         return newState;
@@ -104,7 +107,7 @@ var CQPublishedInfo = React.createClass({
 
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
-                <iframe src={this.state.fullLink} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
+                <iframe src={this.state.fullLinkBoard} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
 
             </CQPageTemplate>
         );
