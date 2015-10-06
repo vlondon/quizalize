@@ -243,6 +243,5 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
                 span(ng-show="quiz.percentage") {{(quiz.correct*100/quiz.answered) | number: 0}}%
                 span(ng-show="!quiz.percentage && quiz.status=='ACTIVITY_INSTANCE_STARTED'") No Data
                 span(ng-show="!quiz.percentage && quiz.status=='ACTIVITY_INSTANCE_CANCELLED'") Cancelled
-                span {{quiz.status}}
             .bar-topic-title 
             .bar-block(ng-style="{width: (quiz.correct*95/quiz.answered)+'%'}",ng-class="quiz.state") {{quiz.score}}
