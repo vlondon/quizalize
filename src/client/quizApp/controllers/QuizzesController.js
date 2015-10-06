@@ -61,13 +61,17 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
             return self.app.colour;
         }
         else {
-            return "#f2f2f2";
+            return "#404040";
         }
     };
 
     self.logout = function(){
         QuizData.unsetUser();
         $location.path("/");
+    };
+
+    self.showStats = function() {
+        $location.path("/stats");
     };
 
     if (typeof($location.search()).cancel != 'undefined' && $location.search().cancel){

@@ -46,6 +46,10 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
     .col-sm-6.col-sm-offset-3(ng-show="quizzes.user")
         .well
             br
+            button.btn.btn-info.btn-block(ng-click="quizzes.showStats();")
+                span.glyphicon.glyphicon-stats
+                |&nbsp;Your Stats
+            br
             button.btn.btn-info.btn-block(ng-click="quizzes.reloadQuizzes();")
                 span.glyphicon.glyphicon-refresh
                 |&nbsp;Check for new quizzes

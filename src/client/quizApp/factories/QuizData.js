@@ -541,10 +541,16 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 $rootScope.$digest();
             });
         },
+        loadStats: function(callback){
+            zzish.getUserResults(userUuid, {aggregate: true, data: true}, function(err, message) {
+                callback(err, message);
+                $rootScope.$digest();
+            });
+        },
         loadQuiz: function(catId,quizId,callback) {
             var cb = function(data){
                 callback(data);
-            }
+            };
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 cb(currentQuiz);
             }
@@ -588,7 +594,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     contentId: currentQuiz.uuid,
                     groupCode: classCode
                 }
-            }
+            };
             if (currentQuiz.meta.categoryId) {
                 parameters.extensions.categoryId = currentQuiz.meta.categoryId;
             }
