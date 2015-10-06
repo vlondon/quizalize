@@ -1245,7 +1245,7 @@
                     callback(status, message);
                 }
             });
-        });
+        })
     };
 
     /**
@@ -1566,6 +1566,7 @@
                 error(this, callback, logEnabled);
             }, false);
         }else{
+            ocallback = callback;
             req.onload = outputResult;
         }
 
@@ -1577,9 +1578,10 @@
     }
 
     function outputResult() {
-        if (logEnabled) console.log('Proxy.response callback',req.responseText);
+        if (logEnabled) console.log('Proxy.response callback', req.responseText !== undefined, ocallback);
         if (typeof ocallback === 'function') {
-            ocallback(null,req.responseText);
+            var responseText = typeof req.responseText === 'string' ? JSON.parse(req.responseText) : req.responseText;
+            ocallback(null, responseText);
         }
     }
 
