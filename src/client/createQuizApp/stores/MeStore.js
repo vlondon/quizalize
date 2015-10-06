@@ -48,7 +48,10 @@ class Me extends Store {
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
-        UserActions.getOwn();
+        console.log('state', state, state.uuid);
+        if (state.uuid) {
+            UserActions.getOwn();
+        }
     }
 
     getState (): UserType {
