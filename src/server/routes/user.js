@@ -139,21 +139,27 @@ exports.logout = function(req, res){
 exports.register =  function(req, res) {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
-    zzish.registerUser(userEmail, encrypt(userPassword), function(err, data) {
+    logger.info('Creating new user for', userEmail);
+    zzish.registerUser(userEmail, encrypt(userPassword), function(err, user) {
         if (!err) {
-            req.session.user = data;
-            res.status(200);
-            intercom.createUser({
-                'email': userEmail,
-                'user_id': data.uuid,
-                'created_at': Date.now() / 1000
-            });
+            user.attributes.accountType = 0;
+            user.attributes.accountTypeUpdated = Date.now();
+            req.session.user = user;
+            logger.info('Setting account type for', userEmail);
+            exports.saveUser(user)
+                .then(()=>{
+                    logger.info('saving session');
+                    res.send(user);
+                })
+                .catch(()=>{
+                    res.status(err).send();
+                });
             email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
         }
         else {
             res.status(err);
         }
-        res.send(data);
+        res.send(user);
     });
 };
 
