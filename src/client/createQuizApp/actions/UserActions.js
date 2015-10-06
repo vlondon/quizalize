@@ -42,7 +42,7 @@ var UserActions = {
 
     update: function(user: Object) : Promise{
 
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject)=>{
 
             UserApi.post(user)
                 .then(()=>{
@@ -51,6 +51,7 @@ var UserActions = {
                         actionType: UserConstants.USER_DETAILS_UPDATED,
                         payload: user
                     });
+                    this.getOwn();
                     if (handleRedirect() === false){
                         resolve(user);
                     }
