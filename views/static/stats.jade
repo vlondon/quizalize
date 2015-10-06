@@ -224,9 +224,10 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nc
 
 
     h2(ng-show="stats.loadingStats",style="color: white") Loading stats…
-    h2(ng-hide="stats.loadingStats",style="color: white") Here are your stats...
+    h2(ng-show="!stats.loadingStats && stats.data.meta.data_total > 0",style="color: white") Here are your stats...
+    h2(ng-show="!stats.loadingStats && stats.data.meta.data_total == 0",style="color: white") Play some games to see your stats
     
-    .row
+    .row(ng-show="stats.data.meta.data_total > 0")
         .col-xs-4
             center
                 h3 Total Quizzes: {{stats.data.meta.data_total}}        
