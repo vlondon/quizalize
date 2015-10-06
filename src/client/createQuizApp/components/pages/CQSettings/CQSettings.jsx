@@ -1,6 +1,7 @@
 /* @flow */
 var React = require('react');
 
+import CQSettingsSubscriptions from './CQSettingsSubscriptions';
 import type {UserType} from './../../../../../types/UserType';
 import CQPageTemplate from './../../../components/CQPageTemplate';
 import CQViewProfilePicture from './../../../components/views/CQViewProfilePicture';
@@ -45,7 +46,7 @@ export default class CQSettings extends React.Component {
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;
-        console.log('USER USER', user);
+        console.log('USER USER', user, user.attributes.accountType);
 
         this.state =  {
             user,
@@ -63,8 +64,21 @@ export default class CQSettings extends React.Component {
         this.handleProfileImageFile = this.handleProfileImageFile.bind(this);
         this.handleBannerImageData = this.handleBannerImageData.bind(this);
         this.handleBannerImageFile = this.handleBannerImageFile.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+    onChange(){
+        var user:UserType = MeStore.state;
+        console.log('USER UPDATEEEEE', user.attributes.accountType);
+        this.setState({user});
+        this.forceUpdate();
+    }
+    componentDidMount() {
+        MeStore.addChangeListener(this.onChange);
     }
 
+    componentWillUnmount() {
+        MeStore.removeChangeListener(this.onChange);
+    }
 
 
     isFormValid(): Object{
@@ -364,7 +378,7 @@ export default class CQSettings extends React.Component {
                     <div className="cq-settings__col2">
                         <div className="cq-settings__subscriptions">
                             <b>Your subscription</b>
-                            
+                            <CQSettingsSubscriptions user={this.state.user}/>
                         </div>
                     </div>
                 </div>
