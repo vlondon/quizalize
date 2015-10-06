@@ -68,7 +68,7 @@ style.
                             textarea.autogrow-short.form-control#question(on-enter="create.focusAnswer();", placeholder="e.g. What is the capital of France", autofocus="true", tabindex="1",rows="1",cols="40", ng-model="create.question")
                             script $('#question').css('overflow', 'hidden').autogrow()                                                        
                         .col-xs-4(ng-show="create.quiz.latexEnabled")
-                            span(mathjax-bind="create.question")#questionMath
+                            
                     .form-group
                         label.col-sm-3.control-label 
                           | Correct Answer 
@@ -77,7 +77,7 @@ style.
                             textarea.autogrow-short.form-control#answer(type="text", on-enter="create.nextFromAnswer();", placeholder="e.g. Paris", ng-model="create.answerText" tabindex="2",rows="1",cols="44")
                             script $('#answer').css('overflow', 'hidden').autogrow()
                         .col-xs-4(ng-show="create.quiz.latexEnabled")
-                            span(mathjax-bind="create.answerText")#answerTextMath             
+                            
                     .form-group(ng-hide="create.quiz.latexEnabled")
                         label.col-sm-3.control-label 
                             | Incorrect Answers
@@ -99,21 +99,20 @@ style.
                             textarea.autogrow-short.form-control#alt1a(type="text", placeholder="e.g. London", ng-model="create.alt1", on-enter="create.focusAlt('2a');", tabindex="3",rows="1",cols="10")
                             script $('#alt1a').css('overflow', 'hidden').autogrow()
                         .col-xs-4(ng-show="create.quiz.latexEnabled")
-                            span(mathjax-bind="create.alt1")#alt1Math
                     .form-group(ng-show="create.quiz.latexEnabled")
                         label.col-sm-3.control-label 
                         .col-sm-5
                             textarea.autogrow-short.form-control#alt2a(type="text", placeholder="e.g. Toronto", ng-model="create.alt2", on-enter="create.focusAlt('3a');", tabindex="4",rows="1",cols="10")
                             script $('#alt2a').css('overflow', 'hidden').autogrow()
                         .col-xs-4(ng-show="create.quiz.latexEnabled")
-                            span(mathjax-bind="create.alt2")#alt2Math                                                       
+                            
                     .form-group(ng-show="create.quiz.latexEnabled")
                         label.col-sm-3.control-label 
                         .col-sm-5
                             textarea.autogrow-short.form-control#alt3a(type="text", placeholder="e.g. Berlin", ng-model="create.alt3", on-enter="create.focusTopic();", tabindex="5",rows="1",cols="10")
                             script $('#alt3a').css('overflow', 'hidden').autogrow()                            
                         .col-xs-4(ng-show="create.quiz.latexEnabled")
-                            span(mathjax-bind="create.alt3")#alt3Math                                              
+                            
                     .form-group
                         label.col-sm-3.control-label
                           | Subtopic 
@@ -179,4 +178,3 @@ script.
         $('[data-toggle="popover"]').popover()
     });
   });
-

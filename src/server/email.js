@@ -98,7 +98,7 @@ exports.sendEmailTemplate = function(from, email, subject, doc, params, htmlPara
 				});
 			});
 		} else {
-			fs.readFile(process.env.PWD + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
+			fs.readFile(emailFolder + '/emails/text/' + doc + ".txt", 'utf-8', function(err1, contents) {
 				exports.sendActualEmail(from, email, subject, parseData(contents, params), parseData(contents, params), callback);
 			});
 		}

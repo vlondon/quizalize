@@ -8,6 +8,10 @@ nav.navbar.navbar-default.navbar-fixed-top
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
+        .navbar-collapse.collapse#navbar
+            ul.nav.navbar-nav.navbar-right
+                li
+                    a.btn.btn-info(ng-show="login.code", ng-click="login.quizalize()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Return to Quizalize
 
 br
 br
@@ -15,10 +19,11 @@ br
 .container
     .row
         .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
-            .well
+            .well(style="background-color: {{login.appColour()}}")
                 center
-                    h1#title Quizalize Class Mode
-                    p Play against your classmates using the class code from your teacher. 
+                    img(ng-src="{{login.iconURL()}}")
+                    h1 {{login.app.name}} - Class Mode
+                    p {{login.app.description}}. Play against your classmates using the class code from your teacher. 
                 br
 
                 form.form-horizontal(role="form")

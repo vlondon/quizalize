@@ -1245,7 +1245,7 @@
                     callback(status, message);
                 }
             });
-        })
+        });
     };
 
     /**
