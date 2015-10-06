@@ -11,6 +11,8 @@ nav.navbar.navbar-default.navbar-fixed-top
         .navbar-collapse.collapse#navbar
             ul.nav.navbar-nav.navbar-right
                 li
+                    a.btn.btn-info(ng-show="login.code", ng-click="login.loadAppButton()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Return to App
+                li
                     a.btn.btn-info(ng-show="login.code", ng-click="login.quizalize()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Return to Quizalize
 
 br

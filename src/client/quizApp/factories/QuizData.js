@@ -508,7 +508,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (quizzes.length == 1) {
                 zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizzes[0],function(err,message) {
                     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err,result) {
-                        result.contents = message;
+                        result.contents = [message];
                         processQuizData(result,false);
                         callback(err,message);
                         $rootScope.$digest();
