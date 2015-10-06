@@ -2,8 +2,16 @@
 @import './../../../../shared/scss/mixins';
 
 .cq-settings {
-    max-width: 600px;
+    // max-width: 600px;
     min-width: 300px;
+
+    &__cols {
+        display: flex;
+    }
+    &__col2,
+    &__col1 {
+        width: 50%;
+    }
 
     &__header {
         @include cq-header();
@@ -36,6 +44,7 @@
         }
     }
 
+    &__subscriptions,
     &__profile {
         padding: 20px;
 

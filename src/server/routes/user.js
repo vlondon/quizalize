@@ -30,27 +30,38 @@ function decrypt(text){
 }
 
 
-exports.saveUser = function(req, res) {
+exports.saveUser = function(user){
+    return new Promise(function(resolve, reject){
+        var profileId = user.uuid;
+        zzish.saveUser(profileId, user, function(err, data){
+            if (!err && typeof data === 'object') {
+                var interomUser = {
+                    'user_id': data.uuid,
+                    'name': user.name,
+                    'custom_attributes': user.attributes
+                };
+                intercom.updateUser(interomUser);
+                resolve(data);
+            }
+            else {
+                reject({err, data});
+            }
+        });
+    });
+
+};
+exports.saveUserRequest = function(req, res) {
     if (req.session.user === undefined) {
         res.status(401).send('Not authorized');
     } else {
-        var profileId = req.session.user.uuid;
-        zzish.saveUser(profileId, req.body, function(err, data){
-            if (!err && typeof data === 'object') {
+        exports.saveUser(req.body)
+            .then((data) => {
                 req.session.user = data;
-                var user = {
-                    'user_id': data.uuid,
-                    'name': req.body.name,
-                    'custom_attributes': req.body.attributes
-                };
-                intercom.updateUser(user);
-                res.status(200);
-            }
-            else {
-                res.status(err);
-            }
-            res.send(data);
-        });
+                res.status(200).send(data);
+            })
+            .catch(({err, data}) => {
+                res.status(err).send(data);
+            });
     }
 };
 

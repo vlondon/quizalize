@@ -2,10 +2,10 @@
 var React = require('react');
 
 import type {UserType} from './../../../../../types/UserType';
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQViewProfilePicture = require('./../../../components/views/CQViewProfilePicture');
-var UserActions = require('./../../../actions/UserActions');
-var router = require('./../../../config/router');
+import CQPageTemplate from './../../../components/CQPageTemplate';
+import CQViewProfilePicture from './../../../components/views/CQViewProfilePicture';
+import UserActions from './../../../actions/UserActions';
+import router from './../../../config/router';
 
 
 import MeStore from './../../../stores/MeStore';
@@ -286,78 +286,87 @@ export default class CQSettings extends React.Component {
 
         return (
             <CQPageTemplate className="cq-container cq-settings">
-
                 <h3 className="cq-settings__header">
                     <div className="skip">
                         {skipButton}
                     </div>
                     {message}
                 </h3>
+                <div className="cq-settings__cols">
+                    <div className="cq-settings__col1">
 
-                <div className={`cq-settings__profile`}>
-                    <div className={`cq-settings__profile-item${classNameError(0)} form-group`}>
-                        <label htmlFor="name">Name</label>
-                        <input type="text" id="name"
-                            className="form-control"
-                            placeholder = "e.g. John Smith"
-                            onChange={this.handleNameChange}
-                            value={this.state.user.name}/>
+                        <div className={`cq-settings__profile`}>
+                            <div className={`cq-settings__profile-item${classNameError(0)} form-group`}>
+                                <label htmlFor="name">Name</label>
+                                <input type="text" id="name"
+                                    className="form-control"
+                                    placeholder = "e.g. John Smith"
+                                    onChange={this.handleNameChange}
+                                    value={this.state.user.name}/>
+                            </div>
+
+                            <div className={`cq-settings__profile-item${classNameError(1)} form-group`}>
+                                <label htmlFor="school">School name / company</label>
+                                <input type="text" id="school"
+                                    className="form-control"
+                                    placeholder = "e.g. City School Academy"
+                                    onChange={this.handleChange.bind(this, 'school')}
+                                    value={this.state.user.attributes.school}/>
+                            </div>
+
+                            {schoolWebsite}
+
+                            <div className={`cq-settings__profile-item${classNameError(2)} form-group`}>
+                                <label htmlFor="location">Location</label>
+                                <input type="text" id="location"
+                                    className="form-control"
+                                    placeholder = "e.g. London, UK"
+                                    onChange={this.handleChange.bind(this, 'location')}
+                                    value={this.state.user.attributes.location}/>
+                            </div>
+
+                            <div className={`cq-settings__profile-item${classNameError(3)} form-group`}>
+                                <label htmlFor="location">Age groups taught</label>
+                                <input type="text" id="location"
+                                    className="form-control"
+                                    placeholder="e.g. Year 3 - Year 5 / Grade 3 - Grade 5"
+                                    onChange={this.handleChange.bind(this, 'ageTaught')}
+                                    value={this.state.user.attributes.ageTaught}/>
+                            </div>
+
+
+                            <div className={`cq-settings__profile-item${classNameError(4)} form-group`}>
+                                <label htmlFor="location">Subjects taught</label>
+                                <input type="text" id="location"
+                                    className="form-control"
+                                    placeholder = "e.g. Biology and Chemistry"
+                                    onChange={this.handleChange.bind(this, 'subjectTaught')}
+                                    value={this.state.user.attributes.subjectTaught}/>
+                            </div>
+
+                            {editProfile()}
+
+                            {profilePicture}
+
+
+                            <div className="cq-settings__save">
+                                <button className="btn btn-danger"
+                                    disabled={!this.state.canSave}
+                                    onClick={this.handleSave}>
+                                    Save Profile
+                                </button>
+                            </div>
+
+
+
+                        </div>
                     </div>
-
-                    <div className={`cq-settings__profile-item${classNameError(1)} form-group`}>
-                        <label htmlFor="school">School name / company</label>
-                        <input type="text" id="school"
-                            className="form-control"
-                            placeholder = "e.g. City School Academy"
-                            onChange={this.handleChange.bind(this, 'school')}
-                            value={this.state.user.attributes.school}/>
+                    <div className="cq-settings__col2">
+                        <div className="cq-settings__subscriptions">
+                            <b>Your subscription</b>
+                            
+                        </div>
                     </div>
-
-                    {schoolWebsite}
-
-                    <div className={`cq-settings__profile-item${classNameError(2)} form-group`}>
-                        <label htmlFor="location">Location</label>
-                        <input type="text" id="location"
-                            className="form-control"
-                            placeholder = "e.g. London, UK"
-                            onChange={this.handleChange.bind(this, 'location')}
-                            value={this.state.user.attributes.location}/>
-                    </div>
-
-                    <div className={`cq-settings__profile-item${classNameError(3)} form-group`}>
-                        <label htmlFor="location">Age groups taught</label>
-                        <input type="text" id="location"
-                            className="form-control"
-                            placeholder="e.g. Year 3 - Year 5 / Grade 3 - Grade 5"
-                            onChange={this.handleChange.bind(this, 'ageTaught')}
-                            value={this.state.user.attributes.ageTaught}/>
-                    </div>
-
-
-                    <div className={`cq-settings__profile-item${classNameError(4)} form-group`}>
-                        <label htmlFor="location">Subjects taught</label>
-                        <input type="text" id="location"
-                            className="form-control"
-                            placeholder = "e.g. Biology and Chemistry"
-                            onChange={this.handleChange.bind(this, 'subjectTaught')}
-                            value={this.state.user.attributes.subjectTaught}/>
-                    </div>
-
-                    {editProfile()}
-
-                    {profilePicture}
-
-
-                    <div className="cq-settings__save">
-                        <button className="btn btn-danger"
-                            disabled={!this.state.canSave}
-                            onClick={this.handleSave}>
-                            Save Profile
-                        </button>
-                    </div>
-
-
-
                 </div>
             </CQPageTemplate>
         );

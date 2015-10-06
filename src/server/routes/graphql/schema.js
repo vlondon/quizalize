@@ -182,6 +182,18 @@ var userAttributes = new GraphQLObjectType({
         url: {
             type: GraphQLString,
             description: 'Url',
+        },
+        accountType: {
+            type: GraphQLInt,
+            description: 'Quizalize user type (Free / Premium / School)'
+        },
+        accountTypeUpdated: {
+            type: GraphQLInt,
+            description: 'Quizalize user type last updated'
+        },
+        accountTypeExpiration: {
+            type: GraphQLInt,
+            description: 'Quizalize user expires'
         }
     }
 });

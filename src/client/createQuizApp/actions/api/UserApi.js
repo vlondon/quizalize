@@ -63,6 +63,8 @@ var UserApi = {
                 uuid,
                 email
                 attributes {
+                    accountType,
+                    accountTypeExpiration,
                     ageTaught,
                     bannerUrl,
                     imageUrl,
