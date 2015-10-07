@@ -1,14 +1,14 @@
 /* @flow */
 import Store from './Store';
 import MeStore from './MeStore';
-import Immutable, {Record} from 'immutable';
 
-var uuid            = require('node-uuid');
+import uuid            from 'node-uuid';
 
-var AppDispatcher   = require('./../dispatcher/CQDispatcher');
-var QuizConstants   = require('./../constants/QuizConstants');
-var UserConstants = require('./../constants/UserConstants');
-var QuizActions     = require('./../actions/QuizActions');
+import AppDispatcher   from './../dispatcher/CQDispatcher';
+import QuizConstants   from './../constants/QuizConstants';
+import UserConstants from './../constants/UserConstants';
+import UserActions from './../actions/UserActions';
+import QuizActions     from './../actions/QuizActions';
 import TopicStore from './../stores/TopicStore';
 
 
@@ -100,7 +100,6 @@ var QuizObject = function() : QuizComplete {
     return quiz;
 };
 
-var quizRecord = Record(QuizObject());
 
 var QuestionObject = function(quiz){
 
@@ -272,6 +271,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_DELETED:
+            UserActions.getOwn();
             var quizIdToBeDeleted = action.payload;
             var quizToBeDeleted = _quizzes.filter(q => q.uuid === quizIdToBeDeleted)[0];
             _quizzes.splice(_quizzes.indexOf(quizToBeDeleted), 1);
@@ -279,6 +279,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_ADDED:
+            UserActions.getOwn();
             var quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
             quizStoreInstance.emitChange();
@@ -286,6 +287,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
 
         case QuizConstants.QUIZ_META_UPDATED:
+            UserActions.getOwn();
             var quizToBeUpdated = action.payload;
             var quizFromArray = _quizzes.filter(q => q.uuid === quizToBeUpdated.uuid)[0];
             if (quizFromArray){
