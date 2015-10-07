@@ -34,7 +34,7 @@ class CQSettingsSubscriptions extends React.Component {
                     </div>
                     <div>Unlock all the features</div>
 
-                    <small>Valid until <br/>{moment(this.props.user.attributes.accountTypeExpiration).format("Do MMM YY HH:mm:ss")}</small>
+                    <small><i>Valid until <br/>{moment(this.props.user.attributes.accountTypeExpiration).format("Do MMM YY")}</i></small>
 
                 </div>
                 <div className={selected(2, "cq-settings__subsoptions__school")}>
