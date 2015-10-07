@@ -7,11 +7,13 @@ import CQQuizzesProfile from './../../../components/pages/CQQuizzes/CQQuizzesPro
 import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
 import TransactionStore from './../../../stores/TransactionStore';
+import TransactionActions from './../../../actions/TransactionActions';
+import MeStore from './../../../stores/MeStore';
 
 import priceFormat from './../../../utils/priceFormat';
 import kolor from 'kolor';
 import router from './../../../config/router';
-
+import type {AppType} from './../../../stores/AppStore';
 type Props = Object;
 type State = Object;
 
@@ -23,9 +25,12 @@ type State = Object;
         super(props);
 
         // console.log('apps sorting', apps);
+
         this.getState = this.getState.bind(this);
         this.handleQuizClick = this.handleQuizClick.bind(this);
         this.handleDetailsClose = this.handleDetailsClose.bind(this);
+        this.handleBuyApp = this.handleBuyApp.bind(this);
+
         this.state = this.getState(props);
 
     }
@@ -73,8 +78,29 @@ type State = Object;
         this.setState({quizDetails: undefined});
     }
 
+    handleBuyApp(app: AppType){
+        console.log('buying app', app);
+        if (!MeStore.isLoggedIn()){
+            swal({
+                title: 'You need to be logged in',
+                text: `In order to buy this item you need to log into Quizalize`,
+                type: 'info',
+                confirmButtonText: 'Log in',
+                showCancelButton: true
+            }, function(isConfirm){
+                if (isConfirm){
+                    var redirectUrl = window.encodeURIComponent('/quiz/app/' + app.uuid);
+                    router.setRoute(`/quiz/login?redirect=${redirectUrl}`);
+                }
+            });
+        } else {
+            TransactionActions.buyApp(app);
+        }
+    }
+
     render () : any {
         var quizButtons, quizDetails;
+
 
         if (this.props.own) {
             quizButtons = (<CQQuizzesProfile/>);
@@ -93,11 +119,15 @@ type State = Object;
                 {quizDetails}
                 <ul class="appquizlist__list">
                     {this.state.apps.map(app=>{
+
                         var quizIcon, buyApp;
                         var appColor = kolor(app.meta.colour);
                         var quizzes = [];
                         if (app.meta.quizzes) {
                             quizzes = app.meta.quizzes;
+                        }
+                        if (quizzes.length === 0){
+                            return null;
                         }
                         if (app.uuid !== 'own'){
                             quizIcon = (<CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>);
@@ -124,7 +154,7 @@ type State = Object;
 
                                 buyApp = (
                                     <span>
-                                        <button className="appquizlist__app__button">
+                                        <button className="appquizlist__app__button" onClick={this.handleBuyApp.bind(this, app)}>
                                             {buyAppLabel}
                                         </button>
                                         {getSave()}

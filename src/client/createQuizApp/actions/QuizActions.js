@@ -23,7 +23,7 @@ var createNewTopicsForQuiz = function(quiz){
     var questions = quiz.payload.questions;
 
     var createTopicForQuestion = function(question){
-        var topic = TopicStore.getTopicById(question.topicId);
+        var topic = TopicStore.getTopicById("subtopic", question.topicId);
         // we create a new topic and save it
         topic = {
             uuid: uuid.v4(),
@@ -194,9 +194,9 @@ var QuizActions = {
 
         var addOrCreateCategory = function(){
             var topicUuid;
-            var topicFound = TopicStore.getTopicById(quiz.meta.categoryId);
+            var topicFound = TopicStore.getTopicById("topic", quiz.meta.categoryId);
             if (quiz.meta.categoryId === undefined) {
-                topicFound = TopicStore.getTopicByName('');
+                topicFound = TopicStore.getTopicByName("topic", '');
                 if (!topicFound) {
                     //we have an empty topic
                     topicFound = {
@@ -210,8 +210,9 @@ var QuizActions = {
             }
             if (topicFound && topicFound.uuid !== '-1') {
                 topicUuid = topicFound.uuid;
-            } else {
+            } else if (topicFound !== undefined){
                 topicUuid = uuid.v4();
+                console.log('topicFound.nametopicFound.nametopicFound.nametopicFound.name', topicFound);
                 TopicActions.createTopic({
                     name: topicFound.name,
                     parentCategoryId: '-1',

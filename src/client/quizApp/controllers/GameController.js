@@ -108,10 +108,13 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                 window.close();
             }
             else if (QuizData.getClassCode()){
-                $location.path("/list");
+                $location.path("/list/" + QuizData.gameCode());
             }
             else if (QuizData.getUser()){
                 $location.path("/quiz");
+            }
+            else if (QuizData.gameCode()){
+                $location.path("/list/" + QuizData.gameCode());
             }
             else {
                 $location.path("/app");

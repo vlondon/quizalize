@@ -1,6 +1,7 @@
 var randomise = require('quizApp/utils/randomise');
 var settings = require('quizApp/config/settings');
 var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
+var APP_CONTENT_TYPE = settings.APP_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     if(typeof zzish === 'undefined') {
@@ -12,6 +13,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     var userUuid = localStorage.getItem("uuid");
     var userName =  localStorage.getItem("userName");
+    var gameCode = localStorage.getItem("gameCode");
     zzish.getUser(userUuid, userName);
 
     var classCode = localStorage.getItem("classCode");
@@ -425,6 +427,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         getUser: function () {
             return userUuid;
         },
+        gameCode: function() {
+            return gameCode;
+        },
+        resetGame: function() {
+            gameCode = null;
+            localStorage.removeItem("gameCode");
+        },
         getUsername: function() {
             return userName;
         },
@@ -509,6 +518,47 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 callback(404,"Check your classcode");
             }
         },
+        loadApp: function(code, callback) {
+            gameCode = code;
+            localStorage.setItem("gameCode",code);
+            if (zzish.validateClassCode(code)) {
+                zzish.getPublicContentByCode(APP_CONTENT_TYPE, code, function(err, result) {
+                    if (!err) {
+                        callback(null, result);
+                    }
+                    else {
+                        callback(result.status, result.message);
+                    }
+                    $rootScope.$digest();
+                });
+            }
+            else {
+                callback(404,"Check your classcode");
+            }
+        },
+        loadQuizzes: function(app, callback) {
+            var quizzes = app.quizzes.split(",");
+            if (quizzes.length == 1) {
+                zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizzes[0],function(err,message) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err,result) {
+                        result.contents = [message];
+                        processQuizData(result,false);
+                        callback(err,message);
+                        $rootScope.$digest();
+                    });
+                });
+            }
+            else {
+                zzish.getContents(app.profileId, QUIZ_CONTENT_TYPE, quizzes, function(err,message) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err,result) {
+                        result.contents = message;
+                        processQuizData(result,false);
+                        callback(err,message);
+                        $rootScope.$digest();
+                    });
+                });
+            }
+        },
         loadPlayerQuizzes: function(callback) {
             loadPlayerQuizzes(callback);
         },
@@ -524,10 +574,16 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 $rootScope.$digest();
             });
         },
+        loadStats: function(callback){
+            zzish.getUserResults(userUuid, {aggregate: true, data: true}, function(err, message) {
+                callback(err, message);
+                $rootScope.$digest();
+            });
+        },
         loadQuiz: function(catId,quizId,callback) {
             var cb = function(data){
                 callback(data);
-            }
+            };
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 cb(currentQuiz);
             }
@@ -574,7 +630,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     contentId: currentQuiz.uuid,
                     groupCode: classCode
                 }
-            }
+            };
             if (currentQuiz.meta.categoryId) {
                 parameters.extensions.categoryId = currentQuiz.meta.categoryId;
             }

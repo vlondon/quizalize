@@ -32,8 +32,8 @@ export default class QuizSorter {
 
                 quizzes.sort((a, b) => {
                     if (a.meta.categoryId && b.meta.categoryId){
-                        var topicA = TopicStore.getTopicById(a.meta.categoryId);
-                        var topicB = TopicStore.getTopicById(b.meta.categoryId);
+                        var topicA = TopicStore.getTopicById("topic", a.meta.categoryId);
+                        var topicB = TopicStore.getTopicById("topic", b.meta.categoryId);
 
                         if (topicA) {
                             var A = topicA.name && topicA.name.toLowerCase();

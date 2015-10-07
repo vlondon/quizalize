@@ -2,7 +2,6 @@
 var React = require('react');
 
 import TopicStore from './../../stores/TopicStore';
-var TopicActions = require('./../../actions/TopicActions');
 
 // type Props = {
 //     id: string;
@@ -37,11 +36,11 @@ export default class CQAutofill extends React.Component {
         // this.state = this.getState();
         var topic;
         if (props.value) {
-            topic = TopicStore.getTopicById(props.value);
+            topic = TopicStore.getTopicById(props.identifier, props.value);
 
         }
         if (props.value === undefined || topic === undefined){
-            topic = TopicStore.getTopicByName('');
+            topic = TopicStore.getTopicByName(props.identifier,  '');
         }
         console.log('topic', topic);
         var indexSelected = -1;
@@ -97,11 +96,11 @@ export default class CQAutofill extends React.Component {
         var topic;
 
         if (props.value) {
-            topic = TopicStore.getTopicById(props.value);
+            topic = TopicStore.getTopicById(props.identifier, props.value);
 
         }
         if (props.value === undefined || topic === undefined){
-            topic = TopicStore.getTopicByName('');
+            topic = TopicStore.getTopicByName(props.identifier, '');
         }
 
         return topic;
@@ -147,7 +146,7 @@ export default class CQAutofill extends React.Component {
     }
 
     handleChange(ev:Object){
-        var topic = TopicStore.getTopicByName(ev.target.value);
+        var topic = TopicStore.getTopicByName(this.props.identifier, ev.target.value);
         this.handleAssign(topic);
     }
 
@@ -195,11 +194,11 @@ export default class CQAutofill extends React.Component {
             }
 
             if (topic.uuid === '-1'){
-                var copy = occurrences.length === 0 ? this.props.labels[0] : this.props.labels[1];
+                var text = occurrences.length === 0 ? `Create a new ${this.props.identifier}` : `Pick one below or continue typing to create a new ${this.props.identifier}`;
                 list.unshift((
                     <li key={topic.uuid}
                         className={getClassName('-1', 'cq-autofill__option')}>
-                        <small>{copy}</small>
+                        <small>{text}</small>
                         {
                             //formatString(topic.name, topic.uuid)
                         }
@@ -313,12 +312,12 @@ CQAutofill.propTypes = {
     onChange: React.PropTypes.func.isRequired,
     onKeyDown: React.PropTypes.func,
     className: React.PropTypes.string,
-    labels: React.PropTypes.array
+    identifier:  React.PropTypes.string
 };
 
 CQAutofill.defaultProps = {
     limit: 30,
     onChange: function(){},
     className: 'form-control',
-    labels: ['Create a new topic', 'Pick one below or continue typing to create a new topic']
+    identifier: 'object'
 };

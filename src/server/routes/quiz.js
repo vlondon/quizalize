@@ -437,8 +437,8 @@ exports.publishToMarketplace = function(req,res) {
             var params = {
                 name: name
             };
-            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
-            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
               profileId: profileId,
               id: id,
               type: 'quiz'
@@ -468,7 +468,7 @@ exports.shareQuiz = function(req, res){
             link: link
         };
         logger.info('sending email', typeof emails, emails);
-        email.sendEmailTemplate('team@quizalize.com', emails, 'Someone shared a quiz with you on Quizalize!', 'shared', params);
+        email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", emails, 'Someone shared a quiz with you on Quizalize!', 'shared', params);
     }
     res.send(true);
 };
@@ -486,7 +486,7 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                                 name: quiz.meta.name,
                                 link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
                             };
-                            email.sendEmailTemplate('team@quizalize.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
+                            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
                 }
@@ -514,7 +514,7 @@ exports.help = function(req, res){
     var params = {
         name: name
     };
-    email.sendEmailTemplate('team@quizalize.com', [req.body.email], 'Quizalize Help', 'help', params);
+    email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [req.body.email], 'Quizalize Help', 'help', params);
     var params2 = {
         name: req.body.name,
         message: req.body.message,

@@ -97,7 +97,7 @@ var CQCreate = React.createClass({
 
         fillAutoFill(newState.topics);
 
-        newState.category = TopicStore.getTopicById(quiz.meta.categoryId);
+        newState.category = TopicStore.getTopicById("topic", quiz.meta.categoryId);
 
 
         if (this.props.quizId !== undefined){
@@ -152,7 +152,7 @@ var CQCreate = React.createClass({
 
     handleTopic: function(topicId){
         var quiz = Object.assign({}, this.state.quiz);
-        var topic = TopicStore.getTopicById(topicId);
+        var topic = TopicStore.getTopicById("topic", topicId);
 
         quiz.meta.categoryId = topicId;
 

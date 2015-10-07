@@ -17,6 +17,7 @@ var CQAssignments = React.createClass({
     componentDidMount: function() {
         GroupStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+
     },
 
     componentWillUnmount: function() {
@@ -29,7 +30,7 @@ var CQAssignments = React.createClass({
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
         var publicQuizzes = QuizStore.getPublicQuizzes();
-        console.log('groups', groups, groupsContent);
+
         var newState = { groups, groupsContent, quizzes, publicQuizzes };
 
         return newState;
