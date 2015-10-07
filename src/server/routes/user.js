@@ -41,8 +41,10 @@ exports.saveUser = function(req, res) {
                 var user = {
                     'user_id': data.uuid,
                     'name': req.body.name,
-                    'custom_attributes': req.body.attributes
+                    'custom_attributes': req.body.attributes,
+                    'created_at': Math.round(data.created / 1000)
                 };
+                logger.info('INTERCOM USER', user);
                 intercom.updateUser(user);
                 res.status(200);
             }
