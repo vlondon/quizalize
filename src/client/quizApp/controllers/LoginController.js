@@ -11,6 +11,11 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
         colour: "#f2f2f2"
     };
 
+    self.appVersion = false;
+    if ($location.search().appVersion) {
+        self.appVersion = true;
+    }
+
     if ($routeParams.code) {
         self.code = $routeParams.code;
     }
@@ -48,7 +53,7 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
 
     self.quizalize = function() {
         QuizData.resetGame();
-        location.reload(); 
+        location.reload();
     };
 
     self.login = function() {
