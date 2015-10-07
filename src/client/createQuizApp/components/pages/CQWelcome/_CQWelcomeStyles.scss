@@ -18,6 +18,11 @@
         justify-content: center;
         align-items: center;
 
+        video {
+            width: 800px;
+            height: 450px;
+        }
+
         &__icon {
             background: rgba(#FFF, .6);
             display: inline-block;
