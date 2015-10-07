@@ -9,7 +9,7 @@ import QuizStore from './../../stores/QuizStore';
 import type {Quiz} from './../../stores/QuizStore';
 
 import priceFormat from './../../utils/priceFormat';
-var TransactionActions = require('./../../actions/TransactionActions');
+import TransactionActions from './../../actions/TransactionActions';
 import AnalyticsActions from './../../actions/AnalyticsActions';
 
 type Props = {
@@ -30,7 +30,11 @@ export default class CQViewQuizPrice extends React.Component {
     handleClick(owned: boolean, ev : Object){
         ev.stopPropagation();
         if (owned){
-            router.setRoute(`/quiz/published/${this.props.quiz.uuid}/assign`);
+            let ownedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
+            if (ownedQuiz){
+                
+                router.setRoute(`/quiz/published/${ownedQuiz.uuid}/assign`);
+            }
         } else {
             if (!MeStore.isLoggedIn()) {
                 swal({
