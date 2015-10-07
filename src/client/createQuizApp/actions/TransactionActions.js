@@ -7,7 +7,7 @@ var TransactionConstants    = require('./../constants/TransactionConstants');
 var QuizActions             = require('./../actions/QuizActions');
 var UserActions             = require('./../actions/UserActions');
 var stripeSDK               = require('./../config/stripeSDK');
-var UserApi                 = require('./../actions/api/UserApi');
+import UserActions from './../actions/UserActions';
 var TransactionStore        = require('./../stores/TransactionStore');
 import AnalyticsActions from './../actions/AnalyticsActions';
 
@@ -58,6 +58,7 @@ var TransactionActions = {
                             purchaseComplete();
                         }
                         QuizActions.loadQuizzes();
+                        UserActions.getOwn();
                         resolve();
                     })
                     .catch(reject);
