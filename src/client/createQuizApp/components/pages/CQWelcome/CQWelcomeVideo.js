@@ -19,7 +19,6 @@ class CQWelcomeVideo extends React.Component {
 
     render () : any {
         let videoURL = `${settings.CDNURL}quizalize/quizalize-intro-video.mp4`;
-        let videoThumb = `${settings.CDNURL}quizalize/quizalize-intro-video-thumb.jpg`;
         return (
             <div className="cq-welcome__video" onClick={this.handleDismiss}>
                 <div className="cq-welcome__video__iframe">
