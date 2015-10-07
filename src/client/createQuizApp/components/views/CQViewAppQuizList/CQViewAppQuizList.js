@@ -101,6 +101,7 @@ type State = Object;
     render () : any {
         var quizButtons, quizDetails;
 
+
         if (this.props.own) {
             quizButtons = (<CQQuizzesProfile/>);
         } else {
@@ -118,11 +119,15 @@ type State = Object;
                 {quizDetails}
                 <ul class="appquizlist__list">
                     {this.state.apps.map(app=>{
+
                         var quizIcon, buyApp;
                         var appColor = kolor(app.meta.colour);
                         var quizzes = [];
                         if (app.meta.quizzes) {
                             quizzes = app.meta.quizzes;
+                        }
+                        if (quizzes.length === 0){
+                            return null;
                         }
                         if (app.uuid !== 'own'){
                             quizIcon = (<CQQuizIcon className="appquizlist__app__icon" name={app.meta.name} image={app.meta.iconURL}/>);

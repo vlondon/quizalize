@@ -1,7 +1,6 @@
 /* @flow */
 import Store from './Store';
 import MeStore from './MeStore';
-import Immutable, {Record} from 'immutable';
 
 import uuid            from 'node-uuid';
 
@@ -101,7 +100,6 @@ var QuizObject = function() : QuizComplete {
     return quiz;
 };
 
-var quizRecord = Record(QuizObject());
 
 var QuestionObject = function(quiz){
 

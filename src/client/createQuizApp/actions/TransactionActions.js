@@ -5,10 +5,11 @@ var router                  = require('./../config/router');
 var TransactionApi          = require('./../actions/api/TransactionApi');
 var TransactionConstants    = require('./../constants/TransactionConstants');
 var QuizActions             = require('./../actions/QuizActions');
-var UserActions             = require('./../actions/UserActions');
+
 var stripeSDK               = require('./../config/stripeSDK');
-import UserActions from './../actions/UserActions';
 var TransactionStore        = require('./../stores/TransactionStore');
+
+import UserActions from './../actions/UserActions';
 import AnalyticsActions from './../actions/AnalyticsActions';
 
 
