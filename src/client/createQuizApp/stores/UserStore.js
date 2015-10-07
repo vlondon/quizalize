@@ -32,38 +32,10 @@ class UserStore extends Store {
 
     getPublicUser(userId: string): Object{
         var user = _users.get(userId);
+        console.log('generating we got user', user, user !== null, user !== undefined);
         if (user === undefined){
             UserActions.getPublicUser(userId);
             _users = _users.set(userId, null);
-        } else if (user !== null && user !== undefined){
-            var fillApps = (apps, quizzes)=>{
-                var quizzesWithoutApps = quizzes.filter(q=>{
-                    var isInApp = apps.filter(a=>{
-                        var quizzes = a.meta.quizzes || [];
-                        return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
-                    });
-                    return isInApp.length === 0;
-                });
-
-                var appPlaceholder = AppStore.getNewApp({
-                    uuid: 'own',
-                    meta: {
-                        quizzes: quizzesWithoutApps,
-                        colour: '#FFF',
-                        name: 'Your Quizzes',
-                        description: 'This is a description of your quizzes that don\'t belong to any app'
-                    }
-                });
-
-                apps.push(appPlaceholder);
-                return apps;
-            };
-
-
-            var apps = fillApps(user.apps, user.quizzes);
-            user = {...user, apps};
-
-
         }
         return user;
     }
@@ -73,7 +45,6 @@ class UserStore extends Store {
         if (userId === undefined){
             UserActions.getPublicUserByUrl(url);
             _usersByUrl[url] = null;
-
         }
         console.log('_users get', _users, userId, _users.get(userId));
         return _users.get(userId);
@@ -102,7 +73,37 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_PUBLIC_LOADED:
             console.log('UserConstants.USER_PUBLIC_LOADED', action);
             var user = action.payload;
+
+            var fillApps = (apps, quizzes)=>{
+
+                var quizzesWithoutApps = quizzes.filter(q=>{
+                    var isInApp = apps.filter(a=>{
+                        var quizzes = a.meta.quizzes || [];
+                        return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
+                    });
+                    return isInApp.length === 0;
+                });
+
+                var appPlaceholder = AppStore.getNewApp({
+                    uuid: 'own',
+                    meta: {
+                        quizzes: quizzesWithoutApps,
+                        colour: '#FFF',
+                        name: `${user.name} Quizzes`,
+                        description: ''
+                    }
+                });
+
+                apps.push(appPlaceholder);
+                return apps;
+            };
+
+            console.log('user??', user.apps, user);
+            var apps = fillApps(user.apps, user.quizzes);
+            user = {...user, apps};
             _users = _users.set(user.uuid, user);
+
+            // _users = _users.set(user.uuid, user);
             userStore.emitChange();
             break;
 
