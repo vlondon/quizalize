@@ -1,0 +1,248 @@
+style.
+    .congratulations-text {
+        line-height: 1.5;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 32px;
+        color: white    ;
+        text-shadow: 1px 1px black, 2px 2px black, 3px 3px black, 4px 4px black;
+        margin: 40px auto;
+    }
+    .score-title {
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .score-value {
+        font-size: 32px;
+        font-weight: 700;
+        height: 120px;
+        width: 120px;
+        border: 1px solid rgba(255,255,255,.5);
+        border-radius: 100px;
+        padding-top: 30px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .score-points {
+        text-transform: uppercase;
+        font-size: 8px;
+        font-weight: 300;
+        display: block;
+    }
+    .rag1 {
+        border-color: red;
+    }
+    .rag2 {
+        border-color: orange;
+    }
+    .rag3 {
+        border-color: green;
+
+    }
+    .rag4 {
+        border-color: blue;
+    }
+
+    .complete-info-wrap {
+        border-radius: 4px;
+    }
+
+    .complete-info {
+        margin-bottom: 20px;
+    }
+    .complete-info span {
+        color: rgba(0,0,0,.5);
+        margin-right: 10px;
+    }
+
+    .score-fraction {
+        font-size: 18px;
+        font-weight: 700;
+        display: block;
+        margin: 0 auto;
+        line-height: 120px;
+        width: 120px;
+        text-align: center;
+    }
+    .score-fraction div {
+        line-height: 1.5;
+        display: block;
+    }
+    .fraction-bottom {
+        border-top: 2px solid black;
+        width: 50%;
+        max-width: 60px;
+        margin: 0 auto;
+    }
+    .complete-main-text {
+      font-size: 28px;
+      text-align: left;
+    }
+    .complete-main-text span {
+      font-weight: 700;
+    }
+
+    .span-g {
+      color: lime;
+    }
+    .span-r {
+      color: orange;
+    }
+    .score-time {
+        padding-top: 18px;
+        font-size: 18px;
+        text-align: center;
+    }
+    .bar-item-container {
+      text-align: left;
+      margin-bottom: 1px;
+      width: 100%;
+      float: left;
+      position: relative;
+      background-color: rgba(0,0,0,.2);
+      border-radius: 0;
+    }
+
+    .bar-topic-title {
+      font-size: 18px;
+      line-height: 40px;
+      z-index: 2;
+      position: relative;
+      height: 40px;
+      padding-left: 10px;
+    }
+    .bar-topic-percent {
+        float: right;
+        line-height: 40px;
+        padding-right: 10px;
+        z-index: 2;
+        position: relative;
+    }
+
+    .bar-block {
+      height: 40px;
+      text-align: right;
+      line-height: 20px;
+      padding: 10px;
+      margin-bottom: 5px;
+      position: absolute;
+      top: 0;
+      z-index: 1;
+    }
+    .bar-block-g {
+      background: linear-gradient(90deg, lime, green);
+      opacity: 0.8;
+    }
+    .bar-block-a {
+      background: linear-gradient(90deg, orange, brown);
+      opacity: 0.8;
+    }
+    .bar-block-r {
+      background: linear-gradient(90deg, red, crimson);
+      opacity: 0.8;
+    }
+    .bar-block-b {
+      background: linear-gradient(90deg, blue, navy);
+      opacity: 0.8;
+    }
+    .bar-block-c {
+      line-height: 0;
+      height: 10px;
+      background: grey;
+      font-size: 8px;
+      opacity: 0.8;
+    }
+    .bar-wrapper {
+      
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 8px;
+      padding: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 18px;
+    }
+    .well--complete {
+      overflow: hidden;
+    }
+    .ng-hide-add, .ng-hide-remove {
+       /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+    }
+    .cssFade {
+        transition: 0.5s linear all;
+        opacity: 1;
+    }
+    .cssFade.ng-hide {
+        opacity: 0;
+    }
+    .share-cta,
+    .share-score {
+        text-align: center;
+    }
+    .share {
+        display: inline-block;
+        margin: 5px;
+        background: #2e60ff;
+        color: #FFF;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        border-radius: 100%;
+        line-height: 50px;
+    }
+    .share:hover,
+    .share:focus {
+        opacity: 0.5;
+        color: #FFF;
+    }
+    .share-fb {
+        background: #3b5998;
+    }
+    .share-tw {
+        background: #00aced;
+    }    
+
+nav.navbar.navbar-default.navbar-fixed-top(ng-controller="NavBarController as nctrl")
+    .container-fluid
+        .navbar-header
+            a(href="/app")
+                img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+                button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+        .navbar-collapse.collapse#navbar
+            ul.nav.navbar-nav.navbar-right
+                li
+                  a.btn.btn-info(ng-show="nctrl.loggedIn",ng-click="nctrl.logout()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Log out
+.container(style="background-color: {{stats.appColour()}}")
+    .row
+        h1(ng-show="stats.name",style="color: white") Hi {{stats.name}}!
+
+
+    h2(ng-show="stats.loadingStats",style="color: white") Loading stats…
+    h2(ng-show="!stats.loadingStats && stats.data.meta.data_total > 0",style="color: white") Here are your stats...
+    h2(ng-show="!stats.loadingStats && stats.data.meta.data_total == 0",style="color: white") Play some games to see your stats
+    
+    .row(ng-show="stats.data.meta.data_total > 0")
+        .col-xs-4
+            center
+                h3 Total Quizzes: {{stats.data.meta.data_total}}        
+        .col-xs-4
+            center
+                h3 Average Score: {{stats.total.avg_score | number: 0}}        
+        .col-xs-4
+            center
+                h3 Average Percentage: {{stats.total.avg_percentage | number: 0}}%
+    
+    .bar-wrapper(ng-repeat="data in stats.data.aggregrate.data") {{data.lookup.title}}
+        .bar-item-container(ng-repeat="quiz in stats.data.data | filter: {activityDefId : data.lookup.uuid}")
+            .bar-topic-percent 
+                span(ng-show="quiz.percentage") {{(quiz.correct*100/quiz.answered) | number: 0}}%
+                span(ng-show="!quiz.percentage && quiz.status=='ACTIVITY_INSTANCE_STARTED'") No Data
+                span(ng-show="!quiz.percentage && quiz.status=='ACTIVITY_INSTANCE_CANCELLED'") Cancelled
+            .bar-topic-title 
+            .bar-block(ng-style="{width: (quiz.correct*95/quiz.answered)+'%'}",ng-class="quiz.state") {{quiz.score}}

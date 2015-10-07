@@ -4,7 +4,6 @@ var UserConstants       = require('./../constants/UserConstants');
 var UserApi             = require('./../actions/api/UserApi');
 var urlParams           = require('./../utils/urlParams');
 import AnalyticsActions from './../actions/AnalyticsActions';
-import settings from './../config/settings';
 import router from './../config/router';
 import intercom from './../utils/intercom';
 
@@ -42,7 +41,7 @@ var UserActions = {
 
     update: function(user: Object) : Promise{
 
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject)=>{
 
             UserApi.post(user)
                 .then(()=>{
@@ -51,6 +50,7 @@ var UserActions = {
                         actionType: UserConstants.USER_DETAILS_UPDATED,
                         payload: user
                     });
+                    this.getOwn();
                     if (handleRedirect() === false){
                         resolve(user);
                     }
@@ -64,15 +64,16 @@ var UserActions = {
         console.log('data', data);
         // data.email = data.email.trim();
 
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject)=>{
 
             UserApi.login(data)
-                .then(function(user){
+                .then((user)=>{
                     // AnalyticsActions.triggerPixels();
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_IS_LOGGED,
                         payload: user
                     });
+                    this.getOwn();
                     if (handleRedirect() === false){
                         resolve(user);
                     }
@@ -97,12 +98,13 @@ var UserActions = {
         return new Promise(function(resolve, reject){
 
             UserApi.loginWithToken(token)
-                .then(function(user){
+                .then((user)=>{
                     // AnalyticsActions.triggerPixels();
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_IS_LOGGED,
                         payload: user
                     });
+                    this.getOwn();
                     if (handleRedirect() === false){
                         resolve(user);
                     }
@@ -157,12 +159,13 @@ var UserActions = {
 
     register: function(data: Object) : Promise {
 
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject)=>{
             console.log('registering', data);
             UserApi.register(data)
-                .then(function(user){
+                .then((user)=>{
                     console.log("AnalyticsActions", AnalyticsActions);
                     console.log("AnalyticsActions.triggerPixels", AnalyticsActions.triggerPixels);
+                    this.getOwn();
                     AnalyticsActions.triggerPixels().then(function(){
                         AppDispatcher.dispatch({
                             actionType: UserConstants.USER_REGISTERED,
