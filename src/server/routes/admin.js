@@ -975,7 +975,7 @@ exports.email = function(req, res){
         for (var j in user) {
             params[j] = user[j];
         }
-        email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], subject, "email", params, null, callback);
+        email.sendEmailTemplate("'Quizalize Team' <team@quizalize-mail.com>", [user.email], subject, "email", params, null, callback);
     }, function(done) {
         res.send("Done");
     });
