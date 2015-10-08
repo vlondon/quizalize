@@ -38,6 +38,11 @@ block body
                 console.log(categoryName);
                 $(this).text(categoryName);
             });
+            $(".publicCategoryId").each(function() {
+                var categoryName = categoryNameFromCategoryId($(this).text());
+                console.log(categoryName);
+                $(this).text(categoryName);
+            });
             
         });
         
@@ -53,12 +58,24 @@ block body
                             th Name
                             th Updated
                             th category
-                            th publicCategoryId
+                            th public cat
+                            th price
                         tbody
+                            -approved.sort(function(x, y){
+                                -if (!x.updated) {
+                                    -return -1;
+                                -}
+                                -if (!y.updated) {
+                                    -return 1;
+                                -}
+                                -return y.updated - x.updated;
+                            -});
                             for quiz in approved
+                                -console.log(quiz.meta);
                                 tr
                                     td #{quiz.type}
                                     td #{quiz.meta.name}
                                     td #{prettyDate(quiz.updated)}
                                     td(value="#{quiz.meta.categoryId}").categoryId #{quiz.meta.categoryId}
-                                    td #{quiz.meta.publicCategoryId}
+                                    td(value="#{quiz.meta.publicCategoryId}").publicCategoryId #{quiz.meta.publicCategoryId}
+                                    td #{quiz.meta.price}
