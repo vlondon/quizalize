@@ -3,7 +3,8 @@
 var defaultSettings = {
     apiDomain: '/',
     defaultLoggedPage: '/quiz/user',
-    type: 'quiz'
+    type: 'quiz',
+    CDNURL: 'https://d15tuytjqnsden.cloudfront.net/'
 };
 
 var settings = Object.assign(defaultSettings, {});
