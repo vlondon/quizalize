@@ -34,6 +34,7 @@ class CQWelcome extends React.Component {
     handlePlayDemo(){
         AnalyticsActions.sendEvent('welcome_screen', 'play_demo');
         AnalyticsActions.sendIntercomEvent('welcome_play_demo');
+        window.sessionStorage.setItem('mode', 'demo');
         // window.open('/app#/play/public/3af911c5-755f-445e-9483-0fbb8d6d9194');
         this.setState({isQuizOpen: true});
 
