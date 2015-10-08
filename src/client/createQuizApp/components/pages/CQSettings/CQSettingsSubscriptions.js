@@ -50,7 +50,7 @@ class CQSettingsSubscriptions extends React.Component {
 }
 
 CQSettingsSubscriptions.propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object.isRequired
 };
 
 export default CQSettingsSubscriptions;
