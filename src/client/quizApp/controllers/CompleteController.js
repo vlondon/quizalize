@@ -28,6 +28,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.hasTopics = false;
     self.teacherMode = sessionStorage.getItem("mode")=="teacher";
     self.previewMode = sessionStorage.getItem("mode")=="preview";
+    self.demoMode = sessionStorage.getItem("mode")=="demo";
     sessionStorage.removeItem("mode");
     self.showButtons = false;
     self.id = $routeParams.quizId;
