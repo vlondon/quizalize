@@ -4,9 +4,11 @@ var router = require('createQuizApp/config/router');
 
 
 class CQPublicFooter extends React.Component {
+
     handleClick() {
         router.setRoute(`/quiz/create`);
     }
+    
     render () {
         return (
             <div className="cq-public__footer">
