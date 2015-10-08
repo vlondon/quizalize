@@ -48,7 +48,7 @@ class CQImageUploader extends React.Component {
 CQImageUploader.propTypes = {
     onImageData: React.PropTypes.func,
     onImageFile: React.PropTypes.func,
-    id: React.PropTypes.string.required,
+    id: React.PropTypes.string.isRequired,
     className: React.PropTypes.string
 };
 

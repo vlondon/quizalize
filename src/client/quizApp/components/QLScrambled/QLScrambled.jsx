@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
@@ -71,7 +72,7 @@ var QLScrambled = React.createClass({
 
     componentDidMount: function() {
         window.addEventListener('resize', this.handleResize);
-        _domElement = this.refs.main.getDOMNode();
+        _domElement = this.refs.main;
         cssStateIndex = 0;
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
@@ -92,7 +93,7 @@ var QLScrambled = React.createClass({
         var optionSize = 60;
         var containerPadding = 20;
         var numOptions = this.props.letters.length;
-        var spaceAvailable = React.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
+        var spaceAvailable = ReactDOM.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
 
 
         var howManyOptionsFit = spaceAvailable / optionSize;
@@ -115,7 +116,7 @@ var QLScrambled = React.createClass({
         var optionSize = 70;
         var containerPadding = 20;
         var numOptions = this.props.letters.length;
-        var spaceAvailable = React.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
+        var spaceAvailable = ReactDOM.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
 
 
         var howManyOptionsFit = spaceAvailable / optionSize;
@@ -153,12 +154,12 @@ var QLScrambled = React.createClass({
     },
 
     handleClick: function(index){
-        this.props.onAddLetter(index)
+        this.props.onAddLetter(index);
     },
 
 
     handleRemoveLetter: function(index){
-        this.props.onRemoveLetter(index)
+        this.props.onRemoveLetter(index);
     },
 
     render: function() {

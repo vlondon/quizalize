@@ -2,6 +2,7 @@ angular.module('quizApp')
     .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
 
         var React = require('react');
+        var ReactDOM = require('react-dom');
         var QLMultiple = require('quizApp/components/QLMultiple');
 
         var self = this;
@@ -16,7 +17,7 @@ angular.module('quizApp')
 
 
         var renderReactComponent = function(){
-            React.render(
+            ReactDOM.render(
                 React.createElement(QLMultiple, {
                     currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
@@ -44,7 +45,7 @@ angular.module('quizApp')
             setTimeout(renderReactComponent, 200);
 
             $scope.$on('$destroy', function(){
-                React.unmountComponentAtNode(document.getElementById('reactContainer'));
+                ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
             });
 
         };

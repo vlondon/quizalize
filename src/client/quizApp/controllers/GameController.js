@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
 var QLLeaderboard = require('quizApp/components/QLLeaderboard');
@@ -17,12 +18,12 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     }
 
     var renderReactComponent = function(){
-        React.render(React.createElement('div', {className: 'qofd-intro'},
-            React.createElement(CQQuizOfTheDay, {
+        ReactDOM.render(React.createElement('div', {className: 'qofd-intro'},
+            ReactDOM.createElement(CQQuizOfTheDay, {
                 quiz: self.currentQuiz,
                 showActions: false
             }),
-            React.createElement(QLLeaderboard, {
+            ReactDOM.createElement(QLLeaderboard, {
                 leaderboard: self.leaderboard
             })),
 
@@ -34,7 +35,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     var addReactComponent = function(){
         setTimeout(renderReactComponent, 200);
         $scope.$on('$destroy', function(){
-            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+            ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
         });
     };
 

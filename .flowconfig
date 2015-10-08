@@ -3,7 +3,7 @@
 .*/node_modules/match-at
 .*/node_modules/node-sass
 .*/node_modules/flux
-
+.*/react/node_modules/.*
 
 [include]
 ./src
