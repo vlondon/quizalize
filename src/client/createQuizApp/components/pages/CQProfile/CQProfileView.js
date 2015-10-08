@@ -134,11 +134,11 @@ type Props = {
 }
 
 CQProfileView.propTypes = {
-    profile: React.PropTypes.oject,
+    profile: React.PropTypes.object,
     apps: React.PropTypes.array,
     quizzes: React.PropTypes.array,
     quizCode: React.PropTypes.string,
-    own: React.PropTypes.boolean
+    own: React.PropTypes.bool
 };
 
 module.exports = CQProfileView;

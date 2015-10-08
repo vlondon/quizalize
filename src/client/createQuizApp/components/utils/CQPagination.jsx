@@ -12,7 +12,8 @@ var CQPagination = React.createClass({
 
     getDefaultProps: function():Object {
         return {
-            className: ''
+            className: '',
+            pages: 1
         };
     },
 
