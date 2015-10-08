@@ -4,6 +4,8 @@
     text-align: center;
     padding-top: 80px;
     position: relative;
+
+    &__quiz,
     &__video {
         position: fixed;
         top: 0;
@@ -15,6 +17,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        video {
+            width: 800px;
+            height: 450px;
+        }
 
         &__icon {
             background: rgba(#FFF, .6);
@@ -38,6 +45,15 @@
             position: relative;
             width: 800px;
             height: 450px;
+        }
+
+    }
+    &__quiz {
+        &__iframe {
+            width: 900px;
+            min-height: 400px;
+            height: 100%;
+            max-height: 600px;
         }
     }
     &__brand {

@@ -10,7 +10,7 @@ var CQPublishQuiz = React.createClass({
     propTypes: {
         quiz: React.PropTypes.object.isRequired,
         className: React.PropTypes.string,
-        disabled: React.PropTypes.boolean,
+        disabled: React.PropTypes.bool,
         prePublished: React.PropTypes.func
     },
 

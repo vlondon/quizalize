@@ -1,6 +1,6 @@
 /* @flow */
 import React, {PropTypes} from 'react';
-
+import settings from './../../../config/settings';
 type Props = {
     onDismiss: Function;
 };
@@ -18,11 +18,14 @@ class CQWelcomeVideo extends React.Component {
     }
 
     render () : any {
+        let videoURL = `${settings.CDNURL}quizalize/quizalize-intro-video.mp4`;
         return (
             <div className="cq-welcome__video" onClick={this.handleDismiss}>
                 <div className="cq-welcome__video__iframe">
                     <div className="cq-welcome__video__icon"><i className="fa fa-times"></i></div>
-                    <iframe width="800" height="450" src="https://www.youtube.com/embed/RrlMXexiA_c?autoplay=1" frameBorder="0" allowFullScreen></iframe>
+                    <video id="cq-welcome__video__player" width="800" height="450" controls="controls" autoPlay="autoPlay" preload="auto">
+                        <source src={videoURL} type='video/mp4'/>
+                    </video>
                 </div>
             </div>
         );

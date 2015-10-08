@@ -24,7 +24,6 @@ export default class CQYourApps extends React.Component {
         this.state = {
             isAdmin: MeStore.isAdmin()
         };
-        UserActions.getOwn();
     }
 
     render() {

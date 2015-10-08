@@ -3,6 +3,7 @@ import Store from './Store';
 import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import UserConstants from './../constants/UserConstants';
+import UserActions from './../actions/UserActions';
 import type {UserType} from './../../../types/UserType';
 import AppStore from './AppStore';
 
@@ -31,8 +32,7 @@ let noUser:UserType = {
     avatar: '',
     email: '',
     name: '',
-    attributes: new meAttributesRecord(),
-    created: Date.now()
+    attributes: new meAttributesRecord()
 };
 
 const meRecord = Record(noUser);
@@ -47,6 +47,10 @@ class Me extends Store {
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
+        console.log('state', state, state.uuid);
+        if (state.uuid) {
+            UserActions.getOwn();
+        }
     }
 
     getState (): UserType {
