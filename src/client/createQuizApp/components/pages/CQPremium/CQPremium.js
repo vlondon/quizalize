@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 import CQPageTemplate from './../../../components/CQPageTemplate';
 import CQSettingsSubscriptions from './../../../components/pages/CQSettings/CQSettingsSubscriptions';
@@ -9,9 +9,6 @@ class CQPremium extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {
-            user: MeStore.state
-        };
         this.onChange = this.onChange.bind(this);
     }
 
@@ -31,7 +28,7 @@ class CQPremium extends React.Component {
         return (
             <CQPageTemplate>
                 asdf
-                <CQSettingsSubscriptions user={this.state.user}/>
+                <CQSettingsSubscriptions user={MeStore.state}/>
             </CQPageTemplate>
         );
     }

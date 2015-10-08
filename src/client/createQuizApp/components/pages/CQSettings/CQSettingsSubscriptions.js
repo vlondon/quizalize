@@ -1,6 +1,8 @@
 /* @flow */
 import React, { PropTypes } from 'react';
 import type {UserType} from './../../../../../types/UserType';
+import TransactionActions from './../../../actions/TransactionActions';
+
 import moment from 'moment';
 type Props = {
     user: UserType;
@@ -9,6 +11,10 @@ type Props = {
 class CQSettingsSubscriptions extends React.Component {
 
     props: Props;
+
+    handleMonthlySubscription(){
+        TransactionActions.buyMonthlySubscription();
+    }
 
     render () : any {
         let selected = (id, className) => {
@@ -26,7 +32,7 @@ class CQSettingsSubscriptions extends React.Component {
                     </div>
                     Start using our product for free!
                 </div>
-                <div className={selected(1,"cq-settings__subsoptions__premium")}>
+                <div className={selected(1,"cq-settings__subsoptions__premium")} onClick={this.handleMonthlySubscription}>
                     <div className="cq-settings__subsoptions__price">
                         Premium
 

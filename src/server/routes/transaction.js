@@ -156,6 +156,8 @@ var processTransactions = function(transaction, profileId){
                         .catch(reject);
 
                 });
+        } else if (transaction.meta.type === 'subscription') {
+            logger.info('we got subscription to process');
         }
 
     });
@@ -222,13 +224,15 @@ exports.post = function(req, res){
         res.status(500).send(error);
     };
 
+    logger.info('about to save transaction', data);
+
     saveTransaction(data, profileId)
         .then(function(){
-            if (data.meta.price && data.meta.price > 0){
-                console.log('charginng for transaction');
+            if ((data.meta.price && data.meta.price > 0) || data.meta.subscription){
+                logger.info('charginng for transaction');
                 chargeForTransaction(data)
                     .then(function(){
-                        console.log('processing transaction');
+                        logger.info('processing transaction');
                         processTransactions(data, profileId)
                             .then(saveProcessedTransaction)
                             .catch(function(){
