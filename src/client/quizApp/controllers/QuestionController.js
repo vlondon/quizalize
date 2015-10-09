@@ -1,31 +1,24 @@
 angular.module('quizApp')
-    .controller('MultipleController', function(QuizData, $log,  $routeParams, $location, $scope){
+    .controller('QuestionController', function(QuizData, $log,  $routeParams, $location, $scope, $route){
 
         var React = require('react');
-        var QLMultiple = require('quizApp/components/QLMultiple');
+        var QLVideoPlayer = require('quizApp/components/QLVideoPlayer');
 
         var self = this;
         var startTime = (new Date()).getTime();
 
         self.id = $routeParams.quizId;
         self.catId = $routeParams.catId;
-
         self.questionId = parseInt($routeParams.questionId);
-        self.showButtons = false;
         $log.debug('On question', self.questionId);
 
 
         var renderReactComponent = function(){
             React.render(
-                React.createElement(QLMultiple, {
+                React.createElement(QLVideoPlayer, {
                     currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
                     questionData: self.questionData,
-                    question: self.question,
-                    alternatives: self.alternatives,
-                    imageURL: self.imageURL,
-                    latexEnabled: self.latexEnabled,
-                    imageEnabled: self.imageEnabled,
                     startTime: QuizData.logQuestion(self.questionData),
                     onSelect: function(index){
                         $scope.$apply(() => self.select(index) );
@@ -41,6 +34,7 @@ angular.module('quizApp')
 
         var addReactComponent = function(){
 
+
             setTimeout(renderReactComponent, 200);
 
             $scope.$on('$destroy', function(){
@@ -50,53 +44,43 @@ angular.module('quizApp')
         };
 
         QuizData.loadQuiz(self.catId, self.id, function(data) {
-
             //$scope.$apply(function(){
+                // var extraQuizData = ExtraData.videoQuizHandler(data);
+                // self.currentQuiz = extraQuizData.quiz;
+                // self.videoQuizData = extraQuizData.extra;
                 self.currentQuiz = data;
-
-                self.score = QuizData.currentQuizResult().totalScore;
-                self.questionCount = QuizData.currentQuizResult().questionCount;
+                self.quiz = QuizData.currentQuizResult();
                 QuizData.getQuestion(self.questionId, function(data){
                     console.log('question???', data);
-                    self.imageURL = data.imageURL;
-                    self.question = data.question;
                     self.questionData = data;
-                    self.answer = data.answer;
-                    self.latexEnabled = data.latexEnabled;
-                    self.imageEnabled = data.imageEnabled;
-                    self.alternatives = QuizData.getAlternatives(self.questionId);
-
-                    if (QuizData.currentQuizResult().report[self.questionId] !== undefined) {
+                    if (!QuizData.canShowQuestion(self.questionId)) {
                         //we already have this question
                         $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                     }
-
-                    self.longMode = false;
-                    for(var i in self.alternatives){
-                        if(self.alternatives[i].length > 10){
-                            self.longMode = true;
-                        }
-                    }
-                    console.log('imageUrl', data);
                     addReactComponent();
                 });
             //});
         });
 
-        self.select = function(idx){
+        self.select = function(userAnswer){
             QuizData.answerQuestion(self.questionId,
-                                    self.alternatives[idx],
-                                    self.answer,
-                                    self.question,
-                                    Math.max(new Date().getTime() - startTime - 2000, 0),
-                                    false);
-            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+                                    self.questionData,
+                                    userAnswer,
+                                    Math.max(new Date().getTime() - startTime - 2000, 0));
             renderReactComponent();
         };
 
         self.nextQuestion = function(){
-            $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+            var nextUrl = QuizData.generateNextQuestionUrl(self.questionId);
+            if (nextUrl) {
+                if (nextUrl === $location.url()) {
+                    $route.reload();
+                }
+                else {
+                    $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+                }
+            }
         };
 
-        $log.debug('Multiple Controller', self);
+        $log.debug('Question Controller', self);
     });

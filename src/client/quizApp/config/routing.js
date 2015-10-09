@@ -51,14 +51,9 @@ angular.module('quizApp')
             controller: "GameController",
             controllerAs: "quiz"
         })
-        .when('/quiz/:catId/:quizId/multiple/:questionId', {
-            templateUrl: "/quiz/view/multiple",
-            controller: "MultipleController",
-            controllerAs: "quiz"
-        })
-        .when('/quiz/:catId/:quizId/scrambled/:questionId', {
-            templateUrl: "/quiz/view/scrambled",
-            controller: "ScrambledController",
+        .when('/quiz/:catId/:quizId/question/:questionId', {
+            templateUrl: "/quiz/view/question",
+            controller: "QuestionController",
             controllerAs: "quiz"
         })
         .when('/quiz/:catId/:quizId/answer/:questionId', {

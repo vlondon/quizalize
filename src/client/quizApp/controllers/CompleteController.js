@@ -30,7 +30,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     self.demoMode = sessionStorage.getItem("mode")=="demo";
     sessionStorage.removeItem("mode");
-    self.showButtons = false;
+    self.QLQuestion = false;
     self.id = $routeParams.quizId;
     self.catId = $routeParams.catId;
 
@@ -167,11 +167,11 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             }, 200);
             MathJax.Hub.Queue(function () {
                 $scope.$apply(function() {
-                    self.showButtons = true;
+                    self.QLQuestion = true;
                 });
             });
         }
-        self.showButtons = true;
+        self.QLQuestion = true;
         // renderReactComponent();
     },self.previewMode);
 
