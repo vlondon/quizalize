@@ -1,32 +1,24 @@
 angular.module('quizApp')
-    .controller('FreetextController', function(QuizData, $log,  $routeParams, $location, $scope, $route){
+    .controller('QuestionController', function(QuizData, $log,  $routeParams, $location, $scope, $route){
 
         var React = require('react');
-        var QLFreetext = require('quizApp/components/QLFreetext');
+        var QLVideoPlayer = require('quizApp/components/QLVideoPlayer');
 
         var self = this;
         var startTime = (new Date()).getTime();
 
         self.id = $routeParams.quizId;
         self.catId = $routeParams.catId;
-
         self.questionId = parseInt($routeParams.questionId);
-        self.showButtons = false;
         $log.debug('On question', self.questionId);
 
 
         var renderReactComponent = function(){
-            console.log("Redning", QuizData.currentQuiz().attributes);
             React.render(
-                React.createElement(QLFreetext, {
+                React.createElement(QLVideoPlayer, {
                     currentQuiz: self.currentQuiz,
                     quizData: QuizData.currentQuizResult(),
                     questionData: self.questionData,
-                    question: self.question,
-                    imageURL: self.imageURL,
-                    attributes: QuizData.currentQuiz().attributes,
-                    latexEnabled: self.latexEnabled,
-                    imageEnabled: self.imageEnabled,
                     startTime: QuizData.logQuestion(self.questionData),
                     onSelect: function(index){
                         $scope.$apply(() => self.select(index) );
@@ -42,6 +34,7 @@ angular.module('quizApp')
 
         var addReactComponent = function(){
 
+
             setTimeout(renderReactComponent, 200);
 
             $scope.$on('$destroy', function(){
@@ -51,41 +44,29 @@ angular.module('quizApp')
         };
 
         QuizData.loadQuiz(self.catId, self.id, function(data) {
-
             //$scope.$apply(function(){
+                // var extraQuizData = ExtraData.videoQuizHandler(data);
+                // self.currentQuiz = extraQuizData.quiz;
+                // self.videoQuizData = extraQuizData.extra;
                 self.currentQuiz = data;
-
-                self.score = QuizData.currentQuizResult().totalScore;
-                self.questionCount = QuizData.currentQuizResult().questionCount;
+                self.quiz = QuizData.currentQuizResult();
                 QuizData.getQuestion(self.questionId, function(data){
                     console.log('question???', data);
-                    self.imageURL = data.imageURL;
-                    self.question = data.question;
                     self.questionData = data;
-                    self.answer = data.answer;
-                    self.latexEnabled = data.latexEnabled;
-                    self.imageEnabled = data.imageEnabled;
-
                     if (!QuizData.canShowQuestion(self.questionId)) {
                         //we already have this question
                         $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
                     }
-
-                    self.longMode = false;
-                    console.log('imageUrl', data);
                     addReactComponent();
                 });
             //});
         });
 
-        self.select = function(answer){
+        self.select = function(userAnswer){
             QuizData.answerQuestion(self.questionId,
-                                    answer,
-                                    self.answer,
-                                    self.question,
-                                    Math.max(new Date().getTime() - startTime - 2000, 0),
-                                    false);
-            // $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+                                    self.questionData,
+                                    userAnswer,
+                                    Math.max(new Date().getTime() - startTime - 2000, 0));
             renderReactComponent();
         };
 
@@ -101,5 +82,5 @@ angular.module('quizApp')
             }
         };
 
-        $log.debug('Freetext Controller', self);
+        $log.debug('Question Controller', self);
     });

@@ -278,13 +278,13 @@ style.
                             .fa.fa-lg.fa-facebook
                         a.share.share-tw(ng-href="{{quiz.twitterLink}}",target="_blank")
                             .fa.fa-lg.fa-twitter
-        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
+        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.QLQuestion")
             .col-md-8.col-md-offset-2
                 .well
                     .row
                         .col-md-4
                             h4.wrapword
-                              strong(id="quizQuestion{{item.questionId}}") {{item.question}}
+                              strong(id="quizQuestion{{item.questionId}}") {{item.question.text}}
                         .col-md-3.wrapword
                             h4 Your answer
                             strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}

@@ -86,7 +86,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     });
 
     self.start = function(){
-        var url = "/quiz/" + self.catId + '/' + self.id + "/" + QuizData.selectQuestionType(0) + "/0";
+        var url = "/quiz/" + self.catId + '/' + self.id + "/question/0";
         $location.path(url);
     };
 

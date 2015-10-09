@@ -38,6 +38,10 @@
 // Hide old content
 .row.row-scrambled { display: none; }
 
+.btn-selected {
+    text-decoration: line-through;
+}
+
 .ql-quiz-container {
     position: relative;
 }

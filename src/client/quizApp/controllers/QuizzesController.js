@@ -26,8 +26,9 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     var loadQuizzes = function() {
         self.user = QuizData.getUser();
         self.name = QuizData.getUsername();
+        self.hasQuizzes = false;
         QuizData.loadPlayerQuizzes(function(err, res){
-            self.hasQuizzes = true;
+            self.loading = false;
             if(!err){
                 self.categories = QuizData.getCategories();
                 for (var i in self.categories) {

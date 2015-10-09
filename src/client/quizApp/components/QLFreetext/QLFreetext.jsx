@@ -1,5 +1,6 @@
 var React = require('react');
 
+var QLQuestion = require('quizApp/components/QLQuestion');
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
 var QLCountDown = require('quizApp/components/QLCountDown');
 var QLLatex = require('quizApp/components/QLLatex');
@@ -24,17 +25,13 @@ var cssStateIndex = 0;
 var QLFreetext = React.createClass({
 
     propTypes: {
-        question: React.PropTypes.string.isRequired,
-        onSelect: React.PropTypes.func,
-        onNext: React.PropTypes.func,
-        attributes: React.PropTypes.object,
-        quizData: React.PropTypes.object,
-        questionData: React.PropTypes.object,
-        currentQuiz: React.PropTypes.object,
-        imageURL: React.PropTypes.string,
-        latexEnabled: React.PropTypes.bool,
-        imageEnabled: React.PropTypes.bool,
-        startTime: React.PropTypes.number,
+        questionIndex: React.PropTypes.number.isRequired,
+        currentQuiz: React.PropTypes.object.isRequired,
+        quizData: React.PropTypes.object.isRequired,
+        questionData: React.PropTypes.object.isRequired,
+        startTime: React.PropTypes.number.isRequired,
+        onSelect: React.PropTypes.func.isRequired,
+        onNext: React.PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -42,13 +39,12 @@ var QLFreetext = React.createClass({
 
         return {
             cssState: cssStates[cssStateIndex],
-            answered: null,
-            startTime: Date.now()
+            answer: this.props.quizData.report[this.props.questionIndex] ? this.props.quizData.report[this.props.questionIndex].answer : null
         };
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if (this.props.question !== nextProps.question) {
+        if (this.props.questionData !== nextProps.questionData) {
             this.setState({
                 cssSate: cssStates[0]
             });
@@ -96,21 +92,14 @@ var QLFreetext = React.createClass({
 
     render: function() {
 
-        var latexWrapper = (string) => {
-            if (this.props.latexEnabled) {
-                return (<QLLatex>{string}</QLLatex>);
-            } else {
-                return (<span>{string}</span>);
-            }
-        };
-
         var showAnswer, showQuestions, showCountdown;
 
         if (!this.state.answer) {
             showCountdown = <QLCountDown startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
                 showQuestions = (
-                    <div>
+                    <div className="freetext">
                         <input type="text" name="freetextInputAnswer" id="freetextInputAnswer"/>
+                        &nbsp;
                         <button type="button" className="btn" onClick={this.handleClick}>
                             Submit
                         </button>
@@ -122,31 +111,20 @@ var QLFreetext = React.createClass({
             });
             showAnswer = (
                 <QLAnswerScreen
+                    currentQuiz={this.props.currentQuiz}
                     questionData={this.props.questionData}
                     answerData={currentAnswerFilter[0]}
                     onNext={this.props.onNext}/>
             );
         }
 
-        var questionText;
-        if (this.props.questionData.questionObject.type == "audio") {
-            questionText = (
-                <audio controls="true" autoPlay>
-                    <source src={this.props.questionData.questionObject.url} type="audio/mpeg"/>
-                    Your browser does not support the audio element.
-                </audio>);
-        }
-        else {
-            questionText = this.props.questionData.questionObject.url;
-        }
-
         return (
             <div className='ql-quiz-container'>
                 <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
-                    <p className='question'>
-                        {questionText}
-                    </p>
-                    {this.props.imageURL && this.props.imageEnabled ? <QLImage src={this.props.imageURL} className='ql-question-img'/> : null}
+                    <QLQuestion
+                        questionData={this.props.questionData}
+                    />
+                    {this.props.questionData.imageURL && this.props.questionData.imageEnabled ? <QLImage src={this.props.questionData.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers">
                         {showAnswer}
