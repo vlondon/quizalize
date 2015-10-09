@@ -108,42 +108,35 @@ var QLAnswerScreen = React.createClass({
 
 
         if (this.props.questionData.expObject) {
-            if (!this.props.answerData.correct) {
-                if (this.props.questionData.expObject.type == "video") {
-                    explanation = (<video width="320" height="240" controls autoPlay>
-                      <source src={this.props.questionData.expObject.url} type="video/mp4"/>
-                    Your browser does not support the video tag.
-                    </video>);
+            if (!this.props.answerData.correct || this.props.questionData.expObject.show === 1) {
+                if (this.props.questionData.expObject.type === "videoq" && this.props.questionData.expObject.start && this.props.questionData.expObject.end) {
+                    if (this.props.questionData.expObject.autoPlay === 0) {
+                        viewVideo = (
+                            <div className="view-video">
+                                <img src="/img/ui-quiz/youtube-player.png" alt="" onClick={this.handleVideoAnswer}/>
+                            </div>
+                        );
+                    }
                 }
-                else {
-                    explanation = (<blockquote className="description">
-                        <p>
-                            {this.props.questionData.expObject.text}
-                        </p>
-                    </blockquote>);
+
+                if (this.state.videoOpen === true || this.props.questionData.expObject.autoPlay === 1){
+                    var start = this.props.questionData.expObject.start;
+                    var end = this.props.questionData.expObject.end;
+                    videoPlayer = (
+                        <PQViewVideo
+                            video={this.props.questionData.expObject.url}
+                            start={start}
+                            end={end}
+                            onComplete={this.handleVideoComplete}
+                        />
+                    );
                 }
+                explanation = (<blockquote className="description">
+                    <p>
+                        {this.props.questionData.expObject.text}
+                    </p>
+                </blockquote>);
             }
-        }
-
-        if (this.props.questionData.expObject.url && this.props.questionData.expObject.start && this.props.questionData.expObject.end) {
-            viewVideo = (
-                <div className="view-video">
-                    <img src="/img/ui-quiz/youtube-player.png" alt="" onClick={this.handleVideoAnswer}/>
-                </div>
-            );
-        }
-
-        if (this.state.videoOpen === true){
-            var start = this.props.questionData.expObject.start;
-            var end = this.props.questionData.expObject.end;
-            videoPlayer = (
-                <PQViewVideo
-                    video={this.props.questionData.expObject.url}
-                    start={start}
-                    end={end}
-                    onComplete={this.handleVideoComplete}
-                />
-            );
         }
 
         return (

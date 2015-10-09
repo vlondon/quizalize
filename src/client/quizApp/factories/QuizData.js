@@ -459,6 +459,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     text: "Audio"
                 };
             }
+            if (input.indexOf("exp:") === 0) {
+                var meta = input.split("//");
+                var commands = meta[0].split(":");
+                return {
+                    type: "text",
+                    show: parseInt(commands[1]),
+                    text: meta[1]
+                };
+            }
             if (input.indexOf("videoq:") === 0) {
                 var meta = input.split("//");
                 var commands = meta[0].split(":");
@@ -467,8 +476,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     url: commands[1],
                     start: commands[2],
                     end: commands[3],
-                    text: meta[1]
+                    text: meta[1],
+                    autoPlay: 0
                 };
+                if (commands.length == 5) {
+                    result.autoPlay = parseInt(commands[4]);
+                }
                 return result;
             }
         }

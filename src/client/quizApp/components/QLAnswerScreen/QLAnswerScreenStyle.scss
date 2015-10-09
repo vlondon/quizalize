@@ -116,6 +116,7 @@
         max-width: 160px;
         margin: auto;
         padding: 10px;
+        text-align: center;
         img {
             width: 100%;
             transition: transform 200ms ease-in-out;
@@ -124,6 +125,11 @@
                 transform: scale(1.2);
             }
         }
+    }
+
+    .video-icon {
+        width: 300px;
+        margin-top: 100px;
     }
 
     .answer-wrong {

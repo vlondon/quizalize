@@ -17,7 +17,12 @@ var QLVideoPlayer = React.createClass({
     },
 
     getInitialState: function() {
+        var videoOpen = false;
+        if (this.props.questionData.questionObject.type === "videoq") {
+            videoOpen = (this.props.questionData.questionObject.autoPlay === 1);
+        }
         return {
+            videoOpen,
             videoComplete: false,
             startTime: this.props.startTime
         };
@@ -44,7 +49,12 @@ var QLVideoPlayer = React.createClass({
 
     },
 
-
+    handleVideoAnswer: function(){
+        console.log('show video');
+        this.setState({
+            videoOpen: true
+        });
+    },
 
     handleVideoComplete: function(){
         console.log('finished');
@@ -58,14 +68,23 @@ var QLVideoPlayer = React.createClass({
         var {start, end} = this.getStartEnd();
         var props = Object.assign({},this.props);
         if (!this.state.videoComplete && this.props.questionData.questionObject.type === "videoq" && start!==undefined && end!==undefined) {
-            return (
-                <PQViewVideo
-                    video={this.props.questionData.questionObject.url}
-                    start={start}
-                    end={end}
-                    onComplete={this.handleVideoComplete}
-                />
-            );
+            if (this.state.videoOpen === true) {
+                return (
+                    <PQViewVideo
+                        video={this.props.questionData.questionObject.url}
+                        start={start}
+                        end={end}
+                        onComplete={this.handleVideoComplete}
+                    />
+                );
+            }
+            else {
+                return (
+                    <div className="view-video">
+                        <img className="video-icon" src="/img/ui-quiz/youtube-player.png" alt="" onClick={this.handleVideoAnswer}/>
+                    </div>
+                );
+            }
         } else {
             props.startTime = this.state.startTime;
             props.questionIndex = this.state.questionIndex;
