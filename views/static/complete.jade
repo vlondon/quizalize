@@ -208,7 +208,7 @@ style.
         .row(ng-hide="quiz.teacherMode || quiz.demoMode")
             .col-md-8.col-md-offset-2
                 a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
-        .row(ng-show="quiz.teacherMode", ng-hide="quiz.demoMode")
+        .row(ng-show="quiz.teacherMode")
             .col-md-8.col-md-offset-2
                 a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz/published/{{quiz.data.quizId}}") Set this Quiz for your class
                 br
