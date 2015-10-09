@@ -22,9 +22,6 @@ require('quizApp/controllers/PreviewController');
 require('quizApp/controllers/QuestionController');
 require('quizApp/controllers/QuizzesController');
 require('quizApp/controllers/QuizController');
-require('quizApp/controllers/MultipleController');
-require('quizApp/controllers/FreetextController');
-require('quizApp/controllers/ScrambledController');
 require('quizApp/controllers/AnswerController');
 require('quizApp/controllers/CompleteController');
 
