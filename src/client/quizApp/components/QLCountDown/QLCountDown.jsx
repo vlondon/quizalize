@@ -8,6 +8,7 @@ var buffer = 2;
 var QLCountDown = React.createClass({
 
     propTypes: {
+        showCountdown: React.PropTypes.bool,
         duration: React.PropTypes.number,
         startTime: React.PropTypes.number
     },
@@ -50,15 +51,21 @@ var QLCountDown = React.createClass({
     },
 
     render: function() {
+        var timer;
+        if (this.propTypes.showCountdown) {
+            timer = (
+                <div className="countdown-number-holder">
+                    <div className={`tick ${this.state.className}`}></div>
+                    <div className="countdown-number">
+                        {this.state.time}
+                    </div>
+                </div>
+            );
+        }
         return (
             <div className="ql-countdown">
                 <div className="countdown-line">
-                    <div className="countdown-number-holder">
-                        <div className={`tick ${this.state.className}`}></div>
-                        <div className="countdown-number">
-                            {this.state.time}
-                        </div>
-                    </div>
+                    {timer}
                 </div>
             </div>
         );
