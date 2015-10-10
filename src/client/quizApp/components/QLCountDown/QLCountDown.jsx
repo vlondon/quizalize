@@ -52,7 +52,7 @@ var QLCountDown = React.createClass({
 
     render: function() {
         var timer;
-        if (this.propTypes.showCountdown) {
+        if (this.props.showCountdown) {
             timer = (
                 <div className="countdown-number-holder">
                     <div className={`tick ${this.state.className}`}></div>

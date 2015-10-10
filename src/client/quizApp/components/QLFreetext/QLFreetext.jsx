@@ -95,15 +95,15 @@ var QLFreetext = React.createClass({
         var showAnswer, showQuestions, showCountdown;
 
         if (!this.state.answer) {
-            showCountdown = <QLCountDown startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
-                showQuestions = (
-                    <div className="freetext">
-                        <input type="text" name="freetextInputAnswer" id="freetextInputAnswer"/>
-                        &nbsp;
-                        <button type="button" className="btn" onClick={this.handleClick}>
-                            Submit
-                        </button>
-                    </div>);
+            showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
+            showQuestions = (
+                <div className="freetext">
+                    <input type="text" name="freetextInputAnswer" id="freetextInputAnswer"/>
+                    &nbsp;
+                    <button type="button" className="btn" onClick={this.handleClick}>
+                        Submit
+                    </button>
+                </div>);
         } else {
             var questionId = this.props.questionData.uuid;
             var currentAnswerFilter = this.props.quizData.report.filter(function(f) {

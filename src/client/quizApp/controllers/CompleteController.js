@@ -38,6 +38,10 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         window.ga('send', 'event', 'quiz', 'end', self.id);
     }
 
+    QuizData.loadQuiz(self.catId, self.id, function(data) {
+        self.currentQuiz = data;
+    });
+
 
     var renderReactComponent = function(){
         var activityId = self.data ? self.data.currentActivityId : undefined;
@@ -122,6 +126,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     };
 
     self.data = QuizData.currentQuizResult();
+    self.quiz = QuizData.currentQuizResult();
 
     self.topics = {};
 

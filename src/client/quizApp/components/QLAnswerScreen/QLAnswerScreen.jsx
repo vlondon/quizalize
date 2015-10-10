@@ -91,7 +91,7 @@ var QLAnswerScreen = React.createClass({
         }
 
 
-        if (!this.props.answerData.correct){
+        if (!this.props.answerData.correct && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1)){
             correctAnswer = (
                 <div className="text-2">
                     The correct answer is

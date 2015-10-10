@@ -107,7 +107,7 @@ var QLMultiple = React.createClass({
         };
 
         if (!this.state.answer) {
-            showCountdown = <QLCountDown startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
+            showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = this.props.questionData.questionObject.alternatives.map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
