@@ -1,13 +1,11 @@
 /* @flow */
-var assign = require('object-assign');
-
 var defaultSettings = {
     apiDomain: '/',
     defaultLoggedPage: '/quiz/quizzes',
     type: 'quiz'
 };
 
-var settings = assign(defaultSettings, {});
+var settings = Object.assign(defaultSettings, {});
 
 // // fixing types
 console.log((function(){

@@ -1,10 +1,9 @@
 /* @flow */
-import {Promise} from 'es6-promise';
 
 
 var scriptInjected = false;
 
-export var addYoutubeSdk = function(DOMId:string, videoId: string, begin: number, end: number, cb:?Function){
+export var addYoutubeSdk = function(DOMId:string, videoId: string, begin: number, end: number, cb:?Function) : Promise {
     var onPlayerReady = function(ev){
         console.log('ev onPlayerReady', ev);
 
