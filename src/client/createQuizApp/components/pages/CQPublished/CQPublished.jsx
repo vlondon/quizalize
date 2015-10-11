@@ -90,7 +90,7 @@ export default class CQPublished extends React.Component {
     handleClick () {
 
         var redirect = function(quizId, classId){
-            router.setRoute(`/quiz/published/${quizId}/${classId}/info`);
+            router.setRoute(`/quiz/published/${quizId}/${classId}/info`, true);
         };
 
         if (this.state.selectedClass === 'new') {
