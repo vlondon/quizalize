@@ -1,8 +1,9 @@
+/* @flow */
 var config              = require('./../../config');
 var stripe              = require('stripe')(config.stripeSecret);
+import logger from './../../logger';
 
-
-exports.processPayment = function(transaction, stripeToken){
+export let processPayment = function(transaction: Object, stripeToken: string) : Promise {
     return new Promise(function(resolve, reject){
 
         console.log('stripe Token', config.stripeSecret, stripeToken);
@@ -13,7 +14,7 @@ exports.processPayment = function(transaction, stripeToken){
             source: stripeToken,
             description: 'Quizalize transaction'
         }, function(err, charge) {
-            console.log('stripe returns', err, charge);
+            logger.debug('stripe returns', err, charge);
             if (err && err.type === 'StripeCardError') {
                 // The card has been declined
                 reject(err);
@@ -23,5 +24,22 @@ exports.processPayment = function(transaction, stripeToken){
 
         });
 
+    });
+};
+
+export let processSubscription = function(transaction: Object, stripeToken: string, userEmail: string) : Promise{
+    return new Promise((resolve, reject)=>{
+        stripe.customers.create({
+            source: stripeToken,
+            email: userEmail,
+            plan: 'quizalize_tier1'
+        }, function(err, charge) {
+            logger.debug('stripe returns', err, charge);
+            if (err && err.type === 'StripeCardError'){
+                reject(err);
+            } else {
+                resolve(charge);
+            }
+        });
     });
 };

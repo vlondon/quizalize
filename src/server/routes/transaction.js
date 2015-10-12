@@ -1,3 +1,4 @@
+/* @flow */
 //general zzish config
 var uuid                = require('node-uuid');
 var zzish               = require("zzishsdk");
@@ -83,7 +84,21 @@ var chargeForTransaction = function(transaction){
     });
 };
 
-var processTransactions = function(transaction, profileId){
+var setStripePlan = function(transaction, userEmail) : Promise {
+    return new Promise(function(resolve, reject){
+        if (transaction._token){
+            let stripeToken = transaction._token.id;
+            stripeHelper.processSubscription(transaction, stripeToken, userEmail)
+                .then((charge)=>{
+                    transaction.payload.charge = charge;
+                    resolve(transaction);
+                })
+                .catch(reject);
+        }
+    });
+};
+
+var processTransactions = function(transaction, profileId, userEmail){
 
     var getApp = function(appId){
         return new Promise(function(resolve, reject){
@@ -157,7 +172,11 @@ var processTransactions = function(transaction, profileId){
 
                 });
         } else if (transaction.meta.type === 'subscription') {
-            logger.info('we got subscription to process');
+            logger.info('we got subscription to process', userEmail, transaction);
+            transaction.meta.status = 'rejected';
+            saveTransaction(transaction, profileId);
+            reject();
+
         }
 
     });
@@ -165,7 +184,7 @@ var processTransactions = function(transaction, profileId){
 
 
 
-exports.list = function(req, res){
+exports.list = function(req : Object, res : Object){
     var profileId = req.params.profileId;
 
     zzish.listContent(profileId, TRANSACTION_CONTENT_TYPE, function(err, resp){
@@ -179,34 +198,36 @@ exports.list = function(req, res){
 
 
 
-exports.get = function(req, res){
+exports.get = function(req : Object, res : Object){
     var id = req.params.id;
     var profileId = req.params.profileId;
 
     zzish.getContent(profileId, TRANSACTION_CONTENT_TYPE, id, function(err, resp){
         if(!err){
-            logger.trace("request for content, got: ", resp);
+            logger.trace("request for content,", id," got: ", resp);
             res.send(resp);
         }else{
-            logger.error("request for content, error: ", err);
+            logger.error("request for content,", id," error: ", err);
             res.status = 400;
         }
     });
 };
 
-exports.delete = function(req, res){
+exports.delete = function(req : Object, res : Object){
     var profileId = req.params.profileId;
     var id = req.params.id;
 
-    zzish.deleteContent(profileId, TRANSACTION_CONTENT_TYPE, id, function(err, resp){
+    zzish.deleteContent(profileId, TRANSACTION_CONTENT_TYPE, id, function(err){
         res.send(err === undefined);
     });
 };
 
-exports.post = function(req, res){
+exports.post = function(req : Object, res : Object){
 
     var profileId = req.params.profileId;
     var data = req.body;
+    var userEmail = req.session.user.email;
+    logger.trace('session info', req.session);
     data.uuid = data.uuid || uuid.v4();
 
     // setting transaction to pending
@@ -228,12 +249,15 @@ exports.post = function(req, res){
 
     saveTransaction(data, profileId)
         .then(function(){
-            if ((data.meta.price && data.meta.price > 0) || data.meta.subscription){
-                logger.info('charginng for transaction');
+            if (data.meta.subscription){
+                logger.info('charging for subscription');
+                setStripePlan(data, userEmail);
+            } else if (data.meta.price && data.meta.price > 0) {
+                logger.info('charginng for transaction for app or quiz');
                 chargeForTransaction(data)
                     .then(function(){
                         logger.info('processing transaction');
-                        processTransactions(data, profileId)
+                        processTransactions(data, profileId, userEmail)
                             .then(saveProcessedTransaction)
                             .catch(function(){
                                 res.status = 400;
@@ -241,7 +265,7 @@ exports.post = function(req, res){
                             });
                     }).catch(errorHandler);
             } else {
-                processTransactions(data, profileId)
+                processTransactions(data, profileId, userEmail)
                     .then(saveProcessedTransaction)
                     .catch(function(){
                         res.status = 400;
@@ -257,8 +281,9 @@ exports.post = function(req, res){
 
 
 
-exports.process = function(req, res){
+exports.process = function(req : Object, res : Object){
     var profileId = req.params.profileId;
+    let userEmail = req.session.user.email;
 
     zzish.listContent(profileId, TRANSACTION_CONTENT_TYPE, function(err, resp){
 
@@ -270,7 +295,7 @@ exports.process = function(req, res){
             transactions.forEach(function(transaction){
                 if (transaction.meta.status === 'pending'){
 
-                    processTransactions(transaction, profileId)
+                    processTransactions(transaction, profileId, userEmail)
                         .then(function(){
                             transaction.meta.status = 'processed';
                             saveTransaction(transaction, profileId);

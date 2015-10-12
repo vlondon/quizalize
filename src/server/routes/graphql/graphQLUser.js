@@ -62,6 +62,7 @@ class User {
 class OwnUser extends User {
     constructor(user){
         super(user);
+        logger.debug('user loaded', user);
         if (user.attributes.accountType === undefined) {
             logger.info('OwnUser: Setting account type for user', user.uuid);
             var now = Date.now();

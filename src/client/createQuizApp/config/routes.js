@@ -26,6 +26,7 @@ var CQApp                   = require('./../components/pages/CQApp');
 var CQYourApps              = require('./../components/pages/CQYourApps');
 var CQPremium               = require('./../components/pages/CQPremium');
 var CQAssignQuiz            = require('./../components/pages/CQAssignQuiz');
+var CQTransactions          = require('./../components/pages/CQTransactions');
 
 export type Page = {
     name: string;
@@ -40,6 +41,13 @@ var pagesArray: Array<Page> = [
         path: '/quiz',
         needsLogin: undefined,
         component: CQOwnProfile,
+
+    },
+    {
+        name: 'mainPage',
+        path: '/quiz/transaction',
+        needsLogin: undefined,
+        component: CQTransactions,
 
     },
     {

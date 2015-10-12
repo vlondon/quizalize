@@ -86,7 +86,7 @@ class Me extends Store {
         var apps = userData.apps || [];
 
 
-        console.log('userDatauserDatauserDatauserDatauserData', userData.attributes.accountType, typeof userData);
+        console.log('userDatauserDatauserDatauserDatauserData', userData.attributes, typeof userData);
         userData.attributes = new meAttributesRecord(userData.attributes);
         this.state = new meRecord(userData);
         console.log('userDatauserDatauserDatauserDatauserData',  this.state.attributes.accountType, typeof userData);
