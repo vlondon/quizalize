@@ -84,11 +84,11 @@ var chargeForTransaction = function(transaction){
     });
 };
 
-var setStripePlan = function(transaction, userEmail) : Promise {
+var setStripePlan = function(transaction, user) : Promise {
     return new Promise(function(resolve, reject){
         if (transaction._token){
             let stripeToken = transaction._token.id;
-            stripeHelper.processSubscription(transaction, stripeToken, userEmail)
+            stripeHelper.processSubscription(transaction, stripeToken, user)
                 .then((charge)=>{
                     transaction.payload.charge = charge;
                     resolve(transaction);
@@ -98,8 +98,8 @@ var setStripePlan = function(transaction, userEmail) : Promise {
     });
 };
 
-var processTransactions = function(transaction, profileId, userEmail){
-
+var processTransactions = function(transaction, profileId, user){
+    let userEmail = user.email;
     var getApp = function(appId){
         return new Promise(function(resolve, reject){
             zzish.getPublicContent(APP_CONTENT_TYPE, appId, function(err, resp){
@@ -126,10 +126,7 @@ var processTransactions = function(transaction, profileId, userEmail){
 
     return new Promise(function(resolve, reject){
         // process payment
-
-
         // is a quiz or an app?
-
         if (transaction.meta.type === 'app') {
             // object consisteny, to be removed
             transaction.meta.appId = transaction.meta.appId || transaction.meta.quizId;
@@ -226,7 +223,7 @@ exports.post = function(req : Object, res : Object){
 
     var profileId = req.params.profileId;
     var data = req.body;
-    var userEmail = req.session.user.email;
+    var user = req.session.user;
     logger.trace('session info', req.session);
     data.uuid = data.uuid || uuid.v4();
 
@@ -235,6 +232,7 @@ exports.post = function(req : Object, res : Object){
     data.payload = data.payload || {};
 
     var saveProcessedTransaction = function(){
+        logger.info('saving processed transaction', data, profileId);
         res.status = 200;
         res.send();
         data.meta.status = 'processed';
@@ -250,14 +248,15 @@ exports.post = function(req : Object, res : Object){
     saveTransaction(data, profileId)
         .then(function(){
             if (data.meta.subscription){
-                logger.info('charging for subscription');
-                setStripePlan(data, userEmail);
+                logger.info('charging for subscription', data, user);
+                setStripePlan(data, user)
+                    .then(saveProcessedTransaction);
             } else if (data.meta.price && data.meta.price > 0) {
                 logger.info('charginng for transaction for app or quiz');
                 chargeForTransaction(data)
                     .then(function(){
                         logger.info('processing transaction');
-                        processTransactions(data, profileId, userEmail)
+                        processTransactions(data, profileId, user)
                             .then(saveProcessedTransaction)
                             .catch(function(){
                                 res.status = 400;
@@ -265,7 +264,7 @@ exports.post = function(req : Object, res : Object){
                             });
                     }).catch(errorHandler);
             } else {
-                processTransactions(data, profileId, userEmail)
+                processTransactions(data, profileId, user)
                     .then(saveProcessedTransaction)
                     .catch(function(){
                         res.status = 400;
@@ -291,7 +290,6 @@ exports.process = function(req : Object, res : Object){
             res.send(err, 500);
         } else {
             var transactions = resp;
-
             transactions.forEach(function(transaction){
                 if (transaction.meta.status === 'pending'){
 

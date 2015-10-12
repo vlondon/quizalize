@@ -11,6 +11,7 @@ type UserAttributesType = {
     accountType: number;
     accountTypeUpdated: number;
     accountTypeExpiration: ?number;
+    stripeId?: string;
 }
 
 type UserTypeDefinition = {
