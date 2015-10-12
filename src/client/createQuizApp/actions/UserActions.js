@@ -3,6 +3,7 @@ var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var UserConstants       = require('./../constants/UserConstants');
 var UserApi             = require('./../actions/api/UserApi');
 var urlParams           = require('./../utils/urlParams');
+
 import AnalyticsActions from './../actions/AnalyticsActions';
 import settings from './../config/settings';
 import router from './../config/router';
