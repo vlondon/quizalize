@@ -595,7 +595,20 @@ exports.data = function (req, res){
 };
 
 exports.newMetric = function(req, res){
-    res.render('admin/newMetric');
+    db.findDocuments("metrics",{}, -1, function(err, metrics) {
+        metrics.sort(function(x, y){
+            if (!x._id) {
+                return -1;
+            }
+            if (!y._id) {
+                return 1;
+            }
+            return y._id - x._id;
+        });
+        res.render("admin/newmetric", {metrics: metrics});
+
+
+    });
 };
 
 
