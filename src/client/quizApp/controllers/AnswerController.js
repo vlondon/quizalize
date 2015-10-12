@@ -1,13 +1,11 @@
 angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$routeParams', '$location', '$scope', function(QuizData, $log,  $routeParams, $location, $scope){
     var self = this;
-
+    var React = require('react');
+    var QLAnswer = require('quizApp/components/QLAnswerScreen');
     self.catId = $routeParams.catId;
     self.quizId = $routeParams.quizId;
-    self.action = $routeParams.action;
+    self.id = $routeParams.quizId;
     self.questionId = parseInt($routeParams.questionId);
-
-    self.data = QuizData.currentQuizResult();
-    self.QLQuestion = false;
 
     /* Have this data for previous question
                 {id: idx,
@@ -17,52 +15,66 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
                 correct: correct}
      */
 
-    self.last = self.data.report[self.data.report.length-1];
+
+     var renderReactComponent = function(){
+         React.render(
+             React.createElement(QLAnswer, {
+                 currentQuiz: self.currentQuiz,
+                 questionData: self.questionData,
+                 answerData: self.currentAnswer,
+                 onNext: function(){
+                     $scope.$apply(()=> self.nextQuestion() );
+                 }
+             }),
+             document.getElementById('reactContainer')
+         );
+     };
+
+
+     var addReactComponent = function(){
+         setTimeout(renderReactComponent, 200);
+
+         $scope.$on('$destroy', function(){
+             React.unmountComponentAtNode(document.getElementById('reactContainer'));
+         });
+
+     };
+
+     QuizData.loadQuiz(self.catId, self.id, function(data) {
+         //$scope.$apply(function(){
+             // var extraQuizData = ExtraData.videoQuizHandler(data);
+             // self.currentQuiz = extraQuizData.quiz;
+             // self.videoQuizData = extraQuizData.extra;
+             self.currentQuiz = data;
+             self.quiz = QuizData.currentQuizResult();
+             QuizData.getQuestion(self.questionId, function(data){
+                 self.questionData = data;
+                 var currentAnswerFilter = self.quiz.report.filter(function(f) {
+                     return f.questionId == data.uuid;
+                 });
+                 if (currentAnswerFilter.length > 0) {
+                     self.currentAnswer = currentAnswerFilter[0];
+                     addReactComponent();
+                 }
+                 else {
+                     $location.path(QuizData.generateNextQuestionUrl(self.questionId));
+                 }
+             });
+         //});
+     });
+
 
     self.nextQuestion = function(){
-        $location.path(QuizData.generateNextQuestionUrl(self.questionId));
-    };
-
-    if (self.data.latexEnabled) {
-        self.QLQuestion = false;
-        setTimeout(function() {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response")[0]]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse")[0]]);
-            MathJax.Hub.Queue(function () {
-                $scope.$apply(function() {
-                    self.QLQuestion = true;
-                });
-            });
-        },200);
-    }
-    else {
-        self.QLQuestion = true;
-    }
-
-    self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().meta.name+"'. You won't be able to continue this quiz.",function() {
-            if (sessionStorage.getItem("mode")=="teacher") {
-                window.location.href="/quiz/public";
-            }
-            else if (sessionStorage.getItem("mode")=="preview") {
-                window.close();
-            }
-            else if (QuizData.getClassCode()){
-                $location.path("/list/" + QuizData.gameCode());
-            }
-            else if (QuizData.getUser()){
-                $location.path("/quiz");
-            }
-            else if (QuizData.gameCode()){
-                $location.path("/list/" + QuizData.gameCode());
+        var nextUrl = QuizData.generateNextQuestionUrl(self.questionId);
+        if (nextUrl) {
+            if (nextUrl === $location.url()) {
+                $route.reload();
             }
             else {
-                $location.path("/app");
+                $location.path(QuizData.generateNextQuestionUrl(self.questionId));
             }
-            QuizData.cancelCurrentQuiz(function() {
-
-            });
-        });
+        }
     };
+
+    $log.debug('Answer Controller', self);
 }]);

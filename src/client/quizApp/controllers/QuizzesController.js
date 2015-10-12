@@ -12,14 +12,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         self.code = $routeParams.code;
     }
     else {
-        try {
-            if (typeof localStorage != 'undefined' && localStorage.getItem("gameCode")) {
-                self.code = localStorage.getItem("gameCode");
-            }
-        }
-        catch (err) {
-
-        }
+        self.code = QuizData.getDataValue("gameCode");
     }
 
 
@@ -76,15 +69,15 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     };
 
     if (typeof($location.search()).cancel != 'undefined' && $location.search().cancel){
-        localStorage.removeItem("token");
+        QuizData.removeItem("token");
     }
     else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
         self.token = $location.search().token;
     }
-    else if (localStorage.getItem("token")!=undefined) {
+    else {
         //
-        self.token = localStorage.getItem("token");
+        self.token = QuizData.getDataValue("token");
     }
     if (self.token!=undefined) {
         zzish.getCurrentUser(self.token, function(err,message) {

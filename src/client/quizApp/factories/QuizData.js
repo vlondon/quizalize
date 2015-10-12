@@ -5,24 +5,77 @@ var APP_CONTENT_TYPE = settings.APP_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
+
+    var getDataValue = function(key) {
+        if (dataParams[key]) return dataParams[key];
+        try {
+            if (typeof localStorage != 'undefined') {
+                return localStorage.getItem(key);
+            }
+        }
+        catch (err) {
+
+        }
+        return null;
+    };
+
+    var setDataValue = function(key, value) {
+        dataParams[key] = value;
+        try {
+            if (typeof localStorage != 'undefined') {
+                return localStorage.setItem(key, value);
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    var removeDataValue = function(key) {
+        delete dataParams[key];
+        try {
+            if (typeof localStorage != 'undefined') {
+                localStorage.removeItem(key);
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    var clearDataValue = function() {
+        for (var i in dataParams) {
+            delete dataParams[i];
+        }
+        try {
+            if (typeof localStorage != 'undefined') {
+                localStorage.clear();
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
     if(typeof zzish === 'undefined') {
         $log.error("Require zzish.js to use zzish");
     }
 
+    var dataParams = {};
 
     zzish.init(initToken);
 
-    var userUuid = localStorage.getItem("uuid");
-    var userName =  localStorage.getItem("userName");
-    var gameCode = localStorage.getItem("gameCode");
+    var userUuid = getDataValue("uuid");
+    var userName =  getDataValue("userName");
+    var gameCode = getDataValue("gameCode");
     zzish.getUser(userUuid, userName);
 
-    var classCode = localStorage.getItem("classCode");
-    var categories = {};
+    var classCode = getDataValue("classCode");
+    var categories = JSON.parse(getDataValue("categories") || "{}");
     var topics = {};
-    var currentQuiz = localStorage.getItem("currentQuiz") !== 'undefined' ?  JSON.parse(localStorage.getItem("currentQuiz")) : localStorage.removeItem('currentQuiz');
+    var currentQuiz = getDataValue("currentQuiz") !== 'undefined' ?  JSON.parse(getDataValue("currentQuiz")) : removeDataValue('currentQuiz');
 
-    var currentQuizResult = JSON.parse(localStorage.getItem("currentQuizResult"));
+    var currentQuizResult = JSON.parse(getDataValue("currentQuizResult"));
 
     var maxTime = settings.maxTime;
     var maxScore = settings.maxScore;
@@ -37,19 +90,19 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var setUser = function(user) {
         if (user==undefined) {
             userUuid = "";
-            localStorage.clear();
+            clearDataValue();
         }
         else {
             userUuid = user.uuid;
             userName = user.name;
-            localStorage.setItem("uuid", userUuid);
-            localStorage.setItem("userName", userName);
+            setDataValue("uuid", userUuid);
+            setDataValue("userName", userName);
         }
     };
 
     var setClassCode = function(code) {
         classCode = code;
-        localStorage.setItem("classCode",classCode);
+        setDataValue("classCode",classCode);
     };
 
     var registerWithGroup = function(code,callback) {
@@ -118,10 +171,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
 
+
         for (var i in result.categories) {
             topicsLoaded = true;
             topics[result.categories[i].uuid] = result.categories[i];
         }
+        setDataValue("categories", JSON.stringify(categories));
     };
 
     var processQuizCategories = function(result) {
@@ -172,13 +227,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     var initQuizResult = function() {
         currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.payload.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
-        localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
+        setDataValue("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
     };
 
     var setQuiz = function(quiz) {
         currentQuiz = quiz;
-        localStorage.setItem("currentQuiz",JSON.stringify(currentQuiz));
+        setDataValue("currentQuiz",JSON.stringify(currentQuiz));
         if (quiz.payload && quiz.payload.questions) {
             quiz.payload.questions = spliceQuestions(quiz);
             initQuizResult();
@@ -499,7 +554,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         unsetUser: function() {
             var result = userUuid!="" && userUuid!=undefined;
             setUser(null);
-            var token = localStorage.getItem("token");
+            var token = getDataValue("token");
             if (token!=null) {
                 zzish.logout(token);
             }
@@ -513,7 +568,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         resetGame: function() {
             gameCode = null;
-            localStorage.removeItem("gameCode");
+            removeDataValue("gameCode");
         },
         getUsername: function() {
             return userName;
@@ -577,7 +632,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     startTime: Date.now()
                 };
             }
-            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
+            setDataValue("currentQuizResult", JSON.stringify(currentQuizResult));
             return currentQuizResult.processing[question.uuid].startTime;
         },
         loginUser: function(user, classcode, callback) {
@@ -601,7 +656,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         loadApp: function(code, callback) {
             gameCode = code;
-            localStorage.setItem("gameCode",code);
+            setDataValue("gameCode",code);
             if (zzish.validateClassCode(code)) {
                 zzish.getPublicContentByCode(APP_CONTENT_TYPE, code, function(err, result) {
                     if (!err) {
@@ -684,13 +739,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         selectQuiz: selectQuiz,
         previewQuiz: function(quizId, callback) {
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = getDataValue('cqUuid');
             $http.get(`/create/${uuid}/quizzes/${quizId}`).then(function(response){
                 console.log('we got quiz!', response.data);
                 setQuiz(response.data);
                 callback(response.data);
             });
-            // var quizData = JSON.parse(localStorage.getItem("quizData"));
+            // var quizData = JSON.parse(getDataValue("quizData"));
             // if (quizData !== undefined) {
             //     var quiz = quizData[quizId];
             //     setQuiz(quiz);
@@ -742,6 +797,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         getQuestion: function(questionIndex,callback) {
             var currentQuestion = currentQuiz.payload.questions[questionIndex];
             callback(currentQuestion);
+        },
+        getDataValue: function(key) {
+            return getDataValue(key);
+        },
+        setDataValue: function(key, value) {
+            setDataValue(key,value);
+        },
+        removeDataValue: function(key) {
+            removeDataValue(key);
         },
         answerQuestion: function(idx, questionData, response, duration){
             var question = currentQuiz.payload.questions[idx];
@@ -822,14 +886,14 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 existingReport[0].roundedScore = Math.round(existingReport[0].score);
                 existingReport[0].response = reportItem.response;
             }
-            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
+            setDataValue("currentQuizResult", JSON.stringify(currentQuizResult));
         },
         canShowQuestion: function(questionId) {
             if (currentQuizResult.report[questionId] === undefined) {
                 return true;
             }
-            var repeatUntilCorrect = true;
-            //var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            //var repeatUntilCorrect = true;
+            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
             if (repeatUntilCorrect) {
                 return !currentQuizResult.report[questionId].correct;
             }
@@ -838,6 +902,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         generateNextQuestionUrl: function(questionId) {
             //var repeatUntilCorrect = true;
             var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            var maxAttempts = parseInt(currentQuiz.meta.maxAttempts || -1);
             var nextQuestionId = -1;
             if (repeatUntilCorrect) {
                 var tmpQ = questionId;
@@ -846,7 +911,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     if (tmpQ == currentQuiz.payload.questions.length) {
                         tmpQ = 0;
                     }
-                    if (currentQuizResult.report[tmpQ] == undefined || (!currentQuizResult.report[tmpQ].correct && currentQuizResult.report[tmpQ].attempts < 3)) {
+                    if (currentQuizResult.report[tmpQ] == undefined || (!currentQuizResult.report[tmpQ].correct && (currentQuizResult.report[tmpQ].attempts < maxAttempts || maxAttempts === -1))) {
                         nextQuestionId = tmpQ;
                         break;
                     }
