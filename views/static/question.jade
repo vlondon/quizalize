@@ -1,0 +1,37 @@
+block header
+    style.
+        .ng-hide-add, .ng-hide-remove {
+           /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+        }
+        .cssFade {
+            transition: 0.2s linear all;
+            opacity: 1;
+        }
+        .cssFade.ng-hide {
+            opacity: 0;
+        }
+
+
+nav.navbar.navbar-default.navbar-fixed-top
+    .container-fluid
+        .navbar-header
+            img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+        .navbar-collapse.collapse#navbar
+            ul.nav.navbar-nav.navbar-right(ng-controller="AnswerController as actrl")
+                li
+                    btn.btn.btn-info.pull-right(ng-click="actrl.cancel()", style=" margin-top:9px;") Cancel Quiz
+
+
+.container
+    .ql-score
+        .score
+            h2 {{quiz.quiz.totalScore || 0}} pts
+        .questions
+            h2 Q: {{quiz.questionId + 1}}/{{quiz.quiz.questionCount}}
+    #reactContainer

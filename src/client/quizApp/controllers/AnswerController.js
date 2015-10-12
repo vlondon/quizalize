@@ -7,7 +7,7 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
     self.questionId = parseInt($routeParams.questionId);
 
     self.data = QuizData.currentQuizResult();
-    self.showButtons = false;
+    self.QLQuestion = false;
 
     /* Have this data for previous question
                 {id: idx,
@@ -21,23 +21,23 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
 
     self.nextQuestion = function(){
         $location.path(QuizData.generateNextQuestionUrl(self.questionId));
-    }
+    };
 
     if (self.data.latexEnabled) {
-        self.showButtons = false;
+        self.QLQuestion = false;
         setTimeout(function() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion")[0]]);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response")[0]]);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse")[0]]);
             MathJax.Hub.Queue(function () {
                 $scope.$apply(function() {
-                    self.showButtons = true;
+                    self.QLQuestion = true;
                 });
             });
         },200);
     }
     else {
-        self.showButtons = true;
+        self.QLQuestion = true;
     }
 
     self.cancel = function() {
@@ -49,10 +49,13 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
                 window.close();
             }
             else if (QuizData.getClassCode()){
-                $location.path("/list");
+                $location.path("/list/" + QuizData.gameCode());
             }
             else if (QuizData.getUser()){
                 $location.path("/quiz");
+            }
+            else if (QuizData.gameCode()){
+                $location.path("/list/" + QuizData.gameCode());
             }
             else {
                 $location.path("/app");
@@ -61,5 +64,5 @@ angular.module('quizApp').controller('AnswerController', ['QuizData', '$log', '$
 
             });
         });
-    }
+    };
 }]);

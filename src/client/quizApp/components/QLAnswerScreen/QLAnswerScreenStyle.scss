@@ -62,12 +62,16 @@
         animation-fill-mode: both;
         animation-delay: 100ms;
         margin-bottom: 20px;
+        width: 50%;
+        display: inline-block;
     }
     .text-2 {
         animation: qlEnterTranslateY 300ms ease-out;
         animation-fill-mode: both;
         animation-delay: 1000ms;
         margin-bottom: 20px;
+        width: 50%;
+        display: inline-block;
     }
     .description {
         @include media($size-mobile) {
@@ -91,13 +95,41 @@
         animation-delay: 500ms;
         cursor: default;
 
-         @include media($size-mobile) {
+        @include media($size-mobile) {
             font-size:2.5vw;
         }
         @include media($size-widescreen) {
             font-size:2vw;
         }
 
+
+    }
+    .alternative-wrapper {
+        width: 90% !important;
+    }
+
+    .view-video {
+        animation: qlEnterTranslateY 300ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 1900ms;
+
+        max-width: 160px;
+        margin: auto;
+        padding: 10px;
+        text-align: center;
+        img {
+            width: 100%;
+            transition: transform 200ms ease-in-out;
+            cursor: pointer;
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+    }
+
+    .video-icon {
+        width: 300px;
+        margin-top: 100px;
     }
 
     .answer-wrong {
