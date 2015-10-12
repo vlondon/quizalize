@@ -12,7 +12,6 @@ var QuizActions = require('createQuizApp/actions/QuizActions');
 var CQPublishedInfo = React.createClass({
 
     propTypes: {
-        routeParams: React.PropTypes.object,
         classCode: React.PropTypes.string,
         quizId: React.PropTypes.string
     },
@@ -102,13 +101,14 @@ var CQPublishedInfo = React.createClass({
     },
 
     render: function() {
-        // var className = this.state.currentClass ? this.state.currentClass.name : 'Teacher';
-        // var classCode = this.state.currentClass ? this.state.currentClass.code : '';
-        // var helpStatus = this.state.showHelp ? 'open' : 'closed';
+        var className = this.state.currentClass ? this.state.currentClass.name : 'Teacher';
+        var classCode = this.state.currentClass ? this.state.currentClass.code : '';
+        var helpStatus = this.state.showHelp ? 'open' : 'closed';
 
         return (
-            <CQPageTemplate minimal={true} className="cq-publishedinfo">
-                <iframe src={this.state.fullLinkBoard} frameBorder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
+            <CQPageTemplate className="cq-container cq-publishedinfo">
+                <iframe src={this.state.fullLinkBoard} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
+
             </CQPageTemplate>
         );
     }

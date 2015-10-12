@@ -28,9 +28,6 @@ var sections = {
 
 var CQViewHeader = React.createClass({
 
-    propTypes: {
-        minimal: React.PropTypes.bool
-    },
 
     getInitialState: function() {
         return this.getState();
@@ -108,60 +105,34 @@ var CQViewHeader = React.createClass({
                 </li>);
         }
 
-        if (this.props.minimal === true){
-            return (
-                <nav className="cq-header">
-                    <div className="cq-header__container">
-                        <div className="cq-header__brand">
-                            <CQLink href="/quiz/assignments" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
-                                <div className="fa fa-chevron-left"></div> Back to Quizalize
+
+        return (
+            <nav className="cq-header">
+                <div className="cq-header__container">
+                    <div className="cq-header__brand">
+                        <a href={this.state.home}>
+                            <img src="/img/quizalize.png" className="cq-brand" alt=""/>
+                        </a>
+                    </div>
+                    <ul className="cq-header__buttons">
+
+                        {buttons}
+
+                        <li id="cq-publicQuizzes">
+                            <CQLink href="/quiz/marketplace" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
+                                <div className="fa fa-tags"></div> Marketplace
                             </CQLink>
-                            {/*
-                                <a href={this.state.home}>
-                                    <img src="/img/quizalize.png" className="cq-brand" alt=""/>
-                                </a>
-                            */}
-                        </div>
-                        <ul className="cq-header__buttons">
+                        </li>
 
+                        {loginButton}
 
-                        </ul>
+                    </ul>
 
-                    </div>
-                    <CQAnalytics/>
-                </nav>
-            );
-        } else {
+                </div>
+                <CQAnalytics/>
+            </nav>
 
-            return (
-                <nav className="cq-header">
-                    <div className="cq-header__container">
-                        <div className="cq-header__brand">
-                            <a href={this.state.home}>
-                                <img src="/img/quizalize.png" className="cq-brand" alt=""/>
-                            </a>
-                        </div>
-                        <ul className="cq-header__buttons">
-
-                            {buttons}
-
-                            <li id="cq-publicQuizzes">
-                                <CQLink href="/quiz/marketplace" className={isActive('public') ? 'navbar-btn active' : 'navbar-btn'}>
-                                    <div className="fa fa-tags"></div> Marketplace
-                                </CQLink>
-                            </li>
-
-                            {loginButton}
-
-                        </ul>
-
-                    </div>
-                    <CQAnalytics/>
-                </nav>
-
-            );
-
-        }
+        );
     }
 
 });

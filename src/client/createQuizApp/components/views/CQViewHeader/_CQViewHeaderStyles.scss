@@ -10,9 +10,6 @@
 .cq-header {
     border-radius: 0;
     min-width: 980px;
-    z-index: 20;
-    position: relative;
-    pointer-events: none;
     @include clearfix();
     &__container {
         max-width: 1170px;
@@ -21,12 +18,10 @@
     }
 
     &__brand {
-        pointer-events: auto;
         float: left;
     }
 
     &__buttons {
-        pointer-events: auto;
         list-style: none;
         float: right;
         margin: 0;
