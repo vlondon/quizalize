@@ -1,0 +1,226 @@
+section#what_is.q-home__section.q-home__hero
+    .q-home__section__inner
+        .aled-made-me-hack-this
+        .flash__hero
+            .flash-container
+                #flash
+        .cta-container.clearfix
+            .cta-container__left
+                a.get-started(href='/quiz/register')
+                    | Get Start here, it's free
+            .cta-video.cta-container__right
+                | or 
+                a#play-but(href='https://www.youtube.com/watch?v=J3_CWmLcEI0', title='Quizalize Video') watch a video
+                |  to learn more
+// /Section: intro
+section#what_is.q-home__section.q-home__whatis
+    .q-home__section__inner
+        .q-home__whatis__left
+            img.q-home__whatis__image(src='/img/homev2/home_whatis.png', alt='Quizalize available on computer, tablet and phones')
+        .q-home__whatis__right
+            h1 What is Quizalize?
+            p
+                | Quizalize lets you engage your class and deliver instant assessments
+                | for personalised learning on any computer, tablet or smartphone.
+                | It helps you quickly identify the strengths, weaknesses and learning gaps of individual
+                | students and intervene in real-time to give one-on-one help in the classroom.
+            p
+                | You can create your own assessments with our super fast quiz creator in 60 seconds, use one that a colleague
+                | has shared with you or pick one from our growing library of public curriculum based quizzes.
+// how quizalize works section
+section#steps.q-home__section.q-home__howitworks
+    .q-home__section__inner
+        h1 How it works
+        p
+            ul
+                li
+                    img(src='img/homev2/home_marketplace.png', alt='')
+                    p
+                        | Create a quiz in less than 60 seconeds, or choose one
+                        | created by other teachers.
+                //
+                li
+                    img(src='img/homev2/home_marketplace.png', alt='')
+                    p
+                        | Engage the whole class with live dashboards
+                //
+                li
+                    img(src='img/homev2/home_marketplace.png', alt='')
+                    p
+                        | Identify struggling students quickly
+                //
+                li
+                    img(src='img/homev2/home_marketplace.png', alt='')
+                    p
+                        | Spot learning gaps instantly
+// Section: about
+section#about.q-home__section.q-home__features
+    .q-home__section__inner
+        h1
+            | Diagnostic Assessments Made Easy
+        ul
+            li
+                .q-home__features__img
+                    img(src='/img/icon3.jpg')
+                h3 Engage Students
+                p
+                    | Turn dull assessments into a fun online game. Students love
+                    | playing Quizalize and you can even show a live leaderboard
+                    | on the electronic whiteboard!
+            //
+            li
+                .q-home__features__img
+                    img(src='/img/icon1.jpg')
+                h3 Personalise Learning
+                p
+                    | Create custom quizzes in 60 seconds and get insight into
+                    | individual students’ strengths, weaknesses and learning
+                    | gaps with printable reports.
+            //
+            li
+                .q-home__features__img
+                    img(src='/img/icon5.jpg')
+                h3 Track Progress
+                p
+                    | Record student results over time and monitor progress at the
+                    | class and student level using our state-of-the-art
+                    | progress dashboards.
+            //
+            li
+                .q-home__features__img
+                    img(src='/img/icon4.jpg')
+                h3 Save Time
+                p
+                    | Use our live dashboards to identify struggling students in
+                    | real-time so you can give them one-on-one help in class.
+section#about.q-home__section.q-home__tutorial
+    .q-home__section__inner
+        h1 Watch a tutorial
+        p
+            .q-home__tutorial__video
+                iframe(src='//www.youtube.com/embed/4ZmFuhSzr8s?&controls=1&autohide=1', frameborder='0', allowfullscreen='')
+section.home-section.color-light.bg-dark.carousel_div
+    .container
+        .row
+            .col-md-12
+                #quote-carousel.carousel.slide(data-ride='carousel')
+                    // Bottom Carousel Indicators
+                    ol.carousel-indicators
+                        li.active(data-target='#quote-carousel', data-slide-to='0')
+                        li(data-target='#quote-carousel', data-slide-to='1')
+                        li(data-target='#quote-carousel', data-slide-to='2')
+                    // Carousel Slides / Quotes
+                    .carousel-inner
+                        // Quote 1
+                        .item.active
+                            blockquote
+                                .row
+                                    .col-sm-3.text-center
+                                        img(src='../img/doghill.png')
+                                    #dog-kennel.col-sm-9
+                                        p.carousel-paragraph ...great tool for testing children in an engaging and useful way...
+                                        small.quote_giver Ross Orton, Deputy Headteacher at Dog Kennel Hill Primary School
+                        // Quote 2
+                        .item
+                            blockquote
+                                .row
+                                    .col-sm-3.text-center
+                                        img(src='../img/Millbrook.png')
+                                    .col-sm-9
+                                        p.carousel-paragraph It was good. It was entertaining. You got to learn lots.
+                                        small.quote_giver Megan, Year 6 pupil, Millbrook Academy
+                        // Quote 3
+                        .item
+                            blockquote
+                                .row
+                                    .col-sm-3.text-center
+                                        img(src='../img/Pagnel.png', style='height:120px; width:auto; margin-left:50px;')
+                                    .col-sm-9
+                                        p.carousel-paragraph Children were highly enthused - it's a great tool for consolidating facts
+                                        small.quote_giver Dave Harwood, Year 6 Teacher, Paganel School
+                    // Carousel Buttons Next/Prev
+                    a.left.carousel-control(data-slide='prev', href='#quote-carousel')
+                        i.fa.fa-chevron-left
+                    a.right.carousel-control(data-slide='next', href='#quote-carousel')
+                        i.fa.fa-chevron-right
+section#about.q-home__section
+    .q-home__section__inner
+        h1
+            | CREATE A QUIZ FOR YOUR CLASS IN 60 SECONDS
+            br
+            br
+            |                     or set your class a pre-made quiz
+        a.cta3(href='/quiz/register') Create or set a quiz
+        br
+// Section: contact
+section#contact.q-home__section.q-home__touch
+    .q-home__section__inner
+        h1 Get in touch
+        a.q-home__touch_cta1(onclick="ask('order')")
+            | Request an info pack
+        a.q-home__touch_cta2(onclick="ask('question')")
+            | Ask a question
+        a.q-home__touch_cta2(onclick="ask('demo')")
+            | Book a demo
+        .q-home__touch__form
+            form#contact-form(onsubmit='return submitForm()')
+                .row.marginbot-20
+                    .col-md-6.xs-marginbot-20
+                        input#ename.form-control.input-lg(type='text', placeholder='Enter name')
+                    .col-md-6
+                        input#email.form-control.input-lg(type='email', placeholder='Enter email', required='')
+                .row
+                    .col-md-12
+                        .form-group
+                            textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
+                        input#btnContactUs.btn-lg.btn-block(type='submit', value='Send')
+        #helpSent.container(style='display: none;')
+            .row.marginbot-80
+                .col-md-8.col-md-offset-2
+                    h3 Thanks for getting in touch. We'll get back to you ASAP!
+section#contact.q-home__section.q-home__logos
+    .q-home__section__inner
+        ul
+            li
+                img.img-responsive(src='cquiz/img/Bett-future2.png')
+            li
+                img.img-responsive(src='cquiz/img/Techstars.png')
+            li
+                img.img-responsive(src='cquiz/img/GovUK.png')
+            li
+                img.img-responsive(src='cquiz/img/EdComs.jpg')
+            li
+                img.img-responsive(src='cquiz/img/InnovateUK.jpg')
+section.q-home__section.q-home__extra
+    .q-home__section__inner
+        .q-home__extra__left
+            ul.about
+                li
+                    a(href='/faq') FAQ
+                li
+                    a(href='/terms') Terms of Service
+                li
+                    a(href='/privacy-policy') Privacy Policy
+                li
+                    a(href='/COPPA-policy')   COPPA Policy
+        .q-home__extra__rigth
+            .social
+                h6 Follow us
+                ul
+                    li
+                        a(href='http://www.facebook.com/quizalize')
+                            i.fa.fa-lg.fa-facebook
+                    li
+                        a(href='http://twitter.com/quizalizeapp')
+                            i.fa.fa-lg.fa-twitter
+                    li
+                        a(href='http://blog.zzish.com/')
+                            i.fa.fa-lg.fa-tumblr
+                    li
+                        a(href='http://www.youtube.com/channel/UCsN-UvRQ-hYUAndrQePJkMA')
+                            i.fa.fa-lg.fa-youtube
+footer.cq-home__footer
+    .cq-home__footer__inner
+        h3
+            | Powered by 
+            a(href='http://zzish.com', style='color:purple', target='_blank') Zzish

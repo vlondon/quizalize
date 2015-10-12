@@ -1,0 +1,26 @@
+.q-home__students {
+    @include boxHome;
+    background: #FFF;
+    color: $brand-color-purple;
+    vertical-align: top;
+    &__quote {
+        display: inline-block;
+        background: url(./../assets/home_bubble.png);
+        width: 240px;
+        height: 210px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+
+        margin: 20px 20px 60px;
+        padding: 50px 10px 10px;
+        position: relative;
+        small {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+    }
+
+}

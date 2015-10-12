@@ -13,7 +13,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         meta(name='twitter:card', content='summary_large_image')
         meta(name='twitter:site', content='@quizalizeapp')
         meta(name='twitter:creator', content='@quizalizeapp')
-        title Quizalize
+        title Quizalize for Publishers
         // css
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
         link(href='/cquiz/css/bootstrap.min.css', rel='stylesheet', type='text/css')
@@ -28,9 +28,9 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         if (devServer=='true')
             script(src="http://localhost:7071/webpack-dev-server.js")
         else
-            link(href='/js/home.css', rel='stylesheet')
+            link(href='/js/publishers.css', rel='stylesheet')
         script(src='/js/vendor.js')
-        script(src='/js/home.js')
+        script(src='/js/publishers.js')
             
         script.
             var intercomId = '!{intercomId}';
@@ -48,9 +48,11 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             
             include ./home/menu.jade
             
-            include ./home/brand.jade
+            include ./publishers/brand-publishers.jade
             
-            include ./home/box_intro.jade
+            include ./publishers/box_intro-publishers.jade
+            
+            include ./publishers/box_whatis.jade
             
             include ./home/box_player.jade
             
