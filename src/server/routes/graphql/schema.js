@@ -15,9 +15,26 @@ import graphQLQuiz from './graphQLQuiz';
 import graphQLApps from './graphQLApps';
 
 
-var count = 0;
+let count = 0;
 
-var appMeta = new GraphQLObjectType({
+let transactionMeta = new GraphQLObjectType({
+    name: 'transactionMeta',
+    fields: () => ({
+        type: {
+            type: GraphQLString,
+            name: 'Type of transaction (quiz, app, subscription)',
+        },
+        created: {
+            type: GraphQLInt,
+            name: 'When the transaction was created',
+        },
+        price: {
+            type: GraphQLInt
+        }
+    })
+});
+
+let appMeta = new GraphQLObjectType({
     name: 'AppMeta',
     fields: () => ({
         code: {
@@ -57,7 +74,7 @@ var appMeta = new GraphQLObjectType({
             resolve: ({quizzes, profileId})=>{
                 console.log('RESOLVING ', quizzes, typeof quizzes);
                 if (typeof quizzes === 'string' && quizzes.length > 0) {
-                    var quizzesID = quizzes.split(',');
+                    let quizzesID = quizzes.split(',');
                     return graphQLQuiz.getQuizzes(profileId, quizzesID);
                 } else {
                     return [];
@@ -72,7 +89,7 @@ var appMeta = new GraphQLObjectType({
 });
 
 
-var appType = new GraphQLObjectType({
+let appType = new GraphQLObjectType({
     name: 'App',
     fields: {
         uuid: {
@@ -86,7 +103,7 @@ var appType = new GraphQLObjectType({
     }
 });
 
-var quizMeta = new GraphQLObjectType({
+let quizMeta = new GraphQLObjectType({
     name: 'QuizMeta',
     fields: {
         authorId: {
@@ -130,7 +147,7 @@ var quizMeta = new GraphQLObjectType({
 });
 
 
-var quizType = new GraphQLObjectType({
+let quizType = new GraphQLObjectType({
     name: 'Quiz',
     description: 'A character in the Star Wars Trilogy',
     fields: ()=>({
@@ -146,7 +163,7 @@ var quizType = new GraphQLObjectType({
 
 
 
-var userAttributes = new GraphQLObjectType({
+let userAttributes = new GraphQLObjectType({
     name: 'UserAttributes',
     fields: {
         ageTaught: {
@@ -182,6 +199,18 @@ var userAttributes = new GraphQLObjectType({
         url: {
             type: GraphQLString,
             description: 'Url',
+        },
+        accountType: {
+            type: GraphQLInt,
+            description: 'Quizalize user type (Free / Premium / School)'
+        },
+        accountTypeUpdated: {
+            type: GraphQLInt,
+            description: 'Quizalize user type last updated'
+        },
+        accountTypeExpiration: {
+            type: GraphQLInt,
+            description: 'Quizalize user expires'
         }
     }
 });
@@ -189,7 +218,7 @@ var userAttributes = new GraphQLObjectType({
 
 
 
-var userType = new GraphQLObjectType({
+let userType = new GraphQLObjectType({
     name: 'UserType',
     description: 'UserType test',
     fields: () => ({
@@ -259,7 +288,7 @@ var userType = new GraphQLObjectType({
 });
 
 
-var schema = new GraphQLSchema({
+let schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'RootQueryType',
         fields: {

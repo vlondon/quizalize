@@ -87,7 +87,7 @@ export default class CQViewShareQuizInput extends React.Component {
 
     focusField() {
         if (this.refs.inputField){
-            this.refs.inputField.getDOMNode().focus();
+            this.refs.inputField.focus();
         }
     }
 

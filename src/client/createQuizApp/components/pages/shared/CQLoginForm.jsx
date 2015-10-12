@@ -19,7 +19,11 @@ var CQLoginForm = React.createClass({
         showEmailField: React.PropTypes.bool,
         enabled: React.PropTypes.bool,
         buttonLabel: React.PropTypes.string,
-        children: React.PropTypes.element
+        children: React.PropTypes.oneOfType([
+            React.PropTypes.element,
+            React.PropTypes.arrayOf(React.PropTypes.element)
+        ])
+
     },
 
     getDefaultProps: function():Object {

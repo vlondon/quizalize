@@ -2,6 +2,7 @@
 import type { Quiz, Question } from './../../../stores/QuizStore';
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var CQLatexString = require('./../../../components/utils/CQLatexString');
 
@@ -120,7 +121,7 @@ export default class CQEditNormal extends React.Component{
 
         var nextRef = i < (refs.length - 1) ? i + 1 : 0;
         var nextElement = refs[nextRef];
-        var node = React.findDOMNode(nextElement);
+        var node = ReactDOM.findDOMNode(nextElement);
 
         var gotoNext = ()=>{
             if (nextElement) {

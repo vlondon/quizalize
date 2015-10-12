@@ -4,13 +4,15 @@ var router = require('createQuizApp/config/router');
 
 
 class CQPublicFooter extends React.Component {
+
     handleClick() {
         router.setRoute(`/quiz/create`);
     }
+    
     render () {
         return (
             <div className="cq-public__footer">
-                <div class="cq-public__footer__copy">
+                <div className="cq-public__footer__copy">
 
                     <h1 className="cq-public__footer__title">Can’t find the right game?</h1>
                     <p className="cq-public__footer__text">

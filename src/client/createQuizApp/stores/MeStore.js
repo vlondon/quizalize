@@ -23,10 +23,12 @@ let userAttributes = {
     school: undefined,
     subjectTaught: undefined,
     url: undefined,
+    accountType: undefined,
+    accountTypeUpdated: undefined,
+    accountTypeExpiration: undefined
 };
 
 const meAttributesRecord = Record(userAttributes);
-
 let noUser:UserType = {
     uuid: '-1',
     avatar: '',
@@ -34,7 +36,6 @@ let noUser:UserType = {
     name: '',
     attributes: new meAttributesRecord()
 };
-
 const meRecord = Record(noUser);
 
 class Me extends Store {
@@ -44,6 +45,7 @@ class Me extends Store {
 
     constructor(state: UserType = noUser){
         super(state);
+        state = Object.assign({}, state);
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
@@ -58,7 +60,6 @@ class Me extends Store {
     }
 
     setState(userData : Object) {
-        console.log('userDatauserDatauserDatauserDatauserData', userData, typeof userData);
         var fillApps = (apps, quizzes)=>{
             var quizzesWithoutApps = quizzes.filter(q=>{
                 var isInApp = apps.filter(a=>{
@@ -85,9 +86,10 @@ class Me extends Store {
         var apps = userData.apps || [];
 
 
+        console.log('userDatauserDatauserDatauserDatauserData', userData.attributes, typeof userData);
         userData.attributes = new meAttributesRecord(userData.attributes);
-        // userData = userData.set('attributes', attributes);
         this.state = new meRecord(userData);
+        console.log('userDatauserDatauserDatauserDatauserData',  this.state.attributes.accountType, typeof userData);
         this.apps = fillApps(apps, quizzes);
         this.emitChange();
     }

@@ -1,5 +1,6 @@
 var settings = require('quizApp/config/settings');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 // var QLComplete = require('quizApp/components/QLComplete');
 
@@ -45,7 +46,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
 
     var renderReactComponent = function(){
         var activityId = self.data ? self.data.currentActivityId : undefined;
-        React.render(
+        ReactDOM.render(
             React.createElement(QLLeaderboard, {
                 leaderboard: self.leaderboard,
                 activityId
@@ -58,7 +59,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     var addReactComponent = function(){
         setTimeout(renderReactComponent, 200);
         $scope.$on('$destroy', function(){
-            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+            ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
         });
     };
 

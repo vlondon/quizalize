@@ -8,6 +8,10 @@ type UserAttributesType = {
     ageTaught?: string;
     profileUrl?: string;
     bannerUrl?: string;
+    accountType: number;
+    accountTypeUpdated: number;
+    accountTypeExpiration: ?number;
+    stripeId?: string;
 }
 
 type UserTypeDefinition = {
