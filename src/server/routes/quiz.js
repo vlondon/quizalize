@@ -177,7 +177,9 @@ exports.faq = function(req, res){
 exports.landing = function(req, res){
     res.render('landing');
 };
-
+exports.publishers = function(req,res){
+    res.render('publishers');
+}
 
 exports.terms = function(req, res){
     res.render('terms');

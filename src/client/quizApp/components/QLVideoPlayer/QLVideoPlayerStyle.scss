@@ -1,0 +1,12 @@
+@import './../../../shared/scss/mixins';
+@import './../../../shared/scss/score';
+
+.view-video {
+    text-align: center;
+}
+
+.video-icon {
+    max-width: 50%;
+    min-width: 30%;
+    margin-top: 100px;
+}

@@ -82,6 +82,7 @@ var GroupActions = {
     publishAssignment: function(quizId : string, code : string , settings : Object ) : Promise {
 
         return new Promise((resolve, reject) => {
+            var UserStore = require('./../stores/UserStore');
             var dataToSend = {
                 access: -1,
                 code

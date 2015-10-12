@@ -63,11 +63,6 @@ block body
             console.log("vis sign", metric);
             var signVisitRatio = Math.floor((metric.signups/metric.visitors)*100);
             console.log("vis sign", metric.signups, metric.visitors);
-            var activatedRatio = Math.floor((metric.activated/metric.signups)*100);
-            console.log("act sign", metric.signups/metric.activated, activatedRatio);
-            $('#activatedRatio .big').text(activatedRatio +"%");   
-            $('#activatedRatio .metric-title').text("activated ratio");
-            $('#activatedRatio').css({'background-color': findColor(activatedRatio)})
             $('#signUpRatio .big').text(signVisitRatio +"%");   
             $('#signUpRatio .metric-title').text("sign up ratio");
             $('#signUpRatio').css({'background-color': findColor(signVisitRatio)})

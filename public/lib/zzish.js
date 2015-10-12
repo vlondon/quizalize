@@ -1245,7 +1245,7 @@
                     callback(status, message);
                 }
             });
-        })
+        });
     };
 
     /**
@@ -1268,7 +1268,7 @@
                     query - A Summary of query parameters passed in (as the request)
 
      */
-    Zzish.getUserResults = function (profileId, callback, parameters) {
+    Zzish.getUserResults = function (profileId, parameters, callback) {
         var request = {
             method: "GET",
             url: getBaseUrl() + "statements/" + profileId + "/results?" + convertToParameters(parameters)

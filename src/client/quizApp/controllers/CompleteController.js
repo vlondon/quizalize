@@ -29,14 +29,19 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.hasTopics = false;
     self.teacherMode = sessionStorage.getItem("mode")=="teacher";
     self.previewMode = sessionStorage.getItem("mode")=="preview";
+    self.demoMode = sessionStorage.getItem("mode")=="demo";
     sessionStorage.removeItem("mode");
-    self.showButtons = false;
+    self.QLQuestion = false;
     self.id = $routeParams.quizId;
     self.catId = $routeParams.catId;
 
     if (window.ga){
         window.ga('send', 'event', 'quiz', 'end', self.id);
     }
+
+    QuizData.loadQuiz(self.catId, self.id, function(data) {
+        self.currentQuiz = data;
+    });
 
 
     var renderReactComponent = function(){
@@ -122,6 +127,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     };
 
     self.data = QuizData.currentQuizResult();
+    self.quiz = QuizData.currentQuizResult();
 
     self.topics = {};
 
@@ -167,11 +173,11 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             }, 200);
             MathJax.Hub.Queue(function () {
                 $scope.$apply(function() {
-                    self.showButtons = true;
+                    self.QLQuestion = true;
                 });
             });
         }
-        self.showButtons = true;
+        self.QLQuestion = true;
         // renderReactComponent();
     },self.previewMode);
 

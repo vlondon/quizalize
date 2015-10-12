@@ -95,7 +95,7 @@ var UserActions = {
     },
 
     loginWithToken: function(token: string): Promise {
-        return new Promise(function(resolve, reject){
+        return new Promise((resolve, reject)=>{
 
             UserApi.loginWithToken(token)
                 .then((user)=>{

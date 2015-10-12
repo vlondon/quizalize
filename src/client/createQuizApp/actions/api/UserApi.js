@@ -32,7 +32,6 @@ var getGraphQLUserQuery = function(key, value){
                     meta {
                         name,
                         iconURL,
-                        created,
                         price,
                         description,
                         colour,
@@ -92,7 +91,6 @@ var UserApi = {
                     meta {
                         name,
                         iconURL,
-                        created,
                         price,
                         description,
                         colour,

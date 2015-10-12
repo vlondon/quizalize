@@ -6,6 +6,21 @@ angular.module('quizApp')
             controller: "LoginController",
             controllerAs: "login"
         })
+        .when('/code/:code', {
+            templateUrl: "/quiz/view/plogin",
+            controller: "LoginController",
+            controllerAs: "login"
+        })
+        .when('/app', {
+            templateUrl: "/quiz/view/alogin",
+            controller: "AppController",
+            controllerAs: "login"
+        })
+        .when('/app/:code', {
+            templateUrl: "/quiz/view/alogin",
+            controller: "AppController",
+            controllerAs: "login"
+        })
         .when('/class', {
             templateUrl: "/quiz/view/plogin",
             controller: "LoginController",
@@ -16,24 +31,29 @@ angular.module('quizApp')
             controller: "QuizzesController",
             controllerAs: "quizzes"
         })
+        .when('/list/:code', {
+            templateUrl: "/quiz/view/studentCategoryList",
+            controller: "QuizzesController",
+            controllerAs: "quizzes"
+        })
         .when('/public', {
             templateUrl: "/quiz/view/studentCategoryList",
             controller: "PublicController",
             controllerAs: "quizzes"
+        })
+        .when('/stats', {
+            templateUrl: "/quiz/view/stats",
+            controller: "StatsController",
+            controllerAs: "stats"
         })
         .when('/play/:catId/:id', {
             templateUrl: "/quiz/view/intro",
             controller: "GameController",
             controllerAs: "quiz"
         })
-        .when('/quiz/:catId/:quizId/multiple/:questionId', {
-            templateUrl: "/quiz/view/multiple",
-            controller: "MultipleController",
-            controllerAs: "quiz"
-        })
-        .when('/quiz/:catId/:quizId/scrambled/:questionId', {
-            templateUrl: "/quiz/view/scrambled",
-            controller: "ScrambledController",
+        .when('/quiz/:catId/:quizId/question/:questionId', {
+            templateUrl: "/quiz/view/question",
+            controller: "QuestionController",
             controllerAs: "quiz"
         })
         .when('/quiz/:catId/:quizId/answer/:questionId', {

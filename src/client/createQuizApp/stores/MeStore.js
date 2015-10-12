@@ -34,8 +34,7 @@ let noUser:UserType = {
     avatar: '',
     email: '',
     name: '',
-    attributes: new meAttributesRecord(),
-    created: Date.now()
+    attributes: new meAttributesRecord()
 };
 const meRecord = Record(noUser);
 

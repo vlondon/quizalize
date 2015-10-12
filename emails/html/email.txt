@@ -329,6 +329,7 @@ background: #970b0e !important;
             </tr></table></center>
         </td>
       </tr></table>
-      <img src="http://www.google-analytics.com/collect?v=1&tid=UA-2402555-23&t=event&ec=email&ea=open&el=%campaignlabel%" />
+      <img src="http://localhost:3001/pixel?category=email&action=open&label=%campaignlabel%&value=5" />
+      <p>Click <a href="http://localhost:3001/unsubscribe?email=%email%">here to unsubscribe</a></p>
       </body>
 </html>

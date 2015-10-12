@@ -1,3 +1,1 @@
-
-
 declare var $: function;

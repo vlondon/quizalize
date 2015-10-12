@@ -37,9 +37,11 @@ exports.saveUser = function(user){
             if (!err && typeof data === 'object') {
                 var interomUser = {
                     'user_id': data.uuid,
-                    'name': user.name,
-                    'custom_attributes': user.attributes
+                    'name': data.name,
+                    'custom_attributes': data.attributes,
+                    'created_at': Math.round(data.created / 1000)
                 };
+                logger.info('INTERCOM USER', interomUser);
                 intercom.updateUser(interomUser);
                 resolve(data);
             }

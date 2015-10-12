@@ -4,6 +4,7 @@ import AnalyticsActions from './../../../actions/AnalyticsActions';
 import MeStore from './../../../stores/MeStore';
 import CQLink from './../../../components/utils/CQLink';
 import CQWelcomeVideo from './CQWelcomeVideo';
+import CQWelcomeQuiz from './CQWelcomeQuiz';
 
 // assets
 import cta1 from './../../../../assets/welcome_cta1.svg';
@@ -21,9 +22,11 @@ class CQWelcome extends React.Component {
         super(props);
         this.state = {
             user: MeStore.state,
-            isVideoOpen: false
+            isVideoOpen: false,
+            isQuizOpen: false
         };
         this.handleWatchVideo = this.handleWatchVideo.bind(this);
+        this.handlePlayDemo = this.handlePlayDemo.bind(this);
         this.handleDismiss = this.handleDismiss.bind(this);
         // this.handleBrowseMarketplace = this.handleBrowseMarketplace.bind(this);
     }
@@ -31,7 +34,9 @@ class CQWelcome extends React.Component {
     handlePlayDemo(){
         AnalyticsActions.sendEvent('welcome_screen', 'play_demo');
         AnalyticsActions.sendIntercomEvent('welcome_play_demo');
-        window.open('/app#/play/public/3af911c5-755f-445e-9483-0fbb8d6d9194');
+        window.sessionStorage.setItem('mode', 'demo');
+        // window.open('/app#/play/public/3af911c5-755f-445e-9483-0fbb8d6d9194');
+        this.setState({isQuizOpen: true});
 
         // window.open(`/app#/preview/${quiz.meta.profileId}/${quiz.uuid}`, 'preview');
     }
@@ -65,7 +70,7 @@ class CQWelcome extends React.Component {
     }
 
     handleDismiss(){
-        this.setState({isVideoOpen: false});
+        this.setState({isVideoOpen: false, isQuizOpen: false});
     }
 
     // <li className="cq-welcome__actions__action__4" onClick={this.handlePreviewDashboard}>
@@ -75,11 +80,12 @@ class CQWelcome extends React.Component {
     //     Preview a dashboard
     // </li>
     render () {
-        var name = this.state.user.name ? ` ${this.state.user.name}` : '';
-        var video = this.state.isVideoOpen ? <CQWelcomeVideo onDismiss={this.handleDismiss}/> : undefined;
+        let name = this.state.user.name ? ` ${this.state.user.name}` : '';
+        let video = this.state.isVideoOpen ? <CQWelcomeVideo onDismiss={this.handleDismiss}/> : undefined;
+        let quiz = this.state.isQuizOpen ? <CQWelcomeQuiz onDismiss={this.handleDismiss}/> : undefined;
         return (
             <CQPageTemplate className="cq-welcome__page">
-                {video}
+                {video}{quiz}
                 <div className="cq-welcome">
                     <img src="/cquiz/img/logo 2.png" className="cq-welcome__brand"/>
                     <h1 className="cq-welcome__header">
@@ -99,12 +105,6 @@ class CQWelcome extends React.Component {
                     </div>
 
                     <ul className="cq-welcome__actions">
-                        <li className="cq-welcome__actions__action__1" onClick={this.handlePlayDemo}>
-                            <div className="cq-welcome__actions__image">
-                                <img src={cta1} alt="Play"/>
-                            </div>
-                            Play a demo quiz
-                        </li>
                         <li className="cq-welcome__actions__action__2" onClick={this.handleWatchVideo}>
                             <div className="cq-welcome__actions__image">
                                 <img src={cta2} alt="Watch the video"/>
@@ -116,6 +116,12 @@ class CQWelcome extends React.Component {
                                 <img src={cta3} alt="Printable guide"/>
                             </div>
                             Printable guide
+                        </li>
+                        <li className="cq-welcome__actions__action__1" onClick={this.handlePlayDemo}>
+                            <div className="cq-welcome__actions__image">
+                                <img src={cta1} alt="Play"/>
+                            </div>
+                            Play a demo quiz
                         </li>
 
                     </ul>

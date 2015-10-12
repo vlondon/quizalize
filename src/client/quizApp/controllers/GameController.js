@@ -87,7 +87,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     });
 
     self.start = function(){
-        var url = "/quiz/" + self.catId + '/' + self.id + "/" + QuizData.selectQuestionType(0) + "/0";
+        var url = "/quiz/" + self.catId + '/' + self.id + "/question/0";
         $location.path(url);
     };
 
@@ -109,10 +109,13 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                 window.close();
             }
             else if (QuizData.getClassCode()){
-                $location.path("/list");
+                $location.path("/list/" + QuizData.gameCode());
             }
             else if (QuizData.getUser()){
                 $location.path("/quiz");
+            }
+            else if (QuizData.gameCode()){
+                $location.path("/list/" + QuizData.gameCode());
             }
             else {
                 $location.path("/app");

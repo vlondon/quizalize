@@ -205,7 +205,7 @@ style.
 
 .container
     .wrapper-complete
-        .row(ng-hide="quiz.teacherMode")
+        .row(ng-hide="quiz.teacherMode || quiz.demoMode")
             .col-md-8.col-md-offset-2
                 a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
         .row(ng-show="quiz.teacherMode")
@@ -278,21 +278,23 @@ style.
                             .fa.fa-lg.fa-facebook
                         a.share.share-tw(ng-href="{{quiz.twitterLink}}",target="_blank")
                             .fa.fa-lg.fa-twitter
-        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.showButtons")
+        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.QLQuestion")
             .col-md-8.col-md-offset-2
                 .well
                     .row
                         .col-md-4
                             h4.wrapword
-                              strong(id="quizQuestion{{item.questionId}}") {{item.question}}
+                              strong(id="quizQuestion{{item.questionId}}") {{item.question.text}}
                         .col-md-3.wrapword
                             h4 Your answer
                             strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
-                        .col-md-3.wrapword
+                        .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers === undefined || quiz.currentQuiz.meta.showAnswers === 1")
                             h4 Correct answer&nbsp;
                             strong(id="cresponse{{item.questionId}}") {{item.answer}}
+                        .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers !== undefined && quiz.currentQuiz.meta.showAnswers === 0")
                         .col-md-2
                             h4 Score: {{item.roundedScore}}
-                            p(ng-show="item.correct") (You took {{item.seconds}}
+                            p(ng-show="item.correct") ({{item.seconds}}
                                 ng-pluralize(count="item.seconds", when="{1: ' second', other: ' seconds'}")
                                 |)
+                            p(ng-show="item.attempts >1") ({{item.attempts}} attempts)
