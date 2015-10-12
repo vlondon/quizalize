@@ -20,14 +20,7 @@ angular.module('quizApp').controller('LoginController', ['QuizData', '$log', '$r
         self.code = $routeParams.code;
     }
     else {
-        try {
-            if (typeof localStorage != 'undefined' && localStorage.getItem("gameCode")) {
-                self.code = localStorage.getItem("gameCode");
-            }
-        }
-        catch (err) {
-
-        }
+        self.code = QuizData.getDataValue("gameCode");
     }
 
     self.focusClassCode = function() {
