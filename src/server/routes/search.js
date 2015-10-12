@@ -49,118 +49,35 @@ var performQuery = function(mongoQuery, contenType, callback) {
 exports.getQuizzes = function(req, res){
 
     var searchString = req.body.search || '';
-    var categoryId = req.body.categoryId;
-    var profileId = req.body.profileId;
-
-    var subjects = req.body.subjects;
 
     logger.info('getQuizzes');
-    marketplaceSearch.quiz(searchString);
+    var quizzes = marketplaceSearch.quiz(searchString);
+    res.send(quizzes);
 
-
-    var patt = new RegExp(searchString, 'i');
-    var usedSubs = subjects.filter(function(subject) {
-        return searchString!=='' && patt.test(subject.name);
-    });
-
-    var mongoQuery = {
-        updated: {
-            $gt: 1
-        },
-        published: "published",
-        name: {
-            $regex: searchString, $options: 'i'
-        }
-    };
-    if (categoryId) {
-        mongoQuery.subjectId = categoryId;
-    }
-    if (profileId) {
-        mongoQuery.profileId = profileId;
-    }
-
-    if (usedSubs.length > 0) {
-        var usedSubsId = usedSubs.map(function(item) {
-            return item.uuid;
-        });
-        var mongoQuery2 = {
-            updated: {
-                $gt: 1
-            },
-            published: "published",
-            subjectId: { $in: usedSubsId }
-        };
-        performQuery(mongoQuery, QUIZ_CONTENT_TYPE, function(err,result) {
-            if (err === null) {
-                performQuery(mongoQuery2, QUIZ_CONTENT_TYPE, function(err,result2) {
-                    if (err === null) {
-                        result2.forEach(function(quiz) {
-                            var filtered = result.filter(function(rresult) {
-                                return rresult.uuid == quiz.uuid;
-                            });
-                            if (filtered.length == 0) {
-                                result.push(quiz);
-                            }
-                        });
-                        //Array.prototype.push.apply(result, result2);
-                        res.send(result);
-                    }
-                    else {
-                        res.status(500).send(result2);
-                    }
-                });
-            }
-            else {
-                res.status(500).send(result);
-            }
-        });
-    }
-    else {
-        performQuery(mongoQuery,QUIZ_CONTENT_TYPE, function(err,result) {
-            if (err === null) {
-                res.send(result);
-            }
-            else {
-                res.status(500).send(result);
-            }
-        });
-    }
-    //mongoQuery.published = true;
 };
 
 
 
 exports.getApps = function(req, res){
     var searchString = req.body.search || '';
-    var categoryId = req.body.categoryId;
-    var appId = req.body.appId;
 
-    var now = Date.now();
-    var mongoQuery = {
-        updated: {
-            $gt: 1
-        },
-        published: "published",
-        name: {
-            $regex: searchString, $options: 'i'
-        }
 
-    };
-
-    if (categoryId) {
-        mongoQuery.categoryId = categoryId;
-    }
-    // if (appId){
-    //     mongoQuery.uuid = appId;
+    let apps = marketplaceSearch.app(searchString);
+    res.send(apps);
+    // if (categoryId) {
+    //     mongoQuery.categoryId = categoryId;
     // }
-    logger.trace('searching ', mongoQuery);
-
-    performQuery(mongoQuery, APP_CONTENT_TYPE, function(err,result) {
-        if (err === null) {
-            res.send(result);
-        }
-        else {
-            res.status(500).send(result);
-        }
-    });
+    // // if (appId){
+    // //     mongoQuery.uuid = appId;
+    // // }
+    // logger.trace('searching ', mongoQuery);
+    //
+    // performQuery(mongoQuery, APP_CONTENT_TYPE, function(err,result) {
+    //     if (err === null) {
+    //         res.send(result);
+    //     }
+    //     else {
+    //         res.status(500).send(result);
+    //     }
+    // });
 };
