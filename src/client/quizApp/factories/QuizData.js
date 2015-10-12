@@ -458,23 +458,23 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             return currentQuizResult.processing[question.uuid].startTime;
         },
         loginUser: function(user, classcode, callback) {
-            if (zzish.validateClassCode(classcode)) {
-                var newId = uuid.v4();
-                zzish.authUser(newId,user,classcode,function(err,message) {
-                    if (!err) {
-                        setUser(message);
-                        registerWithGroup(classcode,callback);
-                    }
-                    else {
-                        callback(err,message);
-                    }
-                    $rootScope.$digest();
-                });
-
-            }
-            else {
-                callback(404,"Check your classcode");
-            }
+            // if (zzish.validateClassCode(classcode)) {
+            //
+            // }
+            // else {
+            //     callback(404,"Check your classcode");
+            // }
+            var newId = uuid.v4();
+            zzish.authUser(newId,user,classcode,function(err,message) {
+                if (!err) {
+                    setUser(message);
+                    registerWithGroup(classcode,callback);
+                }
+                else {
+                    callback(err,message);
+                }
+                $rootScope.$digest();
+            });
         },
         loadPlayerQuizzes: function(callback) {
             loadPlayerQuizzes(callback);
