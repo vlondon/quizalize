@@ -1,0 +1,32 @@
+.q-home__features {
+    @include boxHome;
+    background: #FFF;
+    color: $brand-color-purple;
+    // margin-bottom: -20px;
+
+    &__feature {
+        text-align: left;
+        position: relative;
+        // max-width: 500px;
+        margin: 40px 40px;
+        text-align: center;
+        // padding: 20px;
+
+
+        @include media($size-tablet) {
+            padding-left: 100px;
+
+        }
+
+        img {
+            @include media($size-tablet) {
+                position: absolute;
+                left: 0;
+            }
+        }
+
+        p {
+            color: #5EB1C1;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+.q-home__zzish {
+    @include boxHome;
+    background: none;
+    padding-top: 0;
+
+    a:hover {
+        text-decoration: none;
+        opacity: 0.6;
+    }
+    &__bubble {
+        margin: auto;
+        padding-top: 80px;
+        background: url(./../assets/home_zzish_cta.png);
+        background-position: center -35px;
+        background-size: 280px 345px;
+        width: 280px;
+        height: 310px;
+        color: #FFF;
+
+        &__subtitle {
+            opacity: 0.6;
+        }
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+}
