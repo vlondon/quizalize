@@ -45,7 +45,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     var clearDataValue = function() {
         for (var i in dataParams) {
-            delete items[i];
+            delete dataParams[i];
         }
         try {
             if (typeof localStorage != 'undefined') {
