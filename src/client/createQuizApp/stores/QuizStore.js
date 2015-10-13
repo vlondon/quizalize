@@ -118,6 +118,7 @@ var QuestionObject = function(quiz){
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
         question.latexEnabled = lastQuestion.latexEnabled || false;
         question.imageEnabled = lastQuestion.imageEnabled || false;
+        question.duration = lastQuestion.duration || 60;
         question.topicId = lastQuestion.topicId;
         console.log('question', question, lastQuestion);
     }
