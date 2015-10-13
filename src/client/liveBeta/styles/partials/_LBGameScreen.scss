@@ -4,10 +4,13 @@
     background-size: 2203px 1215px;
     position: relative;
     overflow: auto;
+    overflow: hidden;
 
     &__banner {
         text-align: center;
-        position: fixed;
+        // position: fixed;
+        position: absolute;
+        top: 60px;
         margin: auto;
         left: 50%;
         transform: translateX(-70px);

@@ -3,7 +3,7 @@
     @include boxHome;
 
     height: 420px;
-    background-image: url(./../assets/home_kid2.jpg);
+    background-image: url(./../assets/home_kids3.jpg);
     background-size: cover;
     background-position: center;
     margin-top: 180px;
@@ -13,29 +13,7 @@
         margin-top: 0;
     }
 
-    &__bubble {
-        height: 140px;
-        font-size: 28px;
-        background: rgba(#FFF, .7);
-        color: rgba($brand-color-purple, .7);
-        position: absolute;
-        top: -140px;
-        right: 0;
-        left: 0;
-        padding: 10px;
-        text-align: center;
-
-        &__alt {
-            color: $brand-color-purple;
-        }
-        @include media($size-tablet) {
-            top: 20px;
-            right: auto;
-            height: auto;
-            left: 20px;
-            padding: 20px;
-        }
-    }
+    
 
     &__explanation {
         position: absolute;
