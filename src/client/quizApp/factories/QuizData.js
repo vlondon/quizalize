@@ -214,13 +214,16 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var numAlternatives = getNumAlternvatives(question);
         if(numAlternatives > 0 || patternToDected || length >= 20 || length === 1) {
             //either there are alternatives or there is a space in the anser
-            return "multiple";
+            answerQuestion.alternatives = getAlternatives(answerQuestion, questionIndex);
+            answerQuestion.type = "multiple";
         }
         else {
             //var options = ["scrambled", "multiple"];
             //var ran = Math.floor(Math.random()*options.length);
             //return options[ran];
-            return "scrambled";
+            answerQuestion.type = "scrambled";
+            answerQuestion.joiner = "";
+            answerQuestion.textArray = answerQuestion.text.split("");
         }
     };
 
@@ -469,7 +472,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var meta = input.split("//");
                 return {
                     type: "scrambled",
-                    text: meta[1]
+                    text: meta[1],
+                    textArray: meta[1].split(""),
+                    joiner: ""
                 };
             }
             if (input.indexOf("multiple://") === 0) {
@@ -521,6 +526,16 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     type: "text",
                     show: parseInt(commands[1]),
                     text: meta[1]
+                };
+            }
+            if (input.indexOf("jumble:") === 0) {
+                var meta = input.split("//");
+                var commands = meta[0].split(":");
+                return {
+                    type: "scrambled",
+                    text: meta[1],
+                    textArray: meta[1].split(","),
+                    joiner: ","
                 };
             }
             if (input.indexOf("videoq:") === 0) {
@@ -722,10 +737,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     currentQuestion.questionObject = processInput(currentQuestion.question);
                     currentQuestion.answerObject = processInput(currentQuestion.answer);
                     currentQuestion.expObject = processInput(currentQuestion.answerExplanation);
-                    currentQuestion.answerObject.type = selectAnswerType(currentQuestion.questionObject, currentQuestion.answerObject, questionIndex);
-                    if (currentQuestion.answerObject.type === "multiple") {
-                        currentQuestion.questionObject.alternatives = getAlternatives(currentQuestion.answerObject, questionIndex);
-                    }
+                    selectAnswerType(currentQuestion.questionObject, currentQuestion.answerObject, questionIndex);
                 });
                 callback(data);
             };

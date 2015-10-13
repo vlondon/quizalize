@@ -62,10 +62,10 @@ var QLScrambled = React.createClass({
     },
 
     getInitialState: function() {
-        var answerSelected = this.props.questionData.answerObject.text.split("").map(function() {
+        var answerSelected = this.props.questionData.answerObject.textArray.map(function() {
             return {text:"", index: -1};
         });
-        var letters = randomise(this.props.questionData.answerObject.text.split(""));
+        var letters = randomise(this.props.questionData.answerObject.textArray);
         var letterSelected = letters.map(function(letter) {
             return {text:letter, state:"unselected"};
         });
@@ -102,7 +102,7 @@ var QLScrambled = React.createClass({
         var optionSize = 60;
         var containerPadding = 20;
         //var numOptions = this.props.letters.length;
-        var numOptions = this.props.questionData.answer.length;
+        var numOptions = this.props.questionData.answerObject.textArray.length;
         var spaceAvailable = React.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
 
 
@@ -126,7 +126,7 @@ var QLScrambled = React.createClass({
         var optionSize = 70;
         var containerPadding = 20;
         //var numOptions = this.props.letters.length;
-        var numOptions = this.props.questionData.answer.length;
+        var numOptions = this.props.questionData.answerObject.textArray.length;
         var spaceAvailable = React.findDOMNode(this.refs.userInteraction).offsetWidth - (containerPadding * 2);
 
 
@@ -171,7 +171,7 @@ var QLScrambled = React.createClass({
                 return answer.index == -1;
             });
             var answerSelected = this.state.answerSelected;
-            if(index < this.props.questionData.answer.length && answerSelected.length > 0){
+            if(index < this.props.questionData.answerObject.textArray.length && answerSelected.length > 0){
                 letterSelected[index].state = 'selected';
                 unanswered[0].text = letterSelected[index].text;
                 unanswered[0].index = index;
@@ -179,9 +179,9 @@ var QLScrambled = React.createClass({
             var answered = letterSelected.filter(function(letter) {
                 return letter.state === 'selected';
             });
-            if (answered.length === this.props.questionData.answerObject.text.length)
+            if (answered.length === this.props.questionData.answerObject.textArray.length)
             {
-                this.props.onSelect(answerSelected.map(function(a) { return a.text; }).join(""));
+                this.props.onSelect(answerSelected.map(function(a) { return a.text; }).join(this.props.questionData.answerObject.joiner));
             }
             this.setState({
                 letterSelected,
@@ -211,12 +211,22 @@ var QLScrambled = React.createClass({
         var answered = this.state.letterSelected.filter(function(letter) {
             return letter.state === 'selected';
         });
-        if (answered.length !== this.props.questionData.answerObject.text.length) {
+        var width = 100;
+        var maxLength = 0;
+        //determine biggest element length
+        this.props.questionData.answerObject.textArray.forEach(function(item) {
+            if (maxLength < ("" + item).length) {
+                maxLength = ("" + item).length;
+            }
+        });
+        width = 50 + (maxLength * 20);
+        if (answered.length !== this.props.questionData.answerObject.textArray.length) {
             showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showTargets = this.state.answerSelected.map(function(letter, index){
                 var selected = letter.index === -1 ? "btn-info": "btn-danger";
                 return (
                     <button className={`letterTile ng-binding ng-scope solution ${selected}`}
+                        style={{width: width + 'px'}}
                         onClick={this.handleRemoveLetter.bind(this, index)}
                         key={index}>
                         {letter.index === -1 ? "_": letter.text}
@@ -229,6 +239,7 @@ var QLScrambled = React.createClass({
                     var selected = letter.state === "selected" ? "btn-normal.btn-selected": "btn-info";
                     return (
                         <button className={`letterTile ng-binding ng-scope option ${selected}`}
+                            style={{width: width + 'px'}}
                             onClick={this.handleClick.bind(this, index)}
                             key={index}>
                             {letter.state === 'selected' ? "_": letter.text}
