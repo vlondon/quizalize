@@ -94,3 +94,30 @@ export let processSubscription = function(transaction: Object, stripeToken: stri
         return addSubscription();
     }
 };
+
+export let getSubscription = function(stripeCustomerId){
+    return new Promise((resolve, reject)=>{
+        logger.error('test');
+        stripe.customers.listSubscriptions(stripeCustomerId, function(err, subscriptions) {
+            if (err){
+                reject(err);
+                logger.error('stripeHelper.js getSubscription error', err);
+            } else {
+                let subscription = subscriptions.data[0];
+                let accountType = 0;
+                let accountTypeExpiration;
+                let accountTypeUpdated;
+                if (subscription && subscription.status === 'active'){
+                    accountTypeExpiration = subscription.current_period_end * 1000;
+                    accountTypeUpdated = subscription.current_period_start * 1000;
+                    logger.info('subscription.plan.id', subscription.plan.id);
+                    if (subscription.plan.id === 'quizalize_tier1'){
+                        accountType = 1;
+                    }
+                }
+                logger.info('Stipehelper.js: getSubscription subscription', subscriptions);
+                resolve({accountType, accountTypeExpiration, accountTypeUpdated});
+            }
+        });
+    });
+};

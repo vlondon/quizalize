@@ -1,7 +1,7 @@
 var zzish = require("../../zzish");
 import logger from './../../logger';
 import user from './../../routes/user';
-
+import {getSubscription} from './../helpers/stripeHelper';
 
 class User {
 
@@ -74,6 +74,19 @@ class OwnUser extends User {
             };
             Object.assign(this.user.attributes, extraAttributes);
             this.save();
+
+        } else if (user.attributes.stripeId) {
+            // check subscription status
+            getSubscription(user.attributes.stripeId).then(({accountType, accountTypeExpiration, accountTypeUpdated})=>{
+                logger.info('Own user with details', accountType, accountTypeExpiration, accountTypeUpdated);
+                var extraAttributes = {
+                    accountType,
+                    accountTypeUpdated,
+                    accountTypeExpiration
+                };
+                Object.assign(this.user.attributes, extraAttributes);
+                this.save();
+            });
 
         }
 

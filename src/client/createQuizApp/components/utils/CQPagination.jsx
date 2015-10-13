@@ -5,7 +5,7 @@ var CQPagination = React.createClass({
 
     propTypes: {
         className: React.PropTypes.string,
-        pages: React.PropTypes.number.isRequired,
+        pages: React.PropTypes.number,
         currentPage: React.PropTypes.number.isRequired,
         onPagination: React.PropTypes.func.isRequired
     },
@@ -88,7 +88,7 @@ var CQPagination = React.createClass({
             );
         }
 
-        if(this.props.pages){
+        if(this.props.pages && this.props.pages > 1){
 
             return (
                 <nav className={this.props.className}>

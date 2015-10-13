@@ -17,7 +17,7 @@ import type {AppType} from './../../../stores/AppStore';
 type Props = Object;
 type State = Object;
 
-        class CQViewAppQuizList extends React.Component {
+class CQViewAppQuizList extends React.Component {
 
     props: Props;
 
