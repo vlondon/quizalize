@@ -91,7 +91,6 @@ class CQProfileView extends React.Component {
 
             headerCta = (
                 <div className="cq-profile__cta">
-                    <div><CQOwnProfileCounter amount={amountOfPrivateQuizzes}/></div>
                     <button  onClick={this.handleNewApp} className="btn btn-primary cq-profile__cta__app">
                         <i className="fa fa-plus"></i> New collection of quizzes
                     </button>
@@ -99,6 +98,9 @@ class CQProfileView extends React.Component {
                     <button  onClick={this.handleNew} className="btn btn-primary ">
                         <i className="fa fa-plus"></i> New quiz
                     </button>
+                    <div className="cq-profile__freeaccount">
+                        <CQOwnProfileCounter amount={amountOfPrivateQuizzes}/>
+                    </div>
 
                 </div>
             );
