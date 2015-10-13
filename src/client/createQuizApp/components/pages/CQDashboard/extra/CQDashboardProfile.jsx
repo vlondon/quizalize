@@ -63,8 +63,9 @@ var CQDashboardProfile = React.createClass({
             }
 
             if (this.state.user.attributes.url) {
+                var url = this.state.user.attributes.url.indexOf("http") === 0 ? this.state.user.attributes.url : "http://" + this.state.user.attributes.url;
                 school = (
-                    <a href={this.state.user.attributes.url}
+                    <a href={url}
                         target="_blank"
                         rel="nofollow">
                         {this.state.user.attributes.school}
@@ -75,7 +76,14 @@ var CQDashboardProfile = React.createClass({
             }
             var className = this.state.user.attributes.bannerUrl ? 'banner' : 'no-banner';
             var name = this.state.user.name && this.state.user.name.length !== 0 ? this.state.user.name : 'Quizalize user';
-
+            var publicUrl = this.state.user.attributes.url ? (
+                                                        <div  className="cq-dashboard__profile__info__entry">
+                                                            <small>Public URL</small>
+                                                            <a
+                                                                target="_blank"
+                                                                href={`https://www.quizalize.com/profile/${this.state.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.state.user.attributes.profileUrl}
+                                                            </a>
+                                                        </div>) : "";
             profile = (
                 <div className='cq-dashboard__profile__wrapper'>
                     <div className={`cq-dashboard__bannerpicture ${className}`} style={bannerStyles}>
@@ -106,7 +114,7 @@ var CQDashboardProfile = React.createClass({
                                 <small>Location</small>
                                 {this.state.user.attributes.location}
                             </div>
-
+                            {publicUrl}
                         </div>
 
 

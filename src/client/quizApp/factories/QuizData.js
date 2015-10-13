@@ -68,7 +68,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var userUuid = getDataValue("uuid");
     var userName =  getDataValue("userName");
     var gameCode = getDataValue("gameCode");
-    zzish.getUser(userUuid, userName);
 
     var classCode = getDataValue("classCode");
     var categories = JSON.parse(getDataValue("categories") || "{}");

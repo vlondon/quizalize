@@ -124,7 +124,7 @@ var QLFreetext = React.createClass({
                     <QLQuestion
                         questionData={this.props.questionData}
                     />
-                    {this.props.questionData.imageURL && this.props.questionData.imageEnabled ? <QLImage src={this.props.questionData.imageURL} className='ql-question-img'/> : null}
+                    {this.props.questionData.imageURL ? <QLImage src={`https://d15tuytjqnsden.cloudfront.net/${this.props.questionData.imageURL}`} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers">
                         {showAnswer}
