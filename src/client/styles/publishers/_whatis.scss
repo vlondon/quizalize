@@ -1,26 +1,13 @@
 .q-home__whatis {
-    @include clearfix();
-    &__left {
-        width: 100%;
-        padding: 10px;
-        @include media($size-tablet) {
-            margin-top: 50px;
-            width: 33%;
-            float: left;
-        }
+    @include boxHome;
+    h2 {
+        margin-top: 0px;
+        margin-bottom: 30px;
+    }
+    p {
+        text-align: left;
+        padding: 0 70px 20px 70px;
+
     }
 
-    &__right {
-        width: 100%;
-        text-align: left;
-        padding: 10px;
-        @include media($size-tablet) {
-            width: 66%;
-            float: left;
-        }
-    }
-    &__image {
-        width: 100%;
-        // max-width: 300px;
-    }
 }
