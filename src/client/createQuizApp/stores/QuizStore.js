@@ -2,14 +2,14 @@
 import Store from './Store';
 import MeStore from './MeStore';
 
-import uuid            from 'node-uuid';
+import uuid from 'node-uuid';
 
-import AppDispatcher   from './../dispatcher/CQDispatcher';
-import QuizConstants   from './../constants/QuizConstants';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import QuizConstants from './../constants/QuizConstants';
 import UserConstants from './../constants/UserConstants';
 import UserActions from './../actions/UserActions';
-import QuizActions     from './../actions/QuizActions';
-import TopicStore from './../stores/TopicStore';
+import QuizActions from './../actions/QuizActions';
+
 
 
 type QuizCategory = {
@@ -75,7 +75,6 @@ var storeInitPublic = false;
 MeStore.addChangeListener(function(){
     storeInit = false;
     storeInitPublic = false;
-
 });
 
 var QuizObject = function() : QuizComplete {
@@ -142,6 +141,10 @@ class QuizStore extends Store {
         return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined || q.meta.originalQuizId === null);
     }
 
+    getPrivateQuizzes(): Array<Quiz> {
+        return _quizzes.slice().filter(q=> q.meta.published === null);
+    }
+
     getQuizMeta(quizId): Quiz {
         var result = _quizzes.filter(t => t.uuid === quizId);
         return result.length === 1 ? result.slice()[0] : _fullQuizzes[quizId];
@@ -156,7 +159,7 @@ class QuizStore extends Store {
             if (fullQuiz === undefined){
                 QuizActions.loadQuiz(quizId)
                     .catch(()=>{
-                        console.log('new quiz');
+
                         fullQuiz = new QuizObject();
                         if (quizId){
                             fullQuiz.uuid = quizId;
@@ -169,8 +172,17 @@ class QuizStore extends Store {
                 //create empty quiz?
             }
         } else {
-            fullQuiz = new QuizObject();
-            _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+            let user = MeStore.state;
+            let {accountType} = user.attributes;
+            console.log('new quiz', accountType, this.getPrivateQuizzes());
+            let quizzes = this.getPrivateQuizzes();
+            if (accountType === 0 && quizzes.length >= 5) {
+                // TODO Francesco fix the copy
+                window.swal(`You've reached your limit`, `You have reached your limit of private quizzes`);
+            } else {
+                fullQuiz = new QuizObject();
+                _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+            }
         }
         return fullQuiz;
     }
@@ -251,9 +263,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_LOADED:
-            AppDispatcher.waitFor([
-                TopicStore.token
-            ]);
+
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
             quizStoreInstance.emitChange();

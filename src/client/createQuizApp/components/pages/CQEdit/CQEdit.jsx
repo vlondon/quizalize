@@ -7,17 +7,17 @@ import CQPageTemplate from './../../../components/CQPageTemplate';
 import CQQuestionList from './CQQuestionList';
 import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditIcon from './CQEditIcon';
+import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
 
 
 import QuizStore from './../../../stores/QuizStore';
-import type {QuizComplete, Question} from './../../../stores/QuizStore';
-import QuizActions from './../../../actions/QuizActions';
-import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
-
 import TopicStore from './../../../stores/TopicStore';
+
+import QuizActions from './../../../actions/QuizActions';
 import AnalyticsActions from './../../../actions/AnalyticsActions';
 
 import urlParams from './../../../utils/urlParams';
+import type {QuizComplete, Question} from './../../../stores/QuizStore';
 
 type Props = {
     routeParams: {
@@ -74,7 +74,7 @@ export default class CQEdit extends React.Component {
     getQuiz() : QuizComplete {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.routeParams.quizId;
         var quiz = QuizStore.getQuiz(quizId);
-        console.info('quiz quiz quiz', quiz);
+
         return quiz;
     }
 
@@ -90,6 +90,8 @@ export default class CQEdit extends React.Component {
 
 
     componentDidMount() {
+
+
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
     }
@@ -325,7 +327,12 @@ export default class CQEdit extends React.Component {
             var placeholderForName = 'e.g. Enter a quiz name';
             var topics = TopicStore.getTopicTree();
 
-
+            let pularlize = function(amount, singular, plural){
+                if (amount === 1 || amount === 0) {
+                    return singular;
+                }
+                return plural;
+            };
 
             return (
                 <CQPageTemplate className="cq-container cq-edit">
@@ -362,7 +369,7 @@ export default class CQEdit extends React.Component {
 
                     </div>
 
-                    <h4>Your questions</h4>
+                    <h4>You have {this.state.quiz.payload.questions.length} {pularlize(this.state.quiz.payload.questions.length, 'question', 'questions')}</h4>
 
                     <CQQuestionList
                         quiz={this.state.quiz}
