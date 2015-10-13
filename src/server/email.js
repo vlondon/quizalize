@@ -26,11 +26,20 @@ exports.sendActualEmail = function(from, toArray, subject, html, text, callback)
 			var ses = new awssdk.SES();
 
 			var dest = { ToAddresses: [to] };
+			console.log("congigUrl", config.webUrl);
 			if (config.webUrl === "https://www.zzish.com/") {
+				console.log("in zzish");
 				dest.BccAddresses = ['team@quizalize.com'];
 			}
-			else if (config.webUrl === "https://test.zzish.com/") {
+			else if (config.webUrl === "http://test.zzish.com/") {
+				console.log("in test");
+
 				dest.CcAddresses = ['frabusiello@gmail.com'];
+			}
+			else if (config.webUrl === "http://localhost:3000/"){
+				console.log("in local");
+
+				dest.BccAddresses = ['frabusiello@gmail.com'];
 			}
 
 

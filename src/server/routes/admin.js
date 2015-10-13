@@ -13,7 +13,7 @@ var GoogleAnalytics = require('ga');
 var ua = process.env.QUIZALIZEGA;
 var host = 'www.quizalize.com';
 var ga = new GoogleAnalytics(ua, host);
-
+var zzish = require('zzishsdk');
 if (process.env.admin=="true") {
     var Zzish = require('zzish');
     var zzish_db = new Zzish();
