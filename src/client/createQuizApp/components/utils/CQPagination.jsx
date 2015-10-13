@@ -35,7 +35,7 @@ var CQPagination = React.createClass({
 
     handleNext: function(ev:Object){
 
-        if (this.props.currentPage < this.props.pages) {
+        if (this.props.pages && this.props.currentPage < this.props.pages) {
             this.handlePagination(this.props.currentPage + 1);
         }
         ev.preventDefault();
@@ -46,8 +46,10 @@ var CQPagination = React.createClass({
         var first = this.props.currentPage === 1;
         var last = this.props.currentPage === this.props.pages;
         var pages = [];
-        for (var i = 0; i < this.props.pages; i++) {
-            pages.push(i + 1);
+        if (this.props.pages){
+            for (var i = 0; i < this.props.pages; i++) {
+                pages.push(i + 1);
+            }
         }
 
         var previousElement, nextElement;

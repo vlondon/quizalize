@@ -95,7 +95,7 @@ export let processSubscription = function(transaction: Object, stripeToken: stri
     }
 };
 
-export let getSubscription = function(stripeCustomerId){
+export let getSubscription = function(stripeCustomerId: string) : Promise {
     return new Promise((resolve, reject)=>{
         logger.error('test');
         stripe.customers.listSubscriptions(stripeCustomerId, function(err, subscriptions) {
