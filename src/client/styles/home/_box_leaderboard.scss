@@ -1,0 +1,15 @@
+.q-home__live {
+    @include boxHome;
+    height: 400px;
+    background: green;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: relative;
+    .lb-all {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
