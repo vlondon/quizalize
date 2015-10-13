@@ -72,7 +72,9 @@ class CQProfileView extends React.Component {
 
     render() {
 
-        var quizList, headerCta;
+        var quizList, headerCta, noQuizMessage;
+
+
 
         if (this.props.own) {
 
@@ -89,6 +91,14 @@ class CQProfileView extends React.Component {
                 </div>
             );
         }
+
+        noQuizMessage = this.props.apps.length == 0 ? (
+            <div>
+                {this.props.profile ? this.props.profile.name : "This user"} has no publicly available content
+            </div>
+        ) : "";
+
+
         // if (this.state.quizDetails) {
         //     quizDetails = (<CQViewQuizDetails
         //         onClose={this.handleDetailsClose}
@@ -109,9 +119,11 @@ class CQProfileView extends React.Component {
         return (
             <CQPageTemplate className="cq-container cq-profile">
 
-                <CQDashboardProfile user={this.props.profile}/>
+                <CQDashboardProfile user={this.props.profile} own={this.props.own}/>
 
                 {headerCta}
+
+                {noQuizMessage}
 
                 <CQViewAppQuizList
                     apps={this.props.apps}
