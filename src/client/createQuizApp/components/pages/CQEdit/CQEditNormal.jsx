@@ -482,7 +482,7 @@ export default class CQEditNormal extends React.Component{
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 identifier="subtopic"
-                                tabIndex="6"/>
+                                tabIndex={6}/>
                         </div>
                     </div>
                 </div>

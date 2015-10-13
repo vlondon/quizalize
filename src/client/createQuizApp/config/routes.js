@@ -12,7 +12,6 @@ var CQRegister              = require('./../components/pages/CQRegister');
 var CQRecoverPassword       = require('./../components/pages/CQRecoverPassword');
 var CQRestorePassword       = require('./../components/pages/CQRestorePassword');
 var CQRedirect              = require('./../components/pages/CQRedirect');
-var CQCreate                = require('./../components/pages/CQCreate');
 var CQReview                = require('./../components/pages/CQReview');
 var CQEdit                  = require('./../components/pages/CQEdit');
 var CQAssignments           = require('./../components/pages/CQAssignments');
@@ -197,14 +196,6 @@ var pagesArray: Array<Page> = [
         path: '/quiz/create',
         needsLogin: true,
         component: CQEdit,
-
-    },
-
-    {
-        name: 'editQuiz',
-        path: '/quiz/edit/:quizId',
-        needsLogin: true,
-        component: CQCreate,
 
     },
 
