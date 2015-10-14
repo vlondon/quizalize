@@ -54,9 +54,15 @@ class CQZzishLogin extends React.Component {
         console.log('CQZzishLogin');
         let params = urlParams();
         if (params.token){
-            UserActions.loginWithToken(params.token);
-            this.state = {
-                isZzishRedirect: true
+            if (params.cancel) {
+                localStorage.removeItem("token");
+                location.href = '/quiz/login';
+            }
+            else {
+                UserActions.loginWithToken(params.token);
+                this.state = {
+                    isZzishRedirect: true
+                };
             }
         } else {
             this.state = {};
