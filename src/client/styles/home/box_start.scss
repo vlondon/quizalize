@@ -2,9 +2,13 @@
     @include boxHome;
     // background: #FFF;
     // color: $brand-color-purple;
-
+    min-height: 400px;
     padding: 40px;
 
+    h1, h3 {
+        max-width: 400px;
+        margin: 0 auto 40px;
+    }
     &__cta__students,
     &__cta__teachers {
         margin: 20px auto;
