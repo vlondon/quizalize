@@ -69,7 +69,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     };
 
     if (typeof($location.search()).cancel != 'undefined' && $location.search().cancel){
-        QuizData.removeItem("token");
+        QuizData.removeDataValue("token");
     }
     else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
