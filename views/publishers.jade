@@ -25,24 +25,26 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         link(href='/cquiz/css/flexslider.css', rel='stylesheet')
         link(href='/cquiz/css/animate.css', rel='stylesheet')
         link(href='/cquiz/css/style.css', rel='stylesheet')
+        link(href='/css/sweetalert.min.css' rel='stylesheet')
+
+
         if (devServer=='true')
             script(src="http://localhost:7071/webpack-dev-server.js")
         else
             link(href='/js/publishers.css', rel='stylesheet')
         script(src='/js/vendor.js')
         script(src='/js/publishers.js')
+        script(src='/lib/sweetalert.min.js')
+        
             
         script.
-            var intercomId = '!{intercomId}';            
-            var intercomSettings = {
+            var intercomId = '!{intercomId}';
+            
+            window.intercomSettings = {
                 app_id: intercomId
-            }
-            intercomSettings.widget = { 
-                activator: "#IntercomDefaultWidget" 
-            };            
-            window.intercomSettings = intercomSettings;
-            window.intercomId = intercomId;
-            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/!{intercomId}';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+            };
+    
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
             
     body#page-top.q-home
         // Navigation
@@ -57,20 +59,24 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             
             include ./publishers/box_whatis.jade
             
-            include ./home/box_player.jade
+            -//include ./home/box_player.jade
             
-            include ./home/box_dashboard.jade
+            -//include ./publishers/box_benefits.jade
             
-            include ./home/box_questionlist.jade
+            include ./publishers/box_benefits_cool.jade
             
-            include ./home/box_features.jade
+            -//include ./publishers/box_enhance.jade
             
-            include ./home/box_studentopinions.jade
+            include ./publishers/box_partners.jade
             
-            include ./home/box_start.jade
-            
-            include ./home/box_zzish.jade
-            
+            include ./publishers/box_contact.jade
+            //- 
+            //- include ./home/box_studentopinions.jade
+            //- 
+            //- include ./home/box_start.jade
+            //- 
+            include ./publishers/box_zzish.jade
+            //- 
             include ./home/footer.jade
         
         
@@ -89,6 +95,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             function newQuiz() {
             window.location.href="/quiz";
             }
+        
         script(src='/cquiz/js/jquery.min.js')
         script(src='/cquiz/js/bootstrap.min.js')
         script(src='//zzish.github.io/zzishsdk-js/zzish.js')
@@ -191,6 +198,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             if (userId!=undefined) {
                 $("#LoginButton").attr("href","/quiz/quizzes");
             }
+        
         noscript
             img(height='1', width='1', alt='', style='display:none', src='https://www.facebook.com/tr?id=832854753469486&ev=PixelInitialized')
         script(type='text/javascript').

@@ -1,0 +1,33 @@
+.q-home__start
+    h1 Find out more about our content partnership programme today
+    p Download our publisher PDF to find out more
+
+    a(href="https://d15tuytjqnsden.cloudfront.net/quizalize/quizalize_publishers.pdf", target="_blank")
+        span.q-home__start__cta 
+            | Download PDF
+        
+    
+    
+    h1 or contact us
+    a(href="mailto:vini.bance@zzish.com?subject=I would like to publish content on Quizalize")
+        span.q-home__start__cta 
+            | Email us 
+    a(href="#call",id='call')
+        span.q-home__start__cta 
+            | Call us
+
+ script.
+    var el = document.getElementById('call');
+
+    var call = function(){
+        swal("Call us","+44 (0)207 680 7173");
+        return false;
+    }
+        
+    console.log("el", el)
+    el.onclick = call;
+
+
+
+
+    

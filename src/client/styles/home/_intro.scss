@@ -2,105 +2,155 @@
 
     @include boxHome;
 
-    height: 420px;
-    background-image: url(./../assets/home_kid2.jpg);
+    min-height: 500px;
+    background-image: url(./../assets/home_kids3.jpg);
     background-size: cover;
     background-position: center;
     margin-top: 180px;
     overflow: hidden;
 
+    @include media($size-desktop) {
+        min-height: 420px;
+    }
+
     @include media($size-tablet) {
         margin-top: 0;
     }
 
-    &__bubble {
-        height: 140px;
-        font-size: 28px;
-        background: rgba(#FFF, .7);
-        color: rgba($brand-color-purple, .7);
+    &__bkg {
+        background: rgba($brand-color-purple, .4);
         position: absolute;
-        top: -140px;
-        right: 0;
+        top: 0;
+        bottom: 0;
         left: 0;
-        padding: 10px;
-        text-align: center;
+        right: 0;
+    }
 
-        &__alt {
-            color: $brand-color-purple;
-        }
+    &__devices {
+        width: 200px;
+        height: 200px;
+        padding: 20px 10px;
+        // margin: 20px auto;
+        background: rgba($brand-color-purple, .7);
+        border-radius: 100%;
+        z-index: 3;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        transform: rotate(15deg);
         @include media($size-tablet) {
-            top: 20px;
-            right: auto;
-            height: auto;
+            transform: rotate(-15deg);
+            position: absolute;
             left: 20px;
-            padding: 20px;
+        }
+        img {
+            margin-bottom: 20px;
         }
     }
 
-    &__explanation {
+    &__graphic {
+        height: 310px;
         position: absolute;
-        font-size: 18px;
-        color: #FFF;
-        background: rgba($brand-color-purple, .9);
-        padding: 20px 40px;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        text-align: center;
+        bottom: 0;
+        width: 100%;
+        padding-right: 100px;
 
         @include media($size-tablet) {
-            // background: rgba($brand-color-purple, 1);
+            padding-right: 0;
+        }
+        @include media($size-desktop) {
+            left: 160px;
+            width: auto;
+        }
+    }
+
+    &__device {
+        padding: 30px;
+        background: darken($brand-color-purple, 20%);
+        margin: auto;
+        width: 285px;
+        border-radius: 20px;
+        &__screen {
+            width: 225px;
+            height: 310px;
+            background-image: url(./../assets/player_screen.png);
+            background-size: 225px 310px;
+        }
+    }
+
+
+    &__explanation {
+        font-size: 18px;
+        color: #FFF;
+        bottom: 10px;
+        right: 10px;
+        text-align: center;
+        font-weight: bold;
+        position: relative;
+        z-index: 5;
+        width: 100%;
+        padding: 0 10px;
+        left: 0;
+        &__ctas {
+            @include media($size-desktop) {
+                padding: 20px 0;
+            }
+        }
+
+        @include media($size-desktop) {
+            position: absolute;
+            left: 10px;
             text-align: left;
-            top: 20px;
+            // top: 20px;
             right: 20px;
-            width: 260px;
-            bottom: auto;
+            width: 320px;
+            bottom: 160px;
             left: auto;
+            padding: 10px;
 
         }
 
-        &__cta {
-            width: 220px;
-            margin: auto;
-            margin-top: 20px;
+        &__foot {
+            text-align: center;
+            a {
+                color: #FFF;
+                font-weight: normal;
+            }
+        }
+        &__cta__teacher,
+        &__cta__student, {
+            // width: 220px;
+            display: inline-block;
+            width: 140px;
+            margin: 5px;
+            // margin-top: 20px;
             background: #FFF;
             color: $brand-color-purple;
             text-align: center;
             padding: 5px;
-            border-radius: 20px;
+            border-radius: 40px;
+            a {
+                text-decoration: none;
+                color: $brand-color-purple;
+            }
+            b {
+                font-size: 20px;
+            }
+            &:hover {
+                opacity: 0.75;
+            }
 
             @include media($size-tablet) {
-                margin-left: -20px;
+                // margin-left: -20px;
             }
+
+        }
+        &__cta__student {
+            background: red;
+            a { color: #FFF; }
 
         }
     }
 
-    &__attribution {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        padding: 5px;
-        color: rgba(#FFF, .6);
-        transition: background 200ms linear;
-        @include clearfix;
-        &__icon {
-            float: left;
-        }
-        &__author {
-            float: left;
-            opacity: 0.2;
-            transform: translate(-400px, 0);
-            transition: transform 200ms ease-in-out;
-        }
-        &:hover {
-            color: #FFF;
-            background: rgba($brand-color-purple-light, .5);
-            // left: 2px;
-            .q-home__intro__attribution__author {
-                opacity: 1;
-                transform: translate(0, 0);
-            }
-        }
-    }
+
 }
