@@ -85,7 +85,14 @@ var CQDashboardProfile = React.createClass({
                                                                 target="_blank"
                                                                 href={`https://www.quizalize.com/profile/${this.props.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.props.user.attributes.profileUrl}
                                                             </a>
-                                                        </div>) : "";
+                                                        </div>) : (
+                                                                    <div  className="cq-dashboard__profile__info__entry">
+                                                                        <small>Public URL</small>
+                                                                        <a
+                                                                            target="_blank"
+                                                                            href={`https://www.quizalize.com/quiz/user/${this.props.user.uuid}`}>https://www.quizalize.com/quiz/user/{this.props.user.uuid}
+                                                                        </a>
+                                                                    </div>);
             if (UserIdStore.getUserId() === this.props.user.uuid && !this.props.own) {
                 returnToPrivate = (<div>
                     <a
@@ -105,13 +112,14 @@ var CQDashboardProfile = React.createClass({
                                 width="200"
                                 height="200"
                                 name={name}
-
                                 picture={this.props.user.avatar}/>
                         </div>
+
                         <div className="cq-dashboard__profile__info">
 
                             <div className="cq-dashboard__profile__info__entry">
                                 <h3>{name}</h3>
+                                <a href="/quiz/settings">Edit Profile</a>
                             </div>
 
                             <div className="cq-dashboard__profile__info__entry">
