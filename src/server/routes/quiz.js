@@ -85,7 +85,8 @@ exports.index =  function(req, res) {
     var params = {
         zzishapi: getZzishParam(),
         devServer: process.env.ZZISH_DEVMODE,
-        publicConfig: publicConfig
+        publicConfig: publicConfig,
+        intercomId: process.env.intercomAppId
     };
 
     if (req.query.uuid !== undefined) {

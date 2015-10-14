@@ -117,24 +117,23 @@ class Me extends Store {
             window.intercomSettings = {
                 name: (currentUser.name || currentUser.email),
                 email: (currentUser.email),
+                user_id: currentUser.uuid,
                 created_at: Math.round((currentUser.created / 1000)),
                 app_id: intercomId
             };
-
-            if (intercomAdded === false){
-                intercom('boot', window.intercomSettings);
-            }
-
-            intercom('update', window.intercomSettings);
-
-            intercomAdded = true;
         } else {
             window.intercomSettings = {
                 app_id: intercomId
             };
         }
-
-
+        window.intercomSettings.widget = {
+            activator: "#IntercomDefaultWidget"
+        };
+        if (intercomAdded === false){
+            intercom('boot', window.intercomSettings);
+        }
+        intercom('update', window.intercomSettings);
+        intercomAdded = true;
     }
 
     getUserId() : string{

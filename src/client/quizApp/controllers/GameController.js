@@ -54,6 +54,20 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = result;
+            window.Intercom('boot', {
+              app_id: window.intercomId,
+              user_id: result.meta.profileId // Optional: Replace with a unique identifier that won't change
+            });
+            window.Intercom('update', {
+              app_id: window.intercomId,
+              user_id: result.meta.profileId // Optional: Replace with a unique identifier that won't change
+            });
+            window.Intercom('update');
+            window.Intercom('trackEvent', 'class-quiz', {
+                classCode: localStorage.getItem("classCode"),
+                quizId: self.currentQuiz.uuid
+            });
+
 
             if (self.currentQuiz.meta) {
 
