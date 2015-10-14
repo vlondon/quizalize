@@ -91,6 +91,11 @@
         width: 100%;
         padding: 0 10px;
         left: 0;
+        &__ctas {
+            @include media($size-desktop) {
+                padding: 20px 0;
+            }
+        }
 
         @include media($size-desktop) {
             position: absolute;
@@ -99,7 +104,7 @@
             // top: 20px;
             right: 20px;
             width: 320px;
-            bottom: 140px;
+            bottom: 160px;
             left: auto;
             padding: 10px;
 
