@@ -45,7 +45,6 @@ export default class CQPublic extends React.Component {
         var p = urlParams();
         if (p.token) {
             if (p.cancel) {
-                localStorage.removeItem("token");
                 location.href = "/quiz/login";
             }
             else {

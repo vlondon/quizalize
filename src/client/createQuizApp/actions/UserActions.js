@@ -111,13 +111,12 @@ var UserActions = {
                     }
                 })
                 .catch(function(error){
-                    reject(error);
-                    localStorage.removeItem("token");
                     location.href = "/quiz/login";
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_LOGIN_ERROR,
                         payload: error
                     });
+                    reject(error);
                 });
 
             AppDispatcher.dispatch({
