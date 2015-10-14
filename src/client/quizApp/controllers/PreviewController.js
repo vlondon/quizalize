@@ -18,7 +18,4 @@ angular.module('quizApp').controller('PreviewController', function(QuizData, $lo
         window.close();
     };
 
-    self.cancel = function() {
-        window.close();
-    };
 });

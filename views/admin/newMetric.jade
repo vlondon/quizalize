@@ -2,6 +2,22 @@ extends ./layout
 
 block body
     script.
+        var metricsString = "#{JSON.stringify(metrics)}";
+        metricsString = metricsString.replace(/&quot;/g, '"');
+        var metrics = JSON.parse(metricsString);
+        var fillTable = function(){
+            var date = $('#monday').val();
+            var metric = {};
+            metrics.forEach(function(m){
+                if (m._id === date){
+                    metric = m;
+                    }
+            });
+            for (var field in metric){
+                var fieldId = "#" + field;
+                $(fieldId).val(metric[field]);
+                };
+        };
         $(function() {
             function prettyDate(dateString){
                 //if it's already a date object and not a string you don't need this line:
@@ -27,49 +43,50 @@ block body
             dateArray.forEach(function(date){
                 $('#monday').append($("<option />").val(date).text(prettyDate(date)));
             });
+            
         });
         
     form(method="POST",action="/admin/submitmetrics")
         div
             label Current Monday Date
-                select(name="_id")#monday
+                select(name="_id", onchange="fillTable()")#monday
                     option 
         div Communication
             ul
                 li
                     label Intercom
-                        input(name="intercom")
+                        input(name="intercom", id="intercom")
                 li
                     label Email 
-                        input(name="email")
+                        input(name="email", id="email")
                 li
                     label Social 
-                        input(name="social")
+                        input(name="social", id="social")
                 li
                     label Real Life
-                        input(name="realLife")
+                        input(name="realLife", id="realLife")
                 li
                     label Countries
-                        input(name="countries")
+                        input(name="countries", id="countries")
         div Convert
             ul
                 li
                     label Visitors
-                        input(name="visitors")
+                        input(name="visitors", id="visitors")
         div Share
             ul
                 li
                     label Followers
-                        input(name="followers")
+                        input(name="followers", id="followers")
                 li 
                     label Sharers
-                        input(name="sharers")
+                        input(name="sharers", id="sharers")
                 li 
                     label Reach 
-                        input(name="reach")
+                        input(name="reach", id="reach")
                 li 
                     label Reviews
-                        input(name="reviews")
+                        input(name="reviews", id="reviews")
         div
             input(type="submit")
                     

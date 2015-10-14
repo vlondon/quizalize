@@ -95,7 +95,7 @@ var QLFreetext = React.createClass({
         var showAnswer, showQuestions, showCountdown;
 
         if (!this.state.answer) {
-            showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
+            showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer || true} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = (
                 <div className="freetext">
                     <input type="text" name="freetextInputAnswer" id="freetextInputAnswer"/>
@@ -124,7 +124,7 @@ var QLFreetext = React.createClass({
                     <QLQuestion
                         questionData={this.props.questionData}
                     />
-                    {this.props.questionData.imageURL && this.props.questionData.imageEnabled ? <QLImage src={this.props.questionData.imageURL} className='ql-question-img'/> : null}
+                    {this.props.questionData.imageURL ? <QLImage src={`https://d15tuytjqnsden.cloudfront.net/${this.props.questionData.imageURL}`} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers">
                         {showAnswer}

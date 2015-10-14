@@ -12,8 +12,7 @@ var CQPageTemplate = React.createClass({
         className: React.PropTypes.string,
         wrapperMainClassName: React.PropTypes.string,
         wrapperStyleClassName: React.PropTypes.string,
-        showBanner: React.PropTypes.bool,
-        minimal: React.PropTypes.bool
+        showBanner: React.PropTypes.bool
     },
 
     componentDidMount: function() {
@@ -36,7 +35,7 @@ var CQPageTemplate = React.createClass({
         return (
             <div className='cq'>
                 <div className={this.props.wrapperMainClassName + ' ' + this.props.wrapperStyleClassName}>
-                    <CQViewHeader {...this.props}/>
+                    <CQViewHeader/>
 
                     <div className={this.props.className}>
                         {this.props.children}

@@ -264,19 +264,26 @@ export default class CQSettings extends React.Component {
         }
 
         message = this.state.isNew ? 'Complete your registration' : 'Settings';
+        var exampleUrlText = this.state.user.attributes.profileUrl ? "People will be able to access your profile at:" : "";
+        var exampleUrl = this.state.user.attributes.profileUrl ? `www.quizalize.com/profile/${this.state.user.attributes.profileUrl}` : "";
 
         var editProfile = () => {
             if (!this.state.isNew) {
                 return (
                     <div>
                         <div className={`cq-settings__profile-item${classNameError(5)} form-group`}>
-                            <label htmlFor="url">Your personal Quizalize url www.quizalize.com/profile/…</label>
+                            <label htmlFor="url">Your personal Quizalize URL</label>
 
                             <input type="text" id="profileUrl"
                                 className="form-control"
                                 placeholder = "e.g. Your own personal Quizalize URL"
                                 onChange={this.handleChange.bind(this, 'profileUrl')}
                                 value={this.state.user.attributes.profileUrl}/>
+                            {exampleUrlText}
+                            <br/>
+                            <label>
+                                {exampleUrl}
+                            </label>
                         </div>
                         <div className={`cq-settings__profile-item${classNameError(6)} form-group`}>
                             <label htmlFor="url">Quizalize Banner <i>(suggested size is 1070px x 300px)</i></label>

@@ -87,6 +87,8 @@ class CQProfileView extends React.Component {
         var headerCta;
         var amountOfPrivateQuizzes = getPrivateQuizzes(this.props.apps).length;
 
+        var quizList, headerCta, noQuizMessage;
+
         if (this.props.own) {
 
             headerCta = (
@@ -105,12 +107,39 @@ class CQProfileView extends React.Component {
         }
 
 
+        noQuizMessage = this.props.apps.length == 0 ? (
+            <div>
+                {this.props.profile ? this.props.profile.name : "This user"} has no publicly available content
+            </div>
+        ) : "";
+
+
+        // if (this.state.quizDetails) {
+        //     quizDetails = (<CQViewQuizDetails
+        //         onClose={this.handleDetailsClose}
+        //         quizCode={this.props.quizCode}
+        //         quizId={this.state.quizDetails}/>);
+                // quizCode={this.props.quizCode}
+        // }
+        var quizzes = this.props.quizzes || [];
+        quizList = (
+            <CQViewQuizList
+                isQuizInteractive={true}
+                isPaginated={true}
+                onQuizClick={this.handleDetails}
+                quizzes={quizzes}
+                className="cq-public__list"
+                sortBy="time"/>
+        );
+
         return (
             <CQPageTemplate className="cq-container cq-profile">
 
-                <CQDashboardProfile user={this.props.profile}/>
+                <CQDashboardProfile user={this.props.profile} own={this.props.own}/>
 
                 {headerCta}
+
+                {noQuizMessage}
 
                 <CQViewAppQuizList
                     apps={this.props.apps}

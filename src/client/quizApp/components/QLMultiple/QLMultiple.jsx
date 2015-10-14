@@ -86,12 +86,12 @@ var QLMultiple = React.createClass({
 
         this.handleCssState(2, () => {
             this.setState({
-                answer: this.props.questionData.questionObject.alternatives[index]
+                answer: this.props.questionData.answerObject.alternatives[index]
             });
         });
 
         if (this.props.onSelect) {
-            this.props.onSelect(this.props.questionData.questionObject.alternatives[index]);
+            this.props.onSelect(this.props.questionData.answerObject.alternatives[index]);
         }
     },
 
@@ -107,8 +107,8 @@ var QLMultiple = React.createClass({
         };
 
         if (!this.state.answer) {
-            showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
-            showQuestions = this.props.questionData.questionObject.alternatives.map(function(alternative, index){
+            showCountdown = <QLCountDown showCountdown={this.props.currentQuiz.meta.showTimer || true} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
+            showQuestions = this.props.questionData.answerObject.alternatives.map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
                     <button type="button" className={`btn alternative alternative-${index} wrapword`} onClick={this.handleClick.bind(this, index)}>
@@ -136,7 +136,7 @@ var QLMultiple = React.createClass({
                     <QLQuestion
                         questionData={this.props.questionData}
                     />
-                    {this.props.questionData.imageURL && this.props.questionData.imageEnabled ? <QLImage src={this.props.questionData.imageURL} className='ql-question-img'/> : null}
+                    {this.props.questionData.imageURL ? <QLImage src={`https://d15tuytjqnsden.cloudfront.net/${this.props.questionData.imageURL}`} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers alternatives">
                         {showAnswer}

@@ -1,0 +1,26 @@
+@keyframes bubbleUp {
+    from { transform: translateY(0px); }
+    to {
+        transform: translateY(-200px);
+        opacity: 0;
+        user-select: none;
+
+    }
+}
+
+.lb-playerscore {
+    background: rgba(#000, .3);
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    animation: bubbleUp 1000ms linear;
+    animation-fill-mode: both;
+    .lb-teams__a & { right: 0; }
+    .lb-teams__b & { left: 0; }
+}

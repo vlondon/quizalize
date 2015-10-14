@@ -29,10 +29,12 @@ exports.sendActualEmail = function(from, toArray, subject, html, text, callback)
 			if (config.webUrl === "https://www.zzish.com/") {
 				dest.BccAddresses = ['team@quizalize.com'];
 			}
-			else if (config.webUrl === "https://test.zzish.com/") {
+			else if (config.webUrl === "http://test.zzish.com/") {
 				dest.CcAddresses = ['frabusiello@gmail.com'];
 			}
-
+			else if (config.webUrl === "http://localhost:3000/"){
+				dest.BccAddresses = ['frabusiello@gmail.com'];
+			}
 
 			// this sends the email
 			ses.sendEmail(

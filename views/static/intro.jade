@@ -2,20 +2,7 @@ script.
     var domain = document.referrer ? document.referrer.split('/')[2] : undefined; 
     ga('send', 'event', 'quiz-of-the-day', 'banana', domain);
 
-nav.navbar.navbar-default.navbar-fixed-top
-    .container-fluid
-        .navbar-header
-            btn(ng-click="quiz.return()")
-                img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
-            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
-                span.sr-only Toggle navigation
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
-        .navbar-collapse.collapse#navbar        
-            ul.nav.navbar-nav.navbar-right
-                li
-                    btn.btn.btn-info.pull-right(ng-click="quiz.cancel()", style=" margin-top:9px;") Cancel Quiz
+include navbar
 
 .container
     .row(style="padding-top:10px")

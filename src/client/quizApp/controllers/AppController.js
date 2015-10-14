@@ -15,14 +15,7 @@ angular.module('quizApp').controller('AppController', ['QuizData', '$log', '$rou
         self.code = $routeParams.code;
     }
     else {
-        try {
-            if (typeof localStorage != 'undefined' && localStorage.getItem("gameCode")) {
-                self.code = localStorage.getItem("gameCode");
-            }
-        }
-        catch (err) {
-
-        }
+        self.code = QuizData.getDataValue("gameCode");
     }
 
     self.checkCanSubmit = function() {
