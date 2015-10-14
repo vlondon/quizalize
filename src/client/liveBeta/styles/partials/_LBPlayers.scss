@@ -1,0 +1,78 @@
+.lb-teams {
+    .lb-score {
+        text-align: center;
+        background: rgba(#000, .2);
+        position: absolute;
+        top: 0;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        font-size: 28px;
+        font-weight: bold;
+        color: #FFF;
+        text-shadow: 3px 3px 0 #000;
+        small {
+            text-shadow: none;
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+
+        }
+    }
+
+    &__a,
+    &__b {
+        padding-top: 90px;
+
+        width: 50%;
+        min-height: 50px;
+        display: flex;
+        flex-direction: column;
+
+        &__student {
+            font-size: 20px;
+            color: #FFF;
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 2px;
+            width: 160px;
+
+        }
+    }
+
+    &__a {
+        position: absolute;
+        top: 20px;
+        .lb-score {
+            background: $brand-color-green;
+            right: 120px;
+        }
+        &__student {
+            text-align: right;
+            background: $brand-color-green;
+        }
+    }
+
+    &__b {
+        position: absolute;
+        top: 20px;
+        right: 0;
+        justify-content: flex-end;
+        .lb-score {
+            left: 120px;
+            background: $brand-color-orange;
+        }
+        &__student {
+            position: relative;
+            float: right;
+            align-self: flex-end;
+            background: $brand-color-orange;
+        }
+    }
+
+
+}

@@ -1,0 +1,18 @@
+.q-home__benefits {
+    @include boxHome;
+    background: $brand-color-purple-light;
+    h2{
+        margin-bottom: 30px;
+    }
+    ol {
+        text-align: left;
+        padding: 0 80px 50px 80px;
+
+    }
+    li{
+        padding-bottom: 10px;
+        font-size: 20px;
+    }
+
+
+}

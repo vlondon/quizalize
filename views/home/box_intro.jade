@@ -1,16 +1,30 @@
 .q-home__intro
-    .q-home__intro__bubble
-        | Class 4B, 
-        br 
-        | Thursday 3pm
-        .q-home__intro__bubble__alt fully engaged
+    .q-home__intro__bkg
     
     .q-home__intro__explanation
-        | Quizalize turns assessments into fun classroom or homework quiz games 
-        .q-home__intro__explanation__cta
-            a(href="/quiz/welcome") Start here: Choose a topic
+        | Make fun games on any topic, to play in class or as homework 
         
-    .q-home__intro__attribution
-        .q-home__intro__attribution__icon
-            i.glyphicon.glyphicon-info-sign 
-        .q-home__intro__attribution__author &nbsp;Photo taken by Lexie Flickinger
+        .q-home__intro__explanation__ctas
+            .q-home__intro__explanation__cta__teacher
+                a(href="/quiz/welcome") 
+                    b Teachers 
+                    br
+                    | start here
+                    
+            .q-home__intro__explanation__cta__student
+                a(href="/app") 
+                    b Students 
+                    br
+                    | play here
+        .q-home__intro__explanation__foot
+            b How it works 
+            a(href="https://www.youtube.com/watch?v=J3_CWmLcEI0", target="_blank") watch a video
+        
+    .q-home__intro__devices
+        img(src="/img/homev2/home_devices.png", width="100", height="60", alt="")
+        p No setup or downloads. Students play on any laptops, tablets or phones
+
+
+    .q-home__intro__graphic
+        .q-home__intro__device
+            .q-home__intro__device__screen

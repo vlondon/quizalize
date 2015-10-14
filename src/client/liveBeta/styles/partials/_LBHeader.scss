@@ -1,0 +1,19 @@
+.lb-header {
+    background: $brand-color-dark;
+
+    &__information {
+        position: relative;
+        width: 600px;
+        margin: auto;
+    }
+    &__code {
+        position: absolute;
+        top: 43px;
+        right: 5px;
+        width: 175px;
+        height: 53px;
+        text-align: center;
+
+        font-size: 44px;
+    }
+}

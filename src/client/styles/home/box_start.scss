@@ -5,20 +5,35 @@
 
     padding: 40px;
 
-    &__cta {
+    &__cta__students,
+    &__cta__teachers {
         margin: 20px auto;
         background: red;
         border-radius: 30px;
         padding: 12px 40px;
         display: inline-block;
         color: #FFF;
-
+        font-size: 16px;
+        font-weight: bold;
+        margin: 2px;
+        b {
+            font-size: 20px;
+        }
         &:hover {
             background: rgba(red, .7);
         }
 
         // a {
         // }
+    }
+
+    &__cta__teachers {
+        background: #FFF;
+        color: $brand-color-purple;
+
+        &:hover {
+            background: rgba(#FFF, .7);
+        }
     }
 
 }

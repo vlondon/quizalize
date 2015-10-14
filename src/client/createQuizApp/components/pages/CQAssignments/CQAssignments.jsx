@@ -92,7 +92,7 @@ var CQAssignments = React.createClass({
                     <i className="fa fa-users"/> Your Classes
                     {editClass}
                 </h2>
-                <p>Here are your classes. You can click on "View Info" to see the strenghts and weaknesses for that quiz.</p>
+                <p>Here are your classes. You can click on "Open Game" to see live dashboard and reports for that quiz.</p>
 
                     {this.state.groups.map(classN => {
                         classN.fulllink = classN.link+"one";
@@ -133,7 +133,7 @@ var CQAssignments = React.createClass({
 
                                                         <button
                                                             className="btn btn-default">
-                                                            View info
+                                                            Open Game
                                                         </button>
                                                     </CQLink>
                                                 </div>

@@ -1,24 +1,20 @@
 .q-home__start
-    h1 Start here - it’s free
+    h1 Make fun games on any topic, to play in class or as homework
     p You can be ready to go in seconds
 
     a(href="/quiz/welcome")
-        span.q-home__start__cta 
-            | Start here : Choose a topic
+        span.q-home__start__cta__teachers 
+            b Teachers 
+            br
+            | start here
         
+        
+    a(href="/app/")
+        span.q-home__start__cta__students
+            b Students 
+            br
+            | start here
     
     
-    h1 or ask us anything
-    form#sendForm(onsubmit='return submitForm()')
-        .row
-            .col-md-12
-                input#ename.form-control.input-lg(type='text', placeholder='Enter name')
-            .col-md-12
-                input#email.form-control.input-lg(type='email', placeholder='Enter email', required='')
-        .row
-            .col-md-12
-                .form-group
-                    textarea#message.form-control(name='message', rows='4', cols='25', placeholder='Message')
-                input#btnContactUs.btn-lg.btn-danger.btn-block(type='submit', value='Send')
-                    
-    h2#helpSent Thanks for contacting us. We’ll get back to you as soon as possible.
+    
+    
