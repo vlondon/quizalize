@@ -12,7 +12,7 @@ module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        home: 'home.js',
+        home: ['home.js', 'liveBeta/liveBeta.js'],
         publishers: 'publishers.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['fastclick', 'react', 'superagent']
