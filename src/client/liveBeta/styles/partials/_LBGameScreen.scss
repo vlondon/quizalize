@@ -1,0 +1,53 @@
+.lb-gamescreen {
+    background: url('./../assets/game-mountains.jpg');
+    background-position: center center;
+    background-size: 2203px 1215px;
+    position: relative;
+    overflow: auto;
+    overflow: hidden;
+
+    &__banner {
+        text-align: center;
+        // position: fixed;
+        position: absolute;
+        top: 60px;
+        margin: auto;
+        left: 50%;
+        transform: translateX(-70px);
+        img {
+            margin-left: 65px;
+            max-height: 494px;
+        }
+    }
+
+}
+
+
+.lb-gamesscreenempty {
+    font-size: 26px;
+    text-align: center;
+    margin-top: 80px;
+
+    &__title {
+        color: #FFF;
+        text-transform: uppercase;
+    }
+    &__waiting {
+        text-transform: uppercase;
+        color: $brand-color-dark;
+    }
+    &__button {
+        background: $brand-color-dark;
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        color: rgba(#FFF, .7);
+        display: inline-flex;
+        margin: 5px;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            color: #FFF;
+        }
+    }
+}
