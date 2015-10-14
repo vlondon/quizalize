@@ -1,7 +1,7 @@
 .q-home__live {
     @include boxHome;
     height: 400px;
-    background: green;
+    background: lighten($brand-color-purple, 40%);
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
@@ -25,5 +25,8 @@
         z-index: 2;
         padding: 20px;
         font-size: 22px;
+        b {
+            color: #FFF;
+        }
     }
 }
