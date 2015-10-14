@@ -49,7 +49,7 @@ var CQHeaderDropdown = React.createClass({
                 <div className="person-menu">
                     <ul>
                         <li><CQLink href='/quiz/settings'>Settings</CQLink></li>
-                        <li><a target="_blank" href="https://s3-eu-west-1.amazonaws.com/quizalize/Quizalize+Teacher+Guide.pdf">Help</a></li>
+                        <li><a target="_blank" href="/quiz/welcome">Help</a></li>
                         <li><a onClick={this.handleLogout}>Logout</a></li>
                     </ul>
                 </div>
@@ -57,7 +57,7 @@ var CQHeaderDropdown = React.createClass({
         }
         return (
             <li>
-                <div className="navbar-dropdown" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
+                <div className="navbar-btn" onMouseOver={this.handleOver} onMouseOut={this.handleOut}>
                     Hi {MeStore.state.name}! <i className="fa fa-caret-down"></i>
                     {dropdown}
                 </div>
