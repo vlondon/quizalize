@@ -56,7 +56,7 @@ var CQRegister = React.createClass({
 
         var moreInfo;
         if (this.state.isRedirect){
-            moreInfo = (<p style={{'text-align': 'center'}}>
+            moreInfo = (<p style={{'textAlign': 'center'}}>
                 Before we can continue you'll need to create a new Quizalize account.
                 <br/>
                 <br/>
