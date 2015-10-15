@@ -1,8 +1,7 @@
 /* @flow */
-import AppDispatcher       from './../dispatcher/CQDispatcher';
-import UserApi from './../actions/api/UserApi';
-
-import AnalyticsConstants  from './../constants/AnalyticsConstants';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {UserApi} from './../actions/api';
+import {AnalyticsConstants}  from './../constants';
 
 export var sendEvent = function(category: string, action: string, label: string) {
 

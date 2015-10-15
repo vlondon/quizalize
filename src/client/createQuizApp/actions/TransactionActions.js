@@ -1,20 +1,25 @@
-    /* @flow */
-var AppDispatcher           = require('./../dispatcher/CQDispatcher');
-var router                  = require('./../config/router');
-
-var TransactionApi          = require('./../actions/api/TransactionApi');
-var TransactionConstants    = require('./../constants/TransactionConstants');
-var QuizActions             = require('./../actions/QuizActions');
-
-var stripeSDK               = require('./../config/stripeSDK');
-var TransactionStore        = require('./../stores/TransactionStore');
-
-import UserActions from './../actions/UserActions';
-import AnalyticsActions from './../actions/AnalyticsActions';
+/* @flow */
+import AppDispatcher  from './../dispatcher/CQDispatcher';
+import {
+    router,
+    stripeSDK
+} from './../config';
 
 
-import MeStore from './../stores/MeStore';
-import priceFormat from './../utils/priceFormat';
+import { TransactionApi } from './../actions/api';
+import { TransactionConstants } from './../constants';
+import {
+    QuizActions,
+    UserActions,
+    AnalyticsActions
+} from './../actions';
+
+import {
+    TransactionStore,
+    MeStore
+} from './../stores';
+
+import {priceFormat} from './../utils';
 
 import type {Quiz} from './../stores/QuizStore';
 import type {AppType} from './../stores/AppStore';

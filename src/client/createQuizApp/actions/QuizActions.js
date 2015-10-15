@@ -1,21 +1,24 @@
 import type {Quiz, QuizComplete} from './../stores/QuizStore';
-var uuid                = require('node-uuid');
+import uuid                from 'node-uuid';
 
 
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var QuizConstants       = require('./../constants/QuizConstants');
-var QuizApi             = require('./../actions/api/QuizApi');
-var TopicActions        = require('./../actions/TopicActions');
-var router              = require('./../config/router');
+import AppDispatcher       from './../dispatcher/CQDispatcher';
+import {QuizConstants} from './../constants';
+import {QuizApi}             from './../actions/api';
+import {router}              from './../config';
 
+import {
+    UserActions,
+    AnalyticsActions,
+    TopicActions
+} from './../actions';
 
-import AnalyticsActions from './../actions/AnalyticsActions';
+import {
+    TopicStore,
+    MeStore
+} from './../stores';
 
-import TopicStore from './../stores/TopicStore';
-import MeStore from './../stores/MeStore';
-import UserActions from './UserActions';
-
-var debounce            = require('./../utils/debounce');
+import {debounce} from './../utils';
 
 
 var createNewTopicsForQuiz = function(quiz){

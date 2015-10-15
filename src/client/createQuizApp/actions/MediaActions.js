@@ -1,5 +1,5 @@
 /* @flow */
-import MediaApi from './api/MediaApi';
+import {MediaApi} from './api';
 
 var MediaActions = {
 

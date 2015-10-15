@@ -1,6 +1,6 @@
 /* @flow */
 
-import debounde from './debounce';
+import debounce from './debounce';
 import imageUrlParser from './imageUrlParser';
 import intercom from './intercom';
 import LatexString from './LatexString';
@@ -8,7 +8,7 @@ import priceFormat from './priceFormat';
 import urlParams from './urlParams';
 
 export {
-    debounde,
+    debounce,
     imageUrlParser,
     intercom,
     LatexString,

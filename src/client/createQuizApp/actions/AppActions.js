@@ -1,17 +1,20 @@
 /* @flow */
 // import type App from './../stores/AppStore';
 
-var uuid                = require('node-uuid');
+import uuid from 'node-uuid';
 
-var router              = require('./../config/router');
-var debounce            = require('./../utils/debounce');
+import {AppConstants} from './../constants';
+import {AnalyticsActions} from './../actions';
+import {
+    AppApi,
+    QuizApi
+} from './../actions/api';
 
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var AppApi              = require('./../actions/api/AppApi');
-var QuizApi             = require('./../actions/api/QuizApi');
-var AppConstants        = require('./../constants/AppConstants');
-var UserApi             = require('./../actions/api/UserApi');
-import AnalyticsActions from './../actions/AnalyticsActions';
+
+import {router}              from './../config';
+import {debounce}            from './../utils';
+
+import AppDispatcher from './../dispatcher/CQDispatcher';
 
 let searching = false;
 

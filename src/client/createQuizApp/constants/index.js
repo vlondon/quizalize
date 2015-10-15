@@ -4,7 +4,7 @@ import AppConstants from './AppConstants';
 import GroupConstants from './GroupConstants';
 import QuizConstants from './QuizConstants';
 import TopicConstants from './TopicConstants';
-import TransactioConstants from './TransactionConstants';
+import TransactionConstants from './TransactionConstants';
 import UserConstants from './UserConstants';
 
 
@@ -14,6 +14,6 @@ export {
     GroupConstants,
     QuizConstants,
     TopicConstants,
-    TransactioConstants,
+    TransactionConstants,
     UserConstants
 };

@@ -1,7 +1,6 @@
 /* @flow */
 var request = require('superagent');
 
-
 var getGraphQLUserQuery = function(key, value){
     return `
         {
