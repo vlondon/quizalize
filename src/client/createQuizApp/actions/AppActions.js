@@ -129,13 +129,14 @@ var AppActions = {
                         }
                         quizzes.forEach(quiz => {
                             if (typeof app.meta.quizzes === 'string' && app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
-                                found = true;
+                                if (!found) found = true;
                             }
                             else if (typeof app.meta.quizzes === 'object') {
-                                found = app.meta.quizzes.filter(function(q) { return q == quiz.uuid; }).length > 0;
+                                if (!found) found = app.meta.quizzes.filter(function(q) { return q == quiz.uuid; }).length > 0;
                             }
                         });
-                        return app.meta.published === "published" && (found || app.meta.name.toLowerCase().indexOf(searchString.toLowerCase()) >= 0);
+                        var checkSearch = searchString.length !== 0 ? app.meta.name.toLowerCase().indexOf(searchString.toLowerCase()) > 0 : false;
+                        return app.meta.published === "published" && (found || checkSearch);
                     });
 
 
