@@ -3,6 +3,7 @@ var AppDispatcher       = require('./../dispatcher/CQDispatcher');
 var UserConstants       = require('./../constants/UserConstants');
 var UserApi             = require('./../actions/api/UserApi');
 var urlParams           = require('./../utils/urlParams');
+
 import AnalyticsActions from './../actions/AnalyticsActions';
 import router from './../config/router';
 import intercom from './../utils/intercom';
@@ -80,7 +81,7 @@ var UserActions = {
                 })
                 .catch(function(error){
                     reject(error);
-
+                    router.setRoute("/quiz/login");
 
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_LOGIN_ERROR,
@@ -110,13 +111,12 @@ var UserActions = {
                     }
                 })
                 .catch(function(error){
-                    reject(error);
-
-
+                    location.href = "/quiz/login";
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_LOGIN_ERROR,
                         payload: error
                     });
+                    reject(error);
                 });
 
             AppDispatcher.dispatch({

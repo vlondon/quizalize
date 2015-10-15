@@ -12,8 +12,8 @@ module.exports = {
     entry: {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
-        publishers: ['webpack/hot/dev-server', 'publishers.js'],    
-        home: ['webpack/hot/dev-server', 'home.js'],
+        publishers: ['webpack/hot/dev-server', 'publishers.js'],
+        home: ['webpack/hot/dev-server', 'home.js', 'liveBeta/liveBeta.js'],
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent']
     },

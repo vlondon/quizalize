@@ -25,12 +25,17 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         link(href='/cquiz/css/flexslider.css', rel='stylesheet')
         link(href='/cquiz/css/animate.css', rel='stylesheet')
         link(href='/cquiz/css/style.css', rel='stylesheet')
+        link(href='/css/sweetalert.min.css' rel='stylesheet')
+
+
         if (devServer=='true')
             script(src="http://localhost:7071/webpack-dev-server.js")
         else
             link(href='/js/publishers.css', rel='stylesheet')
         script(src='/js/vendor.js')
         script(src='/js/publishers.js')
+        script(src='/lib/sweetalert.min.js')
+        
             
         script.
             var intercomId = '!{intercomId}';
@@ -54,20 +59,24 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             
             include ./publishers/box_whatis.jade
             
-            include ./home/box_player.jade
+            -//include ./home/box_player.jade
             
-            include ./home/box_dashboard.jade
+            -//include ./publishers/box_benefits.jade
             
-            include ./home/box_questionlist.jade
+            include ./publishers/box_benefits_cool.jade
             
-            include ./home/box_features.jade
+            -//include ./publishers/box_enhance.jade
             
-            include ./home/box_studentopinions.jade
+            include ./publishers/box_partners.jade
             
-            include ./home/box_start.jade
-            
-            include ./home/box_zzish.jade
-            
+            include ./publishers/box_contact.jade
+            //- 
+            //- include ./home/box_studentopinions.jade
+            //- 
+            //- include ./home/box_start.jade
+            //- 
+            include ./publishers/box_zzish.jade
+            //- 
             include ./home/footer.jade
         
         
@@ -86,6 +95,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             function newQuiz() {
             window.location.href="/quiz";
             }
+        
         script(src='/cquiz/js/jquery.min.js')
         script(src='/cquiz/js/bootstrap.min.js')
         script(src='//zzish.github.io/zzishsdk-js/zzish.js')
@@ -188,6 +198,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             if (userId!=undefined) {
                 $("#LoginButton").attr("href","/quiz/quizzes");
             }
+        
         noscript
             img(height='1', width='1', alt='', style='display:none', src='https://www.facebook.com/tr?id=832854753469486&ev=PixelInitialized')
         script(type='text/javascript').

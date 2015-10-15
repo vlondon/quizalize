@@ -69,7 +69,7 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
     };
 
     if (typeof($location.search()).cancel != 'undefined' && $location.search().cancel){
-        QuizData.removeItem("token");
+        QuizData.removeDataValue("token");
     }
     else if(typeof ($location.search()).token != 'undefined'){
         //Have quiz name
@@ -83,19 +83,26 @@ angular.module('quizApp').controller('QuizzesController', ['QuizData', '$log', '
         zzish.getCurrentUser(self.token, function(err,message) {
             if (!err) {
                 QuizData.setUser(message);
-                QuizData.registerUserWithGroup(message.attributes.groupCode,function(err) {
-                    if (!err) {
-                        loadQuizzes();
-                    }
-                    else {
-                        QuizData.unsetUser();
-                        $location.path("/app#");
-                    }
-                });
+                if (message.attributes.groupCode) {
+                    QuizData.registerUserWithGroup(message.attributes.groupCode,function(err) {
+                        if (!err) {
+                            loadQuizzes();
+                        }
+                        else {
+                            QuizData.unsetUser();
+                            $location.path("/app#");
+                        }
+                    });
+                }
+                else {
+                    QuizData.unsetUser();
+                    location.href="/app#";
+                }
             }
             else {
                 QuizData.unsetUser();
-                $location.path("/app#");
+                location.href="/app#";
+                //$location.path("/app#");
             }
         });
     }

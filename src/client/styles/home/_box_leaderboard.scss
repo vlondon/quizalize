@@ -1,0 +1,32 @@
+.q-home__live {
+    @include boxHome;
+    height: 400px;
+    background: lighten($brand-color-purple, 40%);
+    padding-top: 0;
+    padding-bottom: 0;
+    position: relative;
+    .lb-all {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        .lb-gamescreen {
+            .lb-teams {
+                position: relative;
+                top: 50px;
+            }
+        }
+    }
+    &__header {
+        position: relative;
+        color: $brand-color-purple;
+        font-weight: bold;
+        z-index: 2;
+        padding: 20px;
+        font-size: 22px;
+        b {
+            color: #FFF;
+        }
+    }
+}

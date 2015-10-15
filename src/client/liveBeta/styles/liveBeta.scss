@@ -1,0 +1,45 @@
+@import "partials/variables";
+@import "partials/reset";
+
+html,
+body,
+.dashboard-beta {
+    height: 100%;
+    width: 100%;
+}
+
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+.lb-all {
+    font-family: 'Bubblegum Sans', cursive;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .lb-header {
+        height: 130px;
+    }
+
+    .lb-gamescreen {
+        flex: 1;
+        min-height: 300px;
+    }
+    .lb-footer {
+        height: 130px;
+    }
+}
+
+@import "partials/LBAdmin";
+@import "partials/LBHeader";
+@import "partials/LBGameScreen";
+@import "partials/LBPlayers";
+@import "partials/LBPlayerScore";
+@import "partials/LBFooter";
