@@ -1,22 +1,27 @@
 var zzish = require("../../zzish");
+import logger from './../../logger';
+import user from './../../routes/user';
+import {getSubscription} from './../helpers/stripeHelper';
 
 class User {
 
     constructor(user){
         // Object.assign(this, user);
-        console.log('user', user);
+
         this.user = user;
         this.uuid = user.uuid;
         this._userQuizzesInit = false;
+
     }
 
     toJSON(){
         return this.user;
     }
 
+
+
     getUserQuizzes(){
         if (!this._userQuizzesInit) {
-            console.log('GGGOGOGOGOGOGOGOGOGOGOGOOG');
             this.userQuizzes = [];
 
             var performQuery = function(mongoQuery) {
@@ -54,10 +59,48 @@ class User {
 
 }
 
+class OwnUser extends User {
+    constructor(user){
+        super(user);
+        logger.debug('user loaded', user);
+        if (user.attributes.accountType === undefined) {
+            logger.info('OwnUser: Setting account type for user', user.uuid);
+            var now = Date.now();
+            var expiration = (365 * 24 * 60 * 60 * 1000) + now;
+            var extraAttributes = {
+                accountType: 1,
+                accountTypeUpdated: now,
+                accountTypeExpiration: expiration
+            };
+            Object.assign(this.user.attributes, extraAttributes);
+            this.save();
+
+        } else if (user.attributes.stripeId) {
+            // check subscription status
+            getSubscription(user.attributes.stripeId).then(({accountType, accountTypeExpiration, accountTypeUpdated})=>{
+                logger.info('Own user with details', accountType, accountTypeExpiration, accountTypeUpdated);
+                var extraAttributes = {
+                    accountType,
+                    accountTypeUpdated,
+                    accountTypeExpiration
+                };
+                Object.assign(this.user.attributes, extraAttributes);
+                this.save();
+            });
+
+        }
+
+    }
+
+    save(){
+        logger.info('OwnUser: saved', this.user.uuid);
+        user.saveUser(this.toJSON());
+    }
+}
+
 class Users {
 
     constructor(){
-        console.log('preparing new users');
         this.users = [];
     }
 
@@ -65,13 +108,11 @@ class Users {
         return new Promise((resolve, reject) => {
             zzish.user(userId, (err, data) => {
                 if (err) {
-                    console.log('User not found', err);
                     if (err === "404") {
                         reject('User not found');
                     }
                     reject(err);
                 } else {
-                    console.log('NEW USER LOADE', data);
                     var user = new User(data);
                     this.users.push(user);
                     resolve(user.toJSON());
@@ -127,10 +168,11 @@ class Users {
 
     getMyUser(profileId){
         return new Promise((resolve, reject)=>{
-            console.log('getting profile', profileId);
             zzish.user(profileId, function(err, data){
                 if (!err && typeof data === 'object') {
-                    resolve(data);
+                    var user = new OwnUser(data);
+                    logger.debug('Own user loaded', user);
+                    resolve(user.toJSON());
                 }
                 else {
                     reject(err);

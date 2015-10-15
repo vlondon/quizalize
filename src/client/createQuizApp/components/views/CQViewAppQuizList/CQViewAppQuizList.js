@@ -17,7 +17,7 @@ import type {AppType} from './../../../stores/AppStore';
 type Props = Object;
 type State = Object;
 
-        class CQViewAppQuizList extends React.Component {
+class CQViewAppQuizList extends React.Component {
 
     props: Props;
 
@@ -117,7 +117,7 @@ type State = Object;
         return (
             <div className="appquizlist">
                 {quizDetails}
-                <ul class="appquizlist__list">
+                <ul className="appquizlist__list">
                     {this.state.apps.map(app=>{
 
                         var quizIcon, buyApp;
@@ -165,7 +165,7 @@ type State = Object;
                         }
 
                         return (
-                            <li className="appquizlist__app" style={{backgroundColor: appColor.fadeOut(0.7)}}>
+                            <li key={app.uuid} className="appquizlist__app" style={{backgroundColor: appColor.fadeOut(0.7)}}>
                                 <div className="appquizlist__app__infowrapper">
 
                                     {quizIcon}
