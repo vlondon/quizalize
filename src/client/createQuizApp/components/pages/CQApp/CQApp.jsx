@@ -2,20 +2,21 @@
 var React = require('react');
 var router = require('./../../../config/router');
 
-import AppStore from './../../../stores/AppStore';
-import TopicStore from './../../../stores/TopicStore';
-import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
-import CQLinkToUser from './../../../components/utils/CQLinkToUser';
-var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
+import {AppStore, TopicStore, MeStore} from './../../../stores';
+
+import {
+    CQViewQuizPrice,
+    CQLinkToUser,
+    CQViewQuizDetails,
+    CQPageTemplate,
+    CQQuizIcon,
+    CQViewQuizList,
+} from './../../../components';
 
 import priceFormat from './../../../utils/priceFormat';
 var TransactionActions = require('./../../../actions/TransactionActions');
 import TransactionStore from './../../../stores/TransactionStore';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
-var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
-import MeStore from './../../../stores/MeStore';
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {AppType} from './../../../stores/AppStore';
