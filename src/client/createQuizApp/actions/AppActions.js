@@ -135,7 +135,8 @@ var AppActions = {
                                 found = app.meta.quizzes.filter(function(q) { return q == quiz.uuid; }).length > 0;
                             }
                         });
-                        return app.meta.published === "published" && (found || app.meta.name.toLowerCase().indexOf(searchString.toLowerCase()) >= 0);
+                        var checkSearch = searchString.length !== 0 ? false : app.meta.name.toLowerCase().indexOf(searchString.toLowerCase()) > 0;
+                        return app.meta.published === "published" && (found || checkSearch);
                     });
 
 
