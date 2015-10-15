@@ -78,7 +78,7 @@ exports.details = function(req, res) {
                 res.status(200);
             }
             else {
-                req.userUUID = undefined;
+                req.session.userUUID = undefined;
                 res.status(err);
             }
             res.send(data);
@@ -102,11 +102,12 @@ exports.search = function(req, res) {
 
 exports.token =  function(req, res) {
     var token = req.body.token;
-
     zzish.getCurrentUser(token, function(err, data) {
         if (!err && typeof data === 'object') {
-            intercom.trackEvent(data.uuid, 'logged_in');
+            data.token = token;
+            req.session.token = token;
             req.session.user = data;
+            intercom.trackEvent(data.uuid, 'logged_in');
             res.status(200).send(data);
         }
         else {

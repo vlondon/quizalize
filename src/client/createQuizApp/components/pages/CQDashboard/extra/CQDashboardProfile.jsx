@@ -1,7 +1,8 @@
 var React = require('react');
 var UserStore = require('createQuizApp/stores/UserStore');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var UserIdStore = require('createQuizApp/stores/UserIdStore');
 var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
+
 
 import imageUrlParser from './../../../../utils/imageUrlParser';
 
@@ -9,7 +10,8 @@ import imageUrlParser from './../../../../utils/imageUrlParser';
 var CQDashboardProfile = React.createClass({
 
     propTypes: {
-        user: React.PropTypes.object
+        user: React.PropTypes.object,
+        own: React.PropTypes.bool
     },
 
     getInitialState: function() {
@@ -45,37 +47,60 @@ var CQDashboardProfile = React.createClass({
     },
 
     render: function() {
-        var profile, bannerStyles, school, profileUrl;
+        var profile, bannerStyles, school, profileUrl, returnToPrivate;
 
-        if (this.state.user){
-            console.log('this.state.user.attributes', this.state.user.attributes);
-            if (this.state.user.attributes.bannerUrl){
+        if (this.props.user){
+            console.log('this.props.user.attributes', this.props.user.attributes);
+            if (this.props.user.attributes.bannerUrl){
                 bannerStyles = {
-                    backgroundImage: `url(${imageUrlParser(this.state.user.attributes.bannerUrl)})`,
+                    backgroundImage: `url(${imageUrlParser(this.props.user.attributes.bannerUrl)})`,
                     height: 300
                 };
             }
 
-            if (this.state.user.attributes.profileUrl){
-                profileUrl = 'https://www.quizalize.com/profile/' + this.state.user.attributes.profileUrl;
+            if (this.props.user.attributes.profileUrl){
+                profileUrl = 'https://www.quizalize.com/profile/' + this.props.user.attributes.profileUrl;
             } else {
-                profileUrl = 'https://www.quizalize.com/quiz/user/'+ this.state.user.uuid;
+                profileUrl = 'https://www.quizalize.com/quiz/user/'+ this.props.user.uuid;
             }
 
-            if (this.state.user.attributes.url) {
+            if (this.props.user.attributes.url) {
+                var url = this.props.user.attributes.url.indexOf("http") === 0 ? this.props.user.attributes.url : "http://" + this.props.user.attributes.url;
                 school = (
-                    <a href={this.state.user.attributes.url}
+                    <a href={url}
                         target="_blank"
                         rel="nofollow">
-                        {this.state.user.attributes.school}
+                        {this.props.user.attributes.school}
                     </a>
                 );
             } else {
-                school = this.state.user.attributes.school;
+                school = this.props.user.attributes.school;
             }
-            var className = this.state.user.attributes.bannerUrl ? 'banner' : 'no-banner';
-            var name = this.state.user.name && this.state.user.name.length !== 0 ? this.state.user.name : 'Quizalize user';
-
+            var className = this.props.user.attributes.bannerUrl ? 'banner' : 'no-banner';
+            var name = this.props.user.name && this.props.user.name.length !== 0 ? this.props.user.name : 'Quizalize user';
+            var publicUrl = this.props.user.attributes.profileUrl ? (
+                                                        <div  className="cq-dashboard__profile__info__entry">
+                                                            <small>Public URL</small>
+                                                            <a
+                                                                target="_blank"
+                                                                href={`https://www.quizalize.com/profile/${this.props.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.props.user.attributes.profileUrl}
+                                                            </a>
+                                                        </div>) : (
+                                                                    <div  className="cq-dashboard__profile__info__entry">
+                                                                        <small>Public URL</small>
+                                                                        <a
+                                                                            target="_blank"
+                                                                            href={`https://www.quizalize.com/quiz/user/${this.props.user.uuid}`}>https://www.quizalize.com/quiz/user/{this.props.user.uuid}
+                                                                        </a>
+                                                                    </div>);
+            if (UserIdStore.getUserId() === this.props.user.uuid && !this.props.own) {
+                returnToPrivate = (<div>
+                    <a
+                        href="/quiz/user">
+                            Return to your Private Profile
+                    </a>
+                </div>);
+            }
             profile = (
                 <div className='cq-dashboard__profile__wrapper'>
                     <div className={`cq-dashboard__bannerpicture ${className}`} style={bannerStyles}>
@@ -87,13 +112,14 @@ var CQDashboardProfile = React.createClass({
                                 width="200"
                                 height="200"
                                 name={name}
-
-                                picture={this.state.user.avatar}/>
+                                picture={this.props.user.avatar}/>
                         </div>
+
                         <div className="cq-dashboard__profile__info">
 
                             <div className="cq-dashboard__profile__info__entry">
                                 <h3>{name}</h3>
+                                <a href="/quiz/settings">Edit Profile</a>
                             </div>
 
                             <div className="cq-dashboard__profile__info__entry">
@@ -104,9 +130,9 @@ var CQDashboardProfile = React.createClass({
                             </div>
                             <div  className="cq-dashboard__profile__info__entry">
                                 <small>Location</small>
-                                {this.state.user.attributes.location}
+                                {this.props.user.attributes.location}
                             </div>
-
+                            {publicUrl}
                         </div>
 
 
@@ -115,8 +141,14 @@ var CQDashboardProfile = React.createClass({
             );
         }
         return (
-            <div className="cq-dashboard__profile">
-                {profile}
+            <div>
+                <div className="cq-dashboard__profile">
+                    {profile}
+                </div>
+                <br/><br/>
+                <div>
+                    {returnToPrivate}
+                </div>
             </div>
         );
     }

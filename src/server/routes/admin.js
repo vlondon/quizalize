@@ -13,6 +13,7 @@ var GoogleAnalytics = require('ga');
 var ua = process.env.QUIZALIZEGA;
 var host = 'www.quizalize.com';
 var ga = new GoogleAnalytics(ua, host);
+var zzish = require('zzishsdk');
 
 if (process.env.admin=="true") {
     var Zzish = require('zzish');
@@ -58,7 +59,6 @@ var finalApproval = function(req, res, type, content, doc) {
 };
 
 var approveDocument = function(req, res, doc) {
-    console.log(zzish);
     var id = req.params.id;
     var type = req.params.type;
 
@@ -595,7 +595,20 @@ exports.data = function (req, res){
 };
 
 exports.newMetric = function(req, res){
-    res.render('admin/newMetric');
+    db.findDocuments("metrics",{}, -1, function(err, metrics) {
+        metrics.sort(function(x, y){
+            if (!x._id) {
+                return -1;
+            }
+            if (!y._id) {
+                return 1;
+            }
+            return y._id - x._id;
+        });
+        res.render("admin/newmetric", {metrics: metrics});
+
+
+    });
 };
 
 

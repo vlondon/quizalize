@@ -131,9 +131,9 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
 
     self.topics = {};
 
-    var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
+    var currentQuiz = JSON.parse(QuizData.getDataValue("currentQuiz") || '{}');
 
-    self.isFeatured = localStorageQuiz.meta!=null ? localStorageQuiz.meta.featured : false;
+    self.isFeatured = currentQuiz.meta!=null ? currentQuiz.meta.featured : false;
     // self.isFeatured = false;
 
     if (self.isFeatured === true) {
@@ -141,7 +141,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             .then(function(score){
                 self.leaderboard = score;
                 self.facebookLink = `http://www.facebook.com/sharer/sharer.php?u=http://quizalize.com/qapp/${self.data.quizId}`;
-                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.meta.name + ' on @Quizalizeapp and I got ' + self.totals.score + ' points. http://www.quizalize.com/qapp/' + self.data.quizId)}`;
+                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + currentQuiz.meta.name + ' on @Quizalizeapp and I got ' + self.totals.score + ' points. http://www.quizalize.com/qapp/' + self.data.quizId)}`;
                 //addReactComponent();
             });
     }

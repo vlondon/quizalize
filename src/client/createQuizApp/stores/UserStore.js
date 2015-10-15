@@ -58,6 +58,30 @@ class UserStore extends Store {
 var userStore = new UserStore();
 export default userStore;
 
+var fillApps = (apps, quizzes, user)=>{
+    var quizzesWithoutApps = quizzes.filter(q=>{
+        var isInApp = apps.filter(a=>{
+            var quizzes = a.meta.quizzes || [];
+            return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
+        });
+        return isInApp.length === 0;
+    });
+    console.info('Filling apps', apps, quizzesWithoutApps);
+
+    var appPlaceholder = AppStore.getNewApp({
+        uuid: 'own',
+        meta: {
+            quizzes: quizzesWithoutApps,
+            colour: '#FFF',
+            name: `${user.name} Quizzes`,
+            description: ''
+        }
+    });
+
+    apps.push(appPlaceholder);
+    return apps;
+};
+
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
     // var text;
@@ -72,34 +96,9 @@ AppDispatcher.register(function(action) {
 
         case UserConstants.USER_PUBLIC_LOADED:
             console.log('UserConstants.USER_PUBLIC_LOADED', action);
+            debugger;
             var user = action.payload;
-
-            var fillApps = (apps, quizzes)=>{
-
-                var quizzesWithoutApps = quizzes.filter(q=>{
-                    var isInApp = apps.filter(a=>{
-                        var quizzes = a.meta.quizzes || [];
-                        return quizzes.filter(aq=> aq.uuid === q.uuid).length !== 0;
-                    });
-                    return isInApp.length === 0;
-                });
-
-                var appPlaceholder = AppStore.getNewApp({
-                    uuid: 'own',
-                    meta: {
-                        quizzes: quizzesWithoutApps,
-                        colour: '#FFF',
-                        name: `${user.name} Quizzes`,
-                        description: ''
-                    }
-                });
-
-                apps.push(appPlaceholder);
-                return apps;
-            };
-
-            console.log('user??', user.apps, user);
-            var apps = fillApps(user.apps, user.quizzes);
+            var apps = fillApps(user.apps, user.quizzes, user);
             user = {...user, apps};
             _users = _users.set(user.uuid, user);
 
@@ -108,10 +107,11 @@ AppDispatcher.register(function(action) {
             break;
 
         case UserConstants.USER_PUBLIC_LOADED_URL:
-            console.log('UserConstants.USER_PUBLIC_LOADED_URL', action);
+
             var user = action.payload;
+            var apps = fillApps(user.apps, user.quizzes, user);
+            user = {...user, apps};
             _usersByUrl[user.attributes.profileUrl] = user.uuid;
-            console.log('_users set', user.attributes.profileUrl, user.uuid, _usersByUrl, user);
             _users = _users.set(user.uuid, user);
             userStore.emitChange();
             break;

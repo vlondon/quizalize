@@ -19,6 +19,8 @@
     //keep track of the current user (so we know when session needs to be updated)
     var currentUser = null;
 
+    //store for storage
+    var dataStorage = {};
 
 
 /**** CONFIGURATION ******/
@@ -31,8 +33,71 @@
     var headerprefix = "Bearer ";
     var makeStateless = false;
 
+    var getDataValue = function(key) {
+        if (dataStorage[key]) {
+            return dataStorage[key];
+        }
+        try {
+            if (typeof localStorage !== "undefined") {
+                return localStorage.getItem(key);
+            }
+        }
+        catch (err) {
+
+        }
+        return undefined;
+    };
+
+    var setDataValue = function(key, value) {
+        dataStorage[key] = value;
+        try {
+            if (typeof localStorage !== "undefined") {
+                return localStorage.setItem(key, value);
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    var removeDataValue = function(key) {
+        delete dataStorage[key];
+        try {
+            if (typeof localStorage !== "undefined") {
+                localStorage.removeItem(key);
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    var clearDataValue = function() {
+        for (var i in dataStorage) {
+            delete dataStorage[i];
+        }
+        try {
+            if (typeof localStorage !== "undefined") {
+                localStorage.clear();
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    /**
+     * Checks to see if localStorage is defined. Then it's a stateful session
+     */
+    function stateful() {
+        //if localstorage is not defined
+        if (makeStateless) return false;
+        return (typeof localStorage != 'undefined');
+    }
+
+
     function getBaseUrl() {
-        if (stateful() && window!=undefined && window.location!=undefined && window.location.href!=undefined) {
+        if (stateful() && window !== undefined && window.location !== undefined && window.location.href !== undefined) {
             var url = window.location.href;
             if (url!=undefined) {
                 var arr = url.split("/");
@@ -80,12 +145,10 @@
     Zzish.init = function (config) {
         //generate a device if we don't have one
         appConfig = config;
-        if (stateful()) {
-            deviceId = localStorage.getItem("deviceId");
-            if (deviceId == null) {
-                deviceId = v4();
-                localStorage.setItem("deviceId", deviceId);
-            }
+        deviceId = getDataValue("deviceId");
+        if (deviceId == null) {
+            deviceId = v4();
+            setDataValue("deviceId", deviceId);
         }
         if (typeof config =='string') {
             try
@@ -95,7 +158,7 @@
             }
             catch (err) {
                 appId = config;
-                if (stateful()) localStorage.setItem("appConfig",config);
+                setDataValue("appConfig",config);
             }
 
         }
@@ -107,7 +170,7 @@
             header = getConfigValue(config,'header',header);
             headerprefix = getConfigValue(config,'headerprefix',headerprefix);
             logEnabled = getConfigValue(config,'logEnabled',logEnabled);
-            if (stateful()) localStorage.setItem("appConfig",JSON.stringify(config));
+            setDataValue("appConfig",JSON.stringify(config));
         }
     };
 
@@ -117,7 +180,7 @@
         Zzish.init(params["zzishtoken"]);
     }
     if (params["cancel"]!=undefined) {
-        localStorage.removeItem("token");
+        removeDataValue("token");
     }
 
 
@@ -134,15 +197,6 @@
     };
 
 /**** CLIENT SIDE (REQUIRE STATE) *****/
-
-    /**
-     * Checks to see if localStorage is defined. Then it's a stateful session
-     */
-    function stateful() {
-        //if localstorage is not defined
-        if (makeStateless) return false;
-        return (typeof localStorage != 'undefined');
-    }
 
     /**
      * Get the User (if the id is the same as the current one, returns the current user)
@@ -1245,7 +1299,7 @@
                     callback(status, message);
                 }
             });
-        });
+        })
     };
 
     /**
@@ -1464,46 +1518,30 @@
      * @param callback - A callback to call when done (returns error AND (message or user))
      */
     Zzish.login = function (type,options,callback) {
-        if (stateful()) {
-            //check if we already have a token
-            token = localStorage.getItem("token");
-            if (token=="Zzish error" || token=="undefined") {
-                localStorage.removeItem("token");
-                token = null;
-            }
-        }
-        if (options==undefined) {
-            options = {};
-        }
-        if (token==undefined || token==null) {
-            var token_request = {
-                method: "POST",
-                url: getBaseUrl() + "profiles/tokens",
-                data: { options: options }
-            }
-            //create a token first
-            sendData(token_request, function (err, data) {
-                    callCallBack(err, data, function(err,token) {
-                    options['token']=token;
-                    localStorage.setItem("token",token);
-                    loadLoginWithToken(type,options,callback);
-                });
+        var token_request = {
+            method: "POST",
+            url: getBaseUrl() + "profiles/tokens",
+            data: { options: options }
+        };
+        //create a token first
+        sendData(token_request, function (err, data) {
+                callCallBack(err, data, function(err,token) {
+                options['token']=token;
+                setDataValue("token", token);
+                loadLoginWithToken(type,options,callback);
             });
-        }
-        else {
-            loadLoginWithToken(type,token,callback);
-        }
-    }
+        });
+    };
 
     Zzish.getCurrentUser = function(token,callback) {
         if (token==undefined) {
             //see if we can get token from query params
             token = getQueryParams()["token"];
         }
-        if (token==undefined && stateful()) {
-            token = localStorage.getItem("token");
+        if (token==undefined) {
+            token = getDataValue("token");
         }
-        if (token!="Zzish error" && token!="undefined" && token!=undefined) {
+        if (token !== undefined && token!="Zzish error" && token!="undefined") {
             var token_request = {
                 method: "GET",
                 url: getBaseUrl() + "profiles/tokens/" + token
@@ -1530,9 +1568,7 @@
             method: "DELETE",
             url: getBaseUrl() + "profiles/tokens/" + token
         }
-        if (stateful()) {
-            localStorage.removeItem("token");
-        }
+        removeDataValue("token");
         sendData(request, function (err, data) {
             callCallBack(err, data, callback);
         });

@@ -18,28 +18,26 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
         link(href='/cquiz/css/bootstrap.min.css', rel='stylesheet', type='text/css')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
-        link(href='/cquiz/css/nivo-lightbox.css', rel='stylesheet')
-        link(href='/cquiz/css/nivo-lightbox-theme/default/default.css', rel='stylesheet', type='text/css')
-        link(href='/cquiz/css/owl.carousel.css', rel='stylesheet', media='screen')
-        link(href='/cquiz/css/owl.theme.css', rel='stylesheet', media='screen')
-        link(href='/cquiz/css/flexslider.css', rel='stylesheet')
-        link(href='/cquiz/css/animate.css', rel='stylesheet')
         link(href='/cquiz/css/style.css', rel='stylesheet')
+        link(href='https://fonts.googleapis.com/css?family=Bubblegum+Sans' rel='stylesheet' type='text/css')
         if (devServer=='true')
             script(src="http://localhost:7071/webpack-dev-server.js")
         else
             link(href='/js/home.css', rel='stylesheet')
         script(src='/js/vendor.js')
-        script(src='/js/home.js')
+
             
         script.
-            var intercomId = '!{intercomId}';
-            
-            window.intercomSettings = {
+            var intercomId = '!{intercomId}';            
+            var intercomSettings = {
                 app_id: intercomId
+            }
+            intercomSettings.widget = { 
+                activator: "#IntercomDefaultWidget" 
             };
-    
-            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mnacdt52';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+            window.intercomSettings = intercomSettings;
+            window.intercomId = intercomId;
+            (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/!{intercomId}';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
             
     body#page-top.q-home
         // Navigation
@@ -52,11 +50,15 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
             
             include ./home/box_intro.jade
             
-            include ./home/box_player.jade
+            include ./home/box_leaderboard.jade
+            
+            //- include ./home/box_player.jade
             
             include ./home/box_dashboard.jade
             
             include ./home/box_questionlist.jade
+            
+            include ./home/box_strengths.jade
             
             include ./home/box_features.jade
             
@@ -71,6 +73,7 @@ html(lang='en', xmlns='http://www.w3.org/1999/html')
         
             // /Section: contact
             #outdated
+        script(src='/js/home.js')
         // Core JavaScript Files
         script.
             function showQuiz(id) {

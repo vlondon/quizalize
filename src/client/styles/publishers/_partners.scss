@@ -1,0 +1,18 @@
+.q-home__partners {
+    @include boxHome;
+    background: $brand-color-purple-light;
+
+    ul {
+        padding: 20px 80px 30px 80px;
+        list-style: none;
+    }
+    li{
+        padding: 0 50px 10px 50px;
+
+        font-size: 20px;
+        display: inline-block;
+
+    }
+
+
+}

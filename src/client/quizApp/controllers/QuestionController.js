@@ -54,10 +54,13 @@ angular.module('quizApp')
                     console.log('question???', data);
                     self.questionData = data;
                     if (!QuizData.canShowQuestion(self.questionId)) {
+                        console.log('question answered', data);
                         //we already have this question
-                        $location.path('/quiz/' + self.catId + '/' + self.quizId + "/answer/" + self.questionId);
+                        $location.path('/quiz/' + self.catId + '/' + self.id + "/answer/" + self.questionId);
                     }
-                    addReactComponent();
+                    else {
+                        addReactComponent();
+                    }
                 });
             //});
         });

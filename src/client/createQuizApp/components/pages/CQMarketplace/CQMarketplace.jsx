@@ -44,7 +44,12 @@ export default class CQPublic extends React.Component {
         super(props);
         var p = urlParams();
         if (p.token) {
-            UserActions.loginWithToken(p.token);
+            if (p.cancel) {
+                location.href = "/quiz/login";
+            }
+            else {
+                UserActions.loginWithToken(p.token);
+            }
         }
         //
 

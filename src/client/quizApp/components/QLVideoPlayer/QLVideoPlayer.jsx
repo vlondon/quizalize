@@ -12,7 +12,6 @@ var QLVideoPlayer = React.createClass({
         onNext: React.PropTypes.func,
         currentQuiz: React.PropTypes.object,
         questionData: React.PropTypes.object,
-        currentQuiz: React.PropTypes.object,
         startTime: React.PropTypes.number
     },
 

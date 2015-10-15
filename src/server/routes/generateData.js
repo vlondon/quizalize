@@ -252,38 +252,23 @@ var generateData = function(chosenWeek, callback) {
 
                     var activatedThisWeek = function (activeTeachers, signUps){
                         console.log("signupsinact", signUps);
-                        var count = 0;
+                        var activatedTeachersArray = [];
+                        var count=0;
                         for (var teacher in activeTeachers){
                             for (var signUp in signUps){
                                 if (activeTeachers[teacher].ownerId === signUps[signUp].uuid){
                                     console.log("ownerId",activeTeachers[teacher].ownerId);
                                     console.log("uuid",signUps[signUp].uuid);
-
+                                    activatedTeachersArray.push( activeTeachers[teacher].ownerId);
                                     count++;
-                                    console.log(count);
+                                    console.log("activecount",count);
                                 }
                             }
                         }
-                        console.log("activatedthisweek",count);
+                        console.log("activatedthisweek",activatedTeachersArray);
                         return count;
                     };
 
-                    //Active Classes
-                    var activityGroup = [];
-                    activityGroup[0] = activityGroupFromActivities(activities, oneWeekBefore, chosenWeek);
-                    activityGroup[1] = activityGroupFromActivities(activities, twoWeeksBefore, oneWeekBefore);
-
-                    //Active Teachers
-                    var activeTeachers = [];
-                    activeTeachers[0] = activeTeachersFromActivityGroup(activityGroup[0], userGroups);
-                    activeTeachers[1] = activeTeachersFromActivityGroup(activityGroup[1], userGroups);
-                    var repeatGroup = repeatUsers(activeTeachers);
-                    var repeat = Object.keys(repeatGroup).length;
-                    var activated = Object.keys(activeTeachers[0]).length;
-                    var signUpThisWeek = signUps(users, oneWeekBefore, chosenWeek);
-
-                    var retained = retainedUsers(repeatGroup, users, 0, fourWeeksBefore);
-                    var activatedWeek = activatedThisWeek(activeTeachers[0], signUpsGroup(users, twoWeeksBefore, chosenWeek))+ activatedThisWeek(activeTeachers[1], signUpsGroup(users, twoWeeksBefore, chosenWeek));
                     var activatedList = function(activeTeachers, users){
                         var list = [];
                         for (var teacher in activeTeachers){
@@ -318,6 +303,25 @@ var generateData = function(chosenWeek, callback) {
                         }
                         return list;
                     };
+
+                    //Active Classes
+                    var activityGroup = [];
+                    activityGroup[0] = activityGroupFromActivities(activities, oneWeekBefore, chosenWeek);
+                    activityGroup[1] = activityGroupFromActivities(activities, twoWeeksBefore, oneWeekBefore);
+
+                    //Active Teachers
+                    var activeTeachers = [];
+                    activeTeachers[0] = activeTeachersFromActivityGroup(activityGroup[0], userGroups);
+                    activeTeachers[1] = activeTeachersFromActivityGroup(activityGroup[1], userGroups);
+                    var repeatGroup = repeatUsers(activeTeachers);
+                    var repeat = Object.keys(repeatGroup).length;
+                    var activated = Object.keys(activeTeachers[0]).length;
+                    var signUpThisWeek = signUps(users, oneWeekBefore, chosenWeek);
+                    var signUpWeekBefore = signUps(users, twoWeeksBefore, chosenWeek);
+                    var totalSignUps = signUps(users, 0, chosenWeek);
+                    var retained = retainedUsers(repeatGroup, users, 0, fourWeeksBefore);
+                    var activatedWeek = activatedThisWeek(activeTeachers[0], signUpsGroup(users, twoWeeksBefore, chosenWeek)) +activatedThisWeek(activeTeachers[1], signUpsGroup(users, twoWeeksBefore, chosenWeek));
+
                     var schools = activeSchools(users, chosenWeek);
                     var schoolsMulti = multiSchools(schools);
                     var emailList = activatedList(activeTeachers[0], users);
@@ -333,7 +337,8 @@ var generateData = function(chosenWeek, callback) {
                         "activeList": activeList,
                         "schools": Object.keys(schools).length,
                         "schoolsMulti": schoolsMulti,
-                        "activatedRatio": Math.floor(((activatedWeek)/signUpThisWeek)*100)
+                        "activatedRatio": ((activatedWeek/signUpWeekBefore)*100).toFixed(3),
+                        "activatedOverall": ((activated/totalSignUps)*100).toFixed(3)
                     };
 
                     console.log(calculatedMetrics);
