@@ -1,0 +1,64 @@
+extends ./layout
+
+block body 
+    -function prettyDate(dateString){
+        //if it's already a date object and not a string you don't need this line:
+        -if (dateString=="" || dateString=="0") return "";
+        -var date = new Date(dateString);
+        -var d = date.getDate();
+        -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = monthNames[date.getMonth()];
+        -var y = date.getFullYear();
+        -var result = d+' '+m+' '+y;
+        -if(result=="1 Jan 1970") return "";
+        -return result;
+    -}
+    script.
+        $(function(){
+            
+            //- $('.date').each(function(){
+            //-     this.append($("<p />").text(prettyDate(this.val)));
+            //- });
+        })
+    p hello world
+    h1 Pending Quizzes
+    .container-fluid
+        .row
+            table(border="1", style="background-color:white;font-size:12px; width:100%")
+                thead
+                    th number
+                    th created
+                    th updated
+                    th Name
+                    th preview
+                tbody
+                    console.log("sorting quizzes")
+                    -quizzes.sort(function(x, y){
+                        -if (!x.updated) {
+                            -return -1;
+                        -}
+                        -if (!y.updated) {
+                            -return 1;
+                        -}
+                        -return y.updated - x.updated;
+                    -});
+                    -var count = 0;
+
+                for quiz in quizzes
+                    if quiz.payload.length >400
+                        -count = count + 1;
+                        tr
+                            td  #{count}
+                            td #{prettyDate(quiz.created)} 
+                            td #{prettyDate(quiz.updated)} 
+                            td
+                                if quiz.meta && quiz.meta.name
+                                    p #{quiz.meta.name}
+                                else
+                                    p No Name?
+                                    
+                            td            
+                                if quiz.type == "quiz"
+                                    a(href="https://www.quizalize.com/quiz/create/#{quiz.uuid}") Editor    
+                                else            
+                                    a(href="https://www.quizalize.com/quiz/app/#{quiz.uuid}") Editor    

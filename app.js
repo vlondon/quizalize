@@ -135,6 +135,7 @@ app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishT
 if (process.env.admin === "true") {
     app.get('/admin/', admin.index);
     app.get('/admin/approved', admin.approved);
+    app.get('/admin/quizlist', admin.quizlist);
     app.get('/admin/pending', admin.pendingQuizzes);
     app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
@@ -199,6 +200,7 @@ app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
 //app.get('/packages', quiz.packages);
 app.get('/publishers', quiz.publishers);
+app.get('/publisher', quiz.publisher);
 app.get('/faq', quiz.faq);
 app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);

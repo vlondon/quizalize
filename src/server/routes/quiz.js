@@ -197,7 +197,11 @@ exports.landing = function(req, res){
 };
 exports.publishers = function(req,res){
     res.render('publishers');
-}
+};
+
+exports.publisher = function(req, res){
+    res.render('publisher');
+};
 
 exports.terms = function(req, res){
     res.render('terms');
