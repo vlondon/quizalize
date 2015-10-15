@@ -1,5 +1,5 @@
 /* @flow */
-import TransactionStore from './../stores/TransactionStore';
+import { TransactionStore } from './../stores';
 export default function(price : mixed, currency : string = '£', country : string = 'uk') : string {
 
     if (!price) { return 'Free'; }

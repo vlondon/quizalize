@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import CQLink from './../../../components/utils/CQLink';
+import { CQLink } from './../../../components';
 
 let CQOwnProfileCounter = ({amount} : {amount: number}): any => {
     // TODO: Francesco to review the copy

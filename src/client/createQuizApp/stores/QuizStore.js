@@ -1,7 +1,7 @@
 /* @flow */
 import Store from './Store';
-import MeStore from './MeStore';
-
+import {MeStore} from './../stores';
+console.log('wahhaha, MeStore', MeStore);
 import uuid from 'node-uuid';
 
 import AppDispatcher from './../dispatcher/CQDispatcher';
@@ -179,7 +179,7 @@ class QuizStore extends Store {
         } else {
             fullQuiz = new QuizObject();
             _fullQuizzes[fullQuiz.uuid] = fullQuiz;
-            
+
         }
         return fullQuiz;
     }

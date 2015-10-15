@@ -1,16 +1,10 @@
 var React = require('react');
 
-
 var CQAppGrid = React.createClass({
 
-
-
     getInitialState: function() {
-
         return {};
     },
-
-
 
     render: function() {
 

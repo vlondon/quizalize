@@ -1,19 +1,18 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import { router } from './../../../config';
 
+import {
+    CQPageTemplate,
+    CQViewAppQuizList
+} from './../../../components';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
+var { TransactionActions } = require('./../../../actions');
 
-import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
+import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
 import CQOwnProfileCounter from './CQOwnProfileCounter';
-// var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
-
-var TransactionActions = require('./../../../actions/TransactionActions');
-
-import type {Quiz} from './../../../stores/QuizStore';
-import type {AppType} from './../../../stores/AppStore';
+import type { Quiz } from './../../../../../types';
+import type { AppType } from './../../../../../types';
 
 
 let getPrivateQuizzes = (apps) => {

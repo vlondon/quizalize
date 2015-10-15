@@ -1,11 +1,12 @@
-
+/* @flow */
 import React, { PropTypes } from 'react';
-import type {Quiz} from './../../../stores/QuizStore';
-import GroupStore from './../../../stores/GroupStore';
-import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
+import { GroupStore } from './../../../stores';
+import { CQPublishQuiz } from './../../../components';
 
-var QuizActions     = require(`./../../../actions/QuizActions`);
-var router          = require(`./../../../config/router`);
+import { QuizActions } from './../../../actions';
+import { router }  from './../../../config';
+
+import type {Quiz} from './../../../../../types';
 
 type Props = {
     quiz: Quiz;
@@ -20,18 +21,18 @@ class CQQuizzesProfile extends React.Component {
         this.handleAssign = this.handleAssign.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
-    handleShare(ev){
+    handleShare(ev : Event){
         ev.stopPropagation();
         router.setRoute(`/quiz/published/${this.props.quiz.uuid}/share`);
     }
-    handleEdit(ev){
+    handleEdit(ev : Event){
         ev.stopPropagation();
         if (this.props.quiz){
             router.setRoute(`/quiz/create/${this.props.quiz.uuid}`);
         }
 
     }
-    handlePreview(ev){
+    handlePreview(ev : Event){
         ev.stopPropagation();
         var quiz = this.props.quiz;
         sessionStorage.setItem('mode', 'teacher');
@@ -46,14 +47,14 @@ class CQQuizzesProfile extends React.Component {
 
     }
 
-    handleAssign(ev){
+    handleAssign(ev : Event){
         ev.stopPropagation();
         var quiz = this.props.quiz;
         if (quiz){
             router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
         }
     }
-    handleDelete(ev){
+    handleDelete(ev : Event){
         ev.stopPropagation();
         var quiz = this.props.quiz;
         var found = false;

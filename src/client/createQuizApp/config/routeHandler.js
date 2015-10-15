@@ -1,7 +1,7 @@
 /* @flow */
 import { Router, Route } from 'react-router';
 import history from './history';
-import MeStore from './../stores/MeStore';
+import {MeStore} from './../stores';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

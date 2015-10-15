@@ -1,21 +1,25 @@
 /* @flow */
-import type { Quiz, Question } from './../../../stores/QuizStore';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from  'react';
+import ReactDOM from  'react-dom';
 
-var CQLatexString = require('./../../../components/utils/CQLatexString');
+import {
+    QuizStore,
+    TopicStore
+} from './../../../stores';
 
-import QuizStore from './../../../stores/QuizStore';
-import CQAutofill from './../../../components/utils/CQAutofill';
+import {
+    CQAutofill,
+    CQImageUploader,
+    CQLatexString
+} from './../../../components';
+
+
+import { MediaActions } from './../../../actions';
+import { imageUrlParser } from './../../../utils';
+import type { Quiz, Question } from './../../../../../types';
+
 import CQEditDurationPicker from './CQEditDurationPicker';
-import TopicStore from './../../../stores/TopicStore';
-import CQImageUploader from './../../../components/utils/CQImageUploader';
-
-import MediaActions from './../../../actions/MediaActions';
-
-import imageUrlParser from './../../../utils/imageUrlParser';
-
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {

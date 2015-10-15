@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import CQLink from './../../utils/CQLink';
-var router = require('createQuizApp/config/router');
+/* @flow */
+import React  from 'react';
+import { CQLink } from './../../../components';
+import { router } from './../../../config';
 
 
 class CQPublicFooter extends React.Component {
@@ -8,8 +9,8 @@ class CQPublicFooter extends React.Component {
     handleClick() {
         router.setRoute(`/quiz/create`);
     }
-    
-    render () {
+
+    render () : any {
         return (
             <div className="cq-public__footer">
                 <div className="cq-public__footer__copy">

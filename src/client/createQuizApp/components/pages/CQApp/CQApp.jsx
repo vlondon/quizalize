@@ -1,8 +1,13 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import { router } from './../../../config';
 
-import {AppStore, TopicStore, MeStore} from './../../../stores';
+import {
+    AppStore,
+    TopicStore,
+    MeStore,
+    TransactionStore
+} from './../../../stores';
 
 import {
     CQViewQuizPrice,
@@ -13,9 +18,8 @@ import {
     CQViewQuizList,
 } from './../../../components';
 
-import priceFormat from './../../../utils/priceFormat';
-var TransactionActions = require('./../../../actions/TransactionActions');
-import TransactionStore from './../../../stores/TransactionStore';
+import { priceFormat } from './../../../utils';
+import { TransactionActions } from './../../../actions';
 
 
 import type {Quiz} from './../../../stores/QuizStore';

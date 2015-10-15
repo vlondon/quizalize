@@ -1,23 +1,28 @@
 /* @flow */
 import React from 'react';
 
-import router from './../../../config/router';
+import { router } from './../../../config';
+import {
+    CQSpinner,
+    CQAutofill,
+    CQPublishQuiz
+} from './../../../components';
 
-import CQSpinner from './../../../components/utils/CQSpinner';
+import {
+    QuizStore,
+    TopicStore
+} from './../../../stores';
+
+
+import {
+    QuizActions,
+    AnalyticsActions
+} from './../../../actions';
+
+import { urlParams } from './../../../utils';
+import type {QuizComplete, Question} from './../../../../../types';
 import CQQuestionList from './CQQuestionList';
-import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditIcon from './CQEditIcon';
-import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
-
-
-import QuizStore from './../../../stores/QuizStore';
-import TopicStore from './../../../stores/TopicStore';
-
-import QuizActions from './../../../actions/QuizActions';
-import AnalyticsActions from './../../../actions/AnalyticsActions';
-
-import urlParams from './../../../utils/urlParams';
-import type {QuizComplete, Question} from './../../../stores/QuizStore';
 
 type Props = {
     routeParams: {

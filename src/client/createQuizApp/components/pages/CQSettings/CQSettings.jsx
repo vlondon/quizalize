@@ -1,22 +1,26 @@
 /* @flow */
-var React = require('react');
+import React from 'react';
+
+import { router } from './../../../config';
+import {
+    CQPageTemplate,
+    CQViewProfilePicture,
+    CQImageUploader,
+} from './../../../components';
+
+import {
+    UserActions,
+    MediaActions
+} from './../../../actions';
+import { sendEvent } from './../../../actions/AnalyticsActions';
+
+
+import { MeStore } from './../../../stores';
+import { urlParams } from './../../../utils';
+import { imageUrlParser } from './../../../utils';
 
 import CQSettingsSubscriptions from './CQSettingsSubscriptions';
-import type {UserType} from './../../../../../types/UserType';
-import CQPageTemplate from './../../../components/CQPageTemplate';
-import CQViewProfilePicture from './../../../components/views/CQViewProfilePicture';
-import UserActions from './../../../actions/UserActions';
-import router from './../../../config/router';
-
-
-import MeStore from './../../../stores/MeStore';
-import {urlParams} from './../../../utils';
-import {sendEvent} from './../../../actions/AnalyticsActions';
-
-import CQImageUploader from './../../../components/utils/CQImageUploader';
-import MediaActions from './../../../actions/MediaActions';
-import imageUrlParser from './../../../utils/imageUrlParser';
-
+import type {UserType} from './../../../../../types';
 
 
 type Params = {

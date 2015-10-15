@@ -1,11 +1,14 @@
-var React = require('react');
+import React from 'react';
 
-var TransactionStore = require('createQuizApp/stores/TransactionStore');
+import {
+    TransactionStore,
+    QuizStore
+} from 'createQuizApp/stores';
 
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
 
-var priceFormat = require('createQuizApp/utils/priceFormat');
+import QuizActions from 'createQuizApp/actions/QuizActions';
+
+import { priceFormat } from 'createQuizApp/utils';
 
 var CQViewQuizMarketplaceOptions = React.createClass({
 

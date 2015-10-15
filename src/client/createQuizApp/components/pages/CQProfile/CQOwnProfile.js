@@ -1,8 +1,8 @@
 /* @flow */
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import CQProfileView from './CQProfileView';
-import MeStore from './../../../stores/MeStore';
-import TransactionActions from './../../../actions/TransactionActions';
+import { MeStore } from './../../../stores';
+import { TransactionActions } from './../../../actions';
 
 type Props = {
     routeParams: {

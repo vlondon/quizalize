@@ -2,8 +2,8 @@
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {GroupConstants} from './../constants';
 import {GroupApi} from './../actions/api';
-import GroupStore from './../stores/GroupStore';
-import router from './../config/router';
+import {GroupStore} from './../stores';
+import {router} from './../config';
 
 var GroupActions = {
 

@@ -1,10 +1,13 @@
 /* @flow */
 import React, {PropTypes} from 'react';
+import { CQPageTemplate } from './../../../components';
+import {
+    QuizStore,
+    MeStore
+} from './../../../stores';
+import { router } from './../../../config';
+import type { QuizComplete } from './../../../../../types';
 import CQEditView from './CQEditView';
-import CQPageTemplate from './../../../components/CQPageTemplate';
-import {QuizStore, MeStore} from './../../../stores';
-import type {QuizComplete} from './../../../stores/QuizStore';
-import router from './../../../config/router';
 
 type Props = {
     routeParams: Object;

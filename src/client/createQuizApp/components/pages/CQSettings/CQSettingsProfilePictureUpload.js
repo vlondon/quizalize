@@ -1,10 +1,16 @@
-import React from 'react';
+/* @flow */
+import React, { PropTypes } from 'react';
 
-import CQImageUploader from './../../../components/utils/CQImageUploader';
-import MediaActions from './../../../actions/MediaActions';
-
+import { CQImageUploader } from './../../../components';
+import { MediaActions } from './../../../actions';
+import type { Quiz } from './../../../../../types';
+type Props = {
+    quiz: Quiz;
+    onIcon: Function;
+};
 class CQSettingsProfilePictureUpload extends React.Component {
 
+    props: Props;
     constructor(props : Props) {
         super(props);
         this.state = {};
@@ -28,7 +34,7 @@ class CQSettingsProfilePictureUpload extends React.Component {
     }
 
 
-    render () {
+    render () : any {
         return (
             <div>
                 <CQImageUploader
@@ -41,5 +47,8 @@ class CQSettingsProfilePictureUpload extends React.Component {
         )
     }
 }
-
+CQSettingsProfilePictureUpload.propTypes = {
+    quiz: PropTypes.object,
+    onIcon: PropTypes.function
+}
 export default CQSettingsProfilePictureUpload;

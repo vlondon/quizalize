@@ -1,8 +1,7 @@
-var React = require('react');
-var UserStore = require('createQuizApp/stores/UserStore');
-var UserIdStore = require('createQuizApp/stores/UserIdStore');
-var CQViewProfilePicture = require('createQuizApp/components/views/CQViewProfilePicture');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import React from 'react';
+import {UserStore, UserIdStore} from 'createQuizApp/stores';
+import CQViewProfilePicture from 'createQuizApp/components/views/CQViewProfilePicture';
+import CQLink from 'createQuizApp/components/utils/CQLink';
 
 import imageUrlParser from './../../../../utils/imageUrlParser';
 

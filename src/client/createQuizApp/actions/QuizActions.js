@@ -1,12 +1,12 @@
-import type {Quiz, QuizComplete} from './../stores/QuizStore';
 import uuid                from 'node-uuid';
 
 
 import AppDispatcher       from './../dispatcher/CQDispatcher';
 import {QuizConstants} from './../constants';
-import {QuizApi}             from './../actions/api';
+import {QuizApi} from './../actions/api';
 import {router}              from './../config';
 
+import type {Quiz, QuizComplete} from './../stores/QuizStore';
 import {
     UserActions,
     AnalyticsActions,

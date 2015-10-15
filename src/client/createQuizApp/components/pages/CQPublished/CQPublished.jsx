@@ -1,19 +1,22 @@
 /* @flow */
 import React from 'react';
-import router from './../../../config/router';
+import { router } from './../../../config';
 
-import CQViewClassList from './../../../components/views/CQViewClassList';
-import CQViewQuizMarketplaceOptions from './../../../components/views/CQViewQuizMarketplaceOptions';
+import {
+    CQViewClassList,
+    CQViewQuizMarketplaceOptions,
+    CQPageTemplate,
+    CQViewShareQuiz,
+    CQLink
+} from './../../../components';
 
-import CQLink from './../../../components/utils/CQLink';
+import { GroupActions } from './../../../actions';
+import {
+    GroupStore,
+    QuizStore
+} from './../../../stores';
 
-import CQPageTemplate from './../../../components/CQPageTemplate';
-import GroupActions from './../../../actions/GroupActions';
-import GroupStore  from './../../../stores/GroupStore';
-import QuizStore from './../../../stores/QuizStore';
-import type { QuizComplete } from './../../../stores/QuizStore';
-import CQViewShareQuiz from './../../../components/views/CQViewShareQuiz';
-
+import type { QuizComplete } from './../../../../../types';
 
 type Props = {
     routeParams: { quizId: string };

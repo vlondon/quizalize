@@ -11,26 +11,30 @@ import CQDashboard from './pages/CQDashboard';
 import CQEdit from './pages/CQEdit';
 import CQLogin from './pages/CQLogin';
 import CQMarketplace from './pages/CQMarketplace';
-import CQNotFOund from './pages/CQNotFound';
+import CQNotFound from './pages/CQNotFound';
 import CQPremium from './pages/CQPremium';
 import CQProfile from './pages/CQProfile';
 import CQOwnProfile from './pages/CQProfile/CQOwnProfile';
-import CQPorilfeSlug from './pages/CQProfile/CQProfileSlug';
+import CQProfileSlug from './pages/CQProfile/CQProfileSlug';
 import CQPublished from './pages/CQPublished';
+import CQPublishedPublished from './pages/CQPublished/CQPublishedPublished';
+import CQPublishedAssign from './pages/CQPublished/CQPublishedAssign';
+import CQPublishedShare from './pages/CQPublished/CQPublishedShare';
 import CQPublishedInfo from './pages/CQPublishedInfo';
 import CQQuizzes from './pages/CQQuizzes';
 import CQRecoverPassword from './pages/CQRecoverPassword';
 import CQRedirect from './pages/CQRedirect';
 import CQRegister from './pages/CQRegister';
 import CQRestorePassword from './pages/CQRestorePassword';
-// CQReivew from './pages/CQReview';
+import CQReview from './pages/CQReview';
 import CQSettings from './pages/CQSettings';
+import CQSettingsSubscriptions from './pages/CQSettings/CQSettingsSubscriptions';
 import CQTransactions from './pages/CQTransactions';
 import CQWelcome from './pages/CQWelcome';
 import CQYourApps from './pages/CQYourApps';
 
 // pages/shared
-import CQLoginFrom from './pages/shared/CQLoginForm';
+import CQLoginForm from './pages/shared/CQLoginForm';
 import CQZzishLogin from './pages/shared/CQZzishLogin';
 
 
@@ -78,23 +82,28 @@ export {
     CQEdit,
     CQLogin,
     CQMarketplace,
-    CQNotFOund,
+    CQNotFound,
     CQPremium,
     CQProfile,
     CQOwnProfile,
-    CQPorilfeSlug,
+    CQProfileSlug,
     CQPublished,
+    CQPublishedPublished,
+    CQPublishedAssign,
+    CQPublishedShare,
     CQPublishedInfo,
     CQQuizzes,
     CQRecoverPassword,
     CQRedirect,
     CQRegister,
     CQRestorePassword,
+    CQReview,
     CQSettings,
+    CQSettingsSubscriptions,
     CQTransactions,
     CQWelcome,
     CQYourApps,
-    CQLoginFrom,
+    CQLoginForm,
     CQZzishLogin,
     CQAnalytics,
     CQAutofill,

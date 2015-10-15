@@ -1,13 +1,30 @@
-var React = require('react');
+/* @flow */
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import {
+    CQPageTemplate,
+    CQLink
+} from './../../../components';
 
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-var TopicStore = require('createQuizApp/stores/TopicStore');
 
+import { GroupActions } from './../../../actions';
+import {
+    GroupStore,
+    TopicStore,
+    QuizStore
+}  from './../../../stores';
+
+import type {
+    Group,
+    GroupContent,
+    Quiz,
+} from './../../../../../types';
+type State = {
+    groups: Array<Group>;
+    groupsContent: Array<GroupContent>;
+    quizzes: Array<Quiz>;
+    publicQuizzes: Array<Quiz>;
+}
 var CQAssignments = React.createClass({
 
     getInitialState: function() {
@@ -25,7 +42,7 @@ var CQAssignments = React.createClass({
         QuizStore.removeChangeListener(this.onChange);
     },
 
-    getState: function(){
+    getState: function() : State {
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
@@ -37,8 +54,8 @@ var CQAssignments = React.createClass({
 
     },
 
-    _getAssignments: function(groupCode){
-        var selectPublicQuiz = (quizId) => {
+    _getAssignments: function(groupCode : string) : Array<Quiz>{
+        var selectPublicQuiz = (quizId : string) => {
             if (typeof this.state.publicQuizzes !== 'object'){
                 return [];
             }
@@ -68,7 +85,7 @@ var CQAssignments = React.createClass({
         this.setState(this.getState());
     },
 
-    handleUnpublish: function(quizId, groupCode){
+    handleUnpublish: function(quizId : string, groupCode : string ){
         console.log('about to unpublish', quizId, groupCode);
         GroupActions.unpublishAssignment(quizId, groupCode);
     },
