@@ -3,7 +3,7 @@ import React from 'react';
 
 import router from './../../../config/router';
 
-import CQPageTemplate from './../../../components/CQPageTemplate';
+import CQSpinner from './../../../components/utils/CQSpinner';
 import CQQuestionList from './CQQuestionList';
 import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditIcon from './CQEditIcon';
@@ -24,6 +24,7 @@ type Props = {
         questionIndex: ?string;
         quizId: string;
     };
+    quiz: QuizComplete;
 };
 
 type State = {
@@ -35,7 +36,7 @@ type State = {
     quizImageFile?: Object;
 };
 
-export default class CQEdit extends React.Component {
+export default class CQEditView extends React.Component {
 
     props: Props;
     state: State;
@@ -46,7 +47,7 @@ export default class CQEdit extends React.Component {
             mode: 'Create',
             pristine: true,
             saveEnabled: true,
-            quiz: this.getQuiz()
+            quiz: this.props.quiz
         };
         var state = this.getState(props);
         state.mode = 'Create';
@@ -321,7 +322,7 @@ export default class CQEdit extends React.Component {
         QuizActions.newQuiz(this.state.quiz).then(callback);
     }
 
-    render() {
+    render() : any {
         if (this.state.quiz){
 
             var placeholderForName = 'e.g. Enter a quiz name';
@@ -335,7 +336,7 @@ export default class CQEdit extends React.Component {
             };
 
             return (
-                <CQPageTemplate className="cq-container cq-edit">
+                <div>
                     <div className="cq-edit__top">
 
                         <div className="cq-edit__icon">
@@ -409,14 +410,18 @@ export default class CQEdit extends React.Component {
                         </div>
                     </div>
 
-                </CQPageTemplate>
+                </div>
             );
         } else {
             // add a loading animation
-            return (<div>Loading</div>);
+            return (
+                <div>
+                    <CQSpinner/>
+                </div>);
         }
     }
 }
-CQEdit.propTypes = {
-    routeParams: React.PropTypes.object
+CQEditView.propTypes = {
+    routeParams: React.PropTypes.object,
+    quiz: React.PropTypes.object.isRequired,
 };

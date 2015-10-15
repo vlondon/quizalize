@@ -96,7 +96,6 @@ AppDispatcher.register(function(action) {
 
         case UserConstants.USER_PUBLIC_LOADED:
             console.log('UserConstants.USER_PUBLIC_LOADED', action);
-            debugger;
             var user = action.payload;
             var apps = fillApps(user.apps, user.quizzes, user);
             user = {...user, apps};

@@ -171,19 +171,15 @@ class QuizStore extends Store {
                         this.emitChange();
                     });
                 //create empty quiz?
-            }
-        } else {
-            let user = MeStore.state;
-            let {accountType} = user.attributes;
-            console.log('new quiz', accountType, this.getPrivateQuizzes());
-            let quizzes = this.getPrivateQuizzes();
-            if (accountType === 0 && quizzes.length >= 5) {
-                // TODO Francesco fix the copy
-                window.swal(`You've reached your limit`, `You have reached your limit of private quizzes`);
             } else {
                 fullQuiz = new QuizObject();
                 _fullQuizzes[fullQuiz.uuid] = fullQuiz;
             }
+
+        } else {
+            fullQuiz = new QuizObject();
+            _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+            
         }
         return fullQuiz;
     }
