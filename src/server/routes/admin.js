@@ -105,7 +105,13 @@ var approveDocument = function(req, res, doc) {
 exports.index = function(req, res){
     res.render("admin/index");
 };
-
+exports.quizlist = function(req, res){
+    console.log("Querying DB");
+    zzish_db.secure.post("db/content/query/", {"query": "{'meta.originalQuizId':{$exists:false}, 'type': 'quiz', 'meta.published': {$exists: false}}", "project":"{'updated':1, 'type':1, 'meta': 1, 'uuid': 1, 'name':1, 'payload':1, 'created':1}"}, function(err, quizzes) {
+        console.log("Fetching quizzes");
+        res.render("admin/quizlist", { quizzes: JSON.parse(quizzes.payload)});
+    });
+};
 exports.pendingQuizzes = function(req, res){
     // db.findDocuments("subject",{}, 1, function(err, subjects) {
     //     var subjectArray = subjects.map(function(item) {
