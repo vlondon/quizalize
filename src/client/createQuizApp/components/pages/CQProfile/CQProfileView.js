@@ -6,7 +6,6 @@ var router = require('./../../../config/router');
 var CQPageTemplate = require('./../../../components/CQPageTemplate');
 var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
 
-var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
 import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
 import CQOwnProfileCounter from './CQOwnProfileCounter';
 // var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
@@ -87,7 +86,7 @@ class CQProfileView extends React.Component {
         var headerCta;
         var amountOfPrivateQuizzes = getPrivateQuizzes(this.props.apps).length;
 
-        var quizList, headerCta, noQuizMessage;
+        var headerCta, noQuizMessage;
 
         if (this.props.own) {
 
@@ -123,16 +122,6 @@ class CQProfileView extends React.Component {
         //         quizId={this.state.quizDetails}/>);
                 // quizCode={this.props.quizCode}
         // }
-        var quizzes = this.props.quizzes || [];
-        quizList = (
-            <CQViewQuizList
-                isQuizInteractive={true}
-                isPaginated={true}
-                onQuizClick={this.handleDetails}
-                quizzes={quizzes}
-                className="cq-public__list"
-                sortBy="time"/>
-        );
 
         return (
             <CQPageTemplate className="cq-container cq-profile">
