@@ -418,7 +418,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var score;
         questionDuration = questionDuration * 1000;
         if (correct) {
-            score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer) {
+                score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+            }
+            else {
+                score = maxScore;
+            }
         } else {
             score = 0;
         }
