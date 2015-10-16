@@ -19,12 +19,6 @@ import {
 } from './../actions';
 
 
-
-
-
-
-
-
 type QuizCategory = {
     name: string;
     title: string;
@@ -72,9 +66,9 @@ export type QuizComplete = {
 }
 
 export type Quiz = {
+    _category?: QuizCategory;
     uuid: string;
     meta: QuizMeta;
-    _category?: QuizCategory;
 }
 
 let _quizzes: Array<Quiz> = [];

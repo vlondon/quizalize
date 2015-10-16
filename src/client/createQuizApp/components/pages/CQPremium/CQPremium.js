@@ -9,7 +9,10 @@ import {
 import { MeStore } from './../../../stores';
 
 type Props = {};
+
 class CQPremium extends React.Component {
+
+    props: Props;
 
     constructor(props : Props){
         super(props);
@@ -30,7 +33,7 @@ class CQPremium extends React.Component {
 
     render () {
         return (
-            <CQPageTemplate>
+            <CQPageTemplate className="cq-container cq-premium">
                 <CQSettingsSubscriptions user={MeStore.state}/>
             </CQPageTemplate>
         );

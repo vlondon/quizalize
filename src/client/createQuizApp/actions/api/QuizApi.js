@@ -2,7 +2,7 @@
 var request = require('superagent');
 var noCache = require('superagent-no-cache');
 
-import type {Quiz} from './../../stores/QuizStore';
+import type {Quiz, QuizComplete} from './../../../../types';
 import type {Topic} from './../../stores/TopicStore';
 import MeStore from './../../stores/MeStore';
 
@@ -35,7 +35,7 @@ var QuizApi = {
 
         var promises = [];
 
-        return function(search: string = '', categoryId: string, profileId: string) : Promise {
+        return function(search: string = '', categoryId: string, profileId?: string) : Promise {
 
             var chosenPromise = promises.filter(p => p.search === search && p.categoryId === categoryId)[0];
             if (chosenPromise){
@@ -205,7 +205,7 @@ var QuizApi = {
         });
     },
 
-    putQuiz: function(quiz : Quiz) : Promise {
+    putQuiz: function(quiz : QuizComplete) : Promise {
         return new Promise(function(resolve, reject){
             var uuid = MeStore.getUuid();
             if (!uuid) {
@@ -225,7 +225,7 @@ var QuizApi = {
         });
 
     },
-    shareQuiz: function(quizId : string, data: Quiz) : Promise {
+    shareQuiz: function(quizId : string, data: {email: string; quiz: Quiz; emails?: Array<string>; link?: string }) : Promise {
         return new Promise(function(resolve, reject){
             var uuid = MeStore.getUuid();
 

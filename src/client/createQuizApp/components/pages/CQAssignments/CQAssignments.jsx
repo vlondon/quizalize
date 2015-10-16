@@ -19,6 +19,7 @@ import type {
     GroupContent,
     Quiz,
 } from './../../../../../types';
+
 type State = {
     groups: Array<Group>;
     groupsContent: Array<GroupContent>;
@@ -112,7 +113,7 @@ var CQAssignments = React.createClass({
                 <p>Here are your classes. You can click on "Open Game" to see live dashboard and reports for that quiz.</p>
 
                     {this.state.groups.map(classN => {
-                        classN.fulllink = classN.link+"one";
+                        let fulllink = classN.link + 'one';
                         var noQuizzes;
 
                         if (this._getAssignments(classN.code).length === 0) {
@@ -128,7 +129,7 @@ var CQAssignments = React.createClass({
                             <div className="cq-classes__class">
                                 <h3 className="cq-classes__class__name">
                                     {classN.name}
-                                    <a href={classN.fulllink} target="_blank" className="btn btn-info pull-right">
+                                    <a href={fulllink} target="_blank" className="btn btn-info pull-right">
                                         Open {classN.name} Zzish Dashboard
                                     </a>
                                 </h3>

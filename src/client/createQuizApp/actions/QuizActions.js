@@ -1,12 +1,12 @@
-import uuid                from 'node-uuid';
+/* @flow */
+import uuid from 'node-uuid';
 
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import { QuizConstants } from './../constants';
+import { QuizApi } from './../actions/api';
+import { router } from './../config';
 
-import AppDispatcher       from './../dispatcher/CQDispatcher';
-import {QuizConstants} from './../constants';
-import {QuizApi} from './../actions/api';
-import {router}              from './../config';
-
-import type {Quiz, QuizComplete} from './../stores/QuizStore';
+import type {Quiz, QuizComplete} from './../../../types';
 import {
     UserActions,
     AnalyticsActions,
@@ -18,7 +18,7 @@ import {
     MeStore
 } from './../stores';
 
-import {debounce} from './../utils';
+import { debounce } from './../utils';
 
 
 var createNewTopicsForQuiz = function(quiz){
@@ -121,7 +121,7 @@ var QuizActions = {
     },
 
 
-    saveReview: function(purchased:Quiz) : Promise {
+    saveReview: function(purchased:QuizComplete) : Promise {
 
         return new Promise(function(resolve, reject){
 
@@ -310,6 +310,7 @@ var QuizActions = {
     publishQuiz: function(quiz:Quiz, settings:Object)  {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
+        quiz.meta.updated = Date.now();
         QuizApi.publishQuiz(quiz);
         AnalyticsActions.sendEvent('quiz', 'publish', quiz.meta.name);
         AnalyticsActions.sendIntercomEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});

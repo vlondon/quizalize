@@ -1,5 +1,6 @@
 
 export type Group = {
+    nameTest: string;
     code: string;
     link: string;
     name: string;
