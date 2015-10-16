@@ -39,6 +39,48 @@
 
     &__explanation {
         position: absolute;
+        font-size: 30px;
+        color: #FFF;
+        background: rgba($brand-color-purple, .9);
+        padding: 20px 40px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        text-align: center;
+
+        @include media($size-tablet) {
+            // background: rgba($brand-color-purple, 1);
+            text-align: center;
+            top: 20px;
+            right: 20px;
+            width: 340px;
+            bottom: auto;
+            left: auto;
+
+        }
+
+        &__cta {
+            width: 220px;
+            margin: auto;
+            margin-top: 200px;
+            background: #FFF;
+            color: $brand-color-purple;
+            text-align: center;
+            padding: 5px;
+            border-radius: 20px;
+
+            @include media($size-tablet) {
+                margin-left: -20px;
+            }
+
+        }
+        &__content {
+            font-size:25px;
+        }
+    }
+
+    &__explanations {
+        position: absolute;
         font-size: 40px;
         color: #FFF;
         background: rgba($brand-color-purple, .9);
@@ -73,6 +115,9 @@
                 margin-left: -20px;
             }
 
+        }
+        &__content {
+            font-size:25px;
         }
     }
 
