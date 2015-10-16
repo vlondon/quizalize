@@ -1,12 +1,15 @@
-var React = require('react');
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+import { CQPageTemplate } from './../../../components';
 
-
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
+import {
+    GroupActions,
+    QuizActions
+} from './../../../actions';
+import {
+    GroupStore,
+    QuizStore
+} from './../../../stores';
 
 
 var CQPublishedInfo = React.createClass({

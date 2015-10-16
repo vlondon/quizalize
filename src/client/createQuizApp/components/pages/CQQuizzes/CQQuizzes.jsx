@@ -1,24 +1,30 @@
 /* @flow */
-import type {Quiz} from './../../../stores/QuizStore';
-
 var React = require('react');
 
-var router          = require(`./../../../config/router`);
+import { router } from './../../../config';
 
-var TransactionActions = require(`./../../../actions/TransactionActions`);
-var QuizActions     = require(`./../../../actions/QuizActions`);
-var QuizStore       = require(`./../../../stores/QuizStore`);
-var GroupStore      = require(`./../../../stores/GroupStore`);
+import {
+    TransactionActions,
+    QuizActions
+} from './../../../actions';
 
-var MeStore       = require(`./../../../stores/MeStore`);
+import {
+    QuizStore,
+    GroupStore,
+    MeStore
+} from './../../../stores';
 
-var CQViewQuizList  = require(`./../../../components/views/CQViewQuizList`);
-var CQViewCreateApp = require('./../../../components/views/CQViewCreateApp');
-var CQSpinner       = require(`./../../../components/utils/CQSpinner`);
-var CQPublishQuiz   = require(`./../../../components/utils/CQPublishQuiz`);
 
-var CQPageTemplate  = require(`./../../../components/CQPageTemplate`);
-var CQLink          = require(`./../../../components/utils/CQLink`);
+import {
+    CQViewQuizList,
+    CQViewCreateApp,
+    CQSpinner,
+    CQPublishQuiz,
+    CQPageTemplate,
+    CQLink
+}  from './../../../components';
+
+import type { Quiz } from './../../../../../types';
 
 type State = {
     selectedQuizzes?: Array<Object>;
@@ -236,7 +242,7 @@ var CQQuizzes = React.createClass({
                     onAssign={this.handleAssign}
                     onDelete={this.handleDelete}>
 
-                    <CQPublishQuiz className="cq-quizzes__button--publish"/>
+                    {/* <CQPublishQuiz className="cq-quizzes__button--publish"/>*/}
 
                     <button className="cq-quizzes__button--share" onClick={this.handleShare}>
                         <span className="fa fa-share"></span> Share

@@ -1,29 +1,36 @@
 /* @flow */
 import React from 'react';
 
-import router from './../../../config/router';
+import { router } from './../../../config';
+import {
+    CQSpinner,
+    CQAutofill,
+    CQPublishQuiz
+} from './../../../components';
 
-import CQPageTemplate from './../../../components/CQPageTemplate';
+import {
+    QuizStore,
+    TopicStore
+} from './../../../stores';
+
+
+import {
+    QuizActions,
+    AnalyticsActions
+} from './../../../actions';
+
+import { urlParams } from './../../../utils';
+import type {QuizComplete, Question} from './../../../../../types';
+
 import CQQuestionList from './CQQuestionList';
-import CQAutofill from './../../../components/utils/CQAutofill';
 import CQEditIcon from './CQEditIcon';
-
-
-import QuizStore from './../../../stores/QuizStore';
-import type {QuizComplete, Question} from './../../../stores/QuizStore';
-import QuizActions from './../../../actions/QuizActions';
-import CQPublishQuiz from './../../../components/utils/CQPublishQuiz';
-
-import TopicStore from './../../../stores/TopicStore';
-import AnalyticsActions from './../../../actions/AnalyticsActions';
-
-import urlParams from './../../../utils/urlParams';
 
 type Props = {
     routeParams: {
         questionIndex: ?string;
         quizId: string;
     };
+    quiz: QuizComplete;
 };
 
 type State = {
@@ -35,19 +42,14 @@ type State = {
     quizImageFile?: Object;
 };
 
-export default class CQEdit extends React.Component {
+export default class CQEditView extends React.Component {
 
     props: Props;
     state: State;
 
     constructor(props : Props) {
         super(props);
-        this.state = {
-            mode: 'Create',
-            pristine: true,
-            saveEnabled: true,
-            quiz: this.getQuiz()
-        };
+
         var state = this.getState(props);
         state.mode = 'Create';
         state.saveEnabled = true;
@@ -74,7 +76,8 @@ export default class CQEdit extends React.Component {
     getQuiz() : QuizComplete {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.routeParams.quizId;
         var quiz = QuizStore.getQuiz(quizId);
-        console.info('quiz quiz quiz', quiz);
+        console.info("Quiz ID", quizId, quiz);
+
         return quiz;
     }
 
@@ -86,7 +89,6 @@ export default class CQEdit extends React.Component {
             this.setState({quiz});
         }
     }
-
 
 
     componentDidMount() {
@@ -104,12 +106,7 @@ export default class CQEdit extends React.Component {
     }
 
     onChange(props : ?Props){
-
         props = props || this.props;
-
-        // TODO: we need to load the quiz without having to worry about
-        // if the quiz store have finished loading
-
         if (props) {
             this.setState(this.getState(props));
         }
@@ -121,7 +118,6 @@ export default class CQEdit extends React.Component {
         var quiz = this.getQuiz(props);
         var questionIndex;
 
-
         if (quiz){
             quiz.payload.questions = quiz.payload.questions || [];
 
@@ -129,13 +125,19 @@ export default class CQEdit extends React.Component {
                 questionIndex = parseInt(props.routeParams.questionIndex, 10);
             }
 
-            if (quiz.payload.questions.length === 0){
+            if (
+                quiz.payload.questions.length === 0 ||
+                (
+                    quiz.payload.questions.length === 1 &&
+                    quiz.payload.questions[0].question === ''
+                )
+            ){
                 questionIndex = 0;
             }
 
             // Check if the questionIndex is in range
             if (questionIndex && questionIndex > quiz.payload.questions.length){
-                console.warn('Trying to edit a question out of range');
+                // console.warn('Trying to edit a question out of range');
                 setTimeout(function(){
                     router.setRoute(`/quiz/create/${quiz.uuid}`);
                 }, 550);
@@ -143,6 +145,7 @@ export default class CQEdit extends React.Component {
         }
         state.quiz = quiz;
         state.questionIndex = questionIndex;
+        console.info('CQEdit return state', state);
         return state;
 
     }
@@ -170,7 +173,6 @@ export default class CQEdit extends React.Component {
 
     handleSaveNewQuestion(){
         // new question
-        console.log('handleSaveNewQuestion', this.state.questionIndex, this.state.quiz);
         var nextQuestion;
 
         if (this.state.questionIndex) {
@@ -272,7 +274,7 @@ export default class CQEdit extends React.Component {
 
     handlePreview(){
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
-            sessionStorage.setItem('mode', 'teacher');
+            localStorage.setItem('mode', 'teacher');
             window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
                 window.open(`/app#/preview/${this.state.quiz.meta.profileId}/${this.state.quiz.uuid}`, 'preview');
@@ -315,40 +317,24 @@ export default class CQEdit extends React.Component {
     }
 
     handlePrePublish(callback: Function) {
-        QuizActions.newQuiz(this.state.quiz).then( ()=> {
-            callback();
-        });
+        QuizActions.newQuiz(this.state.quiz).then(callback);
     }
 
-    render() {
-        console.log('we have quiZ!!!');
+    render() : any {
         if (this.state.quiz){
 
             var placeholderForName = 'e.g. Enter a quiz name';
             var topics = TopicStore.getTopicTree();
 
-            var publishButton = (() => {
-                if (!this.state.quiz.meta.originalQuizId) {
-                    if (this.state.quiz.meta.published === "pending") {
-                        return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
-                            <span className="fa fa-shopping-cart"></span> Published Pending
-                        </button>);
-                    }
-                    else if (this.state.quiz.meta.published === "published") {
-                        return (<button className="cq-quizzes__button--publish" disabled="disabled" onClick={this.handleIgnore}>
-                            <span className="fa fa-shopping-cart"></span> Published to Marketplace
-                        </button>);
-                    }
-                    else {
-                        return (<button className="cq-quizzes__button--publish" onClick={this.handlePublish}>
-                            <span className="fa fa-shopping-cart"></span> Publish to Marketplace
-                        </button>);
-                    }
+            let pularlize = function(amount, singular, plural){
+                if (amount === 1 || amount === 0) {
+                    return singular;
                 }
-            })();
+                return plural;
+            };
 
             return (
-                <CQPageTemplate className="cq-container cq-edit">
+                <div>
                     <div className="cq-edit__top">
 
                         <div className="cq-edit__icon">
@@ -376,13 +362,13 @@ export default class CQEdit extends React.Component {
                                 data={topics}
                                 className="cq-edit__input-topic"
                                 placeholder="e.g. Mathematics > Addition and Subtraction (Optional)"
-                                identifier="topic"                                
+                                identifier="topic"
                             />
                         </div>
 
                     </div>
 
-                    <h4>Your questions</h4>
+                    <h4>You have {this.state.quiz.payload.questions.length} {pularlize(this.state.quiz.payload.questions.length, 'question', 'questions')}</h4>
 
                     <CQQuestionList
                         quiz={this.state.quiz}
@@ -422,14 +408,18 @@ export default class CQEdit extends React.Component {
                         </div>
                     </div>
 
-                </CQPageTemplate>
+                </div>
             );
         } else {
             // add a loading animation
-            return (<div>Loading</div>);
+            return (
+                <div>
+                    <CQSpinner/>
+                </div>);
         }
     }
 }
-CQEdit.propTypes = {
-    routeParams: React.PropTypes.object
+CQEditView.propTypes = {
+    routeParams: React.PropTypes.object,
+    quiz: React.PropTypes.object.isRequired,
 };

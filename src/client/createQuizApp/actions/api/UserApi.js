@@ -1,7 +1,6 @@
 /* @flow */
 var request = require('superagent');
 
-
 var getGraphQLUserQuery = function(key, value){
     return `
         {
@@ -62,6 +61,8 @@ var UserApi = {
                 uuid,
                 email
                 attributes {
+                    accountType,
+                    accountTypeExpiration,
                     ageTaught,
                     bannerUrl,
                     imageUrl,

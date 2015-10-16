@@ -1,12 +1,14 @@
 /* @flow */
-var React = require('react');
-import router from './../../../config/router';
-import urlParams from './../../../utils/urlParams';
-var CQPageTemplate  = require('./../../../components/CQPageTemplate');
-var CQLoginForm     = require('./../../../components/pages/shared/CQLoginForm');
-var CQLink          = require('./../../../components/utils/CQLink');
-var CQZzishLogin    = require('./../../../components/pages/shared/CQZzishLogin');
-var UserActions     = require('./../../../actions/UserActions');
+import React from 'react';
+import { router } from './../../../config';
+import { urlParams } from './../../../utils';
+import {
+    CQPageTemplate,
+    CQLoginForm,
+    CQLink,
+    CQZzishLogin
+} from './../../../components';
+import { UserActions } from './../../../actions';
 
 
 var CQLogin = React.createClass({

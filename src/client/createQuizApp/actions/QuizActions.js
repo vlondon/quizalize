@@ -1,21 +1,24 @@
-import type {Quiz, QuizComplete} from './../stores/QuizStore';
-var uuid                = require('node-uuid');
+/* @flow */
+import uuid from 'node-uuid';
 
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import { QuizConstants } from './../constants';
+import { QuizApi } from './../actions/api';
+import { router } from './../config';
 
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var QuizConstants       = require('./../constants/QuizConstants');
-var QuizApi             = require('./../actions/api/QuizApi');
-var TopicActions        = require('./../actions/TopicActions');
-var router              = require('./../config/router');
+import type {Quiz, QuizComplete} from './../../../types';
+import {
+    UserActions,
+    AnalyticsActions,
+    TopicActions
+} from './../actions';
 
+import {
+    TopicStore,
+    MeStore
+} from './../stores';
 
-import AnalyticsActions from './../actions/AnalyticsActions';
-
-import TopicStore from './../stores/TopicStore';
-import MeStore from './../stores/MeStore';
-import UserActions from './UserActions';
-
-var debounce            = require('./../utils/debounce');
+import { debounce } from './../utils';
 
 
 var createNewTopicsForQuiz = function(quiz){
@@ -118,7 +121,7 @@ var QuizActions = {
     },
 
 
-    saveReview: function(purchased:Quiz) : Promise {
+    saveReview: function(purchased:QuizComplete) : Promise {
 
         return new Promise(function(resolve, reject){
 
@@ -307,6 +310,7 @@ var QuizActions = {
     publishQuiz: function(quiz:Quiz, settings:Object)  {
         quiz.meta.price = settings.price;
         quiz.meta.published = "pending";
+        quiz.meta.updated = Date.now();
         QuizApi.publishQuiz(quiz);
         AnalyticsActions.sendEvent('quiz', 'publish', quiz.meta.name);
         AnalyticsActions.sendIntercomEvent('publish_quiz', {uuid: quiz.uuid, name: quiz.meta.name});

@@ -1,9 +1,10 @@
-var React = require('react');
-var router = require('createQuizApp/config/router');
+/* @flow */
+import React from 'react';
+import { router } from './../../../config';
 
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var QuizStore = require('createQuizApp/stores/QuizStore');
+import { QuizActions } from './../../../actions';
+import { CQPageTemplate } from './../../../components';
+import { QuizStore } from './../../../stores';
 
 
 var CQReview = React.createClass({
@@ -12,12 +13,12 @@ var CQReview = React.createClass({
         quizId: React.PropTypes.string
     },
 
-    getDefaultProps: function() {
+    getDefaultProps: function() : Object {
         return {
         };
     },
 
-    getInitialState: function() {
+    getInitialState: function() : Object {
 
 
         var initialState = {
@@ -29,7 +30,7 @@ var CQReview = React.createClass({
 
     },
 
-    _getQuiz: function(props){
+    _getQuiz: function(props? : Object) : Object {
         props = props || this.props;
 
         var quiz = props.quizId ? QuizStore.getQuiz(props.quizId) : undefined;
@@ -82,7 +83,7 @@ var CQReview = React.createClass({
         QuizStore.removeChangeListener(this.onChange);
     },
 
-    handleChange: function(property, event) {
+    handleChange: function(property : string, event : Object) {
         console.log('handleChange');
         var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta[property] = event.target.value;
@@ -90,7 +91,7 @@ var CQReview = React.createClass({
         this.setState({quiz: newQuizState});
     },
 
-    updateStars: function(num) {
+    updateStars: function(num: number) {
         console.log('updateStars', num);
         var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta.review = num;

@@ -31,6 +31,8 @@ var graphql = require('./src/server/routes/graphql').graphql;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// console.log = logger.debug;
+
 app.use(favicon(path.join(__dirname, '/public/favcq.png')));
 //var FileStore   = require('session-file-store')(session);
 //var sessionsFolder = process.env.QUIZALIZE_SESSIONS || './sessions';
@@ -89,7 +91,7 @@ app.get('/users/:profileId/groups', user.groups);
 app.get('/users/:profileId/groups/contents', user.groupContents);
 app.get('/user', user.details);
 app.post('/user/search', user.search);
-app.post('/user', user.saveUser);
+app.post('/user', user.saveUserRequest);
 app.post('/email/', email.sendDocumentEmail);
 
 app.post('/user/events/:name', intercom.events);

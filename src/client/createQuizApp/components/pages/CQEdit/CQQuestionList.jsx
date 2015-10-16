@@ -1,10 +1,11 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import CQLatexString from 'react-latex';
+import {router} from './../../../config/';
+
 import CQEditNormal from './CQEditNormal';
 
-var CQLatexString = require('react-latex');
-import type {QuizComplete, Question} from './../../../stores/QuizStore';
+import type {QuizComplete, Question} from './../../../../../types';
 
 type Props = {
     quiz: QuizComplete;

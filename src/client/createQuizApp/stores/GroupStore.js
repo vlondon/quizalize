@@ -6,32 +6,9 @@ var AppDispatcher = require('./../dispatcher/CQDispatcher');
 var GroupConstants = require('./../constants/GroupConstants');
 var GroupActions = require('./../actions/GroupActions');
 
+import type {Group, GroupContent} from './../../../types';
 
-export type Group = {
-    code: string;
-    link: string;
-    name: string;
-};
 type Groups = Array<Group>;
-
-type GroupContent = {
-    access: number;
-    attributes: {
-        access: string;
-        code: string;
-    };
-    contentId: string;
-    created: number;
-    createdString: string;
-    groupCode: string;
-    ownerId: string;
-    profileOwnerId: string;
-    revision: number;
-    timestamp: number;
-    timestampedString: string;
-    uuid: string;
-}
-
 type GroupsContent = Array<GroupContent>;
 
 var storeInit = false;

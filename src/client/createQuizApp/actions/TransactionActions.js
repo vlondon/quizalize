@@ -1,24 +1,29 @@
 /* @flow */
-var AppDispatcher           = require('./../dispatcher/CQDispatcher');
-var router                  = require('./../config/router');
-
-var TransactionApi          = require('./../actions/api/TransactionApi');
-var TransactionConstants    = require('./../constants/TransactionConstants');
-var QuizActions             = require('./../actions/QuizActions');
-
-var stripeSDK               = require('./../config/stripeSDK');
-var TransactionStore        = require('./../stores/TransactionStore');
-
-import UserActions from './../actions/UserActions';
-import AnalyticsActions from './../actions/AnalyticsActions';
+import AppDispatcher  from './../dispatcher/CQDispatcher';
+import {
+    router,
+    stripeSDK
+} from './../config';
 
 
-import MeStore    from './../stores/MeStore';
-import priceFormat  from './../utils/priceFormat';
+import { TransactionApi } from './../actions/api';
+import { TransactionConstants } from './../constants';
+import {
+    QuizActions,
+    UserActions,
+    AnalyticsActions
+} from './../actions';
 
-import type {Quiz}  from './../stores/QuizStore';
-import type {AppType}   from './../stores/AppStore';
-import type {Transaction}   from './../stores/TransactionStore';
+import {
+    TransactionStore,
+    MeStore
+} from './../stores';
+
+import {priceFormat} from './../utils';
+
+import type {Quiz} from './../stores/QuizStore';
+import type {AppType} from './../stores/AppStore';
+import type {Transaction} from './../stores/TransactionStore';
 
 var purchaseComplete = function(){
     swal({
@@ -26,7 +31,6 @@ var purchaseComplete = function(){
         text: 'You will find the new content in your quizzes',
         type: 'success'
     }, ()=>{
-
         router.setRoute('/quiz/user');
     });
 };
@@ -67,12 +71,12 @@ var TransactionActions = {
 
             console.log('saving new transaction', transaction);
 
-            if (transaction.meta.price > 0) {
+            if (transaction.meta.price > 0 || transaction.meta.subscription) {
                 swal.close();
                 var userEmail = MeStore.state.email;
                 console.log('creating stripe checkout', MeStore.state);
                 var localPrice = TransactionStore.getPriceInCurrency(transaction.meta.price, 'us');
-                console.log('localPrice', transaction.meta.price, localPrice);
+                console.log('localPrice', transaction, localPrice);
                 stripeSDK.stripeCheckout(localPrice, userEmail)
                     .then(function(stripeToken){
                         transaction._token = stripeToken;
@@ -100,6 +104,7 @@ var TransactionActions = {
                         type: 'quiz',
                         profileId: info.profileId,
                         quizId: info.uuid,
+                        created: Date.now(),
                         price: 0
                     }
                 };
@@ -126,6 +131,7 @@ var TransactionActions = {
                 type: 'quiz',
                 quizId: quiz.uuid,
                 profileId: quiz.meta.profileId,
+                created: Date.now(),
                 price: price
             }
         };
@@ -194,6 +200,7 @@ var TransactionActions = {
                             type: 'app',
                             appId: app.uuid,
                             profileId: app.meta.profileId,
+                            created: Date.now(),
                             price: price
                         }
                     };
@@ -209,6 +216,23 @@ var TransactionActions = {
                 }, 300);
             }
         });
+    },
+
+    buyMonthlySubscription: function() : Promise{
+        console.log('about to get subscription');
+        let user = MeStore.state;
+
+        let newTransaction : Transaction = {
+            meta: {
+                type: 'subscription',
+                profileId: user.profileId,
+                created: Date.now(),
+                price: 0,
+                subscription: 'montly'
+            }
+        };
+        return this.saveNewTransaction(newTransaction);
+        // stripeSDK.stripeCheckout(localPrice, userEmail)
     }
 };
 

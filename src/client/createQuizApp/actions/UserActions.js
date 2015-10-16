@@ -1,12 +1,12 @@
 /* @flow */
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var UserConstants       = require('./../constants/UserConstants');
-var UserApi             = require('./../actions/api/UserApi');
-var urlParams           = require('./../utils/urlParams');
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import { UserConstants } from './../constants';
+import { UserApi } from './../actions/api';
+import { urlParams } from './../utils';
 
-import AnalyticsActions from './../actions/AnalyticsActions';
-import router from './../config/router';
-import intercom from './../utils/intercom';
+import { AnalyticsActions } from './../actions';
+import { router } from './../config';
+import { intercom } from './../utils';
 
 type loginObject = {
     email: string;

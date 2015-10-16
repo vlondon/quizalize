@@ -15,6 +15,10 @@ var router = {
         route.shift();
         console.trace('should return the url', document.location.pathname.split('/'), route);
         return route;
+    },
+    goBack() {
+        console.log('history', history);
+        history.goBack();
     }
 };
 module.exports = router;

@@ -10,7 +10,9 @@ type TransactionMeta = {
     quizId?: string;
     appId?: string;
     profileId: string;
-    price: number
+    created: number;
+    price: number;
+    subscription?: string;
 }
 export type Transaction = {
     meta: TransactionMeta;

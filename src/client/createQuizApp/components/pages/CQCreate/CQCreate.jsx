@@ -1,29 +1,26 @@
-var React = require('react');
-var router = require('createQuizApp/config/router');
+import React from 'react';
+import { router } from './../../../config';
+import { QuizActions } from './../../../actions';
 
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQCreateMore = require('./CQCreateMore');
+import {
+    CQPageTemplate,
+    CQLink,
+    CQAutofill,
+} from './../../../components';
 
+import {
+    QuizStore,
+    TopicStore,
+    UserStore
+} from './../../../stores';
 
-var CQLink = require('createQuizApp/components/utils/CQLink');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var CQAutofill = require('createQuizApp/components/utils/CQAutofill');
-
-var TopicStore = require('createQuizApp/stores/TopicStore');
-var UserStore = require('createQuizApp/stores/UserStore');
+import CQCreateMore from './CQCreateMore';
 
 var CQCreate = React.createClass({
 
     propTypes: {
         quizId: React.PropTypes.string
     },
-
-    getDefaultProps: function() {
-        return {
-        };
-    },
-
 
     getInitialState: function() {
 

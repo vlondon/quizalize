@@ -1,16 +1,14 @@
-var React = require('react');
+/* @flow */
+import React from 'react';
 
-var UserStore = require('createQuizApp/stores/UserStore');
-// var UserActions = require('createQuizApp/actions/UserActions');
+import { UserStore } from './../../../stores';
+// import UserActions from './../../../actions/UserActions';
 
-var CQDashboardProfile = require('./extra/CQDashboardProfile');
-var CQDashboardQuizzes = require('./extra/CQDashboardQuizzes');
-
-
+import CQDashboardProfile from './extra/CQDashboardProfile';
+import CQDashboardQuizzes from './extra/CQDashboardQuizzes';
 
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-
+import { CQPageTemplate } from './../../../components';
 
 var CQDashboard = React.createClass({
 
@@ -34,7 +32,7 @@ var CQDashboard = React.createClass({
         this.setState(this.getState());
     },
 
-    getState: function(){
+    getState: function(): any{
         var user;
         if (this.props.authorId){
             user = UserStore.getPublicUser(this.props.authorId);

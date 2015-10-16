@@ -1,9 +1,9 @@
 /* @flow */
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var GroupConstants      = require('./../constants/GroupConstants');
-var GroupApi            = require('./../actions/api/GroupApi');
-import GroupStore from './../stores/GroupStore';
-import router from './../config/router';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {GroupConstants} from './../constants';
+import {GroupApi} from './../actions/api';
+import {GroupStore} from './../stores';
+import {router} from './../config';
 
 var GroupActions = {
 

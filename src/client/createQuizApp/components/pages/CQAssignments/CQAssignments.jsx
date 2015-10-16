@@ -1,13 +1,31 @@
-var React = require('react');
+/* @flow */
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import {
+    CQPageTemplate,
+    CQLink
+} from './../../../components';
 
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-var TopicStore = require('createQuizApp/stores/TopicStore');
 
+import { GroupActions } from './../../../actions';
+import {
+    GroupStore,
+    TopicStore,
+    QuizStore
+}  from './../../../stores';
+
+import type {
+    Group,
+    GroupContent,
+    Quiz,
+} from './../../../../../types';
+
+type State = {
+    groups: Array<Group>;
+    groupsContent: Array<GroupContent>;
+    quizzes: Array<Quiz>;
+    publicQuizzes: Array<Quiz>;
+}
 var CQAssignments = React.createClass({
 
     getInitialState: function() {
@@ -25,7 +43,7 @@ var CQAssignments = React.createClass({
         QuizStore.removeChangeListener(this.onChange);
     },
 
-    getState: function(){
+    getState: function() : State {
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizzes = QuizStore.getQuizzes();
@@ -37,8 +55,8 @@ var CQAssignments = React.createClass({
 
     },
 
-    _getAssignments: function(groupCode){
-        var selectPublicQuiz = (quizId) => {
+    _getAssignments: function(groupCode : string) : Array<Quiz>{
+        var selectPublicQuiz = (quizId : string) => {
             if (typeof this.state.publicQuizzes !== 'object'){
                 return [];
             }
@@ -68,7 +86,7 @@ var CQAssignments = React.createClass({
         this.setState(this.getState());
     },
 
-    handleUnpublish: function(quizId, groupCode){
+    handleUnpublish: function(quizId : string, groupCode : string ){
         console.log('about to unpublish', quizId, groupCode);
         GroupActions.unpublishAssignment(quizId, groupCode);
     },
@@ -95,7 +113,7 @@ var CQAssignments = React.createClass({
                 <p>Here are your classes. You can click on "Open Game" to see live dashboard and reports for that quiz.</p>
 
                     {this.state.groups.map(classN => {
-                        classN.fulllink = classN.link+"one";
+                        let fulllink = classN.link + 'one';
                         var noQuizzes;
 
                         if (this._getAssignments(classN.code).length === 0) {
@@ -111,7 +129,7 @@ var CQAssignments = React.createClass({
                             <div className="cq-classes__class">
                                 <h3 className="cq-classes__class__name">
                                     {classN.name}
-                                    <a href={classN.fulllink} target="_blank" className="btn btn-info pull-right">
+                                    <a href={fulllink} target="_blank" className="btn btn-info pull-right">
                                         Open {classN.name} Zzish Dashboard
                                     </a>
                                 </h3>
