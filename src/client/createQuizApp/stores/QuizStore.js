@@ -1,14 +1,27 @@
 /* @flow */
-import Store from './Store';
-import {MeStore} from './../stores';
-console.log('wahhaha, MeStore', MeStore);
+// import Store from './Store';
 import uuid from 'node-uuid';
-
+import Store from './Store';
 import AppDispatcher from './../dispatcher/CQDispatcher';
-import QuizConstants from './../constants/QuizConstants';
-import UserConstants from './../constants/UserConstants';
-import UserActions from './../actions/UserActions';
-import QuizActions from './../actions/QuizActions';
+import {
+    MeStore
+} from './../stores';
+
+
+import {
+    QuizConstants,
+    UserConstants
+} from './../constants';
+
+import {
+    UserActions,
+    QuizActions
+} from './../actions';
+
+
+
+
+
 
 
 
@@ -74,10 +87,16 @@ let storeLoaded = false;
 let storePublicLoaded = false;
 
 // Add user listener
-MeStore.addChangeListener(function(){
-    storeInit = false;
-    storeInitPublic = false;
+// need to be debounced since MeStore is undefined at the moment this line is
+// executed
+setTimeout(()=>{
+    MeStore.addChangeListener(function(){
+        storeInit = false;
+        storeInitPublic = false;
+    });
+    console.log('wahhaha, MeStore', MeStore);
 });
+
 
 var QuizObject = function() : QuizComplete {
     var quiz : QuizComplete = {

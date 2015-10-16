@@ -1,3 +1,4 @@
+import Store from './Store';
 import MeStore from './MeStore';
 import AnalyticsStore from './AnalyticsStore';
 import AppStore from './AppStore';
@@ -11,6 +12,7 @@ import QuizStore from './QuizStore';
 
 
 export {
+    Store,
     MeStore,
     AnalyticsStore,
     AppStore,

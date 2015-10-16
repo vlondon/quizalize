@@ -7,7 +7,7 @@ import {
     CQLoginForm,
     CQLink,
     CQZzishLogin
-} from './../../../components/CQPageTemplate';
+} from './../../../components';
 import { UserActions } from './../../../actions';
 
 
