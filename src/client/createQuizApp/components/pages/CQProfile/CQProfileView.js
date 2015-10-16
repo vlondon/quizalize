@@ -7,12 +7,17 @@ import {
     CQViewAppQuizList
 } from './../../../components';
 
-var { TransactionActions } = require('./../../../actions');
+import { TransactionActions } from './../../../actions';
 
 import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
 import CQOwnProfileCounter from './CQOwnProfileCounter';
-import type { Quiz } from './../../../../../types';
-import type { AppType } from './../../../../../types';
+import type {
+    Quiz,
+    AppType
+} from './../../../../../types';
+
+import { MeStore } from './../../../stores';
+
 
 
 let getPrivateQuizzes = (apps) => {
@@ -24,7 +29,6 @@ let getPrivateQuizzes = (apps) => {
             }
         });
     });
-    console.log('privateQuizzes', privateQuizzes);
     return privateQuizzes;
 };
 
@@ -32,6 +36,9 @@ class CQProfileView extends React.Component {
 
     constructor(props : Props){
         super(props);
+        this.state = {
+            user: MeStore.state
+        };
     }
 
     handlePreview(quiz : Quiz){
@@ -85,10 +92,12 @@ class CQProfileView extends React.Component {
         var headerCta;
         var amountOfPrivateQuizzes = getPrivateQuizzes(this.props.apps).length;
 
-        var headerCta, noQuizMessage;
+        var headerCta, noQuizMessage, ownProfileCounter;
 
         if (this.props.own) {
-
+            if (MeStore.state.attributes.accountType === 0){
+                ownProfileCounter = (<CQOwnProfileCounter amount={amountOfPrivateQuizzes}/>);
+            }
             headerCta = (
                 <div className="cq-profile__cta">
                     <button  onClick={this.handleNewApp} className="btn btn-primary cq-profile__cta__app">
@@ -99,7 +108,7 @@ class CQProfileView extends React.Component {
                         <i className="fa fa-plus"></i> New quiz
                     </button>
                     <div className="cq-profile__freeaccount">
-                        <CQOwnProfileCounter amount={amountOfPrivateQuizzes}/>
+                        {ownProfileCounter}
                     </div>
 
                 </div>
