@@ -1,0 +1,66 @@
+.cq-premium {
+    padding: 0;
+    // margin: 0 auto;
+    overflow: hidden;
+    &__block__header {
+        background: url(./../../assets/chalkboard.jpg);
+        background-size: cover;
+        color: #FFF;
+        color: rgba(#FFF, .8);
+        text-align: center;
+        padding: 40px 60px;
+        @include clearfix();
+        h1, h2, h3 { margin: 0; }
+        h1 {
+            margin: 20px 0;
+        }
+        h3 {
+            margin: 20px 0;
+        }
+
+        ul {
+            max-width: 400px;
+            margin: auto;
+            text-align: left;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    }
+    &__table {
+        // background: rgba(red, .2);
+        display: flex;
+        flex-direction: column;
+
+    }
+    &__row1 {
+        font-weight: bold;
+    }
+    &__row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: stretch;
+        border-bottom: 1px solid #999;
+    }
+    &__col1 {
+        width: 40%;
+        flex: 1 auto;
+        padding: 10px;
+    }
+    &__col2 {
+        background: $brand-color-purple;
+    }
+    &__col2,
+    &__col3,
+    &__col4 {
+        padding: 10px;
+        width: 20%;
+        // border: 1px solid #999;
+        flex: 1 auto;
+        display: flex;
+        align-items: center;
+        // height: 100%;
+        text-align: center;
+    }
+}

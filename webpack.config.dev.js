@@ -37,7 +37,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                loader: 'babel?optional[]=runtime',
+                loaders: ['react-hot', 'babel?optional[]=runtime'],
                 exclude: /(node_modules|bower_components)/
             },
 

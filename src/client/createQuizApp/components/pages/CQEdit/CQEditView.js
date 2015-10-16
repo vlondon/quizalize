@@ -21,6 +21,7 @@ import {
 
 import { urlParams } from './../../../utils';
 import type {QuizComplete, Question} from './../../../../../types';
+
 import CQQuestionList from './CQQuestionList';
 import CQEditIcon from './CQEditIcon';
 
@@ -48,12 +49,7 @@ export default class CQEditView extends React.Component {
 
     constructor(props : Props) {
         super(props);
-        this.state = {
-            mode: 'Create',
-            pristine: true,
-            saveEnabled: true,
-            quiz: this.props.quiz
-        };
+
         var state = this.getState(props);
         state.mode = 'Create';
         state.saveEnabled = true;
@@ -80,6 +76,7 @@ export default class CQEditView extends React.Component {
     getQuiz() : QuizComplete {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.routeParams.quizId;
         var quiz = QuizStore.getQuiz(quizId);
+        console.info("Quiz ID", quizId, quiz);
 
         return quiz;
     }
@@ -94,10 +91,7 @@ export default class CQEditView extends React.Component {
     }
 
 
-
     componentDidMount() {
-
-
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
     }
@@ -112,7 +106,6 @@ export default class CQEditView extends React.Component {
     }
 
     onChange(props : ?Props){
-
         props = props || this.props;
         if (props) {
             this.setState(this.getState(props));
