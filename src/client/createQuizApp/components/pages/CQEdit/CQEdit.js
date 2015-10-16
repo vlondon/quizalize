@@ -79,7 +79,7 @@ class CQEdit extends React.Component {
 
     render () {
         let {quiz} = this.state;
-        let editView = quiz ? (<CQEditView {...this.props} quiz={this.state.quiz}/>) : undefined;
+        let editView = quiz ? (<CQEditView {...this.props} />) : undefined;
         return (
             <CQPageTemplate className="cq-container cq-edit">
                 {editView}

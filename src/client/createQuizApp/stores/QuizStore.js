@@ -167,7 +167,6 @@ class QuizStore extends Store {
 
     getQuiz(quizId?): QuizComplete {
         var fullQuiz;
-
         if (quizId){
             fullQuiz = _fullQuizzes[quizId];
             if (fullQuiz === undefined){
@@ -185,8 +184,7 @@ class QuizStore extends Store {
                     });
                 //create empty quiz?
             } else {
-                fullQuiz = new QuizObject();
-                _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+                return fullQuiz;
             }
 
         } else {
