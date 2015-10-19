@@ -33,9 +33,8 @@ class CQDiscoveryThankYou extends React.Component {
                     <div className="cq-discovery__header__offer">
                         &nbsp;
                     </div>
-                    <div className="cq-discovery__header__banner">
-                        Get Quizalize Premium <br/>
-                        Free for 1 year
+                    <div className="cq-discovery__header__bannerthanks">
+                        Thank you
                     </div>
 
                     <CQRegisterInner

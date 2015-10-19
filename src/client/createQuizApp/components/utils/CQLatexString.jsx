@@ -12,8 +12,15 @@ var CQLatexString = React.createClass({
         };
     },
     render: function() {
+        var input = this.props.children;
+        if (input.indexOf("videoq:") === 0) {
+            var index = input.indexOf("//");
+            if (index !== -1) {
+                input = input.substring(index+2);
+            }
+        }
         return (
-            <span dangerouslySetInnerHTML={{__html: latexString(this.props.children)}}/>
+            <span dangerouslySetInnerHTML={{__html: latexString(input)}}/>
         );
     }
 

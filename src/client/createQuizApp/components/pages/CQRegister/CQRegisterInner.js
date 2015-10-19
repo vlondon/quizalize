@@ -67,8 +67,9 @@ var CQRegisterInner = React.createClass({
     render: function() {
 
         var moreInfo, zzishLogin;
-        if (this.state.isRedirect){
-            moreInfo = (<p style={{'textAlign': 'center'}}>
+        if (this.state.isRedirect && this.props.header === 'Quizalize Registration'){
+            moreInfo = (
+                <p style={{'textAlign': 'center'}}>
                 Before we can continue you'll need to create a new Quizalize account.
                 <br/>
                 <br/>
