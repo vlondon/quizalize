@@ -442,7 +442,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     options.push(alt);
                 }
             }
-            return randomise(options);
+            return randomise(options, true);
             //return options;
         } else {
             var answers = [];
