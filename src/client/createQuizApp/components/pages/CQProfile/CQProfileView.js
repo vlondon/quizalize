@@ -28,7 +28,7 @@ let getPrivateQuizzes = (apps) => {
     let privateQuizzes = [];
     apps.forEach(app=> {
         app.meta.quizzes.forEach(quiz=>{
-            if (quiz.meta.published === null) {
+            if (quiz.meta.published === null && (quiz.meta.originalQuizId === null || quiz.meta.originalQuizId === undefined)) {
                 privateQuizzes.push(quiz);
             }
         });
