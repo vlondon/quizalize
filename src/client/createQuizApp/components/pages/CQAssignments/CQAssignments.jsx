@@ -96,7 +96,7 @@ var CQAssignments = React.createClass({
         GroupActions.unpublishAssignment(quizId, groupCode);
     },
 
-    handlePremium: function(assignment, classN){
+    handlePremium: function(assignment : Object, classN : Object){
         console.log("BEING HANDLED");
         if(MeStore.state.attributes.accountType === 1) {
             router.setRoute(`/quiz/published/${assignment.uuid}/${classN.code}/info`);
