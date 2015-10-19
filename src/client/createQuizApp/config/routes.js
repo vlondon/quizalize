@@ -58,7 +58,7 @@ var pagesArray: Array<Page> = [
         name: 'discoveryPage',
         path: '/discovery-education-promotion',
         needsLogin: undefined,
-        component: CQDiscoveryThankYou,
+        component: CQDiscovery,
 
     },
     {
