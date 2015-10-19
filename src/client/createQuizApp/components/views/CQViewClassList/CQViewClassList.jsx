@@ -5,6 +5,7 @@ import {
     GroupStore,
     MeStore
 }  from './../../../stores';
+
 import {
     GroupActions,
     QuizActions
@@ -27,6 +28,7 @@ export default class CQViewClassList extends React.Component {
 
     props: Props;
     state: State;
+
     constructor(props: Props) {
         super(props);
         var initialState = this.getState();
@@ -34,6 +36,7 @@ export default class CQViewClassList extends React.Component {
         initialState.canSaveNewClass = false;
         initialState.groupsUsed = [];
         initialState.user = MeStore.state;
+
         this.state = initialState;
 
         this.onChange = this.onChange.bind(this);
@@ -48,6 +51,7 @@ export default class CQViewClassList extends React.Component {
 
     componentDidMount() {
         GroupStore.addChangeListener(this.onChange);
+
     }
 
     componentWillUnmount() {
@@ -59,15 +63,22 @@ export default class CQViewClassList extends React.Component {
     }
 
     getState(){
+        let state = this.state || {};
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizId = this.props.quizId;
+
+        let isNew = groups.length === 0;
+        let name = MeStore.state.name !== null ? MeStore.state.name : 'Quizalize teacher';
+        let newClassName = isNew || (state && state.newClassName === '') ? `${name}'s class` : '';
+        console.log('classNameclassName', state.newClassName, state.newClassName === '', isNew);
+
         QuizActions.loadQuiz(quizId).then( (quiz) => {
             if (quiz.payload.questions.length === 0) {
                 swal({
                     title: "Error",
                     text: "You need at least one question in order to be able to play this quiz"
-                },function() {
+                }, function() {
                     router.setRoute(`/quiz/create/${quiz.uuid}`);
                 });
             }
@@ -83,6 +94,7 @@ export default class CQViewClassList extends React.Component {
                         inputPlaceholder: "e.g. End of Unit Quiz"
                     },
                 function(inputValue) {
+
                     if (inputValue === false) {
                         swal({
                                 title: "Error",
@@ -98,12 +110,12 @@ export default class CQViewClassList extends React.Component {
                     }
                     else {
 
-                            quiz.meta.name = inputValue;
-                            QuizActions.newQuiz(quiz).then( ()=> {
-                                swal("Thanks!", "You can now use this quiz in your class");
-                            });
-                        }
-                    });
+                        quiz.meta.name = inputValue;
+                        QuizActions.newQuiz(quiz).then( ()=> {
+                            swal("Thanks!", "You can now use this quiz in your class");
+                        });
+                    }
+                });
             }
         });
         console.log('groupsContent', groups, groupsContent);
@@ -115,7 +127,19 @@ export default class CQViewClassList extends React.Component {
             })
             .map(g => g.code);
 
-        return { groups, groupsUsed };
+        if (groupsUsed.length === 0 && isNew === false) {
+            groupsUsed = [groups[0].code];
+        }
+
+        let canSaveNewClass = newClassName.length > 0;
+
+        if (isNew && this.refs.newClassBox){
+            setTimeout(()=>{
+                // console.log('refs', this, this.refs);
+                this.refs.newClassBox.setSelectionRange(0, this.refs.newClassBox.value.length);
+            });
+        }
+        return { groups, groupsUsed, newClassName, canSaveNewClass, isNew };
     }
 
     _showGroupsList(){
@@ -139,26 +163,8 @@ export default class CQViewClassList extends React.Component {
         var groupsUsed = [classCode];
         var newClassName = '';
         var canSaveNewClass = false;
-
         this.setState({ groupsUsed, newClassName, canSaveNewClass });
     }
-
-
-    // handleClick: function(classCode, ev){
-    //     // console.log("Here?",classCode,ev);
-    //     // var isAssigning = ev.target.checked;
-    //     // var groupsUsed = this.state.groupsUsed;
-    //     // if (isAssigning){
-    //     //     GroupActions.publishAssignment(this.props.quizId, classCode);
-    //     //     groupsUsed.push(classCode);
-    //     // } else {
-    //     //     GroupActions.unpublishAssignment(this.props.quizId, classCode);
-    //     //     groupsUsed.splice(groupsUsed.indexOf(classCode), 1);
-    //     // }
-    //     // this.setState({groupsUsed});
-
-    //     // console.log('classCode', classCode, ev.target.checked);
-    // },
 
     handleDone() {
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
@@ -209,11 +215,11 @@ export default class CQViewClassList extends React.Component {
 
     render() {
         var newTitle = "Create a new class";
-        var existingClasses = (() => {
-            if (this._showGroupsList().length > 0) {
-                newTitle = "...or create a new class";
-                return (<div>
-                    <h4>Your current classes:</h4>
+        var existingClasses, newClass;
+        if (this._showGroupsList().length > 0) {
+            // newTitle = "...or create a new class";
+            existingClasses = (
+                <div>
                     <ul className="list-unstyled">
                         {this._showGroupsList().map( (classN) => {
                             return (
@@ -230,32 +236,29 @@ export default class CQViewClassList extends React.Component {
                                 </li>
                             );
                         })}
+                        <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            id='continue'>
+                            <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
+                            Continue
+                        </button>
+                        <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            id='continue'>
+                            Use with another class
+                        </button>
                     </ul>
-                    <button className="btn btn-primary cq-viewclass__done"
-                        disabled={this.state.groupsUsed.length === 0}
-                        onClick={this.handleDone}>
-                        Done - Use this class
-                    </button>
-                </div>);
-            }
-        });
-
-
-        return (
-            <div className='cq-viewclass'>
-                <div className="cq-viewclass__close" onClick={this.handleClose}>
-                    <div className="fa fa-times"></div>
                 </div>
-                <h3>
-                    Set as a class game (or homework)
-                </h3>
-                <div className="cq-viewclass__list">
-                    {existingClasses()}
+            );
+        }
+
+        if (this.state.isNew) {
+            newClass = (
+                <div>
                     <h4>{newTitle}</h4>
                     <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
                             id='newClassBox'
                             type="text"
+                            ref='newClassBox'
                             className=""
                             value={this.state.newClassName}
                             onChange={this.handleClassName}
@@ -267,6 +270,23 @@ export default class CQViewClassList extends React.Component {
                             Continue
                         </button>
                     </form>
+                </div>
+            );
+        }
+
+
+
+        return (
+            <div className='cq-viewclass'>
+                <div className="cq-viewclass__close" onClick={this.handleClose}>
+                    <div className="fa fa-times"></div>
+                </div>
+                <h3>
+                    Set this as a class game (or homework) for
+                </h3>
+                <div className="cq-viewclass__list">
+                    {existingClasses}
+                    {newClass}
                 </div>
                 <div className="cq-viewclass__extra">
                     <p>
