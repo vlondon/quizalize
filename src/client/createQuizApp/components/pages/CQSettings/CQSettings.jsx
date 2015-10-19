@@ -214,7 +214,7 @@ export default class CQSettings extends React.Component {
     }
 
 
-    render() {
+    render(): any {
 
         var message, profilePicture, schoolWebsite, skipButton;
         var classNameError = (index) => {
