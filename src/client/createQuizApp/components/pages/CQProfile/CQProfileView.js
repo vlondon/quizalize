@@ -7,17 +7,21 @@ import {
     CQViewAppQuizList
 } from './../../../components';
 
-import { TransactionActions } from './../../../actions';
+import {
+    TransactionActions
+} from './../../../actions';
 
-import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
-import CQOwnProfileCounter from './CQOwnProfileCounter';
 import type {
     Quiz,
     AppType
 } from './../../../../../types';
 
-import { MeStore } from './../../../stores';
+import {
+    MeStore
+} from './../../../stores';
 
+import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
+import CQOwnProfileCounter from './CQOwnProfileCounter';
 
 
 let getPrivateQuizzes = (apps) => {
@@ -122,14 +126,6 @@ class CQProfileView extends React.Component {
             </div>
         ) : "";
 
-
-        // if (this.state.quizDetails) {
-        //     quizDetails = (<CQViewQuizDetails
-        //         onClose={this.handleDetailsClose}
-        //         quizCode={this.props.quizCode}
-        //         quizId={this.state.quizDetails}/>);
-                // quizCode={this.props.quizCode}
-        // }
 
         return (
             <CQPageTemplate className="cq-container cq-profile">
