@@ -213,7 +213,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var numAlternatives = getNumAlternvatives(question);
         if(numAlternatives > 0 || patternToDected || length >= 20 || length === 1) {
             //either there are alternatives or there is a space in the anser
-            answerQuestion.alternatives = getAlternatives(answerQuestion, questionIndex);
             answerQuestion.type = "multiple";
         }
         else {
@@ -742,6 +741,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     currentQuestion.answerObject = processInput(currentQuestion.answer);
                     currentQuestion.expObject = processInput(currentQuestion.answerExplanation);
                     selectAnswerType(currentQuestion.questionObject, currentQuestion.answerObject, questionIndex);
+                    if (currentQuestion.answerObject.type === "multiple") {
+                        currentQuestion.answerObject.alternatives = getAlternatives(currentQuestion.answerObject, questionIndex);
+                    }
                 });
                 callback(data);
             };
