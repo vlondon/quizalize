@@ -11,6 +11,11 @@ import {
     QuizActions
 } from './../../../actions';
 
+import {
+    CQLink
+} from './../../../components';
+
+
 import { AnalyticsActions } from './../../../actions';
 
 type Props = {
@@ -46,7 +51,9 @@ export default class CQViewClassList extends React.Component {
         this.handleDone = this.handleDone.bind(this);
         this.handleClassName = this.handleClassName.bind(this);
         this.handleNewClass = this.handleNewClass.bind(this);
-
+        this.handleCreateClass = this.handleCreateClass.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleShowPricing = this.handleShowPricing.bind(this);
     }
 
     componentDidMount() {
@@ -167,6 +174,10 @@ export default class CQViewClassList extends React.Component {
     }
 
     handleDone() {
+        if (this.state.groupsUsed.length === 0) {
+            this.state.groupsUsed[0] = this.state.groups[this.state.groups.length -1].code;
+        }
+        console.log("Done", this.props.quizId, this.state.groupsUsed[0]);
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
@@ -202,6 +213,11 @@ export default class CQViewClassList extends React.Component {
             });
         }
     }
+
+    handleCancel() {
+        this.setState({isNew: false});
+    }
+
     handleViewInfo(){
         AnalyticsActions.sendEvent('assign_class', 'action', 'watch_info');
         AnalyticsActions.sendIntercomEvent('assign_class_action', {watch_info: true});
@@ -213,13 +229,31 @@ export default class CQViewClassList extends React.Component {
         router.goBack();
     }
 
+    handleCreateClass() {
+        if (MeStore.state.attributes.accountType === 0) {
+            //non premium
+            this.setState({isPremium: true});
+        }
+        else {
+            //this.setState({isNew: true});
+            this.setState({isPremium: true});
+        }
+    }
+
+    handleShowPricing() {
+        router.setRoute("/quiz/premium");
+    }
+
     render() {
-        var newTitle = "Create a new class";
-        var existingClasses, newClass;
-        if (this._showGroupsList().length > 0) {
+        var newTitle = "Type in the name of your class";
+        var existingClasses, newClass, signUpFoPremium;
+        if (this._showGroupsList().length > 0 && !this.state.isNew && !this.state.isPremium) {
             // newTitle = "...or create a new class";
             existingClasses = (
                 <div>
+                    <h3>
+                        Set this as a class game (or homework) for
+                    </h3>
                     <ul className="list-unstyled">
                         {this._showGroupsList().map( (classN) => {
                             return (
@@ -227,7 +261,7 @@ export default class CQViewClassList extends React.Component {
                                     <input type="radio"
                                         name="classSelection"
                                         id={classN.value}
-                                        checked={this.state.groupsUsed.indexOf(classN.value) !== -1}
+                                        checked={!this.state.groupsUsed || this.state.groupsUsed.length === 0 ? true : this.state.groupsUsed[0] === classN.value}
                                         onChange={this.handleClick.bind(this, classN.value)}
                                         />
                                     <label htmlFor={classN.value}>
@@ -237,15 +271,24 @@ export default class CQViewClassList extends React.Component {
                             );
                         })}
                         <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            onClick={this.handleDone}
                             id='continue'>
                             <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
                             Continue
                         </button>
                         <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            onClick={this.handleCreateClass}
                             id='continue'>
                             Use with another class
                         </button>
                     </ul>
+                    <div className="cq-viewclass__extra">
+                        <p>
+                            <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
+                                See how to play and what you'll need…
+                            </a>
+                        </p>
+                    </div>
                 </div>
             );
         }
@@ -253,7 +296,10 @@ export default class CQViewClassList extends React.Component {
         if (this.state.isNew) {
             newClass = (
                 <div>
-                    <h4>{newTitle}</h4>
+                    <h3>
+                        Set this as a class game (or homework) for
+                    </h3>
+                    <p>Type the name of your class</p>
                     <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
                             id='newClassBox'
@@ -270,6 +316,37 @@ export default class CQViewClassList extends React.Component {
                             Continue
                         </button>
                     </form>
+                    <div>
+                        or <CQLink href="#" onClick={this.handleCancel}>cancel</CQLink>
+                    </div>
+                    <div className="cq-viewclass__extra">
+                        <p>
+                            <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
+                                See how to play and what you'll need…
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        if (this.state.isPremium) {
+            signUpFoPremium = (
+                <div>
+                    <h4>You can add more classes with the premium version and a whole lot more, including…</h4>
+                    <ul>
+                        <li>unlimited quizzes</li>
+                        <li>unlimited classes</li>
+                        <li>view all your quizzes and track progress</li>
+                    </ul>
+                    <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
+                        <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            onClick={this.handleShowPricing}
+                            id='continue'>
+                            <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
+                            Plans and pricing
+                        </button>
+                    </form>
                 </div>
             );
         }
@@ -281,19 +358,10 @@ export default class CQViewClassList extends React.Component {
                 <div className="cq-viewclass__close" onClick={this.handleClose}>
                     <div className="fa fa-times"></div>
                 </div>
-                <h3>
-                    Set this as a class game (or homework) for
-                </h3>
                 <div className="cq-viewclass__list">
                     {existingClasses}
                     {newClass}
-                </div>
-                <div className="cq-viewclass__extra">
-                    <p>
-                        <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
-                            See how to play and what you'll need…
-                        </a>
-                    </p>
+                    {signUpFoPremium}
                 </div>
             </div>
         );

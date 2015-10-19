@@ -28,6 +28,7 @@ import {
     CQAssignQuiz,
     CQTransactions,
     CQDiscovery,
+    CQDiscoveryThankYou,
 } from './../components';
 
 export type Page = {
@@ -56,7 +57,7 @@ var pagesArray: Array<Page> = [
         name: 'discoveryPage',
         path: '/discovery-education-free-premium-subscription',
         needsLogin: undefined,
-        component: CQDiscovery,
+        component: CQDiscoveryThankYou,
 
     },
     {

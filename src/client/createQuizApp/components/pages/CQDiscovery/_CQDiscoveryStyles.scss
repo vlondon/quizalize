@@ -11,7 +11,6 @@
 
     &__header {
         background: $brand-color-purple-light;
-        padding-top: 20px;
         text-align: center;
         padding: 30px;
         font-size: 20px;
@@ -31,6 +30,7 @@
             padding: 20px 100px;
             font-size: 36px;
             line-height: 34px;
+            color: #FFF;
         }
 
         &__cta {
@@ -147,6 +147,23 @@
         &__copy {
             max-width: 700px;
             margin: auto;
+        }
+    }
+
+    &__register {
+        background: #FFF;
+        text-align: center;
+        color: $brand-color-purple;
+        padding: 30px;
+        font-size: 20px;
+    }
+
+    // Override login styles
+    .cq-login {
+        &__header {
+            padding-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
         }
     }
 }
