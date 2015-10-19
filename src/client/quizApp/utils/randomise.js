@@ -35,7 +35,7 @@ var randomise = function(array, returnOriginal = false) {
     }
 
     if (isEqual(originalArray, array) && returnOriginal === false){
-        return randomise(originalArray);
+        return randomise(originalArray, returnOriginal);
     } else {
         iterations = 0;
         return array;
