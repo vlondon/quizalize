@@ -230,3 +230,34 @@ exports.groupContents = function(req, res) {
         res.send(resp);
     });
 };
+
+exports.discoveryPromotion = function(req, res){
+    console.log('session?', req.session.user);
+    var profileId = req.session.user.uuid;
+    zzish.user(profileId, function(err, user){
+        console.log('user.attributes.accountType', user.attributes.accountType);
+        if(parseInt(user.attributes.accountType, 10) === 1) {
+            res.status(200).send();
+        } else {
+            if (!err && parseInt(user.attributes.accountType, 10) === 0 ) {
+
+                user.attributes.accountType = 1;
+                user.attributes.accountTypeUpdated = Date.now();
+
+                exports.saveUser(user)
+                    .then((data) => {
+                        req.session.user = user;
+                        res.status(200).send(data);
+                    })
+                    .catch(({err, data}) => {
+                        res.status(err).send(data);
+                    });
+
+
+            } else {
+                res.status(500).send(err);
+            }
+        }
+    // console.log('user', user);
+    });
+};

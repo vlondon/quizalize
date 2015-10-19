@@ -171,6 +171,25 @@ var UserApi = {
         });
     },
 
+    discoveryPromotion: function() : Promise {
+
+        return new Promise((resolve, reject)=>{
+            request.post('/user/discovery-promotion')
+                .end((err) => {
+                    if (err){
+                        reject(err);
+                    } else {
+                        this.getOwn()
+                            .then(resolve)
+                            .catch(reject);
+
+                        // resolve(res);
+                    }
+                });
+        });
+
+    },
+
     post: function(user : Object) : Promise {
         return new Promise((resolve, reject) => {
             request.post(`/user`)

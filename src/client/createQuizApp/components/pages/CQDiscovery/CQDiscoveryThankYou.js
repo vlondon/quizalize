@@ -5,10 +5,21 @@ import {
     CQRegisterInner
 } from './../../../components';
 
+import {
+    router
+} from './../../../config';
+
 import CQDiscoveryFeatures from './CQDiscoveryFeatures';
 import CQDiscoveryQuizalize from './CQDiscoveryQuizalize';
 
 class CQDiscoveryThankYou extends React.Component {
+
+    componentDidMount() {
+        console.log('a');
+        let url = '/discovery-education-free-premium-subscription?redirect=' + window.encodeURIComponent('/discovery-education-free-premium-subscription/perform-upgrade');
+        router.setRoute(url);
+    }
+
     render () {
         let header = (
             <div>

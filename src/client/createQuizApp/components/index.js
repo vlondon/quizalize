@@ -9,6 +9,7 @@ import CQAssignQuiz from './pages/CQAssignQuiz';
 import CQCreate from './pages/CQCreate';
 import CQDashboard from './pages/CQDashboard';
 import CQDiscovery from './pages/CQDiscovery/CQDiscovery';
+import CQDiscoveryPerformUpgrade from './pages/CQDiscovery/CQDiscoveryPerformUpgrade';
 import CQDiscoveryThankYou from './pages/CQDiscovery/CQDiscoveryThankYou';
 import CQEdit from './pages/CQEdit';
 import CQLogin from './pages/CQLogin';
@@ -83,6 +84,7 @@ export {
     CQCreate,
     CQDashboard,
     CQDiscovery,
+    CQDiscoveryPerformUpgrade,
     CQDiscoveryThankYou,
     CQEdit,
     CQLogin,

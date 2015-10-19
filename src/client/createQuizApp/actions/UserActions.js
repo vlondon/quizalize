@@ -40,6 +40,10 @@ var UserActions = {
         });
     },
 
+    discoveryPromotion: function(){
+        return UserApi.discoveryPromotion();
+    },
+
     update: function(user: Object) : Promise{
 
         return new Promise((resolve, reject)=>{

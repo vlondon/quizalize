@@ -28,6 +28,7 @@ import {
     CQAssignQuiz,
     CQTransactions,
     CQDiscovery,
+    CQDiscoveryPerformUpgrade,
     CQDiscoveryThankYou,
 } from './../components';
 
@@ -55,9 +56,23 @@ var pagesArray: Array<Page> = [
     },
     {
         name: 'discoveryPage',
+        path: '/discovery-education-promotion',
+        needsLogin: undefined,
+        component: CQDiscoveryThankYou,
+
+    },
+    {
+        name: 'discoveryPage',
         path: '/discovery-education-free-premium-subscription',
         needsLogin: undefined,
         component: CQDiscoveryThankYou,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-free-premium-subscription/perform-upgrade',
+        needsLogin: true,
+        component: CQDiscoveryPerformUpgrade,
 
     },
     {

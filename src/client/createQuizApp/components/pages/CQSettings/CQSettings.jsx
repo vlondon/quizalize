@@ -310,7 +310,7 @@ export default class CQSettings extends React.Component {
         };
 
         return (
-            <CQPageTemplate className="cq-container cq-settings">
+            <div className="cq-container cq-settings">
                 <h3 className="cq-settings__header">
                     <div className="skip">
                         {skipButton}
@@ -394,7 +394,7 @@ export default class CQSettings extends React.Component {
                         </div>
                     </div>
                 </div>*/}
-            </CQPageTemplate>
+            </div>
         );
 
     }
