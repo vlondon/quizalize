@@ -1,0 +1,51 @@
+nav.navbar.navbar-default.navbar-fixed-top
+    .container-fluid
+        .navbar-header
+            a(href="/")
+                img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+                button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', onclick='return false')
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+        .navbar-collapse.collapse#navbar
+            ul.nav.navbar-nav.navbar-right
+                li
+                    a.btn.btn-info(ng-show="login.code", ng-click="login.quizalize()",style="margin:9px; height: 10px; line-height: 1.42857143; padding: 10px 10px 30px") Return to Quizalize
+                        
+
+br
+br
+
+.container
+    .row
+        .col-sm-8.col-sm-offset-2.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3
+            .well(style="background-color: {{login.appColour()}}")
+                center
+                    img(ng-src="{{login.iconURL()}}")
+                    h1 {{login.app.name}}
+                    p {{login.app.description}}
+                    
+                br
+
+                form.form-horizontal(role="form")
+                    .form-group(ng-show="!login.loadedApp")
+                        label.col-sm-3.control-label
+                            span#loginField App Code
+                        .col-sm-9
+                            input.form-control#name(type="text", on-enter="login.checkCanSubmit();", ng-model="login.code", placeholder="e.g. PQA234", autofocus="true")
+                            br
+                        .col-sm-4.col-sm-offset-4
+                            button.btn.btn-primary.btn-block(ng-click="login.login();", ng-disabled="login.checkCanSubmit()")
+                                span Load App
+                    .form-group
+                        .col-sm-12
+                            ul
+                                li(ng-repeat="quiz in login.quizzes") {{quiz.meta.name}}
+                        .col-sm-12
+                            hr(style="border: 1px solid")
+                        .col-sm-4.col-sm-offset-4
+                            br
+                            br
+                            button.btn.btn-primary.btn-block(ng-click="login.home();")
+                                span Class Mode

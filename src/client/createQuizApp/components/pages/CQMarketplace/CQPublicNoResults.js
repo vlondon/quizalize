@@ -1,9 +1,9 @@
 /* @flow */
 import React from 'react';
 
-import AnalyticsActions from './../../../actions/AnalyticsActions';
-import debounce from './../../../utils/debounce';
-import CQLink from './../../../components/utils/CQLink';
+import { AnalyticsActions } from './../../../actions';
+import { debounce } from './../../../utils';
+import { CQLink } from './../../../components';
 
 type Props = {
     keyword: string;

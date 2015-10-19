@@ -1,9 +1,9 @@
 /* @flow */
-var request = require('superagent');
-var noCache = require('superagent-no-cache');
+import request from 'superagent';
+import noCache from 'superagent-no-cache';
 
 import type {AppType} from './../../stores/AppStore';
-import MeStore from './../../stores/MeStore';
+import { MeStore } from './../../stores';
 
 var AppApi = {
 

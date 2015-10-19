@@ -1,6 +1,7 @@
-var React = require('react');
+import React from 'react';
 
-var TransactionStore = require('createQuizApp/stores/TransactionStore');
+import {TransactionStore} from 'createQuizApp/stores';
+console.log('TransactionStore',TransactionStore);
 var prices = TransactionStore.getPrices();
 
 var removeUndefinedProps = function(obj) {

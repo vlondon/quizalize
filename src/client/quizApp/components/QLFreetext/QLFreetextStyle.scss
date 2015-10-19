@@ -1,0 +1,183 @@
+@import './../../../shared/scss/mixins';
+@import './../../../shared/scss/score';
+
+@keyframes qlEnterScale {
+    from {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes qlEnterTranslateY {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes qlExitScale {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+// We hide old content
+.row.multiple-row {
+    display: none;
+}
+
+
+
+.ql-quiz-container {
+    position: relative;
+    max-width: 768px;
+    margin: 0 auto;
+}
+.ql-multiple {
+    background: #FFF;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 5px;
+
+
+    &.enter {
+        animation: qlEnterScale 300ms cubic-bezier(0,0,.47,1);
+        animation-delay: 50ms;
+        animation-fill-mode: both;
+    }
+
+
+    .question {
+        text-align: center;
+        margin: 40px auto;
+        font-size: 4.5vw;
+        -ms-word-break: break-all;
+        word-break:     break-word;
+        -webkit-hyphens: auto;
+        white-space: pre-line;
+        -moz-hyphens:    auto;
+        -ms-hyphens: auto;
+        hyphens:         auto;
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
+        @include media($size-widescreen) {
+            font-size:2vw;
+        }
+    }
+
+    &.enter .question {
+        animation: qlEnterTranslateY 200ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 400ms;
+    }
+
+    .ql-question-img {
+        display: block;
+        width: 100%;
+        max-width: 400px;
+        max-height: 400px;
+        margin: auto;
+        margin-bottom: 40px;
+    }
+
+    &.enter .ql-question-img {
+        animation: qlEnterTranslateY 200ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 400ms;
+    }
+
+    .answers {
+        position: relative
+
+    }
+
+    .alternative-wrapper {
+        width: 100%;
+        /* margin: 20px; */
+        display: inline-block;
+        text-align: center;
+        padding: 5px;
+
+        @include media($size-mobile) {
+            width: 50%;
+        }
+
+    }
+    .alternative {
+        width: 100%;
+        background: #2e60ff;
+        display: block;
+        font-size: 4.5vw;
+        color: #FFF;
+        white-space: normal;
+
+         @include media($size-mobile) {
+            font-size:2.5vw;
+        }
+        @include media($size-widescreen) {
+            font-size:2vw;
+        }
+
+
+    }
+
+    .freetext {
+        text-align: center;
+    }
+
+    #freetextInputAnswer {
+        height: 44px;
+    }
+
+    &.enter .alternative {
+        // ANIMATION: Alternative elements
+        animation: qlEnterTranslateY 200ms cubic-bezier(0,0,.47,1);
+        animation-fill-mode: both;
+
+        $delay-between-elements: 50ms;
+        $delay-base: 1000ms;
+        animation-delay: $delay-base + ($delay-between-elements * 0);
+
+        &.alternative-1 { animation-delay: $delay-base + ($delay-between-elements * 1); }
+        &.alternative-2 { animation-delay: $delay-base + ($delay-between-elements * 2); }
+        &.alternative-3 { animation-delay: $delay-base + ($delay-between-elements * 3); }
+        &.alternative-4 { animation-delay: $delay-base + ($delay-between-elements * 4); }
+        &.alternative-5 { animation-delay: $delay-base + ($delay-between-elements * 5); }
+        &.alternative-6 { animation-delay: $delay-base + ($delay-between-elements * 6); }
+    }
+
+    &.exit .alternative {
+        // ANIMATION: Alternative elements
+        animation: qlExitScale 200ms ease-in;
+        animation-fill-mode: both;
+        cursor: default;
+        pointer-events: none;
+
+        $delay-between-elements: 50ms;
+        $delay-base: 10ms;
+        animation-delay: $delay-base + ($delay-between-elements * 0);
+
+        &.alternative-1 { animation-delay: $delay-base + ($delay-between-elements * 1); }
+        &.alternative-2 { animation-delay: $delay-base + ($delay-between-elements * 2); }
+        &.alternative-3 { animation-delay: $delay-base + ($delay-between-elements * 3); }
+        &.alternative-4 { animation-delay: $delay-base + ($delay-between-elements * 4); }
+        &.alternative-5 { animation-delay: $delay-base + ($delay-between-elements * 5); }
+        &.alternative-6 { animation-delay: $delay-base + ($delay-between-elements * 6); }
+    }
+
+
+}

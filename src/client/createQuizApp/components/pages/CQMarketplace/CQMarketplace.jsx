@@ -1,30 +1,37 @@
 /* @flow */
 import React from 'react';
-import router from './../../../config/router';
+import { router } from './../../../config';
 
-import CQPageTemplate from './../../../components/CQPageTemplate';
+import {
+    CQPageTemplate,
+    CQViewQuizList,
+    CQViewQuizFilter,
+    CQViewQuizDetails,
+    CQViewQuizPrice,
+} from './../../../components';
+
+
+
+import {urlParams} from './../../../utils';
+
+import {
+    TransactionActions,
+    UserActions,
+    QuizActions
+} from './../../../actions';
+
+import {
+    QuizStore,
+    MeStore
+} from './../../../stores';
+
 
 import CQAppGrid from './CQAppGrid';
-import CQViewQuizList from './../../../components/views/CQViewQuizList';
-import CQViewQuizFilter from './../../../components/views/CQViewQuizFilter';
-import CQViewQuizDetails from './../../../components/views/CQViewQuizDetails';
-import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
 import CQPublicHeader from './CQPublicHeader';
 import CQPublicFooter from './CQPublicFooter';
 import CQPublicNoResults from './CQPublicNoResults';
-import urlParams from './../../../utils/urlParams';
+import type {Quiz} from './../../../../../types';
 
-import TransactionActions from './../../../actions/TransactionActions';
-import UserActions from './../../../actions/UserActions';
-
-
-import QuizActions from './../../../actions/QuizActions';
-import QuizStore from './../../../stores/QuizStore';
-import UserStore from './../../../stores/UserStore';
-import MeStore from './../../../stores/MeStore';
-
-import type {Quiz} from './../../../stores/QuizStore';
-import type {UserType} from './../../../../../types/UserType';
 
 type State = {
     quizzes: Array<Quiz>;
@@ -44,7 +51,12 @@ export default class CQPublic extends React.Component {
         super(props);
         var p = urlParams();
         if (p.token) {
-            UserActions.loginWithToken(p.token);
+            if (p.cancel) {
+                location.href = "/quiz/login";
+            }
+            else {
+                UserActions.loginWithToken(p.token);
+            }
         }
         //
 

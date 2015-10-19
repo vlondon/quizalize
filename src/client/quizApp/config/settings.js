@@ -3,7 +3,8 @@ var settings = {
     maxScore: 200,
     minScore: 10,
     gracePeriod: 2000,
-    QUIZ_CONTENT_TYPE: 'quiz'
+    QUIZ_CONTENT_TYPE: 'quiz',
+    APP_CONTENT_TYPE: 'app'
 };
 
 module.exports = settings;

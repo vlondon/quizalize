@@ -10,7 +10,7 @@ angular.module('quizApp').controller('PreviewController', function(QuizData, $lo
     });
 
     self.start = function(){
-        var url = "/quiz/private/" + self.id + "/" + QuizData.selectQuestionType(0) + "/0";
+        var url = "/quiz/private/" + self.id + "/question/0";
         $location.path(url);
     };
 
@@ -18,7 +18,4 @@ angular.module('quizApp').controller('PreviewController', function(QuizData, $lo
         window.close();
     };
 
-    self.cancel = function() {
-        window.close();
-    };
 });

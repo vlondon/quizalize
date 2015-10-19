@@ -1,26 +1,80 @@
 var randomise = require('quizApp/utils/randomise');
 var settings = require('quizApp/config/settings');
 var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
+var APP_CONTENT_TYPE = settings.APP_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
+
+
+    var getDataValue = function(key) {
+        if (dataParams[key]) return dataParams[key];
+        try {
+            if (typeof localStorage != 'undefined') {
+                return localStorage.getItem(key);
+            }
+        }
+        catch (err) {
+
+        }
+        return null;
+    };
+
+    var setDataValue = function(key, value) {
+        dataParams[key] = value;
+        try {
+            if (typeof localStorage != 'undefined') {
+                return localStorage.setItem(key, value);
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    var removeDataValue = function(key) {
+        delete dataParams[key];
+        try {
+            if (typeof localStorage != 'undefined') {
+                localStorage.removeItem(key);
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
+    var clearDataValue = function() {
+        for (var i in dataParams) {
+            delete dataParams[i];
+        }
+        try {
+            if (typeof localStorage != 'undefined') {
+                localStorage.clear();
+            }
+        }
+        catch (err) {
+
+        }
+    };
+
     if(typeof zzish === 'undefined') {
         $log.error("Require zzish.js to use zzish");
     }
 
+    var dataParams = {};
 
     zzish.init(initToken);
 
-    var userUuid = localStorage.getItem("uuid");
-    var userName =  localStorage.getItem("userName");
-    zzish.getUser(userUuid, userName);
+    var userUuid = getDataValue("uuid");
+    var userName =  getDataValue("userName");
+    var gameCode = getDataValue("gameCode");
 
-    var classCode = localStorage.getItem("classCode");
-    var categories = {};
-    var contents = {};
+    var classCode = getDataValue("classCode");
+    var categories = JSON.parse(getDataValue("categories") || "{}");
     var topics = {};
-    var currentQuiz = localStorage.getItem("currentQuiz") !== 'undefined' ?  JSON.parse(localStorage.getItem("currentQuiz")) : localStorage.removeItem('currentQuiz');
+    var currentQuiz = getDataValue("currentQuiz") !== 'undefined' ?  JSON.parse(getDataValue("currentQuiz")) : removeDataValue('currentQuiz');
 
-    var currentQuizResult = JSON.parse(localStorage.getItem("currentQuizResult"));
+    var currentQuizResult = JSON.parse(getDataValue("currentQuizResult"));
 
     var maxTime = settings.maxTime;
     var maxScore = settings.maxScore;
@@ -35,19 +89,19 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var setUser = function(user) {
         if (user==undefined) {
             userUuid = "";
-            localStorage.clear();
+            clearDataValue();
         }
         else {
             userUuid = user.uuid;
             userName = user.name;
-            localStorage.setItem("uuid", userUuid);
-            localStorage.setItem("userName", userName);
+            setDataValue("uuid", userUuid);
+            setDataValue("userName", userName);
         }
     };
 
     var setClassCode = function(code) {
         classCode = code;
-        localStorage.setItem("classCode",classCode);
+        setDataValue("classCode",classCode);
     };
 
     var registerWithGroup = function(code,callback) {
@@ -116,10 +170,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
 
+
         for (var i in result.categories) {
             topicsLoaded = true;
             topics[result.categories[i].uuid] = result.categories[i];
         }
+        setDataValue("categories", JSON.stringify(categories));
     };
 
     var processQuizCategories = function(result) {
@@ -134,50 +190,57 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             topicsLoaded = true;
             topics[result.categories[i].uuid] = result.categories[i];
         }
-    }
+    };
 
     var getNumAlternvatives = function(currentQuestion) {
         var numAlternatives = 0;
         if (currentQuestion.alternatives) {
             for (var i in currentQuestion.alternatives) {
-                if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i]!=="") {
+                if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i] !== "") {
                     numAlternatives++;
                 }
             }
         }
         return numAlternatives;
-    }
+    };
 
-    var selectQuestionType = function(index) {
-        var currentQuestion = currentQuiz.payload.questions[index];
-        var patternToDected = currentQuestion.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
-        var length = currentQuestion.answer.length;
-        var numAlternatives = getNumAlternvatives(currentQuestion);
-        if(numAlternatives>0 || patternToDected || length >=20 || length==1) {
+    var selectAnswerType = function(currentQuestion, answerQuestion, questionIndex) {
+        //we already have a question type (so don't update it)
+        if (answerQuestion.type) return answerQuestion.type;
+        var question = currentQuiz.payload.questions[questionIndex];
+        var patternToDected = question.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
+        var length = question.answer.length;
+        var numAlternatives = getNumAlternvatives(question);
+        if(numAlternatives > 0 || patternToDected || length >= 20 || length === 1) {
             //either there are alternatives or there is a space in the anser
-            return "multiple";
+            answerQuestion.alternatives = getAlternatives(answerQuestion, questionIndex);
+            answerQuestion.type = "multiple";
         }
         else {
-            var options = ["scrambled", "multiple"];
-            var ran = Math.floor(Math.random()*options.length);
-            return "scrambled";
+            //var options = ["scrambled", "multiple"];
+            //var ran = Math.floor(Math.random()*options.length);
+            //return options[ran];
+            answerQuestion.type = "scrambled";
+            answerQuestion.joiner = "";
+            answerQuestion.textArray = answerQuestion.text.split("");
         }
-    }
+    };
+
 
     var initQuizResult = function() {
         currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.payload.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
-        localStorage.setItem("currentQuizResult",JSON.stringify(currentQuizResult));
+        setDataValue("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
-    }
+    };
 
     var setQuiz = function(quiz) {
         currentQuiz = quiz;
-        localStorage.setItem("currentQuiz",JSON.stringify(currentQuiz));
+        setDataValue("currentQuiz",JSON.stringify(currentQuiz));
         if (quiz.payload && quiz.payload.questions) {
             quiz.payload.questions = spliceQuestions(quiz);
             initQuizResult();
         }
-    }
+    };
 
     var searchThroughCategories = function(catId, quizId) {
         console.log('categories', categories, catId, quizId);
@@ -198,23 +261,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
         }
         return null;
-    }
+    };
 
     var randomFunctionNumber = function(seed,size) {
         var x = Math.sin(seed++) * 10000;
         var result =  x - Math.floor(x);
         return Math.floor(result * size) + 1;
-    }
-
-    var hashCode = function(str) {
-        var hash = 0, i, chr, len;
-        if (str.length == 0) return hash;
-        for (i = 0, len = str.length; i < len; i++) {
-            chr   = str.charCodeAt(i);
-            hash  = ((hash << 5) - hash) + chr;
-            hash |= 0; // Convert to 32bit integer
-        }
-        return hash;
     };
 
     function shuffle(array) {
@@ -250,7 +302,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 }
                 var result2 = [];
                 if (settings['numQuestions']) {
-                    var random = false;
                     try {
                         var num = parseInt(settings['numQuestions']);
                         var numToAdd = Math.min(num,questions.length);
@@ -367,11 +418,150 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var score;
         questionDuration = questionDuration * 1000;
         if (correct) {
-            score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer) {
+                score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+            }
+            else {
+                score = maxScore;
+            }
         } else {
             score = 0;
         }
         return score;
+    };
+
+    var getAlternatives = function(answerObject, questionIndex){
+        var question = currentQuiz.payload.questions[questionIndex];
+        var numAlternatives = getNumAlternvatives(question);
+        if(numAlternatives > 0){
+            var options = [];
+            options.push(answerObject.text);
+            for(var i in question.alternatives) {
+                var alt = question.alternatives[i];
+                if (alt!=undefined && alt.length>0) {
+                    options.push(alt);
+                }
+            }
+            return randomise(options, true);
+            //return options;
+        } else {
+            var answers = [];
+            var correct = answerObject.text;
+
+            for(var i in currentQuiz.payload.questions){
+                var q = currentQuiz.payload.questions[i];
+                if (q.question!=question.question) {
+                    var answer = processInput(q.answer);
+                    if(answer.text != correct){
+                        answers.push(answer.text);
+                    }
+                }
+            }
+            var options = randomise(answers).slice(0,3);
+            options.push(answerObject.text);
+            return randomise(options);
+        }
+    };
+
+    var processInput = function(input) {
+        if (input) {
+            if (input.indexOf("freetext://") === 0) {
+                var meta = input.split("//");
+                return {
+                    type: "freetext",
+                    text: meta[1]
+                };
+            }
+            if (input.indexOf("scrambled://") === 0) {
+                var meta = input.split("//");
+                return {
+                    type: "scrambled",
+                    text: meta[1],
+                    textArray: meta[1].split(""),
+                    joiner: ""
+                };
+            }
+            if (input.indexOf("multiple://") === 0) {
+                var meta = input.split("//");
+                return {
+                    type: "multiple",
+                    text: meta[1]
+                };
+            }
+            if (input.indexOf("freetext://") === 0) {
+                var meta = input.split("//");
+                return {
+                    type: "freetext",
+                    text: meta[1]
+                };
+            }
+            if (input.indexOf("video://") === 0) {
+                return {
+                    type: "video",
+                    url: "http://" + input.substring(8),
+                    text: "Video"
+                };
+            }
+            if (input.indexOf("videos://") === 0) {
+                return {
+                    type: "video",
+                    url: "https://" + input.substring(9),
+                    text: "Video"
+                };
+            }
+            if (input.indexOf("audio://") === 0) {
+                return {
+                    type: "audio",
+                    url: "http://" + input.substring(8),
+                    text: "Audio"
+                };
+            }
+            if (input.indexOf("audios://") === 0) {
+                return {
+                    type: "audio",
+                    url: "http://" + input.substring(9),
+                    text: "Audio"
+                };
+            }
+            if (input.indexOf("exp:") === 0) {
+                var meta = input.split("//");
+                var commands = meta[0].split(":");
+                return {
+                    type: "text",
+                    show: parseInt(commands[1]),
+                    text: meta[1]
+                };
+            }
+            if (input.indexOf("jumble:") === 0) {
+                var meta = input.split("//");
+                var commands = meta[0].split(":");
+                return {
+                    type: "scrambled",
+                    text: meta[1],
+                    textArray: meta[1].split(","),
+                    joiner: ","
+                };
+            }
+            if (input.indexOf("videoq:") === 0) {
+                var meta = input.split("//");
+                var commands = meta[0].split(":");
+                var result = {
+                    type: "videoq",
+                    url: commands[1],
+                    start: commands[2],
+                    end: commands[3],
+                    text: meta[1],
+                    autoPlay: 0
+                };
+                if (commands.length == 5) {
+                    result.autoPlay = parseInt(commands[4]);
+                }
+                return result;
+            }
+        }
+        return {
+            text: input
+        };
     };
 
     //return client data api
@@ -383,7 +573,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         unsetUser: function() {
             var result = userUuid!="" && userUuid!=undefined;
             setUser(null);
-            var token = localStorage.getItem("token");
+            var token = getDataValue("token");
             if (token!=null) {
                 zzish.logout(token);
             }
@@ -391,6 +581,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         getUser: function () {
             return userUuid;
+        },
+        gameCode: function() {
+            return gameCode;
+        },
+        resetGame: function() {
+            gameCode = null;
+            removeDataValue("gameCode");
         },
         getUsername: function() {
             return userName;
@@ -454,7 +651,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     startTime: Date.now()
                 };
             }
-            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
+            setDataValue("currentQuizResult", JSON.stringify(currentQuizResult));
             return currentQuizResult.processing[question.uuid].startTime;
         },
         loginUser: function(user, classcode, callback) {
@@ -476,6 +673,47 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 $rootScope.$digest();
             });
         },
+        loadApp: function(code, callback) {
+            gameCode = code;
+            setDataValue("gameCode",code);
+            if (zzish.validateClassCode(code)) {
+                zzish.getPublicContentByCode(APP_CONTENT_TYPE, code, function(err, result) {
+                    if (!err) {
+                        callback(null, result);
+                    }
+                    else {
+                        callback(result.status, result.message);
+                    }
+                    $rootScope.$digest();
+                });
+            }
+            else {
+                callback(404,"Check your classcode");
+            }
+        },
+        loadQuizzes: function(app, callback) {
+            var quizzes = app.quizzes.split(",");
+            if (quizzes.length == 1) {
+                zzish.getPublicContent(QUIZ_CONTENT_TYPE,quizzes[0],function(err,message) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err,result) {
+                        result.contents = [message];
+                        processQuizData(result,false);
+                        callback(err,message);
+                        $rootScope.$digest();
+                    });
+                });
+            }
+            else {
+                zzish.getContents(app.profileId, QUIZ_CONTENT_TYPE, quizzes, function(err,message) {
+                    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err,result) {
+                        result.contents = message;
+                        processQuizData(result,false);
+                        callback(err,message);
+                        $rootScope.$digest();
+                    });
+                });
+            }
+        },
         loadPlayerQuizzes: function(callback) {
             loadPlayerQuizzes(callback);
         },
@@ -491,10 +729,22 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 $rootScope.$digest();
             });
         },
+        loadStats: function(callback){
+            zzish.getUserResults(userUuid, {aggregate: true, data: true}, function(err, message) {
+                callback(err, message);
+                $rootScope.$digest();
+            });
+        },
         loadQuiz: function(catId,quizId,callback) {
             var cb = function(data){
+                data.payload.questions.forEach(function(currentQuestion, questionIndex) {
+                    currentQuestion.questionObject = processInput(currentQuestion.question);
+                    currentQuestion.answerObject = processInput(currentQuestion.answer);
+                    currentQuestion.expObject = processInput(currentQuestion.answerExplanation);
+                    selectAnswerType(currentQuestion.questionObject, currentQuestion.answerObject, questionIndex);
+                });
                 callback(data);
-            }
+            };
             if (currentQuiz!=undefined && currentQuiz.uuid==quizId) {
                 cb(currentQuiz);
             }
@@ -505,13 +755,13 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         selectQuiz: selectQuiz,
         previewQuiz: function(quizId, callback) {
-            var uuid = localStorage.getItem('cqUuid');
+            var uuid = getDataValue('cqUuid');
             $http.get(`/create/${uuid}/quizzes/${quizId}`).then(function(response){
                 console.log('we got quiz!', response.data);
                 setQuiz(response.data);
                 callback(response.data);
             });
-            // var quizData = JSON.parse(localStorage.getItem("quizData"));
+            // var quizData = JSON.parse(getDataValue("quizData"));
             // if (quizData !== undefined) {
             //     var quiz = quizData[quizId];
             //     setQuiz(quiz);
@@ -521,7 +771,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             //     console.error('No data found for quiz', quizId);
             // }
         },
-        selectQuestionType: selectQuestionType,
         currentQuiz: function() {
             return currentQuiz;
         },
@@ -538,7 +787,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     contentId: currentQuiz.uuid,
                     groupCode: classCode
                 }
-            }
+            };
             if (currentQuiz.meta.categoryId) {
                 parameters.extensions.categoryId = currentQuiz.meta.categoryId;
             }
@@ -562,51 +811,29 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             return initQuizResult(currentQuiz);
         },
         getQuestion: function(questionIndex,callback) {
-            callback(currentQuiz.payload.questions[questionIndex]);
+            var currentQuestion = currentQuiz.payload.questions[questionIndex];
+            callback(currentQuestion);
         },
-        getAlternatives: function(questionIndex){
-            var question = currentQuiz.payload.questions[questionIndex];
-            var numAlternatives = getNumAlternvatives(question);
-            if(numAlternatives>0){
-                var options = [];
-                options.push(question.answer);
-                for(var i in question.alternatives) {
-                    var alt = question.alternatives[i];
-                    if (alt!=undefined && alt.length>0) {
-                        options.push(alt);
-                    }
-                }
-                return randomise(options);
-                //return options;
-            } else {
-                var answers = [];
-                var correct = question.answer;
-
-                for(var i in currentQuiz.payload.questions){
-                    var q = currentQuiz.payload.questions[i];
-                    if (q.question!=question.question) {
-                        if(q.answer != correct){
-                            answers.push(q.answer);
-                        }
-                    }
-                }
-                var options = randomise(answers).slice(0,3);
-                options.push(correct);
-                return randomise(options);
-            }
+        getDataValue: function(key) {
+            return getDataValue(key);
         },
-        answerQuestion: function(idx, response, answer, questionName, duration){
-
+        setDataValue: function(key, value) {
+            setDataValue(key,value);
+        },
+        removeDataValue: function(key) {
+            removeDataValue(key);
+        },
+        answerQuestion: function(idx, questionData, response, duration){
             var question = currentQuiz.payload.questions[idx];
             var questionDuration = question.duration || maxTime / 1000;
             console.log('currentQuiz,', currentQuiz);
 
-            var correct = (response.toUpperCase().replace(/\s/g, "") == answer.toUpperCase().replace(/\s/g, ""));
+            var correct = (response.toUpperCase().replace(/\s/g, "") == questionData.answerObject.text.toUpperCase().replace(/\s/g, ""));
             var score = calculateScore(correct, duration, questionDuration);
             var parameters = {
                 definition: {
                     type: question.uuid,
-                    name: question.question,
+                    name: question.questionObject.text,
                     score: maxScore,
                     duration: questionDuration,
                     response: question.answer
@@ -628,7 +855,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (question.imageURL) {
                 parameters.attributes["image_url"] = question.imageURL;
             }
-            if (!!question.latexEnabled) {
+            if (questionData.expObject.text) {
+                parameters.attributes["explanation"] = questionData.expObject.text;
+            }
+            if (question.latexEnabled == true) {
                 parameters.attributes["latex"] = true;
             }
 
@@ -644,10 +874,11 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
             var reportItem = {
                 id: idx,
-                question: questionName,
+                question: questionData.questionObject,
                 questionId: question.uuid,
                 response: response,
-                answer: answer,
+                answer: questionData.answerObject.text,
+                attempts: 1,
                 correct: correct,
                 score: score,
                 latexEnabled: question.latexEnabled,
@@ -656,19 +887,70 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 topicId: question.topicId,
                 duration: duration
             };
-            currentQuizResult.report.push(reportItem);
-            localStorage.setItem("currentQuizResult", JSON.stringify(currentQuizResult));
+            var existingReport = currentQuizResult.report.filter(function(i) {
+                return i.id == idx;
+            });
+            if (existingReport.length ==0) {
+                currentQuizResult.report.push(reportItem);
+            }
+            else {
+                existingReport[0].attempts++;
+                existingReport[0].correct = reportItem.correct;
+                existingReport[0].duration += reportItem.duration;
+                existingReport[0].seconds += reportItem.seconds;
+                existingReport[0].score = reportItem.score / existingReport[0].attempts;
+                existingReport[0].roundedScore = Math.round(existingReport[0].score);
+                existingReport[0].response = reportItem.response;
+            }
+            setDataValue("currentQuizResult", JSON.stringify(currentQuizResult));
+        },
+        canShowQuestion: function(questionId) {
+            if (currentQuizResult.report[questionId] === undefined) {
+                return true;
+            }
+            //var repeatUntilCorrect = true;
+            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            if (repeatUntilCorrect) {
+                return !currentQuizResult.report[questionId].correct;
+            }
+            return false;
         },
         generateNextQuestionUrl: function(questionId) {
-            var q = questionId + 1;
-            if (currentQuiz.payload.questions.length == q) {
+            //var repeatUntilCorrect = true;
+            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            var maxAttempts = parseInt(currentQuiz.meta.maxAttempts || -1);
+            var nextQuestionId = -1;
+            if (repeatUntilCorrect) {
+                var tmpQ = questionId;
+                while (true) {
+                    tmpQ++;
+                    if (tmpQ == currentQuiz.payload.questions.length) {
+                        tmpQ = 0;
+                    }
+                    if (currentQuizResult.report[tmpQ] == undefined || (!currentQuizResult.report[tmpQ].correct && (currentQuizResult.report[tmpQ].attempts < maxAttempts || maxAttempts === -1))) {
+                        nextQuestionId = tmpQ;
+                        break;
+                    }
+                    if (tmpQ == questionId) {
+                        //we went through all the questions, so no more incorrect
+                        nextQuestionId = -1;
+                        break;
+                    }
+                }
+            }
+            else {
+                if (currentQuiz.payload.questions.length != (questionId + 1)) {
+                    nextQuestionId = questionId + 1;
+                }
+            }
+            if (nextQuestionId !== -1) {
+                return '/quiz/' +  currentQuiz.meta.categoryId + "/" + currentQuiz.uuid + "/question/" + (nextQuestionId);
+            }
+            else {
                 if (currentQuizResult.currentActivityId !== undefined) {
                     zzish.stopActivity(currentQuizResult.currentActivityId, {});
                 }
                 return '/quiz/' +  currentQuiz.meta.categoryId + "/" + currentQuiz.uuid + "/complete";
-            }
-            else {
-                return '/quiz/' +  currentQuiz.meta.categoryId + "/" + currentQuiz.uuid + "/" + selectQuestionType(q) + '/' + (q);
             }
         },
         cancelCurrentQuiz: function(callback) {
@@ -679,7 +961,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                         callback(err,message);
                         $rootScope.$digest();
                     }
-                })
+                });
             }
         },
         showMessage : function(title, message, callBack) {

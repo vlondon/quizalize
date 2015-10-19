@@ -1,5 +1,6 @@
 var settings = require('quizApp/config/settings');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var QLLeaderboard = require('quizApp/components/QLLeaderboard');
 // var QLComplete = require('quizApp/components/QLComplete');
 
@@ -30,7 +31,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     self.demoMode = sessionStorage.getItem("mode")=="demo";
     sessionStorage.removeItem("mode");
-    self.showButtons = false;
+    self.QLQuestion = false;
     self.id = $routeParams.quizId;
     self.catId = $routeParams.catId;
 
@@ -38,10 +39,14 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         window.ga('send', 'event', 'quiz', 'end', self.id);
     }
 
+    QuizData.loadQuiz(self.catId, self.id, function(data) {
+        self.currentQuiz = data;
+    });
+
 
     var renderReactComponent = function(){
         var activityId = self.data ? self.data.currentActivityId : undefined;
-        React.render(
+        ReactDOM.render(
             React.createElement(QLLeaderboard, {
                 leaderboard: self.leaderboard,
                 activityId
@@ -54,7 +59,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     var addReactComponent = function(){
         setTimeout(renderReactComponent, 200);
         $scope.$on('$destroy', function(){
-            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+            ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
         });
     };
 
@@ -122,12 +127,13 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     };
 
     self.data = QuizData.currentQuizResult();
+    self.quiz = QuizData.currentQuizResult();
 
     self.topics = {};
 
-    var localStorageQuiz = JSON.parse(localStorage.getItem('currentQuiz') || '{}');
+    var currentQuiz = JSON.parse(QuizData.getDataValue("currentQuiz") || '{}');
 
-    self.isFeatured = localStorageQuiz.meta!=null ? localStorageQuiz.meta.featured : false;
+    self.isFeatured = currentQuiz.meta!=null ? currentQuiz.meta.featured : false;
     // self.isFeatured = false;
 
     if (self.isFeatured === true) {
@@ -135,7 +141,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             .then(function(score){
                 self.leaderboard = score;
                 self.facebookLink = `http://www.facebook.com/sharer/sharer.php?u=http://quizalize.com/qapp/${self.data.quizId}`;
-                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + localStorageQuiz.meta.name + ' on @Quizalizeapp and I got ' + self.totals.score + ' points. http://www.quizalize.com/qapp/' + self.data.quizId)}`;
+                self.twitterLink = `http://twitter.com/home?status=${window.encodeURIComponent('I played ' + currentQuiz.meta.name + ' on @Quizalizeapp and I got ' + self.totals.score + ' points. http://www.quizalize.com/qapp/' + self.data.quizId)}`;
                 //addReactComponent();
             });
     }
@@ -167,11 +173,11 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             }, 200);
             MathJax.Hub.Queue(function () {
                 $scope.$apply(function() {
-                    self.showButtons = true;
+                    self.QLQuestion = true;
                 });
             });
         }
-        self.showButtons = true;
+        self.QLQuestion = true;
         // renderReactComponent();
     },self.previewMode);
 

@@ -35,7 +35,7 @@ var performQuery = function(mongoQuery,contenType,callback) {
                         callback(400,error);
                     });
             } else {
-                callback(500,error);
+                callback(500,resp);
             }
         });
     }

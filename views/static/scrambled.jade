@@ -13,10 +13,7 @@ block header
         }
 
 
-nav.navbar.navbar-default.navbar-fixed-top
-    .container-fluid
-        .navbar-header
-            img(src="/img/quizalize.png", style="height:44px; margin-top:9px; padding-left:5px;")
+include navbar
 
 .container
     .ql-score
@@ -29,7 +26,7 @@ nav.navbar.navbar-default.navbar-fixed-top
 
     .row.row-scrambled
         .col-x-12.col-sm-8.col-sm-offset-2
-            .well(ng-show="quiz.showButtons",class="cssFade ng-scope ng-hide")
+            .well(ng-show="quiz.QLQuestion",class="cssFade ng-scope ng-hide")
                 .text-center
                     h2.math.quizQuestion#quizQuestion {{quiz.question}}
                     span(ng-show="quiz.imageURL")

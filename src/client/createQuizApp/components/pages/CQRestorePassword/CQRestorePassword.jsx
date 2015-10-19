@@ -1,13 +1,14 @@
 /* @flow */
-var React = require('react');
+import React from 'react';
 
-import router from './../../../config/router';
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
-var CQLink = require('./../../../components/utils/CQLink');
+import { router } from './../../../config';
+import {
+    CQPageTemplate,
+    CQLoginForm,
+    CQLink
+} from './../../../components';
 
-var UserActions = require('./../../../actions/UserActions');
-
+import { UserActions } from './../../../actions';
 
 var CQRestorePassword = React.createClass({
 

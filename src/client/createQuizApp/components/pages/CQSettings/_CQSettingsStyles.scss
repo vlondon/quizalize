@@ -2,8 +2,16 @@
 @import './../../../../shared/scss/mixins';
 
 .cq-settings {
-    max-width: 600px;
+    // max-width: 600px;
     min-width: 300px;
+
+    &__cols {
+        display: flex;
+    }
+    &__col2,
+    &__col1 {
+        width: 50%;
+    }
 
     &__header {
         @include cq-header();
@@ -36,6 +44,7 @@
         }
     }
 
+    &__subscriptions,
     &__profile {
         padding: 20px;
 
@@ -43,6 +52,51 @@
             &--error {
                 color: $brand-color-red;
             }
+        }
+    }
+    &__subsoptions {
+        display: flex;
+        text-align: center;
+        &__price {
+            font-size: 24px;
+            font-weight: bold;
+            height: 80px;
+            margin-top: 20px;
+
+            small {
+                display: block;
+                font-size: 18px;
+            }
+        }
+        &__free,
+        &__premium,
+        &__school {
+
+            border: 1px solid #CCC;
+            box-shadow: 0 2px 2px 0 #999;
+            border-radius: 10px;
+            min-height: 100px;
+            width: 33%;
+            margin: 5px;
+            padding: 10px;
+            opacity: 0.5;
+            cursor: pointer;
+            &:hover { opacity: 1;}
+            &--selected {
+                opacity: 1;
+                cursor: default;
+            }
+        }
+        &__free {
+            background: rgba(#000, .05);
+        }
+
+        &__premium {
+            background: lighten($brand-color-orange, 30%);
+        }
+
+        &__school {
+            background: lighten($brand-color-purple-light, 40%);
         }
     }
 

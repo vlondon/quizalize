@@ -328,5 +328,8 @@ background: #970b0e !important;
               </td>
             </tr></table></center>
         </td>
-      </tr></table></body>
+      </tr></table>
+      <img src="http://localhost:3001/pixel?category=email&action=open&label=%campaignlabel%&value=5" />
+      <p>Click <a href="http://localhost:3001/unsubscribe?email=%email%">here to unsubscribe</a></p>
+      </body>
 </html>

@@ -1,3 +1,5 @@
 %body%
 
-%linktitle%
+%link%
+
+Click to unsubscribe: http://localhost:3001/unsubscribe?email=%email%

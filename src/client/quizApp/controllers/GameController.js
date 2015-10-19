@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
 var QLLeaderboard = require('quizApp/components/QLLeaderboard');
@@ -17,12 +18,12 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     }
 
     var renderReactComponent = function(){
-        React.render(React.createElement('div', {className: 'qofd-intro'},
-            React.createElement(CQQuizOfTheDay, {
+        ReactDOM.render(React.createElement('div', {className: 'qofd-intro'},
+            ReactDOM.createElement(CQQuizOfTheDay, {
                 quiz: self.currentQuiz,
                 showActions: false
             }),
-            React.createElement(QLLeaderboard, {
+            ReactDOM.createElement(QLLeaderboard, {
                 leaderboard: self.leaderboard
             })),
 
@@ -34,7 +35,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     var addReactComponent = function(){
         setTimeout(renderReactComponent, 200);
         $scope.$on('$destroy', function(){
-            React.unmountComponentAtNode(document.getElementById('reactContainer'));
+            ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
         });
     };
 
@@ -54,6 +55,23 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     QuizData.selectQuiz(self.catId, self.id, function(err, result) {
         if (!err) {
             self.currentQuiz = result;
+            if (localStorage.getItem("classCode")) {
+                window.Intercom('boot', {
+                  app_id: window.intercomId,
+                  user_id: result.meta.profileId // Optional: Replace with a unique identifier that won't change
+                });
+                window.Intercom('update', {
+                  app_id: window.intercomId,
+                  user_id: result.meta.profileId // Optional: Replace with a unique identifier that won't change
+                });
+                window.Intercom('update');
+                window.Intercom('trackEvent', 'class-quiz', {
+                    classCode: localStorage.getItem("classCode"),
+                    quizId: self.currentQuiz.uuid
+                });
+                window.Intercom('shutdown');                
+            }
+
 
             if (self.currentQuiz.meta) {
 
@@ -86,7 +104,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     });
 
     self.start = function(){
-        var url = "/quiz/" + self.catId + '/' + self.id + "/" + QuizData.selectQuestionType(0) + "/0";
+        var url = "/quiz/" + self.catId + '/' + self.id + "/question/0";
         $location.path(url);
     };
 
@@ -97,28 +115,5 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
         else {
             $location.path("/app/");
         }
-    };
-
-    self.cancel = function() {
-        QuizData.confirmWithUser("Cancel Quiz","Are you sure you want to cancel '" + QuizData.currentQuiz().meta.name+"'. You won't be able to continue this quiz.",function() {
-            if (sessionStorage.getItem("mode")=="teacher") {
-                window.location.href="/quiz/public";
-            }
-            else if (sessionStorage.getItem("mode")=="preview") {
-                window.close();
-            }
-            else if (QuizData.getClassCode()){
-                $location.path("/list");
-            }
-            else if (QuizData.getUser()){
-                $location.path("/quiz");
-            }
-            else {
-                $location.path("/app");
-            }
-            QuizData.cancelCurrentQuiz(function() {
-
-            });
-        });
     };
 });

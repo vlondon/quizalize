@@ -1,0 +1,41 @@
+block header
+    style.
+        .ng-hide-add, .ng-hide-remove {
+           /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+        }
+        .cssFade {
+            transition: 0.2s linear all;
+            opacity: 1;
+        }
+        .cssFade.ng-hide {
+            opacity: 0;
+        }
+
+
+include navbar
+
+.container
+    .ql-score
+        .score
+            h2 {{quiz.score}} pts
+        .questions
+            h2 Q: {{quiz.questionId + 1}}/{{quiz.questionCount}}
+    #reactContainer
+
+
+
+    .row.multiple-row
+        .col-x-12.col-sm-8.col-sm-offset-2
+            .well(ng-show="quiz.QLQuestion",class="cssFade ng-scope ng-hide")
+                .text-center.wrapword
+                    p.math.quizQuestion#quizQuestion {{quiz.question}}
+                    br
+                    span(ng-show="quiz.imageURL")
+                        img(ng-src="{{quiz.imageURL}}",width="80%")
+                        br
+                        br
+                .row
+
+                    div.math(ng-repeat="alternative in quiz.alternatives track by $index", style="padding-bottom: 20px", ng-class="{'col-xs-6': !quiz.longMode, 'col-xs-12': quiz.longMode}")
+                        button.btn.btn-block.btn-info.wrapword(ng-click="quiz.select($index);",style="white-space: normal;",id="alt{{$index}}") {{alternative}}

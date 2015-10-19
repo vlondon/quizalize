@@ -2,7 +2,7 @@
 import React from 'react';
 import CQProfileView from './CQProfileView';
 
-import UserStore from './../../../stores/UserStore';
+import { UserStore } from './../../../stores';
 
 type Props = {
     routeParams: {

@@ -1,24 +1,48 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import { router } from './../../../config';
+
+import {
+    CQPageTemplate,
+    CQViewAppQuizList
+} from './../../../components';
+
+import {
+    TransactionActions
+} from './../../../actions';
+
+import type {
+    Quiz,
+    AppType
+} from './../../../../../types';
+
+import {
+    MeStore
+} from './../../../stores';
+
+import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
+import CQOwnProfileCounter from './CQOwnProfileCounter';
 
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
-
-var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
-import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
-// var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
-
-var TransactionActions = require('./../../../actions/TransactionActions');
-
-import type {Quiz} from './../../../stores/QuizStore';
-import type {AppType} from './../../../stores/AppStore';
+let getPrivateQuizzes = (apps) => {
+    let privateQuizzes = [];
+    apps.forEach(app=> {
+        app.meta.quizzes.forEach(quiz=>{
+            if (quiz.meta.published === null) {
+                privateQuizzes.push(quiz);
+            }
+        });
+    });
+    return privateQuizzes;
+};
 
 class CQProfileView extends React.Component {
 
     constructor(props : Props){
         super(props);
+        this.state = {
+            user: MeStore.state
+        };
     }
 
     handlePreview(quiz : Quiz){
@@ -65,17 +89,19 @@ class CQProfileView extends React.Component {
         this.setState({quizDetails: quiz.uuid});
     }
 
-    handleDetailsClose(){
-        // this.props.quizCode = undefined;
-        // this.setState({quizDetails: undefined});
-    }
 
     render() {
 
-        var quizList, headerCta;
+
+        var headerCta;
+        var amountOfPrivateQuizzes = getPrivateQuizzes(this.props.apps).length;
+
+        var headerCta, noQuizMessage, ownProfileCounter;
 
         if (this.props.own) {
-
+            if (MeStore.state.attributes.accountType === 0){
+                ownProfileCounter = (<CQOwnProfileCounter amount={amountOfPrivateQuizzes}/>);
+            }
             headerCta = (
                 <div className="cq-profile__cta">
                     <button  onClick={this.handleNewApp} className="btn btn-primary cq-profile__cta__app">
@@ -85,33 +111,30 @@ class CQProfileView extends React.Component {
                     <button  onClick={this.handleNew} className="btn btn-primary ">
                         <i className="fa fa-plus"></i> New quiz
                     </button>
+                    <div className="cq-profile__freeaccount">
+                        {ownProfileCounter}
+                    </div>
 
                 </div>
             );
         }
-        // if (this.state.quizDetails) {
-        //     quizDetails = (<CQViewQuizDetails
-        //         onClose={this.handleDetailsClose}
-        //         quizCode={this.props.quizCode}
-        //         quizId={this.state.quizDetails}/>);
-                // quizCode={this.props.quizCode}
-        // }
-        var quizzes = this.props.quizzes || [];
-        quizList = (
-            <CQViewQuizList
-                isQuizInteractive={true}
-                isPaginated={true}
-                onQuizClick={this.handleDetails}
-                quizzes={quizzes}
-                className="cq-public__list"
-                sortBy="time"/>
-        );
+
+
+        noQuizMessage = this.props.apps.length == 0 ? (
+            <div>
+                {this.props.profile ? this.props.profile.name : "This user"} has no publicly available content
+            </div>
+        ) : "";
+
+
         return (
             <CQPageTemplate className="cq-container cq-profile">
 
-                <CQDashboardProfile user={this.props.profile}/>
+                <CQDashboardProfile user={this.props.profile} own={this.props.own}/>
 
                 {headerCta}
+
+                {noQuizMessage}
 
                 <CQViewAppQuizList
                     apps={this.props.apps}
@@ -134,11 +157,11 @@ type Props = {
 }
 
 CQProfileView.propTypes = {
-    profile: React.PropTypes.oject,
+    profile: React.PropTypes.object,
     apps: React.PropTypes.array,
     quizzes: React.PropTypes.array,
     quizCode: React.PropTypes.string,
-    own: React.PropTypes.boolean
+    own: React.PropTypes.bool
 };
 
 module.exports = CQProfileView;

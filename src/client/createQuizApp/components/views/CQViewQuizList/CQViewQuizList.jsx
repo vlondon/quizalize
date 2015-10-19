@@ -40,7 +40,7 @@ type Props = {
 type State = {
     page: number;
     pages: number;
-    quizzes: Array<Object>;
+    quizzes: Array<Quiz>;
     selectedQuizzes: Array<string>;
 };
 
@@ -89,7 +89,7 @@ export default class CQViewQuizList extends React.Component {
 
 
         var quizCta = function(quizzes){
-            var quizPlaceholder = {
+            var quizPlaceholder:Quiz = {
                 uuid: 'new',
                 meta: {
                     name: 'Create your own Quiz',

@@ -68,17 +68,17 @@ var fillApps = (apps, quizzes, user)=>{
     });
     console.info('Filling apps', apps, quizzesWithoutApps);
 
-    var appPlaceholder = AppStore.getNewApp({
-        uuid: 'own',
-        meta: {
-            quizzes: quizzesWithoutApps,
-            colour: '#FFF',
-            name: `${user.name} Quizzes`,
-            description: ''
-        }
-    });
-
-    apps.push(appPlaceholder);
+    // var appPlaceholder = AppStore.getNewApp({
+    //     uuid: 'own',
+    //     meta: {
+    //         quizzes: quizzesWithoutApps,
+    //         colour: '#FFF',
+    //         name: `${user.name} Quizzes`,
+    //         description: ''
+    //     }
+    // });
+    //
+    // apps.push(appPlaceholder);
     return apps;
 };
 
@@ -96,7 +96,6 @@ AppDispatcher.register(function(action) {
 
         case UserConstants.USER_PUBLIC_LOADED:
             console.log('UserConstants.USER_PUBLIC_LOADED', action);
-            debugger;
             var user = action.payload;
             var apps = fillApps(user.apps, user.quizzes, user);
             user = {...user, apps};

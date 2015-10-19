@@ -1,15 +1,16 @@
 /* @flow */
-var React = require('react');
+import React from 'react';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
-var CQLink = require('./../../../components/utils/CQLink');
-var CQSettings = require('./../../../components/pages/CQSettings');
-var CQZzishLogin = require('./../../../components/pages/shared/CQZzishLogin');
+import {
+    CQPageTemplate,
+    CQLoginForm,
+    CQLink,
+    CQSettings,
+    CQZzishLogin
+} from './../../../components';
 
-var UserActions = require('./../../../actions/UserActions');
-
-import {urlParams} from './../../../utils';
+import { UserActions } from './../../../actions';
+import { urlParams } from './../../../utils';
 
 var CQRegister = React.createClass({
 
@@ -56,7 +57,7 @@ var CQRegister = React.createClass({
 
         var moreInfo;
         if (this.state.isRedirect){
-            moreInfo = (<p style={{'text-align': 'center'}}>
+            moreInfo = (<p style={{'textAlign': 'center'}}>
                 Before we can continue you'll need to create a new Quizalize account.
                 <br/>
                 <br/>

@@ -30,29 +30,40 @@ function decrypt(text){
 }
 
 
-exports.saveUser = function(req, res) {
+exports.saveUser = function(user){
+    return new Promise(function(resolve, reject){
+        var profileId = user.uuid;
+        zzish.saveUser(profileId, user, function(err, data){
+            if (!err && typeof data === 'object') {
+                var interomUser = {
+                    'user_id': data.uuid,
+                    'name': data.name,
+                    'custom_attributes': data.attributes,
+                    'created_at': Math.round(data.created / 1000)
+                };
+                logger.info('INTERCOM USER', interomUser);
+                intercom.updateUser(interomUser);
+                resolve(data);
+            }
+            else {
+                reject({err, data});
+            }
+        });
+    });
+
+};
+exports.saveUserRequest = function(req, res) {
     if (req.session.user === undefined) {
         res.status(401).send('Not authorized');
     } else {
-        var profileId = req.session.user.uuid;
-        zzish.saveUser(profileId, req.body, function(err, data){
-            if (!err && typeof data === 'object') {
+        exports.saveUser(req.body)
+            .then((data) => {
                 req.session.user = data;
-                var user = {
-                    'user_id': data.uuid,
-                    'name': req.body.name,
-                    'custom_attributes': req.body.attributes,
-                    'created_at': Math.round(data.created / 1000)
-                };
-                logger.info('INTERCOM USER', user);
-                intercom.updateUser(user);
-                res.status(200);
-            }
-            else {
-                res.status(err);
-            }
-            res.send(data);
-        });
+                res.status(200).send(data);
+            })
+            .catch(({err, data}) => {
+                res.status(err).send(data);
+            });
     }
 };
 
@@ -67,7 +78,7 @@ exports.details = function(req, res) {
                 res.status(200);
             }
             else {
-                req.userUUID = undefined;
+                req.session.userUUID = undefined;
                 res.status(err);
             }
             res.send(data);
@@ -91,11 +102,12 @@ exports.search = function(req, res) {
 
 exports.token =  function(req, res) {
     var token = req.body.token;
-
     zzish.getCurrentUser(token, function(err, data) {
         if (!err && typeof data === 'object') {
-            intercom.trackEvent(data.uuid, 'logged_in');
+            data.token = token;
+            req.session.token = token;
             req.session.user = data;
+            intercom.trackEvent(data.uuid, 'logged_in');
             res.status(200).send(data);
         }
         else {
@@ -130,21 +142,27 @@ exports.logout = function(req, res){
 exports.register =  function(req, res) {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
-    zzish.registerUser(userEmail, encrypt(userPassword), function(err, data) {
+    logger.info('Creating new user for', userEmail);
+    zzish.registerUser(userEmail, encrypt(userPassword), function(err, user) {
         if (!err) {
-            req.session.user = data;
-            res.status(200);
-            intercom.createUser({
-                'email': userEmail,
-                'user_id': data.uuid,
-                'created_at': Date.now() / 1000
-            });
-            email.sendEmailTemplate('team@zzish.com', [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
+            user.attributes.accountType = 0;
+            user.attributes.accountTypeUpdated = Date.now();
+            req.session.user = user;
+            logger.info('Setting account type for', userEmail);
+            exports.saveUser(user)
+                .then(()=>{
+                    logger.info('saving session');
+                    res.send(user);
+                })
+                .catch(()=>{
+                    res.status(err).send();
+                });
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
         }
         else {
             res.status(err);
         }
-        res.send(data);
+        res.send(user);
     });
 };
 
@@ -154,7 +172,7 @@ exports.forget =  function(req, res) {
         if (!err) {
             res.status(200);
             var link = "http://www.quizalize.com/quiz/reset/" + encrypt(data);
-            email.sendEmailTemplate('team@zzish.com', [userEmail], 'Password Reset', 'passwordreset', {link: link});
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Password Reset', 'passwordreset', {link: link});
         }
         else {
             res.status(err);

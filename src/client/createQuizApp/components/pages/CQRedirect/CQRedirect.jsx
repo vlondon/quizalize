@@ -1,10 +1,14 @@
-var React = require('react');
+/* @flow */
+import React, { PropTypes } from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+import { CQPageTemplate } from './../../../components/CQPageTemplate';
 
 
 var CQNotFound = React.createClass({
-
+    propTypes: {
+        redirectUrl: PropTypes.string.isRequired
+    },
+    
     getInitialState: function() {
         return {};
     },

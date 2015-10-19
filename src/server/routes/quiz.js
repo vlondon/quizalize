@@ -85,7 +85,8 @@ exports.index =  function(req, res) {
     var params = {
         zzishapi: getZzishParam(),
         devServer: process.env.ZZISH_DEVMODE,
-        publicConfig: publicConfig
+        publicConfig: publicConfig,
+        intercomId: process.env.intercomAppId
     };
 
     if (req.query.uuid !== undefined) {
@@ -107,18 +108,35 @@ exports.indexQuiz =  function(req, res) {
     res.redirect(301, '/app?uuid=' + req.params.id + '#/play/public/' + req.params.id);
 };
 
-exports.create =  function(req, res) {
-    var intercomId = process.env.intercomAppId || 'mnacdt52';
-    var session = req.session;
-    var user = session.user || {};
-    logger.trace('intercom Id', intercomId);
+function loadUser(res, user) {
     res.render('create', {
         zzishapi: getZzishParam(),
         devServer: process.env.ZZISH_DEVMODE,
         publicConfig,
-        intercomId,
+        intercomId: process.env.intercomAppId,
         user
     });
+}
+
+exports.create =  function(req, res) {
+    var session = req.session;
+    if (req.session.token) {
+        //validate token
+        zzish.getCurrentUser(req.session.token, function(err, data){
+            var user = {};
+            if (!err && typeof data === 'object') {
+                user = data;
+            }
+            else {
+                req.session.token = null;
+                req.session.user = null;
+            }
+            loadUser(res, user);
+        });
+    }
+    else {
+        loadUser(res, session.user || {});
+    }
 };
 
 exports.landingpage =  function(req, res) {
@@ -443,8 +461,8 @@ exports.publishToMarketplace = function(req,res) {
             var params = {
                 name: name
             };
-            email.sendEmailTemplate('team@quizalize.com', [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
-            email.sendEmailTemplate('team@quizalize.com', ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], 'Thanks for submitting your quiz to the Quizalize Marketplace', 'publishrequest', params);
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'New Publish Request', 'publishrequestadmin', {
               profileId: profileId,
               id: id,
               type: 'quiz'
@@ -474,7 +492,7 @@ exports.shareQuiz = function(req, res){
             link: link
         };
         logger.info('sending email', typeof emails, emails);
-        email.sendEmailTemplate('team@quizalize.com', emails, 'Someone shared a quiz with you on Quizalize!', 'shared', params);
+        email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", emails, 'Someone shared a quiz with you on Quizalize!', 'shared', params);
     }
     res.send(true);
 };
@@ -492,7 +510,7 @@ var getReviewForPurchasedQuiz = function(quiz, res){
                                 name: quiz.meta.name,
                                 link: "http://www.quizalize.com/quiz/review/" + quiz.uuid
                             };
-                            email.sendEmailTemplate('team@quizalize.com', [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
+                            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [user.email], 'What did you think of ' + quiz.meta.name + '?', 'feedback', params);
                         }
                     });
                 }
@@ -520,7 +538,7 @@ exports.help = function(req, res){
     var params = {
         name: name
     };
-    email.sendEmailTemplate('team@quizalize.com', [req.body.email], 'Quizalize Help', 'help', params);
+    email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [req.body.email], 'Quizalize Help', 'help', params);
     var params2 = {
         name: req.body.name,
         message: req.body.message,
