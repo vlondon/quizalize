@@ -1,38 +1,64 @@
-var React = require('react');
-var router = require('createQuizApp/config/router');
+import React from 'react';
+import router from './../../../config/router';
 
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var QuizActions = require('createQuizApp/actions/QuizActions');
-import AnalyticsActions from './../../../actions/AnalyticsActions';
+import {
+    GroupStore,
+    MeStore
+}  from './../../../stores';
+import {
+    GroupActions,
+    QuizActions
+} from './../../../actions';
 
+import { AnalyticsActions } from './../../../actions';
 
-var CQViewClassList = React.createClass({
+type Props = {
+    quizId: string;
+};
 
-    propTypes: {
-        quizId: React.PropTypes.string.isRequired
-    },
+type State = {
+    newClassName: string;
+    canSaveNewClass: boolean;
+    groups: Array<Object>;
+    groupsUsed: Array<Object>;
+};
 
-    getInitialState: function() {
+export default class CQViewClassList extends React.Component {
+
+    props: Props;
+    state: State;
+    constructor(props: Props) {
+        super(props);
         var initialState = this.getState();
         initialState.newClassName = '';
         initialState.canSaveNewClass = false;
         initialState.groupsUsed = [];
-        return initialState;
-    },
-    componentDidMount: function() {
+        initialState.user = MeStore.state;
+        this.state = initialState;
+
+        this.onChange = this.onChange.bind(this);
+        this.getState = this.getState.bind(this);
+        this._showGroupsList = this._showGroupsList.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.handleDone = this.handleDone.bind(this);
+        this.handleClassName = this.handleClassName.bind(this);
+        this.handleNewClass = this.handleNewClass.bind(this);
+
+    }
+
+    componentDidMount() {
         GroupStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         GroupStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    getState: function(){
+    getState(){
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizId = this.props.quizId;
@@ -90,9 +116,9 @@ var CQViewClassList = React.createClass({
             .map(g => g.code);
 
         return { groups, groupsUsed };
-    },
+    }
 
-    _showGroupsList: function(){
+    _showGroupsList(){
 
         if (!this.state.groups) {
             return [{
@@ -107,15 +133,15 @@ var CQViewClassList = React.createClass({
 
         return groupList;
 
-    },
+    }
 
-    handleClick: function(classCode, ev){
+    handleClick(classCode){
         var groupsUsed = [classCode];
         var newClassName = '';
         var canSaveNewClass = false;
 
         this.setState({ groupsUsed, newClassName, canSaveNewClass });
-    },
+    }
 
 
     // handleClick: function(classCode, ev){
@@ -134,25 +160,25 @@ var CQViewClassList = React.createClass({
     //     // console.log('classCode', classCode, ev.target.checked);
     // },
 
-    handleDone: function() {
+    handleDone() {
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
                 AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode});
                 router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
             });
-    },
+    }
 
-    handleClassName: function(ev){
+    handleClassName(ev){
         console.log('handleClassName', ev.target.value);
         this.setState({
             newClassName: ev.target.value,
             canSaveNewClass: ev.target.value.length > 0,
             groupsUsed: []
         });
-    },
+    }
 
-    handleNewClass: function(ev){
+    handleNewClass(ev){
         ev.preventDefault();
 
         var className = this.state.newClassName;
@@ -169,9 +195,19 @@ var CQViewClassList = React.createClass({
                 canSaveNewClass: false
             });
         }
-    },
+    }
+    handleViewInfo(){
+        AnalyticsActions.sendEvent('assign_class', 'action', 'watch_info');
+        AnalyticsActions.sendIntercomEvent('assign_class_action', {watch_info: true});
+    }
 
-    render: function() {
+    handleClose(){
+        AnalyticsActions.sendEvent('assign_class', 'action', 'go_back_clicked');
+        AnalyticsActions.sendIntercomEvent('assign_class_action', {go_back_clicked: true});
+        router.goBack();
+    }
+
+    render() {
         var newTitle = "Create a new class";
         var existingClasses = (() => {
             if (this._showGroupsList().length > 0) {
@@ -207,34 +243,44 @@ var CQViewClassList = React.createClass({
 
         return (
             <div className='cq-viewclass'>
+                <div className="cq-viewclass__close" onClick={this.handleClose}>
+                    <div className="fa fa-times"></div>
+                </div>
                 <h3>
-                    <span className="cq-viewclass__icon">
-                        <i className="fa fa-users"></i>
-                    </span>Set as a class game (or homework)…
+                    Set as a class game (or homework)
                 </h3>
                 <div className="cq-viewclass__list">
                     {existingClasses()}
                     <h4>{newTitle}</h4>
-                    <form className="form-inline cq-viewclass__new" onSubmit={this.handleNewClass}>
+                    <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
                             id='newClassBox'
                             type="text"
-                            className="form-control"
+                            className=""
                             value={this.state.newClassName}
                             onChange={this.handleClassName}
-                            placeholder="new class name"/>
-                        <button className={this.state.canSaveNewClass ? "btn btn-primary" : "btn btn-default"}
+                            placeholder="New class name"/>
+                        <button className={this.state.canSaveNewClass ? "cq-viewclass__save--enabled" : "cq-viewclass__save--disabled"}
                             id='createNewClass'
                             type="submit"
                             disabled={!this.state.canSaveNewClass}>
-                            Create and use in class
+                            Continue
                         </button>
                     </form>
+                </div>
+                <div className="cq-viewclass__extra">
+                    <p>
+                        <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
+                            See how to play and what you'll need…
+                        </a>
+                    </p>
                 </div>
             </div>
         );
     }
 
-});
+}
 
-module.exports = CQViewClassList;
+CQViewClassList.propTypes = {
+    quizId: React.PropTypes.string.isRequired
+};

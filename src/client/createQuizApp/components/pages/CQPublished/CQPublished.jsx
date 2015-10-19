@@ -147,15 +147,6 @@ export default class CQPublished extends React.Component {
 
                 <div className="cq-published__header">
 
-                    <h1>
-                        All done…
-                    </h1>
-                    <h3>
-                        Your quiz is ready
-                    </h3>
-                    <p>
-                        Too soon? <CQLink href={`/quiz/create/${this.props.routeParams.quizId}`} >Continue building</CQLink>
-                    </p>
                 </div>
 
 
@@ -173,7 +164,7 @@ export default class CQPublished extends React.Component {
 CQPublished.propTypes = {
     routeParams: React.PropTypes.object.isRequired,
     assign: React.PropTypes.bool,
-    publish: React.PropTypes.bool,
+    published: React.PropTypes.bool,
     share: React.PropTypes.bool
 };
                 // <div className="pricing">
