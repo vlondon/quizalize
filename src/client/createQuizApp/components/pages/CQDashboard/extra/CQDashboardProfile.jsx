@@ -58,9 +58,9 @@ var CQDashboardProfile = React.createClass({
             }
 
             if (this.props.user.attributes.profileUrl){
-                profileUrl = 'https://www.quizalize.com/profile/' + this.props.user.attributes.profileUrl;
+                profileUrl = '/profile/' + this.props.user.attributes.profileUrl;
             } else {
-                profileUrl = 'https://www.quizalize.com/quiz/user/'+ this.props.user.uuid;
+                profileUrl = '/quiz/user/'+ this.props.user.uuid;
             }
 
             if (this.props.user.attributes.url) {
@@ -81,13 +81,13 @@ var CQDashboardProfile = React.createClass({
                                                         <div  className="cq-dashboard__profile__info__entry">
                                                             <small>Public URL</small>
                                                             <CQLink
-                                                                href={`https://www.quizalize.com/profile/${this.props.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.props.user.attributes.profileUrl}
+                                                                href={`/profile/${this.props.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.props.user.attributes.profileUrl}
                                                             </CQLink>
                                                         </div>) : (
                                                         <div  className="cq-dashboard__profile__info__entry">
                                                             <small>Public URL</small>
                                                             <CQLink
-                                                                href={`https://www.quizalize.com/quiz/user/${this.props.user.uuid}`}>https://www.quizalize.com/quiz/user/{this.props.user.uuid}
+                                                                href={`/quiz/user/${this.props.user.uuid}`}>https://www.quizalize.com/quiz/user/{this.props.user.uuid}
                                                             </CQLink>
                                                         </div>);
             if (UserIdStore.getUserId() === this.props.user.uuid && !this.props.own) {

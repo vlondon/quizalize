@@ -14,6 +14,10 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
         $location.path("/app");
     };
 
+    self.hideCancel = function() {
+        return sessionStorage.getItem("mode")=="demo";
+    };
+
     self.loggedIn = QuizData.getUser();
 
     var processCancel = function() {
@@ -33,7 +37,7 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
             $location.path("/list/" + QuizData.gameCode());
         }
         else {
-            $location.path("/app");
+            $location.path("/");
         }
         QuizData.cancelCurrentQuiz(function() {
 
