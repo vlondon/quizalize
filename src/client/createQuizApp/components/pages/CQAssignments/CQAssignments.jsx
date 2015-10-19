@@ -2,6 +2,10 @@
 import React from 'react';
 
 import {
+    router
+} from './../../../config';
+
+import {
     CQPageTemplate,
     CQLink
 } from './../../../components';
@@ -11,7 +15,8 @@ import { GroupActions } from './../../../actions';
 import {
     GroupStore,
     TopicStore,
-    QuizStore
+    QuizStore,
+    MeStore
 }  from './../../../stores';
 
 import type {
@@ -91,6 +96,31 @@ var CQAssignments = React.createClass({
         GroupActions.unpublishAssignment(quizId, groupCode);
     },
 
+    handlePremium: function(assignment, classN){
+        console.log("BEING HANDLED");
+        if(MeStore.state.attributes.accountType === 1) {
+            router.setRoute(`/quiz/published/${assignment.uuid}/${classN.code}/info`);
+        }
+        else {
+            swal(
+                {
+                    title: 'You can view all your quizzes and track progress with the premium version',
+                    text: `and a whole lot more, including
+                        unlimited quizzes and
+                        unlimited classes`,
+
+                confirmButtonText: 'Plans and pricing',
+                showCancelButton: true,
+                cancelButtonText: 'Close',
+                html: true,
+                allowOutsideClick:true},
+                ()=>{
+                    router.setRoute('/quiz/premium');
+                }
+            );
+        }
+    },
+
     render: function() {
 
         var editClass = "";
@@ -103,6 +133,7 @@ var CQAssignments = React.createClass({
                 </a>
             );
         }
+
 
         return (
             <CQPageTemplate className="cq-container cq-classes">
@@ -147,13 +178,10 @@ var CQAssignments = React.createClass({
                                                     <h4>{TopicStore.getTopicName(assignment.meta.categoryId)}</h4>
                                                 </div>
                                                 <div className="cq-classes__class__assignment__info">
-                                                    <CQLink href={`/quiz/published/${assignment.uuid}/${classN.code}/info`}>
-
-                                                        <button
-                                                            className="btn btn-default">
-                                                            Open Game
-                                                        </button>
-                                                    </CQLink>
+                                                    <button
+                                                        className="btn btn-default" onClick={this.handlePremium.bind(this, assignment, classN)} >
+                                                        Open Game
+                                                    </button>
                                                 </div>
                                                 <div className="cq-classes__class__assignment__unassign">
                                                     <button
