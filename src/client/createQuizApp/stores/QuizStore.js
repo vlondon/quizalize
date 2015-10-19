@@ -156,7 +156,7 @@ class QuizStore extends Store {
     }
 
     getPrivateQuizzes(): Array<Quiz> {
-        return _quizzes.slice().filter(q=> q.meta.published === null);
+        return _quizzes.slice().filter(q=> q.meta.published === null && (q.meta.originalQuizId === null || q.meta.originalQuizId === undefined))
     }
 
     getQuizMeta(quizId): Quiz {
