@@ -10,7 +10,7 @@ var isEqual = function(arr1, arr2) {
 };
 
 
-var randomise = function(array) {
+var randomise = function(array, returnOriginal = false) {
 
     iterations++;
 
@@ -34,7 +34,7 @@ var randomise = function(array) {
         array[randomIndex] = temporaryValue;
     }
 
-    if (isEqual(originalArray, array) ){
+    if (isEqual(originalArray, array) && returnOriginal === false){
         return randomise(originalArray);
     } else {
         iterations = 0;

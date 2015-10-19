@@ -459,7 +459,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
             var options = randomise(answers).slice(0,3);
             options.push(answerObject.text);
-            return randomise(options);
+            return randomise(options, true);
         }
     };
 
