@@ -1,6 +1,6 @@
 //general zzish config
 var config = require("../config"); //initialized zzish
-var email              = require('../email');
+var email     = require('../email');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
 var db = require('./db');
