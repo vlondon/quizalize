@@ -38,7 +38,12 @@ class LBPlayer extends React.Component {
         return (
             <Motion defaultStyle={{x: - initialPosition}} style={{x: spring(this.state.position, presets.wobbly )}}>
                 {interpolatedStyle=>{
-                    let style = {transform: `translateX(${interpolatedStyle.x}px)`};
+                    let style = {
+                        WebkitTransform: `translateX(${interpolatedStyle.x}px)`,
+                        MozTransform: `translateX(${interpolatedStyle.x}px)`,
+                        msTransform: `translateX(${interpolatedStyle.x}px)`,
+                        transform: `translateX(${interpolatedStyle.x}px)`,
+                    };
                     return (
                         <div className={className} style={style}>
                             {player.name}
