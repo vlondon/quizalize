@@ -2,34 +2,58 @@
     max-width: 600px;
     margin: 0 auto 40px;
     background: #BB27DD;
-    border-radius: 25px;
     min-height: 50px;
     font-size: 18px;
     color: #FFF;
     padding: 10px 25px 30px;
     box-shadow: 0 5px 10px rgba($brand-color-black, .4);
-
-    @at-root #{&}__list {
-        margin: 10px 50px;
+    h3 {
+        font-weight: bold;
     }
-    @at-root #{&}__icon {
-        color: #BB27DD;
-        background: #FFF;
-        border-radius: 100%;
-        width: 40px;
-        height: 40px;
-        display: inline-block;
-        text-align: center;
-        line-height: 40px;
+    &__list {
 
     }
 
-    @at-root #{&}__new {
-        text-align: center;
-        input { width: 200px; }
+
+    &__new {
+        margin-top: 10px;
+        input {
+            padding: 4px;
+            width: 100%;
+            height: 40px;
+        }
+        // text-align: center;
     }
 
-    @at-root #{&}__done {
+    &__save {
+        &--enabled,
+        &--disabled {
+            @include button($brand-color-purple);
+            width: 100%;
+            margin: 0;
+            color: #FFF;
+            border-radius: 0;
+            height: 40px;
+            border: 0;
+
+            background :$brand-color-purple;
+
+        }
+        &--enabled {
+            &:hover {
+                background: lighten($brand-color-purple, 50%);
+                // color: $brand-color-purple;
+            }
+        }
+
+        &--disabled {
+            opacity: 0.4;
+        }
+    }
+    &__extra {
+        margin-top: 20px;
+    }
+    &__done {
         display: block;
         margin-bottom: 20px;
     }
@@ -41,6 +65,9 @@
     input {
         color: $brand-color-grey;
 
+    }
+    a {
+        color: #FFF;
     }
 
     label {

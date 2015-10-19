@@ -31,22 +31,22 @@ var GroupActions = {
     },
 
     createFirstAssignment: function(quizId : string){
-        console.log('createFirstAssignment', quizId);
+        // console.log('createFirstAssignment', quizId);
         // make sure we don't have any class created:
-        var groups = GroupStore.getGroups();
-        if (groups.length === 0){
-
-            this.publishNewAssignment(quizId, 'Your first class')
-                .then(classResponse => {
-                    console.log('class', classResponse);
-                    router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
-
-                });
-        } else {
-            console.log('a class already exists');
-            router.setRoute(`/quiz/published/${quizId}/assign`, true);
-
-        }
+        router.setRoute(`/quiz/published/${quizId}/assign`, true);
+        // var groups = GroupStore.getGroups();
+        // if (groups.length === 0){
+        //
+        //     this.publishNewAssignment(quizId, 'Your first class')
+        //         .then(classResponse => {
+        //             console.log('class', classResponse);
+        //             router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
+        //
+        //         });
+        // } else {
+        //     console.log('a class already exists');
+        //
+        // }
     },
 
     unpublishAssignment: function(quizId: string, groupCode : string){
