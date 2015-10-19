@@ -197,8 +197,14 @@ export default class CQViewClassList extends React.Component {
         }
     }
     handleViewInfo(){
-        AnalyticsActions.sendEvent('assign_class', 'watch_info');
-        AnalyticsActions.sendIntercomEvent('assign_class', {watch_info: true});
+        AnalyticsActions.sendEvent('assign_class', 'action', 'watch_info');
+        AnalyticsActions.sendIntercomEvent('assign_class_action', {watch_info: true});
+    }
+
+    handleClose(){
+        AnalyticsActions.sendEvent('assign_class', 'action', 'go_back_clicked');
+        AnalyticsActions.sendIntercomEvent('assign_class_action', {go_back_clicked: true});
+        router.goBack();
     }
 
     render() {
@@ -237,6 +243,9 @@ export default class CQViewClassList extends React.Component {
 
         return (
             <div className='cq-viewclass'>
+                <div className="cq-viewclass__close" onClick={this.handleClose}>
+                    <div className="fa fa-times"></div>
+                </div>
                 <h3>
                     Set as a class game (or homework)
                 </h3>

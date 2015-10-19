@@ -7,11 +7,26 @@
     color: #FFF;
     padding: 10px 25px 30px;
     box-shadow: 0 5px 10px rgba($brand-color-black, .4);
+    position: relative;
     h3 {
         font-weight: bold;
     }
     &__list {
 
+    }
+
+    &__close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        text-align: center;
+        border-radius: 100%;
+        &:hover {
+            background: $brand-color-purple;
+        }
     }
 
 
