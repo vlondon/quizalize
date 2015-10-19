@@ -106,6 +106,9 @@ app.get('/quiz/public', function(req, res){
 });
 app.get('/quiz/*', checkForIE, quiz.create);
 app.get('/profile/*', checkForIE, quiz.create);
+app.get('/discovery-education-promotion', checkForIE, quiz.create);
+app.get('/discovery-education-free-premium-subscription', checkForIE, quiz.create);
+app.get('/discovery-education-free-premium-subscription/thanks', checkForIE, quiz.create);
 app.get('/quiz', checkForIE, quiz.create);
 
 

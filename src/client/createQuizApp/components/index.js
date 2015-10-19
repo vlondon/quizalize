@@ -8,6 +8,7 @@ import CQAssignments from './pages/CQAssignments';
 import CQAssignQuiz from './pages/CQAssignQuiz';
 import CQCreate from './pages/CQCreate';
 import CQDashboard from './pages/CQDashboard';
+import CQDiscovery from './pages/CQDiscovery/CQDiscovery';
 import CQEdit from './pages/CQEdit';
 import CQLogin from './pages/CQLogin';
 import CQMarketplace from './pages/CQMarketplace';
@@ -79,6 +80,7 @@ export {
     CQAssignQuiz,
     CQCreate,
     CQDashboard,
+    CQDiscovery,
     CQEdit,
     CQLogin,
     CQMarketplace,
