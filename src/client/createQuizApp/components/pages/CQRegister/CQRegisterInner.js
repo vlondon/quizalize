@@ -1,8 +1,7 @@
 /* @flow */
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import {
-    CQPageTemplate,
     CQLoginForm,
     CQLink,
     CQSettings,
@@ -12,7 +11,19 @@ import {
 import { UserActions } from './../../../actions';
 import { urlParams } from './../../../utils';
 
-var CQRegister = React.createClass({
+var CQRegisterInner = React.createClass({
+
+    propTypes: {
+        showZzish: PropTypes.bool,
+        header: PropTypes.object
+    },
+
+    getDefaultProps: function(): Object {
+        return {
+            showZzish: true,
+            header: 'Quizalize Registration'
+        };
+    },
 
     getInitialState: function() {
 
@@ -55,7 +66,7 @@ var CQRegister = React.createClass({
     },
     render: function() {
 
-        var moreInfo;
+        var moreInfo, zzishLogin;
         if (this.state.isRedirect){
             moreInfo = (<p style={{'textAlign': 'center'}}>
                 Before we can continue you'll need to create a new Quizalize account.
@@ -63,14 +74,17 @@ var CQRegister = React.createClass({
                 <br/>
             </p>);
         }
+        if (this.props.showZzish){
+            zzishLogin = (<CQZzishLogin/>);
+        }
         if (this.state.isRegister){
 
             return (
-                <CQPageTemplate className="cq-login">
+                <div>
 
                     <div className="cq-login__inner">
                         <h2 className="cq-login__header" id="title">
-                            Quizalize Registration
+                            {this.props.header}
                         </h2>
 
                         {moreInfo}
@@ -86,9 +100,9 @@ var CQRegister = React.createClass({
                         </CQLoginForm>
                     </div>
 
-                    <CQZzishLogin/>
+                    {zzishLogin}
 
-                </CQPageTemplate>
+                </div>
             );
         } else {
             return <CQSettings isRedirect={true} isRegister={true}/>;
@@ -97,4 +111,4 @@ var CQRegister = React.createClass({
 
 });
 
-module.exports = CQRegister;
+module.exports = CQRegisterInner;

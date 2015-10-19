@@ -74,7 +74,7 @@
     "gulp": "^3.8.11",
     "gulp-load-plugins": "^0.10.0",
     "gulp-ng-annotate": "^1.1.0",
-    "gulp-uglify": "^1.2.0",
+    "gulp-uglify": "^1.4.2",
     "history": "^1.9.1",
     "immutable": "^3.7.5",
     "json-loader": "^0.5.2",
