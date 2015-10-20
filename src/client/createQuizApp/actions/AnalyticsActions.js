@@ -33,7 +33,7 @@ class AnalyticsActions {
 
 
     sendIntercomEvent(eventName : string, meta : Object){
-        console.info('SEND INTERCOM EVENT', eventName);
+        console.info('AnalyticsActions: INTERCOM EVENT', eventName);
         UserApi.trackEvent(eventName, meta);
     }
 

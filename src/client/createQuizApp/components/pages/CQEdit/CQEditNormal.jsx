@@ -4,7 +4,6 @@ import React from  'react';
 import ReactDOM from  'react-dom';
 
 import {
-    QuizStore,
     TopicStore
 } from './../../../stores';
 
@@ -17,13 +16,13 @@ import {
 
 import { MediaActions } from './../../../actions';
 import { imageUrlParser } from './../../../utils';
-import type { Quiz, Question } from './../../../../../types';
+import type { QuizComplete, Question } from './../../../../../types';
 
 import CQEditDurationPicker from './CQEditDurationPicker';
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {
-    quiz: Quiz;
+    quiz: QuizComplete;
     onChange: Function;
     onSave: Function;
     setSaveMode: Function;
@@ -65,7 +64,7 @@ export default class CQEditNormal extends React.Component{
         this.focusNext(0);
         $('textarea').autogrow();
         this.handlePopover();
-        this.props.onChange(this.state.question);
+        // this.props.onChange(this.state.question);
     }
 
     componentWillReceiveProps(nextProps : Props) {
@@ -89,7 +88,8 @@ export default class CQEditNormal extends React.Component{
 
     getState (props? : Props) : State {
         props = props || this.props;
-        var question : Question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
+        var question : Question = props.quiz.payload.questions[props.questionIndex];
+        console.log('AAAA props.quiz', props.quiz, props.questionIndex, question);
         question.alternatives = question.alternatives || [];
         var subtopics = this.handleGetTopics();
         var newState = {
@@ -128,6 +128,7 @@ export default class CQEditNormal extends React.Component{
         var node = ReactDOM.findDOMNode(nextElement);
 
         var gotoNext = ()=>{
+            console.log('nextElement', nextElement, node);
             if (nextElement) {
                 if (nextElement.onFocus){
                     nextElement.onFocus();

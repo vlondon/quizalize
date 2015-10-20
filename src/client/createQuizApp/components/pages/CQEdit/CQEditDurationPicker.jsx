@@ -12,7 +12,7 @@ class CQEditDurationPicker extends React.Component {
         super(props);
         this.state = {
             selected: props.duration,
-            available: [5, 10, 20, 30, 45, 60]
+            available: [5, 10, 20, 30, 45, 60, 120]
         };
         this.handleSelect = this.handleSelect.bind(this);
     }

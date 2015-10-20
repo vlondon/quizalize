@@ -124,7 +124,7 @@ var QuestionObject = function(quiz){
         answer: '',
         latexEnabled: false,
         imageEnabled: false,
-        duration: 60,
+        duration: 30,
         uuid: uuid.v4()
     };
 
@@ -132,7 +132,7 @@ var QuestionObject = function(quiz){
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
         question.latexEnabled = lastQuestion.latexEnabled || false;
         question.imageEnabled = lastQuestion.imageEnabled || false;
-        question.duration = lastQuestion.duration || 60;
+        question.duration = lastQuestion.duration || 30;
         question.topicId = lastQuestion.topicId;
     }
 
@@ -156,7 +156,7 @@ class QuizStore extends Store {
     }
 
     getPrivateQuizzes(): Array<Quiz> {
-        return _quizzes.slice().filter(q=> q.meta.published === null && (q.meta.originalQuizId === null || q.meta.originalQuizId === undefined))
+        return _quizzes.slice().filter(q=> q.meta.published === null && (q.meta.originalQuizId === null || q.meta.originalQuizId === undefined));
     }
 
     getQuizMeta(quizId): Quiz {
@@ -215,6 +215,7 @@ class QuizStore extends Store {
         var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
         // adding new properties to the object
         question.duration = question.duration || 60;
+        console.info('QuizStore getQuestion', question);
         return question;
     }
 
@@ -280,6 +281,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_LOADED:
+        case QuizConstants.QUIZ_CHANGED:
 
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;

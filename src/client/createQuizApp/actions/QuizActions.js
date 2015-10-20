@@ -83,21 +83,21 @@ var QuizActions = {
     loadQuiz: function(quizId : string) : Promise {
         return new Promise((resolve, reject)=>{
 
-        var quizPromise = QuizApi.getQuiz(quizId);
+            var quizPromise = QuizApi.getQuiz(quizId);
 
-        quizPromise
-            .then((quiz) => {
-                if (quiz){
-                    AppDispatcher.dispatch({
-                        actionType: QuizConstants.QUIZ_LOADED,
-                        payload: quiz
-                    });
-                    resolve(quiz);
-                } else {
-                    reject();
-                }
-            })
-            .catch(reject);
+            quizPromise
+                .then((quiz) => {
+                    if (quiz){
+                        AppDispatcher.dispatch({
+                            actionType: QuizConstants.QUIZ_LOADED,
+                            payload: quiz
+                        });
+                        resolve(quiz);
+                    } else {
+                        reject();
+                    }
+                })
+                .catch(reject);
         });
     },
 
@@ -261,7 +261,9 @@ var QuizActions = {
 
                 // TODO: Call loadQuizzes only if the quiz is new
                 this.loadQuizzes();
-                resolve(quiz);
+                setTimeout(()=> {
+                    resolve(quiz);
+                }, 100);
             }, (error)=> {
                 console.error(error);
                 reject(error);
@@ -327,6 +329,13 @@ var QuizActions = {
             payload: quiz
         });
 
+    },
+
+    updateQuiz: function(quiz:Quiz){
+        AppDispatcher.dispatch({
+            actionType: QuizConstants.QUIZ_CHANGED,
+            payload: quiz
+        });
     }
 };
 
