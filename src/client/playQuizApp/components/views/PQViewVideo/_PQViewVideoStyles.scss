@@ -15,16 +15,31 @@
 
 
 .pq-viewvideo {
-    position: fixed;
+    position: absolute;
     background: $brand-color-grey;
-    width: 800px;
+    max-width: 800px;
+    max-height: 400px;
+    height: 100%;
     margin: auto;
     text-align: center;
     border-radius: 20px;
     padding: 20px;
     left: 0;
     right: 0;
+    top: 60px;
     z-index: 11;
+
+    @include media($size-tablet) {
+        position: fixed;
+        top: 140px;
+    }
+
+
+    &__player {
+        width: 100%;
+        height: 100%;
+
+    }
 
     &.enter {
         animation: intro 300ms ease-out;

@@ -15,8 +15,8 @@ export var addYoutubeSdk = function(DOMId:string, videoId: string, begin: number
     };
     var createPlayer = function(){
         var player = new window.YT.Player(DOMId, {
-            height: '390',
-            width: '640',
+            height: '100%',
+            width: '100%',
             videoId: videoId,
             playerVars: {
                 start: begin,

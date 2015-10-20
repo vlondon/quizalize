@@ -25,7 +25,9 @@ var Star = React.createClass({
 
         var newCss = {
             WebkitTransform: `rotate(${rotate}deg) scale(${scale})`,
-            MsTransform: `rotate(${rotate}deg) scale(${scale})`
+            MozTransform: `rotate(${rotate}deg) scale(${scale})`,
+            msTransform: `rotate(${rotate}deg) scale(${scale})`,
+            transform: `rotate(${rotate}deg) scale(${scale})`
         };
         return newCss;
     },
@@ -140,54 +142,56 @@ var QLAnswerScreen = React.createClass({
         }
 
         return (
-            <div className='ql-answer-screen'>
+            <div>
                 {videoPlayer}
-                <div className="star-container">
-                    {stars}
-                </div>
-                <div className="text-1">
-
-                    <h4>
-                        <span>Your answer </span>
-                        {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
-                    </h4>
-                    <div className="alternatives">
-                            <div className="alternative-wrapper">
-                                <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
-                                    <QLLatex>{this.props.answerData.response}</QLLatex>
-                                </button>
-                            </div>
+                <div className='ql-answer-screen'>
+                    <div className="star-container">
+                        {stars}
                     </div>
-                </div>
+                    <div className="text-1">
 
-                {correctAnswer}
-                {viewVideo}
-                {explanation}
+                        <h4>
+                            <span>Your answer </span>
+                            {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
+                        </h4>
+                        <div className="alternatives">
+                                <div className="alternative-wrapper">
+                                    <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
+                                        <QLLatex>{this.props.answerData.response}</QLLatex>
+                                    </button>
+                                </div>
+                        </div>
+                    </div>
+
+                    {correctAnswer}
+                    {viewVideo}
+                    {explanation}
 
 
-                <div className="score-and-time">
-                    <h3 className="score">
-                        <div>Your score</div>
-                        <strong>
-                            {this.props.answerData.roundedScore}
-                        </strong>
-                    </h3>
-                    <h3 className="time">
-                        <div>Your time</div>
-                        <strong>
-                            {toSeconds(this.props.answerData.duration)}
-                        </strong>
-                    </h3>
-                    <span className="next-anim">
-                        <h3 className="next" onClick={this.handleClick}>
-                            <div>
-                                Next
-                            </div>
+                    <div className="score-and-time">
+                        <h3 className="score">
+                            <div>Your score</div>
                             <strong>
-                                <img src="/img/ui-quiz/arrow-right.svg" />
+                                {this.props.answerData.roundedScore}
                             </strong>
                         </h3>
-                    </span>
+                        <h3 className="time">
+                            <div>Your time</div>
+                            <strong>
+                                {toSeconds(this.props.answerData.duration)}
+                            </strong>
+                        </h3>
+                        <span className="next-anim">
+                            <h3 className="next" onClick={this.handleClick}>
+                                <div>
+                                    Next
+                                </div>
+                                <strong>
+                                    <img src="/img/ui-quiz/arrow-right.svg" />
+                                </strong>
+                            </h3>
+                        </span>
+                    </div>
                 </div>
             </div>
         );
