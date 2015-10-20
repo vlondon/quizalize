@@ -145,7 +145,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
         for (var i in result.contents) {
             var quiz = result.contents[i];
-            var cuuid = "undefined";
+            var cuuid = "unknown";
             var category = { name: "Other" };
             if (quiz.meta.categoryId !== undefined) {
                 cuuid = quiz.meta.categoryId;
