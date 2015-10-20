@@ -107,7 +107,6 @@ export default class PQViewVideo extends React.Component {
         return (
             <div className={`pq-viewvideo ${this.state.cssState}`}>
                 <div className="pq-viewvideo__player">
-
                     <div id="pq-viewvideo"/>
                 </div>
                 <div className="pq-viewvideo__extras">
