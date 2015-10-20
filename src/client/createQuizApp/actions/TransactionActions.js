@@ -54,7 +54,6 @@ var TransactionActions = {
             var put = function(){
                 TransactionApi.put(transaction)
                     .then(function(){
-                        console.log('transaction saved saved');
                         AppDispatcher.dispatch({
                             actionType: TransactionConstants.TRANSACTION_NEW,
                             payload: transaction
@@ -69,18 +68,13 @@ var TransactionActions = {
                     .catch(reject);
             };
 
-            console.log('saving new transaction', transaction);
-
             if (transaction.meta.price > 0 || transaction.meta.subscription) {
                 swal.close();
                 var userEmail = MeStore.state.email;
-                console.log('creating stripe checkout', MeStore.state);
                 var localPrice = TransactionStore.getPriceInCurrency(transaction.meta.price, 'us');
-                console.log('localPrice', transaction, localPrice);
                 stripeSDK.stripeCheckout(localPrice, userEmail)
                     .then(function(stripeToken){
                         transaction._token = stripeToken;
-                        console.log('we got transaction', transaction);
                         resolve(false);
                         put();
                     });
@@ -96,7 +90,6 @@ var TransactionActions = {
     getSharedQuiz: function(token : string){
         // magic to convert quizCode to quizId
         // var quiz = {};
-        console.log('getSharedQuizgetSharedQuiz');
         TransactionApi.decrypt(token)
             .then((info)=>{
                 var newTransaction : Transaction = {
@@ -204,7 +197,6 @@ var TransactionActions = {
                             price: price
                         }
                     };
-                    console.log('new transaction', newTransaction);
                     swal({
                         title: 'Working…',
                         text: `We're processing your order`,
@@ -219,7 +211,6 @@ var TransactionActions = {
     },
 
     buyMonthlySubscription: function() : Promise{
-        console.log('about to get subscription');
         let user = MeStore.state;
 
         let newTransaction : Transaction = {

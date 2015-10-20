@@ -33,7 +33,7 @@ class CQViewShareQuiz extends React.Component {
                         router.setRoute(`/quiz/create/${quiz.uuid}`);
                     });
                 }
-            });            
+            });
         }
     }
 
@@ -43,12 +43,10 @@ class CQViewShareQuiz extends React.Component {
     }
 
     handleEmailInput(emailList: Array<string>){
-        console.log('we got', emailList);
         this.setState({emailList});
     }
 
     sendShare(){
-        console.log('about to send', this.state.emailList);
         QuizActions.shareQuiz(this.state.quiz, this.state.quiz.meta.name, this.state.emailList)
             .then(()=> {
                 swal({

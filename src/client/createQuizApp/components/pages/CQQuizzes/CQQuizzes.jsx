@@ -122,7 +122,6 @@ var CQQuizzes = React.createClass({
     },
 
     handleEdit: function(quiz: Quiz){
-        console.log('edit???', quiz);
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
         }
@@ -166,7 +165,6 @@ var CQQuizzes = React.createClass({
             );
         }
 
-        console.log('this.state.quizzes.length', this.state.quizzes.length);
         if (this.state.quizzes.length === 0 && QuizStore.isInitData()){
             emptyState = (
                 <div className="cq-quizzes__empty">

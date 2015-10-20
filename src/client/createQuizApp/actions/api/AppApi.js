@@ -103,7 +103,6 @@ var AppApi = {
     },
     uploadMedia: function(appId : string, file : Object) : Promise{
         return new Promise(function(resolve, reject){
-            console.log('about to upload', file);
             var uuid = MeStore.getUserId();
 
             if (!uuid) {

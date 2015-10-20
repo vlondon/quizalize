@@ -46,12 +46,10 @@ class CQPublicNoResults extends React.Component {
     }
 
     triggerEvent(){
-        console.log('sending event', this.state.keyword);
         sendEvent(this.state.keyword);
     }
 
     handleTellUs(){
-        console.log('handleTellUs');
         window.Intercom('showNewMessage');
     }
 

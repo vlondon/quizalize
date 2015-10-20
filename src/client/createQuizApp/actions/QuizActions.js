@@ -215,7 +215,6 @@ var QuizActions = {
                 topicUuid = topicFound.uuid;
             } else if (topicFound !== undefined){
                 topicUuid = uuid.v4();
-                console.log('topicFound.nametopicFound.nametopicFound.nametopicFound.name', topicFound);
                 TopicActions.createTopic({
                     name: topicFound.name,
                     parentCategoryId: '-1',

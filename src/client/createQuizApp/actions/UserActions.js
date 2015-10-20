@@ -50,7 +50,6 @@ var UserActions = {
 
             UserApi.post(user)
                 .then(()=>{
-                    console.log('about to update user', user);
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_DETAILS_UPDATED,
                         payload: user
@@ -66,9 +65,7 @@ var UserActions = {
 
 
     login: function(data: loginObject): Promise {
-        console.log('data', data);
         // data.email = data.email.trim();
-
         return new Promise((resolve, reject)=>{
 
             UserApi.login(data)
@@ -150,7 +147,6 @@ var UserActions = {
         var token = localStorage.getItem('token');
 
         if (token !== null) {
-            console.log('zzish logout');
             window.Zzish.logout(token, function(){
                 UserApi.logout().then(logoutEnd);
             });
@@ -164,11 +160,10 @@ var UserActions = {
     register: function(data: Object) : Promise {
 
         return new Promise((resolve, reject)=>{
-            console.log('registering', data);
+
             UserApi.register(data)
                 .then((user)=>{
-                    console.log("AnalyticsActions", AnalyticsActions);
-                    console.log("AnalyticsActions.triggerPixels", AnalyticsActions.triggerPixels);
+
                     this.getOwn();
                     AnalyticsActions.triggerPixels().then(function(){
                         AppDispatcher.dispatch({
@@ -236,7 +231,6 @@ var UserActions = {
                         actionType: UserConstants.USER_PUBLIC_LOADED,
                         payload: user
                     });
-                    console.log('will load', userId, user);
                     resolve(user);
                 })
                 .catch(reject);
@@ -252,7 +246,6 @@ var UserActions = {
                         actionType: UserConstants.USER_PUBLIC_LOADED_URL,
                         payload: user
                     });
-                    console.log('response', user);
                     resolve(user);
 
                 })

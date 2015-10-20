@@ -50,7 +50,6 @@ export default class CQSettings extends React.Component {
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;
-        console.log('USER USER', user, user.attributes.accountType);
 
         this.state =  {
             user,
@@ -72,7 +71,6 @@ export default class CQSettings extends React.Component {
     }
     onChange(){
         var user:UserType = MeStore.state;
-        console.log('USER UPDATEEEEE', user.attributes.accountType);
         this.setState({user});
         this.forceUpdate();
     }
@@ -88,7 +86,6 @@ export default class CQSettings extends React.Component {
     isFormValid(): Object{
         //u?:User
         var canSave = true;
-        console.log("errors", this);
         var errors = [false, false, false];
         // var user:User = u || this.state.user;
         return {canSave, errors};
@@ -96,7 +93,6 @@ export default class CQSettings extends React.Component {
     }
 
     handleSave(){
-        console.log('saving??');
         let {user} = this.state;
         // var user = this.state;
         MeStore.toJSON();
@@ -184,11 +180,9 @@ export default class CQSettings extends React.Component {
     }
 
     handleProfileImageFile(profileImageFile : Object) {
-        console.log('image file', profileImageFile);
         this.setState({profileImageFile});
         MediaActions.uploadPicture(profileImageFile, 'profile').then((avatarUrl)=>{
             var user = this.state.user;
-            console.log('we got avatar', avatarUrl);
             user = user.set('avatar', avatarUrl);
             this.setState({user}, ()=>{
                 UserActions.update(this.state.user.toJSON());

@@ -56,7 +56,6 @@ class CQDiscoveryPerformUpgrade extends React.Component {
                 });
 
         }
-        console.log('onChange: we got user useruser', user.uuid);
     }
     render () : any {
         return (

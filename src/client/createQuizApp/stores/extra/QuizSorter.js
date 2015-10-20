@@ -60,7 +60,7 @@ export default class QuizSorter {
     }
 
     sortByCategory(){
-        console.log('about to sort', this);
+
     }
 
 

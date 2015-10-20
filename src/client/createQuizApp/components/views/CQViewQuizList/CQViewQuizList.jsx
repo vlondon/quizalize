@@ -283,7 +283,6 @@ export default class CQViewQuizList extends React.Component {
         var updated = function(){};
 
         var childActionHandler = function(child, quiz){
-            console.log('child????', typeof child);
             if (child && child.length && child.length > 0) {
                 return child.map(function(c) {
 

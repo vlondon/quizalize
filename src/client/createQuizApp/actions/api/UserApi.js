@@ -119,7 +119,6 @@ var UserApi = {
                     // } else if (res.body) {
                         // reject();
                     } else {
-                        console.log('res', res);
                         resolve(res.body.data.user);
                     }
                 });
@@ -145,7 +144,6 @@ var UserApi = {
                         // } else if (res.body) {
                             // reject();
                         } else {
-                            console.log('res', res);
                             resolve(res.body.data.user);
                         }
                     });
@@ -212,7 +210,6 @@ var UserApi = {
         return new Promise(function(resolve, reject){
             request.get(`/quiz/token/${token}`)
                 .end(function(error, res){
-                    console.log('res', res);
                     if (error || (res.body && res.body.uuid === undefined)) {
                         reject();
                     } else {
@@ -278,7 +275,6 @@ var UserApi = {
             request.post('/user/register')
                 .send(data)
                 .end(function(error, res){
-                    console.log('res', res);
                     if (res.status === 409 || res.status === 412) {
                         reject(res.status);
                     } else if (error){

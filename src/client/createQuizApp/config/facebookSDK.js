@@ -23,9 +23,6 @@ var load = function(){
 var getProfilePicture = function(){
 
     return new Promise(function(resolve, reject){
-        console.log('trying to load facebook profile pciture');
-
-
 
         FB.login(function(response){
             if (response.authResponse){
@@ -33,7 +30,6 @@ var getProfilePicture = function(){
                 FB.api('/me', {
                     fields: 'picture.type(large).redirect(false)'
                 }, function(responsePicture){
-                    console.log('response', responsePicture);
                     if (responsePicture.error){
                         reject(responsePicture.error);
                     } else {
@@ -47,7 +43,6 @@ var getProfilePicture = function(){
                 });
             } else {
                 reject('User cancelled operation');
-                console.log('User cancelled operation');
             }
         });
 

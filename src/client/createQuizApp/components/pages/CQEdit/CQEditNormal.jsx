@@ -89,7 +89,6 @@ export default class CQEditNormal extends React.Component{
     getState (props? : Props) : State {
         props = props || this.props;
         var question : Question = props.quiz.payload.questions[props.questionIndex];
-        console.log('AAAA props.quiz', props.quiz, props.questionIndex, question);
         question.alternatives = question.alternatives || [];
         var subtopics = this.handleGetTopics();
         var newState = {
@@ -128,7 +127,6 @@ export default class CQEditNormal extends React.Component{
         var node = ReactDOM.findDOMNode(nextElement);
 
         var gotoNext = ()=>{
-            console.log('nextElement', nextElement, node);
             if (nextElement) {
                 if (nextElement.onFocus){
                     nextElement.onFocus();
@@ -176,7 +174,6 @@ export default class CQEditNormal extends React.Component{
         var question = Object.assign({}, this.state.question);
         var canBeSaved = this.canBeSaved(question);
         question.duration = duration;
-        console.log('handleDuration', question, duration);
         this.setState({question, canBeSaved});
         this.props.onChange(question);
     }
