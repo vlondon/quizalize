@@ -86,10 +86,11 @@
         flex: 1 auto;
         padding: 5px;
         display: flex;
-        justify-content: flex-end;
-        text-align: right;
+        justify-content: flex-start;
+        text-align: left;
         align-items: center;
         flex: 1 auto;
+        border-bottom: 1px solid #AAA;
     }
 
     &__col2 {

@@ -230,22 +230,26 @@ export default class CQViewClassList extends React.Component {
     }
 
     handleCreateClass() {
+        console.log('handleCreateClass', MeStore.state.attributes.accountType);
         if (MeStore.state.attributes.accountType === 0) {
             //non premium
-            this.setState({isPremium: true});
+            this.setState({isPremium: false});
         }
         else {
             //this.setState({isNew: true});
-            this.setState({isPremium: true});
+            this.setState({
+                isPremium: true,
+                isNew: true
+            });
         }
     }
 
     handleShowPricing() {
-        router.setRoute("/quiz/premium");
+        router.setRoute('/quiz/premium');
     }
 
     render() {
-        var newTitle = "Type in the name of your class";
+        var newTitle = 'Type in the name of your class';
         var existingClasses, newClass, signUpFoPremium;
         if (this._showGroupsList().length > 0 && !this.state.isNew && !this.state.isPremium) {
             // newTitle = "...or create a new class";
@@ -330,7 +334,7 @@ export default class CQViewClassList extends React.Component {
             );
         }
 
-        if (this.state.isPremium) {
+        if (this.state.isPremium === false) {
             signUpFoPremium = (
                 <div>
                     <h4>You can add more classes with the premium version and a whole lot more, including…</h4>
