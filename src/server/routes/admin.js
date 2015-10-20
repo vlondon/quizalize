@@ -741,3 +741,23 @@ exports.unsubscribe = function(req,res) {
     email.sendEmailTemplate('team@zzish.com', ['vini@zzish.com'], 'Unsubscribe', 'unsubscribe', {email: req.query.email});
     res.send("Your email has been unsubscribed.");
 };
+
+exports.logInAsUser = function(req, res) {
+    // console.log('user', req.params.userId);
+    let profileId = req.params.userId;
+    zzish.user(profileId, function(err, data){
+        if (!err && typeof data === 'object') {
+            console.log('we got user', data);
+            var uuid = data.uuid;
+            req.session.userUUID = uuid;
+            req.session.user = data;
+            res.status(200);
+        }
+        else {
+            req.session.userUUID = undefined;
+            res.status(err);
+        }
+        res.send(data);
+    });
+    // res.send(true);
+};

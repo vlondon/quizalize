@@ -51,7 +51,6 @@ class CQEdit extends React.Component {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.routeParams.quizId;
         var quiz;
         if (QuizStore.isLoaded()){
-            console.log('MeStore', MeStore);
             let user = MeStore.state;
             let {accountType} = user.attributes;
             let privateQuizzes = QuizStore.getPrivateQuizzes();

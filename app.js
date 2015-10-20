@@ -138,6 +138,7 @@ app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishT
 
 if (process.env.admin === "true") {
     app.get('/admin/', admin.index);
+    app.get('/admin/user/:userId', admin.logInAsUser);
     app.get('/admin/approved', admin.approved);
     app.get('/admin/quizlist', admin.quizlist);
     app.get('/admin/pending', admin.pendingQuizzes);

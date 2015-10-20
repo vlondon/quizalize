@@ -74,8 +74,7 @@ class CQQuestionList extends React.Component {
                     type: 'info',
                     confirmButtonText: 'OK',
                     showCancelButton: false
-                }, function(isConfirm){
-                    console.log("Going somwhere");
+                }, function(){
                     router.setRoute(`/quiz/create/${quiz.uuid}/${index}`);
                 });
             }
@@ -113,24 +112,7 @@ class CQQuestionList extends React.Component {
 
         if (this.props.questionIndex === this.props.quiz.payload.questions.length){
 
-            newQuestionEditor = (
-                <div className='cq-edit__quiz cq-edit__quiz--selected'>
-                    <div className="col-sm-6">
-                        <i>{this.props.questionIndex + 1}. Creating new question</i>
-                    </div>
-                    <div className="col-sm-4">
-                        <h4 className="text-info">
-
-                        </h4>
-                    </div>
-
-                    <div className="clearfix"></div>
-                    {questionEditor}
-                </div>
-            );
-
-        } else {
-            newQuestionEditor = (<div/>);
+            // new question
         }
 
         var questionText = (question) => {

@@ -30,7 +30,6 @@ type Props = {
         questionIndex: ?string;
         quizId: string;
     };
-    quiz: QuizComplete;
 };
 
 type State = {
@@ -48,12 +47,12 @@ export default class CQEditView extends React.Component {
     state: State;
 
     constructor(props : Props) {
+
         super(props);
 
         var state = this.getState(props);
         state.mode = 'Create';
         state.saveEnabled = true;
-        state.quiz = this.getQuiz();
 
         this.state = state;
 
@@ -76,18 +75,30 @@ export default class CQEditView extends React.Component {
     getQuiz() : QuizComplete {
         var quizId = this.state && this.state.quiz ? this.state.quiz.uuid : this.props.routeParams.quizId;
         var quiz = QuizStore.getQuiz(quizId);
-        console.info("Quiz ID", quizId, quiz);
 
         return quiz;
     }
 
     componentWillMount() {
         var p = urlParams();
+        let quiz;
         if (this.state.quiz && this.state.quiz.meta.categoryId === undefined && p.c) {
-            var quiz = this.state.quiz;
+            quiz = this.state.quiz;
             quiz.meta.categoryId = p.c;
-            this.setState({quiz});
+        } else {
+            quiz = this.getQuiz();
         }
+        this.setState({quiz});
+    }
+
+    componentWillReceiveProps(nextProps : Props) {
+        let {questionIndex} = nextProps.routeParams;
+        if (questionIndex){
+            let {quiz} = this.state;
+            quiz.payload.questions[questionIndex] = QuizStore.getQuestion(quiz.uuid, questionIndex);
+            console.log('getting question', questionIndex);
+        }
+
     }
 
 
@@ -99,10 +110,6 @@ export default class CQEditView extends React.Component {
     componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
-    }
-
-    componentWillReceiveProps(nextProps : Props) {
-        this.onChange(nextProps);
     }
 
     onChange(props : ?Props){
@@ -138,14 +145,12 @@ export default class CQEditView extends React.Component {
             // Check if the questionIndex is in range
             if (questionIndex && questionIndex > quiz.payload.questions.length){
                 // console.warn('Trying to edit a question out of range');
-                setTimeout(function(){
-                    router.setRoute(`/quiz/create/${quiz.uuid}`);
-                }, 550);
+                router.setRoute(`/quiz/create/${quiz.uuid}`);
             }
         }
         state.quiz = quiz;
         state.questionIndex = questionIndex;
-        console.info('CQEdit return state', state);
+
         return state;
 
     }
@@ -165,21 +170,17 @@ export default class CQEditView extends React.Component {
         }
 
         quiz.payload.questions[index] = question;
-        this.setState({
-            pristine: false,
-            quiz
-        });
+        QuizActions.updateQuiz(quiz);
     }
 
     handleSaveNewQuestion(){
         // new question
         var nextQuestion;
 
-        if (this.state.questionIndex) {
-            nextQuestion = this.state.questionIndex + 1;
-        } else if (this.state.quiz) {
+        if (this.state.quiz) {
             nextQuestion = this.state.quiz.payload.questions.length;
         }
+
         this.save().then( ()=> {
             router.setRoute(`/quiz/create/${this.state.quiz.uuid}/${nextQuestion}`);
         });
@@ -218,8 +219,9 @@ export default class CQEditView extends React.Component {
     handleShare() {
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
 
-            AnalyticsActions.sendIntercomEvent('share_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
+            console.warn('handleSharehandleSharehandleShare', this.state.quiz.payload.questions.length);
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
+                AnalyticsActions.sendIntercomEvent('share_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
                 router.setRoute(`/quiz/published/${this.state.quiz.uuid}/share`);
             });
         }
@@ -295,14 +297,9 @@ export default class CQEditView extends React.Component {
 
     enableDisableSave(saveEnabled: boolean){
         this.setState({saveEnabled});
-
-        // <p className="small">
-        //     Speed Tip: We found clicking is a pain - just hit enter to step through quickly
-        // </p>
     }
 
     handleTopic(topicId: string){
-        console.log('we got topic', topicId);
         var {quiz} = this.state;
         quiz.meta.categoryId = topicId;
         this.setState({quiz});
