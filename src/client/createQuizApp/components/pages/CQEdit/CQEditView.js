@@ -92,11 +92,10 @@ export default class CQEditView extends React.Component {
     }
 
     componentWillReceiveProps(nextProps : Props) {
-        let {questionIndex} = nextProps.routeParams;
-        if (questionIndex){
+        if (nextProps.routeParams.questionIndex){
+            let questionIndex = parseInt(nextProps.routeParams.questionIndex, 10);
             let {quiz} = this.state;
             quiz.payload.questions[questionIndex] = QuizStore.getQuestion(quiz.uuid, questionIndex);
-            console.log('getting question', questionIndex);
         }
 
     }
