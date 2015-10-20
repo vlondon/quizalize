@@ -5,7 +5,7 @@ import App from './classes/App';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {AppConstants} from './../constants';
 import {AppActions} from './../actions';
-import Application from './classes/Application';
+import {Application} from './classes/Application';
 type AppMeta = {
     code?: string;
     colour: string;

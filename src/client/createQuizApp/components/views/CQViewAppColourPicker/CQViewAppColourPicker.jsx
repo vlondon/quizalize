@@ -44,6 +44,7 @@ var CQViewAppColourPicker = React.createClass({
             var selected = this.state.selected === colour;
             return (
                 <div
+                    key={colour}
                     onClick={this.handleClick.bind(this, colour)}
                     className={selected ? 'cq-colourpicker__colour selected' : 'cq-colourpicker__colour'}
                     style={style}/>
