@@ -8,7 +8,7 @@ let CQOwnProfileCounter = ({amount} : {amount: number}): any => {
     if (amount < 5){
         copy = `You can create ${5 - amount} more private quizzes`;
     } else {
-        copy = `Your've reached the limit of 5 quizzes`;
+        copy = `You've reached the limit of 5 quizzes`;
     }
     return (
         <span>

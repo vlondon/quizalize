@@ -16,6 +16,11 @@ class CQSettingsSubscriptions extends React.Component {
         TransactionActions.buyMonthlySubscription();
     }
 
+    handleContact(){
+        console.log('handleContact');
+        window.Intercom('showNewMessage');
+    }
+
     render () : any {
         let selected = (id, className) => {
             if (this.props.user.attributes.accountType === id){
@@ -43,7 +48,7 @@ class CQSettingsSubscriptions extends React.Component {
                     <small><i>Valid until <br/>{moment(this.props.user.attributes.accountTypeExpiration).format("Do MMM YY")}</i></small>
 
                 </div>
-                <div className={selected(2, "cq-settings__subsoptions__school")}>
+                <div className={selected(2, "cq-settings__subsoptions__school")} onClick={this.handleContact}>
                     <div className="cq-settings__subsoptions__price">
                         Contact us
                     </div>

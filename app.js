@@ -93,6 +93,7 @@ app.get('/user', user.details);
 app.post('/user/search', user.search);
 app.post('/user', user.saveUserRequest);
 app.post('/email/', email.sendDocumentEmail);
+app.post('/user/discovery-promotion', user.discoveryPromotion);
 
 app.post('/user/events/:name', intercom.events);
 
@@ -106,6 +107,9 @@ app.get('/quiz/public', function(req, res){
 });
 app.get('/quiz/*', checkForIE, quiz.create);
 app.get('/profile/*', checkForIE, quiz.create);
+app.get('/discovery-education-promotion', checkForIE, quiz.create);
+app.get('/discovery-education-free-premium-subscription', checkForIE, quiz.create);
+// app.get('/discovery-education-free-premium-subscription/perform-upgrade', checkForIE, quiz.create);
 app.get('/quiz', checkForIE, quiz.create);
 
 

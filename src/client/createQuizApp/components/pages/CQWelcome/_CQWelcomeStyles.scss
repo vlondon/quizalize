@@ -65,6 +65,9 @@
         color: $brand-color-purple;
         font-weight: bold;
         font-size: 28px;
+        &__sub {
+            color: $brand-color-purple;
+        }
     }
     &__star {
         position: absolute;

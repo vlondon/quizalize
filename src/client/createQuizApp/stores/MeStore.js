@@ -157,6 +157,10 @@ class Me extends Store {
             return false;
         }
     }
+
+    isPremium() : boolean {
+        return this.state.attributes.accountType !== 0;
+    }
 }
 
 

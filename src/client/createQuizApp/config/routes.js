@@ -27,6 +27,9 @@ import {
     CQPremium,
     CQAssignQuiz,
     CQTransactions,
+    CQDiscovery,
+    CQDiscoveryPerformUpgrade,
+    CQDiscoveryThankYou,
 } from './../components';
 
 export type Page = {
@@ -49,6 +52,27 @@ var pagesArray: Array<Page> = [
         path: '/quiz/transaction',
         needsLogin: undefined,
         component: CQTransactions,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-promotion',
+        needsLogin: undefined,
+        component: CQDiscovery,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-free-premium-subscription',
+        needsLogin: undefined,
+        component: CQDiscoveryThankYou,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-free-premium-subscription/perform-upgrade',
+        needsLogin: true,
+        component: CQDiscoveryPerformUpgrade,
 
     },
     {

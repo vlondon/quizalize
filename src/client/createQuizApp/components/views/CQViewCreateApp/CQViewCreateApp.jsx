@@ -154,7 +154,7 @@ export default class CQViewCreateApp extends React.Component {
         if (this.state.prices){
             prices = this.state.prices.map(price=> {
                 return (
-                    <option value={price}>{priceFormat(price, '$', 'us')}</option>
+                    <option key={price} value={price}>{priceFormat(price, '$', 'us')}</option>
                 );
             });
         }

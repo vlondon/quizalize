@@ -214,7 +214,7 @@ export default class CQSettings extends React.Component {
     }
 
 
-    render() {
+    render(): any {
 
         var message, profilePicture, schoolWebsite, skipButton;
         var classNameError = (index) => {
@@ -310,15 +310,15 @@ export default class CQSettings extends React.Component {
         };
 
         return (
-            <CQPageTemplate className="cq-container cq-settings">
+            <div className="cq-container cq-settings">
                 <h3 className="cq-settings__header">
                     <div className="skip">
                         {skipButton}
                     </div>
                     {message}
                 </h3>
-                <div className="cq-settings__cols">
-                    <div className="cq-settings__col1">
+                {/*<div className="cq-settings__cols">
+                    <div className="cq-settings__col1">*/}
 
                         <div className={`cq-settings__profile`}>
                             <div className={`cq-settings__profile-item${classNameError(0)} form-group`}>
@@ -385,15 +385,16 @@ export default class CQSettings extends React.Component {
 
 
                         </div>
-                    </div>
+                    {/*</div>
+
                     <div className="cq-settings__col2">
                         <div className="cq-settings__subscriptions">
                             <b>Your subscription</b>
                             <CQSettingsSubscriptions user={this.state.user}/>
                         </div>
                     </div>
-                </div>
-            </CQPageTemplate>
+                </div>*/}
+            </div>
         );
 
     }

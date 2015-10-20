@@ -8,6 +8,9 @@ import CQAssignments from './pages/CQAssignments';
 import CQAssignQuiz from './pages/CQAssignQuiz';
 import CQCreate from './pages/CQCreate';
 import CQDashboard from './pages/CQDashboard';
+import CQDiscovery from './pages/CQDiscovery/CQDiscovery';
+import CQDiscoveryPerformUpgrade from './pages/CQDiscovery/CQDiscoveryPerformUpgrade';
+import CQDiscoveryThankYou from './pages/CQDiscovery/CQDiscoveryThankYou';
 import CQEdit from './pages/CQEdit';
 import CQLogin from './pages/CQLogin';
 import CQMarketplace from './pages/CQMarketplace';
@@ -25,6 +28,7 @@ import CQQuizzes from './pages/CQQuizzes';
 import CQRecoverPassword from './pages/CQRecoverPassword';
 import CQRedirect from './pages/CQRedirect';
 import CQRegister from './pages/CQRegister';
+import CQRegisterInner from './pages/CQRegister/CQRegisterInner';
 import CQRestorePassword from './pages/CQRestorePassword';
 import CQReview from './pages/CQReview';
 import CQSettings from './pages/CQSettings';
@@ -79,6 +83,9 @@ export {
     CQAssignQuiz,
     CQCreate,
     CQDashboard,
+    CQDiscovery,
+    CQDiscoveryPerformUpgrade,
+    CQDiscoveryThankYou,
     CQEdit,
     CQLogin,
     CQMarketplace,
@@ -96,6 +103,7 @@ export {
     CQRecoverPassword,
     CQRedirect,
     CQRegister,
+    CQRegisterInner,
     CQRestorePassword,
     CQReview,
     CQSettings,

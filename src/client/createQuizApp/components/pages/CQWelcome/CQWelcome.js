@@ -28,7 +28,21 @@ class CQWelcome extends React.Component {
         this.handleWatchVideo = this.handleWatchVideo.bind(this);
         this.handlePlayDemo = this.handlePlayDemo.bind(this);
         this.handleDismiss = this.handleDismiss.bind(this);
+        this.onChange = this.onChange.bind(this);
         // this.handleBrowseMarketplace = this.handleBrowseMarketplace.bind(this);
+    }
+
+    componentDidMount() {
+        MeStore.addChangeListener(this.onChange);
+    }
+
+    componentWillUnmount() {
+        MeStore.removeChangeListener(this.onChange);
+    }
+
+    onChange(){
+        console.log('FUCK ME, this should update');
+        this.setState({user: MeStore.state});
     }
 
     handlePlayDemo(){
@@ -83,14 +97,22 @@ class CQWelcome extends React.Component {
         let name = this.state.user.name ? ` ${this.state.user.name}` : '';
         let video = this.state.isVideoOpen ? <CQWelcomeVideo onDismiss={this.handleDismiss}/> : undefined;
         let quiz = this.state.isQuizOpen ? <CQWelcomeQuiz onDismiss={this.handleDismiss}/> : undefined;
+        let welcomeMessage, subTitle;
+        if (MeStore.isPremium()){
+            welcomeMessage = 'You have a Quizalize Premium Account';
+            subTitle = (<p className="cq-welcome__header__sub">Unlimited private quizzes, unlimited classes, and progress tracking</p>);
+        } else {
+            welcomeMessage = 'What are you teaching this week?';
+        }
         return (
             <CQPageTemplate className="cq-welcome__page">
                 {video}{quiz}
                 <div className="cq-welcome">
                     <img src="/cquiz/img/logo 2.png" className="cq-welcome__brand"/>
                     <h1 className="cq-welcome__header">
-                        Welcome{name}! What are you teaching this week?
+                        Welcome{name}! {` ${welcomeMessage}`}
                     </h1>
+                    {subTitle}
 
                     <div className="cq-welcome__star">
                         <div className="cq-welcome__star__content">
