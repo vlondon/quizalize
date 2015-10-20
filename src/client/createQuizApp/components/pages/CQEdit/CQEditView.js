@@ -20,7 +20,7 @@ import {
 } from './../../../actions';
 
 import { urlParams } from './../../../utils';
-import type {QuizComplete, Question} from './../../../../../types';
+import type { QuizComplete, Question } from './../../../../../types';
 
 import CQQuestionList from './CQQuestionList';
 import CQEditIcon from './CQEditIcon';
@@ -323,7 +323,7 @@ export default class CQEditView extends React.Component {
             var topics = TopicStore.getTopicTree();
 
             let pularlize = function(amount, singular, plural){
-                if (amount === 1 || amount === 0) {
+                if (amount === 1) {
                     return singular;
                 }
                 return plural;
