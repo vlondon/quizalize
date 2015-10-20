@@ -41,7 +41,6 @@ class CQWelcome extends React.Component {
     }
 
     onChange(){
-        console.log('FUCK ME, this should update');
         this.setState({user: MeStore.state});
     }
 

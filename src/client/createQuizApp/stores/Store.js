@@ -9,7 +9,6 @@ class Store extends EventEmitter {
     // getMaxListeners: Function;
     constructor() {
         super();
-        console.trace('this', this);
     }
 
     emitChange() {
@@ -17,7 +16,6 @@ class Store extends EventEmitter {
     }
 
     addChangeListener(callback: Function) {
-        // console.log('super', super);
         // var maxListeners = super.listenerCount;
         // var maxListeners = super.listeners().length;
         super.setMaxListeners(20);

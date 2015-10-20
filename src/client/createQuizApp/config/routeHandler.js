@@ -16,7 +16,6 @@ var urlParams           = require('./../utils/urlParams');
 var requireAuth = function(nextState, replaceState) {
 
     var url =  '/quiz/register?redirect=' + window.encodeURIComponent(nextState.location.pathname);
-    console.log('requireAuth nextState', MeStore.isLoggedIn(), nextState);
     // var url =  '/quiz/register';
     if (MeStore.isLoggedIn() === false) {
         replaceState({ nextPathname: nextState.location.pathname }, url);

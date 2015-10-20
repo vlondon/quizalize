@@ -3,8 +3,6 @@ var React = require('react');
 import urlParams from './../../../utils/urlParams';
 import UserActions from './../../../actions/UserActions';
 
-var token;
-
 var pathArray = location.href.split( '/' );
 var protocol = pathArray[0];
 var host = pathArray[2];
@@ -20,7 +18,6 @@ class CQZzishLogin extends React.Component {
 
     constructor(props: Object){
         super(props);
-        console.log('CQZzishLogin');
         let params = urlParams();
         if (params.token){
             if (params.cancel) {

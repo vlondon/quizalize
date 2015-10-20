@@ -27,7 +27,6 @@ var CQDashboardQuizzes = React.createClass({
     },
 
     onChange: function(){
-        console.log('onChange', QuizStore);
         this.setState(this.getState());
     },
 
@@ -111,7 +110,6 @@ var CQDashboardQuizzes = React.createClass({
         </ul>);
 
         if (this.state.empty === true){
-            console.log('the quiz is empty');
             empty = (<CQDashboardQuizzesEmpty/>);
         }
 
