@@ -43,5 +43,5 @@ export default class CQYourApps extends React.Component {
 
 CQYourApps.propTypes = {
     newApp: React.PropTypes.bool,
-    routeParams: React.PropTypes.Object
+    routeParams: React.PropTypes.object
 };

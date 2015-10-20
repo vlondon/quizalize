@@ -19,34 +19,25 @@
     }
 
     &__profile {
-        /* width: 100%; */
-        /* float: left; */
-        /* background: rgba(green, .5); */
-        /* padding: 10px; */
+        position: relative;
         small {
             display: block;
             color: $brand-color-grey;
             margin-top: 10px;
         }
 
-    }
-
-
-    &__profile {
-        position: relative;
-
         &__extra {
             position: absolute;
             bottom: 0;
-            height: 90px;
-            background: rgba(#FFF, .7);
+            height: 180px;
+            background: linear-gradient(rgba(#FFF, 0), rgba(#FFF, .7) 60%);
             width: 100%;
         }
 
         &__picture {
 
             position: absolute;
-            top: -90px;
+            top: 0px;
             left: 30px;
             width: 200px;
             height: 200px;
@@ -69,7 +60,7 @@
             // bottom: -120px;
             // left: 260px;
             padding-left: 260px;
-            margin-top: 10px;
+            margin-top: 90px;
             display: flex;
 
             &__entry {
