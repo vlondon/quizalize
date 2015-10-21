@@ -109,6 +109,7 @@ app.get('/quiz/*', checkForIE, quiz.create);
 app.get('/profile/*', checkForIE, quiz.create);
 app.get('/discovery-education-promotion', checkForIE, quiz.create);
 app.get('/discovery-education-free-premium-subscription', checkForIE, quiz.create);
+app.get('/discovery-education-free-unlimited-subscription', checkForIE, quiz.create);
 // app.get('/discovery-education-free-premium-subscription/perform-upgrade', checkForIE, quiz.create);
 app.get('/quiz', checkForIE, quiz.create);
 

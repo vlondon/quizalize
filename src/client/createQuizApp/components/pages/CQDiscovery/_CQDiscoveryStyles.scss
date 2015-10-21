@@ -14,11 +14,15 @@
         text-align: center;
         padding: 30px;
         font-size: 20px;
+
+
+        // margin: 20px auto;
+        color: #FFF;
+
         &__offer {
             text-transform: uppercase;
             font-size: 20px;
             letter-spacing: 7px;
-            margin-bottom: 20px;
         }
         &__bannerthanks,
         &__banner {

@@ -228,11 +228,43 @@ var TransactionActions = {
                 profileId: user.profileId,
                 created: Date.now(),
                 price: 0,
-                subscription: 'montly'
+                subscription: 'monthly'
             }
         };
         return this.saveNewTransaction(newTransaction);
         // stripeSDK.stripeCheckout(localPrice, userEmail)
+    },
+
+    buyHalfYearSubscription: function() : Promise {
+        console.log('about to get subscription');
+        let user = MeStore.state;
+
+        let newTransaction : Transaction = {
+            meta: {
+                type: 'subscription',
+                profileId: user.profileId,
+                created: Date.now(),
+                price: 0,
+                subscription: 'halfyear'
+            }
+        };
+        return this.saveNewTransaction(newTransaction);
+        // stripeSDK.stripeCheckout(localPrice, userEmail)
+    },
+
+    buyYearSubscription: function() : Promise {
+        let user = MeStore.state;
+
+        let newTransaction : Transaction = {
+            meta: {
+                type: 'subscription',
+                profileId: user.profileId,
+                created: Date.now(),
+                price: 0,
+                subscription: 'year'
+            }
+        };
+        return this.saveNewTransaction(newTransaction);
     }
 };
 
