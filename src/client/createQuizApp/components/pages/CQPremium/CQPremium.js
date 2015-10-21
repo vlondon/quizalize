@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react';
+import moment from 'moment';
 import CQDiscoveryHeader from './../CQDiscovery/CQDiscoveryHeader';
 import {
     CQPageTemplate
@@ -9,6 +10,9 @@ import {
     TransactionActions
 } from './../../../actions';
 
+import {
+    urlParams
+} from './../../../utils';
 import { MeStore } from './../../../stores';
 
 type Props = {};
@@ -19,10 +23,31 @@ class CQPremium extends React.Component {
 
     constructor(props : Props){
         super(props);
+
         this.onChange = this.onChange.bind(this);
+        this.state = {
+            upgradeOverlay: false
+        };
+
+        this.closeOverlay = this.closeOverlay.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handleContact = this.handleContact.bind(this);
+        this.handleDowngrade = this.handleDowngrade.bind(this);
+        this.handleMonthlySubscription = this.handleMonthlySubscription.bind(this);
+        this.handleHalfYearSubscription = this.handleHalfYearSubscription.bind(this);
+        this.handleYearSubscription = this.handleYearSubscription.bind(this);
+        this.handleUpgrade = this.handleUpgrade.bind(this);
+
     }
 
     componentDidMount() {
+        var params = urlParams();
+        if (params.p === 'true'){
+            // TODO Francesco: check this!
+            swal('Thank you', `Your account has been updated successfuly.
+            It might take a few minutes to update your subscription.`);
+        }
+        // console.log('params?', params);
         MeStore.addChangeListener(this.onChange);
     }
 
@@ -33,7 +58,6 @@ class CQPremium extends React.Component {
     onChange(){
         this.forceUpdate();
     }
-
     handleContact(){
         // TODO Francesco Write the message
         window.Intercom('showNewMessage', 'I want to know more about Quizalize School Package');
@@ -44,9 +68,38 @@ class CQPremium extends React.Component {
         window.Intercom('showNewMessage', 'Donwgrade my account');
     }
 
+    handleDone(){
+        setTimeout(function(){
+            window.location = '/quiz/premium?p=true';
+        }, 2000);
+    }
+
+    handleUpgrade(){
+        this.setState({upgradeOverlay: true});
+    }
+
+    closeOverlay(){
+        this.setState({upgradeOverlay: false});
+    }
+
     handleMonthlySubscription(){
+        this.closeOverlay();
         if (MeStore.isPremium() === false){
-            TransactionActions.buyMonthlySubscription();
+            TransactionActions.buyMonthlySubscription().then(()=>{this.handleDone();});
+        }
+    }
+
+    handleHalfYearSubscription(){
+        this.closeOverlay();
+        if (MeStore.isPremium() === false){
+            TransactionActions.buyHalfYearSubscription().then(()=>{this.handleDone();});
+        }
+    }
+
+    handleYearSubscription(){
+        this.closeOverlay();
+        if (MeStore.isPremium() === false){
+            TransactionActions.buyYearSubscription().then(()=>{this.handleDone();});
         }
     }
 
@@ -55,7 +108,9 @@ class CQPremium extends React.Component {
 
         let buttonFree;
         let buttonUnlimited;
-        let {accountType} = MeStore.state.attributes;
+        let {accountType, accountTypeExpiration} = MeStore.state.attributes;
+        const {upgradeOverlay} = this.state;
+        let overlayDom;
         let buttonSchool = (
             <a className="cq-premium__cta" onClick={this.handleContact}>
                 Get Price
@@ -76,8 +131,12 @@ class CQPremium extends React.Component {
             );
         } else if (accountType === 1) {
             buttonUnlimited = (
-                <div className="cq-premium__cta--selected">
-                    You have an Unlimited Account
+                <div>
+                    <div className="cq-premium__cta--selected">
+                        You have an Unlimited Account
+                    </div>
+                    Valid until <br/>
+                    {moment(accountTypeExpiration).format("Do MMM YY")}
                 </div>
             );
             buttonFree = (
@@ -88,8 +147,40 @@ class CQPremium extends React.Component {
 
         }
 
+        if (upgradeOverlay){
+            overlayDom = (
+                <div className="cq-premium__overlay">
+                    <div className="cq-premium__overlay__option" onClick={this.handleHalfYearSubscription}>
+                        <i className="fa fa-chevron-right"/>
+                        <div>
+                            <b>6 months</b>
+                        </div>
+                        <div>
+                            <span>$50 (that's $8.33 per month, <b>you save $10</b>)</span>
+                        </div>
+                        <div>
+                            <span className="cq-premium__overlay__option__popular">Most popular option</span>
+                        </div>
+                    </div>
+                    <div className="cq-premium__overlay__option" onClick={this.handleYearSubscription}>
+                        <i className="fa fa-chevron-right"/>
+                        <div><b>12 months</b></div>
+                        <div><span>$80 (that's $6.66 per month, <b>you save $40</b>)</span></div>
+
+                    </div>
+                    <div className="cq-premium__overlay__option" onClick={this.handleMonthlySubscription}>
+                        <i className="fa fa-chevron-right"/>
+                        <div><b>Single month</b></div>
+                        <div><span>$10 per month</span></div>
+
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <CQPageTemplate className="cq-container cq-premium">
+                {overlayDom}
                 <div className="cq-premium__block__header">
                     <h1>
                         Subscribe to help us!
@@ -163,7 +254,7 @@ class CQPremium extends React.Component {
                             </div>
                         </div>
 
-                        <div className="cq-premium__row ">
+                        <div className="cq-premium__row cq-premium__rowcta">
                             <div className="cq-premium__col1">
 
                             </div>

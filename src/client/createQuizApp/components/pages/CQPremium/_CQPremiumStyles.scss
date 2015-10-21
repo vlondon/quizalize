@@ -4,6 +4,40 @@
     overflow: hidden;
     max-width: 840px;
 
+    &__overlay {
+        padding: 20px;
+        background: #FFF;
+        width: 520px;
+        position: fixed;
+        box-shadow: 0 5px 26px rgba(#000, .8);
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-260px, -200px);
+        z-index: 20;
+
+        &__option {
+            position: relative;
+            background: $brand-color-purple-light;
+            padding: 30px;
+            color: #FFF;
+            margin-bottom: 10px;
+            cursor: pointer;
+            opacity: 0.7;
+
+            &:hover {
+                background: $brand-color-purple;
+                opacity: 1;
+            }
+            .fa {
+                position: absolute;
+                right: 20px;
+                top: 45px;
+                font-size: 24px;
+            }
+        }
+    }
+
     &__bestvalue {
         background: $brand-color-purple-dark;
         width: 80px;
@@ -110,6 +144,7 @@
         font-weight: bold;
         font-size: 24px;
     }
+
     &__row {
         display: flex;
         flex-direction: row;
@@ -124,6 +159,13 @@
                 padding: 30px 10px;
                 border-radius: 0 0 10px 10px;
             }
+        }
+    }
+    &__rowcta {
+        .cq-premium__col2,
+        .cq-premium__col3,
+        .cq-premium__col4 {    
+            align-items: flex-start;
         }
     }
 
