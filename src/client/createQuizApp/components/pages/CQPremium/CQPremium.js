@@ -1,10 +1,13 @@
 /* @flow */
 import React from 'react';
+import CQDiscoveryHeader from './../CQDiscovery/CQDiscoveryHeader';
+import {
+    CQPageTemplate
+} from './../../../components';
 
 import {
-    CQPageTemplate,
-    CQSettingsSubscriptions
-} from './../../../components';
+    TransactionActions
+} from './../../../actions';
 
 import { MeStore } from './../../../stores';
 
@@ -31,226 +34,267 @@ class CQPremium extends React.Component {
         this.forceUpdate();
     }
 
+    handleContact(){
+        // TODO Francesco Write the message
+        window.Intercom('showNewMessage', 'I want to know more about Quizalize School Package');
+    }
+
+    handleDowngrade(){
+        // TODO Francesco Write the message
+        window.Intercom('showNewMessage', 'Donwgrade my account');
+    }
+
+    handleMonthlySubscription(){
+        if (MeStore.isPremium() === false){
+            TransactionActions.buyMonthlySubscription();
+        }
+    }
+
+
     render () {
+
+        let buttonFree;
+        let buttonUnlimited;
+        let {accountType} = MeStore.state.attributes;
+        let buttonSchool = (
+            <a className="cq-premium__cta" onClick={this.handleContact}>
+                Get Price
+            </a>
+        );
+
+
+        if (accountType === 0){
+            buttonUnlimited = (
+                <a className="cq-premium__cta" onClick={this.handleUpgrade}>
+                    Upgrade your account
+                </a>
+            );
+            buttonFree = (
+                <div className="cq-premium__cta--selected">
+                    You  have a free account
+                </div>
+            );
+        } else if (accountType === 1) {
+            buttonUnlimited = (
+                <div className="cq-premium__cta--selected">
+                    You have an Unlimited Account
+                </div>
+            );
+            buttonFree = (
+                <div className="cq-premium__cta" onClick={this.handleDowngrade}>
+                    Switch to a Free Account
+                </div>
+            );
+
+        }
+
         return (
             <CQPageTemplate className="cq-container cq-premium">
                 <div className="cq-premium__block__header">
-
                     <h1>
-                        You can use Quizalize with one class <br/>completely free forever!
+                        Subscribe to help us!
                     </h1>
-                    <h3>
-                        You can do lots of other things for free as well, such as:
-                    </h3>
+                    <p className="cq-premium__block__header__p1">
+                        We are really excited to have been awarded £250k grant
+                        from the UK government, but need to raise £250k of
+                        private funding to unlock it. Here’s what it’s for:
+                    </p>
+
 
                     <ul>
-                        <li>Publish an unlimited number of quizzes to the marketplace - we like to share</li>
-                        <li>Access the results of the most recent quiz your class took</li>
-                        <li>Export reports of students’ performance and class progress</li>
-                        <li>Create a unique teacher profile page, so other users can discover your content</li>
+                        <li>Better dashboards showing student progress</li>
+                        <li>Algorithms that personalise learning for each student</li>
+                        <li>Turn your quizzes into real Apple and Google apps</li>
                     </ul>
+                    <p>
+                        We are a tiny team, passionate about making a real difference,
+                        and we'll use every penny to make our product better for you.
+                        Please buy a Premium or School subscription to help make this happen!
+                        Thank you.
+                    </p>
+
+                    <p className="cq-premium__block__header__signature">
+                        <img src={require('./../../../../assets/cq-premium__charles.png')} alt="" width="250"/><br/>
+                        Founder and CEO of Zzish<br/>Creator of Quizalize
+                    </p>
 
                 </div>
-                <p className="cq-premium__block__header__body">
-                    But if that’s not enough, you can sign up for one of our premium accounts.
-                    Premium accounts allow you to use unlimited quizzes with unlimited classes,
-                    create unlimited private quizzes and to track students’ performance over time.
+                <div className="cq-premium__block__body">
+                    <h1>Plans and Pricing</h1>
 
-                </p>
 
-                <div className="cq-premium__table">
-                    <div className="cq-premium__row cq-premium__row1 cq-premium__table__header">
-                        <div className="cq-premium__col1">
+                    <div className="cq-premium__table">
+                        <div className="cq-premium__row cq-premium__row1 cq-premium__table__header">
+                            <div className="cq-premium__col1">
 
-                        </div>
-                        <div className="cq-premium__col2">
-                            Free
-                        </div>
-                        <div className="cq-premium__col3">
-                            Premium
-                        </div>
-                        <div className="cq-premium__col4">
-                            School
-                        </div>
-                    </div>
+                            </div>
+                            <div className="cq-premium__col2">
+                                Basic
+                            </div>
+                            <div className="cq-premium__col3">
+                                <div className="cq-premium__col3__inner">
+                                    Unlimited
+                                    <div className="cq-premium__bestvalue">
+                                        Best <br/>
+                                        Value
+                                    </div>
+                                </div>
 
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Number of teachers
-                        </div>
-                        <div className="cq-premium__col2">
-                            1
-                        </div>
-                        <div className="cq-premium__col3">
-                            1
-                        </div>
-                        <div className="cq-premium__col4">
-                            <div>
-                                Small: 20 teachers <br/>
-                                Medium: 21-50 teachers <br/>
-                                Large: 50+ teachers <br/>
+                            </div>
+                            <div className="cq-premium__col4">
+                                <div>
+                                    School<br/>Package
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Number of classes
-                        </div>
-                        <div className="cq-premium__col2">
-                            1
-                        </div>
-                        <div className="cq-premium__col3">
-                            Unlimited
-                        </div>
-                        <div className="cq-premium__col4">
-                            Unlimited
-                        </div>
-                    </div>
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
 
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Number of quiz assignments per week
-                        </div>
-                        <div className="cq-premium__col2">
-                            4
-                        </div>
-                        <div className="cq-premium__col3">
-                            Unlimited
-                        </div>
-                        <div className="cq-premium__col4">
-                            Unlimited
-                        </div>
-                    </div>
-
-
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            <div>
-                                Max. number of private quizzes <br/>(not published to the marketplace)
+                            </div>
+                            <div className="cq-premium__col2">
+                                Free forever
+                            </div>
+                            <div className="cq-premium__col3">
+                                from $6.67/mth
+                            </div>
+                            <div className="cq-premium__col4">
+                                dependent on school size
                             </div>
                         </div>
-                        <div className="cq-premium__col2">
-                            5
+
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
+
+                            </div>
+                            <div className="cq-premium__col2">
+                                {buttonFree}
+                            </div>
+                            <div className="cq-premium__col3">
+                                {buttonUnlimited}
+                            </div>
+                            <div className="cq-premium__col4">
+                                {buttonSchool}
+                            </div>
                         </div>
-                        <div className="cq-premium__col3">
-                            Unlimited
+
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
+                                Teachers
+                            </div>
+                            <div className="cq-premium__col2">
+                                1
+                            </div>
+                            <div className="cq-premium__col3">
+                                1
+                            </div>
+                            <div className="cq-premium__col4">
+                                <div>
+                                    Unlimited
+                                </div>
+                            </div>
                         </div>
-                        <div className="cq-premium__col4">
-                            Unlimited
+
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
+                                Classes
+                            </div>
+                            <div className="cq-premium__col2">
+                                1
+                            </div>
+                            <div className="cq-premium__col3">
+                                Unlimited
+                            </div>
+                            <div className="cq-premium__col4">
+                                Unlimited
+                            </div>
                         </div>
+
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
+                                Private quizzes
+                            </div>
+                            <div className="cq-premium__col2">
+                                yes, up to 5
+                            </div>
+                            <div className="cq-premium__col3">
+                                Unlimited
+                            </div>
+                            <div className="cq-premium__col4">
+                                Unlimited
+                            </div>
+                        </div>
+
+
+
+
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
+                                Student improvement
+                            </div>
+                            <div className="cq-premium__col2">
+                                Yes
+                            </div>
+                            <div className="cq-premium__col3">
+                                Yes
+                            </div>
+                            <div className="cq-premium__col4">
+                                Yes
+                            </div>
+                        </div>
+
+                        <div className="cq-premium__row ">
+                            <div className="cq-premium__col1">
+                                View past results
+                            </div>
+                            <div className="cq-premium__col2">
+                                No
+                            </div>
+                            <div className="cq-premium__col3">
+                                No
+                            </div>
+                            <div className="cq-premium__col4">
+                                Coming soon
+                            </div>
+                        </div>
+
+
+                        <div className="cq-premium__row cq-premium__footer">
+                            <div className="cq-premium__col1">
+                                Dashboards
+                            </div>
+                            <div className="cq-premium__col2">
+                                <div>
+                                    Latest quiz only <br/>
+                                    Student improvement
+                                </div>
+                            </div>
+                            <div className="cq-premium__col3">
+                                <div>
+                                    Latest quiz <br/>
+                                    + Previous quizzes <br/>
+                                    Student improvement
+                                </div>
+                            </div>
+                            <div className="cq-premium__col4">
+                                <div>
+                                    Latest quiz <br/>
+                                    + Previous quizzes <br/>
+                                    + Department* <br/>
+                                    + Head Teacher* <br/>
+                                    Student improvement
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div className="cq-premium__legend">
+                            * coming soon
+                        </div>
+
                     </div>
-
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Access to detailed results for past quizzes
-                        </div>
-                        <div className="cq-premium__col2">
-                            No
-                        </div>
-                        <div className="cq-premium__col3">
-                            Yes
-                        </div>
-                        <div className="cq-premium__col4">
-                            Yes
-                        </div>
-                    </div>
-
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            School profile page
-                        </div>
-                        <div className="cq-premium__col2">
-                            No
-                        </div>
-                        <div className="cq-premium__col3">
-                            No
-                        </div>
-                        <div className="cq-premium__col4">
-                            Coming soon
-                        </div>
-                    </div>
-
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Department Head dashboards
-                        </div>
-                        <div className="cq-premium__col2">
-                            No
-                        </div>
-                        <div className="cq-premium__col3">
-                            No
-                        </div>
-                        <div className="cq-premium__col4">
-                            Coming soon
-                        </div>
-                    </div>
-
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Year Head dashboards
-                        </div>
-                        <div className="cq-premium__col2">
-                            No
-                        </div>
-                        <div className="cq-premium__col3">
-                            No
-                        </div>
-                        <div className="cq-premium__col4">
-                            Coming soon
-                        </div>
-                    </div>
-
-
-                    <div className="cq-premium__row cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Head Teacher dashboards
-                        </div>
-                        <div className="cq-premium__col2">
-                            No
-                        </div>
-                        <div className="cq-premium__col3">
-                            No
-                        </div>
-                        <div className="cq-premium__col4">
-                            Coming soon
-                        </div>
-                    </div>
-
-
-                    <div className="cq-premium__row cq-premium__row__last cq-premium__header">
-                        <div className="cq-premium__col1">
-                            Price
-                        </div>
-                        <div className="cq-premium__col2">
-                            Free
-                        </div>
-                        <div className="cq-premium__col3">
-                            $9.99/£6.49 per month
-                        </div>
-                        <div className="cq-premium__col4">
-                            Ask us
-                        </div>
-                    </div>
-
-                    <div className="cq-premium__row cq-premium__row__cta cq-premium__header">
-                        <div className="cq-premium__col1">
-
-                        </div>
-                        <div className="cq-premium__col2">
-
-                        </div>
-                        <div className="cq-premium__col3">
-                            Upgrade your account
-                        </div>
-                        <div className="cq-premium__col4">
-                            Talk to us
-                        </div>
-                    </div>
-
                 </div>
-
-                <CQSettingsSubscriptions user={MeStore.state}/>
+                <CQDiscoveryHeader showHeader={true}/>
             </CQPageTemplate>
         );
     }

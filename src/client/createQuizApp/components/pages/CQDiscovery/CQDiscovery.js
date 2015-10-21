@@ -3,39 +3,16 @@ import React from 'react';
 import { CQPageTemplate } from './../../../components';
 import CQDiscoveryFeatures from './CQDiscoveryFeatures';
 import CQDiscoveryQuizalize from './CQDiscoveryQuizalize';
+import CQDiscoveryHeader from './CQDiscoveryHeader';
 
 class CQDiscovery extends React.Component {
     render () : any {
         return (
             <CQPageTemplate className='cq-discovery'>
 
-                <div className="cq-discovery__header">
-                    <div className="cq-discovery__header__offer">
-                        Offer
-                    </div>
-                    <div className="cq-discovery__header__banner">
-                        Get Quizalize Premium <br/>
-                        Free for 1 year
-                    </div>
-
-                    <p>
-                        Our partners Discovery Education are offering a year’s unlimited
-                        use of Quizalize Premium completely free for one year.
-                        Create and use an unlimited number of quizzes, with unlimited classes,
-                        and get access to our advanced data analysis tools.
-                    </p>
-
-                    <a href="http://www.zzish.com" className="cq-discovery__header__cta">
-                        Take the survey
-                        <small>
-                            to get Quizalize Premium, free
-                        </small>
-                    </a>
-                </div>
-
+                <CQDiscoveryHeader/>
                 <CQDiscoveryFeatures/>
                 <CQDiscoveryQuizalize/>
-
 
                 <div className="cq-discovery__education">
                     <div className="cq-discovery__education__brand">

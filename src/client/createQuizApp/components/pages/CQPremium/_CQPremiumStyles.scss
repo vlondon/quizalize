@@ -1,16 +1,26 @@
 .cq-premium {
 
     padding: 0;
-    // margin: 0 auto;
     overflow: hidden;
+    max-width: 840px;
+
+    &__bestvalue {
+        background: $brand-color-purple-dark;
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        position: absolute;
+        top: -73px;
+        right: -48px;
+        font-size: 15px;
+        padding-top: 18px;
+        transform: rotate(15deg);
+    }
 
     &__block__header {
-        background: url(./../../assets/chalkboard.jpg);
-        background-size: cover;
-        color: #FFF;
-        color: rgba(#FFF, .8);
-        text-align: center;
-        padding: 40px 60px;
+        background: #FFF;
+        padding: 20px 160px;
+        color: $brand-color-purple;
 
         @include clearfix();
 
@@ -21,25 +31,49 @@
             margin: 40px 0;
         }
 
-        h3 {
-            margin: 40px 0;
+        ul { padding-left: 20px; }
+
+        &__p1 { margin-bottom: 0; }
+
+        &__signature {
+            margin-top: 20px;
         }
 
-        ul {
-            max-width: 600px;
-            margin: auto;
-            text-align: left;
+    }
+    &__block__body {
+        // max-width: 600px;
+        // margin: 40px auto;
+        margin-top: 10px;
+        background: $brand-color-purple;
+        color: #FFF;
+        @include clearfix();
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            padding: 30px;
+            margin: 0;
+        }
+    }
+    &__cta--selected,
+    &__cta {
+        text-transform: uppercase;
+        margin: 10px auto;
+        border: 2px solid #FFF;
+        width: 150px;
+        padding: 5px;
+        cursor: pointer;
+        color: #FFF;
+        &:active,
+        &:hover {
+            text-decoration: none;
+            background: #FFF;
+            color: $brand-color-purple;
         }
 
-        li {
-            margin-bottom: 10px;
-        }
-
-        &__body {
-            max-width: 600px;
-            margin: 40px auto;
-        }
-
+    }
+    &__cta--selected {
+        border-color: transparent;
     }
     &__table {
         // background: rgba(red, .2);
@@ -53,9 +87,21 @@
             .cq-premium__col2,
             .cq-premium__col3,
             .cq-premium__col4 {
-                border-radius: 10px 10px 0 0;
+
                 padding-top: 20px;
                 padding-bottom: 20px;
+
+                &__inner {
+                    width: 100%;
+                    position: relative;
+                }
+            }
+            .cq-premium__col2,
+            .cq-premium__col4 {
+                margin-top: 35px;
+            }
+            .cq-premium__col3 {
+                padding-top: 35px;
             }
         }
 
@@ -82,15 +128,15 @@
     }
 
     &__col1 {
-        width: 30%;
-        flex: 1 auto;
+        width: 180px;
         padding: 5px;
         display: flex;
-        justify-content: flex-start;
-        text-align: left;
-        align-items: center;
-        flex: 1 auto;
-        border-bottom: 1px solid #AAA;
+        justify-content: flex-end;
+        text-align: right;
+        align-items: stretch;
+        // flex-grow: 0;
+        // flex: 1 ;
+        margin-right: 10px;
     }
 
     &__col2 {
@@ -100,8 +146,7 @@
     &__col2,
     &__col3,
     &__col4 {
-        margin: 0 5px;
-        color: #333;
+        color: #FFF;
         background: rgba($brand-color-purple, .4);
         padding: 5px;
         width: 20%;
@@ -109,15 +154,30 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 4px 0 3px  rgba(#000, .1), -4px 0 3px  rgba(#000, .1);
+        text-align: center;
+
+
+    }
+    &__footer {
+        padding-bottom: 20px;
+        align-items: stretch;
+
+        div {
+            min-height: 120px;
+        }
+        // justify-content:
     }
     &__col2 {
-        background: #dadada;
+        background: $brand-color-purple-dark;
     }
     &__col3 {
-        background: #ffc499;
+        background: $brand-color-purple-light;
     }
     &__col4 {
-
+        background: $brand-color-purple-dark;
+    }
+    &__legend {
+        text-align: right;
+        font-size: 12px;
     }
 }
