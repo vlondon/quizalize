@@ -13,3 +13,4 @@
 ./src/interfaces/
 
 [options]
+module.name_mapper='.*\(.png\)' -> 'empty/object'

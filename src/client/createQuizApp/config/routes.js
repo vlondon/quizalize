@@ -62,15 +62,29 @@ var pagesArray: Array<Page> = [
 
     },
     {
-        name: 'discoveryPage',
+        name: 'discoveryPage2',
         path: '/discovery-education-free-premium-subscription',
         needsLogin: undefined,
         component: CQDiscoveryThankYou,
 
     },
     {
-        name: 'discoveryPage',
+        name: 'discoveryPage3',
+        path: '/discovery-education-free-unlimited-subscription',
+        needsLogin: undefined,
+        component: CQDiscoveryThankYou,
+
+    },
+    {
+        name: 'discoveryPage4',
         path: '/discovery-education-free-premium-subscription/perform-upgrade',
+        needsLogin: true,
+        component: CQDiscoveryPerformUpgrade,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-free-unlimited-subscription/perform-upgrade',
         needsLogin: true,
         component: CQDiscoveryPerformUpgrade,
 

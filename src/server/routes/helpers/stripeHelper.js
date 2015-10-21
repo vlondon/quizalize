@@ -68,7 +68,21 @@ export let processSubscription = function(transaction: Object, stripeToken: stri
 
 
     var addSubscription = function(){
-        let plan = 'quizalize_tier1';
+
+        let plan;
+        switch (transaction.meta.subscription) {
+            case 'monthly':
+                plan = 'quizalize_premium_m';
+                break;
+            case 'halfyear':
+                plan = 'quizalize_premium_h';
+                break;
+            case 'year':
+                plan = 'quizalize_premium_y';
+                break;
+
+        }
+
         return new Promise((resolve, reject)=>{
             logger.trace('CHARGING USER ', user.attributes.stripeId, 'with plan', plan);
             stripe.customers.createSubscription(user.attributes.stripeId, {plan}, function(err, charge) {
@@ -111,7 +125,11 @@ export let getSubscription = function(stripeCustomerId: string) : Promise {
                     accountTypeExpiration = subscription.current_period_end * 1000;
                     accountTypeUpdated = subscription.current_period_start * 1000;
                     logger.info('subscription.plan.id', subscription.plan.id);
-                    if (subscription.plan.id === 'quizalize_tier1'){
+                    if (
+                        subscription.plan.id === 'quizalize_premium_m' ||
+                        subscription.plan.id === 'quizalize_premium_y' ||
+                        subscription.plan.id === 'quizalize_premium_h'
+                    ){
                         accountType = 1;
                     }
                 }
