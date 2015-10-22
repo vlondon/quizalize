@@ -22,55 +22,28 @@ var CQPublishQuiz = React.createClass({
     },
 
     publishQuiz: function() {
-        let {quiz} = this.props;
 
-        var error = false;
-        
-        QuizActions.loadQuiz(quiz.uuid).then((quiz)=>{
-            if (quiz.payload.questions &&
-                quiz.payload.questions.length >= 3) {
-                quiz.payload.questions.forEach(function(q) {
-                    if (q.question.length ==0 || q.answer.length ==0) {
-                        error = true;
-                    }
-                });
-                if (!error) {
-                    // we check if the user has the details
-                    var user = MeStore.getState();
-                    if (user && user.name && user.name.length > 0) {
-                        if (quiz){
-                            router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
-                        }
-                    } else {
-                        swal({
-                            title: 'You have an incomplete profile',
-                            text: `To publish to the marketplace you must complete your profile.`,
-                            type: 'info',
-                            confirmButtonText: 'Enter details',
-                            showCancelButton: false
-                        }, function(isConfirm){
-                            if (isConfirm){
-                                router.setRoute(`/quiz/settings?redirect=${window.encodeURIComponent(`/quiz/published/${quiz.uuid}/publish`)}`);
-                            }
-                        });
-                    }
+        let {quiz} = this.props;
+        let user = MeStore.getState();
+
+        if (user && user.name && user.name.length > 0) {
+            if (quiz){
+                router.setRoute(`/quiz/published/${quiz.uuid}/publish`);
+            }
+        } else {
+            swal({
+                title: 'You have an incomplete profile',
+                text: `To publish to the marketplace you must complete your profile.`,
+                type: 'info',
+                confirmButtonText: 'Enter details',
+                showCancelButton: false
+            }, function(isConfirm){
+                if (isConfirm){
+                    router.setRoute(`/quiz/settings?redirect=${window.encodeURIComponent(`/quiz/published/${quiz.uuid}/publish`)}`);
                 }
-            }
-            else {
-                error = true;
-            }
-            if (error) {
-                swal({
-                    title: 'Whoops',
-                    text: `You need to have at least three questions before you can publish this quiz`,
-                    type: 'info',
-                    confirmButtonText: 'Edit Quiz',
-                    showCancelButton: false
-                }, function(){
-                    router.setRoute(`/quiz/create/${quiz.uuid}/`);
-                });
-            }
-        });
+            });
+        }
+
 
     },
 
