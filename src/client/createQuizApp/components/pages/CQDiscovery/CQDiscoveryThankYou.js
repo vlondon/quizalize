@@ -15,6 +15,7 @@ import CQDiscoveryQuizalize from './CQDiscoveryQuizalize';
 class CQDiscoveryThankYou extends React.Component {
 
     componentDidMount() {
+        console.log('a');
         let url = '/discovery-education-free-premium-subscription?redirect=' + window.encodeURIComponent('/discovery-education-free-premium-subscription/perform-upgrade');
         router.setRoute(url);
     }

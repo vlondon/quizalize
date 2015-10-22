@@ -84,6 +84,7 @@ var CQReview = React.createClass({
     },
 
     handleChange: function(property : string, event : Object) {
+        console.log('handleChange');
         var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta[property] = event.target.value;
 
@@ -91,6 +92,7 @@ var CQReview = React.createClass({
     },
 
     updateStars: function(num: number) {
+        console.log('updateStars', num);
         var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta.review = num;
         this.setState({
@@ -102,7 +104,8 @@ var CQReview = React.createClass({
     handleSaveReview: function(){
         this.setState({isSaving: true});
         QuizActions.saveReview(this.state.quiz)
-            .then(function() {
+            .then(function(quiz) {
+                console.log('we\'re saving review new quiz', quiz);
                 router.setRoute('/quiz/user');
             })
             .catch(function(){
@@ -113,6 +116,7 @@ var CQReview = React.createClass({
     render: function() {
 
             var star = (num) => {
+                console.log('Num', num, this.state.quiz.meta.reviews);
                 if (num > this.state.quiz.meta.review || this.state.quiz.meta.review === undefined) {
                     return (<span onClick={this.updateStars.bind(this, num)} className="fa fa-star-o cq-review__star"></span>);
                 } else {
