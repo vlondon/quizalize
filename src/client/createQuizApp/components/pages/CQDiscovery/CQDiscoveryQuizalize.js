@@ -7,7 +7,7 @@ class CQDiscoveryQuizalize extends React.Component {
                 <h1>Discover Quizalize</h1>
                 <h3>
                     If you haven’t discovered Quizalize yet,
-                    the benefits of Quizalize Premium come on top of all the
+                    the benefits of Quizalize Unlimited come on top of all the
                     great features of Quizalize Standard, such as:
                 </h3>
                 <h3 className="cq-discovery__quizalize__video">

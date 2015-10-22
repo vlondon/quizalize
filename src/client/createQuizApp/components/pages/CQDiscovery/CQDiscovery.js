@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { CQPageTemplate } from './../../../components';
+import { CQLink } from './../../../components';
 import CQDiscoveryFeatures from './CQDiscoveryFeatures';
 import CQDiscoveryQuizalize from './CQDiscoveryQuizalize';
 import CQDiscoveryHeader from './CQDiscoveryHeader';
+
 
 class CQDiscovery extends React.Component {
     render () : any {
@@ -24,7 +26,9 @@ class CQDiscovery extends React.Component {
                             Discovery Education is a leading provider of digital content to schools, empowering teachers and captivating students with interactive lessons, real-time assessment and virtual experiences.
                         </p>
                         <p className="cq-discovery__education__cta">
-                            See all Discovery Education’s Quizalize apps
+                            <CQLink href="/profile/discovery-educator-network">
+                                See all Discovery Education’s Quizalize apps
+                            </CQLink>
                         </p>
                     </div>
                 </div>
