@@ -32,6 +32,7 @@ import CQRegisterInner from './pages/CQRegister/CQRegisterInner';
 import CQRestorePassword from './pages/CQRestorePassword';
 import CQReview from './pages/CQReview';
 import CQSettings from './pages/CQSettings';
+import CQSettingsPage from './pages/CQSettings/CQSettingsPage';
 import CQSettingsSubscriptions from './pages/CQSettings/CQSettingsSubscriptions';
 import CQTransactions from './pages/CQTransactions';
 import CQWelcome from './pages/CQWelcome';
@@ -107,6 +108,7 @@ export {
     CQRestorePassword,
     CQReview,
     CQSettings,
+    CQSettingsPage,
     CQSettingsSubscriptions,
     CQTransactions,
     CQWelcome,
