@@ -21,7 +21,7 @@ import {
     CQPublishedAssign,
     CQPublishedShare,
     CQPublishedInfo,
-    CQSettings,
+    CQSettingsPage,
     CQApp,
     CQYourApps,
     CQPremium,
@@ -127,7 +127,7 @@ var pagesArray: Array<Page> = [
         name: 'settingsPage',
         path: '/quiz/settings',
         needsLogin: true,
-        component: CQSettings,
+        component: CQSettingsPage,
 
     },
     {

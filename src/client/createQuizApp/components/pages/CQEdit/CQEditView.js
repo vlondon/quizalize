@@ -143,6 +143,7 @@ export default class CQEditView extends React.Component {
 
             // Check if the questionIndex is in range
             if (questionIndex && questionIndex > quiz.payload.questions.length){
+                // console.warn('Trying to edit a question out of range');
                 router.setRoute(`/quiz/create/${quiz.uuid}`);
             }
         }
@@ -203,7 +204,7 @@ export default class CQEditView extends React.Component {
                 var quiz = Object.assign({}, this.state.quiz);
                 quiz.payload.questions = this.state.quiz.payload.questions;
                 quiz.payload.questions.splice(questionIndex, 1);
-
+                console.log('about to remove question', this.state.questionIndex, quiz.payload.questions.length);
                 this.setState({quiz}, ()=> {
                     QuizActions.newQuiz(quiz);
                     if (this.state.questionIndex && this.state.questionIndex >= quiz.payload.questions.length) {
@@ -217,6 +218,7 @@ export default class CQEditView extends React.Component {
     handleShare() {
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
 
+            console.warn('handleSharehandleSharehandleShare', this.state.quiz.payload.questions.length);
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
                 AnalyticsActions.sendIntercomEvent('share_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
                 router.setRoute(`/quiz/published/${this.state.quiz.uuid}/share`);

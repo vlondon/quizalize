@@ -83,6 +83,7 @@ var fillApps = (apps, quizzes, user)=>{
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
     // var text;
+    console.info('action', action);
     switch(action.actionType) {
 
         case UserConstants.USER_LOGIN_ERROR:

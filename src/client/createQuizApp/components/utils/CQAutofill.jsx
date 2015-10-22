@@ -216,7 +216,9 @@ export default class CQAutofill extends React.Component {
     }
 
     handleClick(topic:?Object){
+        console.trace('CQAutofill handleClick', topic);
         this.handleAssign(topic);
+
     }
 
     handleAssign(topic){
