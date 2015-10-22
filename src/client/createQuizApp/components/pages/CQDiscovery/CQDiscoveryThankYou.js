@@ -23,7 +23,7 @@ class CQDiscoveryThankYou extends React.Component {
     render () {
         let header = (
             <div>
-                Sign up or log in and Quizalize Premium <br/>is yours for a year, free.
+                Sign up or log in and Quizalize Unlimited <br/>is yours for a year, free.
             </div>
         );
         return (

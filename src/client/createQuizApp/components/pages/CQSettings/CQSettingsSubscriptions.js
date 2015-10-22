@@ -39,7 +39,7 @@ class CQSettingsSubscriptions extends React.Component {
                 </div>
                 <div className={selected(1,"cq-settings__subsoptions__premium")} onClick={this.handleMonthlySubscription}>
                     <div className="cq-settings__subsoptions__price">
-                        Premium
+                        Unlimited
 
                         <small>$7.49 Per month</small>
                     </div>

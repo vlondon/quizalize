@@ -15,7 +15,7 @@ let CQDiscoveryHeader = (props) => {
                 <img src={require('./../../../../assets/cq_discovery__logo.svg')} alt=""/>
             </div>
             <div className="cq-discovery__header__banner">
-                Get Quizalize Premium <br/>
+                Get Quizalize Unlimited <br/>
                 Free for 1 year
             </div>
 
