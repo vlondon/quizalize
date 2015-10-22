@@ -60,12 +60,12 @@ class CQPremium extends React.Component {
     }
     handleContact(){
         // TODO Francesco Write the message
-        window.Intercom('showNewMessage', 'I want to know more about Quizalize School Package');
+        window.Intercom('showNewMessage', 'I want to know more about the Quizalize School Package');
     }
 
     handleDowngrade(){
         // TODO Francesco Write the message
-        window.Intercom('showNewMessage', 'Donwgrade my account');
+        window.Intercom('showNewMessage', 'I would like to downgrade my account');
     }
 
     handleDone(){

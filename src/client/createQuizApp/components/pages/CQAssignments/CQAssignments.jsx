@@ -101,7 +101,7 @@ var CQAssignments = React.createClass({
         else {
             swal(
                 {
-                    title: 'You can view all your quizzes and track progress with the premium version',
+                    title: 'You can view all your quizzes and track progress with the Unlimited version',
                     text: `and a whole lot more, including
                         unlimited quizzes and
                         unlimited classes`,

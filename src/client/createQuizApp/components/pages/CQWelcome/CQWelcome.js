@@ -98,7 +98,7 @@ class CQWelcome extends React.Component {
         let quiz = this.state.isQuizOpen ? <CQWelcomeQuiz onDismiss={this.handleDismiss}/> : undefined;
         let welcomeMessage, subTitle;
         if (MeStore.isPremium()){
-            welcomeMessage = 'You have a Quizalize Premium Account';
+            welcomeMessage = 'You have a Quizalize Unlimited Account';
             subTitle = (<p className="cq-welcome__header__sub">Unlimited private quizzes, unlimited classes, and progress tracking</p>);
         } else {
             welcomeMessage = 'What are you teaching this week?';
