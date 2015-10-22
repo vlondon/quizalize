@@ -191,7 +191,6 @@ export default class CQPublic extends React.Component {
 
         var noContent;
         if (this.state.noContent) {
-            console.log('no content');
             noContent = <CQPublicNoResults keyword={this.state.search}/>;
             appGrid = quizList = undefined;
 

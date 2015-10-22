@@ -8,7 +8,6 @@ var getIntercom = function(args, obj){
         localIntercom(args, obj);
         if (args === 'shutdown') {
             localIntercom = function(){
-                console.log('intercom noop');
             };
         };
     }

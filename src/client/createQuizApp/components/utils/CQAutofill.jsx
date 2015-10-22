@@ -42,7 +42,7 @@ export default class CQAutofill extends React.Component {
         if (props.value === undefined || topic === undefined){
             topic = TopicStore.getTopicByName(props.identifier,  '');
         }
-        console.log('topic', topic);
+
         var indexSelected = -1;
         this.state = {
             topic,
@@ -72,7 +72,6 @@ export default class CQAutofill extends React.Component {
     componentWillReceiveProps(nextProps) {
         var topic = this.getTopic(nextProps);
         this.setState({topic});
-        console.log('new topic', topic);
     }
 
     handleFocus(){
@@ -217,14 +216,11 @@ export default class CQAutofill extends React.Component {
     }
 
     handleClick(topic:?Object){
-        console.trace('CQAutofill handleClick', topic);
         this.handleAssign(topic);
-
     }
 
     handleAssign(topic){
         this.setState({indexSelected: undefined});
-        console.log('topic', topic);
         if (topic){
             this.props.onChange(topic.uuid);
         }

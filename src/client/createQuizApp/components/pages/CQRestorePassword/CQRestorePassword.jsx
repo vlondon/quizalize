@@ -23,10 +23,8 @@ var CQRestorePassword = React.createClass({
 
         // expects data as an object with
         // email and password
-        console.log('form submitted with', data);
         UserActions.reset(this.props.routeParams.code, data.password)
             .then(function(){
-                console.log('yay');
                 swal({
                     title: 'Reset Password',
                     text: 'Your password has been saved. You\'ll be redirected in a few seconds.',
@@ -39,7 +37,6 @@ var CQRestorePassword = React.createClass({
                 }, 3000);
             })
             .catch(function(){
-                console.log('nay');
                 swal('Reset Password', 'We couldn\'t save your password.', 'error');
             });
         // swal('Reset Password', 'If you are registered, please check your email for instructions on how to reset your password', 'success');

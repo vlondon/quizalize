@@ -20,24 +20,6 @@ var CQAnalytics = React.createClass({
     componentDidMount: function() {
         AnalyticsStore.addChangeListener(this.onChange);
         MeStore.addChangeListener(this.onChange);
-        // var currentUser = UserStore.getUser();
-        // console.log('MeStore.isLoggedIn()', MeStore.isLoggedIn());
-        // if (MeStore.isLoggedIn()){
-        //     window.intercomSettings = {
-        //         name: (currentUser.name || currentUser.email),
-        //         email: (currentUser.email),
-        //         created_at: (currentUser.created / 1000),
-        //         app_id: intercomId
-        //     };
-        //
-        // }
-        // else {
-        //     window.intercomSettings = {
-        //         app_id: intercomId
-        //     };
-        // }
-        // window.Intercom('boot', window.intercomSettings);
-        // console.log('TRIGGERING INTERCOM', window.intercomSettings);
     },
 
     componentWillUnmount: function() {
@@ -47,23 +29,7 @@ var CQAnalytics = React.createClass({
 
     onChange: function(){
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
-        // if (MeStore.isLoggedIn()){
-        //     var currentUser = UserStore.getUser();
-        //     window.intercomSettings = {
-        //         name: (currentUser.name || currentUser.email),
-        //         email: (currentUser.email),
-        //         created_at: (currentUser.created / 1000),
-        //         app_id: intercomId
-        //     };
-        //
-        // }
-        // else {
-        //     window.intercomSettings = {
-        //         app_id: intercomId
-        //     };
-        // }
-        // console.log('Intercom updated', window.intercomSettings);
-        // window.Intercom('update', window.intercomSettings);
+
         this.setState({
             googleConversion: analyticsEnabled,
             twitterConversion: analyticsEnabled,

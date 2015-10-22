@@ -88,7 +88,6 @@ setTimeout(()=>{
         storeInit = false;
         storeInitPublic = false;
     });
-    console.log('wahhaha, MeStore', MeStore);
 });
 
 
@@ -150,7 +149,6 @@ class QuizStore extends Store {
     // this will return all user quizzes that are not bought
     getPersonalQuizzes(): Array<Quiz> {
         // var ordered = _quizzes.slice().filter( q => (q.meta.originalQuizId === undefined || q.meta.originalQuizId === null));
-        console.log('working with', _quizzes);
         //return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined && q.meta.published === 'published');
         return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined || q.meta.originalQuizId === null);
     }

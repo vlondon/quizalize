@@ -62,7 +62,6 @@ class CQEdit extends React.Component {
                     showCancelButton: true,
                 }, (isConfirm)=>{
                     if (isConfirm) {
-                        console.log('isConfirm', isConfirm);
                         router.setRoute('/quiz/premium', true);
                     } else {
                         router.goBack();

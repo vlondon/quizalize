@@ -3,7 +3,6 @@ import history from './history';
 
 var router = {
     setRoute(url: string, replaceState: boolean = false){
-        console.log('setting route', url, replaceState);
         if (replaceState){
             history.replaceState({}, url);
         } else {
@@ -17,7 +16,6 @@ var router = {
         return route;
     },
     goBack() {
-        console.log('history', history);
         history.goBack();
     }
 };

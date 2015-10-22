@@ -75,9 +75,7 @@ var CQViewAppGrid = React.createClass({
             };
             publishButton =  (app) =>{
                 if (app.meta.published === 'published') {
-                    console.log('its published, skip');
                 } else if (app.meta.published === 'pending') {
-                    console.log('its pending, skip');
                 }
                 else {
                     return (

@@ -81,7 +81,6 @@ export default class CQPublished extends React.Component {
         props = props || this.props;
 
         var quiz = props.routeParams.quizId ? QuizStore.getQuiz(props.routeParams.quizId) : undefined;
-        console.log('props.routeParams.quizId', quiz);
 
         return quiz;
     }

@@ -1,6 +1,5 @@
 /* @flow */
 import Store from './Store';
-import { MeStore } from './../stores';
 import App from './classes/App';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {AppConstants} from './../constants';
@@ -127,7 +126,6 @@ AppDispatcher.register(function(action) {
 
         case AppConstants.APP_LIST_LOADED:
             _apps = action.payload.map(app => new App(app));
-            console.log('_apps', _apps);
             appStoreInstance.emitChange();
             break;
 

@@ -83,7 +83,6 @@ var AppActions = {
                 if (appIcon){
                     this.appPicture(app.uuid, appIcon)
                         .then(function(response){
-                            console.log('we got image uploaded?', response);
                             return handleSave(response);
                         })
                         .then(resolve)
@@ -127,9 +126,7 @@ var AppActions = {
 
                     var sapps = apps.filter(app => {
                         var found = false;
-                        if (typeof app.meta.quizzes !== 'string'){
-                            console.warn('problem with the app', app);
-                        }
+
                         quizzes.forEach(quiz => {
                             if (typeof app.meta.quizzes === 'string' && app.meta.quizzes.indexOf(quiz.uuid) >= 0) {
                                 if (!found) found = true;
@@ -143,10 +140,6 @@ var AppActions = {
                     });
 
 
-                    // apps = apps.filter(function(app) {
-                    //     console.log("Going through app",app);
-                    //     return false;
-                    // });
                     searching = false;
                     AppDispatcher.dispatch({
                         actionType: AppConstants.APP_SEARCH_LOADED,

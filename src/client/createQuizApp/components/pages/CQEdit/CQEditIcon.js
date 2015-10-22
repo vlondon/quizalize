@@ -41,7 +41,6 @@ class CQEditIcon extends React.Component {
     handleQuizImageFile(quizImageFile : Object){
         this.setState({ quizImageFile });
         MediaActions.uploadPicture(quizImageFile, 'quiz').then((result)=>{
-            console.log('image uploaded???', result, this.refs.icon);
             this.refs.icon.resetLocalImage();
             this.props.onIcon(result);
         });

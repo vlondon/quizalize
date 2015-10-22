@@ -23,7 +23,6 @@ var CQRecoverPassword = React.createClass({
 
         // expects data as an object with
         // email and password
-        console.log('form submitted with', data);
         UserActions.recover(data.email);
         swal('Reset Password', 'If you are registered, please check your email for instructions on how to reset your password', 'success');
 

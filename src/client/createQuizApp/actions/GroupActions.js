@@ -2,7 +2,6 @@
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {GroupConstants} from './../constants';
 import {GroupApi} from './../actions/api';
-import {GroupStore} from './../stores';
 import {router} from './../config';
 
 var GroupActions = {
@@ -31,7 +30,6 @@ var GroupActions = {
     },
 
     createFirstAssignment: function(quizId : string){
-        // console.log('createFirstAssignment', quizId);
         // make sure we don't have any class created:
         router.setRoute(`/quiz/published/${quizId}/assign`, true);
         // var groups = GroupStore.getGroups();
@@ -39,12 +37,10 @@ var GroupActions = {
         //
         //     this.publishNewAssignment(quizId, 'Your first class')
         //         .then(classResponse => {
-        //             console.log('class', classResponse);
         //             router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
         //
         //         });
         // } else {
-        //     console.log('a class already exists');
         //
         // }
     },

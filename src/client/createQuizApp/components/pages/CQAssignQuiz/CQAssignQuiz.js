@@ -30,7 +30,6 @@ class CQAssignQuiz extends React.Component {
         var marketplaceQuizId = props.routeParams.quizId;
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
         var init = false;
-        console.log('QUIZ', quiz);
         this.state = { quiz, init };
         this.onChange = this.onChange.bind(this);
     }
@@ -48,7 +47,6 @@ class CQAssignQuiz extends React.Component {
     onChange(){
         var marketplaceQuizId = this.props.routeParams.quizId;
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
-        console.log('marketplaceQuizId', quiz, marketplaceQuizId);
         var groupsLoaded = GroupStore.isLoaded();
 
         var {init} = this.state;

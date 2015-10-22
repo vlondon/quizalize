@@ -78,7 +78,6 @@ export default class CQViewClassList extends React.Component {
         let isNew = groups.length === 0;
         let name = MeStore.state.name !== null ? MeStore.state.name : 'Quizalize teacher';
         let newClassName = isNew || (state && state.newClassName === '') ? `${name}'s class` : '';
-        console.log('classNameclassName', state.newClassName, state.newClassName === '', isNew);
 
         QuizActions.loadQuiz(quizId).then( (quiz) => {
             if (quiz.payload.questions.length === 0) {
@@ -125,7 +124,6 @@ export default class CQViewClassList extends React.Component {
                 });
             }
         });
-        console.log('groupsContent', groups, groupsContent);
         // group code
         var groupsUsed = groups
             .filter( g => {
@@ -142,7 +140,6 @@ export default class CQViewClassList extends React.Component {
 
         if (isNew && this.refs.newClassBox){
             setTimeout(()=>{
-                // console.log('refs', this, this.refs);
                 this.refs.newClassBox.setSelectionRange(0, this.refs.newClassBox.value.length);
             });
         }
@@ -177,7 +174,6 @@ export default class CQViewClassList extends React.Component {
         if (this.state.groupsUsed.length === 0) {
             this.state.groupsUsed[0] = this.state.groups[this.state.groups.length -1].code;
         }
-        console.log("Done", this.props.quizId, this.state.groupsUsed[0]);
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
@@ -187,7 +183,6 @@ export default class CQViewClassList extends React.Component {
     }
 
     handleClassName(ev){
-        console.log('handleClassName', ev.target.value);
         this.setState({
             newClassName: ev.target.value,
             canSaveNewClass: ev.target.value.length > 0,
@@ -230,7 +225,6 @@ export default class CQViewClassList extends React.Component {
     }
 
     handleCreateClass() {
-        console.log('handleCreateClass', MeStore.state.attributes.accountType);
         if (MeStore.state.attributes.accountType === 0) {
             //non premium
             this.setState({isPremium: false});
