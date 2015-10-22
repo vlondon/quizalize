@@ -41,6 +41,7 @@ class CQWelcome extends React.Component {
     }
 
     onChange(){
+        console.log('FUCK ME, this should update');
         this.setState({user: MeStore.state});
     }
 
@@ -117,8 +118,8 @@ class CQWelcome extends React.Component {
                         <div className="cq-welcome__star__content">
                             <b>We’re <br/>growing fast!</b>
                             <div>
-                                1000+ schools <br/>
-                                52 countries<br/>
+                                1800+ schools <br/>
+                                72 countries<br/>
                                 after just<br/>
                                 one month<br/>
                             </div>

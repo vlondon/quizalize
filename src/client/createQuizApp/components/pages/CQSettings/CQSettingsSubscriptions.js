@@ -17,12 +17,14 @@ class CQSettingsSubscriptions extends React.Component {
     }
 
     handleContact(){
+        console.log('handleContact');
         window.Intercom('showNewMessage');
     }
 
     render () : any {
         let selected = (id, className) => {
             if (this.props.user.attributes.accountType === id){
+                console.log('this.props.user.attributes.accountType === id', this.props.user.attributes.accountType, id);
                 return `${className} ${className}--selected`;
             }
             return className;

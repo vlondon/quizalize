@@ -49,6 +49,7 @@ var CQDashboardProfile = React.createClass({
         var profile, bannerStyles, school, profileUrl, returnToPrivate;
 
         if (this.props.user){
+            console.log('this.props.user.attributes', this.props.user.attributes);
             if (this.props.user.attributes.bannerUrl){
                 bannerStyles = {
                     backgroundImage: `url(${imageUrlParser(this.props.user.attributes.bannerUrl)})`,

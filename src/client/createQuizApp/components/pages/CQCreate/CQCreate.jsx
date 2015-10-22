@@ -79,7 +79,8 @@ var CQCreate = React.createClass({
 
         var fillAutoFill = function(array, prefix){
             array.forEach( el => {
-                
+                // console.log('fi<!--  -->lling', el);
+
                 var name = prefix ? `${prefix} > ${el.name}` : el.name;
                 newState.topicsAutofill.push({
                     name: name,
@@ -159,6 +160,7 @@ var CQCreate = React.createClass({
         }
 
         var canSave = this.state.title.length > 0;
+        console.log('topicid', topicId, topic, quiz);
         this.setState({quiz, canSave});
     },
 
@@ -172,6 +174,7 @@ var CQCreate = React.createClass({
                 More Settings
             </button>);
         }
+        console.warn('getTopicTree', TopicStore.getTopicTree());
         return (
             <CQPageTemplate className="cq-container cq-create">
                 <div className="cq-create__body">

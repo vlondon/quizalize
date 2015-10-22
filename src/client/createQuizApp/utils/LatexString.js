@@ -22,7 +22,7 @@ var detectLatex = function(string){
             var renderedString = katex.renderToString(s);
 
         } catch (err){
-            console.error('couldn`t convert string', s);
+            console.log('couldn`t convert string', s);
             return s;
         }
         return renderedString;
@@ -60,7 +60,7 @@ var detectLatex = function(string){
 
 
     var processResult = function(resultToProcess) {
-
+        
         var newResult = resultToProcess.map(function(r) {
             if (r.type === 'text') { return r.string; }
             if (r.type === 'latex') { return renderLatexString(r.string); }

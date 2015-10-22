@@ -67,6 +67,7 @@ var CQAssignments = React.createClass({
             }
             var quizFound;
         };
+        // console.log('checking', groupCode);
         if (this.state.groupsContent && this.state.quizzes){
 
             var quizIds = this.state.groupsContent.map(c => {
@@ -91,10 +92,12 @@ var CQAssignments = React.createClass({
     },
 
     handleUnpublish: function(quizId : string, groupCode : string ){
+        console.log('about to unpublish', quizId, groupCode);
         GroupActions.unpublishAssignment(quizId, groupCode);
     },
 
     handlePremium: function(assignment : Object, classN : Object){
+        console.log("BEING HANDLED");
         if(MeStore.state.attributes.accountType === 1) {
             router.setRoute(`/quiz/published/${assignment.uuid}/${classN.code}/info`);
         }

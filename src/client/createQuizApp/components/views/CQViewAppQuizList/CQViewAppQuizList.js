@@ -47,6 +47,7 @@ class CQViewAppQuizList extends React.Component {
         });
         if (apps.length >= 2){
             apps.sort((a, b)=>{
+                console.log('sorting, ', a, b);
 
                 // this puts "own quizzes" on top;
                 if (a.uuid === 'own') { return -1; }
