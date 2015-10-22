@@ -14,7 +14,7 @@ let CQOwnProfileCounter = ({amount} : {amount: number}): any => {
         <span>
             <i className="fa fa-info-circle"/>{' '}
             {copy} <br/>
-        <CQLink href="/quiz/premium">Upgrade to Premium to have unlimited private quizzes</CQLink>
+        <CQLink href="/quiz/premium">Upgrade to Unlimited to have unlimited private quizzes</CQLink>
         </span>
     );
 };

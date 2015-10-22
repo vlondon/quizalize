@@ -4,7 +4,7 @@ class CQDiscoveryFeatures extends React.Component {
     render () {
         return (
             <div className="cq-discovery__features">
-                <h1 className="cq-discovery__features__header">With Quizalize Premium, you can:</h1>
+                <h1 className="cq-discovery__features__header">With Quizalize Unlimited, you can:</h1>
                 <ul className="cq-discovery__features__list">
                     <li>
                         <div className="cq-discovery__features__list__icon">

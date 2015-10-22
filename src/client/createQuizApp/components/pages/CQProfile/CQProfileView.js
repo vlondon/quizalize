@@ -46,7 +46,7 @@ class CQProfileView extends React.Component {
     }
 
     handlePreview(quiz : Quiz){
-        sessionStorage.setItem('mode', 'teacher');
+        localStorage.setItem('mode', 'teacher');
         window.open(`/app#/play/public/${quiz.uuid}`);
         // window.location.href = `/app#/play/public/${quiz.uuid}`;
 

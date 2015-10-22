@@ -66,17 +66,17 @@ var fillApps = (apps, quizzes, user)=>{
     });
     console.info('Filling apps', apps, quizzesWithoutApps);
 
-    // var appPlaceholder = AppStore.getNewApp({
-    //     uuid: 'own',
-    //     meta: {
-    //         quizzes: quizzesWithoutApps,
-    //         colour: '#FFF',
-    //         name: `${user.name} Quizzes`,
-    //         description: ''
-    //     }
-    // });
-    //
-    // apps.push(appPlaceholder);
+    var appPlaceholder = AppStore.getNewApp({
+        uuid: 'own',
+        meta: {
+            quizzes: quizzesWithoutApps,
+            colour: '#FFF',
+            name: `${user.name} Quizzes`,
+            description: ''
+        }
+    });
+
+    apps.push(appPlaceholder);
     return apps;
 };
 
