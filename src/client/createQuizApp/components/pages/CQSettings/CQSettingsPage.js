@@ -7,7 +7,7 @@ import {
 } from './../../../components';
 
 class CQSettingsPage extends React.Component {
-    constructor(props){
+    constructor(props: Object){
         super(props);
     }
     render () {
