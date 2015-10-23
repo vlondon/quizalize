@@ -49,10 +49,12 @@ var performQuery = function(mongoQuery, contenType, callback) {
 exports.getQuizzes = function(req, res){
 
     var searchString = req.body.search || '';
+    var searches = [].concat.apply([], searchString.split(' ').map(marketplaceSearch.quiz));
 
-    logger.info('getQuizzes');
-    var quizzes = marketplaceSearch.quiz(searchString);
-    res.send(quizzes);
+    // logger.info('getQuizzes', searches);
+
+    // var quizzes = marketplaceSearch.quiz(searchString);
+    res.send(searches);
 
 };
 

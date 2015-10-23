@@ -1,3 +1,4 @@
+/* @flow */
 import zzish from 'zzishsdk';
 import logger from './../../logger';
 import Immutable, {Map} from 'immutable';
@@ -79,7 +80,7 @@ let loadContent = function(){
 loadContent();
 
 let search = {
-    quiz: function(searchString){
+    quiz: function(searchString: string) : Array<Object> {
         logger.info('Searching for', searchString);
 
         let topicsFound = topics.filter(value => value.get('fullName').toLowerCase().indexOf(searchString.toLowerCase()) !== -1 );
@@ -119,14 +120,14 @@ let search = {
         });
 
 
-        logger.info('got the following topics', topicsFound.count());
-        logger.info('quizzesFoundWithTheSubtopic', quizzesFoundWithTheSubtopic);
-        logger.info('quizzesFoundWithName', quizzesFoundWithName.count());
+        // logger.info('got the following topics', topicsFound.count());
+        // logger.info('quizzesFoundWithTheSubtopic', quizzesFoundWithTheSubtopic);
+        // logger.info('quizzesFoundWithName', quizzesFoundWithName.count());
         logger.info('result', result.length);
         return result;
         // let topicResults =
     },
-    app: (searchString) => {
+    app: (searchString : string) : Array<Object> =>  {
         let quizzes = search.quiz(searchString);
         logger.trace('quizzes', quizzes.length);
         let appsWithQuiz = [];
