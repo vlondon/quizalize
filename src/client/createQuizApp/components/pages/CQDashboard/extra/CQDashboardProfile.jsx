@@ -1,55 +1,77 @@
+/* @flow */
 import React from 'react';
-import {UserStore, UserIdStore} from 'createQuizApp/stores';
-import CQViewProfilePicture from 'createQuizApp/components/views/CQViewProfilePicture';
-import CQLink from 'createQuizApp/components/utils/CQLink';
+import {
+    UserStore,
+    MeStore,
+} from './../../../../stores';
+import CQViewProfilePicture from './../../../../components/views/CQViewProfilePicture';
+import CQLink from './../../../../components/utils/CQLink';
 
 import imageUrlParser from './../../../../utils/imageUrlParser';
 
+import type {UserType} from './../../../../../../types';
 
-var CQDashboardProfile = React.createClass({
+type Props = {
+    user: UserType;
+}
+type State = {
+    user: ?UserType;
+    isOwn: boolean;
+}
 
-    propTypes: {
-        user: React.PropTypes.object,
-        own: React.PropTypes.bool
-    },
+class CQDashboardProfile extends React.Component {
 
-    getInitialState: function() {
-        return this.getState();
-    },
+    props: Props;
+    state: State;
 
-    componentDidMount: function() {
+    constructor(props: Props) {
+        super(props);
+        this.state = this.getState();
+
+        this.onChange = this.onChange.bind(this);
+        this.getState = this.getState.bind(this);
+
+    }
+
+    componentDidMount() {
         UserStore.addChangeListener(this.onChange);
-    },
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         UserStore.removeChangeListener(this.onChange);
-    },
-    componentWillReceiveProps: function(nextProps) {
+    }
+
+    componentWillReceiveProps(nextProps : Props) {
         this.setState(this.getState(nextProps));
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    getState: function(props){
+    getState(props? : Props) : State {
 
         props = props || this.props;
-
+        let isOwn = false;
+        let user;
         if (props && props.user){
-            var user = props.user;
-            return { user };
+            user = props.user;
+
         }
 
-        return {};
+        if (user && user.uuid === MeStore.state.uuid){
+            isOwn = true;
+        }
 
-    },
+        return { user, isOwn };
 
-    render: function() {
+    }
+
+    render() : any {
         var profile, bannerStyles, school, profileUrl, returnToPrivate;
 
         if (this.props.user){
-            console.log('this.props.user.attributes', this.props.user.attributes);
+
             if (this.props.user.attributes.bannerUrl){
                 bannerStyles = {
                     backgroundImage: `url(${imageUrlParser(this.props.user.attributes.bannerUrl)})`,
@@ -75,29 +97,44 @@ var CQDashboardProfile = React.createClass({
             } else {
                 school = this.props.user.attributes.school;
             }
+            let editProfile;
             var className = this.props.user.attributes.bannerUrl ? 'banner' : 'no-banner';
             var name = this.props.user.name && this.props.user.name.length !== 0 ? this.props.user.name : 'Quizalize user';
             var publicUrl = this.props.user.attributes.profileUrl ? (
-                                                        <div  className="cq-dashboard__profile__info__entry">
-                                                            <small>Public URL</small>
-                                                            <CQLink
-                                                                href={`/profile/${this.props.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.props.user.attributes.profileUrl}
-                                                            </CQLink>
-                                                        </div>) : (
-                                                        <div  className="cq-dashboard__profile__info__entry">
-                                                            <small>Public URL</small>
-                                                            <CQLink
-                                                                href={`/quiz/user/${this.props.user.uuid}`}>https://www.quizalize.com/quiz/user/{this.props.user.uuid}
-                                                            </CQLink>
-                                                        </div>);
-            if (UserIdStore.getUserId() === this.props.user.uuid && !this.props.own) {
-                returnToPrivate = (<div>
+                <div className="cq-dashboard__profile__info__entry">
+                    <small>Public URL</small>
+                    <CQLink
+                        href={`/profile/${this.props.user.attributes.profileUrl}`}>https://www.quizalize.com/profile/{this.props.user.attributes.profileUrl}
+                    </CQLink>
+                </div>
+            ) : (
+                <div className="cq-dashboard__profile__info__entry">
+                    <small>Public URL</small>
+                    <CQLink
+                        href={`/quiz/user/${this.props.user.uuid}`}>https://www.quizalize.com/quiz/user/{this.props.user.uuid}
+                    </CQLink>
+                </div>
+            );
+
+            if (this.state.isOwn) {
+                editProfile = (<CQLink href="/quiz/settings">Edit Profile</CQLink>);
+
+            } else {
+                publicUrl = undefined;
+            }
+            // WTF warning: This is used to check if the profile is the public
+            // or the private mode
+            if (this.props.own !== true){
+                returnToPrivate = (<div style={{padding: '10px 40px'}}>
                     <CQLink
                         href="/quiz/user">
                             Return to your Private Profile
                     </CQLink>
                 </div>);
             }
+
+
+
             profile = (
                 <div className='cq-dashboard__profile__wrapper'>
                     <div className={`cq-dashboard__bannerpicture ${className}`} style={bannerStyles}>
@@ -116,7 +153,7 @@ var CQDashboardProfile = React.createClass({
 
                             <div className="cq-dashboard__profile__info__entry">
                                 <h3>{name}</h3>
-                                <CQLink href="/quiz/settings">Edit Profile</CQLink>
+                                {editProfile}
                             </div>
 
                             <div className="cq-dashboard__profile__info__entry">
@@ -150,6 +187,11 @@ var CQDashboardProfile = React.createClass({
         );
     }
 
-});
+}
+
+CQDashboardProfile.propTypes = {
+    user: React.PropTypes.object,
+    own: React.PropTypes.bool
+};
 
 module.exports = CQDashboardProfile;
