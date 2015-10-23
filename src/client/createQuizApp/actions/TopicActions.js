@@ -1,5 +1,5 @@
-import AppDispatcher from 'createQuizApp/dispatcher/CQDispatcher';
-import {TopicConstants} from 'createQuizApp/constants';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {TopicConstants} from './../constants';
 import {QuizApi} from './../actions/api';
 
 

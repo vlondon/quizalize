@@ -1,7 +1,7 @@
 var React = require('react');
-var CQLink = require('createQuizApp/components/utils/CQLink');
-var UserActions = require('createQuizApp/actions/UserActions');
-var MeStore = require('createQuizApp/stores/MeStore');
+var CQLink = require('./../../../components/utils/CQLink');
+var UserActions = require('./../../../actions/UserActions');
+var MeStore = require('./../../../stores/MeStore');
 
 var _timeout;
 var CQHeaderDropdown = React.createClass({

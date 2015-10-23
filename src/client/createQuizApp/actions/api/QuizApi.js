@@ -1,6 +1,11 @@
 /* @flow */
 var request = require('superagent');
-var noCache = require('superagent-no-cache');
+var noCache;
+if (typeof window !== 'undefined'){
+    noCache = require('superagent-no-cache');
+} else {
+    noCache = function(){};
+}
 
 import type {Quiz, QuizComplete} from './../../../../types';
 import type {Topic} from './../../stores/TopicStore';

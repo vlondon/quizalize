@@ -1,10 +1,10 @@
 var React = require('react');
-var router = require('createQuizApp/config/router');
+var router = require('./../../../config/router');
 
-var CQLink = require('createQuizApp/components/utils/CQLink');
-var CQAnalytics = require('createQuizApp/components/utils/CQAnalytics');
+var CQLink = require('./../../../components/utils/CQLink');
+var CQAnalytics = require('./../../../components/utils/CQAnalytics');
+var MeStore = require('./../../../stores/MeStore');
 var CQViewHeaderDropdown = require('./CQViewHeaderDropdown');
-var MeStore = require('createQuizApp/stores/MeStore');
 
 
 var sections = {

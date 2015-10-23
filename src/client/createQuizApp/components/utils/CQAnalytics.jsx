@@ -1,7 +1,7 @@
 var React = require('react');
 
-var AnalyticsStore = require('createQuizApp/stores/AnalyticsStore');
-var MeStore = require('createQuizApp/stores/MeStore');
+var AnalyticsStore = require('./../../stores/AnalyticsStore');
+var MeStore = require('./../../stores/MeStore');
 
 
 var CQAnalytics = React.createClass({

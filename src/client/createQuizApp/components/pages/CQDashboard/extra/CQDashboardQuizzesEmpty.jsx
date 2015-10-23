@@ -1,8 +1,9 @@
+/* @flow */
 var React = require('react');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQLink = require('./../../../../components/utils/CQLink');
 var CQDashboardQuizzesEmpty = React.createClass({
 
-    render: function() {
+    render: function() : any {
         return (
             <div className="cq-dashboard__empty">
                 <h3>Oh no!</h3>

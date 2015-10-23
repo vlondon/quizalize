@@ -1,6 +1,7 @@
 /* @flow */
-
-var _userId:string = window._state.uuid;
+if (typeof window !== 'undefined'){
+    var _userId:string = window._state.uuid;
+}
 
 class UserIdStore {
     setUserId(userId:string) : string{

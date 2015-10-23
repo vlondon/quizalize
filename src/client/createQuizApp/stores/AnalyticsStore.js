@@ -1,5 +1,5 @@
-var AppDispatcher = require('createQuizApp/dispatcher/CQDispatcher');
-var AnalyticsConstants = require('createQuizApp/constants/AnalyticsConstants');
+var AppDispatcher = require('./../dispatcher/CQDispatcher');
+var AnalyticsConstants = require('./../constants/AnalyticsConstants');
 
 var EventEmitter = require('events').EventEmitter;
 

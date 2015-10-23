@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {TransactionStore} from 'createQuizApp/stores';
+import {TransactionStore} from './../../../stores';
 
 var prices = TransactionStore.getPrices();
 

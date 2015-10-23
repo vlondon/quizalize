@@ -1,14 +1,14 @@
 var React = require('react');
 var moment = require('moment');
 
-var QuizActions = require('createQuizApp/actions/QuizActions');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var GroupStore = require('createQuizApp/stores/GroupStore');
+var QuizActions = require('./../../../../actions/QuizActions');
+var QuizStore = require('./../../../../stores/QuizStore');
+var GroupStore = require('./../../../../stores/GroupStore');
 
 
 
 var CQDashboardQuizzesEmpty = require('./CQDashboardQuizzesEmpty');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+var CQLink = require('./../../../../components/utils/CQLink');
 
 
 

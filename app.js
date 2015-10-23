@@ -27,6 +27,7 @@ var intercom = require('./src/server/routes/intercom');
 
 var graphql = require('./src/server/routes/graphql').graphql;
 
+var reactRender = require('./src/server/routes/react');
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -106,13 +107,13 @@ app.get('/quiz/profile/:uuid', quiz.getProfileById);
 app.get('/quiz/public', function(req, res){
     res.redirect(301, '/quiz/marketplace');
 });
-app.get('/quiz/*', checkForIE, quiz.create);
+app.get('/quiz/*', checkForIE, reactRender.reactRender);
 app.get('/profile/*', checkForIE, quiz.create);
 app.get('/discovery-education-promotion', checkForIE, quiz.create);
 app.get('/discovery-education-free-premium-subscription', checkForIE, quiz.create);
 app.get('/discovery-education-free-unlimited-subscription', checkForIE, quiz.create);
 // app.get('/discovery-education-free-premium-subscription/perform-upgrade', checkForIE, quiz.create);
-app.get('/quiz', checkForIE, quiz.create);
+app.get('/quiz', checkForIE, reactRender.reactRender);
 
 
 app.get('/users/:id/quizzes/:quizId/results', quiz.getQuizResults);

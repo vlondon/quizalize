@@ -1,5 +1,14 @@
 /* @flow */
-import history from './history';
+var history;
+if (typeof window !== 'undefined'){
+    history = require('./history');
+} else {
+    history = {
+        replaceState: function(){},
+        pushState: function(){},
+        goBack: function(){}
+    };
+};
 
 var router = {
     setRoute(url: string, replaceState: boolean = false){

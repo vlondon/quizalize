@@ -9,8 +9,9 @@ import type {UserType} from './../../../types/UserType';
 
 
 var intercom = require('./../utils/intercom');
-
-var intercomId = window.intercomId;
+if (typeof window !== 'undefined'){
+    var intercomId = window.intercomId;
+}
 var intercomAdded = false;
 
 
@@ -162,9 +163,12 @@ class Me extends Store {
         return this.state.attributes.accountType !== 0;
     }
 }
-
-
-var meStore = new Me(window._state);
+var meStore;
+if (typeof window !== 'undefined'){
+    meStore = new Me(window._state);
+} else {
+    meStore = new Me();
+}
 export default meStore;
 
 // Register callback to handle all updates

@@ -1,6 +1,11 @@
 /* @flow */
 import request from 'superagent';
-import noCache from 'superagent-no-cache';
+var noCache;
+if (typeof window !== 'undefined'){
+    noCache = require('superagent-no-cache');
+} else {
+    noCache = function(){};
+}
 
 import type {AppType} from './../../stores/AppStore';
 import { MeStore } from './../../stores';
