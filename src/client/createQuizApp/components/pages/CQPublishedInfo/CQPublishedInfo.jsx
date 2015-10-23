@@ -1,19 +1,23 @@
-var React = require('react');
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+import { CQPageTemplate } from './../../../components';
 
-
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var QuizStore  = require('createQuizApp/stores/QuizStore');
-var QuizActions = require('createQuizApp/actions/QuizActions');
+import {
+    GroupActions,
+    QuizActions
+} from './../../../actions';
+import {
+    GroupStore,
+    QuizStore
+} from './../../../stores';
 
 
 var CQPublishedInfo = React.createClass({
 
     propTypes: {
         classCode: React.PropTypes.string,
-        quizId: React.PropTypes.string
+        quizId: React.PropTypes.string,
+        routeParams: React.PropTypes.object
     },
 
     getInitialState: function() {
@@ -47,12 +51,17 @@ var CQPublishedInfo = React.createClass({
         var currentQuiz = quizzes.filter(q => q.uuid === this.props.routeParams.quizId)[0];
 
         // var classLink = currentClass ? updateClassLink(currentClass.link) : undefined;
-        var classLink = currentClass ? currentClass.link : undefined;
-        var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
-        //var fullLink = currentClass.link;
-        var fullLiveLink = classLink + 'one/';
-        console.log("LIVE", fullLink);
-        var fullLinkBoard = currentQuiz ? classLink + 'board/' + currentQuiz.uuid : classLink + "board/";
+        if (currentClass) {
+
+            var classLink = currentClass ? currentClass.link : undefined;
+            var fullLink = currentQuiz ? classLink + '/' + currentQuiz.uuid : classLink;
+            //var fullLink = currentClass.link;
+            var fullLiveLink = classLink + 'one/';
+
+            var fullLinkBoard = currentQuiz ? classLink + 'board/' + currentQuiz.uuid : classLink + "board/";
+        }
+
+
 
         // self.shareLink = "http://quizalize.com/quiz#/share/"+result.shareLink;
 
@@ -84,7 +93,7 @@ var CQPublishedInfo = React.createClass({
             var currentQuiz = this.state.currentQuiz;
             QuizActions.shareQuiz(currentQuiz.uuid, currentQuiz.name, this.state.shareEmails);
         }
-        console.log('sharing?', this.state.shareEmails);
+
         swal('Sharing Error', 'You must specify at least one email to share with');
     },
 
@@ -101,14 +110,12 @@ var CQPublishedInfo = React.createClass({
     },
 
     render: function() {
-        var className = this.state.currentClass ? this.state.currentClass.name : 'Teacher';
-        var classCode = this.state.currentClass ? this.state.currentClass.code : '';
-        var helpStatus = this.state.showHelp ? 'open' : 'closed';
+
+        var iframe = this.state.fullLinkBoard ?  <iframe src={this.state.fullLinkBoard} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/> : undefined;
 
         return (
             <CQPageTemplate className="cq-container cq-publishedinfo">
-                <iframe src={this.state.fullLinkBoard} frameborder="0" className="cq-publishedinfo__frame" frameBorder="0"/>
-
+                {iframe}
             </CQPageTemplate>
         );
     }

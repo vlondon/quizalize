@@ -1,12 +1,12 @@
 /* @flow */
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var UserConstants       = require('./../constants/UserConstants');
-var UserApi             = require('./../actions/api/UserApi');
-var urlParams           = require('./../utils/urlParams');
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import { UserConstants } from './../constants';
+import { UserApi } from './../actions/api';
+import { urlParams } from './../utils';
 
-import AnalyticsActions from './../actions/AnalyticsActions';
-import router from './../config/router';
-import intercom from './../utils/intercom';
+import { AnalyticsActions } from './../actions';
+import { router } from './../config';
+import { intercom } from './../utils';
 
 type loginObject = {
     email: string;
@@ -31,6 +31,10 @@ var UserActions = {
         return new Promise((resolve, reject)=>{
 
             UserApi.getOwn().then( user => {
+                let { created } = user;
+                console.info('UserActions.getOwn: yay! Created now!', created, Date.now() + 10000, created > Date.now() + 10000);
+
+
                 AppDispatcher.dispatch({
                     actionType: UserConstants.USER_OWN_LOADED,
                     payload: user
@@ -40,13 +44,16 @@ var UserActions = {
         });
     },
 
+    discoveryPromotion: function(){
+        return UserApi.discoveryPromotion();
+    },
+
     update: function(user: Object) : Promise{
 
         return new Promise((resolve, reject)=>{
 
             UserApi.post(user)
                 .then(()=>{
-                    console.log('about to update user', user);
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_DETAILS_UPDATED,
                         payload: user
@@ -62,9 +69,7 @@ var UserActions = {
 
 
     login: function(data: loginObject): Promise {
-        console.log('data', data);
         // data.email = data.email.trim();
-
         return new Promise((resolve, reject)=>{
 
             UserApi.login(data)
@@ -111,13 +116,12 @@ var UserActions = {
                     }
                 })
                 .catch(function(error){
-                    reject(error);
-                    localStorage.removeItem("token");
                     location.href = "/quiz/login";
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_LOGIN_ERROR,
                         payload: error
                     });
+                    reject(error);
                 });
 
             AppDispatcher.dispatch({
@@ -147,7 +151,6 @@ var UserActions = {
         var token = localStorage.getItem('token');
 
         if (token !== null) {
-            console.log('zzish logout');
             window.Zzish.logout(token, function(){
                 UserApi.logout().then(logoutEnd);
             });
@@ -161,21 +164,16 @@ var UserActions = {
     register: function(data: Object) : Promise {
 
         return new Promise((resolve, reject)=>{
-            console.log('registering', data);
+
             UserApi.register(data)
                 .then((user)=>{
-                    console.log("AnalyticsActions", AnalyticsActions);
-                    console.log("AnalyticsActions.triggerPixels", AnalyticsActions.triggerPixels);
+                    AnalyticsActions.triggerPixels();
                     this.getOwn();
-                    AnalyticsActions.triggerPixels().then(function(){
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_REGISTERED,
-                            payload: user
-                        });
-                        resolve(user);
-                        // if (handleRedirect() === false){
-                        // }
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_REGISTERED,
+                        payload: user
                     });
+                    resolve(user);
                 })
                 .catch(function(error){
                     reject(error);
@@ -233,7 +231,6 @@ var UserActions = {
                         actionType: UserConstants.USER_PUBLIC_LOADED,
                         payload: user
                     });
-                    console.log('will load', userId, user);
                     resolve(user);
                 })
                 .catch(reject);
@@ -249,7 +246,6 @@ var UserActions = {
                         actionType: UserConstants.USER_PUBLIC_LOADED_URL,
                         payload: user
                     });
-                    console.log('response', user);
                     resolve(user);
 
                 })

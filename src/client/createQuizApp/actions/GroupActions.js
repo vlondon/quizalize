@@ -1,9 +1,8 @@
 /* @flow */
-var AppDispatcher       = require('./../dispatcher/CQDispatcher');
-var GroupConstants      = require('./../constants/GroupConstants');
-var GroupApi            = require('./../actions/api/GroupApi');
-import GroupStore from './../stores/GroupStore';
-import router from './../config/router';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {GroupConstants} from './../constants';
+import {GroupApi} from './../actions/api';
+import {router} from './../config';
 
 var GroupActions = {
 
@@ -31,22 +30,19 @@ var GroupActions = {
     },
 
     createFirstAssignment: function(quizId : string){
-        console.log('createFirstAssignment', quizId);
         // make sure we don't have any class created:
-        var groups = GroupStore.getGroups();
-        if (groups.length === 0){
-
-            this.publishNewAssignment(quizId, 'Your first class')
-                .then(classResponse => {
-                    console.log('class', classResponse);
-                    router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
-
-                });
-        } else {
-            console.log('a class already exists');
-            router.setRoute(`/quiz/published/${quizId}/assign`, true);
-
-        }
+        router.setRoute(`/quiz/published/${quizId}/assign`, true);
+        // var groups = GroupStore.getGroups();
+        // if (groups.length === 0){
+        //
+        //     this.publishNewAssignment(quizId, 'Your first class')
+        //         .then(classResponse => {
+        //             router.setRoute(`/quiz/published/${quizId}/${classResponse.groupCode}/info`, true);
+        //
+        //         });
+        // } else {
+        //
+        // }
     },
 
     unpublishAssignment: function(quizId: string, groupCode : string){

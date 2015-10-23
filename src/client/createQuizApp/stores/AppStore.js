@@ -1,12 +1,11 @@
 /* @flow */
 import Store from './Store';
-import MeStore from './MeStore';
+import { MeStore } from './../stores';
 import App from './classes/App';
-var AppDispatcher = require('./../dispatcher/CQDispatcher');
-var AppConstants = require('./../constants/AppConstants');
-var AppActions = require('./../actions/AppActions');
-
-
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {AppConstants} from './../constants';
+import {AppActions} from './../actions';
+import {Application} from './classes/Application';
 type AppMeta = {
     code?: string;
     colour: string;
@@ -53,40 +52,7 @@ var _appInfo = {};
 var storeInit = false;
 var storeInitPublic = false;
 
-class Application {
 
-    uuid: ?string;
-    meta: AppMeta;
-    payload: AppPayload;
-
-    constructor(appInfo: ?AppComplete){
-        var user:Object = MeStore.state;
-        var profileId = user.uuid || undefined;
-        var emptyApp = {
-            uuid: undefined,
-            meta:  {
-                colour: '#a204c3',
-                created: Date.now(),
-                description: '',
-                iconURL: undefined,
-                name: '',
-                price: 0,
-                profileId,
-                quizzes: [],
-                updated: Date.now()
-            },
-            payload: {
-                categories: [],
-                quizzes: []
-            }
-        };
-
-        Object.assign(this, emptyApp, appInfo);
-
-
-    }
-
-}
 
 var fixAppTypes = function(app: ?App){
     if (app) {

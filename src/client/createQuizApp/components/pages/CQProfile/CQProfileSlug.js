@@ -2,7 +2,7 @@
 import React from 'react';
 import CQProfileView from './CQProfileView';
 
-import UserStore from './../../../stores/UserStore';
+import { UserStore } from './../../../stores';
 
 type Props = {
     routeParams: {
@@ -44,7 +44,6 @@ class CQProfileSlug extends React.Component {
         var profile = UserStore.getPublicUserByUrl(this.props.routeParams.profileUrl);
         var apps = profile ? profile.apps : [];
         var quizzes = profile ? profile.quizzes : [];
-        console.log('setting state', profile, apps, quizzes);
         return { profile, apps, quizzes };
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import CQLink from './../../utils/CQLink';
+import { CQLink } from './../../../components';
 
 var image = require('assets/qz-mkt-header-cta-bggraphic.png');
 

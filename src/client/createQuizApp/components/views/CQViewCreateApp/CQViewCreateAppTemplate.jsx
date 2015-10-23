@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
 var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
@@ -29,7 +30,7 @@ var CQViewCreateAppTemplate = React.createClass({
     },
 
     handleScroll: function(){
-        var dom = React.findDOMNode(this.refs.cqApptemplate);
+        var dom = ReactDOM.findDOMNode(this.refs.cqApptemplate);
         var positionTop = dom.getBoundingClientRect().top;
         if (positionTop < 0){
             this.setState({

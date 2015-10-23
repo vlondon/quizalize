@@ -1,21 +1,26 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import { router } from './../../../config';
 
-import AppStore from './../../../stores/AppStore';
-import TopicStore from './../../../stores/TopicStore';
-import CQViewQuizPrice from './../../../components/utils/CQViewQuizPrice';
-import CQLinkToUser from './../../../components/utils/CQLinkToUser';
-var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails');
+import {
+    AppStore,
+    TopicStore,
+    MeStore,
+    TransactionStore
+} from './../../../stores';
 
-import priceFormat from './../../../utils/priceFormat';
-var TransactionActions = require('./../../../actions/TransactionActions');
-import TransactionStore from './../../../stores/TransactionStore';
+import {
+    CQViewQuizPrice,
+    CQLinkToUser,
+    CQViewQuizDetails,
+    CQPageTemplate,
+    CQQuizIcon,
+    CQViewQuizList,
+} from './../../../components';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
-var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
-import MeStore from './../../../stores/MeStore';
+import { priceFormat } from './../../../utils';
+import { TransactionActions } from './../../../actions';
+
 
 import type {Quiz} from './../../../stores/QuizStore';
 import type {AppType} from './../../../stores/AppStore';

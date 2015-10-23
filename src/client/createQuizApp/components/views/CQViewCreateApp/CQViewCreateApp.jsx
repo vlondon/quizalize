@@ -5,6 +5,7 @@ import AppActions from './../../../actions/AppActions';
 import QuizStore from './../../../stores/QuizStore';
 import AppStore from './../../../stores/AppStore';
 import type {AppComplete} from './../../../stores/AppStore';
+import type {Quiz} from './../../../../../types';
 import TopicStore from './../../../stores/TopicStore';
 import CQViewAppColourPicker from './../../../components/views/CQViewAppColourPicker';
 
@@ -21,7 +22,7 @@ type Props = {
 }
 type State = {
     app: AppComplete;
-    quizzes: Array<Object>;
+    quizzes: Array<Quiz>;
     selectedQuizzes: Array<string>;
     prices?: Array<number>;
     canSave?: boolean;
@@ -153,7 +154,7 @@ export default class CQViewCreateApp extends React.Component {
         if (this.state.prices){
             prices = this.state.prices.map(price=> {
                 return (
-                    <option value={price}>{priceFormat(price, '$', 'us')}</option>
+                    <option key={price} value={price}>{priceFormat(price, '$', 'us')}</option>
                 );
             });
         }

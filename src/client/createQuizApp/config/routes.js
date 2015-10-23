@@ -1,32 +1,36 @@
 /* @flow */
 
 // var settings        = require('utils/settings');
-var CQWelcome               = require('./../components/pages/CQWelcome');
-var CQMarketplace           = require('./../components/pages/CQMarketplace');
-var CQProfile               = require('./../components/pages/CQProfile');
-var CQProfileSlug           = require('./../components/pages/CQProfile/CQProfileSlug');
-var CQOwnProfile            = require('./../components/pages/CQProfile/CQOwnProfile');
-var CQNotFound              = require('./../components/pages/CQNotFound');
-var CQLogin                 = require('./../components/pages/CQLogin');
-var CQRegister              = require('./../components/pages/CQRegister');
-var CQRecoverPassword       = require('./../components/pages/CQRecoverPassword');
-var CQRestorePassword       = require('./../components/pages/CQRestorePassword');
-var CQRedirect              = require('./../components/pages/CQRedirect');
-var CQCreate                = require('./../components/pages/CQCreate');
-var CQReview                = require('./../components/pages/CQReview');
-var CQEdit                  = require('./../components/pages/CQEdit');
-var CQAssignments           = require('./../components/pages/CQAssignments');
-var CQPublished             = require('./../components/pages/CQPublished');
-var CQPublishedPublished    = require('./../components/pages/CQPublished/CQPublishedPublished');
-var CQPublishedAssign       = require('./../components/pages/CQPublished/CQPublishedAssign');
-var CQPublishedShare        = require('./../components/pages/CQPublished/CQPublishedShare');
-var CQPublishedInfo         = require('./../components/pages/CQPublishedInfo');
-var CQSettings              = require('./../components/pages/CQSettings');
-var CQApp                   = require('./../components/pages/CQApp');
-var CQYourApps              = require('./../components/pages/CQYourApps');
-var CQPremium               = require('./../components/pages/CQPremium');
-var CQAssignQuiz            = require('./../components/pages/CQAssignQuiz');
-var CQTransactions          = require('./../components/pages/CQTransactions');
+import {
+    CQWelcome,
+    CQMarketplace,
+    CQProfile,
+    CQProfileSlug,
+    CQOwnProfile,
+    CQNotFound,
+    CQLogin,
+    CQRegister,
+    CQRecoverPassword,
+    CQRestorePassword,
+    CQRedirect,
+    CQReview,
+    CQEdit,
+    CQAssignments,
+    CQPublished,
+    CQPublishedPublished,
+    CQPublishedAssign,
+    CQPublishedShare,
+    CQPublishedInfo,
+    CQSettingsPage,
+    CQApp,
+    CQYourApps,
+    CQPremium,
+    CQAssignQuiz,
+    CQTransactions,
+    CQDiscovery,
+    CQDiscoveryPerformUpgrade,
+    CQDiscoveryThankYou,
+} from './../components';
 
 export type Page = {
     name: string;
@@ -48,6 +52,41 @@ var pagesArray: Array<Page> = [
         path: '/quiz/transaction',
         needsLogin: undefined,
         component: CQTransactions,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-promotion',
+        needsLogin: undefined,
+        component: CQDiscovery,
+
+    },
+    {
+        name: 'discoveryPage2',
+        path: '/discovery-education-free-premium-subscription',
+        needsLogin: undefined,
+        component: CQDiscoveryThankYou,
+
+    },
+    {
+        name: 'discoveryPage3',
+        path: '/discovery-education-free-unlimited-subscription',
+        needsLogin: undefined,
+        component: CQDiscoveryThankYou,
+
+    },
+    {
+        name: 'discoveryPage4',
+        path: '/discovery-education-free-premium-subscription/perform-upgrade',
+        needsLogin: true,
+        component: CQDiscoveryPerformUpgrade,
+
+    },
+    {
+        name: 'discoveryPage',
+        path: '/discovery-education-free-unlimited-subscription/perform-upgrade',
+        needsLogin: true,
+        component: CQDiscoveryPerformUpgrade,
 
     },
     {
@@ -88,7 +127,7 @@ var pagesArray: Array<Page> = [
         name: 'settingsPage',
         path: '/quiz/settings',
         needsLogin: true,
-        component: CQSettings,
+        component: CQSettingsPage,
 
     },
     {
@@ -197,14 +236,6 @@ var pagesArray: Array<Page> = [
         path: '/quiz/create',
         needsLogin: true,
         component: CQEdit,
-
-    },
-
-    {
-        name: 'editQuiz',
-        path: '/quiz/edit/:quizId',
-        needsLogin: true,
-        component: CQCreate,
 
     },
 

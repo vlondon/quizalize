@@ -1,47 +1,90 @@
-var React = require('react');
-var router = require('createQuizApp/config/router');
+import React from 'react';
+import router from './../../../config/router';
 
-var GroupStore  = require('createQuizApp/stores/GroupStore');
-var GroupActions = require('createQuizApp/actions/GroupActions');
-var QuizActions = require('createQuizApp/actions/QuizActions');
-import AnalyticsActions from './../../../actions/AnalyticsActions';
+import {
+    GroupStore,
+    MeStore
+}  from './../../../stores';
+
+import {
+    GroupActions,
+    QuizActions
+} from './../../../actions';
+
+import {
+    CQLink
+} from './../../../components';
 
 
-var CQViewClassList = React.createClass({
+import { AnalyticsActions } from './../../../actions';
 
-    propTypes: {
-        quizId: React.PropTypes.string.isRequired
-    },
+type Props = {
+    quizId: string;
+};
 
-    getInitialState: function() {
+type State = {
+    newClassName: string;
+    canSaveNewClass: boolean;
+    groups: Array<Object>;
+    groupsUsed: Array<Object>;
+};
+
+export default class CQViewClassList extends React.Component {
+
+    props: Props;
+    state: State;
+
+    constructor(props: Props) {
+        super(props);
         var initialState = this.getState();
         initialState.newClassName = '';
         initialState.canSaveNewClass = false;
         initialState.groupsUsed = [];
-        return initialState;
-    },
-    componentDidMount: function() {
+        initialState.user = MeStore.state;
+
+        this.state = initialState;
+
+        this.onChange = this.onChange.bind(this);
+        this.getState = this.getState.bind(this);
+        this._showGroupsList = this._showGroupsList.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.handleDone = this.handleDone.bind(this);
+        this.handleClassName = this.handleClassName.bind(this);
+        this.handleNewClass = this.handleNewClass.bind(this);
+        this.handleCreateClass = this.handleCreateClass.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleShowPricing = this.handleShowPricing.bind(this);
+    }
+
+    componentDidMount() {
         GroupStore.addChangeListener(this.onChange);
-    },
 
-    componentWillUnmount: function() {
+    }
+
+    componentWillUnmount() {
         GroupStore.removeChangeListener(this.onChange);
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    getState: function(){
+    getState(){
+        let state = this.state || {};
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
         var quizId = this.props.quizId;
+
+        let isNew = groups.length === 0;
+        let name = MeStore.state.name !== null ? MeStore.state.name : 'Quizalize teacher';
+        let newClassName = isNew || (state && state.newClassName === '') ? `${name}'s class` : '';
+
         QuizActions.loadQuiz(quizId).then( (quiz) => {
             if (quiz.payload.questions.length === 0) {
                 swal({
                     title: "Error",
                     text: "You need at least one question in order to be able to play this quiz"
-                },function() {
+                }, function() {
                     router.setRoute(`/quiz/create/${quiz.uuid}`);
                 });
             }
@@ -57,6 +100,7 @@ var CQViewClassList = React.createClass({
                         inputPlaceholder: "e.g. End of Unit Quiz"
                     },
                 function(inputValue) {
+
                     if (inputValue === false) {
                         swal({
                                 title: "Error",
@@ -72,15 +116,14 @@ var CQViewClassList = React.createClass({
                     }
                     else {
 
-                            quiz.meta.name = inputValue;
-                            QuizActions.newQuiz(quiz).then( ()=> {
-                                swal("Thanks!", "You can now use this quiz in your class");
-                            });
-                        }
-                    });
+                        quiz.meta.name = inputValue;
+                        QuizActions.newQuiz(quiz).then( ()=> {
+                            swal("Thanks!", "You can now use this quiz in your class");
+                        });
+                    }
+                });
             }
         });
-        console.log('groupsContent', groups, groupsContent);
         // group code
         var groupsUsed = groups
             .filter( g => {
@@ -89,10 +132,21 @@ var CQViewClassList = React.createClass({
             })
             .map(g => g.code);
 
-        return { groups, groupsUsed };
-    },
+        if (groupsUsed.length === 0 && isNew === false) {
+            groupsUsed = [groups[0].code];
+        }
 
-    _showGroupsList: function(){
+        let canSaveNewClass = newClassName.length > 0;
+
+        if (isNew && this.refs.newClassBox){
+            setTimeout(()=>{
+                this.refs.newClassBox.setSelectionRange(0, this.refs.newClassBox.value.length);
+            });
+        }
+        return { groups, groupsUsed, newClassName, canSaveNewClass, isNew };
+    }
+
+    _showGroupsList(){
 
         if (!this.state.groups) {
             return [{
@@ -107,52 +161,36 @@ var CQViewClassList = React.createClass({
 
         return groupList;
 
-    },
+    }
 
-    handleClick: function(classCode, ev){
+    handleClick(classCode){
         var groupsUsed = [classCode];
         var newClassName = '';
         var canSaveNewClass = false;
-
         this.setState({ groupsUsed, newClassName, canSaveNewClass });
-    },
+    }
 
-
-    // handleClick: function(classCode, ev){
-    //     // console.log("Here?",classCode,ev);
-    //     // var isAssigning = ev.target.checked;
-    //     // var groupsUsed = this.state.groupsUsed;
-    //     // if (isAssigning){
-    //     //     GroupActions.publishAssignment(this.props.quizId, classCode);
-    //     //     groupsUsed.push(classCode);
-    //     // } else {
-    //     //     GroupActions.unpublishAssignment(this.props.quizId, classCode);
-    //     //     groupsUsed.splice(groupsUsed.indexOf(classCode), 1);
-    //     // }
-    //     // this.setState({groupsUsed});
-
-    //     // console.log('classCode', classCode, ev.target.checked);
-    // },
-
-    handleDone: function() {
+    handleDone() {
+        if (this.state.groupsUsed.length === 0) {
+            this.state.groupsUsed[0] = this.state.groups[this.state.groups.length -1].code;
+        }
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
                 AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode});
                 router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
             });
-    },
+    }
 
-    handleClassName: function(ev){
-        console.log('handleClassName', ev.target.value);
+    handleClassName(ev){
         this.setState({
             newClassName: ev.target.value,
             canSaveNewClass: ev.target.value.length > 0,
             groupsUsed: []
         });
-    },
+    }
 
-    handleNewClass: function(ev){
+    handleNewClass(ev){
         ev.preventDefault();
 
         var className = this.state.newClassName;
@@ -169,15 +207,51 @@ var CQViewClassList = React.createClass({
                 canSaveNewClass: false
             });
         }
-    },
+    }
 
-    render: function() {
-        var newTitle = "Create a new class";
-        var existingClasses = (() => {
-            if (this._showGroupsList().length > 0) {
-                newTitle = "...or create a new class";
-                return (<div>
-                    <h4>Your current classes:</h4>
+    handleCancel() {
+        this.setState({isNew: false});
+    }
+
+    handleViewInfo(){
+        AnalyticsActions.sendEvent('assign_class', 'action', 'watch_info');
+        AnalyticsActions.sendIntercomEvent('assign_class_action', {watch_info: true});
+    }
+
+    handleClose(){
+        AnalyticsActions.sendEvent('assign_class', 'action', 'go_back_clicked');
+        AnalyticsActions.sendIntercomEvent('assign_class_action', {go_back_clicked: true});
+        router.goBack();
+    }
+
+    handleCreateClass() {
+        if (MeStore.state.attributes.accountType === 0) {
+            //non premium
+            this.setState({isPremium: false});
+        }
+        else {
+            //this.setState({isNew: true});
+            this.setState({
+                isPremium: true,
+                isNew: true
+            });
+        }
+    }
+
+    handleShowPricing() {
+        router.setRoute('/quiz/premium');
+    }
+
+    render() {
+        var newTitle = 'Type in the name of your class';
+        var existingClasses, newClass, signUpFoPremium;
+        if (this._showGroupsList().length > 0 && !this.state.isNew && !this.state.isPremium) {
+            // newTitle = "...or create a new class";
+            existingClasses = (
+                <div>
+                    <h3>
+                        Set this as a class game (or homework) for
+                    </h3>
                     <ul className="list-unstyled">
                         {this._showGroupsList().map( (classN) => {
                             return (
@@ -185,7 +259,7 @@ var CQViewClassList = React.createClass({
                                     <input type="radio"
                                         name="classSelection"
                                         id={classN.value}
-                                        checked={this.state.groupsUsed.indexOf(classN.value) !== -1}
+                                        checked={!this.state.groupsUsed || this.state.groupsUsed.length === 0 ? true : this.state.groupsUsed[0] === classN.value}
                                         onChange={this.handleClick.bind(this, classN.value)}
                                         />
                                     <label htmlFor={classN.value}>
@@ -194,47 +268,105 @@ var CQViewClassList = React.createClass({
                                 </li>
                             );
                         })}
+                        <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            onClick={this.handleDone}
+                            id='continue'>
+                            <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
+                            Continue
+                        </button>
+                        <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            onClick={this.handleCreateClass}
+                            id='continue'>
+                            Use with another class
+                        </button>
                     </ul>
-                    <button className="btn btn-primary cq-viewclass__done"
-                        disabled={this.state.groupsUsed.length === 0}
-                        onClick={this.handleDone}>
-                        Done - Use this class
-                    </button>
-                </div>);
-            }
-        });
+                    <div className="cq-viewclass__extra">
+                        <p>
+                            <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
+                                See how to play and what you'll need…
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        if (this.state.isNew) {
+            newClass = (
+                <div>
+                    <h3>
+                        Set this as a class game (or homework) for
+                    </h3>
+                    <p>Type the name of your class</p>
+                    <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
+                        <input
+                            id='newClassBox'
+                            type="text"
+                            ref='newClassBox'
+                            className=""
+                            value={this.state.newClassName}
+                            onChange={this.handleClassName}
+                            placeholder="New class name"/>
+                        <button className={this.state.canSaveNewClass ? "cq-viewclass__save--enabled" : "cq-viewclass__save--disabled"}
+                            id='createNewClass'
+                            type="submit"
+                            disabled={!this.state.canSaveNewClass}>
+                            Continue
+                        </button>
+                    </form>
+                    <div>
+                        or <CQLink href="#" onClick={this.handleCancel}>cancel</CQLink>
+                    </div>
+                    <div className="cq-viewclass__extra">
+                        <p>
+                            <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
+                                See how to play and what you'll need…
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        if (this.state.isPremium === false) {
+            signUpFoPremium = (
+                <div>
+                    <h4>You can add more classes with the premium version and a whole lot more, including…</h4>
+                    <ul>
+                        <li>unlimited quizzes</li>
+                        <li>unlimited classes</li>
+                        <li>view all your quizzes and track progress</li>
+                    </ul>
+                    <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
+                        <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
+                            onClick={this.handleShowPricing}
+                            id='continue'>
+                            <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
+                            Plans and pricing
+                        </button>
+                    </form>
+                </div>
+            );
+        }
+
 
 
         return (
             <div className='cq-viewclass'>
-                <h3>
-                    <span className="cq-viewclass__icon">
-                        <i className="fa fa-users"></i>
-                    </span>Set as a class game (or homework)…
-                </h3>
+                <div className="cq-viewclass__close" onClick={this.handleClose}>
+                    <div className="fa fa-times"></div>
+                </div>
                 <div className="cq-viewclass__list">
-                    {existingClasses()}
-                    <h4>{newTitle}</h4>
-                    <form className="form-inline cq-viewclass__new" onSubmit={this.handleNewClass}>
-                        <input
-                            id='newClassBox'
-                            type="text"
-                            className="form-control"
-                            value={this.state.newClassName}
-                            onChange={this.handleClassName}
-                            placeholder="new class name"/>
-                        <button className={this.state.canSaveNewClass ? "btn btn-primary" : "btn btn-default"}
-                            id='createNewClass'
-                            type="submit"
-                            disabled={!this.state.canSaveNewClass}>
-                            Create and use in class
-                        </button>
-                    </form>
+                    {existingClasses}
+                    {newClass}
+                    {signUpFoPremium}
                 </div>
             </div>
         );
     }
 
-});
+}
 
-module.exports = CQViewClassList;
+CQViewClassList.propTypes = {
+    quizId: React.PropTypes.string.isRequired
+};

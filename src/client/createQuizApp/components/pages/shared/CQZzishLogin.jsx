@@ -13,39 +13,8 @@ var Zzish = window.Zzish;
 
 var login = function (options) {
     var type = "redirect"; //can be a popup instead
-
-    //represents a user (that may be a zzish login)
-    var userId = localStorage.getItem("userId");
-    if (userId === null) {
-        //assume no token
-        localStorage.removeItem("token");
-        Zzish.login(type, options);
-    }
-    else {
-        //just go to the logged in url
-        location.href = url + '/quiz';
-    }
+    Zzish.login(type, options);
 };
-
-var logout = function(postfix) {
-    token = localStorage.getItem("token");
-    $("#LoginButton").attr("href", "/quiz#/login");
-    if (token !== null) {
-        Zzish.logout(token, function() {
-            localStorage.clear();
-            if (postfix !== undefined) {
-                location.href = postfix;
-            }
-        });
-    }
-    else {
-        localStorage.clear();
-        if (postfix !== undefined) {
-            location.href = postfix;
-        }
-    }
-};
-
 
 class CQZzishLogin extends React.Component {
 
@@ -55,7 +24,6 @@ class CQZzishLogin extends React.Component {
         let params = urlParams();
         if (params.token){
             if (params.cancel) {
-                localStorage.removeItem("token");
                 location.href = '/quiz/login';
             }
             else {

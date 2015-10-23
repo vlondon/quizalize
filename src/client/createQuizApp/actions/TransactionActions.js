@@ -1,20 +1,25 @@
-    /* @flow */
-var AppDispatcher           = require('./../dispatcher/CQDispatcher');
-var router                  = require('./../config/router');
-
-var TransactionApi          = require('./../actions/api/TransactionApi');
-var TransactionConstants    = require('./../constants/TransactionConstants');
-var QuizActions             = require('./../actions/QuizActions');
-
-var stripeSDK               = require('./../config/stripeSDK');
-var TransactionStore        = require('./../stores/TransactionStore');
-
-import UserActions from './../actions/UserActions';
-import AnalyticsActions from './../actions/AnalyticsActions';
+/* @flow */
+import AppDispatcher  from './../dispatcher/CQDispatcher';
+import {
+    router,
+    stripeSDK
+} from './../config';
 
 
-import MeStore from './../stores/MeStore';
-import priceFormat from './../utils/priceFormat';
+import { TransactionApi } from './../actions/api';
+import { TransactionConstants } from './../constants';
+import {
+    QuizActions,
+    UserActions,
+    AnalyticsActions
+} from './../actions';
+
+import {
+    TransactionStore,
+    MeStore
+} from './../stores';
+
+import {priceFormat} from './../utils';
 
 import type {Quiz} from './../stores/QuizStore';
 import type {AppType} from './../stores/AppStore';
@@ -49,7 +54,6 @@ var TransactionActions = {
             var put = function(){
                 TransactionApi.put(transaction)
                     .then(function(){
-                        console.log('transaction saved saved');
                         AppDispatcher.dispatch({
                             actionType: TransactionConstants.TRANSACTION_NEW,
                             payload: transaction
@@ -64,18 +68,13 @@ var TransactionActions = {
                     .catch(reject);
             };
 
-            console.log('saving new transaction', transaction);
-
             if (transaction.meta.price > 0 || transaction.meta.subscription) {
                 swal.close();
                 var userEmail = MeStore.state.email;
-                console.log('creating stripe checkout', MeStore.state);
                 var localPrice = TransactionStore.getPriceInCurrency(transaction.meta.price, 'us');
-                console.log('localPrice', transaction, localPrice);
                 stripeSDK.stripeCheckout(localPrice, userEmail)
                     .then(function(stripeToken){
                         transaction._token = stripeToken;
-                        console.log('we got transaction', transaction);
                         resolve(false);
                         put();
                     });
@@ -91,7 +90,6 @@ var TransactionActions = {
     getSharedQuiz: function(token : string){
         // magic to convert quizCode to quizId
         // var quiz = {};
-        console.log('getSharedQuizgetSharedQuiz');
         TransactionApi.decrypt(token)
             .then((info)=>{
                 var newTransaction : Transaction = {
@@ -199,7 +197,6 @@ var TransactionActions = {
                             price: price
                         }
                     };
-                    console.log('new transaction', newTransaction);
                     swal({
                         title: 'Working…',
                         text: `We're processing your order`,
@@ -214,6 +211,22 @@ var TransactionActions = {
     },
 
     buyMonthlySubscription: function() : Promise{
+        let user = MeStore.state;
+
+        let newTransaction : Transaction = {
+            meta: {
+                type: 'subscription',
+                profileId: user.profileId,
+                created: Date.now(),
+                price: 0,
+                subscription: 'monthly'
+            }
+        };
+        return this.saveNewTransaction(newTransaction);
+        // stripeSDK.stripeCheckout(localPrice, userEmail)
+    },
+
+    buyHalfYearSubscription: function() : Promise {
         console.log('about to get subscription');
         let user = MeStore.state;
 
@@ -223,11 +236,26 @@ var TransactionActions = {
                 profileId: user.profileId,
                 created: Date.now(),
                 price: 0,
-                subscription: 'montly'
+                subscription: 'halfyear'
             }
         };
         return this.saveNewTransaction(newTransaction);
         // stripeSDK.stripeCheckout(localPrice, userEmail)
+    },
+
+    buyYearSubscription: function() : Promise {
+        let user = MeStore.state;
+
+        let newTransaction : Transaction = {
+            meta: {
+                type: 'subscription',
+                profileId: user.profileId,
+                created: Date.now(),
+                price: 0,
+                subscription: 'year'
+            }
+        };
+        return this.saveNewTransaction(newTransaction);
     }
 };
 

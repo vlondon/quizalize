@@ -1,17 +1,29 @@
 /* @flow */
-var React = require('react');
+import React, { PropTypes } from 'react';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQLoginForm = require('./../../../components/pages/shared/CQLoginForm');
-var CQLink = require('./../../../components/utils/CQLink');
-var CQSettings = require('./../../../components/pages/CQSettings');
-var CQZzishLogin = require('./../../../components/pages/shared/CQZzishLogin');
+import {
+    CQLoginForm,
+    CQLink,
+    CQSettings,
+    CQZzishLogin
+} from './../../../components';
 
-var UserActions = require('./../../../actions/UserActions');
+import { UserActions } from './../../../actions';
+import { urlParams } from './../../../utils';
 
-import {urlParams} from './../../../utils';
+var CQRegisterInner = React.createClass({
 
-var CQRegister = React.createClass({
+    propTypes: {
+        showZzish: PropTypes.bool,
+        header: PropTypes.any
+    },
+
+    getDefaultProps: function(): Object {
+        return {
+            showZzish: true,
+            header: 'Quizalize Registration'
+        };
+    },
 
     getInitialState: function() {
 
@@ -54,22 +66,26 @@ var CQRegister = React.createClass({
     },
     render: function() {
 
-        var moreInfo;
-        if (this.state.isRedirect){
-            moreInfo = (<p style={{'text-align': 'center'}}>
+        var moreInfo, zzishLogin;
+        if (this.state.isRedirect && this.props.header === 'Quizalize Registration'){
+            moreInfo = (
+                <p style={{'textAlign': 'center'}}>
                 Before we can continue you'll need to create a new Quizalize account.
                 <br/>
                 <br/>
             </p>);
         }
+        if (this.props.showZzish){
+            zzishLogin = (<CQZzishLogin/>);
+        }
         if (this.state.isRegister){
 
             return (
-                <CQPageTemplate className="cq-login">
+                <div>
 
                     <div className="cq-login__inner">
                         <h2 className="cq-login__header" id="title">
-                            Quizalize Registration
+                            {this.props.header}
                         </h2>
 
                         {moreInfo}
@@ -85,9 +101,9 @@ var CQRegister = React.createClass({
                         </CQLoginForm>
                     </div>
 
-                    <CQZzishLogin/>
+                    {zzishLogin}
 
-                </CQPageTemplate>
+                </div>
             );
         } else {
             return <CQSettings isRedirect={true} isRegister={true}/>;
@@ -96,4 +112,4 @@ var CQRegister = React.createClass({
 
 });
 
-module.exports = CQRegister;
+export default CQRegisterInner;

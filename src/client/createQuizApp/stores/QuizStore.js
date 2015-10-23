@@ -1,15 +1,22 @@
 /* @flow */
+// import Store from './Store';
+import uuid from 'node-uuid';
 import Store from './Store';
-import MeStore from './MeStore';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {
+    MeStore
+} from './../stores';
 
-import uuid            from 'node-uuid';
 
-import AppDispatcher   from './../dispatcher/CQDispatcher';
-import QuizConstants   from './../constants/QuizConstants';
-import UserConstants from './../constants/UserConstants';
-import UserActions from './../actions/UserActions';
-import QuizActions     from './../actions/QuizActions';
-import TopicStore from './../stores/TopicStore';
+import {
+    QuizConstants,
+    UserConstants
+} from './../constants';
+
+import {
+    UserActions,
+    QuizActions
+} from './../actions';
 
 
 type QuizCategory = {
@@ -59,24 +66,30 @@ export type QuizComplete = {
 }
 
 export type Quiz = {
+    _category?: QuizCategory;
     uuid: string;
     meta: QuizMeta;
-    _category?: QuizCategory;
 }
 
-var _quizzes: Array<Quiz> = [];
-var _publicQuizzes;
-var _fullQuizzes = {};
-var _fullPublicQuizzes = {};
-var storeInit = false;
-var storeInitPublic = false;
+let _quizzes: Array<Quiz> = [];
+let _publicQuizzes;
+let _fullQuizzes = {};
+let _fullPublicQuizzes = {};
+let storeInit = false;
+let storeInitPublic = false;
+let storeLoaded = false;
+let storePublicLoaded = false;
 
 // Add user listener
-MeStore.addChangeListener(function(){
-    storeInit = false;
-    storeInitPublic = false;
-
+// need to be debounced since MeStore is undefined at the moment this line is
+// executed
+setTimeout(()=>{
+    MeStore.addChangeListener(function(){
+        storeInit = false;
+        storeInitPublic = false;
+    });
 });
+
 
 var QuizObject = function() : QuizComplete {
     var quiz : QuizComplete = {
@@ -110,7 +123,7 @@ var QuestionObject = function(quiz){
         answer: '',
         latexEnabled: false,
         imageEnabled: false,
-        duration: 60,
+        duration: 30,
         uuid: uuid.v4()
     };
 
@@ -118,8 +131,8 @@ var QuestionObject = function(quiz){
         var lastQuestion = quiz.payload.questions[quiz.payload.questions.length - 1];
         question.latexEnabled = lastQuestion.latexEnabled || false;
         question.imageEnabled = lastQuestion.imageEnabled || false;
+        question.duration = lastQuestion.duration || 30;
         question.topicId = lastQuestion.topicId;
-        console.log('question', question, lastQuestion);
     }
 
     return question;
@@ -136,9 +149,12 @@ class QuizStore extends Store {
     // this will return all user quizzes that are not bought
     getPersonalQuizzes(): Array<Quiz> {
         // var ordered = _quizzes.slice().filter( q => (q.meta.originalQuizId === undefined || q.meta.originalQuizId === null));
-        console.log('working with', _quizzes);
         //return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined && q.meta.published === 'published');
         return _quizzes.slice().filter( q => q.meta.originalQuizId === undefined || q.meta.originalQuizId === null);
+    }
+
+    getPrivateQuizzes(): Array<Quiz> {
+        return _quizzes.slice().filter(q=> q.meta.published === null && (q.meta.originalQuizId === null || q.meta.originalQuizId === undefined));
     }
 
     getQuizMeta(quizId): Quiz {
@@ -149,13 +165,12 @@ class QuizStore extends Store {
 
     getQuiz(quizId?): QuizComplete {
         var fullQuiz;
-
         if (quizId){
             fullQuiz = _fullQuizzes[quizId];
             if (fullQuiz === undefined){
                 QuizActions.loadQuiz(quizId)
                     .catch(()=>{
-                        console.log('new quiz');
+
                         fullQuiz = new QuizObject();
                         if (quizId){
                             fullQuiz.uuid = quizId;
@@ -166,10 +181,14 @@ class QuizStore extends Store {
                         this.emitChange();
                     });
                 //create empty quiz?
+            } else {
+                return fullQuiz;
             }
+
         } else {
             fullQuiz = new QuizObject();
             _fullQuizzes[fullQuiz.uuid] = fullQuiz;
+
         }
         return fullQuiz;
     }
@@ -194,6 +213,7 @@ class QuizStore extends Store {
         var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
         // adding new properties to the object
         question.duration = question.duration || 60;
+        console.info('QuizStore getQuestion', question);
         return question;
     }
 
@@ -224,6 +244,14 @@ class QuizStore extends Store {
         return storeInit;
     }
 
+    isLoaded() {
+        return storePublicLoaded;
+    }
+
+    isPublicLoaded (){
+        return storeLoaded;
+    }
+
     /**
      * is Quizzes Init
      */
@@ -243,6 +271,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             // AppDispatcher.waitFor([
             //     TopicStore.token
             // ]);
+            storeLoaded = true;
             _quizzes = action.payload.quizzes;
 
             _quizzes.sort((a, b)=> a.meta.updated > b.meta.updated ? 1 : -1 );
@@ -250,9 +279,8 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_LOADED:
-            AppDispatcher.waitFor([
-                TopicStore.token
-            ]);
+        case QuizConstants.QUIZ_CHANGED:
+
             var quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
             quizStoreInstance.emitChange();
@@ -266,6 +294,7 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZZES_PUBLIC_LOADED:
+            storePublicLoaded = true;
             _publicQuizzes = action.payload;
             _publicQuizzes.forEach(quiz => quiz.meta.price = quiz.meta.price || 0);
             quizStoreInstance.emitChange();
@@ -294,7 +323,6 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             if (quizFromArray){
                 _quizzes[_quizzes.indexOf(quizFromArray)] = quizToBeUpdated;
             }
-
 
             quizStoreInstance.emitChange();
             break;

@@ -1,11 +1,14 @@
 /* @flow */
 import React from 'react';
 
-import CQQuizIcon from './../../../components/utils/CQQuizIcon';
-import CQImageUploader from './../../../components/utils/CQImageUploader';
+import {
+    CQQuizIcon,
+    CQImageUploader
+} from './../../../components';
 
-import MediaActions from './../../../actions/MediaActions';
-import type {QuizComplete} from './../../../stores/QuizStore';
+
+import { MediaActions } from './../../../actions';
+import type {QuizComplete} from './../../../../../types';
 
 type Props = {
     quiz: QuizComplete;
@@ -38,7 +41,6 @@ class CQEditIcon extends React.Component {
     handleQuizImageFile(quizImageFile : Object){
         this.setState({ quizImageFile });
         MediaActions.uploadPicture(quizImageFile, 'quiz').then((result)=>{
-            console.log('image uploaded???', result, this.refs.icon);
             this.refs.icon.resetLocalImage();
             this.props.onIcon(result);
         });

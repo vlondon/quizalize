@@ -1,25 +1,28 @@
 /* @flow */
-import type { Quiz, Question } from './../../../stores/QuizStore';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from  'react';
+import ReactDOM from  'react-dom';
 
-var CQLatexString = require('./../../../components/utils/CQLatexString');
+import {
+    TopicStore
+} from './../../../stores';
 
-import QuizStore from './../../../stores/QuizStore';
-import CQAutofill from './../../../components/utils/CQAutofill';
+import {
+    CQAutofill,
+    CQImageUploader,
+    CQLatexString
+} from './../../../components';
+
+
+import { MediaActions } from './../../../actions';
+import { imageUrlParser } from './../../../utils';
+import type { QuizComplete, Question } from './../../../../../types';
+
 import CQEditDurationPicker from './CQEditDurationPicker';
-import TopicStore from './../../../stores/TopicStore';
-import CQImageUploader from './../../../components/utils/CQImageUploader';
-
-import MediaActions from './../../../actions/MediaActions';
-
-import imageUrlParser from './../../../utils/imageUrlParser';
-
 
 // TODO: Rename to a better name to describe editing questions
 type Props = {
-    quiz: Quiz;
+    quiz: QuizComplete;
     onChange: Function;
     onSave: Function;
     setSaveMode: Function;
@@ -61,7 +64,7 @@ export default class CQEditNormal extends React.Component{
         this.focusNext(0);
         $('textarea').autogrow();
         this.handlePopover();
-        this.props.onChange(this.state.question);
+        // this.props.onChange(this.state.question);
     }
 
     componentWillReceiveProps(nextProps : Props) {
@@ -85,7 +88,7 @@ export default class CQEditNormal extends React.Component{
 
     getState (props? : Props) : State {
         props = props || this.props;
-        var question : Question = QuizStore.getQuestion(props.quiz.uuid, props.questionIndex);
+        var question : Question = props.quiz.payload.questions[props.questionIndex];
         question.alternatives = question.alternatives || [];
         var subtopics = this.handleGetTopics();
         var newState = {
@@ -171,7 +174,6 @@ export default class CQEditNormal extends React.Component{
         var question = Object.assign({}, this.state.question);
         var canBeSaved = this.canBeSaved(question);
         question.duration = duration;
-        console.log('handleDuration', question, duration);
         this.setState({question, canBeSaved});
         this.props.onChange(question);
     }
@@ -482,7 +484,7 @@ export default class CQEditNormal extends React.Component{
                                 onKeyDown={this.handleNext.bind(this, 'topicId', undefined)}
                                 placeholder="e.g. European Capital Cities"
                                 identifier="subtopic"
-                                tabIndex="6"/>
+                                tabIndex={6}/>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 /* @flow */
-import type {Quiz} from './../QuizStore';
+import type {Quiz} from './../../../../types';
 import TopicStore from './../TopicStore';
 
 export default class QuizSorter {
@@ -60,7 +60,7 @@ export default class QuizSorter {
     }
 
     sortByCategory(){
-        console.log('about to sort', this);
+
     }
 
 

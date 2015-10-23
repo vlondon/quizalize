@@ -1,10 +1,13 @@
-var React = require('react');
+/* @flow */
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
-var CQLoginForm = require('createQuizApp/components/pages/shared/CQLoginForm');
-var CQLink = require('createQuizApp/components/utils/CQLink');
+import {
+    CQPageTemplate,
+    CQLoginForm,
+    CQLink
+} from './../../../components';
 
-var UserActions = require('createQuizApp/actions/UserActions');
+import { UserActions } from './../../../actions';
 
 
 var CQRecoverPassword = React.createClass({
@@ -16,7 +19,7 @@ var CQRecoverPassword = React.createClass({
         };
     },
 
-    handleSubmit: function(data) {
+    handleSubmit: function(data : Object) {
 
         // expects data as an object with
         // email and password

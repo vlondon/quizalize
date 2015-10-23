@@ -1,9 +1,9 @@
 /* @flow */
 import React from 'react';
 
-import AnalyticsActions from './../../../actions/AnalyticsActions';
-import debounce from './../../../utils/debounce';
-import CQLink from './../../../components/utils/CQLink';
+import { AnalyticsActions } from './../../../actions';
+import { debounce } from './../../../utils';
+import { CQLink } from './../../../components';
 
 type Props = {
     keyword: string;
@@ -46,12 +46,10 @@ class CQPublicNoResults extends React.Component {
     }
 
     triggerEvent(){
-        console.log('sending event', this.state.keyword);
         sendEvent(this.state.keyword);
     }
 
     handleTellUs(){
-        console.log('handleTellUs');
         window.Intercom('showNewMessage');
     }
 

@@ -1,6 +1,6 @@
 //general zzish config
 var config = require("../config"); //initialized zzish
-var email              = require('../email');
+var email     = require('../email');
 var APP_CONTENT_TYPE    = "app";
 var async = require('async');
 var db = require('./db');
@@ -105,7 +105,13 @@ var approveDocument = function(req, res, doc) {
 exports.index = function(req, res){
     res.render("admin/index");
 };
-
+exports.quizlist = function(req, res){
+    console.log("Querying DB");
+    zzish_db.secure.post("db/content/query/", {"query": "{'meta.originalQuizId':{$exists:false}, 'type': 'quiz', 'meta.published': {$exists: false}}", "project":"{'updated':1, 'type':1, 'meta': 1, 'uuid': 1, 'name':1, 'payload':1, 'created':1}"}, function(err, quizzes) {
+        console.log("Fetching quizzes");
+        res.render("admin/quizlist", { quizzes: JSON.parse(quizzes.payload)});
+    });
+};
 exports.pendingQuizzes = function(req, res){
     // db.findDocuments("subject",{}, 1, function(err, subjects) {
     //     var subjectArray = subjects.map(function(item) {
@@ -734,4 +740,24 @@ exports.pixel = function(req,res) {
 exports.unsubscribe = function(req,res) {
     email.sendEmailTemplate('team@zzish.com', ['vini@zzish.com'], 'Unsubscribe', 'unsubscribe', {email: req.query.email});
     res.send("Your email has been unsubscribed.");
+};
+
+exports.logInAsUser = function(req, res) {
+    // console.log('user', req.params.userId);
+    let profileId = req.params.userId;
+    zzish.user(profileId, function(err, data){
+        if (!err && typeof data === 'object') {
+            console.log('we got user', data);
+            var uuid = data.uuid;
+            req.session.userUUID = uuid;
+            req.session.user = data;
+            res.status(200);
+        }
+        else {
+            req.session.userUUID = undefined;
+            res.status(err);
+        }
+        res.send(data);
+    });
+    // res.send(true);
 };

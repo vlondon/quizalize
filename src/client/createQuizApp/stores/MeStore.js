@@ -1,11 +1,12 @@
 /* @flow */
 import Store from './Store';
+import {Application} from './classes/Application';
 import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
-import UserConstants from './../constants/UserConstants';
-import UserActions from './../actions/UserActions';
+import {UserConstants} from './../constants';
+import {UserActions} from './../actions';
 import type {UserType} from './../../../types/UserType';
-import AppStore from './AppStore';
+
 
 var intercom = require('./../utils/intercom');
 
@@ -69,7 +70,7 @@ class Me extends Store {
                 return isInApp.length === 0;
             });
 
-            var appPlaceholder = AppStore.getNewApp({
+            var appPlaceholder = new Application({
                 uuid: 'own',
                 meta: {
                     quizzes: quizzesWithoutApps,
@@ -156,6 +157,10 @@ class Me extends Store {
             return false;
         }
     }
+
+    isPremium() : boolean {
+        return this.state.attributes.accountType !== 0;
+    }
 }
 
 
@@ -164,6 +169,7 @@ export default meStore;
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
+    console.info('ACTION:', action.actionType, action);
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
         case UserConstants.USER_IS_LOGGED:

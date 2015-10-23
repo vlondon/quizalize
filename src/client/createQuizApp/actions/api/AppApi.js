@@ -1,9 +1,9 @@
 /* @flow */
-var request = require('superagent');
-var noCache = require('superagent-no-cache');
+import request from 'superagent';
+import noCache from 'superagent-no-cache';
 
 import type {AppType} from './../../stores/AppStore';
-import MeStore from './../../stores/MeStore';
+import { MeStore } from './../../stores';
 
 var AppApi = {
 
@@ -103,7 +103,6 @@ var AppApi = {
     },
     uploadMedia: function(appId : string, file : Object) : Promise{
         return new Promise(function(resolve, reject){
-            console.log('about to upload', file);
             var uuid = MeStore.getUserId();
 
             if (!uuid) {

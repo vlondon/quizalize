@@ -1,11 +1,14 @@
 /* @flow */
 import React from 'react';
 
-import CQPageTemplate from './../../../components/CQPageTemplate';
-import QuizStore from './../../../stores/QuizStore';
-import GroupStore from './../../../stores/GroupStore';
-import type { Quiz } from './../../../stores/QuizStore';
-import GroupActions from './../../../actions/GroupActions';
+import { CQPageTemplate } from './../../../components';
+import {
+    QuizStore,
+    GroupStore
+} from './../../../stores';
+
+import { GroupActions } from './../../../actions';
+import type { Quiz } from './../../../../../types';
 
 type Props = {
     routeParams: {
@@ -27,7 +30,6 @@ class CQAssignQuiz extends React.Component {
         var marketplaceQuizId = props.routeParams.quizId;
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
         var init = false;
-        console.log('QUIZ', quiz);
         this.state = { quiz, init };
         this.onChange = this.onChange.bind(this);
     }
@@ -45,7 +47,6 @@ class CQAssignQuiz extends React.Component {
     onChange(){
         var marketplaceQuizId = this.props.routeParams.quizId;
         var quiz = QuizStore.getOwnedQuizByOriginalQuizId(marketplaceQuizId);
-        console.log('marketplaceQuizId', quiz, marketplaceQuizId);
         var groupsLoaded = GroupStore.isLoaded();
 
         var {init} = this.state;

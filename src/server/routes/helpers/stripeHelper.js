@@ -68,7 +68,21 @@ export let processSubscription = function(transaction: Object, stripeToken: stri
 
 
     var addSubscription = function(){
-        let plan = 'quizalize_tier1';
+
+        let plan;
+        switch (transaction.meta.subscription) {
+            case 'monthly':
+                plan = 'quizalize_premium_m';
+                break;
+            case 'halfyear':
+                plan = 'quizalize_premium_h';
+                break;
+            case 'year':
+                plan = 'quizalize_premium_y';
+                break;
+
+        }
+
         return new Promise((resolve, reject)=>{
             logger.trace('CHARGING USER ', user.attributes.stripeId, 'with plan', plan);
             stripe.customers.createSubscription(user.attributes.stripeId, {plan}, function(err, charge) {
@@ -93,4 +107,35 @@ export let processSubscription = function(transaction: Object, stripeToken: stri
     } else {
         return addSubscription();
     }
+};
+
+export let getSubscription = function(stripeCustomerId: string) : Promise {
+    return new Promise((resolve, reject)=>{
+        logger.error('test');
+        stripe.customers.listSubscriptions(stripeCustomerId, function(err, subscriptions) {
+            if (err){
+                reject(err);
+                logger.error('stripeHelper.js getSubscription error', err);
+            } else {
+                let subscription = subscriptions.data[0];
+                let accountType = 0;
+                let accountTypeExpiration;
+                let accountTypeUpdated;
+                if (subscription && subscription.status === 'active'){
+                    accountTypeExpiration = subscription.current_period_end * 1000;
+                    accountTypeUpdated = subscription.current_period_start * 1000;
+                    logger.info('subscription.plan.id', subscription.plan.id);
+                    if (
+                        subscription.plan.id === 'quizalize_premium_m' ||
+                        subscription.plan.id === 'quizalize_premium_y' ||
+                        subscription.plan.id === 'quizalize_premium_h'
+                    ){
+                        accountType = 1;
+                    }
+                }
+                logger.info('Stipehelper.js: getSubscription subscription', subscriptions);
+                resolve({accountType, accountTypeExpiration, accountTypeUpdated});
+            }
+        });
+    });
 };

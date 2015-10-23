@@ -1,22 +1,26 @@
 /* @flow */
-var React = require('react');
+import React from 'react';
+
+import { router } from './../../../config';
+import {
+    CQPageTemplate,
+    CQViewProfilePicture,
+    CQImageUploader,
+} from './../../../components';
+
+import {
+    UserActions,
+    MediaActions
+} from './../../../actions';
+import { sendEvent } from './../../../actions/AnalyticsActions';
+
+
+import { MeStore } from './../../../stores';
+import { urlParams } from './../../../utils';
+import { imageUrlParser } from './../../../utils';
 
 import CQSettingsSubscriptions from './CQSettingsSubscriptions';
-import type {UserType} from './../../../../../types/UserType';
-import CQPageTemplate from './../../../components/CQPageTemplate';
-import CQViewProfilePicture from './../../../components/views/CQViewProfilePicture';
-import UserActions from './../../../actions/UserActions';
-import router from './../../../config/router';
-
-
-import MeStore from './../../../stores/MeStore';
-import {urlParams} from './../../../utils';
-import {sendEvent} from './../../../actions/AnalyticsActions';
-
-import CQImageUploader from './../../../components/utils/CQImageUploader';
-import MediaActions from './../../../actions/MediaActions';
-import imageUrlParser from './../../../utils/imageUrlParser';
-
+import type {UserType} from './../../../../../types';
 
 
 type Params = {
@@ -46,7 +50,6 @@ export default class CQSettings extends React.Component {
         var params = urlParams();
         var {canSave, errors} = this.isFormValid(user);
         var isNew = this.props.isRegister === true;
-        console.log('USER USER', user, user.attributes.accountType);
 
         this.state =  {
             user,
@@ -68,7 +71,6 @@ export default class CQSettings extends React.Component {
     }
     onChange(){
         var user:UserType = MeStore.state;
-        console.log('USER UPDATEEEEE', user.attributes.accountType);
         this.setState({user});
         this.forceUpdate();
     }
@@ -84,7 +86,6 @@ export default class CQSettings extends React.Component {
     isFormValid(): Object{
         //u?:User
         var canSave = true;
-        console.log("errors", this);
         var errors = [false, false, false];
         // var user:User = u || this.state.user;
         return {canSave, errors};
@@ -92,10 +93,9 @@ export default class CQSettings extends React.Component {
     }
 
     handleSave(){
-        console.log('saving??');
         let {user} = this.state;
         // var user = this.state;
-        MeStore.toJSON();
+
         var currentUserId = user.uuid;
         if (this.state.isNew) {
             sendEvent('register', 'details', 'filled');
@@ -180,11 +180,9 @@ export default class CQSettings extends React.Component {
     }
 
     handleProfileImageFile(profileImageFile : Object) {
-        console.log('image file', profileImageFile);
         this.setState({profileImageFile});
         MediaActions.uploadPicture(profileImageFile, 'profile').then((avatarUrl)=>{
             var user = this.state.user;
-            console.log('we got avatar', avatarUrl);
             user = user.set('avatar', avatarUrl);
             this.setState({user}, ()=>{
                 UserActions.update(this.state.user.toJSON());
@@ -210,7 +208,7 @@ export default class CQSettings extends React.Component {
     }
 
 
-    render() {
+    render(): any {
 
         var message, profilePicture, schoolWebsite, skipButton;
         var classNameError = (index) => {
@@ -306,15 +304,15 @@ export default class CQSettings extends React.Component {
         };
 
         return (
-            <CQPageTemplate className="cq-container cq-settings">
+            <div className="cq-container cq-settings">
                 <h3 className="cq-settings__header">
                     <div className="skip">
                         {skipButton}
                     </div>
                     {message}
                 </h3>
-                <div className="cq-settings__cols">
-                    <div className="cq-settings__col1">
+                {/*<div className="cq-settings__cols">
+                    <div className="cq-settings__col1">*/}
 
                         <div className={`cq-settings__profile`}>
                             <div className={`cq-settings__profile-item${classNameError(0)} form-group`}>
@@ -381,15 +379,16 @@ export default class CQSettings extends React.Component {
 
 
                         </div>
-                    </div>
+                    {/*</div>
+
                     <div className="cq-settings__col2">
                         <div className="cq-settings__subscriptions">
                             <b>Your subscription</b>
                             <CQSettingsSubscriptions user={this.state.user}/>
                         </div>
                     </div>
-                </div>
-            </CQPageTemplate>
+                </div>*/}
+            </div>
         );
 
     }

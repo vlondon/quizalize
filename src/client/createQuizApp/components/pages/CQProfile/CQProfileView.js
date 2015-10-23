@@ -1,33 +1,38 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../../config/router');
+import React from 'react';
+import { router } from './../../../config';
 
+import {
+    CQPageTemplate,
+    CQViewAppQuizList
+} from './../../../components';
 
-var CQPageTemplate = require('./../../../components/CQPageTemplate');
-var CQDashboardProfile = require('../CQDashboard/extra/CQDashboardProfile');
+import {
+    TransactionActions
+} from './../../../actions';
 
-var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
-import CQViewAppQuizList from './../../../components/views/CQViewAppQuizList';
+import type {
+    Quiz,
+    AppType
+} from './../../../../../types';
+
+import {
+    MeStore
+} from './../../../stores';
+
+import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
 import CQOwnProfileCounter from './CQOwnProfileCounter';
-// var CQViewQuizDetails = require('./../../../components/views/CQViewQuizDetails')
-
-var TransactionActions = require('./../../../actions/TransactionActions');
-
-import type {Quiz} from './../../../stores/QuizStore';
-import type {AppType} from './../../../stores/AppStore';
 
 
 let getPrivateQuizzes = (apps) => {
     let privateQuizzes = [];
     apps.forEach(app=> {
-        console.log('aaapppppp', app);
         app.meta.quizzes.forEach(quiz=>{
-            if (quiz.meta.published === null) {
+            if (quiz.meta.published === null && (quiz.meta.originalQuizId === null || quiz.meta.originalQuizId === undefined)) {
                 privateQuizzes.push(quiz);
             }
         });
     });
-    console.log('privateQuizzes', privateQuizzes);
     return privateQuizzes;
 };
 
@@ -35,10 +40,13 @@ class CQProfileView extends React.Component {
 
     constructor(props : Props){
         super(props);
+        this.state = {
+            user: MeStore.state
+        };
     }
 
     handlePreview(quiz : Quiz){
-        sessionStorage.setItem('mode', 'teacher');
+        localStorage.setItem('mode', 'teacher');
         window.open(`/app#/play/public/${quiz.uuid}`);
         // window.location.href = `/app#/play/public/${quiz.uuid}`;
 
@@ -84,16 +92,18 @@ class CQProfileView extends React.Component {
 
     render() {
 
+
         var headerCta;
         var amountOfPrivateQuizzes = getPrivateQuizzes(this.props.apps).length;
 
-        var quizList, headerCta, noQuizMessage;
+        var headerCta, noQuizMessage, ownProfileCounter;
 
         if (this.props.own) {
-
+            if (MeStore.state.attributes.accountType === 0){
+                ownProfileCounter = (<CQOwnProfileCounter amount={amountOfPrivateQuizzes}/>);
+            }
             headerCta = (
                 <div className="cq-profile__cta">
-                    <div><CQOwnProfileCounter amount={amountOfPrivateQuizzes}/></div>
                     <button  onClick={this.handleNewApp} className="btn btn-primary cq-profile__cta__app">
                         <i className="fa fa-plus"></i> New collection of quizzes
                     </button>
@@ -101,6 +111,9 @@ class CQProfileView extends React.Component {
                     <button  onClick={this.handleNew} className="btn btn-primary ">
                         <i className="fa fa-plus"></i> New quiz
                     </button>
+                    <div className="cq-profile__freeaccount">
+                        {ownProfileCounter}
+                    </div>
 
                 </div>
             );
@@ -113,24 +126,6 @@ class CQProfileView extends React.Component {
             </div>
         ) : "";
 
-
-        // if (this.state.quizDetails) {
-        //     quizDetails = (<CQViewQuizDetails
-        //         onClose={this.handleDetailsClose}
-        //         quizCode={this.props.quizCode}
-        //         quizId={this.state.quizDetails}/>);
-                // quizCode={this.props.quizCode}
-        // }
-        var quizzes = this.props.quizzes || [];
-        quizList = (
-            <CQViewQuizList
-                isQuizInteractive={true}
-                isPaginated={true}
-                onQuizClick={this.handleDetails}
-                quizzes={quizzes}
-                className="cq-public__list"
-                sortBy="time"/>
-        );
 
         return (
             <CQPageTemplate className="cq-container cq-profile">

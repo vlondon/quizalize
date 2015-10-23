@@ -94,6 +94,7 @@ app.get('/user', user.details);
 app.post('/user/search', user.search);
 app.post('/user', user.saveUserRequest);
 app.post('/email/', email.sendDocumentEmail);
+app.post('/user/discovery-promotion', user.discoveryPromotion);
 
 app.post('/user/events/:name', intercom.events);
 
@@ -107,6 +108,10 @@ app.get('/quiz/public', function(req, res){
 });
 app.get('/quiz/*', checkForIE, quiz.create);
 app.get('/profile/*', checkForIE, quiz.create);
+app.get('/discovery-education-promotion', checkForIE, quiz.create);
+app.get('/discovery-education-free-premium-subscription', checkForIE, quiz.create);
+app.get('/discovery-education-free-unlimited-subscription', checkForIE, quiz.create);
+// app.get('/discovery-education-free-premium-subscription/perform-upgrade', checkForIE, quiz.create);
 app.get('/quiz', checkForIE, quiz.create);
 
 
@@ -135,7 +140,9 @@ app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishT
 
 if (process.env.admin === "true") {
     app.get('/admin/', admin.index);
+    app.get('/admin/user/:userId', admin.logInAsUser);
     app.get('/admin/approved', admin.approved);
+    app.get('/admin/quizlist', admin.quizlist);
     app.get('/admin/pending', admin.pendingQuizzes);
     app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
@@ -200,6 +207,7 @@ app.get('/quizzes/public/:id', quiz.getPublicQuiz);
 app.get('/quiz-of-the-day-1', quiz.quizOfTheDay1);
 //app.get('/packages', quiz.packages);
 app.get('/publishers', quiz.publishers);
+app.get('/publisher', quiz.publisher);
 app.get('/faq', quiz.faq);
 app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);

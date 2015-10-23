@@ -32,7 +32,6 @@ class UserStore extends Store {
 
     getPublicUser(userId: string): Object{
         var user = _users.get(userId);
-        console.log('generating we got user', user, user !== null, user !== undefined);
         if (user === undefined){
             UserActions.getPublicUser(userId);
             _users = _users.set(userId, null);
@@ -46,7 +45,6 @@ class UserStore extends Store {
             UserActions.getPublicUserByUrl(url);
             _usersByUrl[url] = null;
         }
-        console.log('_users get', _users, userId, _users.get(userId));
         return _users.get(userId);
     }
 
@@ -66,7 +64,6 @@ var fillApps = (apps, quizzes, user)=>{
         });
         return isInApp.length === 0;
     });
-    console.info('Filling apps', apps, quizzesWithoutApps);
 
     var appPlaceholder = AppStore.getNewApp({
         uuid: 'own',
@@ -85,18 +82,13 @@ var fillApps = (apps, quizzes, user)=>{
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
     // var text;
-    console.info('action', action);
     switch(action.actionType) {
 
         case UserConstants.USER_LOGIN_ERROR:
-            console.log('we got USER_LOGIN_ERROR', action);
-            // _user = false;
-            // userStore.emitChange();
+
             break;
 
         case UserConstants.USER_PUBLIC_LOADED:
-            console.log('UserConstants.USER_PUBLIC_LOADED', action);
-            debugger;
             var user = action.payload;
             var apps = fillApps(user.apps, user.quizzes, user);
             user = {...user, apps};

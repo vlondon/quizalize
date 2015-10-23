@@ -145,7 +145,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
         for (var i in result.contents) {
             var quiz = result.contents[i];
-            var cuuid = "undefined";
+            var cuuid = "unknown";
             var category = { name: "Other" };
             if (quiz.meta.categoryId !== undefined) {
                 cuuid = quiz.meta.categoryId;
@@ -213,7 +213,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var numAlternatives = getNumAlternvatives(question);
         if(numAlternatives > 0 || patternToDected || length >= 20 || length === 1) {
             //either there are alternatives or there is a space in the anser
-            answerQuestion.alternatives = getAlternatives(answerQuestion, questionIndex);
             answerQuestion.type = "multiple";
         }
         else {
@@ -418,7 +417,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var score;
         questionDuration = questionDuration * 1000;
         if (correct) {
-            score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer) {
+                score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
+            }
+            else {
+                score = maxScore;
+            }
         } else {
             score = 0;
         }
@@ -437,7 +441,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     options.push(alt);
                 }
             }
-            return randomise(options);
+            return randomise(options, true);
             //return options;
         } else {
             var answers = [];
@@ -737,6 +741,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     currentQuestion.answerObject = processInput(currentQuestion.answer);
                     currentQuestion.expObject = processInput(currentQuestion.answerExplanation);
                     selectAnswerType(currentQuestion.questionObject, currentQuestion.answerObject, questionIndex);
+                    if (currentQuestion.answerObject.type === "multiple") {
+                        currentQuestion.answerObject.alternatives = getAlternatives(currentQuestion.answerObject, questionIndex);
+                    }
                 });
                 callback(data);
             };

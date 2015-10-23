@@ -33,6 +33,7 @@ function decrypt(text){
 exports.saveUser = function(user){
     return new Promise(function(resolve, reject){
         var profileId = user.uuid;
+        logger.debug('zzish.saveUser', profileId, user);
         zzish.saveUser(profileId, user, function(err, data){
             if (!err && typeof data === 'object') {
                 var interomUser = {
@@ -78,7 +79,7 @@ exports.details = function(req, res) {
                 res.status(200);
             }
             else {
-                req.userUUID = undefined;
+                req.session.userUUID = undefined;
                 res.status(err);
             }
             res.send(data);
@@ -102,11 +103,12 @@ exports.search = function(req, res) {
 
 exports.token =  function(req, res) {
     var token = req.body.token;
-
     zzish.getCurrentUser(token, function(err, data) {
         if (!err && typeof data === 'object') {
-            intercom.trackEvent(data.uuid, 'logged_in');
+            data.token = token;
+            req.session.token = token;
             req.session.user = data;
+            intercom.trackEvent(data.uuid, 'logged_in');
             res.status(200).send(data);
         }
         else {
@@ -144,8 +146,10 @@ exports.register =  function(req, res) {
     logger.info('Creating new user for', userEmail);
     zzish.registerUser(userEmail, encrypt(userPassword), function(err, user) {
         if (!err) {
-            user.attributes.accountType = 0;
-            user.attributes.accountTypeUpdated = Date.now();
+
+            // user.attributes.accountType = 0;
+            // user.attributes.accountTypeUpdated = Date.now();
+
             req.session.user = user;
             logger.info('Setting account type for', userEmail);
             exports.saveUser(user)
@@ -227,5 +231,36 @@ exports.groupContents = function(req, res) {
             res.status(err);
         }
         res.send(resp);
+    });
+};
+
+exports.discoveryPromotion = function(req, res){
+    console.log('session?', req.session.user);
+    var profileId = req.session.user.uuid;
+    zzish.user(profileId, function(err, user){
+        console.log('user.attributes.accountType', user.attributes.accountType);
+        if(parseInt(user.attributes.accountType, 10) === 1) {
+            res.status(200).send();
+        } else {
+            if (!err && parseInt(user.attributes.accountType, 10) === 0 ) {
+
+                user.attributes.accountType = 1;
+                user.attributes.accountTypeUpdated = Date.now();
+
+                exports.saveUser(user)
+                    .then((data) => {
+                        req.session.user = user;
+                        res.status(200).send(data);
+                    })
+                    .catch(({err, data}) => {
+                        res.status(err).send(data);
+                    });
+
+
+            } else {
+                res.status(500).send(err);
+            }
+        }
+    // console.log('user', user);
     });
 };

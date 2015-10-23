@@ -1,17 +1,17 @@
 /* @flow */
 import React from 'react';
-import router from './../../../config/router';
+import { router } from './../../../config';
 
-import AppStore from './../../../stores/AppStore';
-import AppActions from './../../../actions/AppActions';
-import type {AppType} from './../../../stores/AppStore';
-import CQQuizIcon from './../../../components/utils/CQQuizIcon';
-import CQSpinner from './../../../components/utils/CQSpinner';
+import { AppStore } from './../../../stores';
+import { AppActions } from './../../../actions';
+import type { AppType } from './../../../stores';
+import {
+    CQQuizIcon,
+    CQSpinner,
+    CQPagination
+} from './../../../components';
 
-import CQPagination from './../../../components/utils/CQPagination';
-
-import CQLinkToUser from './../../../components/utils/CQLinkToUser';
-import priceFormat from './../../../utils/priceFormat';
+import { priceFormat } from './../../../utils';
 
 type Props = {
     className: string;
@@ -168,7 +168,7 @@ class CQAppGrid extends React.Component {
                             if (app.extra && app.extra.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        {app.extra.author.name} 
+                                        {app.extra.author.name}
                                     </div>
                                 );
                             }

@@ -1,6 +1,6 @@
-var AppDispatcher       = require('createQuizApp/dispatcher/CQDispatcher');
-var TopicConstants      = require('createQuizApp/constants/TopicConstants');
-var QuizApi             = require('createQuizApp/actions/api/QuizApi');
+import AppDispatcher from 'createQuizApp/dispatcher/CQDispatcher';
+import {TopicConstants} from 'createQuizApp/constants';
+import {QuizApi} from './../actions/api';
 
 
 var TopicActions = {

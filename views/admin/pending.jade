@@ -75,7 +75,6 @@ block body
                     th Editor
                     th Updated
                     th Set Category And Approve
-                    th Approve first
                 tbody
                     -pending.sort(function(x, y){
                         -if (!x.updated) {
@@ -94,8 +93,11 @@ block body
                         td.categoryId #{quiz.meta.categoryId}
                         td
                             a(href="https://www.quizalize.com/app#/play/public/#{quiz.uuid}") Preview
-                        td 
-                            a(href="https://www.quizalize.com/quiz/create/#{quiz.uuid}") Editor
+                        td            
+                            if quiz.type == "quiz"
+                                a(href="https://www.quizalize.com/quiz/create/#{quiz.uuid}") Editor    
+                            else            
+                                a(href="https://www.quizalize.com/quiz/app/#{quiz.uuid}") Editor    
                         td #{prettyDate(quiz.updated)} 
                         td
                             form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
@@ -106,12 +108,12 @@ block body
                                 select(name="publicCategoryId", id="category#{quiz.uuid}")
                                 input(type="submit" value="Approve")
                                     
-                        td
-                            form(method="POST", action="/admin/approvefirst/#{quiz.type}/#{quiz.uuid}")
-                                select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subjectnew', '#categorynew')", id="subjectnew#{quiz.uuid}")
-                                    option 
-                                    for subject in subjects
-                                        option(value=subject.uuid) #{subject.name}
-                                select(name="publicCategoryId", id="categorynew#{quiz.uuid}")
-                                input(type="submit" value="Approve First")
-                                
+                        //- td
+                        //-     form(method="POST", action="/admin/approvefirst/#{quiz.type}/#{quiz.uuid}")
+                        //-         select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subjectnew', '#categorynew')", id="subjectnew#{quiz.uuid}")
+                        //-             option 
+                        //-             for subject in subjects
+                        //-                 option(value=subject.uuid) #{subject.name}
+                        //-         select(name="publicCategoryId", id="categorynew#{quiz.uuid}")
+                        //-         input(type="submit" value="Approve First")
+                        //-         

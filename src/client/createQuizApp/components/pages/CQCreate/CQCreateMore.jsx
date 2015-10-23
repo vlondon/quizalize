@@ -1,6 +1,7 @@
-var React = require('react');
+import React from 'react';
 
-var TransactionStore = require('createQuizApp/stores/TransactionStore');
+import {TransactionStore} from 'createQuizApp/stores';
+
 var prices = TransactionStore.getPrices();
 
 var removeUndefinedProps = function(obj) {
@@ -44,12 +45,10 @@ var CQCreateMore = React.createClass({
         };
             // showanswers: false,
             // timer: true
-        console.log("My initial settings", this.props.settings);
         defaultSettings = Object.assign({}, defaultSettings, this.props.settings);
         convertToBoolean(defaultSettings, 'live');
         convertToBoolean(defaultSettings, 'featured');
         convertToBoolean(defaultSettings, 'random');
-        console.log("My Aafter settings", defaultSettings);
         return defaultSettings;
 
     },
@@ -57,8 +56,6 @@ var CQCreateMore = React.createClass({
     handleChange: function(property, type, event) {
 
         type = type || 'text';
-
-        console.log('event.target', type);
 
         var newState = Object.assign({}, this.state);
 

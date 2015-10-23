@@ -1,8 +1,7 @@
 /* @flow */
-import AppDispatcher       from './../dispatcher/CQDispatcher';
-import UserApi from './../actions/api/UserApi';
-
-import AnalyticsConstants  from './../constants/AnalyticsConstants';
+import AppDispatcher from './../dispatcher/CQDispatcher';
+import {UserApi} from './../actions/api';
+import {AnalyticsConstants}  from './../constants';
 
 export var sendEvent = function(category: string, action: string, label: string) {
 
@@ -34,7 +33,7 @@ class AnalyticsActions {
 
 
     sendIntercomEvent(eventName : string, meta : Object){
-        console.info('SEND INTERCOM EVENT', eventName);
+        console.info('AnalyticsActions: INTERCOM EVENT', eventName);
         UserApi.trackEvent(eventName, meta);
     }
 
@@ -46,20 +45,19 @@ class AnalyticsActions {
     }
 
 
-    triggerPixels() : Promise {
-        return new Promise(function(resolve){
-
-            AppDispatcher.dispatch({
-                actionType: AnalyticsConstants.ANALYTICS_CONVERSION_ENABLED
-            });
-
-            resolve();
-            setTimeout(function(){
-                AppDispatcher.dispatch({
-                    actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
-                });
-            }, 3000);
+    triggerPixels()  {
+        console.log('triggerPixels');
+        AppDispatcher.dispatch({
+            actionType: AnalyticsConstants.ANALYTICS_CONVERSION_ENABLED
         });
+
+
+        setTimeout(function(){
+            AppDispatcher.dispatch({
+                actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
+            });
+        }, 3000);
+
     }
 
     googleConversion(){

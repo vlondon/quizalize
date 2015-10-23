@@ -1,14 +1,22 @@
+/* @flow */
 import React from 'react';
+import { CQLink } from './../../../components';
 
-let CQOwnProfileCounter = ({amount})=>{
+let CQOwnProfileCounter = ({amount} : {amount: number}): any => {
     // TODO: Francesco to review the copy
     let copy;
-    if (amount > 0){
+    if (amount < 5){
         copy = `You can create ${5 - amount} more private quizzes`;
     } else {
-        copy = `Your've reached the limit of 5 quizzes, please publish to the marketplace or get a premium account to create more`;
+        copy = `You've reached the limit of 5 quizzes`;
     }
-    return (<span>{copy}</span>);
+    return (
+        <span>
+            <i className="fa fa-info-circle"/>{' '}
+            {copy} <br/>
+        <CQLink href="/quiz/premium">Upgrade to Unlimited to have unlimited private quizzes</CQLink>
+        </span>
+    );
 };
 
 export default CQOwnProfileCounter;

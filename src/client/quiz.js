@@ -10,14 +10,15 @@ if (initParams.webUrl !== undefined && initParams.webUrl.indexOf("http://test") 
   url = "http://test.quizalize.com/";
 }
 
-Zzish.init({
-    "api": "2d14d1984a2e3293bd13aab34c85e2ea",
-    "protocol": "http://",
-    "baseUrl": "test-api.zzish.com/api/",
-    "webUrl": "http://test.zzish.com/",
-    "logEnabled": true
-});
+// Zzish.init({
+//     "api": "2d14d1984a2e3293bd13aab34c85e2ea",
+//     "protocol": "http://",
+//     "baseUrl": "test-api.zzish.com/api/",
+//     "webUrl": "http://test.zzish.com/",
+//     "logEnabled": true
+// });
 
+Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
 
 function goToQuiz() {
   window.location.href="/quiz#/"

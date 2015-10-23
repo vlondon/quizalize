@@ -7,7 +7,9 @@ var CQPageTemplate = React.createClass({
     propTypes: {
         children: React.PropTypes.oneOfType([
             React.PropTypes.array,
-            React.PropTypes.element
+            React.PropTypes.element,
+            React.PropTypes.string,
+            React.PropTypes.number,
         ]),
         className: React.PropTypes.string,
         wrapperMainClassName: React.PropTypes.string,

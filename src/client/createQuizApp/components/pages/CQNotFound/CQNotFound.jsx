@@ -1,6 +1,7 @@
-var React = require('react');
+/* @flow */
+import React from 'react';
 
-var CQPageTemplate = require('createQuizApp/components/CQPageTemplate');
+import {CQPageTemplate} from './../../../components';
 
 
 var CQNotFound = React.createClass({

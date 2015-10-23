@@ -1,19 +1,22 @@
 /* @flow */
 import React from 'react';
-import router from './../../../config/router';
+import { router } from './../../../config';
 
-import CQViewClassList from './../../../components/views/CQViewClassList';
-import CQViewQuizMarketplaceOptions from './../../../components/views/CQViewQuizMarketplaceOptions';
+import {
+    CQViewClassList,
+    CQViewQuizMarketplaceOptions,
+    CQPageTemplate,
+    CQViewShareQuiz,
+    CQLink
+} from './../../../components';
 
-import CQLink from './../../../components/utils/CQLink';
+import { GroupActions } from './../../../actions';
+import {
+    GroupStore,
+    QuizStore
+} from './../../../stores';
 
-import CQPageTemplate from './../../../components/CQPageTemplate';
-import GroupActions from './../../../actions/GroupActions';
-import GroupStore  from './../../../stores/GroupStore';
-import QuizStore from './../../../stores/QuizStore';
-import type { QuizComplete } from './../../../stores/QuizStore';
-import CQViewShareQuiz from './../../../components/views/CQViewShareQuiz';
-
+import type { QuizComplete } from './../../../../../types';
 
 type Props = {
     routeParams: { quizId: string };
@@ -78,7 +81,6 @@ export default class CQPublished extends React.Component {
         props = props || this.props;
 
         var quiz = props.routeParams.quizId ? QuizStore.getQuiz(props.routeParams.quizId) : undefined;
-        console.log('props.routeParams.quizId', quiz);
 
         return quiz;
     }
@@ -144,15 +146,6 @@ export default class CQPublished extends React.Component {
 
                 <div className="cq-published__header">
 
-                    <h1>
-                        All done…
-                    </h1>
-                    <h3>
-                        Your quiz is ready
-                    </h3>
-                    <p>
-                        Too soon? <CQLink href={`/quiz/create/${this.props.routeParams.quizId}`} >Continue building</CQLink>
-                    </p>
                 </div>
 
 
@@ -170,7 +163,7 @@ export default class CQPublished extends React.Component {
 CQPublished.propTypes = {
     routeParams: React.PropTypes.object.isRequired,
     assign: React.PropTypes.bool,
-    publish: React.PropTypes.bool,
+    published: React.PropTypes.bool,
     share: React.PropTypes.bool
 };
                 // <div className="pricing">
