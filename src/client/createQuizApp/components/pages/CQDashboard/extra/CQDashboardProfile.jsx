@@ -122,17 +122,6 @@ class CQDashboardProfile extends React.Component {
             } else {
                 publicUrl = undefined;
             }
-            // WTF warning: This is used to check if the profile is the public
-            // or the private mode
-            if (this.props.own !== true){
-                returnToPrivate = (<div style={{padding: '10px 40px'}}>
-                    <CQLink
-                        href="/quiz/user">
-                            Return to your Private Profile
-                    </CQLink>
-                </div>);
-            }
-
 
 
             profile = (
