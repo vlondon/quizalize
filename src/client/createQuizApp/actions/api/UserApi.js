@@ -107,7 +107,7 @@ var UserApi = {
                             }
                         }
                     }
-               }
+                }
             }
         }`;
         return new Promise((resolve, reject)=>{

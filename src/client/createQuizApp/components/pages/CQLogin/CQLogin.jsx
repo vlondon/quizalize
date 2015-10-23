@@ -8,13 +8,17 @@ import {
     CQLink,
     CQZzishLogin
 } from './../../../components';
-import { UserActions } from './../../../actions';
+import { UserActions, AnalyticsActions } from './../../../actions';
 
 
 var CQLogin = React.createClass({
 
     getInitialState: function() {
-        var isZzishRedirect = urlParams().token ? true : false;
+        let isZzishRedirect = urlParams().token ? true : false;
+        let isNew = urlParams().n ? true : false;
+        if (isNew) {
+            AnalyticsActions.triggerPixels();
+        }
         return { isZzishRedirect };
     },
 

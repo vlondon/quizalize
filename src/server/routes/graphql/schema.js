@@ -15,6 +15,7 @@ import graphQLUser from './graphQLUser';
 import graphQLQuiz from './graphQLQuiz';
 import graphQLApps from './graphQLApps';
 
+import logger from './../../logger';
 
 let count = 0;
 
@@ -73,7 +74,6 @@ let appMeta = new GraphQLObjectType({
         quizzes: {
             type: new GraphQLList(quizType),
             resolve: ({quizzes, profileId})=>{
-                console.log('RESOLVING ', quizzes, typeof quizzes);
                 if (typeof quizzes === 'string' && quizzes.length > 0) {
                     let quizzesID = quizzes.split(',');
                     return graphQLQuiz.getQuizzes(profileId, quizzesID);
@@ -235,7 +235,6 @@ let userType = new GraphQLObjectType({
             type: GraphQLString,
             description: 'User avatar'
         },
-
         created: {
             type: GraphQLInt,
             resolve: ({uuid, created}, args, {rootValue})=>{
