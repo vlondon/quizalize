@@ -31,13 +31,20 @@ var UserActions = {
         return new Promise((resolve, reject)=>{
 
             UserApi.getOwn().then( user => {
+                let createdDifference = Date.now() - user.created;
+                console.log('createdDifference', createdDifference);
+
                 AppDispatcher.dispatch({
                     actionType: UserConstants.USER_OWN_LOADED,
                     payload: user
                 });
+
                 resolve(user);
+
             }).catch(reject);
+
         });
+
     },
 
     discoveryPromotion: function(){
@@ -70,7 +77,7 @@ var UserActions = {
 
             UserApi.login(data)
                 .then((user)=>{
-                    // AnalyticsActions.triggerPixels();
+                    // ;
                     AppDispatcher.dispatch({
                         actionType: UserConstants.USER_IS_LOGGED,
                         payload: user

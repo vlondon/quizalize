@@ -59,7 +59,8 @@ var UserApi = {
                 name,
                 avatar,
                 uuid,
-                email
+                email,
+                created,
                 attributes {
                     accountType,
                     accountTypeExpiration,

@@ -15,7 +15,7 @@ var CQRegisterInner = React.createClass({
 
     propTypes: {
         showZzish: PropTypes.bool,
-        header: PropTypes.object
+        header: PropTypes.any
     },
 
     getDefaultProps: function(): Object {
@@ -112,4 +112,4 @@ var CQRegisterInner = React.createClass({
 
 });
 
-module.exports = CQRegisterInner;
+export default CQRegisterInner;

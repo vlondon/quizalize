@@ -102,7 +102,7 @@ class CQWelcome extends React.Component {
             welcomeMessage = 'You have a Quizalize Unlimited Account';
             subTitle = (<p className="cq-welcome__header__sub">Unlimited private quizzes, unlimited classes, and progress tracking</p>);
         } else {
-            welcomeMessage = 'What are you teaching this week?';
+            welcomeMessage = 'You have a Quizalize Basic Account';
         }
         return (
             <CQPageTemplate className="cq-welcome__page">

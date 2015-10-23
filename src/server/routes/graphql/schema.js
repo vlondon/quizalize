@@ -235,6 +235,15 @@ let userType = new GraphQLObjectType({
             type: GraphQLString,
             description: 'User avatar'
         },
+
+        created: {
+            type: GraphQLInt,
+            resolve: ({uuid, created}, args, {rootValue})=>{
+                if (uuid === rootValue) {
+                    return created;
+                }
+            }
+        },
         email: {
             type: GraphQLString,
             description: 'User email',

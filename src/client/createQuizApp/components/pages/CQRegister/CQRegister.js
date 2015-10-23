@@ -6,7 +6,7 @@ import {
 
 import CQRegisterInner from './CQRegisterInner';
 
-class CQRegisterOuter extends React.Component {
+class CQRegister extends React.Component {
     render () {
         return (
             <CQPageTemplate className="cq-login">
@@ -16,4 +16,4 @@ class CQRegisterOuter extends React.Component {
     }
 }
 
-export default CQRegisterOuter;
+export default CQRegister;
