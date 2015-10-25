@@ -1,7 +1,7 @@
 var React = require('react');
 
-var CQLink = require('createQuizApp/components/utils/CQLink');
-var CQLinkToUser = require('createQuizApp/components/utils/CQLinkToUser');
+var CQLink = require('./../../../components/utils/CQLink');
+var CQLinkToUser = require('./../../../components/utils/CQLinkToUser');
 
 
 var CQViewQuizAuthor = React.createClass({

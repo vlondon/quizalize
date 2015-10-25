@@ -1,11 +1,11 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
-var CQViewQuizList = require('createQuizApp/components/views/CQViewQuizList');
-var QuizStore = require('createQuizApp/stores/QuizStore');
+var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
+var CQViewQuizList = require('./../../../components/views/CQViewQuizList');
+var QuizStore = require('./../../../stores/QuizStore');
 
-var priceFormat = require('createQuizApp/utils/priceFormat');
+var priceFormat = require('./../../../utils/priceFormat');
 
 var CQViewCreateAppTemplate = React.createClass({
 

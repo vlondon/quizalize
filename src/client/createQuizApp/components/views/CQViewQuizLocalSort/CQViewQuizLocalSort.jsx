@@ -1,5 +1,5 @@
 var React = require('react');
-var TopicStore = require('createQuizApp/stores/TopicStore');
+var TopicStore = require('./../../../stores/TopicStore');
 
 
 var CQViewQuizLocalSort = React.createClass({

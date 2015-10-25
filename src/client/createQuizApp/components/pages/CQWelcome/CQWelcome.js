@@ -7,13 +7,13 @@ import CQWelcomeVideo from './CQWelcomeVideo';
 import CQWelcomeQuiz from './CQWelcomeQuiz';
 
 // assets
-import cta1 from './../../../../assets/welcome_cta1.svg';
-import cta2 from './../../../../assets/welcome_cta2.svg';
-import cta3 from './../../../../assets/welcome_cta3.svg';
-// import cta4 from './../../../../assets/welcome_cta4.svg';
-import cta5 from './../../../../assets/welcome_cta5.svg';
-import cta7 from './../../../../assets/welcome_cta7.svg';
-import ctaNew from './../../../../assets/welcome_button_new.png';
+// import cta1 from './../../../../assets/welcome_cta1.svg';
+// import cta2 from './../../../../assets/welcome_cta2.svg';
+// import cta3 from './../../../../assets/welcome_cta3.svg';
+// // import cta4 from './../../../../assets/welcome_cta4.svg';
+// import cta5 from './../../../../assets/welcome_cta5.svg';
+// import cta7 from './../../../../assets/welcome_cta7.svg';
+// import ctaNew from './../../../../assets/welcome_button_new.png';
 
 
 class CQWelcome extends React.Component {

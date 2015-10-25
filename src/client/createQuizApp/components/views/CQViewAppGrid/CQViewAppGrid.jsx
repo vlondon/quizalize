@@ -1,8 +1,8 @@
 var React = require('react');
 
 
-var AppActions = require('createQuizApp/actions/AppActions');
-var CQQuizIcon = require('createQuizApp/components/utils/CQQuizIcon');
+var AppActions = require('./../../../actions/AppActions');
+var CQQuizIcon = require('./../../../components/utils/CQQuizIcon');
 
 
 var CQViewAppGrid = React.createClass({
