@@ -21,7 +21,7 @@ var CQRegisterInner = React.createClass({
     getDefaultProps: function(): Object {
         return {
             showZzish: true,
-            header: 'Quizalize Registration'
+            header: 'Create a Quizalize account'
         };
     },
 
@@ -76,7 +76,7 @@ var CQRegisterInner = React.createClass({
             </p>);
         }
         if (this.props.showZzish){
-            zzishLogin = (<CQZzishLogin/>);
+            zzishLogin = (<CQZzishLogin isRegister={true}/>);
         }
         if (this.state.isRegister){
 
@@ -95,7 +95,7 @@ var CQRegisterInner = React.createClass({
                             onSubmit={this.handleRegister}
                             buttonLabel={this.state.loginButtonLabel}>
                             <div>
-                                Already registered?&nbsp;
+                                Already registered? <br/>
                                 <CQLink href={`/quiz/login${window.location.search}`}>Log in</CQLink>
                             </div>
                         </CQLoginForm>

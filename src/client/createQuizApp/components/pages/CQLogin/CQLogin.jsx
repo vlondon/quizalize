@@ -62,12 +62,17 @@ var CQLogin = React.createClass({
                     </h2>
                     <CQLoginForm onSubmit={this.handleLogin}>
 
-                        <div>
-                            Don't have an account?{` `}
-                            <CQLink href={`/quiz/register${window.location.search}`}>Sign Up</CQLink>
+                        <div className="cq-login__register">
+                            Don't have an account?{` `} <br/>
+                            <CQLink href={`/quiz/register${window.location.search}`}>
+
+                                Sign Up
+
+
+                            </CQLink>
                         </div>
-                        <div>
-                            Forgotten Password?{` `}
+                        <div className="cq-login__forgotten">
+                            Forgotten Password?{` `} <br/>
                             <CQLink href="/quiz/recover">Reset</CQLink>
                         </div>
 
