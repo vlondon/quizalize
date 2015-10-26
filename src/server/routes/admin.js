@@ -1,19 +1,20 @@
 //general zzish config
-var config = require("../config"); //initialized zzish
-var email     = require('../email');
-var APP_CONTENT_TYPE    = "app";
 var async = require('async');
-var db = require('./db');
-var async = require("async");
 var XLSX = require('xlsx');
 var fs = require('fs');
-var QUIZ_CONTENT_TYPE   = "quiz";
+var zzish = require('zzishsdk');
+
+var config = require("../config"); //initialized zzish
+var email     = require('../email');
+var db = require('./db');
 var generateData = require ('./generateData');
 var GoogleAnalytics = require('ga');
-var ua = process.env.QUIZALIZEGA;
+
 var host = 'www.quizalize.com';
+var ua = process.env.QUIZALIZEGA;
 var ga = new GoogleAnalytics(ua, host);
-var zzish = require('zzishsdk');
+var APP_CONTENT_TYPE    = "app";
+var QUIZ_CONTENT_TYPE   = "quiz";
 
 if (process.env.admin=="true") {
     var Zzish = require('zzish');
@@ -178,7 +179,12 @@ exports.pendingQuizzes = function(req, res){
         //console.log(categories.length.payload);
         zzish_db.secure.post("db/subject/query/",{"query": "{}"}, function(err, subjects){
             zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
-                res.render("admin/pending", { pending: JSON.parse(pending.payload), categories: JSON.parse(categories.payload), subjects: JSON.parse(subjects.payload)});
+                res.render("admin/pending", {
+                    pending: JSON.parse(pending.payload),
+                    categories: JSON.parse(categories.payload),
+                    subjects: JSON.parse(subjects.payload),
+                    pendingString: pending.payload
+                });
             });
         });
     });

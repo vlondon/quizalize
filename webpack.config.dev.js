@@ -15,6 +15,7 @@ module.exports = {
         publishers: ['webpack/hot/dev-server', 'publishers.js'],
         home: ['webpack/hot/dev-server', 'home.js', 'liveBeta/liveBeta.js'],
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
+        admin: ['admin/index.js'],
         vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent']
     },
     plugins: [
