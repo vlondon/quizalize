@@ -1,5 +1,5 @@
 /* @flow */
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { CQPageTemplate } from './../../../components';
 import {
     QuizStore,
@@ -44,7 +44,20 @@ class CQEdit extends React.Component {
 
     onChange(){
         let quiz = this.getQuiz();
-        this.setState({quiz});
+        if (quiz && quiz._error === true) {
+            // TODO Francesco check this copy, trying to prevent users editing quizzes that they don't own
+            // (and now won't load)
+            window.swal({
+                title: `You're trying to load a Quiz that you don't own`,
+                text: `Please ask the author to share it with you or get it from the marketplace`,
+                type: 'warning',
+            }, function(){
+                router.setRoute('/quiz/user', true);
+            });
+
+        } else {
+            this.setState({quiz});
+        }
     }
 
     getQuiz() : ?QuizComplete {

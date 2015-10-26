@@ -170,12 +170,12 @@ class QuizStore extends Store {
             if (fullQuiz === undefined){
                 QuizActions.loadQuiz(quizId)
                     .catch(()=>{
-
+                        console.log('failed to load quiz');
                         fullQuiz = new QuizObject();
                         if (quizId){
                             fullQuiz.uuid = quizId;
                             fullQuiz._new = false;
-                            fullQuiz._temp = true;
+                            fullQuiz._error = true;
                             _fullQuizzes[fullQuiz.uuid] = fullQuiz;
                         }
                         this.emitChange();
@@ -190,6 +190,7 @@ class QuizStore extends Store {
             _fullQuizzes[fullQuiz.uuid] = fullQuiz;
 
         }
+        console.info('QuizStore.getQuiz', fullQuiz);
         return fullQuiz;
     }
 
@@ -280,14 +281,23 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_LOADED:
         case QuizConstants.QUIZ_CHANGED:
-
-            var quiz = action.payload;
+            let quiz = action.payload;
             _fullQuizzes[quiz.uuid] = quiz;
             quizStoreInstance.emitChange();
             break;
 
+        case QuizConstants.QUIZ_LOAD_ERROR:
+            let quizId = action.payload;
+            let quizError = new QuizObject();
+            quizError.uuid = quizId;
+            quizError._error = true;
+            _fullQuizzes[quizId] = quizError;
+            console.log('shoot', quizError);
+            quizStoreInstance.emitChange();
+            break;
+
         case QuizConstants.QUIZ_PUBLIC_LOADED:
-            var publicQuiz = action.payload;
+            let publicQuiz = action.payload;
             publicQuiz.meta.price = publicQuiz.meta.price || 0;
             _fullPublicQuizzes[publicQuiz.uuid] = publicQuiz;
             quizStoreInstance.emitChange();
@@ -302,15 +312,15 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_DELETED:
             UserActions.getOwn();
-            var quizIdToBeDeleted = action.payload;
-            var quizToBeDeleted = _quizzes.filter(q => q.uuid === quizIdToBeDeleted)[0];
+            let quizIdToBeDeleted = action.payload;
+            let quizToBeDeleted = _quizzes.filter(q => q.uuid === quizIdToBeDeleted)[0];
             _quizzes.splice(_quizzes.indexOf(quizToBeDeleted), 1);
             quizStoreInstance.emitChange();
             break;
 
         case QuizConstants.QUIZ_ADDED:
             UserActions.getOwn();
-            var quizAdded = action.payload;
+            let quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
             quizStoreInstance.emitChange();
             break;
@@ -318,8 +328,8 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
 
         case QuizConstants.QUIZ_META_UPDATED:
             UserActions.getOwn();
-            var quizToBeUpdated = action.payload;
-            var quizFromArray = _quizzes.filter(q => q.uuid === quizToBeUpdated.uuid)[0];
+            let quizToBeUpdated = action.payload;
+            let quizFromArray = _quizzes.filter(q => q.uuid === quizToBeUpdated.uuid)[0];
             if (quizFromArray){
                 _quizzes[_quizzes.indexOf(quizFromArray)] = quizToBeUpdated;
             }

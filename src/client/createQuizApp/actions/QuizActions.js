@@ -94,10 +94,17 @@ var QuizActions = {
                         });
                         resolve(quiz);
                     } else {
-                        reject();
+
                     }
                 })
-                .catch(reject);
+                .catch(function(){
+                    console.log('QuizConstants.QUIZ_LOAD_ERROR', QuizConstants.QUIZ_LOAD_ERROR);
+                    AppDispatcher.dispatch({
+                        actionType: QuizConstants.QUIZ_LOAD_ERROR,
+                        payload: quizId
+                    });
+                    reject();
+                });
         });
     },
 
@@ -243,7 +250,7 @@ var QuizActions = {
             }
 
             quiz = createNewTopicsForQuiz(quiz);
-            delete quiz._temp;
+            delete quiz._error;
             var promise = QuizApi.putQuiz(quiz);
 
             if (quiz._new) {

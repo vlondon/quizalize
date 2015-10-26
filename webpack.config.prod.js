@@ -25,7 +25,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'public/js/'),
         filename: '[name].js',
-        publicPath: 'http://localhost:7071/js/'
+        publicPath: '/assets/'
     },
     module: {
         loaders: [
