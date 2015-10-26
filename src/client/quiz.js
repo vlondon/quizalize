@@ -5,20 +5,20 @@ var protocol = pathArray[0];
 var host = pathArray[2];
 var url = protocol + '//' + host;
 
-
+var params = "2d14d1984a2e3293bd13aab34c85e2ea";
 if (initParams.webUrl !== undefined && initParams.webUrl.indexOf("http://test") === 0) {
   url = "http://test.quizalize.com/";
+  params = {
+      "api": "2d14d1984a2e3293bd13aab34c85e2ea",
+      "protocol": "http://",
+      "baseUrl": "test-api.zzish.com/api/",
+      "webUrl": "http://test.zzish.com/",
+      "logEnabled": true
+  };
 }
 
-// Zzish.init({
-//     "api": "2d14d1984a2e3293bd13aab34c85e2ea",
-//     "protocol": "http://",
-//     "baseUrl": "test-api.zzish.com/api/",
-//     "webUrl": "http://test.zzish.com/",
-//     "logEnabled": true
-// });
-
-Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
+Zzish.init(params);
+//Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
 
 function goToQuiz() {
   window.location.href="/quiz#/"
