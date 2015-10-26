@@ -26,14 +26,14 @@ let CQDiscoveryHeader = (props) => {
                 and get access to our advanced data analysis tools.
             </p>
 
-            {/*
-            <a href="http://www.zzish.com" className="cq-discovery__header__cta">
+
+            <a href="http://links.discoveryeducation.com/2015survey" className="cq-discovery__header__cta">
                 Take the survey
                 <small>
                     to get Quizalize Unlimited, free
                 </small>
             </a>
-            */}
+
         </div>
     );
 };

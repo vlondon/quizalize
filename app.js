@@ -23,7 +23,7 @@ var marketplace = require('./src/server/routes/marketplace');
 var proxy       = require('express-http-proxy');
 var multer      = require('multer');
 var compression = require('compression');
-var intercom = require('./src/server/routes/intercom');
+var intercom    = require('./src/server/routes/intercom');
 
 var graphql = require('./src/server/routes/graphql').graphql;
 

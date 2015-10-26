@@ -78,7 +78,8 @@ var QuizApi = {
                         .use(noCache)
                         .end(function(error, res){
                             if (error) {
-                                reject();
+                                console.error('we got error', error);
+                                reject(error);
                             } else {
                                 resolve(res.body);
                             }

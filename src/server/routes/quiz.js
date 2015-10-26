@@ -351,9 +351,12 @@ exports.deleteTopic = function(req, res){
 
 exports.getQuiz = function(req, res){
     var id = req.params.id;
-    // var profileId = req.params.profileId;
+    var profileId = req.session.user.uuid;
 
-    zzish.getPublicContent(QUIZ_CONTENT_TYPE, id, function(err, resp){
+    // var profileId = req.params.profileId;
+    logger.debug('Loading Quiz', id);
+    zzish.getContent(profileId, QUIZ_CONTENT_TYPE, id, function(err, resp){
+        logger.debug('Quiz loaded', id, err, resp);
         if (!handleError(err, res)) {
             res.send(resp);
         }
