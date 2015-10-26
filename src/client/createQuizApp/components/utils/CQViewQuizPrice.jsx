@@ -2,7 +2,6 @@
 var React = require('react');
 var router = require('./../../config/router');
 
-
 import MeStore from './../../stores/MeStore';
 import QuizStore from './../../stores/QuizStore';
 
@@ -32,7 +31,7 @@ export default class CQViewQuizPrice extends React.Component {
         if (owned){
             let ownedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
             if (ownedQuiz){
-                
+
                 router.setRoute(`/quiz/published/${ownedQuiz.uuid}/assign`);
             }
         } else {
