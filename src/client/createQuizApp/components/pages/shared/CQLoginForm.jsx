@@ -115,7 +115,7 @@ var CQLoginForm = React.createClass({
         if (this.props.showEmailField){
             emailField = (
                 <div className="cq-login__email">
-                    <label className="cq-login__email__label control-label">Email:</label>
+                    <label className="cq-login__email__label control-label">Email</label>
                     <div className="cq-login__email__input">
                         <input id="email" type="email"
                             on-enter="login.focusPassword();"

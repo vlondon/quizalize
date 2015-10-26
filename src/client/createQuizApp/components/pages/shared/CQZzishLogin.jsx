@@ -1,9 +1,7 @@
 /* @flow */
-var React = require('react');
+import React, {PropTypes} from 'react';
 import urlParams from './../../../utils/urlParams';
 import UserActions from './../../../actions/UserActions';
-
-var token;
 
 var pathArray = location.href.split( '/' );
 var protocol = pathArray[0];
@@ -55,15 +53,19 @@ class CQZzishLogin extends React.Component {
         if (this.state.isZzishRedirect){
             return (<div/>);
         }
+        let buttonText = this.props.isRegister ? 'Sign up using Zzish' : 'Log in using Zzish';
         return (
             <div className="cq-login__zzish">
                 <div className="cq-login__zzish__header">
-                    or
+                    Got a Zzish or Google Classroom teacher account?
                 </div>
                 <a onClick={this.handleLogin}
                     id="LoginWithZzishButton"
                     className="login-zzish btn btn-info">
-                    Sign up with Zzish
+                    <span className="login-zzish__brand">
+                        <img src={require('./../../../../assets/cq-zzish__google.png')} width="25" height="30" alt=""/>
+                        <img src={require('./../../../../assets/cq-zzish__zzish.png')} width="30" height="30" alt=""/>
+                    </span> {buttonText}
                 </a>
                 <div className="cq-login__zzish__footer">
                     <p>Zzish is a universal teacher dashboard and unified login system for educational software</p>
@@ -75,5 +77,7 @@ class CQZzishLogin extends React.Component {
     }
 
 }
-
+CQZzishLogin.propTypes = {
+    isRegister: PropTypes.string
+};
 module.exports = CQZzishLogin;
