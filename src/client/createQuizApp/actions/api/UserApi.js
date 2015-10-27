@@ -59,7 +59,8 @@ var UserApi = {
                 name,
                 avatar,
                 uuid,
-                email
+                email,
+                created,
                 attributes {
                     accountType,
                     accountTypeExpiration,
@@ -106,7 +107,7 @@ var UserApi = {
                             }
                         }
                     }
-               }
+                }
             }
         }`;
         return new Promise((resolve, reject)=>{

@@ -45,20 +45,19 @@ class AnalyticsActions {
     }
 
 
-    triggerPixels() : Promise {
-        return new Promise(function(resolve){
-
-            AppDispatcher.dispatch({
-                actionType: AnalyticsConstants.ANALYTICS_CONVERSION_ENABLED
-            });
-
-            resolve();
-            setTimeout(function(){
-                AppDispatcher.dispatch({
-                    actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
-                });
-            }, 3000);
+    triggerPixels()  {
+        console.log('triggerPixels');
+        AppDispatcher.dispatch({
+            actionType: AnalyticsConstants.ANALYTICS_CONVERSION_ENABLED
         });
+
+
+        setTimeout(function(){
+            AppDispatcher.dispatch({
+                actionType: AnalyticsConstants.ANALYTICS_CONVERSION_DISABLED
+            });
+        }, 3000);
+
     }
 
     googleConversion(){

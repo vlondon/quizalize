@@ -169,6 +169,7 @@ export default meStore;
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
+    console.info('ACTION:', action.actionType, action);
     switch(action.actionType) {
         case UserConstants.USER_OWN_LOADED:
         case UserConstants.USER_IS_LOGGED:

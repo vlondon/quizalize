@@ -95,7 +95,7 @@ export default class CQSettings extends React.Component {
     handleSave(){
         let {user} = this.state;
         // var user = this.state;
-        MeStore.toJSON();
+
         var currentUserId = user.uuid;
         if (this.state.isNew) {
             sendEvent('register', 'details', 'filled');

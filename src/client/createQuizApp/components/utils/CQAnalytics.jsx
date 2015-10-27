@@ -8,9 +8,9 @@ var CQAnalytics = React.createClass({
 
     getInitialState: function() {
         return {
-            googleConversion: false,
-            twitterConversion: false,
-            facebookConversion: false,
+            googleConversion: AnalyticsStore.analyticsEnabled(),
+            twitterConversion: AnalyticsStore.analyticsEnabled(),
+            facebookConversion: AnalyticsStore.analyticsEnabled(),
             user: MeStore.isLoggedIn(),
             currentUser: MeStore.status
         };
@@ -46,6 +46,7 @@ var CQAnalytics = React.createClass({
     },
 
     onChange: function(){
+        console.warn('CHANGE ON ANALYTICS');
         var analyticsEnabled = AnalyticsStore.analyticsEnabled();
         // if (MeStore.isLoggedIn()){
         //     var currentUser = UserStore.getUser();
@@ -80,31 +81,38 @@ var CQAnalytics = React.createClass({
 
         if (this.state.googleConversion) {
             googleConversion = (
-                <span className="google-conversion">
-                    <img height="1" width="1" style={{'bordeStyle': 'none'}} alt="" src="//www.googleadservices.com/pagead/conversion/1034680765/?value=1.00&amp;amp;current_code=GBP&amp;amp;label=FqfWCIWT-lwQvfOv7QM&amp;amp;guid=ON&amp;amp;script=0"/>
-                </span>
+                <div>
+                    <span className="google-conversion">
+                        <img height="1" width="1" style={{'bordeStyle': 'none'}} alt="" src="//www.googleadservices.com/pagead/conversion/1034680765/?value=1.00&amp;amp;current_code=GBP&amp;amp;label=FqfWCIWT-lwQvfOv7QM&amp;amp;guid=ON&amp;amp;script=0"/>
+                    </span>
+                </div>
             );
         }
 
         if (this.state.twitterConversion) {
             twitterConversion = (
-                <span className="twitter-conversion">
-                    <img height="1" width="1" style={{display: 'none'}} alt="" src="https://analytics.twitter.com/i/adsct?txn_id=l66kx&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
-                    <img height="1" width="1" style={{display: 'none'}} alt="" src="//t.co/i/adsct?txn_id=l66kx&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+                <div>
+
+                    <span className="twitter-conversion">
+                        <img height="1" width="1" style={{display: 'none'}} alt="" src="https://analytics.twitter.com/i/adsct?txn_id=l66kx&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+                        <img height="1" width="1" style={{display: 'none'}} alt="" src="//t.co/i/adsct?txn_id=l66kx&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
 
 
-                    <img height={1} width={1} style={{display: 'none'}} alt src="https://analytics.twitter.com/i/adsct?txn_id=l67iw&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
-                    <img height={1} width={1} style={{display: 'none'}} alt src="//t.co/i/adsct?txn_id=l67iw&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+                        <img height={1} width={1} style={{display: 'none'}} alt src="https://analytics.twitter.com/i/adsct?txn_id=l67iw&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+                        <img height={1} width={1} style={{display: 'none'}} alt src="//t.co/i/adsct?txn_id=l67iw&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
 
-                </span>
+                    </span>
+                </div>
             );
         }
 
         if (this.state.facebookConversion) {
             facebookConversion = (
-                <span className="facebook-conversion">
-                    <img height="1" width="1" alt="" style={{display: 'none'}} src="https://www.facebook.com/tr?ev=6024319569179&amp;amp;cd[value]=0.01&amp;amp;cd[currency]=GBP&amp;amp;noscript=1"/>
-                </span>
+                <div>
+                    <span className="facebook-conversion">
+                        <img height="1" width="1" alt="" style={{display: 'none'}} src="https://www.facebook.com/tr?ev=6024319569179&amp;amp;cd[value]=0.01&amp;amp;cd[currency]=GBP&amp;amp;noscript=1"/>
+                    </span>
+                </div>
             );
         }
 

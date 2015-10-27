@@ -33,6 +33,7 @@ function decrypt(text){
 exports.saveUser = function(user){
     return new Promise(function(resolve, reject){
         var profileId = user.uuid;
+        logger.debug('zzish.saveUser', profileId, user);
         zzish.saveUser(profileId, user, function(err, data){
             if (!err && typeof data === 'object') {
                 var interomUser = {

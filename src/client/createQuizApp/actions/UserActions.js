@@ -31,6 +31,10 @@ var UserActions = {
         return new Promise((resolve, reject)=>{
 
             UserApi.getOwn().then( user => {
+                let { created } = user;
+                console.info('UserActions.getOwn: yay! Created now!', created, Date.now() + 10000, created > Date.now() + 10000);
+
+
                 AppDispatcher.dispatch({
                     actionType: UserConstants.USER_OWN_LOADED,
                     payload: user
@@ -163,17 +167,13 @@ var UserActions = {
 
             UserApi.register(data)
                 .then((user)=>{
-
+                    AnalyticsActions.triggerPixels();
                     this.getOwn();
-                    AnalyticsActions.triggerPixels().then(function(){
-                        AppDispatcher.dispatch({
-                            actionType: UserConstants.USER_REGISTERED,
-                            payload: user
-                        });
-                        resolve(user);
-                        // if (handleRedirect() === false){
-                        // }
+                    AppDispatcher.dispatch({
+                        actionType: UserConstants.USER_REGISTERED,
+                        payload: user
                     });
+                    resolve(user);
                 })
                 .catch(function(error){
                     reject(error);
