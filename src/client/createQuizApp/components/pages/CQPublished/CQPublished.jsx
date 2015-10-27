@@ -35,6 +35,14 @@ type State = {
 
 export default class CQPublished extends React.Component {
     props: Props;
+
+    static propTypes = {
+        routeParams: React.PropTypes.object.isRequired,
+        assign: React.PropTypes.bool,
+        published: React.PropTypes.bool,
+        share: React.PropTypes.bool
+    };
+
     constructor(props : Props) {
         super(props);
 
@@ -159,25 +167,3 @@ export default class CQPublished extends React.Component {
     }
 
 }
-
-CQPublished.propTypes = {
-    routeParams: React.PropTypes.object.isRequired,
-    assign: React.PropTypes.bool,
-    published: React.PropTypes.bool,
-    share: React.PropTypes.bool
-};
-                // <div className="pricing">
-                //     Set pricing and marketplace options
-                // </div>
-                // <div className="share">
-                //     Share with colleagues (they use it free...)
-                // </div>
-                // <div className="preview">
-                //     Preview
-                // </div>
-                // <div className="back">
-                //     Go back and make changes
-                // </div>
-                // <div className="btn btn-default">
-                //     Close and go to my page
-                // </div>
