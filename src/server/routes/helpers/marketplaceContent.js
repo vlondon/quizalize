@@ -81,7 +81,14 @@ loadContent();
 
 let search = {
     quiz: function(searchString: string) : Array<Object> {
-        logger.info('Searching for', searchString);
+        let start = process.hrtime();
+        
+        if (searchString === ''){
+            let result = quizzes.toArray();
+            let end = process.hrtime(start);
+            logger.info('Search for emtpy string', end[1]/1000, result.length);
+            return result;
+        }
 
         let topicsFound = topics.filter(value => value.get('fullName').toLowerCase().indexOf(searchString.toLowerCase()) !== -1 );
 
@@ -123,7 +130,8 @@ let search = {
         // logger.info('got the following topics', topicsFound.count());
         // logger.info('quizzesFoundWithTheSubtopic', quizzesFoundWithTheSubtopic);
         // logger.info('quizzesFoundWithName', quizzesFoundWithName.count());
-        logger.info('result', result.length);
+        let end = process.hrtime(start);
+        logger.info('Search for', searchString, end[1]/1000, result.length);
         return result;
         // let topicResults =
     },
