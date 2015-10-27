@@ -1,20 +1,28 @@
 /* @flow */
 import React from 'react';
-import { router } from './../../../config';
-
+import { Record } from 'immutable';
 import {
     CQViewClassList,
     CQViewQuizMarketplaceOptions,
     CQPageTemplate,
     CQViewShareQuiz,
-    CQLink
+    CQViewQuizSettings
 } from './../../../components';
 
-import { GroupActions } from './../../../actions';
 import {
     GroupStore,
     QuizStore
 } from './../../../stores';
+
+
+const Settings = Record({
+    maxAttempts: -1,
+    numQuestions: -1,
+    random: 0,
+    repeatUntilCorrect: 0,
+    showAnswers: 1,
+    showTimer: 1,
+});
 
 import type { QuizComplete } from './../../../../../types';
 
@@ -49,6 +57,7 @@ export default class CQPublished extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.getState = this.getState.bind(this);
         this.getQuiz = this.getQuiz.bind(this);
+        this.handleSettings = this.handleSettings.bind(this);
 
         this.state = this.getState();
 
@@ -69,8 +78,8 @@ export default class CQPublished extends React.Component {
         var groups = GroupStore.getGroups();
         var selectedClass = (groups && groups.length > 0) ? groups[0].code : 'new';
         var isMoreVisible = this.state ? this.state.isMoreVisible : false;
-        var quiz = this.getQuiz();
-        var settings = quiz ? quiz.meta : {};
+
+        var settings = this.state && this.state.settings ? this.state.settings : new Settings();
         var newClass = '';
         var newState = {
             groups,
@@ -85,11 +94,8 @@ export default class CQPublished extends React.Component {
     }
 
     getQuiz (props? : Props) : ?QuizComplete {
-
         props = props || this.props;
-
         var quiz = props.routeParams.quizId ? QuizStore.getQuiz(props.routeParams.quizId) : undefined;
-
         return quiz;
     }
 
@@ -97,26 +103,12 @@ export default class CQPublished extends React.Component {
         this.setState(this.getState());
     }
 
-    handleClick () {
 
-        var redirect = function(quizId, classId){
-            router.setRoute(`/quiz/published/${quizId}/${classId}/info`, true);
-        };
 
-        if (this.state.selectedClass === 'new') {
-            GroupActions.publishNewAssignment(this.props.routeParams.quizId, this.state.newClass, this.state.settings)
-                .then((response) =>{
-                    redirect(this.props.routeParams.quizId, response.code);
-                });
-
-        } else {
-            GroupActions.publishAssignment(this.props.routeParams.quizId, this.state.selectedClass, this.state.settings)
-                .then(()=>{
-                    redirect(this.props.routeParams.quizId, this.state.selectedClass);
-                });
-        }
+    handleSettings(settings: Settings){
+        console.log('settings', settings.toObject());
+        this.setState({settings});
     }
-
 
     render() : any {
 
@@ -124,9 +116,14 @@ export default class CQPublished extends React.Component {
         var publishQuiz;
         var shareQuiz;
 
+        console.log('settings', this.state.settings.toObject());
         classList = (
-            <CQViewClassList
-                quizId={this.props.routeParams.quizId}/>
+            <div>
+                <CQViewClassList
+                    settings={this.state.settings}
+                    quizId={this.props.routeParams.quizId}/>
+                <CQViewQuizSettings settings={this.state.settings} onChange={this.handleSettings}/>
+            </div>
         );
 
         shareQuiz = <CQViewShareQuiz quizId={this.props.routeParams.quizId}/>;

@@ -5,7 +5,7 @@ var router = require('./../../config/router');
 import MeStore from './../../stores/MeStore';
 import QuizStore from './../../stores/QuizStore';
 
-import type {Quiz} from './../../stores/QuizStore';
+import type {Quiz} from './../../../../types';
 
 import priceFormat from './../../utils/priceFormat';
 import TransactionActions from './../../actions/TransactionActions';

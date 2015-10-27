@@ -1,14 +1,14 @@
 /* @flow */
 import React, { PropTypes } from 'react';
 
-import { CQPageTemplate } from './../../../components/CQPageTemplate';
+import { CQPageTemplate } from './../../../components';
 
 
 var CQNotFound = React.createClass({
     propTypes: {
         redirectUrl: PropTypes.string.isRequired
     },
-    
+
     getInitialState: function() {
         return {};
     },

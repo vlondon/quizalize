@@ -13,7 +13,7 @@ import TransactionActions from './../../../actions/TransactionActions';
 import priceFormat from './../../../utils/priceFormat';
 import kolor from 'kolor';
 import router from './../../../config/router';
-import type {AppType} from './../../../stores/AppStore';
+import type {AppType} from './../../../../../types';
 type Props = Object;
 type State = Object;
 

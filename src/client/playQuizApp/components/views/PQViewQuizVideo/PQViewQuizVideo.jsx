@@ -4,7 +4,7 @@ import React from 'react';
 import PQViewVideo from './../../views/PQViewVideo';
 
 import QLMultiple from './../../../../quizApp/components/QLMultiple';
-import type {Quiz} from './../../../../createQuizApp/stores/QuizStore';
+
 
 
 type Props = {
@@ -63,7 +63,7 @@ export default class PQVideoMultiple extends React.Component {
                     alternatives={this.state.question.alternatives}
                     questionData={this.state.question}
                 />
-            )
+        );
         }
 
         return (

@@ -5,15 +5,13 @@ import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {UserConstants} from './../constants';
 import {UserActions} from './../actions';
-import type {UserType} from './../../../types/UserType';
+import type {UserType} from './../../../types';
 
 
 var intercom = require('./../utils/intercom');
 
 var intercomId = window.intercomId;
 var intercomAdded = false;
-
-
 
 let userAttributes = {
     ageTaught: undefined,

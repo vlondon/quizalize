@@ -8,7 +8,7 @@ import TopicStore from './../../../stores/TopicStore';
 import CQLink from './../../utils/CQLink';
 
 
-import type {Quiz} from './../../../stores/QuizStore';
+import type {Quiz} from './../../../../../types';
 import type {Topic} from './../../../stores/TopicStore';
 
 type Props = {
@@ -155,36 +155,9 @@ class CQViewQuizFilter extends React.Component {
         //     }];
         // }
 
-        var quizzesAndTopics = [{
-                name: 'quizzes and apps',
-                value: 'all'
-            }, {
-                name: 'quizzes',
-                value: 'quizzes'
-            }, {
-                name: 'apps',
-                value: 'apps'
-            }];
 
 
-        var quizDropDown = () => {
-            if (!this.props.appEnabled)
-            {
-                return (
-                    <span>Show classroom quizzes</span>
-                );
-            }
-            else {
-                return (
-                    <span>Show classroom&nbsp;
-                        <CQDropdown
-                            selected={this.state.kindSelected}
-                            values={quizzesAndTopics}
-                            onChange={this.handleKind}/>&nbsp;for any age
-                    </span>
-                );
-            }
-        };
+
 
         mappedTopics.unshift({value: 'all', name: 'topics'});
         var topicsDropDown = () => {

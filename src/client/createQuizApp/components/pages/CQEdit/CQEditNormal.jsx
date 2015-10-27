@@ -38,7 +38,7 @@ type State = {
 
 export default class CQEditNormal extends React.Component{
 
-    static props : Props;
+    props : Props;
     constructor(props:Props) {
         super(props);
 
