@@ -5,14 +5,19 @@ class CQViewSwitch extends React.Component {
 
     static propTypes = {
         checked: PropTypes.bool,
-        onChange: PropTypes.func
+        onChange: PropTypes.func,
+        className: PropTypes.string
+    };
+
+    static defaultProps = {
+        className: ''
     };
 
     render () : any {
         const isChecked = this.props.checked;
         console.log('isChecked', isChecked);
         return (
-            <label className="switch">
+            <label className={`switch ${this.props.className}`}>
                 <input type="checkbox"  className="switch-input"
                     checked={this.props.checked}
                     onChange={this.props.onChange}

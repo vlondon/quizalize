@@ -8,7 +8,7 @@ import type { QuizSettings } from './../../../../../types';
 
 class CQViewQuizSettings extends React.Component {
 
-    state: { settings: QuizSettings };
+    state: { open: boolean };
     props: { settings: QuizSettings; onChange: Function };
 
     static propTypes = {
@@ -18,6 +18,9 @@ class CQViewQuizSettings extends React.Component {
 
     constructor(props: Object){
         super(props);
+        this.state = {
+            open: false
+        };
 
     }
 
@@ -35,74 +38,95 @@ class CQViewQuizSettings extends React.Component {
     render () : any {
 
         const toBoolean = value => value === 1;
-
+        const className = this.state.isOpen ? 'cq-quizsettings--open' : 'cq-quizsettings--close';
         return (
-            <div className="cq-quizsettings">
+            <div className={`cq-quizsettings ${className}`}>
                 <div className="cq-quizsettings__background">
                     <div className="cq-quizsettings__modal">
-                        <h3>Adjust settings for your class game</h3>
+                        <h3 className="cq-quizsettings__header">Adjust settings for your class game</h3>
                         <ul>
                             <li>
-                                <h3>Random order</h3>
+                                <h4>Random order</h4>
                                 <p>Questions will show jubmled to your students</p>
-                                <CQViewSwitch
-                                    onChange={this.handleCheckbox.bind(this, 'random')}
-                                    checked={toBoolean(this.props.settings.random)}
-                                />
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'random')}
+                                        checked={toBoolean(this.props.settings.random)}
+                                    />
+                                </div>
 
                             </li>
                             <li>
-                                <h3>Show answers</h3>
+                                <h4>Show answers</h4>
                                 <p>Questions will show jubmled to your students</p>
-                                <CQViewSwitch
-                                    onChange={this.handleCheckbox.bind(this, 'showAnswers')}
-                                    checked={toBoolean(this.props.settings.showAnswers)}
-                                />
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'showAnswers')}
+                                        checked={toBoolean(this.props.settings.showAnswers)}
+                                    />
+                                </div>
                             </li>
 
                             <li>
-                                <h3>Show timer</h3>
+                                <h4>Show timer</h4>
                                 <p>Don't show the timer to your students. Correct answers always will score the maximum amount.</p>
-                                <CQViewSwitch
-                                    onChange={this.handleCheckbox.bind(this, 'showTimer')}
-                                    checked={toBoolean(this.props.settings.showTimer)}
-                                />
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'showTimer')}
+                                        checked={toBoolean(this.props.settings.showTimer)}
+                                    />
+                                </div>
                             </li>
 
 
                             <li>
-                                <h3>repeatUntilCorrect</h3>
+                                <h4>repeatUntilCorrect</h4>
                                 <p>Questions will show jubmled to your students</p>
-                                <CQViewSwitch
-                                    onChange={this.handleCheckbox.bind(this, 'repeatUntilCorrect')}
-                                    checked={toBoolean(this.props.settings.repeatUntilCorrect)}
-                                />
-                                <select
-                                    value={this.props.settings.maxAttempts}
-                                    onChange={this.handleInputValue.bind(this, 'maxAttempts')}
-                                    >
-                                    <option value={-1}>All</option>
-                                    <option value={10}>10</option>
-                                    <option value={20}>20</option>
-                                </select>
+                                <div className="cq-quizsettings__switch">
+                                    <div>
+
+                                        <CQViewSwitch
+                                            onChange={this.handleCheckbox.bind(this, 'repeatUntilCorrect')}
+                                            checked={toBoolean(this.props.settings.repeatUntilCorrect)}
+                                        />
+                                        retries:
+                                        <select
+                                            value={this.props.settings.maxAttempts}
+                                            onChange={this.handleInputValue.bind(this, 'maxAttempts')}
+                                            >
+                                            <option value={-1}>Until right</option>
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </li>
 
                             <li>
-                                <h3>Show how many questions</h3>
+                                <h4>Show how many questions</h4>
                                 <p>Only show X questions. If random is set to true, then it
                                     will randomly select the questions every time you play. If
                                     random is set to false, it will use meta.updated as a seed
                                     to determine the order of the question so that all players
                                     get the same order of question
                                 </p>
-                                <select
-                                    value={this.props.settings.numQuestions}
-                                    onChange={this.handleInputValue.bind(this, 'numQuestions')}
-                                    >
-                                    <option value={-1}>All</option>
-                                    <option value={10}>10</option>
-                                    <option value={20}>20</option>
-                                </select>
+                                <div className="cq-quizsettings__switch">
+                                    <div>
+                                        <select
+                                            value={this.props.settings.numQuestions}
+                                            onChange={this.handleInputValue.bind(this, 'numQuestions')}
+                                            >
+                                            <option value={-1}>All</option>
+                                            <option value={10}>10</option>
+                                            <option value={20}>20</option>
+                                            <option value={30}>30</option>
+                                        </select>
+                                    </div>
+
+                                </div>
                             </li>
 
                         </ul>

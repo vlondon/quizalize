@@ -86,7 +86,6 @@ var GroupActions = {
             };
 
             var data = Object.assign({}, settings.toObject(), dataToSend);
-            console.log('about to send', data, settings.toObject());
 
             GroupApi.publishAssignment(quizId, data)
                 .then((response) => {
