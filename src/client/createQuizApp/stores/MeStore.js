@@ -5,15 +5,13 @@ import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {UserConstants} from './../constants';
 import {UserActions} from './../actions';
-import type {UserType} from './../../../types/UserType';
+import type {UserType} from './../../../types';
 
 
 var intercom = require('./../utils/intercom');
 
 var intercomId = window.intercomId;
 var intercomAdded = false;
-
-
 
 let userAttributes = {
     ageTaught: undefined,
@@ -30,6 +28,7 @@ let userAttributes = {
 };
 
 const meAttributesRecord = Record(userAttributes);
+
 let noUser:UserType = {
     uuid: '-1',
     avatar: '',
@@ -37,6 +36,7 @@ let noUser:UserType = {
     name: '',
     attributes: new meAttributesRecord()
 };
+
 const meRecord = Record(noUser);
 
 class Me extends Store {
@@ -50,7 +50,6 @@ class Me extends Store {
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
-        console.log('state', state, state.uuid);
         if (state.uuid) {
             UserActions.getOwn();
         }
@@ -86,11 +85,8 @@ class Me extends Store {
         var quizzes = userData.quizzes || [];
         var apps = userData.apps || [];
 
-
-        console.log('userDatauserDatauserDatauserDatauserData', userData.attributes, typeof userData);
         userData.attributes = new meAttributesRecord(userData.attributes);
         this.state = new meRecord(userData);
-        console.log('userDatauserDatauserDatauserDatauserData',  this.state.attributes.accountType, typeof userData);
         this.apps = fillApps(apps, quizzes);
         this.emitChange();
     }

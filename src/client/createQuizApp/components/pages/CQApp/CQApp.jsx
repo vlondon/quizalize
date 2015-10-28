@@ -22,8 +22,11 @@ import { priceFormat } from './../../../utils';
 import { TransactionActions } from './../../../actions';
 
 
-import type {Quiz} from './../../../stores/QuizStore';
-import type {AppType} from './../../../stores/AppStore';
+import type {
+    Quiz,
+    AppType
+} from './../../../../../types';
+
 
 
 

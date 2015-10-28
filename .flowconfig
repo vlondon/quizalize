@@ -14,3 +14,4 @@
 
 [options]
 module.name_mapper='.*\(.png\)' -> 'empty/object'
+esproposal.class_static_fields=ignore

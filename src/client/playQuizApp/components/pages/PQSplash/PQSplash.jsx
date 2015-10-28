@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import type {Question} from './../../../../createQuizApp/stores/QuizStore';
+import type {Question} from './../../../../../types';
 import PQQuizStore from './../../../stores/PQQuizStore';
 import PQLink from './../../utils/PQLink';
 import PQPageTemplate from './../../PQPageTemplate';

@@ -2,18 +2,27 @@
 import React from 'react';
 
 import AppActions from './../../../actions/AppActions';
-import QuizStore from './../../../stores/QuizStore';
-import AppStore from './../../../stores/AppStore';
-import type {AppComplete} from './../../../stores/AppStore';
-import type {Quiz} from './../../../../../types';
-import TopicStore from './../../../stores/TopicStore';
-import CQViewAppColourPicker from './../../../components/views/CQViewAppColourPicker';
 
-import CQViewQuizList from './../../../components/views/CQViewQuizList';
+import {
+    QuizStore,
+    AppStore,
+    TopicStore,
+    TransactionStore
+} from './../../../stores';
+
+import type {
+    Quiz,
+    AppComplete
+} from './../../../../../types';
+
+import {
+    CQViewAppColourPicker,
+    CQViewQuizList,
+} from './../../../components';
+
 import CQViewCreateAppTemplate from './CQViewCreateAppTemplate';
 
-import TransactionStore from './../../../stores/TransactionStore';
-import priceFormat  from './../../../utils/priceFormat';
+import {priceFormat}  from './../../../utils';
 
 var appPicture: ?Object;
 

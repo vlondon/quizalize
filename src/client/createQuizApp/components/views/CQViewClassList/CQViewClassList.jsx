@@ -1,4 +1,5 @@
-import React from 'react';
+/* @flow */
+import React, { PropTypes } from 'react';
 import router from './../../../config/router';
 
 import {
@@ -18,15 +19,18 @@ import {
 
 import { AnalyticsActions } from './../../../actions';
 
+import type { UserType, QuizSettings } from './../../../../../types';
 type Props = {
     quizId: string;
+    settings: QuizSettings;
 };
 
 type State = {
     newClassName: string;
     canSaveNewClass: boolean;
     groups: Array<Object>;
-    groupsUsed: Array<Object>;
+    groupsUsed: Array<string>;
+    user: UserType;
 };
 
 export default class CQViewClassList extends React.Component {
@@ -34,13 +38,18 @@ export default class CQViewClassList extends React.Component {
     props: Props;
     state: State;
 
+    static propTypes = {
+        quizId: PropTypes.string.isRequired,
+        settings: PropTypes.object.isRequired
+    };
+
     constructor(props: Props) {
         super(props);
         var initialState = this.getState();
         initialState.newClassName = '';
         initialState.canSaveNewClass = false;
         initialState.groupsUsed = [];
-        initialState.user = MeStore.state;
+
 
         this.state = initialState;
 
@@ -69,7 +78,7 @@ export default class CQViewClassList extends React.Component {
         this.setState(this.getState());
     }
 
-    getState(){
+    getState() : State {
         let state = this.state || {};
         var groups = GroupStore.getGroups();
         var groupsContent = GroupStore.getGroupsContent();
@@ -143,10 +152,11 @@ export default class CQViewClassList extends React.Component {
                 this.refs.newClassBox.setSelectionRange(0, this.refs.newClassBox.value.length);
             });
         }
-        return { groups, groupsUsed, newClassName, canSaveNewClass, isNew };
+        let user = MeStore.state;
+        return { groups, groupsUsed, newClassName, canSaveNewClass, isNew , user };
     }
 
-    _showGroupsList(){
+    _showGroupsList(): Array<Object>{
 
         if (!this.state.groups) {
             return [{
@@ -163,7 +173,7 @@ export default class CQViewClassList extends React.Component {
 
     }
 
-    handleClick(classCode){
+    handleClick(classCode: string){
         var groupsUsed = [classCode];
         var newClassName = '';
         var canSaveNewClass = false;
@@ -174,7 +184,7 @@ export default class CQViewClassList extends React.Component {
         if (this.state.groupsUsed.length === 0) {
             this.state.groupsUsed[0] = this.state.groups[this.state.groups.length -1].code;
         }
-        GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0])
+        GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0], this.props.settings)
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
                 AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode});
@@ -182,7 +192,7 @@ export default class CQViewClassList extends React.Component {
             });
     }
 
-    handleClassName(ev){
+    handleClassName(ev: Object){
         this.setState({
             newClassName: ev.target.value,
             canSaveNewClass: ev.target.value.length > 0,
@@ -190,7 +200,7 @@ export default class CQViewClassList extends React.Component {
         });
     }
 
-    handleNewClass(ev){
+    handleNewClass(ev: Object){
         ev.preventDefault();
 
         var className = this.state.newClassName;
@@ -242,8 +252,8 @@ export default class CQViewClassList extends React.Component {
         router.setRoute('/quiz/premium');
     }
 
-    render() {
-        var newTitle = 'Type in the name of your class';
+    render() : any {
+
         var existingClasses, newClass, signUpFoPremium;
         if (this._showGroupsList().length > 0 && !this.state.isNew && !this.state.isPremium) {
             // newTitle = "...or create a new class";
@@ -366,7 +376,3 @@ export default class CQViewClassList extends React.Component {
     }
 
 }
-
-CQViewClassList.propTypes = {
-    quizId: React.PropTypes.string.isRequired
-};

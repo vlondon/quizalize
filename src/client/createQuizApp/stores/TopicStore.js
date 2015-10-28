@@ -7,24 +7,7 @@ var MeStore = require('./../stores/MeStore');
 var TopicActions = require('./../actions/TopicActions');
 
 
-export type Topic = {
-    attributes: Object;
-    created: Number;
-    createdString: string;
-    description?: string;
-    index?: number;
-    name: string;
-    ownerId?: string;
-    revision: number;
-    timestamp: number;
-    timestampedString: string;
-    title: string;
-    type?: string;
-    updated?: number;
-    updatedString?: string;
-    uuid: string;
-}
-
+import type { Topic } from './../../../types';
 
 
 var storeInit = false;
@@ -36,14 +19,6 @@ var _subjects = [];
 var _subjectHash = {};
 var _temporaryTopic = {};
 
-var _emptyTopic: Topic = {
-    attributes: {},
-    created: Date.now(),
-    name: '',
-    timestamp: Date.now(),
-    title: '',
-    uuid: '-1'
-};
 
 var loadPublicTopics = function(data) {
     _subjects = data.psubjects;
