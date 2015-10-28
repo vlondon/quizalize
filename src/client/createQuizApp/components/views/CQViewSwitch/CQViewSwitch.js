@@ -14,8 +14,6 @@ class CQViewSwitch extends React.Component {
     };
 
     render () : any {
-        const isChecked = this.props.checked;
-        console.log('isChecked', isChecked);
         return (
             <label className={`switch ${this.props.className}`}>
                 <input type="checkbox"  className="switch-input"

@@ -22,6 +22,8 @@ class CQViewQuizSettings extends React.Component {
             open: false
         };
 
+        this.handleOpenClose = this.handleOpenClose.bind(this);
+
     }
 
     handleCheckbox(property: string){
@@ -35,16 +37,25 @@ class CQViewQuizSettings extends React.Component {
         this.props.onChange(settings);
     }
 
+    handleOpenClose(){
+        let open = !this.state.open;
+        this.setState({open});
+    }
+
     render () : any {
 
         const toBoolean = value => value === 1;
-        const className = this.state.isOpen ? 'cq-quizsettings--open' : 'cq-quizsettings--close';
+        const className = this.state.open === true ? 'cq-quizsettings--open' : 'cq-quizsettings--close';
+        const chevron = this.state.open === true ? 'fa-chevron-up' : 'fa-chevron-down';
         return (
             <div className={`cq-quizsettings ${className}`}>
-                <div className="cq-quizsettings__background">
+
                     <div className="cq-quizsettings__modal">
-                        <h3 className="cq-quizsettings__header">Adjust settings for your class game</h3>
-                        <ul>
+                        <h5 className="cq-quizsettings__header" onClick={this.handleOpenClose}>
+                            <i className={`fa ${chevron}`}/>{` `}
+                            Adjust settings for your class game
+                        </h5>
+                        <ul className="cq-quizsettings__list">
                             <li>
                                 <h4>Random order</h4>
                                 <p>Questions will show jubmled to your students</p>
@@ -90,10 +101,11 @@ class CQViewQuizSettings extends React.Component {
                                             checked={toBoolean(this.props.settings.repeatUntilCorrect)}
                                         />
                                         <div className="cq-quizsettings__maxattempts">
-                                            
+
                                             <select
                                                 value={this.props.settings.maxAttempts}
                                                 onChange={this.handleInputValue.bind(this, 'maxAttempts')}
+                                                disabled={!toBoolean(this.props.settings.repeatUntilCorrect)}
                                                 >
                                                 <option value={-1}>Retry until right</option>
                                                 <option value={1}>retry 1 time</option>
@@ -133,7 +145,7 @@ class CQViewQuizSettings extends React.Component {
 
                         </ul>
                     </div>
-                </div>
+
             </div>
         );
     }
