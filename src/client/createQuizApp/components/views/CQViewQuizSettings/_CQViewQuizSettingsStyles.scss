@@ -1,5 +1,5 @@
+$size-column-right: 120px;
 .cq-quizsettings {
-
     &__background {
         // position: fixed;
         // position: absolute;
@@ -30,26 +30,30 @@
         }
         li {
             position: relative;
-            padding-right: 80px;
+            padding-right: $size-column-right;
             border-bottom: 1px solid #999;
         }
 
     }
     &__header {
         margin-top: 0;
+        margin-bottom: 40px;
     }
     &__switch {
         float: right;
-
         position: absolute;
         top: 0;
         bottom: 0;
         right: 0;
-        width: 80px;
+        width: $size-column-right;
         text-align: right;
         display: flex;
         align-items: center;
+        justify-content: flex-end;
 
+    }
+    &__maxattempts {
+        font-size: 12px;
     }
 
 }

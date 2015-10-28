@@ -89,18 +89,20 @@ class CQViewQuizSettings extends React.Component {
                                             onChange={this.handleCheckbox.bind(this, 'repeatUntilCorrect')}
                                             checked={toBoolean(this.props.settings.repeatUntilCorrect)}
                                         />
-                                        retries:
-                                        <select
-                                            value={this.props.settings.maxAttempts}
-                                            onChange={this.handleInputValue.bind(this, 'maxAttempts')}
-                                            >
-                                            <option value={-1}>Until right</option>
-                                            <option value={1}>1</option>
-                                            <option value={2}>2</option>
-                                            <option value={3}>3</option>
-                                            <option value={4}>4</option>
-                                            <option value={5}>5</option>
-                                        </select>
+                                        <div className="cq-quizsettings__maxattempts">
+                                            
+                                            <select
+                                                value={this.props.settings.maxAttempts}
+                                                onChange={this.handleInputValue.bind(this, 'maxAttempts')}
+                                                >
+                                                <option value={-1}>Retry until right</option>
+                                                <option value={1}>retry 1 time</option>
+                                                <option value={2}>retry 2 times</option>
+                                                <option value={3}>retry 3 times</option>
+                                                <option value={4}>retry 4 times</option>
+                                                <option value={5}>retry 5 times</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
