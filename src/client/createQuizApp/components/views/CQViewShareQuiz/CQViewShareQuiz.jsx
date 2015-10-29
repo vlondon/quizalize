@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 import router from './../../../config/router';
-import type {Quiz} from './../../../stores/QuizStore';
+import type {Quiz} from './../../../../../types';
 import QuizActions from './../../../actions/QuizActions';
 
 import CQViewShareQuizInput from './CQViewShareQuizInput';

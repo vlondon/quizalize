@@ -2,7 +2,7 @@
 var React = require('react');
 var moment = require('moment');
 
-import type {Quiz} from './../../../stores/QuizStore';
+import type {Quiz} from './../../../../../types';
 import QuizSorter from './../../../stores/extra/QuizSorter';
 
 var router = require('./../../../config/router');

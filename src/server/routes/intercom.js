@@ -98,14 +98,16 @@ exports.trackEvent = function(userId, event_name, meta, callback){
 };
 
 exports.events = function(req, res){
-    var profileId = req.session.user.uuid;
-    exports.trackEvent(profileId, req.params.name, req.body, function(err, resp) {
-        console.log("Intercom events respones");
-        if (!err) {
-            res.send(resp);
-        }
-        else {
-            res.send(err.message);
-        }
-    });
+    if (req.session.user) {
+        var profileId = req.session.user.uuid;
+        exports.trackEvent(profileId, req.params.name, req.body, function(err, resp) {
+            console.log("Intercom events respones");
+            if (!err) {
+                res.send(resp);
+            }
+            else {
+                res.send(err.message);
+            }
+        });
+    }
 };

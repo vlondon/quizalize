@@ -1,4 +1,24 @@
-/* @flow */
+
+var T = require('immutable');
+/// TOPIC ////
+export type Topic = {
+    attributes: Object;
+    created: Number;
+    createdString: string;
+    description?: string;
+    index?: number;
+    name: string;
+    ownerId?: string;
+    revision: number;
+    timestamp: number;
+    timestampedString: string;
+    title: string;
+    type?: string;
+    updated?: number;
+    updatedString?: string;
+    uuid: string;
+}
+
 
 /// GROUP ////
 export type Group = {
@@ -68,13 +88,21 @@ type QuizPayload = {
     questions: Array<Question>;
 }
 
+export type QuizSettings = T.Record<{
+    showTimer: number;
+    random: number;
+    numQuestions: number;
+    showAnswers: number;
+    repeatUntilCorrect: number;
+    maxAttempts: number;
+}>
+
 export type QuizComplete = {
     _error?: boolean;
     _new?: boolean;
     uuid: string;
     meta: QuizMeta;
     payload: QuizPayload;
-    nameTest: string;
 }
 
 export type Quiz = {
@@ -83,9 +111,10 @@ export type Quiz = {
     _category?: QuizCategory;
 }
 
+
+
 //// USER ////
-/* @flow */
-var T = require('immutable');
+
 type UserAttributesType = {
     location?: string;
     school?: string;
@@ -127,7 +156,19 @@ type AppMeta = {
     quizzes: Array<Object>
 }
 
+type AppPayload = {
+    quizzes: Array<string>;
+    categories: Array<any>;
+};
+
 export type AppType = {
     uuid: string;
     meta: AppMeta;
 }
+
+
+export type AppComplete = {
+    uuid: ?string;
+    meta: AppMeta;
+    payload: AppPayload;
+};

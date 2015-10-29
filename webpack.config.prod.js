@@ -25,28 +25,23 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'public/js/'),
         filename: '[name].js',
-        publicPath: '/assets/'
+        publicPath: '/js/'
     },
     module: {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel?optional[]=runtime'],
+                loaders: ['babel?optional[]=runtime&stage=0'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loader: 'babel?optional[]=runtime',
+                loader: 'babel?optional[]=runtime&stage=0',
                 exclude: /(node_modules|bower_components)/
             },
             {
                 test: /\.json$/,
                 loader: 'json'
-            },
-            {
-                test: /\.es6\.js$/,
-                loader: 'babel?optional[]=runtime',
-                exclude: /(bower_components)/
             },
             {
                 test: /\.scss$/,

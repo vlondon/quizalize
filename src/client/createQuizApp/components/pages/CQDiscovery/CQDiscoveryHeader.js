@@ -10,10 +10,13 @@ let CQDiscoveryHeader = (props) => {
     }
     return (
         <div className="cq-discovery__header">
+
             {header}
+
             <div className="cq-discovery__education__brand">
                 <img src={require('./../../../../assets/cq_discovery__logo.svg')} alt=""/>
             </div>
+
             <div className="cq-discovery__header__banner">
                 Get Quizalize Unlimited <br/>
                 Free for 1 year

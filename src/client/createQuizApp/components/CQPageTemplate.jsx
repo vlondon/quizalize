@@ -1,3 +1,4 @@
+/* @flow */
 var React           = require('react');
 
 var CQViewHeader   = require('./views/CQViewHeader');
@@ -25,18 +26,20 @@ var CQPageTemplate = React.createClass({
     componentWillUnmount: function() {
     },
 
-    getDefaultProps: function(){
+    getDefaultProps: function() : Object {
         return {
             wrapperMainClassName: 'wrapper',
             wrapperStyleClassName: 'wrapper-style-dark'
         };
     },
 
-    render: function () {
+    render: function () : any {
+        let wrapperMainClassName = this.props.wrapperMainClassName || '';
+        let wrapperStyleClassName = this.props.wrapperStyleClassName || '';
 
         return (
             <div className='cq'>
-                <div className={this.props.wrapperMainClassName + ' ' + this.props.wrapperStyleClassName}>
+                <div className={wrapperMainClassName + ' ' + wrapperStyleClassName}>
                     <CQViewHeader/>
 
                     <div className={this.props.className}>

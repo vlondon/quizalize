@@ -1,58 +1,22 @@
 /* @flow */
 import Store from './Store';
-import { MeStore } from './../stores';
+
 import App from './classes/App';
 import AppDispatcher from './../dispatcher/CQDispatcher';
 import {AppConstants} from './../constants';
 import {AppActions} from './../actions';
 import {Application} from './classes/Application';
-type AppMeta = {
-    code?: string;
-    colour: string;
-    created: number;
-    description: string;
-    iconURL: ?string;
-    name: string;
-    price: number;
-    profileId: string;
-    quizzes: Array<string>;
-    updated: number;
-};
 
-type AppPayload = {
-    quizzes: Array<string>;
-    categories: Array<any>;
-};
+import type {AppType, AppComplete } from './../../../types';
 
-type AppExtra = {
-    author: Object;
-    quizzes: Array<Object>;
-};
-
-export type AppType = {
-    uuid: string;
-    meta: AppMeta;
-    payload?: AppPayload;
-    extra?: AppExtra;
-};
-
-export type AppComplete = {
-    uuid: ?string;
-    meta: AppMeta;
-    payload: AppPayload;
-};
-
-
-var _publicApps: ?Array<App>;
-var _apps: Array<App> = [];
+var _publicApps: ?Array<AppType>;
+var _apps: Array<AppType> = [];
 var _appLoaded = false;
 
 var _appInfo = {};
 
 var storeInit = false;
 var storeInitPublic = false;
-
-
 
 var fixAppTypes = function(app: ?App){
     if (app) {

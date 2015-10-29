@@ -22,28 +22,34 @@ block body
         var categoryString = "#{JSON.stringify(categories)}";
         categoryString = categoryString.replace(/&quot;/g, '"');
         
+        var quizzesString = JSON.parse(!{JSON.stringify(pendingString)});
+    
+        
         var categories = JSON.parse(categoryString);
         var subjects = JSON.parse(subjectString);
-        console.log("subjects", subjects);
+        var quizzes = quizzesString;
+        
+
+
+
         function showCategories(uuid, subId, catId) {
             var subjectId = $(subId + uuid).val();
-            console.log("Subject is now",subjectId);
             
             var availableCategories = categories.filter(function(category) {
                 return category.subjectId == subjectId;
             });
-            console.log("available" + JSON.stringify(availableCategories));
+
             var selectId = $(catId + uuid)
             availableCategories.forEach(function(category){
                 selectId.append($("<option />").val(category.uuid).text(category.name));
             });
         }
         var categoryNameFromCategoryId = function(categoryId){
-            console.log(categoryId);
+            //- console.log(categoryId);
             var category = categories.filter(function(cat) {
                 return cat.uuid == categoryId;
             });
-            console.log(category);
+            //- console.log(category);
             if (category[0] === undefined){
                 return "No valid category";
                 }
@@ -54,16 +60,29 @@ block body
             return category[0].name;
             }
         };
+        
+
+        
         $(function() {
+        
+        
+            window.pendingPage({
+                categories: categories,
+                subjects: subjects,
+                quizzes: quizzes
+            });
+            
+            
             $(".categoryId").each(function() {
                 var categoryName = categoryNameFromCategoryId($(this).text());
-                console.log(categoryName);
+                //- console.log(categoryName);
                 $(this).text(categoryName);
             });
         });
         
     
     h1 Pending Quizzes
+    #react
     .container-fluid
         .row
             table(border="1", style="background-color:white;font-size:12px; width:100%")
@@ -117,3 +136,4 @@ block body
                         //-         select(name="publicCategoryId", id="categorynew#{quiz.uuid}")
                         //-         input(type="submit" value="Approve First")
                         //-         
+    script(src="/js/admin.js")

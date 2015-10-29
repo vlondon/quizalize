@@ -147,8 +147,8 @@ exports.register =  function(req, res) {
     zzish.registerUser(userEmail, encrypt(userPassword), function(err, user) {
         if (!err) {
 
-            // user.attributes.accountType = 0;
-            // user.attributes.accountTypeUpdated = Date.now();
+            user.attributes.accountType = 0;
+            user.attributes.accountTypeUpdated = Date.now();
 
             req.session.user = user;
             logger.info('Setting account type for', userEmail);

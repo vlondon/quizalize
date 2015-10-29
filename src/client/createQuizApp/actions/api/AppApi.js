@@ -2,7 +2,7 @@
 import request from 'superagent';
 import noCache from 'superagent-no-cache';
 
-import type {AppType} from './../../stores/AppStore';
+import type { AppType } from './../../../../types';
 import { MeStore } from './../../stores';
 
 var AppApi = {
