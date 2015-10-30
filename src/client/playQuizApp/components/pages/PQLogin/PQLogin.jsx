@@ -29,6 +29,7 @@ export default class PQLogin extends React.Component {
         PQQuizActions.loginUser(name, classCode);
         console.log('submitting', name, classCode);
     }
+    
     render () :any {
         return (
             <div className="pq-login">
@@ -47,7 +48,7 @@ export default class PQLogin extends React.Component {
                             Class Code
                         </label>
                         <div className="col-sm-9">
-                            <input id="classcode" type="text" placeholder="e.g. 2AEFE" autocapitalize="off" className="form-control"
+                            <input id="classcode" type="text" placeholder="e.g. 2AEFE" autoCapitalize="off" className="form-control"
                                 value={this.state.classCode}
                                 onChange={this.handleChange.bind(this, 'classCode')}
                             />

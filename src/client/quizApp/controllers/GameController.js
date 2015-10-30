@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom');
 
 var CQQuizOfTheDay = require('createQuizApp/components/CQQuizOfTheDay');
 var QLLeaderboard = require('quizApp/components/QLLeaderboard');
+import QLConversation, {startConversation} from './../components/QLConversation';
 
 angular.module('quizApp').controller('GameController', function(QuizData, ExtraData, $log, $location, $rootScope, $routeParams, $scope){
     var self = this;
@@ -41,7 +42,6 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
 
 
     var getLeaderBoard = function(quiz){
-        console.log('loading score for ', quiz.uuid);
         ExtraData.getLeaderBoard(quiz.uuid)
             .then(function(result){
                 self.leaderboard = result;
@@ -69,7 +69,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                     classCode: localStorage.getItem("classCode"),
                     quizId: self.currentQuiz.uuid
                 });
-                window.Intercom('shutdown');                
+                window.Intercom('shutdown');
             }
 
 
@@ -90,14 +90,27 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                     }
                     self.showSubText = true;
                 }
-                console.log('self.currentQuiz.meta', self.currentQuiz);
-                if (self.currentQuiz.meta.featured) {
-                    // addReactComponent();
-                    //getLeaderBoard(self.currentQuiz);
-                }
-                console.log('self.currentQuiz, ', self.currentQuiz);
-                if (self.catId !== 'private'){
-                    QuizData.startCurrentQuiz();
+                console.log('self.currentQuiz.meta', self.currentQuiz.uuid);
+                // conversation quiz!
+                if (self.currentQuiz.uuid === '6e180b9c-ff23-4e23-9f41-927a455491a0') {
+                    console.log('starting conversation');
+                    startConversation(self.currentQuiz);
+                    ReactDOM.render(
+                        React.createElement(QLConversation, {quiz: self.currentQuiz}),
+                        document.getElementById('convContainer')
+                    );
+                    self.conversation = true;
+                    $scope.conversation = true;
+
+                } else {
+                    if (self.currentQuiz.meta.featured) {
+                        // addReactComponent();
+                        //getLeaderBoard(self.currentQuiz);
+                    }
+                    console.log('self.currentQuiz, ', self.currentQuiz);
+                    if (self.catId !== 'private'){
+                        QuizData.startCurrentQuiz();
+                    }
                 }
             }
         }

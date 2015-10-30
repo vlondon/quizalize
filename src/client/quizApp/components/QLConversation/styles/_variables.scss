@@ -1,0 +1,270 @@
+
+////////////////////////////////// YOUNIVERSE > VARIABLES //////////////////////////////////
+
+// ------------ COLORS ------------ //
+
+$color-brand-grey-dark:     #0E0E13;
+$color-brand-grey:          #666666;
+$color-brand-grey-light:    #DADADA;
+
+$color-brand-red:           #E15B54;
+$color-brand-red-dark:      #BF3633;
+$color-brand-orange:        #E69D52;
+$color-brand-orange-dark:   #CC7D36;
+$color-brand-purple:        #948AC6;
+$color-brand-purple-dark:   #6961A3;
+$color-brand-blue:          #4BA3C5;
+$color-brand-blue-dark:     #308DAA;
+$color-brand-seablue:       #53A4B1;
+$color-brand-seablue-dark:  #34848C;
+$color-brand-green:         #49B19C;
+$color-brand-green-dark:    #32937C;
+
+
+$color-main-white:          #FFFFFF;
+$color-main-gray-light:     #F2F2F2;
+$color-main-gray:           #A8A8A8;
+$color-main-gray-dark:      #4D4D4D;
+$color-main-dirt:           #70656D;
+$color-main-red:            #E15B54;
+
+$color-main-black:          #363736;
+$color-background-warm:     #E0DFD9;
+
+$color-main-blue:           #29ABE2;
+$color-main-orange:         #F29B44;
+$color-main-turquoise:      #2F8FAB;
+$color-main-blue-fb:        #4C66A4;
+$color-main-error:          #BE151C;
+$color-main-success:        #62C462;
+
+$color-main-facebook:       #4B6E9D;
+$color-main-twitter:        #5DC8E1;
+
+$color-user-profile:        #4BA3C5;
+$color-user-mood:           $color-main-red;
+$color-user-behavior:       #948AC6;
+$color-user-chat:           #4EB09C;
+$color-user-listen:         #4EB09C;
+$color-user-conversation:   #F4985B;
+$color-user-spikes:         $color-main-gray-dark;
+
+$color-ocean-violet:        #42116D; // o
+$color-ocean-green:         #00A8A8; // c
+$color-ocean-yellow:        #D9E021; // e
+$color-ocean-orange:        #ED8A29; // a
+$color-ocean-red:           #B21052; // n
+
+$color-bg-success:   $color-main-success;
+$color-bg-info:      $color-main-blue;
+$color-bg-warning:   #fca13c;
+$color-bg-danger:    $color-main-error;
+
+$color-orange:          #EB6423;
+$color-orange-dirt:     #ED8B00;
+
+$gray-darker:            lighten(#000, 13.5%) !default; // #222
+$gray-dark:              lighten(#000, 20%) !default;   // #333
+$gray:                   lighten(#000, 33.5%) !default; // #555
+$gray-light:             lighten(#000, 60%) !default;   // #999
+$gray-lighter:           lighten(#000, 93.5%) !default; // #eee
+
+// MOOD
+$mood-color: #1AC2FF;
+$mood-primary-happiness: $color-user-mood;
+$mood-primary-energy: #2B8CBE;
+$mood-secondary: #D6D6D6;
+
+
+// ------------ FONTS ------------ //
+
+$font-family-georgia:     Georgia, "Times New Roman", Times, serif;
+$font-family-montserrat:  'Montserrat', 'Lato', sans-serif;
+$font-family-lato:        'Lato', sans-serif;
+$font-family-frutiger:    'Frutiger', 'InterFaceType-Light', sans-serif;
+
+$font-family-base:        $font-family-lato;
+$font-family-exp1:        $font-family-frutiger;
+$font-family-exp2:        $font-family-georgia;
+
+$font-size-base:          14px;
+$font-size-large:         ceil($font-size-base * 1.25) !default; // ~18px
+$font-size-small:         ceil($font-size-base * 0.85) !default; // ~12px
+
+$font-size-h1:            floor($font-size-base * 2.6) !default; // ~36px
+$font-size-h2:            floor($font-size-base * 2.15) !default; // ~30px
+$font-size-h3:            ceil($font-size-base * 1.7) !default; // ~24px
+$font-size-h4:            ceil($font-size-base * 1.25) !default; // ~18px
+$font-size-h5:            $font-size-base !default;
+$font-size-h6:            ceil($font-size-base * 0.85) !default; // ~12px
+
+$line-height-base:        1.428571429 !default; // 20/14
+$line-height-computed:    floor($font-size-base * $line-height-base) !default; // ~20px
+
+$headings-font-family:    $font-family-lato !default;
+$headings-font-weight:    700 !default;
+$headings-line-height:    1.1 !default;
+$headings-color:          inherit !default;
+
+$text-color:              $color-main-black;
+
+// ------------ COMPONENTS ------------ //
+
+// [based on 14px font-size and 1.428 line-height (~20px to start)]
+
+$padding-base-vertical:          6px !default;
+$padding-base-horizontal:        12px !default;
+
+$padding-large-vertical:         10px !default;
+$padding-large-horizontal:       16px !default;
+
+$padding-small-vertical:         5px !default;
+$padding-small-horizontal:       10px !default;
+
+$line-height-large:              1.33 !default;
+$line-height-small:              1.5 !default;
+
+$border-radius-base:             0 !default;
+$border-radius-large:            0 !default;
+$border-radius-small:            0 !default;
+
+// ------------ MENU ------------ //
+
+$menu-width: 240px;
+$bar-height: 80px;
+$bar-line-height: 36px;
+
+// ------------ BUTTONS ------------ //
+
+$btn-font-weight:                normal !default;
+
+$btn-default-color:              #FFF !default;
+$btn-default-bg:                 rgba(#FFF, .5) !default;
+$btn-default-border:             #ccc !default;
+
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 #428bca !default;
+$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
+
+$btn-success-color:              #fff !default;
+$btn-success-bg:                 #5cb85c !default;
+$btn-success-border:             darken($btn-success-bg, 5%) !default;
+
+$btn-warning-color:              #fff !default;
+$btn-warning-bg:                 #f0ad4e !default;
+$btn-warning-border:             darken($btn-warning-bg, 5%) !default;
+
+$btn-danger-color:               #fff !default;
+$btn-danger-bg:                  #d9534f !default;
+$btn-danger-border:              darken($btn-danger-bg, 5%) !default;
+
+$btn-info-color:                 #fff !default;
+$btn-info-bg:                    #5bc0de !default;
+$btn-info-border:                darken($btn-info-bg, 5%) !default;
+
+$btn-link-disabled-color:        $gray-light !default;
+
+$btn-circular-action-size:       42px;
+
+// ------------ FORMS ------------ //
+
+$input-bg:                       #fff !default;
+$input-bg-disabled:              $gray-lighter !default;
+
+$input-color:                    $gray !default;
+$input-border:                   #ccc !default;
+$input-border-radius:            $border-radius-base !default;
+$input-border-focus:             #66afe9 !default;
+
+$input-color-placeholder:        rgba(#FFF, .4) !default;
+
+$input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 2) !default;
+$input-height-large:             (floor($font-size-large * $line-height-large) + ($padding-large-vertical * 2) + 2) !default;
+$input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2) !default;
+
+$legend-color:                   $gray-dark !default;
+$legend-border-color:            #e5e5e5 !default;
+
+// states and alerts
+$state-success-text:             #468847 !default;
+$state-success-bg:               #dff0d8 !default;
+$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%) !default;
+$state-info-text:                #3a87ad !default;
+$state-info-bg:                  #d9edf7 !default;
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+$state-warning-text:             #c09853 !default;
+$state-warning-bg:               #fcf8e3 !default;
+$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
+$state-danger-text:              #b94a48 !default;
+$state-danger-bg:                #f2dede !default;
+$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
+
+// ------------ CONVERSATION ------------ //
+
+$answer-media-size: 80px;
+
+// ------------ QUIZ ------------ //
+
+$quiz-background-color:     transparent;
+$quiz-option-color:         #4BAFD1;
+$quiz-option-border-color:  #49BBA6;
+$quiz-option-border-size:   2px;
+
+// quiz grid
+$quiz-option-size:          105px;
+$quiz-option-margin:          5px;
+$quiz-option-border:            0;
+$quiz-option-width:         $quiz-option-size + ($quiz-option-margin + $quiz-option-border)*2;
+
+// quiz columns
+$quiz-columns-5:            5; // 5, 10, 13, 14, 15
+$quiz-columns-4:            4; // 4, 7, 8, 11, 12
+$quiz-columns-3:            3; // 2, 3, 6, 9
+
+
+// vieport dimensions
+// -------------------------
+$size-mobile:               640px;     // Maximum mobile screen width
+$size-tablet:  $size-mobile + 1px;     // Minimum tablet screen width
+$size-desktop:              960px;     // Minimum desktop screen width
+$size-widescreen:          1200px;     // Minimum wide screen width
+$size-facebook-iframe:      760px;     // Facebook iFrame
+$size-iphone-landscape:     480px;     // 480*320 - iPhone Landscpe
+$size-iphone-portrait:      320px;     // 320*480 - iPhone Portrait
+$size-sticky-trigger:       660px;      // Size at which the sticky footer gets triggered
+
+
+// ------------ GRID SETTINGS ------------ //
+
+$use-silent-classes:    true;
+$responsive:           false;
+$float:                 true;
+// $use-markup-fix:        false;
+// This is breaking letter-spacing :(
+$max-width:             1140px;
+$push:                  true;
+$pull:                  true;
+
+
+// Conversation settigns //
+$bubble-radius: 5px;
+
+
+// Quests
+$quest-personality-portrait-picture: url('/images/conversation/quests/Conv-Areas_Personality-Portrait.png');
+$quest-personality-portrait-color: #F99339;
+
+$quest-life-overview-picture: url('/images/conversation/quests/Conv-Areas-Life-Overview.png');
+$quest-life-overview-color: #938AC3;
+
+$quest-love-picture: url('/images/conversation/quests/Conv-Areas-Love.png');
+$quest-love-color: #938AC3;
+
+$quest-careers-picture: url('/images/conversation/quests/Conv-Areas-Career.png');
+$quest-careers-color: #F99339;
+
+$quest-strengths-picture: url('/images/conversation/quests/Conv-Areas-Strengths.png');
+$quest-strengths-color: #938AC3;
+
+$quest-purpose-and-values-picture: url(/images/conversation/quests/Conv-Areas-Purpose_Values.png);
+$quest-purpose-and-values-color: #F99339;

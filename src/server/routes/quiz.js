@@ -104,6 +104,30 @@ exports.index =  function(req, res) {
 
 };
 
+exports.newPlayer =  function(req, res) {
+
+    var params = {
+        zzishapi: getZzishParam(),
+        devServer: process.env.ZZISH_DEVMODE,
+        publicConfig: publicConfig,
+        intercomId: process.env.intercomAppId
+    };
+
+    if (req.query.uuid !== undefined) {
+        zzish.getPublicContent('quiz', req.query.uuid, function(err, result) {
+
+            if (!err) {
+                params.quiz = result;
+            }
+            res.render('newPlayer', params);
+        });
+    }
+    else {
+        res.render('newPlayer', params);
+    }
+
+};
+
 exports.indexQuiz =  function(req, res) {
     res.redirect(301, '/app?uuid=' + req.params.id + '#/play/public/' + req.params.id);
 };

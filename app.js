@@ -235,6 +235,10 @@ app.get('/app/', quiz.index);
 app.get('/qapp/:id', quiz.indexQuiz);
 app.post('/quizHelp/', quiz.help);
 
+//new player
+app.get('/play/', quiz.newPlayer);
+app.get('/play/*', quiz.newPlayer);
+
 app.get('/quiz/service', quiz.service);
 app.get('/quiz/privacy', quiz.privacy);
 app.get('/quiz/find-a-quiz', quiz.quizFinder);

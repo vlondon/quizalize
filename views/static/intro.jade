@@ -5,7 +5,8 @@ script.
 include navbar
 
 .container
-    .row(style="padding-top:10px")
+    #convContainer
+    .row(style="padding-top:10px",ng-if="!conversation")
         
         .col-x-12.col-md-8.col-md-offset-2
             .well
