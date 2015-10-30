@@ -1,5 +1,5 @@
 /* @flow */
-import zzish from './../../zzishsdk';
+import zzish from './../../zzish';
 import logger from './../../logger';
 import Immutable, {Map} from 'immutable';
 
