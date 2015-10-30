@@ -43,7 +43,7 @@ type State = {
     search: string;
 };
 
-export default class CQPublic extends React.Component {
+export default class CQMarketplace extends React.Component {
 
     state: State;
 
@@ -180,7 +180,7 @@ export default class CQPublic extends React.Component {
                         quizzes={this.state.quizzes}
                         showCta={true}
                         className="cq-public__list"
-                        sortBy="time">
+                    >
 
                         <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
 
