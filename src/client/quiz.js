@@ -1,5 +1,11 @@
 var token;
-var initParams = window.publicConfig.zzishInit;
+var initParams;
+try {
+    var initParams = JSON.parse(window.publicConfig.zzishInit);
+}
+catch (e) {
+    initParams = window.publicConfig.zzishInit;
+}
 var pathArray = location.href.split( '/' );
 var protocol = pathArray[0];
 var host = pathArray[2];
@@ -15,6 +21,16 @@ if (initParams.webUrl !== undefined && initParams.webUrl.indexOf("http://test") 
       "webUrl": "http://test.zzish.com/",
       "logEnabled": true
   };
+}
+if (initParams.webUrl !== undefined && initParams.webUrl.indexOf("http://localhost") === 0) {
+    url = "http://localhost:3001/";
+    params = {
+        "api": "2d14d1984a2e3293bd13aab34c85e2ea",
+        "protocol": "http://",
+        "baseUrl": "localhost:8080/zzishapi/api/",
+        "webUrl": "http://localhost:3000/",
+        "logEnabled": true
+    };
 }
 
 Zzish.init(params);

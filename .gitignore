@@ -4,3 +4,4 @@ public/js/**
 .idea
 uploads
 sessions
+.node-xmlhttprequest-sync-*

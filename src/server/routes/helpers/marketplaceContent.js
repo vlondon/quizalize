@@ -26,7 +26,7 @@ let loadContent = function(){
         // response = response.splice(0, 4);
         let quizzesTemp = {};
         response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
-        quizzes = Immutable.fromJS(quizzesTemp);
+        quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
 
     });
 
@@ -70,24 +70,42 @@ let loadContent = function(){
         });
         topics = Immutable.fromJS(topicsTemp);
 
-        setTimeout(function(){
-            search.app('italia');
-        }, 2000);
-
     });
 };
 
 loadContent();
+setInterval(loadContent, 60 * 60 * 1000);
+
+let sortQuizzes = function(arrayOfQuizzes){
+    arrayOfQuizzes.sort((q1, q2)=>{
+        let q1meta = q1.get('meta');
+        let q2meta = q2.get('meta');
+        let cr1 = q1meta && q1meta.get('contentRating') ? q1meta.get('contentRating') : 5;
+        let cr2 = q2meta && q2meta.get('contentRating') ? q2meta.get('contentRating') : 5;
+        let time1 = q1meta.get('updated');
+        let time2 = q2meta.get('updated');
+        console.log('cr1', cr1);
+        console.log('cr2', cr2);
+        if (cr1 > cr2) {
+            return 1;
+        } else if (cr1 === cr2) {
+            return (time1 > time2) ? 1 : -1;
+        } else {
+            return -1;
+        }
+    });
+    return arrayOfQuizzes;
+};
 
 let search = {
     quiz: function(searchString: string) : Array<Object> {
         let start = process.hrtime();
-        
+
         if (searchString === ''){
             let result = quizzes.toArray();
             let end = process.hrtime(start);
             logger.info('Search for emtpy string', end[1]/1000, result.length);
-            return result;
+            return (result);
         }
 
         let topicsFound = topics.filter(value => value.get('fullName').toLowerCase().indexOf(searchString.toLowerCase()) !== -1 );
@@ -127,12 +145,14 @@ let search = {
         });
 
 
+
+
         // logger.info('got the following topics', topicsFound.count());
         // logger.info('quizzesFoundWithTheSubtopic', quizzesFoundWithTheSubtopic);
         // logger.info('quizzesFoundWithName', quizzesFoundWithName.count());
         let end = process.hrtime(start);
         logger.info('Search for', searchString, end[1]/1000, result.length);
-        return result;
+        return (result);
         // let topicResults =
     },
     app: (searchString : string) : Array<Object> =>  {

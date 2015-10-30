@@ -35,31 +35,50 @@ var QuizApi = {
 
         var promises = [];
 
-        return function(search: string = '', categoryId: string, profileId?: string) : Promise {
-
-            var chosenPromise = promises.filter(p => p.search === search && p.categoryId === categoryId)[0];
-            if (chosenPromise){
-                return chosenPromise.promise;
-            } else {
-                var TopicStore = require('./../../stores/TopicStore');
-                var subjects = TopicStore.getPublicSubjects();
-                var promise = new Promise(function(resolve, reject){
-                    request.post(`/search/quizzes`)
-                        .send({search, categoryId, profileId, subjects})
-                        .end(function(error, res){
-                            if (error) {
-                                reject();
-                            } else {
-                                resolve(res.body);
-                            }
-
-                        });
+        return function(search: string = '', categoryId: string) : Promise {
+            let query = `{
+                quizzes(search:"${search}") {
+                    uuid,
+                    meta {
+                        name,
+                        categoryId,
+                        imageUrl,
+                        price,
+                        publicCategoryId,
+                        updated
+                    }
+                }
+            }`;
+            // categoryId,
+            // imageUrl,
+            // price,
+            // publicCategoryId,
+            // updated
+            var promise = new Promise(function(resolve, reject){
+                request.post(`/graphql/`)
+                    .set('Content-Type', 'application/graphql')
+                    .send(query)
+                    .end(function(error, res){
+                        console.log('res', res.body);
+                        if (error) {
+                            reject();
+                        } else {
+                            resolve(res.body.data.quizzes);
+                        }
 
                     });
 
-                promises.push({ categoryId, search, promise });
-                return promise;
-            }
+                });
+
+            promises.push({ categoryId, search, promise });
+            return promise;
+            // var chosenPromise = promises.filter(p => p.search === search && p.categoryId === categoryId)[0];
+            // if (chosenPromise){
+            //     return chosenPromise.promise;
+            // } else {
+            //
+            //
+            // }
         };
     })(),
 
