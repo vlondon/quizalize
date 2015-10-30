@@ -58,7 +58,7 @@ class CQViewQuizSettings extends React.Component {
                         <ul className="cq-quizsettings__list">
                             <li>
                                 <h4>Random order</h4>
-                                <p>Questions will show jubmled to your students</p>
+                                <p>Questions will be shown in random order for each student</p>
                                 <div className="cq-quizsettings__switch">
                                     <CQViewSwitch
                                         onChange={this.handleCheckbox.bind(this, 'random')}
@@ -69,7 +69,7 @@ class CQViewQuizSettings extends React.Component {
                             </li>
                             <li>
                                 <h4>Show answers</h4>
-                                <p>Questions will show jubmled to your students</p>
+                                <p>Students will be shown the correct answer if they get it wrong</p>
                                 <div className="cq-quizsettings__switch">
                                     <CQViewSwitch
                                         onChange={this.handleCheckbox.bind(this, 'showAnswers')}
@@ -80,7 +80,7 @@ class CQViewQuizSettings extends React.Component {
 
                             <li>
                                 <h4>Show timer</h4>
-                                <p>Don't show the timer to your students. Correct answers always will score the maximum amount.</p>
+                                <p>Don't show the question timer to students. Correct answers always will score the maximum amount.</p>
                                 <div className="cq-quizsettings__switch">
                                     <CQViewSwitch
                                         onChange={this.handleCheckbox.bind(this, 'showTimer')}
@@ -91,8 +91,8 @@ class CQViewQuizSettings extends React.Component {
 
 
                             <li>
-                                <h4>repeatUntilCorrect</h4>
-                                <p>Questions will show jubmled to your students</p>
+                                <h4>Repeat Until Correct</h4>
+                                <p>The questions will be asked again and again until the student answers it correctly.</p>
                                 <div className="cq-quizsettings__switch">
                                     <div>
 
@@ -120,12 +120,8 @@ class CQViewQuizSettings extends React.Component {
                             </li>
 
                             <li>
-                                <h4>Show how many questions</h4>
-                                <p>Only show X questions. If random is set to true, then it
-                                    will randomly select the questions every time you play. If
-                                    random is set to false, it will use meta.updated as a seed
-                                    to determine the order of the question so that all players
-                                    get the same order of question
+                                <h4>Number of questions</h4>
+                                <p> If your quiz has lots of questions you can select to only set a specific number of them. The selection of these quistions is random.
                                 </p>
                                 <div className="cq-quizsettings__switch">
                                     <div>
