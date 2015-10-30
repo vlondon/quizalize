@@ -80,7 +80,7 @@ class CQViewQuizSettings extends React.Component {
 
                             <li>
                                 <h4>Show timer</h4>
-                                <p>Don't show the question timer to students. Correct answers always will score the maximum amount.</p>
+                                <p>If this is set to no the timer won't be shown to students. Correct answers always will score the maximum amount.</p>
                                 <div className="cq-quizsettings__switch">
                                     <CQViewSwitch
                                         onChange={this.handleCheckbox.bind(this, 'showTimer')}
@@ -91,7 +91,7 @@ class CQViewQuizSettings extends React.Component {
 
 
                             <li>
-                                <h4>Repeat Until Correct</h4>
+                                <h4>Repeat until correct</h4>
                                 <p>The questions will be asked again and again until the student answers it correctly.</p>
                                 <div className="cq-quizsettings__switch">
                                     <div>
