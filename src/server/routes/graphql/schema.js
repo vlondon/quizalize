@@ -355,6 +355,10 @@ const schema = new GraphQLSchema({
                     search: {
                         name: 'search',
                         type: GraphQLString
+                    },
+                    cate: {
+                        name: 'search',
+                        type: GraphQLString
                     }
                 },
                 resolve: (root, {search})=>{

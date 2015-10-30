@@ -14,6 +14,10 @@ var CQDropdown = React.createClass({
         };
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({selected: nextProps.selected});
+    },
+
     handleChange: function(ev){
         var fullObject = this.props.values.filter(v=> v.value === ev.currentTarget.value)[0];
         this.props.onChange(fullObject);
