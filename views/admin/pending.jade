@@ -16,17 +16,18 @@ block body
     -}
     
     script.        
-        var subjectString = "#{JSON.stringify(subjects)}";
-        subjectString = subjectString.replace(/&quot;/g, '"');
+        var subjectString = JSON.parse(!{JSON.stringify(subjects)});
+        //- subjectString = subjectString.replace(/&quot;/g, '"');
         
-        var categoryString = "#{JSON.stringify(categories)}";
-        categoryString = categoryString.replace(/&quot;/g, '"');
+        var categoryString = JSON.parse(!{JSON.stringify(categories)});
+        console.log("categories", categoryString);
+        //- categoryString = categoryString.replace(/&quot;/g, '"');
         
         var quizzesString = JSON.parse(!{JSON.stringify(pendingString)});
     
         
-        var categories = JSON.parse(categoryString);
-        var subjects = JSON.parse(subjectString);
+        var categories = categoryString;
+        var subjects = subjectString;
         var quizzes = quizzesString;
         
 
