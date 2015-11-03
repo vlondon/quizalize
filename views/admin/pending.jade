@@ -15,34 +15,73 @@ block body
         -return result;
     -}
     
-    script.        
-        var subjectString = "#{JSON.stringify(subjects)}";
-        subjectString = subjectString.replace(/&quot;/g, '"');
-        
-        var categoryString = "#{JSON.stringify(categories)}";
-        categoryString = categoryString.replace(/&quot;/g, '"');
-        
-        var quizzesString = JSON.parse(!{JSON.stringify(pendingString)});
-    
-        
-        var categories = JSON.parse(categoryString);
-        var subjects = JSON.parse(subjectString);
-        var quizzes = quizzesString;
-        
+    script.   
+        var subjects, categories, pending;
+        $.post("/admin/queryDb",
+        {
+            dbname: "contentcategory",
+            dbquery: "{}"
+        },
+        function(data, status){
+            categories = data;
+            $.post("/admin/queryDb",
+            {
+                dbname: "subject",
+                dbquery: "{}"
+            },
+            function(data, status){
+                subjects = data;
+                
+                $.post("/admin/queryDb",
+                {
+                    dbname: "content",
+                    dbquery: "{'meta.published': 'pending'}"
+                },
+                function(data, status){
+                    quizzes = data;
+                    
+                    //- window.pendingPage({
+                    //-     categories: categories,
+                    //-     subjects: subjects,
+                    //-     quizzes: quizzes
+                    //- });
+
+                    quizzes.forEach(function(quiz) {
+                        var subjectId = $("#subject" + quiz.uuid)
+                        subjects.forEach(function(subject){
+                            subjectId.append($("<option />").val(subject.uuid).text(subject.name));
+                        });                        
+                    });
 
 
+                    $(".categoryId").each(function() {
+                        var categoryName = categoryNameFromCategoryId($(this).text());
+                        //- console.log(categoryName);
+                        $(this).text(categoryName);
+                    });                    
+                    
+                });
+            });
+            
+        });       
 
         function showCategories(uuid, subId, catId) {
             var subjectId = $(subId + uuid).val();
-            
-            var availableCategories = categories.filter(function(category) {
-                return category.subjectId == subjectId;
-            });
-
             var selectId = $(catId + uuid)
-            availableCategories.forEach(function(category){
-                selectId.append($("<option />").val(category.uuid).text(category.name));
-            });
+            
+            selectId
+                .find('option')
+                .remove()
+                .end();
+            if (subjectId != "") {
+                var availableCategories = categories.filter(function(category) {
+                    return category.subjectId == subjectId;
+                });
+
+                availableCategories.forEach(function(category){
+                    selectId.append($("<option />").val(category.uuid).text(category.name));
+                });                
+            }
         }
         var categoryNameFromCategoryId = function(categoryId){
             //- console.log(categoryId);
@@ -60,26 +99,7 @@ block body
             return category[0].name;
             }
         };
-        
-
-        
-        $(function() {
-        
-        
-            window.pendingPage({
-                categories: categories,
-                subjects: subjects,
-                quizzes: quizzes
-            });
-            
-            
-            $(".categoryId").each(function() {
-                var categoryName = categoryNameFromCategoryId($(this).text());
-                //- console.log(categoryName);
-                $(this).text(categoryName);
-            });
-        });
-        
+                
     
     h1 Pending Quizzes
     #react
@@ -104,7 +124,7 @@ block body
                         -}
                         -return y.updated - x.updated;
                     -});
-
+    
                 for quiz in pending
                     tr
                         td #{quiz.type}
@@ -121,9 +141,7 @@ block body
                         td
                             form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
                                 select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subject', '#category')", id="subject#{quiz.uuid}")
-                                    option 
-                                    for subject in subjects
-                                        option(value=subject.uuid) #{subject.name}
+                                    option(value="") Please Select
                                 select(name="publicCategoryId", id="category#{quiz.uuid}")
                                 input(type="submit" value="Approve")
                                     

@@ -158,6 +158,8 @@ if (process.env.admin === "true") {
     app.post('/admin/email', admin.email);
     app.post('/admin/xlsx', admin.xlsx);
     app.get('/admin/pixel', admin.pixeltest);
+
+    app.post('/admin/queryDb', admin.queryDb);
 }
 
 app.get('/unsubscribe', admin.unsubscribe);
