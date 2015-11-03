@@ -1,5 +1,5 @@
 /* @flow */
-import zzish from './../../zzishsdk';
+import zzish from './../../zzish';
 import logger from './../../logger';
 import Immutable, {Map} from 'immutable';
 
@@ -9,9 +9,10 @@ const APP_CONTENT_TYPE = 'app';
 let quizzes = Map();
 let apps = Map();
 let topics = Map();
-
+let loadTimeout;
 
 let loadContent = function(){
+    logger.info('MARKETPLACE: Loading content');
     let mongoQuery = {
         updated: {
             $gt: 1
@@ -25,50 +26,67 @@ let loadContent = function(){
     zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, response){
         // response = response.splice(0, 4);
         let quizzesTemp = {};
-        response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
-        quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
+        if (err) {
+            logger.error('MARKETPLACE: Failed to load Quizzes', err);
+            clearTimeout(loadTimeout);
+            loadTimeout = setTimeout(loadContent, 5000);
+        } else {
+            response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
+            quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
+        }
 
     });
 
     zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, response){
         // response = response.splice(0, 4);
         let appsTemp = {};
-        response.forEach((app)=> appsTemp[app.uuid] = app );
-        apps = Immutable.fromJS(appsTemp);
+        if (err) {
+            logger.error('MARKETPLACE: Failed to load Apps', err);
+            clearTimeout(loadTimeout);
+            loadTimeout = setTimeout(loadContent, 5000);
+        } else {
+            response.forEach((app)=> appsTemp[app.uuid] = app );
+            apps = Immutable.fromJS(appsTemp);
+        }
 
     });
 
     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         // console.log('topics', Object.keys(resp));
-
         let topicsTemp = {};
         let topicsArray = [];
+        if (err) {
+            logger.error('MARKETPLACE: Failed to load Topics', err);
+            clearTimeout(loadTimeout);
+            loadTimeout = setTimeout(loadContent, 5000);
+        } else {
+            ['categories', 'pcategories', 'psubjects'].forEach((key)=>{
+                let topicList = resp[key];
+                topicList.forEach(topic => topicsArray.push(topic));
+            });
 
-        ['categories', 'pcategories', 'psubjects'].forEach((key)=>{
-            let topicList = resp[key];
-            topicList.forEach(topic => topicsArray.push(topic));
-        });
+            topicsArray.forEach(topic=>{
 
-        topicsArray.forEach(topic=>{
-
-            if (
-                topic.parentCategoryId !== null &&
-                topic.parentCategoryId !== undefined &&
-                topic.parentCategoryId !== '-1'
-            ){
-                let parentTopic = topicsArray.filter(t=> t.uuid === topic.parentCategoryId);
-                topic.fullName = parentTopic[0].name + ' > ' + topic.name;
-            } else if (topic.subjectId){
-                let parentSubject = topicsArray.filter(t=> t.uuid === topic.subjectId);
-                topic.fullName = parentSubject[0].name + ' > ' + topic.name;
-            } else {
-                topic.fullName = topic.name;
-            }
+                if (
+                    topic.parentCategoryId !== null &&
+                    topic.parentCategoryId !== undefined &&
+                    topic.parentCategoryId !== '-1'
+                ){
+                    let parentTopic = topicsArray.filter(t=> t.uuid === topic.parentCategoryId);
+                    topic.fullName = parentTopic[0].name + ' > ' + topic.name;
+                } else if (topic.subjectId){
+                    let parentSubject = topicsArray.filter(t=> t.uuid === topic.subjectId);
+                    topic.fullName = parentSubject[0].name + ' > ' + topic.name;
+                } else {
+                    topic.fullName = topic.name;
+                }
 
 
-            topicsTemp[topic.uuid] = topic;
-        });
-        topics = Immutable.fromJS(topicsTemp);
+                topicsTemp[topic.uuid] = topic;
+            });
+            topics = Immutable.fromJS(topicsTemp);
+        }
+
 
     });
 };
@@ -78,14 +96,14 @@ setInterval(loadContent, 60 * 60 * 1000);
 
 let sortQuizzes = function(arrayOfQuizzes){
     arrayOfQuizzes.sort((q1, q2)=>{
+
         let q1meta = q1.get('meta');
         let q2meta = q2.get('meta');
         let cr1 = q1meta && q1meta.get('contentRating') ? q1meta.get('contentRating') : 5;
         let cr2 = q2meta && q2meta.get('contentRating') ? q2meta.get('contentRating') : 5;
         let time1 = q1meta.get('updated');
         let time2 = q2meta.get('updated');
-        console.log('cr1', cr1);
-        console.log('cr2', cr2);
+
         if (cr1 > cr2) {
             return 1;
         } else if (cr1 === cr2) {
