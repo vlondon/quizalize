@@ -8,6 +8,7 @@ To run the project you'll need the following tools
 - [Flow](http://www.flowtype.org) (`npm install flow-bin -g`)
 - [Gulp](http://gulpjs.com/)
 - [Nodemon](http://nodemon.io/)
+- [Mongodb](https://www.mongodb.org/)
 
 
 Recommended IDE / Editor
