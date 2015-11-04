@@ -104,10 +104,11 @@ block body
     #react
     .container-fluid
         .row
-            table(border="1", style="background-color:white;font-size:12px; width:100%")
+            table(border="1", style="background-color:white;font-size:12px; width:100%")#pendingTable
                 thead
                     th Type
                     th Name
+                    th Number of questions
                     th Category
                     th preview
                     th Editor
@@ -125,9 +126,21 @@ block body
                     -});
     
                 for quiz in pending
+                    -var questionLength = undefined;
+                    -if (quiz.type == "quiz"){
+                        -console.log("in quiz");
+                        -var quizPayload = JSON.parse(quiz.payload);
+                        -if (quizPayload.questions !== undefined){
+                        -console.log("in");
+                            -questionLength = quizPayload.questions.length;
+                            -console.log("questionLength", questionLength);
+                        -}
+                    -}
+                    
                     tr
                         td #{quiz.type}
                         td #{quiz.meta.name}
+                        td #{questionLength}
                         td.categoryId #{quiz.meta.categoryId}
                         td
                             a(href="https://www.quizalize.com/app#/play/public/#{quiz.uuid}") Preview
