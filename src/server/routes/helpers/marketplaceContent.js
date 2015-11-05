@@ -80,6 +80,7 @@ let loadQuizContent = function(){
                 });
                 response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
                 quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
+                console.log("FINISHED LOADING");
             });
         }
     });
