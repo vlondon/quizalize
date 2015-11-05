@@ -2,6 +2,7 @@
 import zzish from './../../zzish';
 import logger from './../../logger';
 import Immutable, {Map} from 'immutable';
+var async = require("async");
 
 const QUIZ_CONTENT_TYPE = 'quiz';
 const APP_CONTENT_TYPE = 'app';
@@ -9,56 +10,117 @@ const APP_CONTENT_TYPE = 'app';
 let quizzes = Map();
 let apps = Map();
 let topics = Map();
-let loadTimeout;
+let loadTimeout1, loadTimeout2, loadTimeout3;
+var size = 10;
 
-let loadContent = function(){
-    logger.info('MARKETPLACE: Loading content');
-    let mongoQuery = {
-        updated: {
-            $gt: 1
-        },
-        published: "published",
-        name: {
-            $regex: '', $options: 'i'
+
+var userIds, tUserIds;
+let mongoQuery = {
+    updated: {
+        $gt: 1
+    },
+    published: "published",
+    name: {
+        $regex: '', $options: 'i'
+    }
+};
+
+let loadUsers = function(userIds, callback) {
+    var users = [];
+    var arrays = [];
+    var userHash = {};
+    userIds.forEach(function(id) {
+        userHash[""+id] = '';
+    });
+    userIds = [];
+    for (var i in userHash) {
+        userIds.push(i);
+    }
+    for (var i=0; i < userIds.length; i += size) {
+        var smallarray = userIds.slice(i,i+size);
+        arrays.push(smallarray);
+    }
+    var counter = 0;
+    async.eachSeries(arrays, function(array, icallback) {
+        if (array.length > 0) {
+            counter+=array.length;
+            zzish.getUsers(array, function(err, response) {
+                icallback();
+                users = users.concat(response);
+            });
         }
-    };
+        else {
+            icallback();
+        }
+    }, function(done){
+        var userHash = {};
+        users.forEach(function(user) {
+            userHash[user.uuid] = user.name;
+        });
+        if (callback) callback(userHash);
+    });
+};
 
+let loadQuizContent = function(){
+    logger.info('MARKETPLACE: Loading quiz content');
     zzish.searchPublicContent(QUIZ_CONTENT_TYPE, mongoQuery, function(err, response){
         // response = response.splice(0, 4);
         let quizzesTemp = {};
         if (err) {
             logger.error('MARKETPLACE: Failed to load Quizzes', err);
-            clearTimeout(loadTimeout);
-            loadTimeout = setTimeout(loadContent, 5000);
+            clearTimeout(loadTimeout1);
+            loadTimeout1 = setTimeout(loadQuizContent, 5000);
         } else {
-            response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
-            quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
+            userIds = response.map(function(quiz) {
+                return quiz.meta.profileId;
+            });
+            loadUsers(userIds, function(users) {
+                response.forEach(function(quiz) {
+                    quiz.meta.author = users[quiz.meta.profileId];
+                });
+                response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
+                quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
+            });
         }
-
     });
+};
 
+let loadAppContent = function(){
+    logger.info('MARKETPLACE: Loading app content');
     zzish.searchPublicContent(APP_CONTENT_TYPE, mongoQuery, function(err, response){
         // response = response.splice(0, 4);
         let appsTemp = {};
         if (err) {
             logger.error('MARKETPLACE: Failed to load Apps', err);
-            clearTimeout(loadTimeout);
-            loadTimeout = setTimeout(loadContent, 5000);
+            clearTimeout(loadTimeout2);
+            loadTimeout2 = setTimeout(loadAppContent, 5000);
         } else {
-            response.forEach((app)=> appsTemp[app.uuid] = app );
-            apps = Immutable.fromJS(appsTemp);
+
+            tUserIds = response.map(function(quiz) {
+                return quiz.meta.profileId;
+            });
+            loadUsers(tUserIds, function(users) {
+                response.forEach(function(app) {
+                    app.meta.author = users[app.meta.profileId];
+                });
+                response.forEach((app)=> appsTemp[app.uuid] = app );
+                apps = Immutable.fromJS(appsTemp);
+                loadQuizContent();
+            });
         }
-
     });
+};
 
+let loadPublicContent = function(){
+    logger.info('MARKETPLACE: Loading public content');
     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         // console.log('topics', Object.keys(resp));
         let topicsTemp = {};
         let topicsArray = [];
         if (err) {
             logger.error('MARKETPLACE: Failed to load Topics', err);
-            clearTimeout(loadTimeout);
-            loadTimeout = setTimeout(loadContent, 5000);
+            clearTimeout(loadTimeout3);
+            loadTimeout3 = setTimeout(loadPublicContent, 5000);
         } else {
             ['categories', 'pcategories', 'psubjects'].forEach((key)=>{
                 let topicList = resp[key];
@@ -85,14 +147,15 @@ let loadContent = function(){
                 topicsTemp[topic.uuid] = topic;
             });
             topics = Immutable.fromJS(topicsTemp);
+            loadAppContent();
         }
 
 
     });
 };
 
-loadContent();
-setInterval(loadContent, 60 * 60 * 1000);
+loadPublicContent();
+setInterval(loadPublicContent, 60 * 60 * 1000);
 
 let sortQuizzes = function(arrayOfQuizzes){
     arrayOfQuizzes.sort((q1, q2)=>{
