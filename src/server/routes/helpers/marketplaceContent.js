@@ -29,9 +29,9 @@ let loadUsers = function(userIds, callback) {
     var users = [];
     var arrays = [];
     var userHash = {};
-    for (var i in userIds) {
-        userHash[userIds[i]] = '';
-    }
+    userIds.forEach(function(id) {
+        userHash[""+id] = '';
+    });
     userIds = [];
     for (var i in userHash) {
         userIds.push(i);
