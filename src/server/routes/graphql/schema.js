@@ -45,6 +45,10 @@ const appMeta = new GraphQLObjectType({
             type: GraphQLString,
             name: 'App internal code'
         },
+        author: {
+            type: GraphQLString,
+            description: 'User'
+        },
         colour: {
             type: GraphQLString,
             name: 'App user defined colour'
@@ -91,7 +95,6 @@ const appMeta = new GraphQLObjectType({
     })
 });
 
-
 let appType = new GraphQLObjectType({
     name: 'App',
     fields: {
@@ -106,10 +109,15 @@ let appType = new GraphQLObjectType({
     }
 });
 
+
 let quizMeta = new GraphQLObjectType({
     name: 'QuizMeta',
     fields: {
-        authorId: {
+        profileId: {
+            type: GraphQLString,
+            description: 'User name'
+        },
+        author: {
             type: GraphQLString,
             description: 'User name'
         },

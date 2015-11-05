@@ -41,6 +41,8 @@ var QuizApi = {
                     uuid,
                     meta {
                         name,
+                        author,
+                        profileId,
                         categoryId,
                         imageUrl,
                         price,

@@ -317,9 +317,8 @@ export default class CQViewQuizList extends React.Component {
 
         if (this.props.showAuthor) {
             author = function(quiz){
-                if (quiz.extra && quiz.extra.author) {
-                    return (<CQViewQuizAuthor author={quiz.extra.author}/>);
-                }
+                console.log(quiz.meta);
+                return (<CQViewQuizAuthor authorId={quiz.meta.profileId} author={quiz.meta.author}/>);
             };
         } else {
             updated = function(quiz){
