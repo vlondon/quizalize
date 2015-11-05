@@ -3,6 +3,7 @@ import AppDispatcher from './../dispatcher/CQDispatcher';
 import {GroupConstants} from './../constants';
 import {GroupApi} from './../actions/api';
 import {router} from './../config';
+import {QuizSettings} from './../../../types';
 
 var GroupActions = {
 
@@ -75,16 +76,16 @@ var GroupActions = {
         });
     },
 
-    publishAssignment: function(quizId : string, code : string , settings : Object ) : Promise {
+    publishAssignment: function(quizId : string, code : string , settings : QuizSettings ) : Promise {
 
         return new Promise((resolve, reject) => {
-            var UserStore = require('./../stores/UserStore');
+
             var dataToSend = {
                 access: -1,
                 code
             };
 
-            var data = Object.assign({}, settings, dataToSend);
+            var data = Object.assign({}, settings.toObject(), dataToSend);
 
             GroupApi.publishAssignment(quizId, data)
                 .then((response) => {

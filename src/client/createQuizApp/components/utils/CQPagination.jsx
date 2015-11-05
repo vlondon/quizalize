@@ -96,19 +96,7 @@ var CQPagination = React.createClass({
                 <nav className={this.props.className}>
                     <ul className="pagination">
                         {previousElement}
-
-                        {pages.map((p) => {
-
-                            var className = (p === this.props.currentPage) ? 'active' : '';
-
-                            return (
-                                <li className={className} onClick={this.handlePagination.bind(this, p)} key={p}>
-                                    <a href="#">{p}</a>
-                                </li>
-                            );
-                        })}
                         {nextElement}
-
                     </ul>
                 </nav>
 

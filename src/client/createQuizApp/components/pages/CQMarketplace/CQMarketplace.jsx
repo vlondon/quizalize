@@ -43,7 +43,7 @@ type State = {
     search: string;
 };
 
-export default class CQPublic extends React.Component {
+export default class CQMarketplace extends React.Component {
 
     state: State;
 
@@ -137,10 +137,12 @@ export default class CQPublic extends React.Component {
     }
 
     handleCategoryChange(currentCategory : Object) {
-        this.setState({currentCategory});
+        let search = '';
+        this.setState({currentCategory, search});
     }
     handleSearchInput(search: string){
-        this.setState({search});
+        let currentCategory = { value: 'all' };
+        this.setState({search, currentCategory});
     }
 
     handleDetails(quiz: Quiz){
@@ -180,7 +182,7 @@ export default class CQPublic extends React.Component {
                         quizzes={this.state.quizzes}
                         showCta={true}
                         className="cq-public__list"
-                        sortBy="time">
+                    >
 
                         <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
 

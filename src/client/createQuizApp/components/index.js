@@ -73,8 +73,10 @@ import CQViewQuizDetails from './views/CQViewQuizDetails';
 import CQViewQuizFilter from './views/CQViewQuizFilter';
 import CQViewQuizList from './views/CQViewQuizList';
 // CQViewQuizLocalSort from './views/CQViewQuizLocalSort';
+import CQViewQuizSettings from './views/CQViewQuizSettings/CQViewQuizSettings';
 import CQViewQuizMarketplaceOptions from './views/CQViewQuizMarketplaceOptions';
 import CQViewShareQuiz from './views/CQViewShareQuiz';
+import CQViewSwitch from './views/CQViewSwitch/CQViewSwitch';
 
 
 export {
@@ -141,5 +143,7 @@ export {
     CQViewQuizFilter,
     CQViewQuizList,
     CQViewQuizMarketplaceOptions,
-    CQViewShareQuiz
+    CQViewQuizSettings,
+    CQViewShareQuiz,
+    CQViewSwitch
 };

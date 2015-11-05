@@ -1,5 +1,5 @@
 /* @flow */
-import type {QuizComplete} from './../../../createQuizApp/stores/QuizStore';
+import type {QuizComplete} from './../../../../types';
 import PQQuestion from './PQQuestionClass';
 class PQQuiz {
 

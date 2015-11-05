@@ -15,6 +15,7 @@ module.exports = {
         publishers: ['webpack/hot/dev-server', 'publishers.js'],
         home: ['webpack/hot/dev-server', 'home.js', 'liveBeta/liveBeta.js'],
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
+        admin: ['admin/index.js'],
         vendor: ['webpack/hot/dev-server', 'fastclick', 'react', 'superagent']
     },
     plugins: [
@@ -32,19 +33,13 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel?optional[]=runtime'],
+                loaders: ['react-hot', 'babel?optional[]=runtime&stage=0'],
                 exclude: /(bower_components)/
             },
             {
                 test: /\.js$/,
-                loaders: ['react-hot', 'babel?optional[]=runtime'],
+                loaders: ['react-hot', 'babel?optional[]=runtime&stage=0'],
                 exclude: /(node_modules|bower_components)/
-            },
-
-            {
-                test: /\.es6\.js$/,
-                loader: 'babel?optional[]=runtime',
-                exclude: /(bower_components)/
             },
             {
                 test: /\.json$/,

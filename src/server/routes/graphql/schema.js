@@ -15,33 +15,39 @@ import graphQLUser from './graphQLUser';
 import graphQLQuiz from './graphQLQuiz';
 import graphQLApps from './graphQLApps';
 
+import marketplaceContent from './../helpers/marketplaceContent';
+
 import logger from './../../logger';
 
-let count = 0;
 
-let transactionMeta = new GraphQLObjectType({
-    name: 'transactionMeta',
-    fields: () => ({
-        type: {
-            type: GraphQLString,
-            name: 'Type of transaction (quiz, app, subscription)',
-        },
-        created: {
-            type: GraphQLInt,
-            name: 'When the transaction was created',
-        },
-        price: {
-            type: GraphQLInt
-        }
-    })
-});
 
-let appMeta = new GraphQLObjectType({
+// const transactionMeta = new GraphQLObjectType({
+//     name: 'transactionMeta',
+//     fields: () => ({
+//         type: {
+//             type: GraphQLString,
+//             name: 'Type of transaction (quiz, app, subscription)',
+//         },
+//         created: {
+//             type: GraphQLInt,
+//             name: 'When the transaction was created',
+//         },
+//         price: {
+//             type: GraphQLInt
+//         }
+//     })
+// });
+
+const appMeta = new GraphQLObjectType({
     name: 'AppMeta',
     fields: () => ({
         code: {
             type: GraphQLString,
             name: 'App internal code'
+        },
+        author: {
+            type: GraphQLString,
+            description: 'User'
         },
         colour: {
             type: GraphQLString,
@@ -89,7 +95,6 @@ let appMeta = new GraphQLObjectType({
     })
 });
 
-
 let appType = new GraphQLObjectType({
     name: 'App',
     fields: {
@@ -104,10 +109,15 @@ let appType = new GraphQLObjectType({
     }
 });
 
+
 let quizMeta = new GraphQLObjectType({
     name: 'QuizMeta',
     fields: {
-        authorId: {
+        profileId: {
+            type: GraphQLString,
+            description: 'User name'
+        },
+        author: {
             type: GraphQLString,
             description: 'User name'
         },
@@ -148,23 +158,23 @@ let quizMeta = new GraphQLObjectType({
 });
 
 
-let quizType = new GraphQLObjectType({
+const quizType = new GraphQLObjectType({
     name: 'Quiz',
     description: 'A character in the Star Wars Trilogy',
     fields: ()=>({
         uuid: {
-            type: GraphQLString
+            type: GraphQLString,
         },
         meta: {
             type: quizMeta,
-            description: 'Quiz meta information'
+            description: 'Quiz meta information',
         }
-    })
+    }),
 });
 
 
 
-let userAttributes = new GraphQLObjectType({
+const userAttributes = new GraphQLObjectType({
     name: 'UserAttributes',
     fields: {
         ageTaught: {
@@ -219,7 +229,7 @@ let userAttributes = new GraphQLObjectType({
 
 
 
-let userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
     name: 'UserType',
     description: 'UserType test',
     fields: () => ({
@@ -297,7 +307,7 @@ let userType = new GraphQLObjectType({
 });
 
 
-let schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'RootQueryType',
         fields: {
@@ -347,29 +357,44 @@ let schema = new GraphQLSchema({
                     return graphQLApps.getApp(uuid);
                 }
             },
-            count: {
-                type: GraphQLInt,
-                description: 'The count!',
-                resolve: function() {
-                    count += 1;
-                    return count;
+            quizzes: {
+                type: new GraphQLList(quizType),
+                args: {
+                    search: {
+                        name: 'search',
+                        type: GraphQLString
+                    },
+                    cate: {
+                        name: 'search',
+                        type: GraphQLString
+                    }
+                },
+                resolve: (root, {search})=>{
+                    // result needs to be converted from immutable to normal object
+                    const result = marketplaceContent.quiz(search).map(r=> {
+                        r = r.toObject();
+                        r.meta = r.meta.toObject();
+                        return r;
+                    });
+                    logger.debug('searching for quizzes', search, result[0]);
+                    return result;
                 }
             }
         }
     }),
-    mutation: new GraphQLObjectType({
-        name: 'RootMutationType',
-        fields: {
-            updateCount: {
-                type: GraphQLInt,
-                description: 'Updates the count',
-                resolve: function() {
-                    count += 1;
-                    return count;
-                }
-            }
-        }
-    })
+    // mutation: new GraphQLObjectType({
+    //     name: 'RootMutationType',
+    //     fields: {
+    //         updateCount: {
+    //             type: GraphQLInt,
+    //             description: 'Updates the count',
+    //             resolve: function() {
+    //
+    //                 return count;
+    //             }
+    //         }
+    //     }
+    // })
 });
 
 export default schema;

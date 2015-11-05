@@ -28,7 +28,7 @@ var generateData = function(chosenWeek, callback) {
     zzish_db.secure.post("db/activityinstance/query/", activityQuery, function(err, activityinstances){
         console.log(err, "Fetching activities");
         zzish_db.secure.post("db/user/query/", {"query": "{'profiles.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
-                        "project": "{ 'uuid': 1, 'profiles':1, 'created': 1, 'email': 1}"}, function(err, userList){
+                        "project": "{ 'uuid': 1, 'profiles.appToken':1, 'profiles.email':1, 'created': 1, 'email': 1}"}, function(err, userList){
                 console.log("Fetching Users");
                 zzish_db.secure.post("db/usergroup/query/", {"query": "{}", "project":"{'uuid': 1, 'ownerId': 1}"}, function(errGroup, usergroup) {
                     console.log("Got Groups");
