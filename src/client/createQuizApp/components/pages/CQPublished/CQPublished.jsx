@@ -122,7 +122,7 @@ export default class CQPublished extends React.Component {
                 <CQViewClassList
                     settings={this.state.settings}
                     quizId={this.props.routeParams.quizId}/>
-                <CQViewQuizSettings settings={this.state.settings} onChange={this.handleSettings}/>
+                {/*<CQViewQuizSettings settings={this.state.settings} onChange={this.handleSettings}/>*/}
             </div>
         );
 
