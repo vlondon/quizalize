@@ -164,14 +164,7 @@ class CQAppGrid extends React.Component {
                     <ul>
                         {this.state.apps.map((app) => {
 
-                            var author;
-                            if (app.extra && app.extra.author) {
-                                author = (
-                                    <div className="cq-appgrid__author">
-                                        {app.extra.author.name}
-                                    </div>
-                                );
-                            }
+                            var author = app.meta.author;
                             return (
                                 <li className="cq-appgrid__app" key={app.uuid} onClick={this.handleClick.bind(this, app)}>
                                     <CQQuizIcon className="cq-appgrid__appicon" name={app.meta.name} image={app.meta.iconURL}/>
