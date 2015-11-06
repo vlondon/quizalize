@@ -107,7 +107,7 @@ var QLMultiple = React.createClass({
         };
 
         if (!this.state.answer) {
-            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer;
+            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = this.props.questionData.answerObject.alternatives.map(function(alternative, index){
                 return (
