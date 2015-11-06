@@ -147,7 +147,7 @@ exports.register =  function(req, res) {
     zzish.registerUser(userEmail, encrypt(userPassword), function(err, user) {
         if (!err) {
 
-            user.attributes.accountType = 0;
+            user.attributes.accountType = 1;
             user.attributes.accountTypeUpdated = Date.now();
 
             req.session.user = user;

@@ -11,7 +11,7 @@ let quizzes = Map();
 let apps = Map();
 let topics = Map();
 let loadTimeout1, loadTimeout2, loadTimeout3;
-var size = 10;
+var size = 5;
 
 
 var userIds, tUserIds;
@@ -44,6 +44,7 @@ let loadUsers = function(userIds, callback) {
     async.eachSeries(arrays, function(array, icallback) {
         if (array.length > 0) {
             counter+=array.length;
+            console.log("Getting user", counter + new Date());
             zzish.getUsers(array, function(err, response) {
                 icallback();
                 users = users.concat(response);
@@ -80,7 +81,7 @@ let loadQuizContent = function(){
                 });
                 response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
                 quizzes = sortQuizzes(Immutable.fromJS(quizzesTemp));
-                console.log("FINISHED LOADING");
+                console.log("FINISHED LOADING" + new Date());
             });
         }
     });

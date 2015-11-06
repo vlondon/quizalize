@@ -382,7 +382,8 @@ exports.postQuiz = function(req, res){
         data.meta.created = Date.now();
     }
     data.meta.updated = Date.now();
-    logger.trace("data.meta", JSON.stringify(data.meta));
+
+    console.log("SAVING META", JSON.stringify(data));
 
     zzish.postContent(profileId, QUIZ_CONTENT_TYPE, req.params.id, data.meta, data.payload, function(err){
         if (!err) {
