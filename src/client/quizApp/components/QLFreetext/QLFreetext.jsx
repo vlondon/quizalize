@@ -95,7 +95,7 @@ var QLFreetext = React.createClass({
         var showAnswer, showQuestions, showCountdown;
 
         if (!this.state.answer) {
-            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer;
+            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = (
                 <div className="freetext">

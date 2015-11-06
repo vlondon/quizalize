@@ -55,15 +55,17 @@ var GroupActions = {
             });
     },
 
-    publishNewAssignment: function(quizId : string, groupName : string) : Promise {
+    publishNewAssignment: function(quizId : string, groupName : string, settings: QuizSettings ) : Promise {
 
         return new Promise((resolve, reject) => {
            var dataToSend = {
                 access: -1,
                 groupName
             };
+            var data = Object.assign({}, settings.toObject(), dataToSend);
 
-            GroupApi.publishNewAssignment(quizId, dataToSend)
+
+            GroupApi.publishNewAssignment(quizId, data)
                 .then((response) => {
                     AppDispatcher.dispatch({
                         actionType: GroupConstants.NEW_GROUP_PUBLISHED,

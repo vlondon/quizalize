@@ -168,6 +168,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             else {
                 categories[cuuid].quizzes.push(quiz);
             }
+            for (var i in quiz.attributes){
+                quiz.meta[i] = quiz.attributes[i];
+            }
+            console.log("quiz with attributes", quiz.meta);
         }
 
 
@@ -233,12 +237,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     };
 
     var setQuiz = function(quiz) {
-        currentQuiz = quiz;
-        setDataValue("currentQuiz",JSON.stringify(currentQuiz));
         if (quiz.payload && quiz.payload.questions) {
             quiz.payload.questions = spliceQuestions(quiz);
             initQuizResult();
         }
+        currentQuiz = quiz;
+        setDataValue("currentQuiz",JSON.stringify(currentQuiz));
     };
 
     var searchThroughCategories = function(catId, quizId) {
@@ -296,11 +300,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var questions = quiz.payload.questions;
             var seed = Math.floor((Math.random() * 100) + 1);
             if (settings && questions!=undefined && questions.length>1) {
-                if (settings['random']==false) {
-                    seed = quiz.meta.updated;
-                }
+                seed = quiz.meta.updated;
                 var result2 = [];
-                if (settings['numQuestions']) {
+                if (settings['numQuestions'] && settings['numQuestions'] != "-1") {
                     try {
                         var num = parseInt(settings['numQuestions']);
                         var numToAdd = Math.min(num,questions.length);
@@ -354,7 +356,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
             else {
                 zzish.getContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quizId, function (err, result) {
-                    setQuiz(result);
+                    quiz.payload = result.payload;
+                    setQuiz(quiz);
                     callback(err,result);
                     $rootScope.$digest();
                 });
@@ -417,7 +420,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var score;
         questionDuration = questionDuration * 1000;
         if (correct) {
-            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer) {
+            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer == 1) {
                 score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
             }
             else {
@@ -827,6 +830,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         answerQuestion: function(idx, questionData, response, duration){
             var question = currentQuiz.payload.questions[idx];
+            if (currentQuizResult.processing) {
+                delete currentQuizResult.processing[question.uuid];
+            }
             var questionDuration = question.duration || maxTime / 1000;
             console.log('currentQuiz,', currentQuiz);
 
@@ -911,7 +917,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return true;
             }
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            var repeatUntilCorrect = currentQuiz.meta.repeatUntilCorrect == 1;
             if (repeatUntilCorrect) {
                 return !currentQuizResult.report[questionId].correct;
             }
@@ -919,7 +925,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         generateNextQuestionUrl: function(questionId) {
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            console.log("quizmeta", currentQuiz.attributes);
+            var repeatUntilCorrect = currentQuiz.meta.repeatUntilCorrect == 1;
             var maxAttempts = parseInt(currentQuiz.meta.maxAttempts || -1);
             var nextQuestionId = -1;
             if (repeatUntilCorrect) {

@@ -221,7 +221,7 @@ var QLScrambled = React.createClass({
         });
         width = 50 + (maxLength * 20);
         if (answered.length !== this.props.questionData.answerObject.textArray.length) {
-            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer;
+            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showTargets = this.state.answerSelected.map(function(letter, index){
                 var selected = letter.index === -1 ? "btn-info": "btn-danger";
@@ -237,7 +237,7 @@ var QLScrambled = React.createClass({
 
             showOptions = this.state.letterSelected.map(function(letter, index){
                 if (true) {
-                    var selected = letter.state === "selected" ? "btn-normal.btn-selected": "btn-info";
+                    var selected = letter.state === "selected" ? "btn-normal.btn-selected": "btn-danger";
                     return (
                         <button className={`letterTile ng-binding ng-scope option ${selected}`}
                             style={{width: width + 'px'}}

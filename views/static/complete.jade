@@ -288,10 +288,10 @@ style.
                         .col-md-3.wrapword
                             h4 Your answer
                             strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
-                        .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers === undefined || quiz.currentQuiz.meta.showAnswers === 1")
+                        .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers === undefined || quiz.currentQuiz.meta.showAnswers == 1")
                             h4 Correct answer&nbsp;
                             strong(id="cresponse{{item.questionId}}") {{item.answer}}
-                        .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers !== undefined && quiz.currentQuiz.meta.showAnswers === 0")
+                        .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers !== undefined && quiz.currentQuiz.meta.showAnswers == 0")
                         .col-md-2
                             h4 Score: {{item.roundedScore}}
                             p(ng-show="item.correct") ({{item.seconds}}

@@ -107,7 +107,10 @@ export default class CQPublished extends React.Component {
 
     handleSettings(settings: Settings){
         console.log('settings', settings.toObject());
-        this.setState({settings});
+        this.setState({settings},
+            function(){
+                console.log("settings state", this.state.settings.toObject());
+            });
     }
 
     render() : any {
