@@ -911,7 +911,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return true;
             }
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            var repeatUntilCorrect = currentQuiz.meta.repeatUntilCorrect === "true";
             if (repeatUntilCorrect) {
                 return !currentQuizResult.report[questionId].correct;
             }
