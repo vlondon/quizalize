@@ -237,7 +237,7 @@ var QLScrambled = React.createClass({
 
             showOptions = this.state.letterSelected.map(function(letter, index){
                 if (true) {
-                    var selected = letter.state === "selected" ? "btn-normal.btn-selected": "btn-info";
+                    var selected = letter.state === "selected" ? "btn-normal.btn-selected": "btn-danger";
                     return (
                         <button className={`letterTile ng-binding ng-scope option ${selected}`}
                             style={{width: width + 'px'}}
