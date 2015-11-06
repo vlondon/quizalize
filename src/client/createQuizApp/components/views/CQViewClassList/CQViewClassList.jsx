@@ -207,7 +207,7 @@ export default class CQViewClassList extends React.Component {
         var className = this.state.newClassName;
         if (className.length > 0) {
 
-            GroupActions.publishNewAssignment(this.props.quizId, className)
+            GroupActions.publishNewAssignment(this.props.quizId, className, this.props.settings)
                 .then((response) =>{
                     AnalyticsActions.sendIntercomEvent('new_class', {uuid: response.groupCode, name: className});
                     AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode, name: className});
