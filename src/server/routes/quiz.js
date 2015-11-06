@@ -435,14 +435,29 @@ exports.publishQuiz = function(req, res){
         if(!err){
             logger.trace("Got publish result", resp);
             res.status = 200;
-            var link = querystring.escape(resp.link);
-            link = replaceAll("/", "-----", link);
-            link = replaceAll("\\\\", "=====", link);
-            resp.link = config.webUrl + "/learning-hub/tclassroom/" + link + "/live";
-            if (resp.content.meta && resp.content.meta.originalQuizId) {
-                //getReviewForPurchasedQuiz(resp.content, res);
+            if (resp.link){
+                var link = querystring.escape(resp.link);
+                link = replaceAll("/", "-----", link);
+                link = replaceAll("\\\\", "=====", link);
+                resp.link = config.webUrl + "/learning-hub/tclassroom/" + link + "/live";
+                if (resp.content.meta && resp.content.meta.originalQuizId) {
+                    //getReviewForPurchasedQuiz(resp.content, res);
+                }
+                //resp.shareLink = resp.content.meta.code;
             }
-            //resp.shareLink = resp.content.meta.code;
+            else {
+                if (resp) {
+                    var errorMessage = resp;
+                    resp = {};
+                    resp.message = errorMessage;
+                }
+                else {
+                    resp = {};
+                    resp.message = "No link, resp undefined";
+                }
+
+            }
+
         } else {
             var errorMessage = resp;
             resp = {};
