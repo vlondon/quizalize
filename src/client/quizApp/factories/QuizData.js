@@ -919,7 +919,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         generateNextQuestionUrl: function(questionId) {
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            var repeatUntilCorrect = currentQuiz.meta.repeatUntilCorrect === "true";
             var maxAttempts = parseInt(currentQuiz.meta.maxAttempts || -1);
             var nextQuestionId = -1;
             if (repeatUntilCorrect) {
