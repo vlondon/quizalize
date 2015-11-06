@@ -1,5 +1,6 @@
 /* @flow */
 import zzish from './../../zzish';
+import db from '../db';
 import logger from './../../logger';
 import Immutable, {Map} from 'immutable';
 var async = require("async");
@@ -25,40 +26,54 @@ let mongoQuery = {
     }
 };
 
-let loadUsers = function(userIds, callback) {
-    var users = [];
-    var arrays = [];
-    var userHash = {};
-    userIds.forEach(function(id) {
-        userHash[""+id] = '';
-    });
-    userIds = [];
-    for (var i in userHash) {
-        userIds.push(i);
-    }
-    for (var i=0; i < userIds.length; i += size) {
-        var smallarray = userIds.slice(i,i+size);
-        arrays.push(smallarray);
-    }
-    var counter = 0;
-    async.eachSeries(arrays, function(array, icallback) {
-        if (array.length > 0) {
-            counter+=array.length;
-            console.log("Getting user", counter + new Date());
-            zzish.getUsers(array, function(err, response) {
-                icallback();
-                users = users.concat(response);
-            });
+let loadUsers = function(key, userIds, callback) {
+    db.findDocument("quser", {key: key}, function(err, doc) {
+        if (doc) {
+            console.log("Got doc", doc);
+            if (callback) callback(doc.doc);
         }
         else {
-            icallback();
+            var users = [];
+            var arrays = [];
+            var userHash = {};
+            userIds.forEach(function(id) {
+                userHash[""+id] = '';
+            });
+            userIds = [];
+            for (var i in userHash) {
+                userIds.push(i);
+            }
+            for (var i=0; i < userIds.length; i += size) {
+                var smallarray = userIds.slice(i,i+size);
+                arrays.push(smallarray);
+            }
+            var counter = 0;
+            async.eachSeries(arrays, function(array, icallback) {
+                if (array.length > 0) {
+                    counter+=array.length;
+                    console.log("Getting user", counter + new Date());
+                    zzish.getUsers(array, function(err, response) {
+                        icallback();
+                        users = users.concat(response);
+                    });
+                }
+                else {
+                    icallback();
+                }
+            }, function(done){
+                var userHash = {};
+                users.forEach(function(user) {
+                    userHash[user.uuid] = user.name;
+                });
+                var doc = {
+                    key: key,
+                    doc: userHash
+                };
+                db.saveDocument("quser", doc, function() {
+                    if (callback) callback(userHash);
+                });
+            });
         }
-    }, function(done){
-        var userHash = {};
-        users.forEach(function(user) {
-            userHash[user.uuid] = user.name;
-        });
-        if (callback) callback(userHash);
     });
 };
 
@@ -75,8 +90,11 @@ let loadQuizContent = function(){
             userIds = response.map(function(quiz) {
                 return quiz.meta.profileId;
             });
-            loadUsers(userIds, function(users) {
+            loadUsers("quiz", userIds, function(users) {
                 response.forEach(function(quiz) {
+                    if (!users[quiz.meta.profileId]) {
+                        console.log("CAN't fine", quiz.meta.profileId);
+                    }
                     quiz.meta.author = users[quiz.meta.profileId];
                 });
                 response.forEach((quiz)=> quizzesTemp[quiz.uuid] = quiz );
@@ -101,8 +119,11 @@ let loadAppContent = function(){
             tUserIds = response.map(function(quiz) {
                 return quiz.meta.profileId;
             });
-            loadUsers(tUserIds, function(users) {
+            loadUsers("app", tUserIds, function(users) {
                 response.forEach(function(app) {
+                    if (!users[app.meta.profileId]) {
+                        console.log("CAN't fine", app.meta.profileId);
+                    }
                     app.meta.author = users[app.meta.profileId];
                 });
                 response.forEach((app)=> appsTemp[app.uuid] = app );
@@ -149,10 +170,9 @@ let loadPublicContent = function(){
                 topicsTemp[topic.uuid] = topic;
             });
             topics = Immutable.fromJS(topicsTemp);
+
             loadAppContent();
         }
-
-
     });
 };
 
