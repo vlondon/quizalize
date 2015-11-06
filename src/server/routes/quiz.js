@@ -435,7 +435,7 @@ exports.publishQuiz = function(req, res){
         if(!err){
             logger.trace("Got publish result", resp);
             res.status = 200;
-            if (resp.link){
+            if (resp && resp.link){
                 var link = querystring.escape(resp.link);
                 link = replaceAll("/", "-----", link);
                 link = replaceAll("\\\\", "=====", link);
