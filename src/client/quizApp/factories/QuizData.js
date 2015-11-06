@@ -420,7 +420,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var score;
         questionDuration = questionDuration * 1000;
         if (correct) {
-            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer) {
+            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer == 1) {
                 score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
             }
             else {

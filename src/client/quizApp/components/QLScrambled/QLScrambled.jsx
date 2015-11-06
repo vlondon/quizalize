@@ -221,7 +221,7 @@ var QLScrambled = React.createClass({
         });
         width = 50 + (maxLength * 20);
         if (answered.length !== this.props.questionData.answerObject.textArray.length) {
-            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer;
+            var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showTargets = this.state.answerSelected.map(function(letter, index){
                 var selected = letter.index === -1 ? "btn-info": "btn-danger";
