@@ -28,6 +28,7 @@ class CQViewQuizSettings extends React.Component {
 
     handleCheckbox(property: string){
         const settings = this.props.settings.update(property, (v) => v === 1 ? 0 : 1 );
+        console.log("settings changed");
         this.props.onChange(settings);
     }
 

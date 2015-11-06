@@ -168,6 +168,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             else {
                 categories[cuuid].quizzes.push(quiz);
             }
+            for (var i in quiz.attributes){
+                quiz.meta[i] = quiz.attributes[i];
+            }
+            console.log("quiz with attributes", quiz.meta);
         }
 
 
@@ -911,7 +915,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return true;
             }
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect == 1;
             if (repeatUntilCorrect) {
                 return !currentQuizResult.report[questionId].correct;
             }
@@ -919,7 +923,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         generateNextQuestionUrl: function(questionId) {
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect === "true";
+            console.log("quizmeta", currentQuiz.attributes);
+            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect == 1;
             var maxAttempts = parseInt(currentQuiz.meta.maxAttempts || -1);
             var nextQuestionId = -1;
             if (repeatUntilCorrect) {

@@ -18,6 +18,7 @@ class CQViewSwitch extends React.Component {
             <label className={`switch ${this.props.className}`}>
                 <input type="checkbox"  className="switch-input"
                     checked={this.props.checked}
+    
                     onChange={this.props.onChange}
                     />
                 <span className="switch-label" data-on="Yes" data-off="No"></span>

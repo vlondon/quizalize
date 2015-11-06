@@ -184,6 +184,7 @@ export default class CQViewClassList extends React.Component {
         if (this.state.groupsUsed.length === 0) {
             this.state.groupsUsed[0] = this.state.groups[this.state.groups.length -1].code;
         }
+        console.log("publish assignment settings", this.props.settings.toObject());
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0], this.props.settings)
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
