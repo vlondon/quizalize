@@ -237,12 +237,12 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     };
 
     var setQuiz = function(quiz) {
-        currentQuiz = quiz;
-        setDataValue("currentQuiz",JSON.stringify(currentQuiz));
         if (quiz.payload && quiz.payload.questions) {
             quiz.payload.questions = spliceQuestions(quiz);
             initQuizResult();
         }
+        currentQuiz = quiz;
+        setDataValue("currentQuiz",JSON.stringify(currentQuiz));
     };
 
     var searchThroughCategories = function(catId, quizId) {
@@ -304,7 +304,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     seed = quiz.meta.updated;
                 }
                 var result2 = [];
-                if (settings['numQuestions']) {
+                if (settings['numQuestions'] && settings['numQuestions'] != "-1") {
                     try {
                         var num = parseInt(settings['numQuestions']);
                         var numToAdd = Math.min(num,questions.length);
@@ -358,7 +358,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             }
             else {
                 zzish.getContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quizId, function (err, result) {
-                    setQuiz(result);
+                    quiz.payload = result.payload;
+                    setQuiz(quiz);
                     callback(err,result);
                     $rootScope.$digest();
                 });
@@ -915,7 +916,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return true;
             }
             //var repeatUntilCorrect = true;
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect == 1;
+            var repeatUntilCorrect = currentQuiz.meta.repeatUntilCorrect == 1;
             if (repeatUntilCorrect) {
                 return !currentQuizResult.report[questionId].correct;
             }
@@ -924,7 +925,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         generateNextQuestionUrl: function(questionId) {
             //var repeatUntilCorrect = true;
             console.log("quizmeta", currentQuiz.attributes);
-            var repeatUntilCorrect = currentQuiz.meta.repeatlUntilCorrect == 1;
+            var repeatUntilCorrect = currentQuiz.meta.repeatUntilCorrect == 1;
             var maxAttempts = parseInt(currentQuiz.meta.maxAttempts || -1);
             var nextQuestionId = -1;
             if (repeatUntilCorrect) {
