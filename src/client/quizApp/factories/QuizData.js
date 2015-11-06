@@ -300,9 +300,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var questions = quiz.payload.questions;
             var seed = Math.floor((Math.random() * 100) + 1);
             if (settings && questions!=undefined && questions.length>1) {
-                if (settings['random']==false) {
-                    seed = quiz.meta.updated;
-                }
+                seed = quiz.meta.updated;
                 var result2 = [];
                 if (settings['numQuestions'] && settings['numQuestions'] != "-1") {
                     try {
@@ -832,6 +830,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         },
         answerQuestion: function(idx, questionData, response, duration){
             var question = currentQuiz.payload.questions[idx];
+            if (currentQuizResult.processing) {
+                delete currentQuizResult.processing[question.uuid];
+            }
             var questionDuration = question.duration || maxTime / 1000;
             console.log('currentQuiz,', currentQuiz);
 
