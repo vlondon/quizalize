@@ -87,6 +87,9 @@ var QLAnswerScreen = React.createClass({
         var correctAnswer, viewVideo, videoPlayer, explanation;
 
         if (this.props.answerData.correct){
+            console.log('PLAY SOUND: applause.mp3');
+            var audio = new Audio('/sounds/applause.mp3');
+            audio.play();
             for (var i = 0; i < 30; i++){
                 stars.push(<Star key={i}/>);
             }
