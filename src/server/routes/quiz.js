@@ -366,7 +366,7 @@ exports.getQuiz = function(req, res){
     else {
         email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
           error: "Failed to getQuiz, quiz.js line 352",
-          message: req,
+          message: JSON.stringify(req),
           parameters: ""
         });
         res.send({});
@@ -460,15 +460,16 @@ exports.publishQuiz = function(req, res){
                 if (resp) {
                     var errorMessage = resp;
                     resp = {};
+                    var parameters = {
+                        profileId: profileId,
+                        QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
+                        id: id,
+                        data: data
+                    };
                     email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Error in publishQuiz', 'error', {
                       error: "Missing resp.link in publishQuiz, quiz.js line 434",
                       message: errorMessage,
-                      parameters: {
-                          profileId: profileId,
-                          QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
-                          id: id,
-                          data: data
-                      }
+                      parameters: JSON.stringify(parameters)
                     });
                     resp.message = errorMessage;
 
@@ -476,15 +477,16 @@ exports.publishQuiz = function(req, res){
                 else {
                     resp = {};
                     resp.message = "No link, resp undefined";
+                    var parameters = {
+                        profileId: profileId,
+                        QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
+                        id: id,
+                        data: data
+                    };
                     email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Error in publishQuiz', 'error', {
                       error: "Missing resp in publishQuiz, quiz.js line 434",
                       message: resp.message,
-                      parameters: {
-                          profileId: profileId,
-                          QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
-                          id: id,
-                          data: data
-                      }
+                      parameters: JSON.stringify(parameters)
                     });
                 }
 
