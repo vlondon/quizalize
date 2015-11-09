@@ -350,17 +350,27 @@ exports.deleteTopic = function(req, res){
 };
 
 exports.getQuiz = function(req, res){
-    var id = req.params.id;
-    var profileId = req.session.user.uuid;
+    if (req && req.session && req.session.user && req.session.user.uuid){
+        var id = req.params.id;
+        var profileId = req.session.user.uuid;
 
-    // var profileId = req.params.profileId;
-    logger.debug('Loading Quiz', id);
-    zzish.getContent(profileId, QUIZ_CONTENT_TYPE, id, function(err, resp){
-        logger.debug('Quiz loaded', id, err, resp);
-        if (!handleError(err, res)) {
-            res.send(resp);
-        }
-    });
+        // var profileId = req.params.profileId;
+        logger.debug('Loading Quiz', id);
+        zzish.getContent(profileId, QUIZ_CONTENT_TYPE, id, function(err, resp){
+            logger.debug('Quiz loaded', id, err, resp);
+            if (!handleError(err, res)) {
+                res.send(resp);
+            }
+        });
+    }
+    else {
+        email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
+          error: "Failed to getQuiz, quiz.js line 352",
+          message: req,
+          parameters: ""
+        });
+        res.send({});
+    }
 };
 
 exports.deleteQuiz = function(req, res){
@@ -450,11 +460,32 @@ exports.publishQuiz = function(req, res){
                 if (resp) {
                     var errorMessage = resp;
                     resp = {};
+                    email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Error in publishQuiz', 'error', {
+                      error: "Missing resp.link in publishQuiz, quiz.js line 434",
+                      message: errorMessage,
+                      parameters: {
+                          profileId: profileId,
+                          QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
+                          id: id,
+                          data: data
+                      }
+                    });
                     resp.message = errorMessage;
+
                 }
                 else {
                     resp = {};
                     resp.message = "No link, resp undefined";
+                    email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Error in publishQuiz', 'error', {
+                      error: "Missing resp in publishQuiz, quiz.js line 434",
+                      message: resp.message,
+                      parameters: {
+                          profileId: profileId,
+                          QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
+                          id: id,
+                          data: data
+                      }
+                    });
                 }
 
             }

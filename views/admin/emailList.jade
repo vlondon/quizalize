@@ -20,12 +20,12 @@ block body
             console.log("activeList",activeList);
             for (var activated in activatedList){
                 console.log("activated", activatedList[activated].email);
-                $('.activated').append('<p>' + activatedList[activated].email + " , " + activatedList[activated].name + '</p>');
+                $('.activated').append('<p>' + activatedList[activated].email + '</p>');
 
             };
             for (var active in activeList){
                 console.log("active", activeList[active].email);
-                $('.active').append('<p>' + activeList[active].email + " " + activeList[active].name + '</p>');
+                $('.active').append('<p>' + activeList[active].email  + '</p>');
 
             };
             

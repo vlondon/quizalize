@@ -140,7 +140,7 @@ let loadPublicContent = function(){
         // console.log('topics', Object.keys(resp));
         let topicsTemp = {};
         let topicsArray = [];
-        if (err) {
+        if (err || !resp) {
             logger.error('MARKETPLACE: Failed to load Topics', err);
             clearTimeout(loadTimeout3);
             loadTimeout3 = setTimeout(loadPublicContent, 5000);

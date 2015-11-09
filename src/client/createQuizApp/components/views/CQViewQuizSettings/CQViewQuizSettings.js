@@ -52,7 +52,7 @@ class CQViewQuizSettings extends React.Component {
             <div className={`cq-quizsettings ${className}`}>
 
                     <div className="cq-quizsettings__modal">
-                        <ul>
+                        {/*<ul>
                             <li className="cq-quizsettings__mastery">
                                 <h4><span className="cq-quizsettings__new">NEW: </span>Try Mastery Mode</h4>
                                 <p>Our new smart algorithm repeats questions to help strengthen learning for each individual student. Give it a try!</p>
@@ -79,10 +79,10 @@ class CQViewQuizSettings extends React.Component {
                                                 <option value={5}>retry 5 times</option>
                                             </select>
                                         </div>
-                                    </div>*/}
+                                    </div>}
                                 </div>
                             </li>
-                        </ul>
+                        </ul>*/}
                         <h5 className="cq-quizsettings__header" onClick={this.handleOpenClose}>
                             <i className={`fa ${chevron}`}/>{` `}
                             Adjust settings for your class game
