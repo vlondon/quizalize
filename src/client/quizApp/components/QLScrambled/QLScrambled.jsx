@@ -276,7 +276,8 @@ var QLScrambled = React.createClass({
                             questionData={this.props.questionData}
                         />
                     </h3>
-                    {this.props.questionData.imageURL ? <QLImage src={`https://d15tuytjqnsden.cloudfront.net/${this.props.questionData.imageURL}`} className='ql-question-img'/> : null}
+
+                    {this.props.questionData.imageURL ? <QLImage src={this.props.questionData.imageURL} className='ql-question-img'/> : null}
                     {showCountdown}
                     <div className="answers options">
                         {showAnswer}
