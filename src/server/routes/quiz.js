@@ -9,7 +9,7 @@ var zzish           = require("zzishsdk");
 var crypto          = require('crypto');
 var logger          = require('../logger');
 var uploadHelper    = require('./helpers/uploadHelper');
-
+var marketplaceSearch = require('./helpers/marketplaceContent');
 var algorithm = 'aes-256-ctr';
 var password = '##34dsadfasdf££FE';
 
@@ -305,11 +305,14 @@ exports.getMyQuizzes = function(req, res){
 };
 
 exports.getTopics = function(req, res){
-    zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
-        if (!handleError(err, res)) {
-            res.send(resp);
-        }
-    });
+    // zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
+    //     if (!handleError(err, res)) {
+    //         console.log(resp);
+    //         res.send(resp);
+    //     }
+    // });
+    //console.log("WHAT", marketplaceSearch.topics());
+    res.send(marketplaceSearch.publicContent());
 };
 
 exports.getUserTopics = function(req, res){
