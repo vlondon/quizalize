@@ -450,11 +450,32 @@ exports.publishQuiz = function(req, res){
                 if (resp) {
                     var errorMessage = resp;
                     resp = {};
+                    email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Error in publishQuiz', 'error', {
+                      error: "Missing resp.link in publishQuiz, quiz.js line 434",
+                      message: errorMessage,
+                      parameters: {
+                          profileId: profileId,
+                          QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
+                          id: id,
+                          data: data
+                      }
+                    });
                     resp.message = errorMessage;
+
                 }
                 else {
                     resp = {};
                     resp.message = "No link, resp undefined";
+                    email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Error in publishQuiz', 'error', {
+                      error: "Missing resp in publishQuiz, quiz.js line 434",
+                      message: resp.message,
+                      parameters: {
+                          profileId: profileId,
+                          QUIZ_CONTENT_TYPE: QUIZ_CONTENT_TYPE,
+                          id: id,
+                          data: data
+                      }
+                    });
                 }
 
             }
