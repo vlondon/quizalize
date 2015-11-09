@@ -366,7 +366,10 @@ exports.getQuiz = function(req, res){
     else {
         email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
           error: "Failed to getQuiz, quiz.js line 352",
-          message: JSON.stringify(req),
+          message: JSON.stringify({
+              "id": id,
+              "profileId": profileId
+          }),
           parameters: ""
         });
         res.send({});
