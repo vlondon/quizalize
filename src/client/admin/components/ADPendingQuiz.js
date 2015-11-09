@@ -1,19 +1,25 @@
 import React, { PropTypes } from 'react';
 
 import ADCategoryPicker from './ADCategoryPicker';
+import ADShowPayload from './ADShowPayload';
 
 class ADPendingQuiz extends React.Component {
+    constructor(props){
 
-    onChange () {
-        this.props(this.props.quiz);
+        super(props);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange (updatedQuiz) {
+        this.props.onChange(updatedQuiz);
     }
 
     render () {
 
         let {quiz} = this.props;
-        let questionAmmount;
+        let questionAmount;
         if (quiz.type === 'quiz'){
-            questionAmmount = JSON.parse(quiz.payload).questions.length;
+            questionAmount = JSON.parse(quiz.payload).questions.length;
         }
 
         return (
@@ -22,7 +28,7 @@ class ADPendingQuiz extends React.Component {
                     {quiz.type}
                 </td>
                 <td>
-                    {quiz.meta.name} - {questionAmmount}
+                    {quiz.meta.name} - {questionAmount}
                 </td>
                 <td className='categoryId'>
                     {quiz.meta.categoryId}
@@ -41,8 +47,12 @@ class ADPendingQuiz extends React.Component {
                 </td>
                 <td>
                     Subject
-                    <ADCategoryPicker onChange={this.onChange}/>
+                    <ADCategoryPicker onChange={this.onChange} quiz={this.props.quiz} subjects={this.props.subjects}/>
                 </td>
+                <td>
+                    <ADShowPayload quiz={this.props.quiz}/>
+                </td>
+
 
             </tr>
         );

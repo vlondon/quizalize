@@ -173,22 +173,37 @@ exports.pendingQuizzes = function(req, res){
     //         });
     //     });
     // });
-    console.log("Building page", zzish_db);
-    zzish_db.secure.post("db/contentcategory/query/",{"query": "{}"}, function(err, categories){
-        console.log("Fetching Categories");
-        //console.log(categories.length.payload);
-        zzish_db.secure.post("db/subject/query/",{"query": "{}"}, function(err, subjects){
-            zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
-                res.render("admin/pending", {
-                    pending: JSON.parse(pending.payload),
-                    categories: JSON.parse(categories.payload),
-                    subjects: JSON.parse(subjects.payload),
-                    pendingString: pending.payload
-                });
-            });
+    // res.render("admin/pending");
+    // console.log("Building page", zzish_db);
+    // zzish_db.secure.post("db/contentcategory/query/",{"query": "{}"}, function(err, categories){
+    //     console.log("Fetching Categories");
+    //     //console.log(categories.length.payload);
+    //     zzish_db.secure.post("db/subject/query/",{"query": "{}"}, function(err, subjects){
+    //         zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
+    //             res.render("admin/pending", {
+    //                 pending: JSON.parse(pending.payload),
+    //                 categories: JSON.parse(categories.payload),
+    //                 subjects: JSON.parse(subjects.payload),
+    //                 pendingString: pending.payload
+    //             });
+    //         });
+    //     });
+    // });
+    zzish_db.secure.post("db/content/query/", {"query": "{'meta.published': 'pending'}"}, function(err, pending) {
+        res.render("admin/pending", {
+            pending: JSON.parse(pending.payload)
         });
     });
 };
+
+exports.queryDb = function(req, res) {
+    console.log("Building page", zzish_db);
+    zzish_db.secure.post("db/" + req.body.dbname + "/query/",{"query": req.body.dbquery}, function(err, result){
+        res.send(JSON.parse(result.payload));
+    });
+};
+
+
 
 exports.approved = function(req, res){
     // db.aggregateDocuments("contentcategory", [{ $project: {"uuid": 1, "name": 1}}], function(errCategory, categories){
@@ -540,22 +555,22 @@ exports.stats = function(req, res){
                     var studentsLastMonth = studentsFromActivities(activities, lastMonth, today);
                     stats.studentsLastMonth = totalStudents(studentsLastMonth);
                     console.log("students", stats.studentsLastMonth);
-                    var previewersThreeMonths = previewersFromActivities(activities, threeMonthsAgo, today);
-                    console.log("previewers", Object.keys(previewersThreeMonths).length);
-                    var teachPrevThree = teacherPreviewers (previewersThreeMonths, users);
-                    console.log("teachPrev", teachPrevThree);
+                    // var previewersThreeMonths = previewersFromActivities(activities, threeMonthsAgo, today);
+                    // console.log("previewers", Object.keys(previewersThreeMonths).length);
+                    // var teachPrevThree = teacherPreviewers (previewersThreeMonths, users);
+                    // console.log("teachPrev", teachPrevThree);
 
                     stats.repeatStudentsLastMonth = repeatStudents(studentsLastMonth);
 
-                    stats.powerUsersLastWeek = powerUsersFromTeachers(activeTeachersLastWeek);
-                    stats.powerUsersTwoWeeksAgo = powerUsersFromTeachers(activeTeachersTwoWeeksAgo);
-                    stats.publishedQuizThisWeek = publishedCounter(published, lastWeek, today, "quiz");
-                    stats.publishedAppThisWeek = publishedCounter(published, lastWeek, today, "app");
-                    stats.publishedQuizzes = published.length;
-                    var quizPublishers = publishersFromContent(published, 0, "quiz", users);
-                    stats.quizPublishersCount = Object.keys(quizPublishers).length;
-                    var appPublishers = publishersFromContent(published, lastWeek, "app", users);
-                    stats.appPublishersCount = Object.keys(appPublishers).length;
+                    // stats.powerUsersLastWeek = powerUsersFromTeachers(activeTeachersLastWeek);
+                    // stats.powerUsersTwoWeeksAgo = powerUsersFromTeachers(activeTeachersTwoWeeksAgo);
+                    // stats.publishedQuizThisWeek = publishedCounter(published, lastWeek, today, "quiz");
+                    // stats.publishedAppThisWeek = publishedCounter(published, lastWeek, today, "app");
+                    // stats.publishedQuizzes = published.length;
+                    // var quizPublishers = publishersFromContent(published, 0, "quiz", users);
+                    // stats.quizPublishersCount = Object.keys(quizPublishers).length;
+                    // var appPublishers = publishersFromContent(published, lastWeek, "app", users);
+                    // stats.appPublishersCount = Object.keys(appPublishers).length;
                 //    var powerUsers = powerUsersFromTeachers(activeTeachers);
                 //    stats.powerUsersTally = Object.keys(powerUsers).length;
 

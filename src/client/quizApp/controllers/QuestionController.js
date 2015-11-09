@@ -70,7 +70,7 @@ angular.module('quizApp')
                                     self.questionData,
                                     userAnswer,
                                     Math.max(new Date().getTime() - startTime - 2000, 0));
-            renderReactComponent();
+            //renderReactComponent();
         };
 
         self.nextQuestion = function(){

@@ -184,6 +184,7 @@ export default class CQViewClassList extends React.Component {
         if (this.state.groupsUsed.length === 0) {
             this.state.groupsUsed[0] = this.state.groups[this.state.groups.length -1].code;
         }
+        console.log("publish assignment settings", this.props.settings.toObject());
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0], this.props.settings)
             .then((response) =>{
                 AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
@@ -206,7 +207,7 @@ export default class CQViewClassList extends React.Component {
         var className = this.state.newClassName;
         if (className.length > 0) {
 
-            GroupActions.publishNewAssignment(this.props.quizId, className)
+            GroupActions.publishNewAssignment(this.props.quizId, className, this.props.settings)
                 .then((response) =>{
                     AnalyticsActions.sendIntercomEvent('new_class', {uuid: response.groupCode, name: className});
                     AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode, name: className});

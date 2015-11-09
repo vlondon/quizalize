@@ -32,11 +32,11 @@ block body
                 return result;
             };
             var dateArray = [];
-            var monday = new Date(Date.UTC(2015, 9, 26, 0, 0 ,0));
+            var monday = new Date(Date.UTC(2015, 10, 23, 0, 0 ,0));
             console.log(monday);
             var week = 7 * 24 * 60 * 60 * 1000;
             console.log(monday-week);
-            for (var i = 0; i<15; i++){
+            for (var i = 0; i<20; i++){
                     dateArray[i] = monday - i * week;
                 };
             console.log(dateArray);

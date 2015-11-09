@@ -1,0 +1,6 @@
+
+error: %error%
+
+message: %message%
+
+parameters: %parameters%

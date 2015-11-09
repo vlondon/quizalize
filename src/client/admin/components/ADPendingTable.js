@@ -8,7 +8,8 @@ class ADPendingTable extends React.Component {
         super(props);
         let quizzes = this.props.quizzes.slice();
         let updated = [];
-
+        let subjects = this.props.subjects.slice();
+        console.log("subjects", subjects);
         quizzes.sort((x, y)=>{
             if (!x.updated) {
                 return -1;
@@ -19,20 +20,34 @@ class ADPendingTable extends React.Component {
             return y.updated - x.updated;
         });
 
+        this.onChange = this.onChange.bind(this);
 
-        this.state = { quizzes, updated };
+        this.state = { quizzes, updated, subjects };
 
     }
 
     onChange(quizChanged){
-        let isAdded = this.state.updated.filter((updated, quizChanged)=>{
+        let updated;
+        let quizzes = this.state.quizzes.slice();
+        let isAdded = this.state.updated.filter((updated)=>{
             return updated.uuid === quizChanged.uuid;
         })[0];
+
+
+        let oldQuiz = quizzes.filter(q => q.uuid === quizChanged.uuid)[0];
+        let quizIndex = quizzes.indexOf(oldQuiz);
+        quizzes[quizIndex] = quizChanged;
+        console.log('quizIndex', quizIndex, oldQuiz, quizChanged);
+
         if (!isAdded) {
-            let {updated} = this.state;
+            updated = this.state.updated;
             updated.push(quizChanged);
-            this.setState({updated});
+            this.setState({updated, quizzes});
+            console.log("Updated", updated);
+        } else {
+            this.setState({quizzes});
         }
+
     }
 
     onSave(){
@@ -58,6 +73,7 @@ class ADPendingTable extends React.Component {
                             <th>
                                 Set Category And Approve
                             </th>
+                            <th>Payload</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,6 +84,7 @@ class ADPendingTable extends React.Component {
                                     key={quiz.uuid}
                                     quiz={quiz}
                                     onChange={this.onChange}
+                                    subjects={this.state.subjects}
                                     {...this.props}
                                 />
                             );

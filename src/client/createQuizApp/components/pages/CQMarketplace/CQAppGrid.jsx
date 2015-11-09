@@ -165,10 +165,10 @@ class CQAppGrid extends React.Component {
                         {this.state.apps.map((app) => {
 
                             var author;
-                            if (app.extra && app.extra.author) {
+                            if (app.meta && app.meta.author) {
                                 author = (
                                     <div className="cq-appgrid__author">
-                                        {app.extra.author.name}
+                                        {app.meta.author}
                                     </div>
                                 );
                             }

@@ -55,3 +55,11 @@
     width: 300px;
     margin: 0 auto;
 }
+
+#pendingTable tr td{
+    /*border: 1pt solid black;*/
+}
+
+#pendingTable tr:nth-child(even) {
+    background-color: #aaaaaa;
+}

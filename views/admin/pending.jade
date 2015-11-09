@@ -15,34 +15,72 @@ block body
         -return result;
     -}
     
-    script.        
-        var subjectString = "#{JSON.stringify(subjects)}";
-        subjectString = subjectString.replace(/&quot;/g, '"');
-        
-        var categoryString = "#{JSON.stringify(categories)}";
-        categoryString = categoryString.replace(/&quot;/g, '"');
-        
-        var quizzesString = JSON.parse(!{JSON.stringify(pendingString)});
-    
-        
-        var categories = JSON.parse(categoryString);
-        var subjects = JSON.parse(subjectString);
-        var quizzes = quizzesString;
-        
+    script.   
+        var subjects, categories, pending;
+        $.post("/admin/queryDb",
+        {
+            dbname: "contentcategory",
+            dbquery: "{}"
+        },
+        function(data, status){
+            categories = data;
+            $.post("/admin/queryDb",
+            {
+                dbname: "subject",
+                dbquery: "{}"
+            },
+            function(data, status){
+                subjects = data;
+                
+                $.post("/admin/queryDb",
+                {
+                    dbname: "content",
+                    dbquery: "{'meta.published': 'pending'}"
+                },
+                function(data, status){
+                    quizzes = data;
+                    
+                    //- window.pendingPage({
+                    //-     categories: categories,
+                    //-     subjects: subjects,
+                    //-     quizzes: quizzes
+                    //- });
 
+                    quizzes.forEach(function(quiz) {
+                        var subjectId = $("#subject" + quiz.uuid)
+                        subjects.forEach(function(subject){
+                            subjectId.append($("<option />").val(subject.uuid).text(subject.name));
+                        });                        
+                    });
 
+                    $(".categoryId").each(function() {
+                        var categoryName = categoryNameFromCategoryId($(this).text());
+                        //- console.log(categoryName);
+                        $(this).text(categoryName);
+                    });                    
+                    
+                });
+            });
+            
+        });       
 
         function showCategories(uuid, subId, catId) {
             var subjectId = $(subId + uuid).val();
-            
-            var availableCategories = categories.filter(function(category) {
-                return category.subjectId == subjectId;
-            });
-
             var selectId = $(catId + uuid)
-            availableCategories.forEach(function(category){
-                selectId.append($("<option />").val(category.uuid).text(category.name));
-            });
+            
+            selectId
+                .find('option')
+                .remove()
+                .end();
+            if (subjectId != "") {
+                var availableCategories = categories.filter(function(category) {
+                    return category.subjectId == subjectId;
+                });
+
+                availableCategories.forEach(function(category){
+                    selectId.append($("<option />").val(category.uuid).text(category.name));
+                });                
+            }
         }
         var categoryNameFromCategoryId = function(categoryId){
             //- console.log(categoryId);
@@ -60,35 +98,17 @@ block body
             return category[0].name;
             }
         };
-        
-
-        
-        $(function() {
-        
-        
-            window.pendingPage({
-                categories: categories,
-                subjects: subjects,
-                quizzes: quizzes
-            });
-            
-            
-            $(".categoryId").each(function() {
-                var categoryName = categoryNameFromCategoryId($(this).text());
-                //- console.log(categoryName);
-                $(this).text(categoryName);
-            });
-        });
-        
+                
     
     h1 Pending Quizzes
     #react
     .container-fluid
         .row
-            table(border="1", style="background-color:white;font-size:12px; width:100%")
+            table(border="1", style="background-color:white;font-size:12px; width:100%")#pendingTable
                 thead
                     th Type
                     th Name
+                    th Number of questions
                     th Category
                     th preview
                     th Editor
@@ -104,11 +124,23 @@ block body
                         -}
                         -return y.updated - x.updated;
                     -});
-
+    
                 for quiz in pending
+                    -var questionLength = undefined;
+                    -if (quiz.type == "quiz"){
+                        -console.log("in quiz");
+                        -var quizPayload = JSON.parse(quiz.payload);
+                        -if (quizPayload.questions !== undefined){
+                        -console.log("in");
+                            -questionLength = quizPayload.questions.length;
+                            -console.log("questionLength", questionLength);
+                        -}
+                    -}
+                    
                     tr
                         td #{quiz.type}
                         td #{quiz.meta.name}
+                        td #{questionLength}
                         td.categoryId #{quiz.meta.categoryId}
                         td
                             a(href="https://www.quizalize.com/app#/play/public/#{quiz.uuid}") Preview
@@ -121,9 +153,7 @@ block body
                         td
                             form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
                                 select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subject', '#category')", id="subject#{quiz.uuid}")
-                                    option 
-                                    for subject in subjects
-                                        option(value=subject.uuid) #{subject.name}
+                                    option(value="") Please Select
                                 select(name="publicCategoryId", id="category#{quiz.uuid}")
                                 input(type="submit" value="Approve")
                                     

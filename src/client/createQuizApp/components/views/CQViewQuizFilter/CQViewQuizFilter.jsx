@@ -72,17 +72,23 @@ class CQViewQuizFilter extends React.Component {
 
     handleSearch(ev : Object){
         var searchString = ev.target.value;
-        this.props.onSearchInput(searchString);
+        let categorySelected = {
+            value: 'all'
+        };
+        // this.props.onSearchInput(searchString);
         this.setState({
-            searchString
+            searchString,
+            categorySelected
         }, this.performSearch);
 
     }
 
     handleChange(category : Object ) {
 
+        let searchString = '';
         this.setState({
-            categorySelected: category
+            categorySelected: category,
+            searchString
         }, this.performSearch);
         this.props.onCategoryChange(category);
 
@@ -98,10 +104,16 @@ class CQViewQuizFilter extends React.Component {
 
     performSearch(){
 
-        var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.value;
-        console.log('searchign for', this.state.searchString, category, this.props.profileId);
-        QuizActions.searchPublicQuizzes(this.state.searchString, category, this.props.profileId);
-        AppActions.searchPublicApps(this.state.searchString, category, this.props.profileId);
+        var category = this.state.categorySelected.value === 'all' ? undefined : this.state.categorySelected.name;
+        console.log('performSearch', this.state.categorySelected);
+        if (category){
+            QuizActions.searchPublicQuizzes(category, category, this.props.profileId);
+            AppActions.searchPublicApps(category, category, this.props.profileId);
+        } else {
+
+            QuizActions.searchPublicQuizzes(this.state.searchString, category, this.props.profileId);
+            AppActions.searchPublicApps(this.state.searchString, category, this.props.profileId);
+        }
 
     }
 
@@ -135,25 +147,6 @@ class CQViewQuizFilter extends React.Component {
             }
         }
 
-        // var quizzesAndTopics = [];
-        // if (this.props.appEnabled=="true") {
-        //     quizzesAndTopics = [{
-        //         name: 'quizzes and apps',
-        //         value: 'all'
-        //     }, {
-        //         name: 'quizzes',
-        //         value: 'quizzes'
-        //     }, {
-        //         name: 'apps',
-        //         value: 'apps'
-        //     }];
-        // }
-        // else {
-        //     quizzesAndTopics = [{
-        //         name: 'quizzes',
-        //         value: 'quizzes'
-        //     }];
-        // }
 
 
 

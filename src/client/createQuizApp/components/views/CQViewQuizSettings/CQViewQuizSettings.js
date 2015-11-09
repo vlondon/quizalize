@@ -28,6 +28,7 @@ class CQViewQuizSettings extends React.Component {
 
     handleCheckbox(property: string){
         const settings = this.props.settings.update(property, (v) => v === 1 ? 0 : 1 );
+        console.log("settings changed");
         this.props.onChange(settings);
     }
 
@@ -51,55 +52,18 @@ class CQViewQuizSettings extends React.Component {
             <div className={`cq-quizsettings ${className}`}>
 
                     <div className="cq-quizsettings__modal">
-                        <h5 className="cq-quizsettings__header" onClick={this.handleOpenClose}>
-                            <i className={`fa ${chevron}`}/>{` `}
-                            Adjust settings for your class game
-                        </h5>
-                        <ul className="cq-quizsettings__list">
-                            <li>
-                                <h4>Random order</h4>
-                                <p>Questions will be shown in random order for each student</p>
+                        {/*<ul>
+                            <li className="cq-quizsettings__mastery">
+                                <h4><span className="cq-quizsettings__new">NEW: </span>Try Mastery Mode</h4>
+                                <p>Our new smart algorithm repeats questions to help strengthen learning for each individual student. Give it a try!</p>
                                 <div className="cq-quizsettings__switch">
                                     <CQViewSwitch
-                                        onChange={this.handleCheckbox.bind(this, 'random')}
-                                        checked={toBoolean(this.props.settings.random)}
+                                        onChange={this.handleCheckbox.bind(this, 'repeatUntilCorrect')}
+                                        checked={toBoolean(this.props.settings.repeatUntilCorrect)}
                                     />
-                                </div>
-
-                            </li>
-                            <li>
-                                <h4>Show answers</h4>
-                                <p>Students will be shown the correct answer if they get it wrong</p>
-                                <div className="cq-quizsettings__switch">
-                                    <CQViewSwitch
-                                        onChange={this.handleCheckbox.bind(this, 'showAnswers')}
-                                        checked={toBoolean(this.props.settings.showAnswers)}
-                                    />
-                                </div>
-                            </li>
-
-                            <li>
-                                <h4>Show timer</h4>
-                                <p>Don't show the question timer to students. Correct answers always will score the maximum amount.</p>
-                                <div className="cq-quizsettings__switch">
-                                    <CQViewSwitch
-                                        onChange={this.handleCheckbox.bind(this, 'showTimer')}
-                                        checked={toBoolean(this.props.settings.showTimer)}
-                                    />
-                                </div>
-                            </li>
+                                {/*<div>
 
 
-                            <li>
-                                <h4>Repeat Until Correct</h4>
-                                <p>The questions will be asked again and again until the student answers it correctly.</p>
-                                <div className="cq-quizsettings__switch">
-                                    <div>
-
-                                        <CQViewSwitch
-                                            onChange={this.handleCheckbox.bind(this, 'repeatUntilCorrect')}
-                                            checked={toBoolean(this.props.settings.repeatUntilCorrect)}
-                                        />
                                         <div className="cq-quizsettings__maxattempts">
 
                                             <select
@@ -115,13 +79,32 @@ class CQViewQuizSettings extends React.Component {
                                                 <option value={5}>retry 5 times</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div>}
                                 </div>
+                            </li>
+                        </ul>*/}
+                        <h5 className="cq-quizsettings__header" onClick={this.handleOpenClose}>
+                            <i className={`fa ${chevron}`}/>{` `}
+                            Adjust settings for your class game
+                        </h5>
+                        <ul className="cq-quizsettings__list">
+                            <li>
+                                <h4>Randomise question order?
+                                </h4>
+
+                                <p>Give the same questions to all students, but in a different order to each</p>
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'random')}
+                                        checked={toBoolean(this.props.settings.random)}
+                                    />
+                                </div>
+
                             </li>
 
                             <li>
                                 <h4>Number of questions</h4>
-                                <p> If your quiz has lots of questions you can select to only set a specific number of them. The selection of these quistions is random.
+                                <p> Randomly choose a smaller set of questions from all the questions in a quiz - choose how many
                                 </p>
                                 <div className="cq-quizsettings__switch">
                                     <div>
@@ -136,6 +119,28 @@ class CQViewQuizSettings extends React.Component {
                                         </select>
                                     </div>
 
+                                </div>
+                            </li>
+
+                            <li>
+                                <h4>Use the timer?</h4>
+                                <p>If this is set to no the timer won't be shown to students. Correct answers always will score the maximum amount.</p>
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'showTimer')}
+                                        checked={toBoolean(this.props.settings.showTimer)}
+                                    />
+                                </div>
+                            </li>
+
+                            <li>
+                                <h4>Show correct answer?</h4>
+                                <p>Show students the correct answer when a student gets the answer wrong.</p>
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'showAnswers')}
+                                        checked={toBoolean(this.props.settings.showAnswers)}
+                                    />
                                 </div>
                             </li>
 

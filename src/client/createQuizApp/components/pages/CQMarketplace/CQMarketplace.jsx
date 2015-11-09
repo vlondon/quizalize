@@ -137,10 +137,12 @@ export default class CQMarketplace extends React.Component {
     }
 
     handleCategoryChange(currentCategory : Object) {
-        this.setState({currentCategory});
+        let search = '';
+        this.setState({currentCategory, search});
     }
     handleSearchInput(search: string){
-        this.setState({search});
+        let currentCategory = { value: 'all' };
+        this.setState({search, currentCategory});
     }
 
     handleDetails(quiz: Quiz){
