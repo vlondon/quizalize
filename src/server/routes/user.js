@@ -146,21 +146,33 @@ exports.register =  function(req, res) {
     logger.info('Creating new user for', userEmail);
     zzish.registerUser(userEmail, encrypt(userPassword), function(err, user) {
         if (!err) {
+            if (user){
+                console.log("creating user", user);
+                user.attributes.accountType = 1;
+                user.attributes.accountTypeUpdated = Date.now();
 
-            user.attributes.accountType = 1;
-            user.attributes.accountTypeUpdated = Date.now();
-
-            req.session.user = user;
-            logger.info('Setting account type for', userEmail);
-            exports.saveUser(user)
-                .then(()=>{
-                    logger.info('saving session');
-                    res.send(user);
-                })
-                .catch(()=>{
-                    res.status(err).send();
+                req.session.user = user;
+                logger.info('Setting account type for', userEmail);
+                exports.saveUser(user)
+                    .then(()=>{
+                        logger.info('saving session');
+                        res.send(user);
+                    })
+                    .catch(()=>{
+                        res.status(err).send();
+                    });
+                email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
+            }
+            else {
+                email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to register', 'error', {
+                  error: "Failed to register user, user.js line 150",
+                  message: "",
+                  parameters: {
+                      userEmail: userEmail
+                  }
                 });
-            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", [userEmail], 'Welcome to Quizalize', 'welcome', {name: "there"});
+            }
+
         }
         else {
             res.status(err);
