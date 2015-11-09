@@ -555,22 +555,22 @@ exports.stats = function(req, res){
                     var studentsLastMonth = studentsFromActivities(activities, lastMonth, today);
                     stats.studentsLastMonth = totalStudents(studentsLastMonth);
                     console.log("students", stats.studentsLastMonth);
-                    var previewersThreeMonths = previewersFromActivities(activities, threeMonthsAgo, today);
-                    console.log("previewers", Object.keys(previewersThreeMonths).length);
-                    var teachPrevThree = teacherPreviewers (previewersThreeMonths, users);
-                    console.log("teachPrev", teachPrevThree);
+                    // var previewersThreeMonths = previewersFromActivities(activities, threeMonthsAgo, today);
+                    // console.log("previewers", Object.keys(previewersThreeMonths).length);
+                    // var teachPrevThree = teacherPreviewers (previewersThreeMonths, users);
+                    // console.log("teachPrev", teachPrevThree);
 
                     stats.repeatStudentsLastMonth = repeatStudents(studentsLastMonth);
 
-                    stats.powerUsersLastWeek = powerUsersFromTeachers(activeTeachersLastWeek);
-                    stats.powerUsersTwoWeeksAgo = powerUsersFromTeachers(activeTeachersTwoWeeksAgo);
-                    stats.publishedQuizThisWeek = publishedCounter(published, lastWeek, today, "quiz");
-                    stats.publishedAppThisWeek = publishedCounter(published, lastWeek, today, "app");
-                    stats.publishedQuizzes = published.length;
-                    var quizPublishers = publishersFromContent(published, 0, "quiz", users);
-                    stats.quizPublishersCount = Object.keys(quizPublishers).length;
-                    var appPublishers = publishersFromContent(published, lastWeek, "app", users);
-                    stats.appPublishersCount = Object.keys(appPublishers).length;
+                    // stats.powerUsersLastWeek = powerUsersFromTeachers(activeTeachersLastWeek);
+                    // stats.powerUsersTwoWeeksAgo = powerUsersFromTeachers(activeTeachersTwoWeeksAgo);
+                    // stats.publishedQuizThisWeek = publishedCounter(published, lastWeek, today, "quiz");
+                    // stats.publishedAppThisWeek = publishedCounter(published, lastWeek, today, "app");
+                    // stats.publishedQuizzes = published.length;
+                    // var quizPublishers = publishersFromContent(published, 0, "quiz", users);
+                    // stats.quizPublishersCount = Object.keys(quizPublishers).length;
+                    // var appPublishers = publishersFromContent(published, lastWeek, "app", users);
+                    // stats.appPublishersCount = Object.keys(appPublishers).length;
                 //    var powerUsers = powerUsersFromTeachers(activeTeachers);
                 //    stats.powerUsersTally = Object.keys(powerUsers).length;
 

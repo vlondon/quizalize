@@ -25,10 +25,11 @@ var generateData = function(chosenWeek, callback) {
     var activityQuery = {"query":"{'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'contentId': {$exists: true}, 'status': 'ACTIVITY_INSTANCE_COMPLETED'}",
     "project":"{'timestamp': 1, 'contentId': 1, 'groupId': 1, 'profileId': 1}"};
     console.log("Generating data");
+
     zzish_db.secure.post("db/activityinstance/query/", activityQuery, function(err, activityinstances){
         console.log(err, "Fetching activities");
         zzish_db.secure.post("db/user/query/", {"query": "{'profiles.appToken': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'profile': {$exists: true}}",
-                        "project": "{ 'uuid': 1, 'profiles.appToken':1, 'profiles.email':1, 'created': 1, 'email': 1}"}, function(err, userList){
+                        "project": "{ 'uuid': 1, 'profiles.email':1, 'created': 1, 'email': 1}"}, function(err, userList){
                 console.log("Fetching Users");
                 zzish_db.secure.post("db/usergroup/query/", {"query": "{}", "project":"{'uuid': 1, 'ownerId': 1}"}, function(errGroup, usergroup) {
                     console.log("Got Groups");
@@ -116,30 +117,30 @@ var generateData = function(chosenWeek, callback) {
 
                                         }
                                     }
-                                }
-                                else {
-                                    var profile = user.profiles.filter(function(prof){
-                                        return prof.appToken == '72064f1f-2cf8-4819-a3d5-1193e52d928c';
-                                    });
-
-                                    if (profile[0].email !== undefined && user.created < periodEnd){
-                                        var domain = profile[0].email.split("@")[1];
-                                        if (domain !== undefined){
-                                            domain = domain.toLowerCase();
-                                            if (domains.join(",").indexOf(domain.split(".")[0]) === -1){
-                                                if (schools[domain] === undefined){
-                                                    schools[domain] = {domain: domain, count: 1};
-                                                }
-                                                else {
-                                                    schools[domain].count++;
-                                                }
-                                            }
-                                        }
-
-
-
-                                    }
-                                }
+                                } 
+                                // else {
+                                //     var profile = user.profiles.filter(function(prof){
+                                //         return prof.appToken == '72064f1f-2cf8-4819-a3d5-1193e52d928c';
+                                //     });
+                                //
+                                //     if (profile[0].email !== undefined && user.created < periodEnd){
+                                //         var domain = profile[0].email.split("@")[1];
+                                //         if (domain !== undefined){
+                                //             domain = domain.toLowerCase();
+                                //             if (domains.join(",").indexOf(domain.split(".")[0]) === -1){
+                                //                 if (schools[domain] === undefined){
+                                //                     schools[domain] = {domain: domain, count: 1};
+                                //                 }
+                                //                 else {
+                                //                     schools[domain].count++;
+                                //                 }
+                                //             }
+                                //         }
+                                //
+                                //
+                                //
+                                //     }
+                                // }
                             });
                             return schools;
                     };
@@ -278,9 +279,8 @@ var generateData = function(chosenWeek, callback) {
                             var fmatches = matches.map(function(user) {
                                 for (var i in user.profiles) {
                                     var profile = user.profiles[i];
-                                    if (profile.appToken === '72064f1f-2cf8-4819-a3d5-1193e52d928c') {
                                         return {email: profile.email || user.email, name: profile.name};
-                                    }
+
                                 }
                             });
                             //console.log(fmatches.length);
