@@ -369,6 +369,7 @@ exports.getQuiz = function(req, res){
           message: req,
           parameters: ""
         });
+        res.send({});
     }
 };
 
