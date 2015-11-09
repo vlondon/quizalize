@@ -1,4 +1,5 @@
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var QLLatex = require('quizApp/components/QLLatex');
 var PQViewVideo = require('playQuizApp/components/views/PQViewVideo');
@@ -87,9 +88,12 @@ var QLAnswerScreen = React.createClass({
         var correctAnswer, viewVideo, videoPlayer, explanation;
 
         if (this.props.answerData.correct){
-            console.log('PLAY SOUND: applause.mp3');
-            var audio = new Audio('/sounds/applause.mp3');
-            audio.play();
+            /*
+            // Playing applause.mp3 using Howl
+            var sound = new Howl({
+                urls: ['/sounds/applause.mp3']
+            }).play().fade(1, 0, 3000);
+            */
             for (var i = 0; i < 30; i++){
                 stars.push(<Star key={i}/>);
             }
