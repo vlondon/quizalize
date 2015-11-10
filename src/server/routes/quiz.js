@@ -353,7 +353,11 @@ exports.deleteTopic = function(req, res){
 };
 
 exports.getQuiz = function(req, res){
-    if (req && req.session && req.session.user && req.session.user.uuid){
+    var query = "id:" + req.params.id + ":profileId:";
+    if (req.session.user) {
+        query+=req.session.user.uuid;
+    }
+    if (req.session.user && req.session.user.uuid){
         var id = req.params.id;
         var profileId = req.session.user.uuid;
 
@@ -369,10 +373,7 @@ exports.getQuiz = function(req, res){
     else {
         email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
           error: "Failed to getQuiz, quiz.js line 352",
-          message: JSON.stringify({
-              "id": id,
-              "profileId": profileId
-          }),
+          message: query,
           parameters: ""
         });
         res.send({});
