@@ -1,4 +1,5 @@
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var QLQuestion = require('quizApp/components/QLQuestion');
 var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
@@ -83,6 +84,13 @@ var QLMultiple = React.createClass({
     },
 
     handleClick: function(index){
+        // Playing sound: Button press
+        new Howl({
+            urls: ['/sounds/button_press.mp3'],
+            onend: function() {
+                this.unload();
+            }
+        }).play();
 
         this.handleCssState(2, () => {
             this.setState({

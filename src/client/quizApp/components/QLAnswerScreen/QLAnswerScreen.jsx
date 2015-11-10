@@ -52,7 +52,6 @@ var Star = React.createClass({
 
 });
 
-
 var QLAnswerScreen = React.createClass({
 
     propTypes: {
@@ -61,11 +60,40 @@ var QLAnswerScreen = React.createClass({
         questionData: React.PropTypes.object.isRequired,
         onNext: React.PropTypes.func
     },
+
     getInitialState: function() {
         return {};
     },
 
+    componentDidMount: function() {
+        if (this.props.answerData.correct){
+            // Playing sound: Correct answer
+            new Howl({
+                urls: ['/sounds/correct_answer.mp3'],
+                onend: function() {
+                    this.unload();
+                }
+            }).play();
+        } else {
+            // Playing sound: Wrong answer
+            new Howl({
+                urls: ['/sounds/wrong_answer.mp3'],
+                onend: function() {
+                    this.unload();
+                }
+            }).play();
+        }
+    },
+
     handleClick: function(){
+        // Playing sound: Button press
+        new Howl({
+            urls: ['/sounds/button_press.mp3'],
+            onend: function() {
+                this.unload();
+            }
+        }).play();
+
         if (this.props.onNext){
             this.props.onNext();
         }
@@ -88,17 +116,10 @@ var QLAnswerScreen = React.createClass({
         var correctAnswer, viewVideo, videoPlayer, explanation;
 
         if (this.props.answerData.correct){
-            /*
-            // Playing applause.mp3 using Howl
-            var sound = new Howl({
-                urls: ['/sounds/applause.mp3']
-            }).play().fade(1, 0, 3000);
-            */
             for (var i = 0; i < 30; i++){
                 stars.push(<Star key={i}/>);
             }
         }
-
 
         if (!this.props.answerData.correct && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1)){
             correctAnswer = (
