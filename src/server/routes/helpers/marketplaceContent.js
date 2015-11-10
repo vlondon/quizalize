@@ -11,6 +11,7 @@ const APP_CONTENT_TYPE = 'app';
 let quizzes = Map();
 let apps = Map();
 let topics = Map();
+let publicContentResult = Map();
 let loadTimeout1, loadTimeout2, loadTimeout3;
 var size = 5;
 
@@ -138,6 +139,7 @@ let loadPublicContent = function(){
     logger.info('MARKETPLACE: Loading public content');
     zzish.listPublicContent(QUIZ_CONTENT_TYPE, function(err, resp){
         // console.log('topics', Object.keys(resp));
+        publicContentResult = resp;
         let topicsTemp = {};
         let topicsArray = [];
         if (err || !resp) {
@@ -201,6 +203,9 @@ let sortQuizzes = function(arrayOfQuizzes){
 };
 
 let search = {
+    publicContent: function() {
+        return publicContentResult;
+    },
     quiz: function(searchString: string) : Array<Object> {
         let start = process.hrtime();
 
