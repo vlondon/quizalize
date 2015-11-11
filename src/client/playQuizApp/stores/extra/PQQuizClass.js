@@ -22,7 +22,7 @@ class PQQuiz {
         if (questionIndex){
             this.questionIndex = questionIndex;
         }
-        var question  = this._quiz.payload.questions[this.questionIndex];
+        var question = this._quiz.payload.questions[this.questionIndex];
         this.questionIndex += 1;
         return new PQQuestion(question);
     }

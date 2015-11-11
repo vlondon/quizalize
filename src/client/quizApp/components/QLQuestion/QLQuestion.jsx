@@ -7,8 +7,8 @@ var QLLatex = require('quizApp/components/QLLatex');
 var QLQuestion = React.createClass({
 
     propTypes: {
-        questionData: React.PropTypes.object.isRequired,
-        attributes: React.PropTypes.object.isRequired
+        questionData: React.PropTypes.object.isRequired
+        //attributes: React.PropTypes.object.isRequired
     },
     getInitialState: function() {
         return {};

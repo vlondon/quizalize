@@ -6,6 +6,8 @@ export default class PQQuestion {
     constructor(newQuestion: Object){
         this._question = newQuestion;
         this._status = 0;
+        this._question.report = [];
+        this._question.duration = newQuestion.duration || 60;
     }
 
     getStatus(): number{
@@ -15,7 +17,5 @@ export default class PQQuestion {
     toObject(): Object{
         return this._question;
     }
-
-
 
 }
