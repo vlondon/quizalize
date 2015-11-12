@@ -50,9 +50,13 @@ var QLMultiple = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         if (this.props.questionData !== nextProps.questionData) {
+            let hasAnswer = nextProps.quizData.report[nextProps.questionIndex] ? nextProps.quizData.report[nextProps.questionIndex].answer : null
             this.setState({
-                cssSate: cssStates[0]
+                answer: hasAnswer
             });
+            if (!hasAnswer) {
+                this.handleCssState(0);
+            }
         }
     },
 
@@ -107,6 +111,7 @@ var QLMultiple = React.createClass({
         };
 
         if (!this.state.answer) {
+            //console.info('Show Question');
             var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = this.props.questionData.answerObject.alternatives.map(function(alternative, index){
@@ -118,6 +123,7 @@ var QLMultiple = React.createClass({
                 </div>);
             }, this);
         } else {
+            //console.info('Show Ansnwer');
             var questionId = this.props.questionData.uuid;
             var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
                 return f.questionId == questionId;

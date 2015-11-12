@@ -17,8 +17,7 @@ class PQQuiz {
         return this._quiz;
     }
 
-
-    getQuestion(questionIndex: ?number = undefined){
+    getQuestion(questionIndex: ?number = undefined) {
         if (questionIndex){
             this.questionIndex = questionIndex;
         }
