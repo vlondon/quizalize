@@ -86,7 +86,7 @@ var QLVideoPlayer = React.createClass({
             }
         } else {
             props.startTime = this.state.startTime;
-            props.questionIndex = this.state.questionIndex;
+            props.questionIndex = this.state.questionIndex || this.props.questionIndex;
             if (this.props.questionData.answerObject.type === "multiple"){
                 return (
                     <QLMultiple
