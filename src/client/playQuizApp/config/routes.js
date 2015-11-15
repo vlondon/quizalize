@@ -3,6 +3,7 @@ var React               = require('react');
 
 import PQSplash from './../components/pages/PQSplash';
 import PQLogin from './../components/pages/PQLogin';
+import PQQuiz from './../components/pages/PQQuiz';
 
 export type Page = {
     name: string;
@@ -18,9 +19,9 @@ var pagesArray: Array<Page> = [
         path: '/play',
         needsLogin: undefined,
         renderer: function(){
-
+            console.log('Quiz Page!');
             React.render(
-                React.createElement(PQSplash, null),
+                React.createElement(PQQuiz, null),
                 document.getElementById('reactApp')
             );
         }
