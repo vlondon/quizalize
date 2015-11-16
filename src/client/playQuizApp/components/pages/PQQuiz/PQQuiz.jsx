@@ -1,10 +1,14 @@
 /* @flow */
 import React from 'react';
 
-import type {Question} from './../../../../../types';
+import type, { Question } from './../../../../../types';
+
 import PQQuizStore from './../../../stores/PQQuizStore';
 import PQQuizActions from './../../../actions/PQQuizActions';
+
 import PQPageTemplate from './../../PQPageTemplate';
+import PQFeedback from './../PQFeedback';
+
 import QLVideoPlayer from './../../../../quizApp/components/QLVideoPlayer';
 
 type State = {
@@ -71,35 +75,36 @@ class PQQuiz extends React.Component {
 
         var content = null;
         if (this.state.quiz) {
-            let quiz = PQQuizStore.getQuiz(quizId);
             if (this.state.completed) {
-                console.log('Feedback for quiz: ', quiz);
                 // Feedback
                 content = (
                     <div>
-                        <h2>Feedback!!!</h2>
-                        <p>Total score: {this.state.quiz.totalScore}</p>
+                        <h1>Feedback</h1>
+                        <PQFeedback quizId={quizId} />
                     </div>
                 );
             } else {
                 // Quiz
+                let quiz = PQQuizStore.getQuiz(quizId);
                 content = (
-                    <QLVideoPlayer
-                        currentQuiz={this.state.quiz}
-                        quizData={this.state.quiz}
-                        questionData={this.state.question}
-                        questionIndex={quiz.questionIndex}
-                        startTime={Date.now()}
-                        onSelect={this._onSelect.bind(this)}
-                        onNext={this._onNext.bind(this)}
-                    />
+                    <div>
+                        <h1>Play</h1>
+                        <QLVideoPlayer
+                            currentQuiz={this.state.quiz}
+                            quizData={this.state.quiz}
+                            questionData={this.state.question}
+                            questionIndex={quiz.questionIndex}
+                            startTime={Date.now()}
+                            onSelect={this._onSelect.bind(this)}
+                            onNext={this._onNext.bind(this)}
+                        />
+                    </div>
                 );
             }
         }
 
         return (
             <PQPageTemplate>
-                <h1>Play</h1>
 
                 { content }
 

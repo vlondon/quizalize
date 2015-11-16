@@ -1,0 +1,11 @@
+.pq-feedback {
+    max-width: 585px;
+    background: #f2f2f2;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+
+    &__title {
+        text-align: center;
+    }
+}
