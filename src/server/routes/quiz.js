@@ -23,8 +23,8 @@ var handleError = function(err, res){
         } else {
             logger.error('handleError: Res object error', res);
             email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
-                error: "Failed to getQuiz, quiz.js line 352",
-                message: res,
+                error: "Failed to handleError, quiz.js line 22",
+                message: JSON.stringify(res),
                 parameters: ""
             });
         }
