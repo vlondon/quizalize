@@ -18,7 +18,9 @@ var QUIZ_CONTENT_TYPE = "quiz";
 var handleError = function(err, res){
     if (err){
         logger.error(err);
-        res.status(500).send(err);
+        if (res && res.status) {
+            res.status(500).send(err);
+        }
     }
     return err;
 };
