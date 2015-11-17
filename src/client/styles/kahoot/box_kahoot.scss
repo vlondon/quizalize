@@ -148,9 +148,10 @@
             float:right;
             width: 450px;
         }
-        &__edsurge{
+        &__edsurge img {
             display: block;
-            margin: 0 auto;
+            margin: 10px auto;
+
             @include media(840px) {
                 padding-top:150px;
                 padding-left:40px;
