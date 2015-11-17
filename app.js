@@ -215,6 +215,8 @@ app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);
 app.get('/COPPA-policy', quiz.coppa);
 app.get('/landing', quiz.landing);
+app.get('/for-kahoot-users', quiz.kahoot);
+app.get('/for-quizlet-users', quiz.quizlet);
 
 /*
 

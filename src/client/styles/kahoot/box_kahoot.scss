@@ -1,0 +1,163 @@
+.q-home__kahoot {
+    @include boxHome;
+    @include clearfix();
+    background: $brand-color-purple-light;
+    &__like{
+        margin-top:-40px;
+        padding-bottom: 10px;
+        h3{
+            font-size: 30px;
+            font-weight: 400;}
+        span {
+            font-size: 25px;
+            color: #cbb3d8;
+        }
+    }
+
+    &__reasons{
+        @include media ( 840 px ) {
+            margin-top:20px;
+            padding-bottom: 30px;
+        }
+        position: relative;
+        clear:both;
+        h3{
+            margin-top:6px;;
+
+            font-size: 20px;
+            font-weight: 400;
+        }
+        p{
+            font-size: 13.5px;
+            color: #cbb3d8;
+            padding: 0 20px 0 20px;
+
+
+        }
+        div {
+            @include media(840px) {
+                width:270px;
+
+            }
+        }
+
+
+        &__one{
+            @include media(840px) {
+            float:left;
+            img {
+                padding-right:60px;
+            }
+        }
+        }
+        &__two{
+            @include media(840px) {
+            display: inline-block;
+
+            margin: 0 auto;
+
+            img {
+                padding-right:40px;
+            }
+        }
+        }
+        &__three{
+            @include media(840px) {
+            float:right;
+            top:0;
+            img {
+                padding-right:78px;
+            }
+            p {
+                padding-right: 40px;
+
+            }
+            h3 {
+                padding-top:5px;
+            }
+        }
+        }
+        &__four{
+            @include media(840px) {
+
+            float:left;
+            img {
+                padding-right:15px;
+            }
+        }
+        }
+        &__five{
+            @include media(840px) {
+
+            display: inline-block;
+            margin: 0 auto;
+            img {
+                padding-right:42px;
+            }
+        }
+        }
+        &__six{
+            @include media(840px) {
+
+            float:right;
+            img {
+                margin-top: -10px;
+                padding-right:45px;
+            }
+        }
+        }
+        &__seven{
+            @include media(840px) {
+
+            img {
+                margin-top: 10px;
+                padding-right:25px;
+            }
+        }
+    }
+
+    }
+    &__praise {
+        position:relative;
+        text-align: left;
+        @include media(840px) {margin-top:-150px;}
+        h3{
+            font-size: 23px;
+            color: #81afcc;
+            font-weight:bold;
+
+            padding-bottom:15px;
+            padding-left: 50px;
+        }
+        p{
+            font-size: 16px;
+            color: #cbb3d8;
+            font-weight:bold;
+            padding-bottom:15px;
+            padding-left: 50px;
+            padding-right: 40px;
+
+            span {
+                color: white;
+            }
+        }
+        &__teachers{
+            background: url(./../assets/speechbubbles.png);
+            background-repeat: no-repeat;
+            background-size: contain;
+            float:right;
+            width: 450px;
+        }
+        &__edsurge{
+            display: block;
+            margin: 0 auto;
+            @include media(840px) {
+                padding-top:150px;
+                padding-left:40px;
+                float:left;
+            }
+
+        }
+    }
+
+}

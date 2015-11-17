@@ -192,6 +192,13 @@ exports.packages = function (req, res){
 exports.faq = function(req, res){
     res.render('faq');
 };
+
+exports.kahoot = function(req, res) {
+    res.render('kahoot');
+};
+exports.quizlet = function (req, res){
+    res.render('quizlet');    
+};
 exports.landing = function(req, res){
     res.render('landing');
 };

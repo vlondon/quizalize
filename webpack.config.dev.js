@@ -13,6 +13,8 @@ module.exports = {
         quiz: 'quiz.js',
         quizApp: 'quizApp.js',
         publishers: ['webpack/hot/dev-server', 'publishers.js'],
+        kahoot: ['webpack/hot/dev-server', 'kahoot.js'],
+        quizlet: ['webpack/hot/dev-server', 'quizlet.js'],
         home: ['webpack/hot/dev-server', 'home.js', 'liveBeta/liveBeta.js'],
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         admin: ['admin/index.js'],

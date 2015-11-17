@@ -8,7 +8,9 @@ var config = require("../config"); //initialized zzish
 var email     = require('../email');
 var db = require('./db');
 var generateData = require ('./generateData');
+var calculateActives = require ('./calculateActives');
 var GoogleAnalytics = require('ga');
+
 
 var host = 'www.quizalize.com';
 var ua = process.env.QUIZALIZEGA;
@@ -313,14 +315,14 @@ exports.stats = function(req, res){
                     var activities = JSON.parse(activityinstances.payload);
                     var published = JSON.parse(publishedList.payload);
 
-                    var today = Date.now();
-                    var lastWeek = Date.now() - 7 * 24 * 60 * 60 * 1000;
-                    var twoWeeksAgo = Date.now() - 14 * 24 * 60 * 60 * 1000;
-                    var threeWeeksAgo = Date.now() - 21 * 24 * 60 * 60 * 1000;
-                    var fourWeeksAgo = Date.now() - 28 * 24 * 60 * 60 * 1000;
-                    var lastMonth = Date.now() - 30 * 24 * 60 * 60 * 1000;
-                    var twoMonthsAgo = Date.now() - 60 * 24 * 60 * 60 * 1000;
-                    var threeMonthsAgo = Date.now() - 91 * 24 * 60 * 60 * 1000;
+                    var today = 1447632000000;
+                    var lastWeek = today - 7 * 24 * 60 * 60 * 1000;
+                    var twoWeeksAgo = today - 14 * 24 * 60 * 60 * 1000;
+                    var threeWeeksAgo = today - 21 * 24 * 60 * 60 * 1000;
+                    var fourWeeksAgo = today - 28 * 24 * 60 * 60 * 1000;
+                    var lastMonth = today - 30 * 24 * 60 * 60 * 1000;
+                    var twoMonthsAgo = today - 60 * 24 * 60 * 60 * 1000;
+                    var threeMonthsAgo = today - 91 * 24 * 60 * 60 * 1000;
 
                     var stats = {};
                     stats.activityWeek = 0;
@@ -554,7 +556,19 @@ exports.stats = function(req, res){
                     //students
                     var studentsLastMonth = studentsFromActivities(activities, lastMonth, today);
                     stats.studentsLastMonth = totalStudents(studentsLastMonth);
-                    console.log("students", stats.studentsLastMonth);
+                    var studentsLastWeek = studentsFromActivities(activities, lastWeek, today);
+                    stats.studentsLastWeek = totalStudents(studentsLastWeek);
+
+                    var studentsTwoWeeksAgo = studentsFromActivities(activities, twoWeeksAgo, lastWeek);
+                    stats.studentsTwoWeeksAgo = totalStudents(studentsTwoWeeksAgo);
+
+                    var studentsThreeWeeksAgo = studentsFromActivities(activities, threeWeeksAgo, twoWeeksAgo);
+                    stats.studentsThreeWeeksAgo = totalStudents(studentsThreeWeeksAgo);
+
+                    var studentsFourWeeksAgo = studentsFromActivities(activities, fourWeeksAgo, threeWeeksAgo);
+                    stats.studentsFourWeeksAgo = totalStudents(studentsFourWeeksAgo);
+
+                    console.log("final stats", stats);
                     // var previewersThreeMonths = previewersFromActivities(activities, threeMonthsAgo, today);
                     // console.log("previewers", Object.keys(previewersThreeMonths).length);
                     // var teachPrevThree = teacherPreviewers (previewersThreeMonths, users);
