@@ -17,9 +17,16 @@ var QUIZ_CONTENT_TYPE = "quiz";
 
 var handleError = function(err, res){
     if (err){
-        logger.error(err);
-        if (res && res.status) {
+        logger.error('handleError: Handle error failed', err);
+        if (res && res.status && typeof res.status === 'function') {
             res.status(500).send(err);
+        } else {
+            logger.error('handleError: Res object error', res);
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
+                error: "Failed to getQuiz, quiz.js line 352",
+                message: res,
+                parameters: ""
+            });
         }
     }
     return err;
