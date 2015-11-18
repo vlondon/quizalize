@@ -47,6 +47,7 @@ class Me extends Store {
     constructor(state: UserType = noUser){
         super(state);
         state = Object.assign({}, state);
+        state.attributes.accountType = state.attributes.accountType ? parseInt(state.attributes.accountType) : 1;
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
@@ -111,28 +112,30 @@ class Me extends Store {
     addIntercom(){
 
         var currentUser = this.state;
-
-        if (this.isLoggedIn()){
-            window.intercomSettings = {
-                name: (currentUser.name || currentUser.email),
-                email: (currentUser.email),
-                user_id: currentUser.uuid,
-                created_at: Math.round((currentUser.created / 1000)),
-                app_id: intercomId
+        if (currentUser.attributes.accountType !== -10){
+            
+            if (this.isLoggedIn()){
+                window.intercomSettings = {
+                    name: (currentUser.name || currentUser.email),
+                    email: (currentUser.email),
+                    user_id: currentUser.uuid,
+                    created_at: Math.round((currentUser.created / 1000)),
+                    app_id: intercomId
+                };
+            } else {
+                window.intercomSettings = {
+                    app_id: intercomId
+                };
+            }
+            window.intercomSettings.widget = {
+                activator: "#IntercomDefaultWidget"
             };
-        } else {
-            window.intercomSettings = {
-                app_id: intercomId
-            };
+            if (intercomAdded === false){
+                intercom('boot', window.intercomSettings);
+            }
+            intercom('update', window.intercomSettings);
+            intercomAdded = true;
         }
-        window.intercomSettings.widget = {
-            activator: "#IntercomDefaultWidget"
-        };
-        if (intercomAdded === false){
-            intercom('boot', window.intercomSettings);
-        }
-        intercom('update', window.intercomSettings);
-        intercomAdded = true;
     }
 
     getUserId() : string{

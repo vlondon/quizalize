@@ -81,7 +81,7 @@ var CQViewHeader = React.createClass({
                 buttons.push((
                     <li id="cq-apps" key='cq-apps'>
                         <CQLink href="/quiz/apps" className={isActive('apps') ? 'navbar-btn active' : 'navbar-btn'}>
-                            <i className="fa fa-archive"></i> Your apps
+                            <i className="fa fa-archive"></i> Your Collections
                         </CQLink>
                     </li>));
 
@@ -89,7 +89,7 @@ var CQViewHeader = React.createClass({
                 <li id="cq-assignments" key='cq-assignments'>
                     <CQLink href="/quiz/assignments"
                         className={isActive('classes') ? 'navbar-btn active' : 'navbar-btn'}>
-                        <i className="fa fa-users"></i> Your classes
+                        <i className="fa fa-users"></i> Your Classes
 
                     </CQLink>
                 </li>
