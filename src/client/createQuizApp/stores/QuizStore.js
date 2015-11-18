@@ -268,7 +268,6 @@ quizStoreInstance.token = AppDispatcher.register(function(action) {
             break;
 
         case QuizConstants.QUIZ_ADDED:
-            UserActions.getOwn();
             let quizAdded = action.payload;
             _fullQuizzes[quizAdded.uuid] = quizAdded;
             quizStoreInstance.emitChange();

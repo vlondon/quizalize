@@ -3,9 +3,9 @@ import Store from './Store';
 import {Application} from './classes/Application';
 import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
-import {UserConstants} from './../constants';
+import {UserConstants, QuizConstants} from './../constants';
 import {UserActions} from './../actions';
-import type {UserType} from './../../../types';
+import type {UserType, Quiz} from './../../../types';
 
 
 var intercom = require('./../utils/intercom');
@@ -157,6 +157,27 @@ class Me extends Store {
     isPremium() : boolean {
         return this.state.attributes.accountType !== 0;
     }
+
+    updateQuiz(quiz: Quiz) {
+        let changed = false;
+        this.apps.forEach(app=>{
+            app.meta.quizzes = app.meta.quizzes.map(q=>{
+                if (q.uuid === quiz.uuid){
+                    q = quiz;
+                    changed = true;
+                }
+                return q;
+            });
+        });
+        if (!changed) {
+            this.apps.forEach(app=>{
+                if (app.uuid === 'own') {
+                    app.meta.quizzes.push(quiz);
+                }
+            });
+        }
+        super.emitChange();
+    }
 }
 
 
@@ -175,6 +196,12 @@ AppDispatcher.register(function(action) {
 
 
             meStore.setState(action.payload);
+            break;
+
+        case QuizConstants.QUIZ_ADDED:
+            // UserActions.getOwn();
+            let quiz = action.payload;
+            meStore.updateQuiz(quiz);
             break;
     };
 });
