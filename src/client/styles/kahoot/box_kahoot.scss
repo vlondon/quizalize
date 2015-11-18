@@ -146,7 +146,7 @@
             background-repeat: no-repeat;
             background-size: contain;
             float:right;
-            @include media(840px){
+            @include media(840px) {
                 width: 450px;
 
             }
