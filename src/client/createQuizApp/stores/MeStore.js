@@ -3,8 +3,13 @@ import Store from './Store';
 import {Application} from './classes/Application';
 import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
-import {UserConstants, QuizConstants} from './../constants';
-import {UserActions} from './../actions';
+import {
+    UserConstants,
+    QuizConstants
+} from './../constants';
+import {
+    UserActions
+} from './../actions';
 import type {UserType, Quiz} from './../../../types';
 
 
@@ -46,8 +51,10 @@ class Me extends Store {
 
     constructor(state: UserType = noUser){
         super(state);
+
         state = Object.assign({}, state);
-        state.attributes.accountType = state.attributes.accountType ? parseInt(state.attributes.accountType) : 1;
+        state.attributes = state.attributes || {};
+        state.attributes.accountType = state.attributes.accountType !== undefined ? parseInt(state.attributes.accountType, 10) : 1;
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
@@ -113,7 +120,7 @@ class Me extends Store {
 
         var currentUser = this.state;
         if (currentUser.attributes.accountType !== -10){
-            
+
             if (this.isLoggedIn()){
                 window.intercomSettings = {
                     name: (currentUser.name || currentUser.email),
