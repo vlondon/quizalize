@@ -265,10 +265,9 @@ var QuizActions = {
                     payload: savedQuiz
                 });
 
-                // TODO: Call loadQuizzes only if the quiz is new
-                this.loadQuizzes();
+
                 setTimeout(()=> {
-                    resolve(quiz);
+                    resolve(savedQuiz);
                 }, 100);
             }, (error)=> {
                 console.error(error);
