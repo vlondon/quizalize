@@ -1,7 +1,7 @@
+/* @flow */
 var React = require('react');
-
-var QLLatex = require('quizApp/components/QLLatex');
-var PQViewVideo = require('playQuizApp/components/views/PQViewVideo');
+var QLLatex = require('./../../components/QLLatex');
+var PQViewVideo = require('./../../../playQuizApp/components/views/PQViewVideo');
 
 var toSeconds = function(ms){
     return Math.round(ms / 10) / 100 + 's';
@@ -13,7 +13,7 @@ var Star = React.createClass({
         return {
             rotation: Math.random() * 360,
             scale: Math.random() + 0.5,
-            delay: parseInt(Math.random() * 1000, 10) + 1000
+            delay: Math.random() * 1000 + 1000
         };
     },
 
@@ -41,7 +41,7 @@ var Star = React.createClass({
         return newCss;
     },
 
-    render: function() {
+    render: function(): any {
         return (
             <div style={this.cssStyle()} className='star-transform'>
                 <img style={this.cssDelay()} src='/img/ui-quiz/star.svg' width='40' height='40' className='star-animated'/>
@@ -51,7 +51,6 @@ var Star = React.createClass({
 
 });
 
-
 var QLAnswerScreen = React.createClass({
 
     propTypes: {
@@ -60,31 +59,36 @@ var QLAnswerScreen = React.createClass({
         questionData: React.PropTypes.object.isRequired,
         onNext: React.PropTypes.func
     },
+
     getInitialState: function() {
+        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
+            this.props.onNext();
+        }
         return {};
     },
 
-    handleClick: function(){
+    handleClick: function() {
         if (this.props.onNext){
             this.props.onNext();
         }
     },
 
-    handleVideoAnswer: function(){
+    handleVideoAnswer: function() {
         console.log('should answer video');
         this.setState({
             videoOpen: true
         });
     },
 
-    handleVideoComplete: function(){
+    handleVideoComplete: function() {
         console.log('video is finished');
         this.setState({videoOpen: false});
     },
 
-    render: function() {
+    render: function(): any {
         var stars = [];
         var correctAnswer, viewVideo, videoPlayer, explanation;
+        var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
@@ -92,11 +96,10 @@ var QLAnswerScreen = React.createClass({
             }
         }
 
-
-        if (!this.props.answerData.correct && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1)){
+        if ((!this.props.answerData.correct || hasPartialScore) && (this.props.currentQuiz && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1))){
             correctAnswer = (
                 <div className="text-2">
-                    The correct answer is
+                    {hasPartialScore ? 'To get maximum point, the answer is' : 'The correct answer is'}
                     <div className="alternatives">
                         <div className="alternative-wrapper">
                             <button type="button" className={`btn answer answer-correct`}>
