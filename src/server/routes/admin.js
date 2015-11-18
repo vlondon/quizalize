@@ -8,7 +8,7 @@ var config = require("../config"); //initialized zzish
 var email     = require('../email');
 var db = require('./db');
 var generateData = require ('./generateData');
-var calculateActives = require ('./calculateActives');
+// var calculateActives = require ('./calculateActives');
 var GoogleAnalytics = require('ga');
 
 
@@ -778,8 +778,7 @@ exports.unsubscribe = function(req,res) {
 };
 
 exports.logInAsUser = function(req, res) {
-    // console.log('user', req.params.userId);
-    let profileId = req.params.userId;
+    let {profileId} = req.params;
     zzish.user(profileId, function(err, data){
         if (!err && typeof data === 'object') {
             console.log('we got user', data);
@@ -794,5 +793,41 @@ exports.logInAsUser = function(req, res) {
         }
         res.send(data);
     });
-    // res.send(true);
+};
+
+exports.loginAsUserAndSetAccountType = function(req, res) {
+    let {profileId, accountType} = req.params;
+    zzish.user(profileId, function(err, user){
+        if (!err && typeof user === 'object') {
+
+            var uuid = user.uuid;
+
+            user.attributes.accountType = accountType;
+            user.attributes.accountTypeUpdated = Date.now();
+            // We unset the accountTypeExpiration
+            // delete user.attributes.accountTypeExpiration;
+            user.attributes.accountTypeExpiration = undefined;
+
+            zzish.saveUser(profileId, user, function(err, newUser){
+                if (!err && typeof data === 'object') {
+                    res.status(200);
+                    user = newUser;
+                }
+                else {
+                    res.status(400);
+                }
+                res.send(user);
+            });
+
+
+            req.session.userUUID = uuid;
+            req.session.user = user;
+            res.status(200);
+        }
+        else {
+            req.session.userUUID = undefined;
+            res.status(err);
+        }
+
+    });
 };
