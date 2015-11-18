@@ -1,9 +1,10 @@
+/* @flow */
 var React = require('react');
 
-var randomise = require('quizApp/utils/randomise');
-var QLQuestion = require('quizApp/components/QLQuestion');
-var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
-var QLCountDown = require('quizApp/components/QLCountDown');
+var randomise = require('./../../utils/randomise');
+var QLQuestion = require('./../../components/QLQuestion');
+var QLAnswerScreen = require('./../../components/QLAnswerScreen');
+var QLCountDown = require('./../../components/QLCountDown');
 var QLImage = require('./../QLImage');
 
 var cssStates = [
@@ -21,34 +22,6 @@ var cssStates = [
 ];
 
 var cssStateIndex = 0;
-var isDragging = false;
-var _domElement;
-var getCoordinates = function(e){
-    var x;
-    var y;
-    if (e.pageX || e.pageY) {
-        x = e.pageX;
-        y = e.pageY;
-    }
-    else {
-        x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-    }
-    x -= _domElement.offsetLeft;
-    y -= _domElement.offsetTop;
-
-    return {x, y};
-};
-
-var getDraggableStyle = function(coordinates){
-    var newStyle = {
-        WebkitTransform: `translate(${coordinates.x - 140 / 2}px, ${coordinates.y - 140 / 2}px)`,
-        MozTransform: `translate(${coordinates.x - 140 / 2}px, ${coordinates.y - 140 / 2}px)`,
-        msTransform: `translate(${coordinates.x - 140 / 2}px, ${coordinates.y - 140 / 2}px)`,
-        transform: `translate(${coordinates.x - 140 / 2}px, ${coordinates.y - 140 / 2}px)`
-    };
-    return newStyle;
-};
 
 var QLScrambled = React.createClass({
 
@@ -79,13 +52,15 @@ var QLScrambled = React.createClass({
         return state;
     },
 
+    componentWillMount: function() {
+        cssStateIndex = 0;
+    },
+
     componentDidMount: function() {
         window.addEventListener('resize', this.handleResize);
-        _domElement = this.refs.main.getDOMNode();
-        cssStateIndex = 0;
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
-        }, this.state.cssState.duration);
+        }, this.state.cssState.duration || 0);
     },
 
     componentWillUnmount: function() {
@@ -145,7 +120,7 @@ var QLScrambled = React.createClass({
 
     },
 
-    handleCssState: function(newCssStateIndex, cb){
+    handleCssState: function(newCssStateIndex: number, cb: ?Function){
         var newCssState = cssStates[newCssStateIndex];
         if (newCssState){
             this.setState({
@@ -164,7 +139,7 @@ var QLScrambled = React.createClass({
         }
     },
 
-    handleClick: function(index){
+    handleClick: function(index: number){
         var letterSelected = this.state.letterSelected;
         if (letterSelected[index].state !== 'selected') {
             var unanswered = this.state.answerSelected.filter(function(answer) {
@@ -191,7 +166,7 @@ var QLScrambled = React.createClass({
     },
 
 
-    handleRemoveLetter: function(index){
+    handleRemoveLetter: function(index: number){
         var answerSelected = this.state.answerSelected;
         if (answerSelected[index].index !== -1) {
             var letterSelected = this.state.letterSelected;
@@ -205,7 +180,7 @@ var QLScrambled = React.createClass({
         }
     },
 
-    render: function() {
+    render: function(): any {
 
         var showAnswer, showTargets, showOptions, showCountdown;
         var answered = this.state.letterSelected.filter(function(letter) {
@@ -220,7 +195,9 @@ var QLScrambled = React.createClass({
             }
         });
         width = 50 + (maxLength * 20);
-        if (answered.length !== this.props.questionData.answerObject.textArray.length) {
+        if (cssStateIndex === 0) {
+            return (<div className='ql-quiz-container' ref='main'></div>);
+        } else if (answered.length !== this.props.questionData.answerObject.textArray.length) {
             var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showTargets = this.state.answerSelected.map(function(letter, index){
@@ -270,7 +247,7 @@ var QLScrambled = React.createClass({
         }
         return (
             <div className='ql-quiz-container' ref='main'>
-                <div className={`ql-question ql-scrambled ${this.state.cssState.name}`}>
+                <div className={`ql-question ql-scrambled ${this.state.cssState.name || ""}`}>
                     <h3 className='question'>
                         <QLQuestion
                             questionData={this.props.questionData}
