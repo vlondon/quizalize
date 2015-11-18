@@ -463,7 +463,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var q = currentQuiz.payload.questions[i];
                 if (q.question!=question.question) {
                     var answer = processInput(q.answer);
-                    if(answer.text != correct){
+                    if(answer.text.indexOf(":") < 0 && answer.text != correct){
                         answers.push(answer.text);
                     }
                 }

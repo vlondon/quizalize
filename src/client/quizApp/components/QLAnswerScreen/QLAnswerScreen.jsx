@@ -61,10 +61,13 @@ var QLAnswerScreen = React.createClass({
     },
 
     getInitialState: function() {
+        return {};
+    },
+
+    componentDidMount: function() {
         if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
             this.props.onNext();
         }
-        return {};
     },
 
     handleClick: function() {
@@ -89,6 +92,11 @@ var QLAnswerScreen = React.createClass({
         var stars = [];
         var correctAnswer, viewVideo, videoPlayer, explanation;
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
+
+        // If in showResult == 0 mode, skip rendering the answerscreen
+        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
+            return (<div></div>);
+        }
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
