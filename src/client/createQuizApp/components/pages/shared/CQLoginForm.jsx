@@ -1,6 +1,6 @@
 /* @flow */
 var React = require('react');
-var CQZzishLogin = require('./CQZzishLogin');
+
 
 import UserStore from './../../../stores/UserStore';
 import UserActions from './../../../actions/UserActions';
@@ -37,11 +37,13 @@ var CQLoginForm = React.createClass({
     },
 
     getInitialState: function():State {
+        let isReady = (this.props.showPasswordField === false && UserStore.getUserLoginEmail().length > 0) ? true : false;
+
         return {
             email: UserStore.getUserLoginEmail(),
             password: '',
-            isReady: false,
-            buttonLabel: this.props.buttonLabel || ''
+            buttonLabel: this.props.buttonLabel || '',
+            isReady,
         };
     },
 
