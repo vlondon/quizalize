@@ -247,12 +247,14 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     var searchThroughCategories = function(catId, quizId) {
         console.log('categories', categories, catId, quizId);
-        for (var i in categories[catId].quizzes) {
-            var quiz = categories[catId].quizzes[i];
-            if (quiz.uuid == quizId) {
-                setQuiz(quiz);
-                return currentQuiz;
-            }
+        if (categories[catId]) {
+          for (var i in categories[catId].quizzes) {
+              var quiz = categories[catId].quizzes[i];
+              if (quiz.uuid == quizId) {
+                  setQuiz(quiz);
+                  return currentQuiz;
+              }
+          }
         }
         for (var p in categories) {
             for (var i in categories[p].quizzes) {
