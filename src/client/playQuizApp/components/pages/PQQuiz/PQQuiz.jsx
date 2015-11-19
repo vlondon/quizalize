@@ -1,9 +1,12 @@
 /* @flow */
 import React from 'react';
 
-import type, { Question } from './../../../../../types';
+import type { Question } from './../../../../../types';
 
 //import urlParams from './../../../../createQuizApp/utils/urlParams';
+
+import PQQuizClass from './../../../stores/extra/PQQuizClass';
+import PQQuestionClass from './../../../stores/extra/PQQuestionClass';
 
 import PQQuizStore from './../../../stores/PQQuizStore';
 import PQQuizActions from './../../../actions/PQQuizActions';
@@ -14,7 +17,9 @@ import PQFeedback from './../PQFeedback';
 import QLVideoPlayer from './../../../../quizApp/components/QLVideoPlayer';
 
 type State = {
-    question?: Question;
+    quiz?: PQQuizClass;
+    question?: PQQuestionClass;
+    completed?: boolean;
 }
 
 //var params = urlParams();
@@ -31,9 +36,9 @@ class PQQuiz extends React.Component {
     }
 
     onChange() {
-        var quiz = PQQuizStore.getQuiz(this.props.quizId);
+        var quiz: PQQuizClass = PQQuizStore.getQuiz(this.props.quizId);
         if (quiz) {
-            var question: Question = quiz.getCurrentQuestion();
+            var question: PQQuestionClass = quiz.getCurrentQuestion();
             this.setState({
                 quiz: quiz.toObject(),
                 question: question.toObject(),
@@ -50,31 +55,36 @@ class PQQuiz extends React.Component {
         PQQuizStore.removeChangeListener(this.onChange);
     }
 
-    _onSelect(userAnswer) {
-        console.log('User answer: ', this.state.quiz, this.state.question);
-        PQQuizActions.answerQuestion(
-            this.state.quiz.uuid,
-            this.state.question,
-            userAnswer,
-            5000 // TODO: Math.max(new Date().getTime() - startTime - 2000, 0)
-        );
+    _onSelect(userAnswer: Object) {
+        if (userAnswer && this.state.quiz && this.state.question) {
+            var answer: Object = userAnswer;
+            var quiz: PQQuizClass = this.state.quiz;
+            var question: PQQuestionClass = this.state.question;
+            console.log('User answer: ', this.state.quiz, this.state.question);
+            PQQuizActions.answerQuestion(
+                quiz.uuid,
+                question,
+                answer,
+                5000 // TODO: Math.max(new Date().getTime() - startTime - 2000, 0)
+            );
+        }
     }
 
     _onNext() {
-        var quiz = PQQuizStore.getQuiz(this.props.quizId);
+        var quiz: PQQuizClass = PQQuizStore.getQuiz(this.props.quizId);
         if (quiz.questionIndex + 1 === this.state.quiz.questionCount) {
             this.setState({
                 completed: true
             });
         } else {
-            var question: Question = quiz.getNextQuestion();
+            var question: PQQuestionClass = quiz.getNextQuestion();
             this.setState({
                 question: question.toObject()
             });
         }
     }
 
-    render() : any {
+    render(): any {
 
         var content = null;
         if (this.state.quiz) {

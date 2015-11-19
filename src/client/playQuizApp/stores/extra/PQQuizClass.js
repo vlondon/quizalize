@@ -1,7 +1,7 @@
 /* @flow */
-import type {QuizComplete} from './../../../../types';
+import type {QuizComplete, Question} from './../../../../types';
 import PQQuestion from './PQQuestionClass';
-import randomise from 'quizApp/utils/randomise';
+import randomise from './../../../quizApp/utils/randomise';
 
 var processInput = function(input) {
     if (input) {
@@ -107,11 +107,11 @@ var processInput = function(input) {
 var getNumAlternvatives = function(currentQuestion) {
     var numAlternatives = 0;
     if (currentQuestion.alternatives) {
-        for (var i in currentQuestion.alternatives) {
-            if (currentQuestion.alternatives[i] && currentQuestion.alternatives[i] !== "") {
+        currentQuestion.alternatives.map((alt) => {
+            if (alt && alt !== "") {
                 numAlternatives++;
             }
-        }
+        });
     }
     return numAlternatives;
 };
@@ -143,27 +143,25 @@ var getAlternatives = function(payload, answerObject, questionIndex){
     if(numAlternatives > 0){
         let options = [];
         options.push(answerObject.text);
-        for(let i in question.alternatives) {
-            var alt = question.alternatives[i];
+        question.alternatives.map((alt) => {
             if (alt!=undefined && alt.length>0) {
                 options.push(alt);
             }
-        }
+        });
         return randomise(options, true);
         //return options;
     } else {
         var answers = [];
         var correct = answerObject.text;
 
-        for(let i in payload.questions){
-            var q = payload.questions[i];
+        payload.questions.map((q) => {
             if (q.question!=question.question) {
                 var answer = processInput(q.answer);
                 if(answer.text != correct){
                     answers.push(answer.text);
                 }
             }
-        }
+        });
         let options = randomise(answers).slice(0,3);
         options.push(answerObject.text);
         return randomise(options);
@@ -171,8 +169,8 @@ var getAlternatives = function(payload, answerObject, questionIndex){
 };
 
 var buildQuizObject = function(quiz: QuizComplete) : QuizComplete {
-    var fullQuiz = Object.assign(quiz, {
-        attributes: Object.assign({}, quiz.attributes),
+    var fullQuiz: QuizComplete = Object.assign({}, quiz, {
+        //attributes: Object.assign({}, quiz.attributes),
         meta: Object.assign({}, quiz.meta),
         payload: Object.assign({}, quiz.payload),
         uuid: quiz.uuid,
@@ -181,11 +179,11 @@ var buildQuizObject = function(quiz: QuizComplete) : QuizComplete {
         totalScore: 0,
         questionCount: quiz.payload.questions.length,
         report: [],
-        correct: 0,
-        latexEnabled: !!quiz.latexEnabled
+        correct: 0
+        //latexEnabled: !!quiz.latexEnabled
     });
 
-    fullQuiz.payload.questions.forEach(function(currentQuestion, questionIndex) {
+    fullQuiz.payload.questions.forEach(function(currentQuestion: Object, questionIndex: number) {
         currentQuestion.questionObject = processInput(currentQuestion.question);
         currentQuestion.answerObject = processInput(currentQuestion.answer);
         currentQuestion.expObject = processInput(currentQuestion.answerExplanation);
@@ -216,23 +214,23 @@ class PQQuiz {
     }
 
     getQuestion(questionIndex: ?number = undefined) {
-        console.log('!!!!!! getQuestion !!!!!', questionIndex);
+        console.log('PQQuizClass -> getQuestion:', questionIndex);
         if (questionIndex){
             this.questionIndex = questionIndex;
         }
-        var question = this._quiz.payload.questions[this.questionIndex];
+        var question: Object = this._quiz.payload.questions[this.questionIndex];
         this.questionIndex += 1;
         return new PQQuestion(question);
     }
 
-    getCurrentQuestion() {
-        var question = this._quiz.payload.questions[this.questionIndex];
+    getCurrentQuestion(): PQQuestion {
+        var question: Object = this._quiz.payload.questions[this.questionIndex];
         return new PQQuestion(question);
     }
 
-    getNextQuestion() {
+    getNextQuestion(): PQQuestion {
         this.questionIndex += 1;
-        var question = this._quiz.payload.questions[this.questionIndex];
+        var question: Question = this._quiz.payload.questions[this.questionIndex];
         return new PQQuestion(question);
     }
 

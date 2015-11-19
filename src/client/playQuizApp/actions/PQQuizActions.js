@@ -1,6 +1,6 @@
 /* @flow */
 
-import settings from 'quizApp/config/settings';
+import settings from './../../quizApp/config/settings';
 import AppDispatcher  from './../dispatcher/PQDispatcher';
 import PQQuizConstants from './../constants/PQQuizConstants';
 import PQQuizStore from './../stores/PQQuizStore';
@@ -28,7 +28,7 @@ class PQQuizActions  {
         });
     }
 
-    answerQuestion(quizId, questionData, response, duration) {
+    answerQuestion(quizId: string, questionData: Object, response: Object, duration: number) {
         var questionId = questionData.uuid;
         var quizInstance = PQQuizStore.getQuiz(quizId);
         var quiz = quizInstance.toObject();
@@ -79,7 +79,7 @@ class PQQuizActions  {
 
         if (currentQuizResult.currentActivityId !== undefined) {
             console.log('currentQuizResult.currentActivityId, parameters', currentQuizResult.currentActivityId, parameters);
-            zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
+            // zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
         }
 
         if(correct) {

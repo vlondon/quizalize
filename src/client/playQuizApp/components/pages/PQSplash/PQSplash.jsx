@@ -4,6 +4,8 @@ import React from 'react';
 import PQLink from './../../utils/PQLink';
 import PQPageTemplate from './../../PQPageTemplate';
 
+type State = {}
+
 class PQSplash extends React.Component {
 
     state: State;

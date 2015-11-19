@@ -22,7 +22,7 @@ class PQFeedback extends Component {
         };
     }
 
-    reportItems() {
+    reportItems(): Array<Object> {
         var answerNum = 0; // For now, to get question text (It should probably be by the ID)
         var items = [];
 
@@ -72,7 +72,7 @@ class PQFeedback extends Component {
         return items;
     }
 
-    feedbackContent() {
+    feedbackContent(): Object {
         return (
             <div className="pq-feedback">
                 <h1 className="pq-feedback__title">Congratulations!</h1>
