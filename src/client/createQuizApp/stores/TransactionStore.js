@@ -1,5 +1,6 @@
 /* @flow */
 import Store from './Store';
+import MeStore from './MeStore';
 
 import AppDispatcher from './../dispatcher/CQDispatcher';
 
@@ -66,6 +67,10 @@ class TransactionStore extends Store {
     }
 
     getPrices():Array<number> {
+        console.log('getPrices', MeStore.state.attributes.accountType);
+        if (MeStore.state.attributes.accountType === 10) {
+            return [0];
+        }
         return _prices[defaultCurrency].slice();
     }
 

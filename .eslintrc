@@ -10,6 +10,7 @@
     },
     "rules": {
         "semi": 2,
+        "radix": [2, "always"],
         "quotes": [0, "single"],
         "react/react-in-jsx-scope": 1,
         "no-multi-spaces": 0,

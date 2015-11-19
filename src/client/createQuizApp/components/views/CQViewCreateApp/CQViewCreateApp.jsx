@@ -119,7 +119,7 @@ export default class CQViewCreateApp extends React.Component {
     }
 
     handleChange(field: string, event: Object) {
-        console.log('field, ', field, event);
+
         var app = Object.assign({}, this.state.app);
         app.meta[field] = event.target.value;
 
@@ -171,13 +171,13 @@ export default class CQViewCreateApp extends React.Component {
             <div className="cq-viewcreateapp">
                 <div className="cq-viewcreateapp__left">
                     <h3>
-                        Creating app
+                        Creating a collection
                     </h3>
 
-                    <h4>1. App Details</h4>
+                    <h4>1. Collection Details</h4>
                     <div className="cq-viewcreateapp__formelement form-group">
 
-                        <label htmlFor="name">Name of your app</label>
+                        <label htmlFor="name">Name of your collection</label>
                         <input type="text" id="name"
                             className="form-control"
                             onChange={this.handleChange.bind(this, 'name')}
@@ -197,7 +197,7 @@ export default class CQViewCreateApp extends React.Component {
 
                     <div className="cq-viewcreateapp__formelement form-group">
 
-                        <label htmlFor="name">Colour of your app</label>
+                        <label htmlFor="name">Color of your collection</label>
                         <CQViewAppColourPicker onChange={this.handleChange.bind(this, 'colour')}/>
 
 
