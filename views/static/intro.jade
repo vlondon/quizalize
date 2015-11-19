@@ -1,22 +1,23 @@
 script.
-    var domain = document.referrer ? document.referrer.split('/')[2] : undefined; 
+    var domain = document.referrer ? document.referrer.split('/')[2] : undefined;
     ga('send', 'event', 'quiz-of-the-day', 'banana', domain);
 
 include navbar
 
 .container
     .row(style="padding-top:10px")
-        
+
         .col-x-12.col-md-8.col-md-offset-2
             .well
                 .text-center
                     #reactContainer
                     h2 Get Ready!
                     br
-                    h3 Each question is worth <strong>200 points</strong>.
-                    br
-                    h3 Score more points by answering questions quickly!
-                    br
+                    div(ng-show="!quiz.noResultMode")
+                      h3 Each question is worth <strong>200 points</strong>.
+                      br
+                      h3 Score more points by answering questions quickly!
+                      br
                     span(ng-show="quiz.showSubText")
                         h4 You will be asked {{quiz.numQuestions}} questions {{quiz.randomText}}
                     br
