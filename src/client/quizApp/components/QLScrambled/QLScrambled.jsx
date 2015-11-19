@@ -38,25 +38,25 @@ var QLScrambled = React.createClass({
         return this.getStateForProps(this.props);
     },
 
+    componentWillReceiveProps: function(nextProps: Object) {
+        if (this.props.questionData !== nextProps.questionData) {
+            cssStateIndex = 0;
+            this.setState(this.getStateForProps(nextProps));
+            this.showQuestion();
+        }
+    },
+
     componentWillMount: function() {
         cssStateIndex = 0;
     },
 
     componentDidMount: function() {
         window.addEventListener('resize', this.handleResize);
-        setTimeout(() => {
-            this.handleCssState(cssStateIndex++);
-        }, this.state.cssState.duration || 0);
+        this.showQuestion();
     },
 
     componentWillUnmount: function() {
         window.removeEventListener('resize', this.handleResize);
-    },
-
-    componentWillReceiveProps: function(nextProps: Object) {
-        if (this.props.questionData !== nextProps.questionData) {
-            this.setState(this.getStateForProps(nextProps));
-        }
     },
 
     getStateForProps(props: Object): Object {
@@ -75,6 +75,12 @@ var QLScrambled = React.createClass({
             letterSelected
         };
         return state;
+    },
+
+    showQuestion() {
+        setTimeout(() => {
+            this.handleCssState(cssStateIndex++);
+        }, this.state.cssState.duration || 0);
     },
 
     handleResize: function(){

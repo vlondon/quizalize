@@ -35,19 +35,14 @@ var QLFreetext = React.createClass({
     },
 
     getInitialState: function() {
-        console.log('currentQuiz', this.props.currentQuiz);
-
-        return {
-            cssState: cssStates[cssStateIndex],
-            answer: this.props.quizData.report[this.props.questionIndex] ? this.props.quizData.report[this.props.questionIndex].answer : null
-        };
+        return this.getStateForProps(this.props);
     },
 
     componentWillReceiveProps: function(nextProps: Object) {
         if (this.props.questionData !== nextProps.questionData) {
-            this.setState({
-                cssSate: cssStates[0]
-            });
+            cssStateIndex = 0;
+            this.setState(this.getStateForProps(nextProps));
+            this.showQuestion();
         }
     },
 
@@ -56,6 +51,18 @@ var QLFreetext = React.createClass({
     },
 
     componentDidMount: function() {
+        this.showQuestion();
+    },
+
+    getStateForProps(props: Object): Object {
+        var state = {
+            cssState: cssStates[cssStateIndex],
+            answer: props.quizData.report[props.questionIndex] ? props.quizData.report[props.questionIndex].answer : null
+        };
+        return state;
+    },
+
+    showQuestion() {
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
         }, this.state.cssState.duration || 0);
