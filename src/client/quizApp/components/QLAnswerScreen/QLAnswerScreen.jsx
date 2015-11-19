@@ -65,7 +65,7 @@ var QLAnswerScreen = React.createClass({
     },
 
     componentDidMount: function() {
-        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
+        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult === "0" && this.props.onNext){
             this.props.onNext();
         }
     },
@@ -94,7 +94,7 @@ var QLAnswerScreen = React.createClass({
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
 
         // If in showResult == 0 mode, skip rendering the answerscreen
-        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
+        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult === "0" && this.props.onNext){
             return (<div></div>);
         }
 
