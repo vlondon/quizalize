@@ -161,16 +161,22 @@ class QuizStore extends Store {
     getQuestion(quizId, questionIndex) : Question{
         var quiz = this.getQuiz(quizId);
         var question = quiz.payload.questions[questionIndex] || new QuestionObject(quiz);
-        // adding new properties to the object
         question.duration = question.duration || 60;
-        console.info('QuizStore getQuestion', question);
         return question;
     }
 
-    getPublicQuizzes(){
+    getPublicQuizzes() : Array<Quiz>{
         if (_publicQuizzes) {
-            return _publicQuizzes.slice().reverse();
+
+            let publicQuizzes = _publicQuizzes.slice();
+            let {accountType} = MeStore.state.attributes;
+
+            if (accountType === 10) {
+                publicQuizzes = publicQuizzes.filter(q=> q.meta.price === 0);
+            }
+            return publicQuizzes.reverse();
         }
+        return [];
     }
 
     getQuizzesForProfile(profileId) {

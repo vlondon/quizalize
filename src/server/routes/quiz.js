@@ -206,7 +206,7 @@ exports.kahoot = function(req, res) {
     res.render('kahoot');
 };
 exports.quizlet = function (req, res){
-    res.render('quizlet');    
+    res.render('quizlet');
 };
 exports.landing = function(req, res){
     res.render('landing');
@@ -636,6 +636,27 @@ exports.quizoftheday = function(req, res) {
     res.render('quizoftheday', {quiz: { title: 'Space'}});
 };
 
+exports.loginEASUser = function(req, res) {
+    console.log('loginEASUser');
+    let {profileId} = req.params;
+    zzish.user(profileId, function(err, user){
+        if (!err && typeof user === 'object') {
+            console.log('user', user);
+            if (parseInt(user.attributes.accountType, 10) === 10) {
+                var uuid = user.uuid;
+                req.session.userUUID = uuid;
+                req.session.user = user;
+                res.redirect('/quiz/welcome');
+            } else {
+                res.status(404).send();
+            }
+
+        }
+        else {
+            res.status(500).send();
+        }
+    });
+};
 
 exports.uploadMedia = function(req, res){
 

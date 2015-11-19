@@ -358,6 +358,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 zzish.getContent(quiz.meta.profileId, QUIZ_CONTENT_TYPE, quizId, function (err, result) {
                     quiz.payload = result.payload;
                     setQuiz(quiz);
+                    if (result.meta && quiz.meta) {result.meta["showResult"] = quiz.meta["showResult"];}
                     callback(err,result);
                     $rootScope.$digest();
                 });
@@ -565,7 +566,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var meta = input.split("//");
                 var answerArray = meta[1].split(":").map(function(a) {
                     var pair = a.split("|");
-                    var partial = (parseInt(pair[1]) || 100) / 100;
+                    var partial = pair.length > 1 ? (parseInt(pair[1])) / 100 : 1;
                     return {text: pair[0], partial:partial};
                 });
                 return {
@@ -912,7 +913,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return ans.text;
             });
             var partial = matchedAnswer.length? matchedAnswer[0].partial: 0;
-            var correct = partial > 0;
+            var correct = matchedAnswer.length > 0;
             var score = calculateScore(correct, duration, questionDuration, partial);
             var parameters = {
                 definition: {

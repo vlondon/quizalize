@@ -21,15 +21,17 @@ var CQViewAppColourPicker = React.createClass({
                 '#104c99'
             ]
         };
-        this.props.onChange({
-            target: {
-                value: initialState.selected
-            }
-        });
+
 
         return initialState;
     },
-
+    componentWillMount: function() {
+        this.props.onChange({
+            target: {
+                value: this.state.selected
+            }
+        });
+    },
     handleClick: function(colour, event){
         this.setState({selected: colour});
         event.target.value = colour;
