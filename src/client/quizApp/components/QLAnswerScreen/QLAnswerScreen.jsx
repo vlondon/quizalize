@@ -88,19 +88,16 @@ var QLAnswerScreen = React.createClass({
         this.setState({videoOpen: false});
     },
 
-    render: function() {
+    render: function(): any {
         var stars = [];
         var correctAnswer, viewVideo, videoPlayer, explanation;
-        var answer = this.props.answerData.answer;
-        var response = this.props.answerData.response;
-        var questionType = this.props.questionData.answerObject? this.props.questionData.answerObject.type || "" : "";
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
 
-        if (this.props.answerData.correct){
-            for (var i = 0; i < 30; i++){
-                stars.push(<Star key={i}/>);
-            }
+        // If in showResult == 0 mode, skip rendering the answerscreen
+        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
+            return (<div></div>);
         }
+
 
         if (questionType === "sorting" || questionType === "linking") {
             function formatAnswer (ans) {
