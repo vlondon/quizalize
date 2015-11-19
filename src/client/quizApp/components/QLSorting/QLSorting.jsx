@@ -254,11 +254,10 @@ var QLSorting = React.createClass({
                     return (
                         <button className={`letterTile ng-binding ng-scope option ${selected}`}
                             style={{width: width + 'px'}}
-                            draggable="true"
                             onDragStart={this.handleSelectLetter.bind(this, index)}
                             onClick={this.handleSelectLetter.bind(this, index)}
                             key={index}>
-                            {letter.state === 'selected' ? "_": letter.text}
+                            {letter.state === 'selected' ? "": letter.text}
                         </button>
                     );
                 }
@@ -300,7 +299,7 @@ var QLSorting = React.createClass({
                             {showTargets}
                         </div>
                         <div className="user-interaction" ref='userInteraction'>
-                            {!showAnswer ? <div>Secect the answers below and place them in correct buckets</div> : null}
+                            {!showAnswer ? <div>Secect the answers below and place them into correct buckets</div> : null}
                             {showOptions}
                         </div>
                     </div>
