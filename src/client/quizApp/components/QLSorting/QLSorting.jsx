@@ -30,8 +30,7 @@ var QLSorting = React.createClass({
         questionData: React.PropTypes.object.isRequired,
         startTime: React.PropTypes.number.isRequired,
         onSelect: React.PropTypes.func.isRequired,
-        onNext: React.PropTypes.func.isRequired,
-        questionIndex: React.PropTypes.func.number
+        onNext: React.PropTypes.func.isRequired
     },
 
     getInitialState: function() {
@@ -61,7 +60,6 @@ var QLSorting = React.createClass({
 
     componentDidMount: function() {
         window.addEventListener('resize', this.handleResize);
-        _domElement = this.refs.main.getDOMNode();
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
         }, this.state.cssState.duration);
@@ -216,7 +214,9 @@ var QLSorting = React.createClass({
         });
         width = 50 + (maxLength * 20);
         if (cssStateIndex === 0) {
-            return (<div className='ql-quiz-container' ref='main'></div>);
+            return (<div className='ql-quiz-container' ref='main'>
+                <div className="user-interaction" ref='userInteraction'></div>
+            </div>);
         } else if (unanswered.length > 0) {
             var that = this;
             var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;

@@ -244,7 +244,9 @@ var QLLinking = React.createClass({
             return item.state !== "selected";
         });
         if (cssStateIndex === 0) {
-            return (<div className='ql-quiz-container' ref='main'></div>);
+            return (<div className='ql-quiz-container' ref='main'>
+                <div className="user-interaction" ref='userInteraction'></div>
+            </div>);
         } else if (unanswered.length > 0) {
             var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
