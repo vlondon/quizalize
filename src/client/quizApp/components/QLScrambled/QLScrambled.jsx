@@ -35,21 +35,7 @@ var QLScrambled = React.createClass({
     },
 
     getInitialState: function() {
-        var answerSelected = this.props.questionData.answerObject.textArray.map(function() {
-            return {text:"", index: -1};
-        });
-        var letters = randomise(this.props.questionData.answerObject.textArray);
-        var letterSelected = letters.map(function(letter) {
-            return {text:letter, state:"unselected"};
-        });
-        var state =  {
-            cssState: cssStates[cssStateIndex],
-            answered: null,
-            currentLetterToFill: 0,
-            answerSelected,
-            letterSelected
-        };
-        return state;
+        return this.getStateForProps(this.props);
     },
 
     componentWillMount: function() {
@@ -65,6 +51,30 @@ var QLScrambled = React.createClass({
 
     componentWillUnmount: function() {
         window.removeEventListener('resize', this.handleResize);
+    },
+
+    componentWillReceiveProps: function(nextProps: Object) {
+        if (this.props.questionData !== nextProps.questionData) {
+            this.setState(this.getStateForProps(nextProps));
+        }
+    },
+
+    getStateForProps(props) {
+        var answerSelected = props.questionData.answerObject.textArray.map(function() {
+            return {text:"", index: -1};
+        });
+        var letters = randomise(props.questionData.answerObject.textArray);
+        var letterSelected = letters.map(function(letter) {
+            return {text:letter, state:"unselected"};
+        });
+        var state = {
+            cssState: cssStates[cssStateIndex],
+            answered: null,
+            currentLetterToFill: 0,
+            answerSelected,
+            letterSelected
+        };
+        return state;
     },
 
     handleResize: function(){
