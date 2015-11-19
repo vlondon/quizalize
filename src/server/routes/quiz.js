@@ -412,11 +412,11 @@ exports.getQuiz = function(req, res){
     }
     else {
         email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
-          error: "Failed to getQuiz, quiz.js line 352",
+          error: "Failed to getQuiz, quiz.js line 371",
           message: query,
           parameters: ""
         });
-        res.send({});
+        res.status(400).send("105");
     }
 };
 
