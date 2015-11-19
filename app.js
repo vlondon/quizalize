@@ -138,6 +138,10 @@ app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishToMarketplace);
 
+// EAS
+app.get('/eas/:profileId', quiz.loginEASUser);
+
+
 if (process.env.admin === "true") {
     app.get('/admin/', admin.index);
     app.get('/admin/user/:profileId', admin.logInAsUser);
