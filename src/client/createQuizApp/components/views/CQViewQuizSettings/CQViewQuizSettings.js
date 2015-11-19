@@ -144,6 +144,17 @@ class CQViewQuizSettings extends React.Component {
                                 </div>
                             </li>
 
+                            <li>
+                                <h4>Show results?</h4>
+                                <p>Show correct answers and the report?</p>
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'showResult')}
+                                        checked={toBoolean(this.props.settings.showResult)}
+                                    />
+                                </div>
+                            </li>
+
                         </ul>
                     </div>
 

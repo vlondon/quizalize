@@ -22,6 +22,8 @@ const Settings = Record({
     repeatUntilCorrect: 0,
     showAnswers: 1,
     showTimer: 1,
+    showResult: 1,
+    seed: Math.floor((Math.random() * 100) + 1)
 });
 
 import type { QuizComplete } from './../../../../../types';
