@@ -93,6 +93,10 @@ var QLAnswerScreen = React.createClass({
         var correctAnswer, viewVideo, videoPlayer, explanation;
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
 
+        if (this.props.answerData.correct){
+            for (var i = 0; i < 30; i++){
+                stars.push(<Star key={i}/>);
+
         // If in showResult == 0 mode, skip rendering the answerscreen
         if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
             return (<div></div>);
