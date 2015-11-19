@@ -134,6 +134,19 @@
         text-align: center;
     }
 
+    button.option {
+        color: #ffffff;
+    }
+
+    button.option.btn-unselected, button.option.btn-selected {
+        background: #2e60ff;
+        text-decoration: none;
+    }
+
+    button.option.btn-unselected:hover, button.option.btn-selecting {
+        background: #003cfa;
+    }
+
     .user-interaction {
         margin: 20px 0;
     }

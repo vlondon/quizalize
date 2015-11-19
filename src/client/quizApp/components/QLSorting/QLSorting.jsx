@@ -223,10 +223,10 @@ var QLSorting = React.createClass({
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showTargets = this.state.answerSelected.map(function(group, group_index){
                 var letters = group.items.map(function(letter, index) {
-                    var selected = letter.index === -1 ? "btn-info": "btn-danger";
+                    var selected = letter.index === -1 ? "btn-selected": "btn-unselected";
                     return (
-                        <button className={`letterTile ng-binding ng-scope solution ${selected}`}
-                            style={{width: width - 10 + 'px'}}
+                        <button className={`letterTile ng-binding ng-scope option ${selected}`}
+                            style={{width: width - 25 + 'px'}}
                             onClick={that.handleRemoveFromGroup.bind(that, group_index, index)}
                             key={index}>
                             {letter.text}
@@ -238,7 +238,7 @@ var QLSorting = React.createClass({
                     onDragover={that.allowDrop}
                     onDrop={that.handleDrop}>
                         <button className={`ng-binding ng-scope group`}
-                        style={{width: width - 10 + 'px'}}
+                        style={{width: width - 25 + 'px'}}
                         onClick={that.handleAddToGroup.bind(that, group_index)}
                         key={group_index}>
                             <p className='groupTitle'>{group.name}</p>
@@ -250,7 +250,7 @@ var QLSorting = React.createClass({
 
             showOptions = this.state.letterSelected.map(function(letter, index){
                 if (true) {
-                    var selected = letter.state === "selected" ? "btn-normal.btn-selected": letter.state === "selecting" ? "btn-selecting": "btn-danger";
+                    var selected = letter.state === "selected" ? "btn-normal.btn-selected": letter.state === "selecting" ? "btn-selecting": "btn-unselected";
                     return (
                         <button className={`letterTile ng-binding ng-scope option ${selected}`}
                             style={{width: width + 'px'}}

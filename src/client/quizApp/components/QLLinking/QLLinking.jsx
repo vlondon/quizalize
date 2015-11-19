@@ -1,5 +1,3 @@
-/* @flow */
-
 var React = require('react');
 
 var randomise = require('./../../utils/randomise');
@@ -265,7 +263,7 @@ var QLLinking = React.createClass({
             var self = this;
             var generateItems = function(items, handler) {
                 return items.map(function(item, index){
-                    var selected = item.state === "selected" ? "btn-normal.btn-selected": item.state === "selecting" ? "btn-selecting": "btn-danger";
+                    var selected = item.state === "selected" ? "btn-selected": item.state === "selecting" ? "btn-selecting": "btn-unselected";
                     return (
                         <div className={`option`}>
                             <button className={`letterTile ng-binding ng-scope option ${selected}`}
