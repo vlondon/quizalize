@@ -3,6 +3,9 @@ var React = require('react');
 var QLMultiple = require('quizApp/components/QLMultiple');
 var QLFreetext = require('quizApp/components/QLFreetext');
 var QLScrambled = require('quizApp/components/QLScrambled');
+var QLBoolean = require('quizApp/components/QLBoolean');
+var QLSorting = require('quizApp/components/QLSorting');
+var QLLinking = require('quizApp/components/QLLinking');
 var PQViewVideo = require('playQuizApp/components/views/PQViewVideo');
 
 var QLVideoPlayer = React.createClass({
@@ -102,6 +105,24 @@ var QLVideoPlayer = React.createClass({
             } else if (this.props.questionData.answerObject.type === "freetext"){
                 return (
                     <QLFreetext
+                        {...props}
+                    />
+                );
+            } else if (this.props.questionData.answerObject.type === "boolean"){
+                return (
+                    <QLBoolean
+                        {...props}
+                    />
+                );
+            } else if (this.props.questionData.answerObject.type === "sorting"){
+                return (
+                    <QLSorting
+                        {...props}
+                    />
+                );
+            } else if (this.props.questionData.answerObject.type === "linking"){
+                return (
+                    <QLLinking
                         {...props}
                     />
                 );

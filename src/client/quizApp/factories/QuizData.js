@@ -587,6 +587,41 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     answerArray: answerArray
                 };
             }
+            if (input.indexOf("boolean://") === 0) {
+                var meta = input.split("//");
+                return {
+                    type: "boolean",
+                    text: meta[1]
+                };
+            }
+            if (input.indexOf("sorting://") === 0) {
+                // The items has no certain order, sort them before compare
+                var meta = input.split("//");
+                var answer = meta[1].split(":").map(function (group) {
+                    var m = group.split("|");
+                    return m[0] + "|" + m[1].split(",").sort().join(",");
+                });
+                return {
+                    type: "sorting",
+                    text: answer.join(":"),
+                    sortingArray: answer
+                };
+            }
+            if (input.indexOf("linking://") === 0) {
+                var meta = input.split("//");
+                var targets = [], options = [];
+                meta[1].split(":").map(function (pair) {
+                    var m = pair.split("|");
+                    targets.push(m[0]);
+                    options.push(m[1]);
+                });
+                return {
+                    type: "linking",
+                    text: meta[1],
+                    targetArray: targets,
+                    optionArray: options
+                };
+            }
         }
         return {
             text: input

@@ -37,7 +37,7 @@ Zzish.init(params);
 //Zzish.init("2d14d1984a2e3293bd13aab34c85e2ea");
 
 function goToQuiz() {
-  window.location.href="/quiz#/"
+  window.location.href="/quiz#/";
 }
 
 function goToService() {

@@ -88,20 +88,40 @@ var QLAnswerScreen = React.createClass({
         this.setState({videoOpen: false});
     },
 
-    render: function(): any {
+    render: function() {
         var stars = [];
         var correctAnswer, viewVideo, videoPlayer, explanation;
+        var answer = this.props.answerData.answer;
+        var response = this.props.answerData.response;
+        var questionType = this.props.questionData.answerObject? this.props.questionData.answerObject.type || "" : "";
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
-
-        // If in showResult == 0 mode, skip rendering the answerscreen
-        if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
-            return (<div></div>);
-        }
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
                 stars.push(<Star key={i}/>);
             }
+        }
+
+        if (questionType === "sorting" || questionType === "linking") {
+            function formatAnswer (ans) {
+                return ans.split(":").map(function (group) {
+                    var meta = group.split("|");
+                    return (
+                        <div className={`answer-item ${questionType}`}>
+                            <QLLatex>{meta[0]}</QLLatex>
+                            <div className="group-item">
+                                <QLLatex>{meta[1]}</QLLatex>
+                            </div>
+                        </div>
+                    );
+                });
+            }
+            answer = formatAnswer(answer);
+            response = formatAnswer(response);
+        }
+        else {
+            answer = (<QLLatex>{answer}</QLLatex>);
+            response = (<QLLatex>{response}</QLLatex>);
         }
 
         if ((!this.props.answerData.correct || hasPartialScore) && (this.props.currentQuiz && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1))){
@@ -111,7 +131,7 @@ var QLAnswerScreen = React.createClass({
                     <div className="alternatives">
                         <div className="alternative-wrapper">
                             <button type="button" className={`btn answer answer-correct`}>
-                                <QLLatex>{this.props.answerData.answer}</QLLatex>
+                                {answer}
                             </button>
                         </div>
                     </div>
@@ -168,7 +188,7 @@ var QLAnswerScreen = React.createClass({
                         <div className="alternatives">
                                 <div className="alternative-wrapper">
                                     <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
-                                        <QLLatex>{this.props.answerData.response}</QLLatex>
+                                        {response}
                                     </button>
                                 </div>
                         </div>
