@@ -13,20 +13,25 @@ class CQImageUploader extends React.Component {
     // when a file is passed to the input field, retrieve the contents as a
     // base64-encoded data URI and save it to the component's state
     handlePicture(ev:Object){
+        if (ev.target.files[0].size <= 1048576){
+            var reader = new FileReader();
+            reader.onload = (upload) =>{
+                var imageData = upload.target.result;
+                this.setState({ imageData });
+                this.props.onImageData(imageData);
+            };
 
-        var reader = new FileReader();
-        reader.onload = (upload) =>{
-            var imageData = upload.target.result;
-            this.setState({ imageData });
-            this.props.onImageData(imageData);
-        };
 
+            var imageFile = ev.target.files[0];
 
-        var imageFile = ev.target.files[0];
+            this.setState({ imageFile });
+            this.props.onImageFile(imageFile);
+            reader.readAsDataURL(imageFile);
+        }
+        else {
+            window.swal("Oops...", "The image you are trying to upload it too large. The maximum size for your image is 1MB", "error");
+        }
 
-        this.setState({ imageFile });
-        this.props.onImageFile(imageFile);
-        reader.readAsDataURL(imageFile);
 
     }
 

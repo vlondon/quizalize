@@ -1,9 +1,10 @@
+/* @flow */
 var React = require('react');
 
-var QLQuestion = require('quizApp/components/QLQuestion');
-var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
-var QLCountDown = require('quizApp/components/QLCountDown');
-var QLLatex = require('quizApp/components/QLLatex');
+var QLQuestion = require('./../../components/QLQuestion');
+var QLAnswerScreen = require('./../../components/QLAnswerScreen');
+var QLCountDown = require('./../../components/QLCountDown');
+var QLLatex = require('./../../components/QLLatex');
 
 var QLImage = require('./../QLImage');
 
@@ -48,7 +49,7 @@ var QLMultiple = React.createClass({
         };
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function(nextProps: Object) {
         if (this.props.questionData !== nextProps.questionData) {
             let hasAnswer = nextProps.quizData.report[nextProps.questionIndex] ? nextProps.quizData.report[nextProps.questionIndex].answer : null
             this.setState({
@@ -60,14 +61,17 @@ var QLMultiple = React.createClass({
         }
     },
 
-    componentDidMount: function() {
+    componentWillMount: function() {
         cssStateIndex = 0;
-        setTimeout(() => {
-            this.handleCssState(cssStateIndex++);
-        }, this.state.cssState.duration);
     },
 
-    handleCssState: function(newCssStateIndex, cb){
+    componentDidMount: function() {
+        setTimeout(() => {
+            this.handleCssState(cssStateIndex++);
+        }, this.state.cssState.duration || 0);
+    },
+
+    handleCssState: function(newCssStateIndex: number, cb: ?Function){
         var newCssState = cssStates[newCssStateIndex];
         if (newCssState){
             this.setState({
@@ -86,7 +90,7 @@ var QLMultiple = React.createClass({
         }
     },
 
-    handleClick: function(index){
+    handleClick: function(index: number){
 
         this.handleCssState(2, () => {
             this.setState({
@@ -99,7 +103,7 @@ var QLMultiple = React.createClass({
         }
     },
 
-    render: function() {
+    render: function(): any{
         var showAnswer, showQuestions, showCountdown;
 
         var latexWrapper = (string) => {
@@ -110,8 +114,9 @@ var QLMultiple = React.createClass({
             }
         };
 
-        if (!this.state.answer) {
-            //console.info('Show Question');
+        if (cssStateIndex === 0) {
+            return (<div></div>);
+        } else if (!this.state.answer) {
             var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = this.props.questionData.answerObject.alternatives.map(function(alternative, index){
@@ -139,7 +144,7 @@ var QLMultiple = React.createClass({
 
         return (
             <div className='ql-quiz-container'>
-                <div className={`ql-question ql-multiple ${this.state.cssState.name}`}>
+                <div className={`ql-question ql-multiple ${this.state.cssState.name || "0"}`}>
                     <QLQuestion
                         questionData={this.props.questionData}
                     />

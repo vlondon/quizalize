@@ -3,7 +3,7 @@ import zzish from './../../zzish';
 import db from '../db';
 import logger from './../../logger';
 import Immutable, {Map} from 'immutable';
-var async = require("async");
+import async from 'async';
 
 const QUIZ_CONTENT_TYPE = 'quiz';
 const APP_CONTENT_TYPE = 'app';
@@ -94,7 +94,7 @@ let loadQuizContent = function(){
             loadUsers("quiz", userIds, function(users) {
                 response.forEach(function(quiz) {
                     if (!users[quiz.meta.profileId]) {
-                        console.log("CAN't fine", quiz.meta.profileId);
+                        console.log("Can't find", quiz.meta.profileId);
                     }
                     quiz.meta.author = users[quiz.meta.profileId];
                 });

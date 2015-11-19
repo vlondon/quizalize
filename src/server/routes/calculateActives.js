@@ -21,7 +21,7 @@ if (process.env.admin=="true") {
     zzish_db.init(adminResult);
 }
 
-var generateData = function(chosenWeek, callback) {
+var calculateActives = function(chosenWeek, callback) {
     var activityQuery = {"query":"{'ownerId': '72064f1f-2cf8-4819-a3d5-1193e52d928c', 'contentId': {$exists: true}, 'status': 'ACTIVITY_INSTANCE_COMPLETED'}",
     "project":"{'timestamp': 1, 'contentId': 1, 'groupId': 1, 'profileId': 1}"};
     console.log("Generating data");
@@ -355,4 +355,4 @@ var generateData = function(chosenWeek, callback) {
 
 };
 
-module.exports = generateData;
+module.exports = calculateActives;

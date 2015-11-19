@@ -17,8 +17,17 @@ var QUIZ_CONTENT_TYPE = "quiz";
 
 var handleError = function(err, res){
     if (err){
-        logger.error(err);
-        res.status(500).send(err);
+        logger.error('handleError: Handle error failed', err);
+        if (res && res.status && typeof res.status === 'function') {
+            res.status(500).send(err);
+        } else {
+            logger.error('handleError: Res object error', res);
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
+                error: "Failed to handleError, quiz.js line 22",
+                message: JSON.stringify(res),
+                parameters: ""
+            });
+        }
     }
     return err;
 };
@@ -215,6 +224,13 @@ exports.packages = function (req, res){
 
 exports.faq = function(req, res){
     res.render('faq');
+};
+
+exports.kahoot = function(req, res) {
+    res.render('kahoot');
+};
+exports.quizlet = function (req, res){
+    res.render('quizlet');    
 };
 exports.landing = function(req, res){
     res.render('landing');

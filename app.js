@@ -144,7 +144,7 @@ if (process.env.admin === "true") {
     app.get('/admin/approved', admin.approved);
     app.get('/admin/quizlist', admin.quizlist);
     app.get('/admin/pending', admin.pendingQuizzes);
-    app.get('/admin/stats', admin.stats);
+    // app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
     app.get('/admin/emails', admin.emailList);
     app.get('/admin/newmetric', admin.newMetric);
@@ -215,6 +215,8 @@ app.get('/terms', quiz.terms);
 app.get('/privacy-policy', quiz.privacypolicy);
 app.get('/COPPA-policy', quiz.coppa);
 app.get('/landing', quiz.landing);
+app.get('/for-kahoot-users', quiz.kahoot);
+app.get('/for-quizlet-users', quiz.quizlet);
 
 /*
 

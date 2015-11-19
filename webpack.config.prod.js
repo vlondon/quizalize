@@ -15,6 +15,8 @@ module.exports = {
         home: ['home.js', 'liveBeta/liveBeta.js'],
         playQuizApp: ['playQuizApp/index.js'], 
         publishers: 'publishers.js',
+        kahoot: 'kahoot.js',
+        quizlet: 'quizlet.js',
         cqApp: ['createQuizApp/styles/createQuizApp', 'createQuizApp/CQApp.js'],
         vendor: ['fastclick', 'react', 'superagent']
     },

@@ -1,11 +1,9 @@
-var randomise = require('quizApp/utils/randomise');
-var settings = require('quizApp/config/settings');
+var randomise = require('./../utils/randomise');
+var settings = require('./../config/settings');
 var QUIZ_CONTENT_TYPE = settings.QUIZ_CONTENT_TYPE;
 var APP_CONTENT_TYPE = settings.APP_CONTENT_TYPE;
 
 angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
-
-
     var getDataValue = function(key) {
         if (dataParams[key]) return dataParams[key];
         try {
@@ -72,9 +70,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     var classCode = getDataValue("classCode");
     var categories = JSON.parse(getDataValue("categories") || "{}");
     var topics = {};
-    var currentQuiz = getDataValue("currentQuiz") !== 'undefined' ?  JSON.parse(getDataValue("currentQuiz")) : removeDataValue('currentQuiz');
+    var currentQuiz = getDataValue("currentQuiz") !== 'undefined' ?  JSON.parse(getDataValue("currentQuiz") || "{}") : removeDataValue('currentQuiz');
 
-    var currentQuizResult = JSON.parse(getDataValue("currentQuizResult"));
+    var currentQuizResult = JSON.parse(getDataValue("currentQuizResult") || "{}");
 
     var maxTime = settings.maxTime;
     var maxScore = settings.maxScore;
@@ -196,7 +194,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         }
     };
 
-    var getNumAlternvatives = function(currentQuestion) {
+    var getNumAlternatives = function(currentQuestion) {
         var numAlternatives = 0;
         if (currentQuestion.alternatives) {
             for (var i in currentQuestion.alternatives) {
@@ -214,7 +212,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         var question = currentQuiz.payload.questions[questionIndex];
         var patternToDected = question.answer.match(/\$\$[\s\S]+?\$\$|\$[\s\S]+?\$/g);
         var length = question.answer.length;
-        var numAlternatives = getNumAlternvatives(question);
+        var numAlternatives = getNumAlternatives(question);
         if(numAlternatives > 0 || patternToDected || length >= 20 || length === 1) {
             //either there are alternatives or there is a space in the anser
             answerQuestion.type = "multiple";
@@ -247,12 +245,14 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     var searchThroughCategories = function(catId, quizId) {
         console.log('categories', categories, catId, quizId);
-        for (var i in categories[catId].quizzes) {
-            var quiz = categories[catId].quizzes[i];
-            if (quiz.uuid == quizId) {
-                setQuiz(quiz);
-                return currentQuiz;
-            }
+        if (categories[catId]) {
+          for (var i in categories[catId].quizzes) {
+              var quiz = categories[catId].quizzes[i];
+              if (quiz.uuid == quizId) {
+                  setQuiz(quiz);
+                  return currentQuiz;
+              }
+          }
         }
         for (var p in categories) {
             for (var i in categories[p].quizzes) {
@@ -300,7 +300,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var questions = quiz.payload.questions;
             var seed = Math.floor((Math.random() * 100) + 1);
             if (settings && questions!=undefined && questions.length>1) {
-                seed = quiz.meta.updated;
+                seed = quiz.meta.seed;
                 var result2 = [];
                 if (settings['numQuestions'] && settings['numQuestions'] != "-1") {
                     try {
@@ -410,7 +410,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
     };
 
-    var calculateScore = function(correct, duration, questionDuration){
+    var calculateScore = function(correct, duration, questionDuration, partial){
         // Something a bit like (below not clear... probably meant 20000 etc), will go with 100 as max... can obviously easily change this
         // P2:  Add 20 second timer and have max 200 points scored per
         // question =  max (  0.1*(min(2000-time_in_milis,0),  if(correct, 50,0)).
@@ -419,34 +419,43 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         //
         var score;
         questionDuration = questionDuration * 1000;
-        if (correct) {
-            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer == 1) {
-                score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / maxScore)), maxScore));
-            }
-            else {
-                score = maxScore;
-            }
+        if (correct && currentQuiz.meta.showTimer !== undefined && currentQuiz.meta.showTimer !== 1) {
+                score = maxScore * partial;
         } else {
-            score = 0;
+            score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / (maxScore * partial))), maxScore * partial));
         }
         return score;
     };
 
     var getAlternatives = function(answerObject, questionIndex){
         var question = currentQuiz.payload.questions[questionIndex];
-        var numAlternatives = getNumAlternvatives(question);
-        if(numAlternatives > 0){
-            var options = [];
+        var numAlternatives = getNumAlternatives(question);
+        var options = [];
+
+        // Parse Alternatives in "correct answers"
+        if (answerObject.answerArray && answerObject.answerArray.length > 1) {
+            // Multiple correct answers specifed
+            for(var i in answerObject.answerArray) {
+                options.push(answerObject.answerArray[i].text);
+            }
+        }
+        else {
+            // Only 1 correct answer specifed
             options.push(answerObject.text);
+        }
+
+        // Take user defined Alternatives
+        if (numAlternatives > 0) {
             for(var i in question.alternatives) {
                 var alt = question.alternatives[i];
                 if (alt!=undefined && alt.length>0) {
                     options.push(alt);
                 }
             }
-            return randomise(options, true);
-            //return options;
-        } else {
+        }
+
+        // If no enough alternatives, take from other questions
+        if (options.length < 4) {
             var answers = [];
             var correct = answerObject.text;
 
@@ -454,15 +463,14 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var q = currentQuiz.payload.questions[i];
                 if (q.question!=question.question) {
                     var answer = processInput(q.answer);
-                    if(answer.text != correct){
+                    if(answer.text.indexOf(":") < 0 && answer.text != correct){
                         answers.push(answer.text);
                     }
                 }
             }
-            var options = randomise(answers).slice(0,3);
-            options.push(answerObject.text);
-            return randomise(options);
+            options = options.concat(answers.slice(0, 4-options.length));
         }
+        return randomise(options, true);
     };
 
     var processInput = function(input) {
@@ -487,13 +495,6 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 var meta = input.split("//");
                 return {
                     type: "multiple",
-                    text: meta[1]
-                };
-            }
-            if (input.indexOf("freetext://") === 0) {
-                var meta = input.split("//");
-                return {
-                    type: "freetext",
                     text: meta[1]
                 };
             }
@@ -559,6 +560,32 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                     result.autoPlay = parseInt(commands[4]);
                 }
                 return result;
+            }
+            if (input.indexOf("freetextm://") === 0) {
+                var meta = input.split("//");
+                var answerArray = meta[1].split(":").map(function(a) {
+                    var pair = a.split("|");
+                    var partial = (parseInt(pair[1]) || 100) / 100;
+                    return {text: pair[0], partial:partial};
+                });
+                return {
+                    type: "freetext",
+                    text: meta[1],
+                    answerArray: answerArray
+                };
+            }
+            if (input.indexOf("multiplem://") === 0) {
+                var meta = input.split("//");
+                var answerArray = meta[1].split(":").map(function(a) {
+                    var pair = a.split("|");
+                    var partial = (parseInt(pair[1]) || 100) / 100;
+                    return {text: pair[0], partial:partial};
+                });
+                return {
+                    type: "multiple",
+                    text: meta[1],
+                    answerArray: answerArray
+                };
             }
         }
         return {
@@ -836,8 +863,22 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             var questionDuration = question.duration || maxTime / 1000;
             console.log('currentQuiz,', currentQuiz);
 
-            var correct = (response.toUpperCase().replace(/\s/g, "") == questionData.answerObject.text.toUpperCase().replace(/\s/g, ""));
-            var score = calculateScore(correct, duration, questionDuration);
+            var normalizedResponse = response.toUpperCase().replace(/\s/g, "");
+            // Handle partial score
+            if (!questionData.answerObject.answerArray) {
+                questionData.answerObject.answerArray = [{text: questionData.answerObject.text, partial: 1}];
+            }
+            var matchedAnswer = questionData.answerObject.answerArray.filter(function (ans) {
+                return ans.text.toUpperCase().replace(/\s/g, "") === normalizedResponse;
+            });
+            var perfectAnswers = questionData.answerObject.answerArray.filter(function (ans) {
+                return ans.partial === 1;
+            }).map(function (ans) {
+                return ans.text;
+            });
+            var partial = matchedAnswer.length? matchedAnswer[0].partial: 0;
+            var correct = partial > 0;
+            var score = calculateScore(correct, duration, questionDuration, partial);
             var parameters = {
                 definition: {
                     type: question.uuid,
@@ -885,9 +926,10 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 question: questionData.questionObject,
                 questionId: question.uuid,
                 response: response,
-                answer: questionData.answerObject.text,
+                answer: perfectAnswers.join(', '),
                 attempts: 1,
                 correct: correct,
+                partial: partial,
                 score: score,
                 latexEnabled: question.latexEnabled,
                 roundedScore: Math.round(score),
