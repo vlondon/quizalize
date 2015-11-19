@@ -17,7 +17,7 @@ var routerReady = false;
 
 var renderPage = (page, properties) => {
     properties = properties || {};
-    // properties.getParams = urlParamsToObject(window.location.search) || {};
+    // properties.getParams = urlParams();
     page.renderer(properties);
 };
 

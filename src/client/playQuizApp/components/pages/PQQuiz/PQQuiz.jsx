@@ -3,6 +3,8 @@ import React from 'react';
 
 import type, { Question } from './../../../../../types';
 
+//import urlParams from './../../../../createQuizApp/utils/urlParams';
+
 import PQQuizStore from './../../../stores/PQQuizStore';
 import PQQuizActions from './../../../actions/PQQuizActions';
 
@@ -15,20 +17,21 @@ type State = {
     question?: Question;
 }
 
-var quizId = '9b8f788f-7889-488e-ba33-a82c56f04c47'; // '7f397534-fb8c-4c1e-8d72-f0a4c95774ae';
+//var params = urlParams();
+//var quizId = params.quizId;
 
 class PQQuiz extends React.Component {
 
     state: State;
     constructor(props: Object) {
         super(props);
-        PQQuizStore.getQuiz(quizId);
+        PQQuizStore.getQuiz(props.quizId);
         this.state = {};
         this.onChange = this.onChange.bind(this);
     }
 
     onChange() {
-        var quiz = PQQuizStore.getQuiz(quizId);
+        var quiz = PQQuizStore.getQuiz(this.props.quizId);
         if (quiz) {
             var question: Question = quiz.getCurrentQuestion();
             this.setState({
@@ -58,7 +61,7 @@ class PQQuiz extends React.Component {
     }
 
     _onNext() {
-        var quiz = PQQuizStore.getQuiz(quizId);
+        var quiz = PQQuizStore.getQuiz(this.props.quizId);
         if (quiz.questionIndex + 1 === this.state.quiz.questionCount) {
             this.setState({
                 completed: true
@@ -80,12 +83,12 @@ class PQQuiz extends React.Component {
                 content = (
                     <div>
                         <h1>Feedback</h1>
-                        <PQFeedback quizId={quizId} />
+                        <PQFeedback quizId={this.props.quizId} />
                     </div>
                 );
             } else {
                 // Quiz
-                let quiz = PQQuizStore.getQuiz(quizId);
+                let quiz = PQQuizStore.getQuiz(this.props.quizId);
                 content = (
                     <div>
                         <h1>Play</h1>

@@ -239,6 +239,7 @@ app.post('/quizHelp/', quiz.help);
 
 //new player
 app.get('/play/', quiz.newPlayer);
+app.get('/play/:id', quiz.newPlayer);
 app.get('/play/*', quiz.newPlayer);
 
 app.get('/quiz/service', quiz.service);

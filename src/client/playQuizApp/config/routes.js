@@ -16,12 +16,12 @@ export type Page = {
 var pagesArray: Array<Page> = [
     {
         name: 'mainPage',
-        path: '/play',
+        path: '/play/:quizId',
         needsLogin: undefined,
-        renderer: function(){
-            console.log('Quiz Page!');
+        pathRegEx: /\/play\/([\w\-]+)/,
+        renderer: function(quizId){
             React.render(
-                React.createElement(PQQuiz, null),
+                React.createElement(PQQuiz, { quizId }),
                 document.getElementById('reactApp')
             );
         }
