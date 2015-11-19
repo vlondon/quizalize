@@ -224,7 +224,7 @@ class PQQuiz {
     }
 
     getCurrentQuestion(): PQQuestion {
-        var question: Object = this._quiz.payload.questions[this.questionIndex];
+        var question: Question = this._quiz.payload.questions[this.questionIndex];
         return new PQQuestion(question);
     }
 

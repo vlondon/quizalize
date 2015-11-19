@@ -51,7 +51,7 @@ var QLMultiple = React.createClass({
 
     componentWillReceiveProps: function(nextProps: Object) {
         if (this.props.questionData !== nextProps.questionData) {
-            let hasAnswer = nextProps.quizData.report[nextProps.questionIndex] ? nextProps.quizData.report[nextProps.questionIndex].answer : null
+            let hasAnswer = nextProps.quizData.report[nextProps.questionIndex] ? nextProps.quizData.report[nextProps.questionIndex].answer : null;
             this.setState({
                 answer: hasAnswer
             });
@@ -114,9 +114,7 @@ var QLMultiple = React.createClass({
             }
         };
 
-        if (cssStateIndex === 0) {
-            return (<div></div>);
-        } else if (!this.state.answer) {
+        if (!this.state.answer) {
             var showTimer = this.props.currentQuiz.meta.showTimer == undefined ? true: this.props.currentQuiz.meta.showTimer == 1;
             showCountdown = <QLCountDown showCountdown={showTimer} startTime={this.props.startTime} duration={this.props.questionData.duration}/>;
             showQuestions = this.props.questionData.answerObject.alternatives.map(function(alternative, index){
