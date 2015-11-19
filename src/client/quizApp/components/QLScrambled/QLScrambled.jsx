@@ -59,7 +59,7 @@ var QLScrambled = React.createClass({
         }
     },
 
-    getStateForProps(props) {
+    getStateForProps(props: Object): Object {
         var answerSelected = props.questionData.answerObject.textArray.map(function() {
             return {text:"", index: -1};
         });
