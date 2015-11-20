@@ -229,17 +229,24 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
 
     var initQuizResult = function() {
-        currentQuizResult = { quizId: currentQuiz.uuid, totalScore: 0, questionCount: currentQuiz.payload.questions.length, report: [], correct: 0, latexEnabled: !!currentQuiz.latexEnabled };
+        console.trace('currentQuiz', currentQuiz);
+        currentQuizResult = {
+            quizId: currentQuiz.uuid,
+            totalScore: 0,
+            questionCount: currentQuiz.payload.questions.length,
+            report: [],
+            correct: 0, latexEnabled: !!currentQuiz.latexEnabled
+        };
         setDataValue("currentQuizResult",JSON.stringify(currentQuizResult));
         return currentQuizResult;
     };
 
     var setQuiz = function(quiz) {
+        currentQuiz = quiz;
         if (quiz.payload && quiz.payload.questions) {
             quiz.payload.questions = spliceQuestions(quiz);
             initQuizResult();
         }
-        currentQuiz = quiz;
         setDataValue("currentQuiz",JSON.stringify(currentQuiz));
     };
 
@@ -862,7 +869,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 delete currentQuizResult.processing[question.uuid];
             }
             var questionDuration = question.duration || maxTime / 1000;
-            console.log('currentQuiz,', currentQuiz);
+            console.log('currentQuiz', currentQuiz);
 
             var normalizedResponse = response.toUpperCase().replace(/\s/g, "");
             // Handle partial score
