@@ -2,7 +2,7 @@
 
 import CQPageTemplate from './CQPageTemplate';
 
-//pages
+// pages
 import CQApp from './pages/CQApp';
 import CQAssignments from './pages/CQAssignments';
 import CQAssignQuiz from './pages/CQAssignQuiz';
@@ -59,8 +59,8 @@ import CQSpinner from './utils/CQSpinner';
 import CQViewQuizPrice from './utils/CQViewQuizPrice';
 
 
-//views
- // CQAppQuizList from './utils/CQAppQuizList';
+// views
+// CQAppQuizList from './utils/CQAppQuizList';
 import CQViewAppColourPicker from './views/CQViewAppColourPicker';
 import CQViewAppGrid from './views/CQViewAppGrid';
 import CQViewAppQuizList from './views/CQViewAppQuizList';
@@ -145,5 +145,5 @@ export {
     CQViewQuizMarketplaceOptions,
     CQViewQuizSettings,
     CQViewShareQuiz,
-    CQViewSwitch
+    CQViewSwitch,
 };
