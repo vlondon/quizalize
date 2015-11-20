@@ -1,4 +1,4 @@
-
+/* @flow */
 var T = require('immutable');
 /// TOPIC ////
 export type Topic = {
@@ -93,6 +93,7 @@ export type QuizSettings = T.Record<{
     random: number;
     numQuestions: number;
     showAnswers: number;
+    showResult: number;
     repeatUntilCorrect: number;
     maxAttempts: number;
 }>

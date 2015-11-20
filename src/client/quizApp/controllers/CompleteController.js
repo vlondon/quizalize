@@ -1,14 +1,7 @@
-var settings = require('quizApp/config/settings');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var QLLeaderboard = require('quizApp/components/QLLeaderboard');
+var settings = require('./../config/settings');
 // var QLComplete = require('quizApp/components/QLComplete');
 
-
 var maxScore = settings.maxScore;
-var maxTime = settings.maxTime;
-var minScore = settings.minScore;
-var gracePeriod = settings.gracePeriod;
 
 MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
@@ -30,6 +23,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     self.teacherMode = sessionStorage.getItem("mode")=="teacher";
     self.previewMode = sessionStorage.getItem("mode")=="preview";
     self.demoMode = sessionStorage.getItem("mode")=="demo";
+    self.noResultMode = false;
     sessionStorage.removeItem("mode");
     self.QLQuestion = false;
     self.id = $routeParams.quizId;
@@ -42,28 +36,6 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
     QuizData.loadQuiz(self.catId, self.id, function(data) {
         self.currentQuiz = data;
     });
-
-
-    var renderReactComponent = function(){
-        var activityId = self.data ? self.data.currentActivityId : undefined;
-        ReactDOM.render(
-            React.createElement(QLLeaderboard, {
-                leaderboard: self.leaderboard,
-                activityId
-            }),
-            document.getElementById('reactContainer')
-        );
-    };
-
-
-    var addReactComponent = function(){
-        setTimeout(renderReactComponent, 200);
-        $scope.$on('$destroy', function(){
-            ReactDOM.unmountComponentAtNode(document.getElementById('reactContainer'));
-        });
-    };
-
-
 
     var calculateTotals = function(items){
         self.topics = {};
@@ -91,7 +63,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
                             answered: 0,
                             seconds: 0,
                             percentage: 0
-                        }
+                        };
                     }
                     self.alltopics[item.topicId].stats.score+=item.score;
                     self.alltopics[item.topicId].stats.seconds+=item.seconds;
@@ -135,6 +107,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
 
     self.isFeatured = currentQuiz.meta!=null ? currentQuiz.meta.featured : false;
     // self.isFeatured = false;
+    self.noResultMode = currentQuiz.meta!=null ? currentQuiz.meta.showResult == 0 : false;
 
     if (self.isFeatured === true) {
         ExtraData.getLeaderBoard(self.data.quizId)
@@ -165,7 +138,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
         }
         if (needToHide) {
             setTimeout(function() {
-                for (var i in arrayToMath) {
+                for (var i = 0; i < arrayToMath.length; i++) {
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#quizQuestion" + arrayToMath[i])[0]]);
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#response" + arrayToMath[i])[0]]);
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, $("#cresponse" + arrayToMath[i])[0]]);

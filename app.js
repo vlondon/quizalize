@@ -138,13 +138,17 @@ app.post('/create/:profileId/apps/:id', appContent.post);
 app.post('/create/:profileId/apps/:id/icon', appContent.postIcon);
 app.post('/create/:profileId/apps/:id/publishToMarketplace', appContent.publishToMarketplace);
 
+// EAS
+app.get('/eas/:profileId', quiz.loginEASUser);
+
+
 if (process.env.admin === "true") {
     app.get('/admin/', admin.index);
-    app.get('/admin/user/:userId', admin.logInAsUser);
+    app.get('/admin/user/:profileId', admin.logInAsUser);
+    app.get('/admin/user/:profileId/type/:accountType', admin.loginAsUserAndSetAccountType);
     app.get('/admin/approved', admin.approved);
     app.get('/admin/quizlist', admin.quizlist);
     app.get('/admin/pending', admin.pendingQuizzes);
-    app.get('/admin/stats', admin.stats);
     app.get('/admin/metrics', admin.metrics);
     app.get('/admin/emails', admin.emailList);
     app.get('/admin/newmetric', admin.newMetric);
