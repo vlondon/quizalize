@@ -201,6 +201,7 @@ class PQQuiz {
 
     _quiz: QuizComplete;
     questionIndex: number;
+    questionCount: number;
     uuid: string;
 
     constructor(newQuiz: QuizComplete) {

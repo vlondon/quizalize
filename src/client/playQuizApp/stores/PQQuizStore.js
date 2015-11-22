@@ -19,6 +19,11 @@ class PQQuizStore extends PQStore {
         return fullQuiz;
     }
 
+    getQuestionIndex(quizId): number {
+        var fullQuiz = _fullQuizzes[quizId];
+        return fullQuiz.questionIndex;
+    }
+
 }
 
 var PQQuizStoreInstance = new PQQuizStore();

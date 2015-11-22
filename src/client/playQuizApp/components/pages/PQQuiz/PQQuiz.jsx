@@ -17,9 +17,9 @@ import PQFeedback from './../PQFeedback';
 import QLVideoPlayer from './../../../../quizApp/components/QLVideoPlayer';
 
 type State = {
-    quiz? : PQQuizClass;
-    question ? : PQQuestionClass;
-    completed ? : boolean;
+    quiz: ?PQQuizClass;
+    question: ?PQQuestionClass;
+    completed: ?boolean;
 }
 
 //var params = urlParams();
@@ -32,7 +32,11 @@ class PQQuiz extends React.Component {
     constructor(props: Object) {
         super(props);
         PQQuizStore.getQuiz(props.quizId);
-        this.state = {};
+        this.state = {
+            quiz: null,
+            question: null,
+            completed: null
+        };
         this.onChange = this.onChange.bind(this);
     }
 
@@ -99,25 +103,28 @@ class PQQuiz extends React.Component {
                 );
             } else {
                 // Quiz
-                let quiz = PQQuizStore.getQuiz(this.props.quizId);
-                let totalScore = this.state.quiz.result ? this.state.quiz.result.totalScore : 0;
-                content = (
-                    <div className="container">
-                        <div className="ql-score">
-                            <div className="score"><h2 className="ng-binding">{totalScore} pts</h2></div>
-                            <div className="questions"><h2 className="ng-binding">Q: {quiz.questionIndex + 1}/{this.state.quiz.questionCount}</h2></div>
+                var questionIndex: number = PQQuizStore.getQuestionIndex(this.props.quizId);
+                var currentQuiz : ?PQQuizClass = this.state.quiz;
+                if (currentQuiz != null) {
+                    let totalScore = currentQuiz.result ? currentQuiz.result.totalScore : 0;
+                    content = (
+                        <div className="container">
+                            <div className="ql-score">
+                                <div className="score"><h2 className="ng-binding">{totalScore} pts</h2></div>
+                                <div className="questions"><h2 className="ng-binding">Q: {questionIndex + 1}/{currentQuiz.questionCount}</h2></div>
+                            </div>
+                            <QLVideoPlayer
+                                currentQuiz={this.state.quiz}
+                                quizData={this.state.quiz}
+                                questionData={this.state.question}
+                                questionIndex={questionIndex}
+                                startTime={Date.now()}
+                                onSelect={this._onSelect.bind(this)}
+                                onNext={this._onNext.bind(this)}
+                            />
                         </div>
-                        <QLVideoPlayer
-                            currentQuiz={this.state.quiz}
-                            quizData={this.state.quiz}
-                            questionData={this.state.question}
-                            questionIndex={quiz.questionIndex}
-                            startTime={Date.now()}
-                            onSelect={this._onSelect.bind(this)}
-                            onNext={this._onNext.bind(this)}
-                        />
-                    </div>
-                );
+                    );
+                }
             }
         }
 
