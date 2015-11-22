@@ -17,9 +17,9 @@ import PQFeedback from './../PQFeedback';
 import QLVideoPlayer from './../../../../quizApp/components/QLVideoPlayer';
 
 type State = {
-    quiz?: PQQuizClass;
-    question?: PQQuestionClass;
-    completed?: boolean;
+    quiz? : PQQuizClass;
+    question ? : PQQuestionClass;
+    completed ? : boolean;
 }
 
 //var params = urlParams();
@@ -28,6 +28,7 @@ type State = {
 class PQQuiz extends React.Component {
 
     state: State;
+
     constructor(props: Object) {
         super(props);
         PQQuizStore.getQuiz(props.quizId);
@@ -93,15 +94,19 @@ class PQQuiz extends React.Component {
                 content = (
                     <div>
                         <h1>Feedback</h1>
-                        <PQFeedback quizId={this.props.quizId} />
+                        <PQFeedback quizId={this.props.quizId}/>
                     </div>
                 );
             } else {
                 // Quiz
                 let quiz = PQQuizStore.getQuiz(this.props.quizId);
+                let totalScore = this.state.quiz.result ? this.state.quiz.result.totalScore : 0;
                 content = (
-                    <div>
-                        <h1>Play</h1>
+                    <div className="container">
+                        <div className="ql-score">
+                            <div className="score"><h2 className="ng-binding">{totalScore} pts</h2></div>
+                            <div className="questions"><h2 className="ng-binding">Q: {quiz.questionIndex + 1}/{this.state.quiz.questionCount}</h2></div>
+                        </div>
                         <QLVideoPlayer
                             currentQuiz={this.state.quiz}
                             quizData={this.state.quiz}
