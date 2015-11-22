@@ -1,8 +1,9 @@
+/* @flow */
 var React = require('react');
 
-var QLQuestion = require('quizApp/components/QLQuestion');
-var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
-var QLCountDown = require('quizApp/components/QLCountDown');
+var QLQuestion = require('./../../components/QLQuestion');
+var QLAnswerScreen = require('./../../components/QLAnswerScreen');
+var QLCountDown = require('./../../components/QLCountDown');
 var QLImage = require('./../QLImage');
 
 var cssStates = [
@@ -101,7 +102,7 @@ var QLBoolean = React.createClass({
             showQuestions = ["true", "false"].map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
-                    <button type="button" className={`btn alternative alternative-${alternative} wrapword`} onClick={this.handleClick.bind(this, alternative)}>
+                    <button type="button" className={`btn alternative alternative wrapword`} onClick={this.handleClick.bind(this, alternative)}>
                         {alternative}
                     </button>
                 </div>);
@@ -109,7 +110,7 @@ var QLBoolean = React.createClass({
         } else {
             var questionId = this.props.questionData.uuid;
             var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
-                return f.questionId == questionId;
+                return f.questionId === questionId;
             });
             showAnswer = (
                 <QLAnswerScreen

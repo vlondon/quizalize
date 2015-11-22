@@ -127,7 +127,7 @@
         width: $size-small;
         padding-top: 20px;
         margin: 10px;
-        background: #ff003f;
+        background: #2e60ff;
         border-radius: 100%;
         color: #FFF;
         display: inline-block;
@@ -166,10 +166,6 @@
 
     .alternative-wrapper button.alternative::first-letter {
         font-size: 4vw;
-    }
-
-    .alternative-wrapper button.alternative-true {
-        background: #2e60ff;
     }
 
     .alternative {

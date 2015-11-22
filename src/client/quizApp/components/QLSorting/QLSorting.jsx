@@ -1,9 +1,10 @@
+/* @flow */
 var React = require('react');
 
-var randomise = require('quizApp/utils/randomise');
-var QLQuestion = require('quizApp/components/QLQuestion');
-var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
-var QLCountDown = require('quizApp/components/QLCountDown');
+var randomise = require('./../../utils/randomise');
+var QLQuestion = require('./../../components/QLQuestion');
+var QLAnswerScreen = require('./../../components/QLAnswerScreen');
+var QLCountDown = require('./../../components/QLCountDown');
 var QLImage = require('./../QLImage');
 
 var cssStates = [
@@ -235,14 +236,11 @@ var QLSorting = React.createClass({
                 });
                 return (
                     <div className={`sortingGroup`} style={{width: width + 'px'}}
-                    onDragover={that.allowDrop}
-                    onDrop={that.handleDrop}>
-                        <button className={`ng-binding ng-scope group`}
-                        style={{width: width - 25 + 'px'}}
+                        onDragover={that.allowDrop}
+                        onDrop={that.handleDrop}
                         onClick={that.handleAddToGroup.bind(that, group_index)}
                         key={group_index}>
                             <p className='groupTitle'>{group.name}</p>
-                        </button>
                         {letters}
                     </div>
                 );
@@ -257,7 +255,7 @@ var QLSorting = React.createClass({
                             onDragStart={this.handleSelectLetter.bind(this, index)}
                             onClick={this.handleSelectLetter.bind(this, index)}
                             key={index}>
-                            {letter.state === 'selected' ? "": letter.text}
+                            {letter.state === "selected" ? "": letter.text}
                         </button>
                     );
                 }

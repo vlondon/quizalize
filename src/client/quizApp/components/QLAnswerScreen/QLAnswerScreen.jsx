@@ -1,3 +1,4 @@
+/* @flow */
 var React = require('react');
 var QLLatex = require('./../../components/QLLatex');
 var PQViewVideo = require('./../../../playQuizApp/components/views/PQViewVideo');
@@ -92,7 +93,8 @@ var QLAnswerScreen = React.createClass({
         var correctAnswer, viewVideo, videoPlayer, explanation;
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
         var questionType = this.props.questionData.answerObject ? this.props.questionData.answerObject.type : "";
-        var answer = "", response = "";
+        var answer = this.props.answerData.answer;
+        var response = this.props.answerData.response;
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
@@ -104,7 +106,6 @@ var QLAnswerScreen = React.createClass({
         if (this.props.currentQuiz && this.props.currentQuiz.meta && this.props.currentQuiz.meta.showResult == 0 && this.props.onNext){
             return (<div></div>);
         }
-
 
         if (questionType === "sorting" || questionType === "linking") {
             function formatAnswer (ans) {
@@ -131,7 +132,9 @@ var QLAnswerScreen = React.createClass({
         if ((!this.props.answerData.correct || hasPartialScore) && (this.props.currentQuiz && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1))){
             correctAnswer = (
                 <div className="text-2">
-                    {hasPartialScore ? 'To get maximum point, the answer is' : 'The correct answer is'}
+                    <h4>
+                        {hasPartialScore ? 'To get maximum point, the answer is' : 'The correct answer is'}
+                    </h4>
                     <div className="alternatives">
                         <div className="alternative-wrapper">
                             <button type="button" className={`btn answer answer-correct`}>
@@ -184,7 +187,6 @@ var QLAnswerScreen = React.createClass({
                         {stars}
                     </div>
                     <div className="text-1">
-
                         <h4>
                             <span>Your answer </span>
                             {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
