@@ -92,7 +92,9 @@ var QLAnswerScreen = React.createClass({
         var correctAnswer, viewVideo, videoPlayer, explanation;
         var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
         var questionType = this.props.questionData.answerObject ? this.props.questionData.answerObject.type : "";
-        var answer = "", response = "";
+        var answer = this.props.answerData.answer;
+        var response = this.props.answerData.response;
+
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
