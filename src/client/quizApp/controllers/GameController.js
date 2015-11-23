@@ -80,7 +80,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                     self.randomText = " in random order.";
                     self.showSubText = true;
                 }
-                if (self.currentQuiz.meta.showResult == 0) {
+                if (self.currentQuiz.meta.showResult === "0") {
                     self.noResultMode = true;
                 }
                 if (self.currentQuiz.meta['numQuestions']) {

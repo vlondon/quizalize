@@ -159,14 +159,10 @@ var QLLinking = React.createClass({
         var answerSelected = this.state.answerSelected;
         var targetSelecting = targetSelected.map(function(item, index) {
             return {text: item.text, state: item.state, index};
-        }).filter(function (item) {
-            return item.state === "selecting";
-        });
+        }).filter(item=>item.state === "selecting");
         var optionSelecting = optionSelected.map(function(item, index) {
             return {text: item.text, state: item.state, index};
-        }).filter(function (item) {
-            return item.state === "selecting";
-        });
+        }).filter(item=> item.state === "selecting");
 
         if (type === 'target') {
             if (optionSelecting.length > 0) {
@@ -238,9 +234,7 @@ var QLLinking = React.createClass({
 
     render: function() {
         var showAnswer, showTargets, showOptions, showCountdown;
-        var unanswered = this.state.targetSelected.filter(function(item) {
-            return item.state !== "selected";
-        });
+        var unanswered = this.state.targetSelected.filter(item=> item.state !== "selected");
         if (cssStateIndex === 0) {
             return (<div className='ql-quiz-container' ref='main'>
                 <div className="user-interaction" ref='userInteraction'></div>
@@ -287,9 +281,7 @@ var QLLinking = React.createClass({
             }
         } else {
             var questionId = this.props.questionData.uuid;
-            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
-                return f.questionId == questionId;
-            });
+            var currentAnswerFilter = this.props.quizData.report.filter(f=> f.questionId === questionId);
             showAnswer = (
                 <QLAnswerScreen
                     currentQuiz={this.props.currentQuiz}

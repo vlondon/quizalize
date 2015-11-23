@@ -109,9 +109,7 @@ var QLBoolean = React.createClass({
             }, this);
         } else {
             var questionId = this.props.questionData.uuid;
-            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
-                return f.questionId === questionId;
-            });
+            var currentAnswerFilter = this.props.quizData.report.filter(f=> f.questionId === questionId);
             showAnswer = (
                 <QLAnswerScreen
                     currentQuiz={this.props.currentQuiz}

@@ -99,8 +99,8 @@ var QuizApi = {
                         .use(noCache)
                         .end(function(error, res){
                             if (error) {
-                                console.error('we got error', error);
-                                reject(error);
+                                console.error('we got error', error, res);
+                                reject(res.text);
                             } else {
                                 resolve(res.body);
                             }

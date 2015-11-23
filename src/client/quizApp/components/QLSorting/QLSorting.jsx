@@ -31,7 +31,8 @@ var QLSorting = React.createClass({
         questionData: React.PropTypes.object.isRequired,
         startTime: React.PropTypes.number.isRequired,
         onSelect: React.PropTypes.func.isRequired,
-        onNext: React.PropTypes.func.isRequired
+        onNext: React.PropTypes.func.isRequired,
+        questionIndex: React.PropTypes.number.isRequired
     },
 
     getInitialState: function() {
@@ -42,9 +43,7 @@ var QLSorting = React.createClass({
             letters = letters.concat(meta[1].split(","));
         });
         var letters = randomise(letters);
-        var letterSelected = letters.map(function(letter) {
-            return {text:letter, state:"unselected"};
-        });
+        var letterSelected = letters.map(letter=> ({text:letter, state:"unselected"}));
         var state =  {
             cssState: cssStates[cssStateIndex],
             currentLetterToFill: 0,
@@ -160,9 +159,7 @@ var QLSorting = React.createClass({
         var answerSelected = this.state.answerSelected;
         var selecting = this.state.letterSelected.map(function(letter, index) {
             return {text: letter.text, state: letter.state, index};
-        }).filter(function (letter) {
-            return letter.state === "selecting";
-        });
+        }).filter(letter=> letter.state === "selecting");
 
         letterSelected = letterSelected.map(function(letter) {
             if (letter.state === "selecting") {
@@ -175,10 +172,9 @@ var QLSorting = React.createClass({
 
         answerSelected[index].items = answerSelected[index].items.concat(selecting);
         // Finish
-        var unanswered = this.state.letterSelected.filter(function(letter) {
-            return letter.state === "unselected";
-        });
-        if (unanswered.length == 0) {
+        var unanswered = this.state.letterSelected.filter(letter=> letter.state === "unselected");
+
+        if (unanswered.length === 0) {
             var answer = answerSelected.map(function(group) { return group.name+"|"+group.items.map(function(letter){ return letter.text; }).sort().join(","); }).join(":");
             this.props.onSelect(answer);
         }
@@ -202,9 +198,7 @@ var QLSorting = React.createClass({
 
     render: function() {
         var showAnswer, showTargets, showOptions, showCountdown;
-        var unanswered = this.state.letterSelected.filter(function(letter) {
-            return letter.state !== "selected";
-        });
+        var unanswered = this.state.letterSelected.filter(letter=> letter.state !== "selected");
         var width = 100;
         var maxLength = 0;
         //determine biggest element length
@@ -269,9 +263,8 @@ var QLSorting = React.createClass({
             }
         } else {
             var questionId = this.props.questionData.uuid;
-            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
-                return f.questionId == questionId;
-            });
+            var currentAnswerFilter = this.props.quizData.report.filter(f=> f.questionId === questionId);
+
             showAnswer = (
                 <QLAnswerScreen
                     currentQuiz={this.props.currentQuiz}
