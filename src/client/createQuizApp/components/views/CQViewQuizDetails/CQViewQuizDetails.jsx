@@ -48,6 +48,8 @@ export default class CQViewQuizDetails extends React.Component {
         this.getState = this.getState.bind(this);
         this.keyUpListener = this.keyUpListener.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+
 
         this.state = this.getState();
     }
@@ -145,9 +147,23 @@ export default class CQViewQuizDetails extends React.Component {
                         <i>
                             {questionLength} questions.
                         </i>
+                        <div className="cq-quizdetails__questionholder">
 
-                        <p>
-                        </p>
+                            <div className="cq-quizdetails__questionscroller">
+                                <div className="cq-quizdetails__questions">
+                                    <ul>
+
+                                        {quiz.payload.questions.map( (question, index) => {
+                                            return (
+                                                <li className="cq-quizdetails__question" key={question.uuid}>
+                                                    {index + 1}. <CQLatexString>{question.question}</CQLatexString>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
 
                         <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, quiz)}>
                             Play
@@ -158,20 +174,7 @@ export default class CQViewQuizDetails extends React.Component {
                         </button>
                     </div>
 
-                    <div className="cq-quizdetails__questionscroller">
-                        <div className="cq-quizdetails__questions">
-                            <ul>
 
-                                {quiz.payload.questions.map( (question, index) => {
-                                    return (
-                                        <li className="cq-quizdetails__question" key={question.uuid}>
-                                            {index + 1}. <CQLatexString>{question.question}</CQLatexString>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             );
         } else {
