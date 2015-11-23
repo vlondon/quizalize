@@ -23,6 +23,7 @@ import {priceFormat} from './../utils';
 
 import type {
     Quiz,
+    QuizComplete,
     AppType
 } from './../../../types';
 
@@ -113,7 +114,7 @@ var TransactionActions = {
     },
 
 
-    buyQuiz: function(quiz : Quiz, free? : number) {
+    buyQuiz: function(quiz : QuizComplete | Quiz, free? : number) {
         var price = 0;
         var priceTag = "free";
         quiz.meta.price = quiz.meta.price || 0;

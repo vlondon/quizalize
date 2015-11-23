@@ -23,11 +23,18 @@ import {priceFormat} from "./../../../utils";
 import type {QuizComplete} from "./../../../../../types";
 
 type State = {
-    quiz: QuizComplete
+    quiz: ?QuizComplete;
+    removed?: Boolean;
 }
-type Props = {};
+type Props = {
+    quizId: string;
+    onClose: Function;
+};
 
 export default class CQViewQuizDetails extends React.Component {
+
+    state: State;
+    props: Props;
 
     static propTypes = {
         quizId: React.PropTypes.string.isRequired,
@@ -37,9 +44,12 @@ export default class CQViewQuizDetails extends React.Component {
 
     constructor(props: Props) {
         super(props);
-        this.state = this.getState();
 
+        this.getState = this.getState.bind(this);
         this.keyUpListener = this.keyUpListener.bind(this);
+        this.onChange = this.onChange.bind(this);
+
+        this.state = this.getState();
     }
 
     componentDidMount() {
@@ -64,11 +74,9 @@ export default class CQViewQuizDetails extends React.Component {
     }
 
     getState() : State {
-        var state = {
-            quiz: QuizStore.getPublicQuiz(this.props.quizId)
-        };
-
-        return state;
+        let quiz = QuizStore.getPublicQuiz(this.props.quizId);
+        console.log("quiz", quiz, this.props.quizId);
+        return {quiz};
     }
 
     handleClose(){
@@ -104,7 +112,9 @@ export default class CQViewQuizDetails extends React.Component {
                     }
                 });
             } else {
-                TransactionActions.buyQuiz(this.state.quiz);
+                if (this.state.quiz){
+                    TransactionActions.buyQuiz(this.state.quiz);
+                }
             }
         }
     }
@@ -112,38 +122,39 @@ export default class CQViewQuizDetails extends React.Component {
     render() : any {
 
         var quizInfo;
-        var tagLine = () => {
-            // this.state.quiz.meta.price = 3;
-            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
-                return (<span>Play in class for {priceFormat(this.state.quiz.meta.price, "$", "us")}</span>);
-            }
-            else {
-                return (<span>Play in class</span>);
-            }
-        };
-
 
         if (this.state.quiz){
+            let tagLine;
+            let name = this.state.quiz.meta.name;
+            let questionLength = this.state.quiz.payload.questions.length;
+            let quiz = this.state.quiz;
+
+            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
+                tagLine = (<span>Play in class for {priceFormat(this.state.quiz.meta.price, "$", "us")}</span>);
+            } else {
+                tagLine = (<span>Play in class</span>);
+            }
+
             quizInfo = (
                 <div className="cq-quizdetails__cardinner">
                     <div className="cq-quizdetails__info">
                         <h5>
                             {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || this.state.quiz.meta.categoryId)}
                         </h5>
-                        <h1>{this.state.quiz.meta.name}</h1>
+                        <h1>{name}</h1>
+                        <i>
+                            {questionLength} questions.
+                        </i>
 
                         <p>
-                        <i>
-                            {this.state.quiz.payload.questions.length} questions.
-                        </i>
                         </p>
 
-                        <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, this.state.quiz)}>
+                        <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, quiz)}>
                             Play
                         </button>
 
                         <button className="cq-quizdetails__button" onClick={this.handleBuy}>
-                            {tagLine()}
+                            {tagLine}
                         </button>
                     </div>
 
@@ -151,7 +162,7 @@ export default class CQViewQuizDetails extends React.Component {
                         <div className="cq-quizdetails__questions">
                             <ul>
 
-                                {this.state.quiz.payload.questions.map( (question, index) => {
+                                {quiz.payload.questions.map( (question, index) => {
                                     return (
                                         <li className="cq-quizdetails__question" key={question.uuid}>
                                             {index + 1}. <CQLatexString>{question.question}</CQLatexString>
@@ -173,7 +184,6 @@ export default class CQViewQuizDetails extends React.Component {
                 <div className={this.state.closed ? `cq-quizdetails closed` : `cq-quizdetails`}>
                     <div className="cq-quizdetails__card">
                         <div className="cq-quizdetails__close fa fa-times" onClick={this.handleClose}></div>
-
                         {quizInfo}
                     </div>
                 </div>
