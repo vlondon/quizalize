@@ -43,7 +43,7 @@ var QLBoolean = React.createClass({
         };
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function(nextProps: Object) {
         if (this.props.questionData !== nextProps.questionData) {
             this.setState({
                 cssSate: cssStates[0]
@@ -56,12 +56,13 @@ var QLBoolean = React.createClass({
     },
 
     componentDidMount: function() {
+        let duration = this.state.cssState.duration || 0;
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
-        }, this.state.cssState.duration);
+        }, duration);
     },
 
-    handleCssState: function(newCssStateIndex, cb){
+    handleCssState: function(newCssStateIndex: number, cb: ?Function) {
         var newCssState = cssStates[newCssStateIndex];
         if (newCssState){
             this.setState({
@@ -80,7 +81,7 @@ var QLBoolean = React.createClass({
         }
     },
 
-    handleClick: function(answer){
+    handleClick: function(answer: string){
 
         this.handleCssState(2, () => {
             this.setState({answer});
@@ -91,7 +92,7 @@ var QLBoolean = React.createClass({
         }
     },
 
-    render: function() {
+    render: function(): any {
         var showAnswer, showQuestions, showCountdown;
 
         if (cssStateIndex === 0) {

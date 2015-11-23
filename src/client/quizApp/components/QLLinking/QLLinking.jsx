@@ -1,3 +1,4 @@
+/* @flow */
 var React = require('react');
 
 var randomise = require('./../../utils/randomise');
@@ -138,7 +139,7 @@ var QLLinking = React.createClass({
         }
     },
 
-    calculateLinkPosition: function (targetIndex, optionIndex) {
+    calculateLinkPosition: function (targetIndex: number, optionIndex: number): Object {
         var containerWidth = 120;
         var optionSize = 60;
         var margin = 5;
@@ -153,7 +154,7 @@ var QLLinking = React.createClass({
         return {width, top, left, degree};
     },
 
-    handleSelect: function(type, index) {
+    handleSelect: function(type: string, index: number) {
         var targetSelected = this.state.targetSelected;
         var optionSelected = this.state.optionSelected;
         var answerSelected = this.state.answerSelected;
@@ -199,7 +200,7 @@ var QLLinking = React.createClass({
         });
     },
 
-    handleSelectTarget: function(index) {
+    handleSelectTarget: function(index: number) {
         if (this.state.targetSelected[index].state === "selecting") {
             this.state.targetSelected[index].state = "unselected";
         }
@@ -208,7 +209,7 @@ var QLLinking = React.createClass({
         }
     },
 
-    handleSelectOption: function(index) {
+    handleSelectOption: function(index: number) {
         if (this.state.optionSelected[index].state === "selecting") {
             this.state.optionSelected[index].state = "unselected";
         }
@@ -217,8 +218,7 @@ var QLLinking = React.createClass({
         }
     },
 
-
-    handleDeleteLink: function(index){
+    handleDeleteLink: function(index: number){
         var answerSelected = this.state.answerSelected;
         var targetSelected = this.state.targetSelected;
         var optionSelected = this.state.optionSelected;
@@ -232,7 +232,7 @@ var QLLinking = React.createClass({
         });
     },
 
-    render: function() {
+    render: function(): any {
         var showAnswer, showTargets, showOptions, showCountdown;
         var unanswered = this.state.targetSelected.filter(item=> item.state !== "selected");
         if (cssStateIndex === 0) {
@@ -292,7 +292,7 @@ var QLLinking = React.createClass({
         }
         return (
             <div className='ql-quiz-container' ref='main' >
-                <div className={`ql-question ql-linking ${this.state.cssState.name}`} onDragover={this.allowDrop}>
+                <div className={`ql-question ql-linking ${this.state.cssState.name}`}>
                     <h3 className='question'>
                         <QLQuestion
                             questionData={this.props.questionData}
