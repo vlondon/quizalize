@@ -1,101 +1,121 @@
-var React = require('react');
-var router = require('./../../../config/router');
-var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
-var TransactionActions = require('createQuizApp/actions/TransactionActions');
-var TopicStore          = require('createQuizApp/stores/TopicStore');
-var MeStore = require('./../../../stores/MeStore');
+/* @flow */
+import React from "react";
+import router from "./../../../config/router";
+
+import {
+    CQSpinner,
+    CQLatexString
+} from "./../../../components";
+
+import {
+    QuizStore,
+    TopicStore,
+    MeStore
+} from "./../../../stores";
+
+import {
+    TransactionActions
+} from "./../../../actions";
+
 
 var timeouts = [];
-var priceFormat = require('createQuizApp/utils/priceFormat');
-var CQViewQuizDetails = React.createClass({
+import {priceFormat} from "./../../../utils";
+import type {QuizComplete} from "./../../../../../types";
 
-    propTypes: {
+type State = {
+    quiz: QuizComplete
+}
+type Props = {};
+
+export default class CQViewQuizDetails extends React.Component {
+
+    static propTypes = {
         quizId: React.PropTypes.string.isRequired,
         quizCode: React.PropTypes.string,
         onClose: React.PropTypes.func.isRequired
-    },
+    };
 
-    getInitialState: function() {
-        return this.getState();
-    },
+    constructor(props: Props) {
+        super(props);
+        this.state = this.getState();
 
-    componentDidMount: function() {
+        this.keyUpListener = this.keyUpListener.bind(this);
+    }
+
+    componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
-        document.addEventListener('keyup', this.keyUpListener);
-    },
+        document.addEventListener("keyup", this.keyUpListener);
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         QuizStore.removeChangeListener(this.onChange);
-        document.removeEventListener('keyup', this.keyUpListener);
+        document.removeEventListener("keyup", this.keyUpListener);
         timeouts.forEach( t => clearTimeout(t));
-        console.log('component unmounted');
-    },
+    }
 
-    keyUpListener: function(ev){
+    keyUpListener(ev: Object){
         if (ev.keyCode === 27) {
             this.handleClose();
         }
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    getState: function(){
+    getState() : State {
         var state = {
             quiz: QuizStore.getPublicQuiz(this.props.quizId)
         };
 
         return state;
-    },
+    }
 
-    handleClose: function(){
+    handleClose(){
         if (this.state.closed !== true) {
             this.setState({closed: true});
 
             timeouts.push(setTimeout(()=>{
-                console.log('timeeeouuuutt');
+
                 this.setState({removed: true}, ()=> {
                     this.props.onClose();
                 });
             }, 350));
         }
-    },
+    }
 
-    handlePreview: function(quiz : Quiz){
-        sessionStorage.setItem('mode', 'preview');
+    handlePreview(quiz : QuizComplete){
+        sessionStorage.setItem("mode", "preview");
         window.open(`/app#/play/public/${quiz.uuid}`);
-    },
+    }
 
-    handleBuy: function(){
+    handleBuy(){
         if (this.state.quiz) {
             if (!MeStore.isLoggedIn()){
                 swal({
-                    title: 'You need to be logged in',
+                    title: "You need to be logged in",
                     text: `In order to buy this item you need to log into Quizalize`,
-                    type: 'info',
-                    confirmButtonText: 'Log in',
+                    type: "info",
+                    confirmButtonText: "Log in",
                     showCancelButton: true
                 }, function(isConfirm){
                     if (isConfirm){
-                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
+                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent("/quiz/marketplace")}`);
                     }
                 });
             } else {
                 TransactionActions.buyQuiz(this.state.quiz);
             }
         }
-    },
+    }
 
-    render: function() {
+    render() : any {
 
         var quizInfo;
         var tagLine = () => {
             // this.state.quiz.meta.price = 3;
             if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
-                return (<span>Play in class for {priceFormat(this.state.quiz.meta.price, '$', 'us')}</span>);
+                return (<span>Play in class for {priceFormat(this.state.quiz.meta.price, "$", "us")}</span>);
             }
             else {
                 return (<span>Play in class</span>);
@@ -111,9 +131,7 @@ var CQViewQuizDetails = React.createClass({
                             {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || this.state.quiz.meta.categoryId)}
                         </h5>
                         <h1>{this.state.quiz.meta.name}</h1>
-                        <p>
-                            {this.state.quiz.meta.description}
-                        </p>
+
                         <p>
                         <i>
                             {this.state.quiz.payload.questions.length} questions.
@@ -165,6 +183,4 @@ var CQViewQuizDetails = React.createClass({
         }
     }
 
-});
-
-module.exports = CQViewQuizDetails;
+};
