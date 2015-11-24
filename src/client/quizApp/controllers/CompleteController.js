@@ -135,6 +135,14 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
                 arrayToMath.push(item.questionId);
                 needToHide = true;
             }
+            if (item.type === "sorting" || item.type === "linking") {
+              item.response = item.response.split(/:/g).map(item=> item.replace(/\|/g, ": "));
+              item.answer = item.answer.split(/:/g).map(item=> item.replace(/\|/g, ": "));
+            }
+            else {
+              item.response = [item.response];
+              item.answer = [item.answer];
+            }
         }
         if (needToHide) {
             setTimeout(function() {

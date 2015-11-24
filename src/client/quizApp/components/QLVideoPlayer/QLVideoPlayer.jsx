@@ -96,43 +96,39 @@ var QLVideoPlayer = React.createClass({
         } else {
             console.log('this.state.startTime => ', this.state.startTime);
             props.startTime = this.state.startTime;
-            props.questionIndex = this.state.questionIndex || this.props.questionIndex;
-            if (this.props.questionData.answerObject.type === "multiple"){
+            props.questionIndex = this.state.questionIndex;
+            switch (this.props.questionData.answerObject.type) {
+              case "multiple":
                 return (
-                    <QLMultiple
-                        {...props}
-                    />
+                    <QLMultiple {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "scrambled"){
+                break;
+              case "scrambled":
                 return (
-                    <QLScrambled
-                        {...props}
-                    />
+                    <QLScrambled {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "freetext"){
+                break;
+              case "freetext":
                 return (
-                    <QLFreetext
-                        {...props}
-                    />
+                    <QLFreetext {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "boolean"){
+                break;
+              case "boolean":
                 return (
-                    <QLBoolean
-                        {...props}
-                    />
+                    <QLBoolean {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "sorting"){
+                break;
+              case "sorting":
                 return (
-                    <QLSorting
-                        {...props}
-                    />
+                    <QLSorting {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "linking"){
+                break;
+              case "linking":
                 return (
-                    <QLLinking
-                        {...props}
-                    />
+                    <QLLinking {...props} />
                 );
+                break;
+              default:
             }
         }
     }

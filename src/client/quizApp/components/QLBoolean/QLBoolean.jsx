@@ -1,8 +1,9 @@
+/* @flow */
 var React = require('react');
 
-var QLQuestion = require('quizApp/components/QLQuestion');
-var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
-var QLCountDown = require('quizApp/components/QLCountDown');
+var QLQuestion = require('./../../components/QLQuestion');
+var QLAnswerScreen = require('./../../components/QLAnswerScreen');
+var QLCountDown = require('./../../components/QLCountDown');
 var QLImage = require('./../QLImage');
 
 var cssStates = [
@@ -42,7 +43,7 @@ var QLBoolean = React.createClass({
         };
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function(nextProps: Object) {
         if (this.props.questionData !== nextProps.questionData) {
             this.setState({
                 cssSate: cssStates[0]
@@ -55,12 +56,13 @@ var QLBoolean = React.createClass({
     },
 
     componentDidMount: function() {
+        let duration = this.state.cssState.duration || 0;
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
-        }, this.state.cssState.duration);
+        }, duration);
     },
 
-    handleCssState: function(newCssStateIndex, cb){
+    handleCssState: function(newCssStateIndex: number, cb: ?Function) {
         var newCssState = cssStates[newCssStateIndex];
         if (newCssState){
             this.setState({
@@ -79,7 +81,7 @@ var QLBoolean = React.createClass({
         }
     },
 
-    handleClick: function(answer){
+    handleClick: function(answer: string){
 
         this.handleCssState(2, () => {
             this.setState({answer});
@@ -90,7 +92,7 @@ var QLBoolean = React.createClass({
         }
     },
 
-    render: function() {
+    render: function(): any {
         var showAnswer, showQuestions, showCountdown;
 
         if (cssStateIndex === 0) {
@@ -101,16 +103,14 @@ var QLBoolean = React.createClass({
             showQuestions = ["true", "false"].map(function(alternative, index){
                 return (
                 <div className="alternative-wrapper" key={index}>
-                    <button type="button" className={`btn alternative alternative-${alternative} wrapword`} onClick={this.handleClick.bind(this, alternative)}>
+                    <button type="button" className={`btn alternative alternative wrapword`} onClick={this.handleClick.bind(this, alternative)}>
                         {alternative}
                     </button>
                 </div>);
             }, this);
         } else {
             var questionId = this.props.questionData.uuid;
-            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
-                return f.questionId == questionId;
-            });
+            var currentAnswerFilter = this.props.quizData.report.filter(f=> f.questionId === questionId);
             showAnswer = (
                 <QLAnswerScreen
                     currentQuiz={this.props.currentQuiz}
