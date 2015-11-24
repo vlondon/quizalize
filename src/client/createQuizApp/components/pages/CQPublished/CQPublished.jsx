@@ -1,18 +1,19 @@
 /* @flow */
-import React from 'react';
-import { Record } from 'immutable';
+import React from "react";
+import { Record } from "immutable";
 import {
     CQViewClassList,
     CQViewQuizMarketplaceOptions,
     CQPageTemplate,
     CQViewShareQuiz,
     CQViewQuizSettings
-} from './../../../components';
+} from "./../../../components";
+
 
 import {
     GroupStore,
     QuizStore
-} from './../../../stores';
+} from "./../../../stores";
 
 
 const Settings = Record({
@@ -26,7 +27,7 @@ const Settings = Record({
     seed: Math.floor((Math.random() * 100) + 1)
 });
 
-import type { QuizComplete } from './../../../../../types';
+import type { QuizComplete } from "./../../../../../types";
 
 type Props = {
     routeParams: { quizId: string };
@@ -61,6 +62,7 @@ export default class CQPublished extends React.Component {
         this.getQuiz = this.getQuiz.bind(this);
         this.handleSettings = this.handleSettings.bind(this);
 
+
         this.state = this.getState();
 
     }
@@ -78,11 +80,11 @@ export default class CQPublished extends React.Component {
     getState() : State {
 
         var groups = GroupStore.getGroups();
-        var selectedClass = (groups && groups.length > 0) ? groups[0].code : 'new';
+        var selectedClass = (groups && groups.length > 0) ? groups[0].code : "new";
         var isMoreVisible = this.state ? this.state.isMoreVisible : false;
 
         var settings = this.state && this.state.settings ? this.state.settings : new Settings();
-        var newClass = '';
+        var newClass = "";
         var newState = {
             groups,
             selectedClass,
@@ -108,7 +110,7 @@ export default class CQPublished extends React.Component {
 
 
     handleSettings(settings: Settings){
-        console.log('settings', settings.toObject());
+        console.log("settings", settings.toObject());
         this.setState({settings},
             function(){
                 console.log("settings state", this.state.settings.toObject());
@@ -121,7 +123,7 @@ export default class CQPublished extends React.Component {
         var publishQuiz;
         var shareQuiz;
 
-        console.log('settings', this.state.settings.toObject());
+        console.log("settings", this.state.settings.toObject());
         classList = (
             <div>
                 <CQViewClassList

@@ -70,7 +70,8 @@ export default class CQViewQuizDetails extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleBuy = this.handleBuy.bind(this);
-
+        this.handleSaveForLater = this.handleSaveForLater.bind(this);
+        this.handleHomework = this.handleHomework.bind(this);
 
         this.state = this.getState();
     }
@@ -142,6 +143,35 @@ export default class CQViewQuizDetails extends React.Component {
         }
     }
 
+    handleSaveForLater(){
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz, false, false)
+                    .then(()=>{
+                        // TODO Francesco please review the copy
+                        swal({
+                            title: "Quiz saved for later",
+                            text: `The quiz has been saved in your profile`,
+                            type: "info",
+                            confirmButtonText: "Got it",
+                            showCancelButton: false
+                        });
+                    });
+            }
+        }
+    }
+
+    handleHomework(){
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz, false, false)
+                    .then((quiz)=>{
+                        router.setRoute(`/quiz/published/${quiz.uuid}/assign?homework=true`);
+                    });
+            }
+        }
+    }
+
     render() : any {
 
         var quizInfo;
@@ -200,7 +230,7 @@ export default class CQViewQuizDetails extends React.Component {
                                 {tagLine}
                             </button>
 
-                            <button className="cq-quizdetails__button__main" onClick={this.handleBuy}>
+                            <button className="cq-quizdetails__button__main" onClick={this.handleHomework}>
                                 Set as homework
                             </button>
 
@@ -208,7 +238,7 @@ export default class CQViewQuizDetails extends React.Component {
                                 Edit questions
                             </button>
 
-                            <button className="cq-quizdetails__button__alt" onClick={this.handleBuy}>
+                            <button className="cq-quizdetails__button__alt" onClick={this.handleSaveForLater}>
                                 Save for later
                             </button>
 
