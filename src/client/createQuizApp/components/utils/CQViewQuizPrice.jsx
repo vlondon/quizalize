@@ -1,15 +1,15 @@
 /* @flow */
-var React = require('react');
-var router = require('./../../config/router');
+import React from "react";
+import router from "./../../config/router";
 
-import MeStore from './../../stores/MeStore';
-import QuizStore from './../../stores/QuizStore';
+import MeStore from "./../../stores/MeStore";
+import QuizStore from "./../../stores/QuizStore";
 
-import type {Quiz} from './../../../../types';
+import type {Quiz} from "./../../../../types";
 
-import priceFormat from './../../utils/priceFormat';
-import TransactionActions from './../../actions/TransactionActions';
-import AnalyticsActions from './../../actions/AnalyticsActions';
+import priceFormat from "./../../utils/priceFormat";
+import TransactionActions from "./../../actions/TransactionActions";
+import AnalyticsActions from "./../../actions/AnalyticsActions";
 
 type Props = {
     className: string;
@@ -37,14 +37,14 @@ export default class CQViewQuizPrice extends React.Component {
         } else {
             if (!MeStore.isLoggedIn()) {
                 swal({
-                    title: 'You need to have an account to use this quiz in a class',
+                    title: "You need to have an account to use this quiz in a class",
                     text: `It takes seconds to create an account`,
-                    type: 'info',
-                    confirmButtonText: 'Create an account',
+                    type: "info",
+                    confirmButtonText: "Create an account",
                     showCancelButton: true
                 }, (isConfirm) => {
                     if (isConfirm){
-                        router.setRoute(`/quiz/register?redirect=${window.encodeURIComponent('/quiz/marketplace?quid=' + this.props.quiz.uuid)}`);
+                        router.setRoute(`/quiz/register?redirect=${window.encodeURIComponent("/quiz/marketplace?quid=" + this.props.quiz.uuid)}`);
                     }
                 });
             } else {
@@ -54,34 +54,35 @@ export default class CQViewQuizPrice extends React.Component {
     }
     handlePreview(){
         var quiz = this.props.quiz;
-        sessionStorage.setItem('mode', 'preview');
+        sessionStorage.setItem("mode", "preview");
         window.open(`/app#/play/public/${quiz.uuid}`);
-        AnalyticsActions.sendIntercomEvent('public_preview', {uuid: quiz.uuid, name: quiz.meta.name});
-        AnalyticsActions.sendEvent('quiz','public_preview', quiz.meta.name);
+        AnalyticsActions.sendIntercomEvent("public_preview", {uuid: quiz.uuid, name: quiz.meta.name});
+        AnalyticsActions.sendEvent("quiz","public_preview", quiz.meta.name);
     }
 
     render() : any {
         var price, owned = false;
         var OwnedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(this.props.quiz.uuid);
         if (OwnedQuiz){
-            price = 'Play in class';
+            price = "Available in your profile";
             owned = true;
         } else if (this.props.quiz.meta.price && this.props.quiz.meta.price > 0){
-            price = 'Play in class for '  + priceFormat(this.props.quiz.meta.price, '$', 'us');
+            price = "Play in class for "  + priceFormat(this.props.quiz.meta.price, "$", "us");
         } else {
-            price = 'Play in class';
+            price = "Play in class";
         }
-        return (
-            <div>
+        if (owned) {
 
-                <span className='cq-public__button' onClick={this.handlePreview}>
-                    Play
-                </span>
-                <span className='cq-public__button__main' onClick={this.handleClick.bind(this, owned)}>
-                    {price}
-                </span>
-            </div>
-        );
+            return (
+                <div>
+                    <span className="cq-public__button__main" onClick={this.handleClick.bind(this, owned)}>
+                        {price}
+                    </span>
+                </div>
+            );
+        } else {
+            return <div/>;
+        }
     }
 
 }

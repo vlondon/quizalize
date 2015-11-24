@@ -151,9 +151,11 @@ export default class CQViewQuizDetails extends React.Component {
             let name = this.state.quiz.meta.name;
             let questionLength = this.state.quiz.payload.questions.length;
             let quiz = this.state.quiz;
+            let quizid = QuizStore.getOwnedQuizByOriginalQuizId(quiz.uuid);
+            console.log("owned quiz? , quizId", quizid);
 
-            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
-                tagLine = (<span>Play in class for {priceFormat(this.state.quiz.meta.price, "$", "us")}</span>);
+            if (quiz.meta.price && quiz.meta.price > 0) {
+                tagLine = (<span>Play in class for {priceFormat(quiz.meta.price, "$", "us")}</span>);
             } else {
                 tagLine = (<span>Play in class</span>);
             }
@@ -162,7 +164,7 @@ export default class CQViewQuizDetails extends React.Component {
                 <div className="cq-quizdetails__cardinner">
                     <div className="cq-quizdetails__info">
                         <h5>
-                            {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || this.state.quiz.meta.categoryId)}
+                            {TopicStore.getTopicName(quiz.meta.publicCategoryId || quiz.meta.categoryId)}
                         </h5>
                         <h1>{name}</h1>
                         <i>
