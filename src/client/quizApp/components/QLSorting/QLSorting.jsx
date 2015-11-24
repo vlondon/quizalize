@@ -1,9 +1,10 @@
+/* @flow */
 var React = require('react');
 
-var randomise = require('quizApp/utils/randomise');
-var QLQuestion = require('quizApp/components/QLQuestion');
-var QLAnswerScreen = require('quizApp/components/QLAnswerScreen');
-var QLCountDown = require('quizApp/components/QLCountDown');
+var randomise = require('./../../utils/randomise');
+var QLQuestion = require('./../../components/QLQuestion');
+var QLAnswerScreen = require('./../../components/QLAnswerScreen');
+var QLCountDown = require('./../../components/QLCountDown');
 var QLImage = require('./../QLImage');
 
 var cssStates = [
@@ -30,20 +31,20 @@ var QLSorting = React.createClass({
         questionData: React.PropTypes.object.isRequired,
         startTime: React.PropTypes.number.isRequired,
         onSelect: React.PropTypes.func.isRequired,
-        onNext: React.PropTypes.func.isRequired
+        onNext: React.PropTypes.func.isRequired,
+        questionIndex: React.PropTypes.number.isRequired
     },
 
     getInitialState: function() {
-        var letters = [], answerSelected = [];
+        var letters = [];
+        var answerSelected: Array<Object> = [];
         this.props.questionData.answerObject.sortingArray.map(function (group) {
             var meta = group.split("|");
             answerSelected.push({name: meta[0], items:[]});
             letters = letters.concat(meta[1].split(","));
         });
         var letters = randomise(letters);
-        var letterSelected = letters.map(function(letter) {
-            return {text:letter, state:"unselected"};
-        });
+        var letterSelected = letters.map(letter=> ({text:letter, state:"unselected"}));
         var state =  {
             cssState: cssStates[cssStateIndex],
             currentLetterToFill: 0,
@@ -60,9 +61,10 @@ var QLSorting = React.createClass({
 
     componentDidMount: function() {
         window.addEventListener('resize', this.handleResize);
+        let duration = this.state.cssState.duration || 0;
         setTimeout(() => {
             this.handleCssState(cssStateIndex++);
-        }, this.state.cssState.duration);
+        }, duration);
     },
 
     componentWillUnmount: function() {
@@ -122,7 +124,7 @@ var QLSorting = React.createClass({
 
     },
 
-    handleCssState: function(newCssStateIndex, cb){
+    handleCssState: function(newCssStateIndex: number, cb: ?Function){
         var newCssState = cssStates[newCssStateIndex];
         if (newCssState){
             this.setState({
@@ -141,7 +143,7 @@ var QLSorting = React.createClass({
         }
     },
 
-    handleSelectLetter: function(index){
+    handleSelectLetter: function(index: number){
         var letterSelected = this.state.letterSelected;
         if (letterSelected[index].state === 'unselected') {
             letterSelected[index].state = 'selecting';
@@ -154,14 +156,12 @@ var QLSorting = React.createClass({
         });
     },
 
-    handleAddToGroup: function(index){
+    handleAddToGroup: function(index: number){
         var letterSelected = this.state.letterSelected;
         var answerSelected = this.state.answerSelected;
         var selecting = this.state.letterSelected.map(function(letter, index) {
             return {text: letter.text, state: letter.state, index};
-        }).filter(function (letter) {
-            return letter.state === "selecting";
-        });
+        }).filter(letter=> letter.state === "selecting");
 
         letterSelected = letterSelected.map(function(letter) {
             if (letter.state === "selecting") {
@@ -174,10 +174,9 @@ var QLSorting = React.createClass({
 
         answerSelected[index].items = answerSelected[index].items.concat(selecting);
         // Finish
-        var unanswered = this.state.letterSelected.filter(function(letter) {
-            return letter.state === "unselected";
-        });
-        if (unanswered.length == 0) {
+        var unanswered = this.state.letterSelected.filter(letter=> letter.state === "unselected");
+
+        if (unanswered.length === 0) {
             var answer = answerSelected.map(function(group) { return group.name+"|"+group.items.map(function(letter){ return letter.text; }).sort().join(","); }).join(":");
             this.props.onSelect(answer);
         }
@@ -187,7 +186,7 @@ var QLSorting = React.createClass({
         });
     },
 
-    handleRemoveFromGroup: function(group_index, index){
+    handleRemoveFromGroup: function(group_index: number, index: number){
         var answerSelected = this.state.answerSelected;
         var letterSelected = this.state.letterSelected;
         var itemToRemove = answerSelected[group_index].items.splice(index, 1);
@@ -199,11 +198,9 @@ var QLSorting = React.createClass({
         });
     },
 
-    render: function() {
+    render: function(): any {
         var showAnswer, showTargets, showOptions, showCountdown;
-        var unanswered = this.state.letterSelected.filter(function(letter) {
-            return letter.state !== "selected";
-        });
+        var unanswered = this.state.letterSelected.filter(letter=> letter.state !== "selected");
         var width = 100;
         var maxLength = 0;
         //determine biggest element length
@@ -235,14 +232,9 @@ var QLSorting = React.createClass({
                 });
                 return (
                     <div className={`sortingGroup`} style={{width: width + 'px'}}
-                    onDragover={that.allowDrop}
-                    onDrop={that.handleDrop}>
-                        <button className={`ng-binding ng-scope group`}
-                        style={{width: width - 25 + 'px'}}
                         onClick={that.handleAddToGroup.bind(that, group_index)}
                         key={group_index}>
                             <p className='groupTitle'>{group.name}</p>
-                        </button>
                         {letters}
                     </div>
                 );
@@ -254,10 +246,9 @@ var QLSorting = React.createClass({
                     return (
                         <button className={`letterTile ng-binding ng-scope option ${selected}`}
                             style={{width: width + 'px'}}
-                            onDragStart={this.handleSelectLetter.bind(this, index)}
                             onClick={this.handleSelectLetter.bind(this, index)}
                             key={index}>
-                            {letter.state === 'selected' ? "": letter.text}
+                            {letter.state === "selected" ? "": letter.text}
                         </button>
                     );
                 }
@@ -271,9 +262,8 @@ var QLSorting = React.createClass({
             }
         } else {
             var questionId = this.props.questionData.uuid;
-            var currentAnswerFilter = this.props.quizData.report.filter(function(f) {
-                return f.questionId == questionId;
-            });
+            var currentAnswerFilter = this.props.quizData.report.filter(f=> f.questionId === questionId);
+
             showAnswer = (
                 <QLAnswerScreen
                     currentQuiz={this.props.currentQuiz}
@@ -284,7 +274,7 @@ var QLSorting = React.createClass({
         }
         return (
             <div className='ql-quiz-container' ref='main' >
-                <div className={`ql-question ql-sorting ${this.state.cssState.name}`} onDragover={this.allowDrop}>
+                <div className={`ql-question ql-sorting ${this.state.cssState.name}`}>
                     <h3 className='question'>
                         <QLQuestion
                             questionData={this.props.questionData}
