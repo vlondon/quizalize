@@ -192,23 +192,23 @@ export default class CQViewQuizDetails extends React.Component {
                             </div>
                         </div>
                         <div className="cq-quizdetails__extra__buttons">
-                            <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, quiz)}>
-                                Play
-                            </button>
+                            <a className="cq-quizdetails__preview" onClick={this.handlePreview.bind(this, quiz)}>
+                                Preview  - try it!
+                            </a>
 
-                            <button className="cq-quizdetails__button" onClick={this.handleBuy}>
+                            <button className="cq-quizdetails__button__main cq-quizdetails__button__main--big" onClick={this.handleBuy}>
                                 {tagLine}
                             </button>
 
-                            <button className="cq-quizdetails__button" onClick={this.handleBuy}>
+                            <button className="cq-quizdetails__button__main" onClick={this.handleBuy}>
                                 Set as homework
                             </button>
 
-                            <button className="cq-quizdetails__button" onClick={this.handleEdit}>
+                            <button className="cq-quizdetails__button__alt" onClick={this.handleEdit}>
                                 Edit questions
                             </button>
 
-                            <button className="cq-quizdetails__button" onClick={this.handleBuy}>
+                            <button className="cq-quizdetails__button__alt" onClick={this.handleBuy}>
                                 Save for later
                             </button>
 

@@ -139,9 +139,45 @@
         }
     }
 
+    &__preview {
+        color: #FFF !important;
+        text-decoration: underline;
+        margin: 5px;
+        display: block;
+        cursor: pointer;
+        &:hover {
+            text-decoration: none;
+        }
+    }
     &__button {
-        @include button(#F3CC3C);
-        background: #F3CC3C;
+        &__alt {
+            @include button(#2F87C1);
+            background: #2F87C1;
+
+            width: 100%;
+            float: none;
+            color: #FFF;
+            border: none;
+            font-weight: bold;
+            margin-bottom: 5px;
+            height: 30px;
+        }
+
+        &__main {
+            @include button(#612C6C);
+            background: #612C6C;
+            width: 100%;
+            float: none;
+            color: #FFF;
+            border: none;
+            font-weight: bold;
+            margin-bottom: 5px;
+            height: 40px;
+            &--big {
+                height: 60px;
+            }
+        }
+
     }
 
 
