@@ -146,7 +146,12 @@ export default class CQMarketplace extends React.Component {
     }
 
     handleDetails(quiz: Quiz){
-        this.setState({quizDetails: quiz.uuid});
+        let ownedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(quiz.uuid);
+        if (ownedQuiz){
+            router.setRoute(`/quiz/create/${ownedQuiz.uuid}`);
+        } else {
+            this.setState({quizDetails: quiz.uuid});
+        }
     }
 
     handleDetailsClose(){

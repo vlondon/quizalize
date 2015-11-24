@@ -67,15 +67,15 @@ export default class CQViewQuizPrice extends React.Component {
             price = "Available in your profile";
             owned = true;
         } else if (this.props.quiz.meta.price && this.props.quiz.meta.price > 0){
-            price = "Play in class for "  + priceFormat(this.props.quiz.meta.price, "$", "us");
+            price = "" + priceFormat(this.props.quiz.meta.price, "$", "us");
         } else {
-            price = "Play in class";
+            price = "Free";
         }
-        if (owned) {
+        if (owned || price) {
 
             return (
                 <div>
-                    <span className="cq-public__button__main" onClick={this.handleClick.bind(this, owned)}>
+                    <span className="cq-public__button__main">
                         {price}
                     </span>
                 </div>
