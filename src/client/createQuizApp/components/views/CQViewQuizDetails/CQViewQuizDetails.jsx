@@ -31,6 +31,25 @@ type Props = {
     onClose: Function;
 };
 
+const isLoggedIn = () => {
+    if (!MeStore.isLoggedIn()){
+        swal({
+            title: "You need to be logged in",
+            text: `In order to buy this item you need to log into Quizalize`,
+            type: "info",
+            confirmButtonText: "Log in",
+            showCancelButton: true
+        }, function(isConfirm){
+            if (isConfirm){
+                router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent("/quiz/marketplace")}`);
+            }
+        });
+        return false;
+    } else {
+        return true;
+    }
+};
+
 export default class CQViewQuizDetails extends React.Component {
 
     state: State;
@@ -49,6 +68,8 @@ export default class CQViewQuizDetails extends React.Component {
         this.keyUpListener = this.keyUpListener.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleBuy = this.handleBuy.bind(this);
 
 
         this.state = this.getState();
@@ -100,23 +121,23 @@ export default class CQViewQuizDetails extends React.Component {
     }
 
     handleBuy(){
-        if (this.state.quiz) {
-            if (!MeStore.isLoggedIn()){
-                swal({
-                    title: "You need to be logged in",
-                    text: `In order to buy this item you need to log into Quizalize`,
-                    type: "info",
-                    confirmButtonText: "Log in",
-                    showCancelButton: true
-                }, function(isConfirm){
-                    if (isConfirm){
-                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent("/quiz/marketplace")}`);
-                    }
-                });
-            } else {
-                if (this.state.quiz){
-                    TransactionActions.buyQuiz(this.state.quiz);
-                }
+
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz);
+            }
+        }
+
+    }
+
+    handleEdit(){
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz, false, false)
+                    .then((quiz)=>{
+                        console.log("we got quiz?", quiz);
+                        router.setRoute(`/quiz/create/${quiz.uuid}`);
+                    });
             }
         }
     }
@@ -147,7 +168,11 @@ export default class CQViewQuizDetails extends React.Component {
                         <i>
                             {questionLength} questions.
                         </i>
-                        <div className="cq-quizdetails__questionholder">
+
+                    </div>
+
+                    <div className="cq-quizdetails__extra">
+                        <div className="cq-quizdetails__extra__questionholder">
 
                             <div className="cq-quizdetails__questionscroller">
                                 <div className="cq-quizdetails__questions">
@@ -164,17 +189,32 @@ export default class CQViewQuizDetails extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <div className="cq-quizdetails__extra__buttons">
+                            <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, quiz)}>
+                                Play
+                            </button>
 
-                        <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, quiz)}>
-                            Play
-                        </button>
+                            <button className="cq-quizdetails__button" onClick={this.handleBuy}>
+                                {tagLine}
+                            </button>
 
-                        <button className="cq-quizdetails__button" onClick={this.handleBuy}>
-                            {tagLine}
-                        </button>
+                            <button className="cq-quizdetails__button" onClick={this.handleBuy}>
+                                Set as homework
+                            </button>
+
+                            <button className="cq-quizdetails__button" onClick={this.handleEdit}>
+                                Edit questions
+                            </button>
+
+                            <button className="cq-quizdetails__button" onClick={this.handleBuy}>
+                                Save for later
+                            </button>
+
+
+
+                        </div>
+
                     </div>
-
-
                 </div>
             );
         } else {
