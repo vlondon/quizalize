@@ -584,7 +584,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return {
                     type: "freetext",
                     text: meta[1],
-                    answerArray: answerArray
+                    answerArray
                 };
             }
             if (input.indexOf("multiplem://") === 0) {
@@ -983,7 +983,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 roundedScore: Math.round(score),
                 seconds: Math.ceil(duration/1000),
                 topicId: question.topicId,
-                duration: duration
+                duration: duration,
+                type: questionData.answerObject.type
             };
             var existingReport = currentQuizResult.report.filter(function(i) {
                 return i.id == idx;
