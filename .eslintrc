@@ -10,7 +10,7 @@
     },
     "rules": {
         "semi": 2,
-        "indent": 2,
+        "indent": [2, 4, {"SwitchCase": 1}],
         "quotes": [1, "double"],
         "react/react-in-jsx-scope": 1,
         "no-multi-spaces": 0,
