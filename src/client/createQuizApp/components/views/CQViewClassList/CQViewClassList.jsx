@@ -200,7 +200,7 @@ export default class CQViewClassList extends React.Component {
                         html: true,
                     }, ()=>{
                         router.setRoute("/quiz/user");
-                    })
+                    });
                 } else {
                     router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
                 }
