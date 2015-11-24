@@ -18,16 +18,20 @@ var QLVideoPlayer = React.createClass({
         startTime: React.PropTypes.number
     },
 
-    getInitialState: function() {
+    getStateForProps(props: Object): Object {
         var videoOpen = false;
-        if (this.props.questionData.questionObject.type === "videoq") {
-            videoOpen = (this.props.questionData.questionObject.autoPlay === 1);
+        if (props.questionData.questionObject.type === "videoq") {
+            videoOpen = (props.questionData.questionObject.autoPlay === 1);
         }
         return {
             videoOpen,
             videoComplete: false,
-            startTime: this.props.startTime
+            startTime: props.startTime
         };
+    },
+
+    getInitialState: function() {
+        return this.getStateForProps(this.props);
     },
 
     onNext: function(){
@@ -43,8 +47,10 @@ var QLVideoPlayer = React.createClass({
         return {start, end};
     },
 
-    componentWillReceiveProps: function() {
-
+    componentWillReceiveProps: function(nextProps: Object) {
+        if (this.props.questionData !== nextProps.questionData) {
+            this.setState(this.getStateForProps(nextProps));
+        }
     },
 
     componentDidMount: function() {
@@ -88,6 +94,7 @@ var QLVideoPlayer = React.createClass({
                 );
             }
         } else {
+            console.log('this.state.startTime => ', this.state.startTime);
             props.startTime = this.state.startTime;
             props.questionIndex = this.state.questionIndex || this.props.questionIndex;
             if (this.props.questionData.answerObject.type === "multiple"){
