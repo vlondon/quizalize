@@ -42,19 +42,20 @@ class PQFeedback extends Component {
 
                                 <div className="col-md-3 wrapword">
                                     <h4>Your answer</h4>
-                                    <strong id={ 'response' + item.id } className={(item.correct ? 'text-success' : 'text-danger')}>{ item.response }</strong>
+                                    <strong id={ 'response' + item.id }
+                                            className={(item.correct ? 'text-success' : 'text-danger')}>{ item.response }</strong>
                                 </div>
 
                                 { (quiz.meta.showAnswers || quiz.meta.showAnswers == 1) ? (
-                                    <div className="col-md-3 wrapword">
-                                        <h4>Correct answer</h4>
-                                        <strong id={'cresponse' + item.questionId}>{ item.answer }</strong>
-                                    </div>
-                                ) : null }
+                                <div className="col-md-3 wrapword">
+                                    <h4>Correct answer</h4>
+                                    <strong id={'cresponse' + item.questionId}>{ item.answer }</strong>
+                                </div>
+                                    ) : null }
 
                                 { (quiz.meta.showAnswers !== undefined && quiz.meta.showAnswers == 0) ? (
-                                    <div className="col-md-3 wrapword"></div>
-                                ) : null}
+                                <div className="col-md-3 wrapword"></div>
+                                    ) : null}
 
                                 <div className="col-md-2">
                                     <h4>Score: { item.score }</h4>
@@ -72,14 +73,57 @@ class PQFeedback extends Component {
         return items;
     }
 
+    quizResult() {
+        var result = null;
+        //if (!this.state.quiz.noResultMode && this.state.quiz.hasTopics) {
+        result = (
+            <div className="well well--complete col-md-8 col-md-offset-2">
+                <div className="col-sm-4">
+                    <div className="complete-info">
+                        <div className="score-value rag2">
+                            <div>{this.state.quiz.totalScore}</div>
+                            <div className="score-points">Points</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-sm-4"><br/><br/>
+                    <div className="complete-info">
+                        <div className="score-fraction">
+                            <div className="fraction-top">{this.state.quiz.correct}</div>
+                            <div className="fraction-bottom">{this.state.quiz.payload.questions.length}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-sm-4"><br/><br/>
+                    <div className="complete-info">
+                        <div className="score-time">
+                            <span className="glyphicon glyphicon-time"/>32 Seconds
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+        //}
+        return result;
+    }
+
     feedbackContent(): Object {
         return (
             <div className="pq-feedback">
-                <h1 className="pq-feedback__title">Congratulations!</h1>
 
-                <p>Total score: {this.state.quiz.totalScore} ({this.state.quiz.correct} out of {this.state.quiz.payload.questions.length})</p>
+                <div className="wrapper-complete">
 
-                { this.reportItems() }
+                    <div className="row inverse-text">
+                        <div className="col-xs-12 text-center">
+                            <h2 className="congratulations-text">Congratulations</h2>
+                        </div>
+                    </div>
+
+                    { this.quizResult() }
+
+                    { this.reportItems() }
+
+                </div>
             </div>
         );
     }

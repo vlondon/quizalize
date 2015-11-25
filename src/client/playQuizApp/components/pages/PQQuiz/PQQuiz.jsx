@@ -95,12 +95,7 @@ class PQQuiz extends React.Component {
         if (this.state.quiz) {
             if (this.state.completed) {
                 // Feedback
-                content = (
-                    <div>
-                        <h1>Feedback</h1>
-                        <PQFeedback quizId={this.props.quizId}/>
-                    </div>
-                );
+                content = (<PQFeedback quizId={this.props.quizId}/>);
             } else {
                 // Quiz
                 var questionIndex: number = PQQuizStore.getQuestionIndex(this.props.quizId);
