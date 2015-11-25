@@ -47,6 +47,7 @@ class PQQuiz extends React.Component {
             this.setState({
                 quiz: quiz.toObject(),
                 question: question.toObject(),
+                questionTimeStart: Date.now(),
                 completed: false
             });
         }
@@ -70,7 +71,7 @@ class PQQuiz extends React.Component {
                 quiz.uuid,
                 question,
                 answer,
-                5000 // TODO: Math.max(new Date().getTime() - startTime - 2000, 0)
+                Math.max(new Date().getTime() - this.state.questionTimeStart - 2000, 0)
             );
         }
     }
@@ -84,7 +85,8 @@ class PQQuiz extends React.Component {
         } else {
             var question: PQQuestionClass = quiz.getNextQuestion();
             this.setState({
-                question: question.toObject()
+                question: question.toObject(),
+                questionTimeStart: Date.now()
             });
         }
     }
@@ -112,8 +114,8 @@ class PQQuiz extends React.Component {
                                 currentQuiz={this.state.quiz}
                                 quizData={this.state.quiz}
                                 questionData={this.state.question}
-                                questionIndex={questionIndex}
-                                startTime={Date.now()}
+                                questionIndex={this.state.questionIndex}
+                                startTime={this.state.questionTimeStart}
                                 onSelect={this._onSelect.bind(this)}
                                 onNext={this._onNext.bind(this)}
                             />
