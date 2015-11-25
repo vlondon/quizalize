@@ -19,6 +19,7 @@ import QLVideoPlayer from './../../../../quizApp/components/QLVideoPlayer';
 type State = {
     quiz: ?PQQuizClass;
     question: ?PQQuestionClass;
+    questionTimeStart: ?number;
     completed: ?boolean;
 }
 
@@ -35,6 +36,7 @@ class PQQuiz extends React.Component {
         this.state = {
             quiz: null,
             question: null,
+            questionTimeStart: null,
             completed: null
         };
         this.onChange = this.onChange.bind(this);
@@ -67,11 +69,16 @@ class PQQuiz extends React.Component {
             var quiz: PQQuizClass = this.state.quiz;
             var question: PQQuestionClass = this.state.question;
             console.log('User answer: ', this.state.quiz, this.state.question);
+            var timeForAnswer = 0;
+            var time: ?number = this.state.questionTimeStart;
+            if (time != null) {
+                timeForAnswer = Math.max(new Date().getTime() - time - 2000, 0)
+            }
             PQQuizActions.answerQuestion(
                 quiz.uuid,
                 question,
                 answer,
-                Math.max(new Date().getTime() - this.state.questionTimeStart - 2000, 0)
+                timeForAnswer
             );
         }
     }
@@ -114,7 +121,7 @@ class PQQuiz extends React.Component {
                                 currentQuiz={this.state.quiz}
                                 quizData={this.state.quiz}
                                 questionData={this.state.question}
-                                questionIndex={this.state.questionIndex}
+                                questionIndex={questionIndex}
                                 startTime={this.state.questionTimeStart}
                                 onSelect={this._onSelect.bind(this)}
                                 onNext={this._onNext.bind(this)}

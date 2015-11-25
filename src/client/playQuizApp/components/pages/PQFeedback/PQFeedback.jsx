@@ -73,10 +73,9 @@ class PQFeedback extends Component {
         return items;
     }
 
-    quizResult() {
-        var result = null;
+    quizResult(): Object {
         //if (!this.state.quiz.noResultMode && this.state.quiz.hasTopics) {
-        result = (
+        return (
             <div className="well well--complete col-md-8 col-md-offset-2">
                 <div className="col-sm-4">
                     <div className="complete-info">
@@ -103,8 +102,6 @@ class PQFeedback extends Component {
                 </div>
             </div>
         );
-        //}
-        return result;
     }
 
     feedbackContent(): Object {
