@@ -1,5 +1,5 @@
 /* @flow */
-var React               = require('react');
+var React = require('react');
 
 import PQSplash from './../components/pages/PQSplash';
 import PQLogin from './../components/pages/PQLogin';
@@ -51,12 +51,12 @@ var pagesArray: Array<Page> = [
     },
     {
         name: 'studentDashboard',
-        path: '/list',
+        path: '/play/list',
         needsLogin: undefined,
         renderer: function(){
             // TODO: list of quizzes assigned
             React.render(
-                React.createElement(PQLogin, null),
+                React.createElement(PQSplash, null),
                 document.getElementById('reactApp')
             );
         }
@@ -86,7 +86,6 @@ var pages = {
         code: /([\w\-]+)/
     },
     pageNotFound: pagesArray.filter((p) => p.name === 'pageNotFound')[0]
-
 };
 
 
