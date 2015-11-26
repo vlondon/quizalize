@@ -8,10 +8,6 @@ import PQQuiz from './../stores/extra/PQQuizClass';
 
 class PQQuizActions  {
 
-    loginUser(classCode: string, name: string) {
-        console.log('will log in user', classCode, name);
-    }
-
     loadQuiz(quizId: string) {
         window.zzish.getPublicContent('quiz', quizId, function (err, quiz) {
             console.log('err', PQQuizConstants.QUIZ_LOADED);

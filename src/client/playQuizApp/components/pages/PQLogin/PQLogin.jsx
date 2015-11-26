@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 
-import PQQuizActions from './../../../actions/PQQuizActions';
+import PQUserActions from './../../../actions/PQUserActions';
 
 export default class PQLogin extends React.Component {
 
@@ -26,7 +26,7 @@ export default class PQLogin extends React.Component {
 
         var {name, classCode} = this.state;
 
-        PQQuizActions.loginUser(name, classCode);
+        PQUserActions.loginUser(name, classCode);
         console.log('submitting', name, classCode);
     }
     

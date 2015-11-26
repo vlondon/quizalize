@@ -2,9 +2,9 @@
 
 import PQStore from './PQStore';
 
-var AppDispatcher = require('./../dispatcher/PQDispatcher');
-var UserConstants = require('./../constants/UserConstants');
-// var UserActions = require('./../actions/UserActions');
+import AppDispatcher from './../dispatcher/PQDispatcher';
+import UserConstants from './../constants/UserConstants';
+// import UserActions from './../actions/UserActions';
 
 
 var storeInit = false;
@@ -52,7 +52,7 @@ class PQUserStore extends PQStore {
     }
 }
 
-var userStore = new PQUserStore();
+var PQUserStoreInstance = new PQUserStore();
 
 
 // Register callback to handle all updates
@@ -96,4 +96,4 @@ AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = userStore;
+export default PQUserStoreInstance;

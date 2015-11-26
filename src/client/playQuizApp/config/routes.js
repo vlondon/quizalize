@@ -16,9 +16,9 @@ export type Page = {
 var pagesArray: Array<Page> = [
     {
         name: 'mainPage',
-        path: '/play/:quizId',
+        path: '/play/public/:quizId',
         needsLogin: undefined,
-        pathRegEx: /\/play\/([\w\-]+)/,
+        pathRegEx: /\/play\/public\/([\w\-]+)/,
         renderer: function(quizId){
             React.render(
                 React.createElement(PQQuiz, { quizId }),
@@ -28,10 +28,33 @@ var pagesArray: Array<Page> = [
     },
     {
         name: 'studentLogin',
-        path: '/play/class',
+        path: '/play/class/:quizId',
+        needsLogin: undefined,
+        pathRegEx: /\/play\/class\/([\w\-]+)/,
+        renderer: function(quizId){
+            React.render(
+                React.createElement(PQQuiz, { quizId }),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    {
+        name: 'studentLogin',
+        path: '/play/login',
         needsLogin: undefined,
         renderer: function(){
-
+            React.render(
+                React.createElement(PQLogin, null),
+                document.getElementById('reactApp')
+            );
+        }
+    },
+    {
+        name: 'studentDashboard',
+        path: '/list',
+        needsLogin: undefined,
+        renderer: function(){
+            // TODO: list of quizzes assigned
             React.render(
                 React.createElement(PQLogin, null),
                 document.getElementById('reactApp')
