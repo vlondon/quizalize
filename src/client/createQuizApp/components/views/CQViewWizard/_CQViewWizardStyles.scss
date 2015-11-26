@@ -1,0 +1,47 @@
+.cq-viewwizard {
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        width: 33%;
+        // background: #FFF;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__entry1,
+    &__entry2,
+    &__entry3 {
+        height: 60px;
+        line-height: 40px;
+        &__count {
+            // height: 40px;
+            font-size: 30px;
+            // line-height: 40px;
+        }
+    }
+
+    &__entry2 {
+        background: url('./../../assets/wizard2.png') center right;
+        background-size: 100%;
+        background-color: #EFF7E4;
+        color: #5CB3C5;
+    }
+    &__entry3 {
+        background-color: #EFF7E4;
+        color: #5CB3C5;
+        &__count { opacity: 0; }
+    }
+
+    &__selected {
+        background: url('./../../assets/wizard1.png') center right;
+        background-size: 100%;
+        background-color: #D8EDE1;
+        color: #FFF;
+
+    }
+}

@@ -8,6 +8,7 @@ import {
     CQViewQuizFilter,
     CQViewQuizDetails,
     CQViewQuizPrice,
+    CQViewWizard,
 } from "./../../../components";
 
 
@@ -208,7 +209,8 @@ export default class CQMarketplace extends React.Component {
         return (
 
             <CQPageTemplate className="cq-public">
-                {header}
+                <CQViewWizard/>
+
                 <div className="cq-container">
 
                     {quizDetails}

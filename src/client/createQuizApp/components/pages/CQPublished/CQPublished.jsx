@@ -6,7 +6,8 @@ import {
     CQViewQuizMarketplaceOptions,
     CQPageTemplate,
     CQViewShareQuiz,
-    CQViewQuizSettings
+    CQViewQuizSettings,
+    CQViewWizard
 } from "./../../../components";
 
 
@@ -155,7 +156,7 @@ export default class CQPublished extends React.Component {
         }
         return (
             <CQPageTemplate className="cq-published">
-
+                <CQViewWizard selected={2}/>
                 <div className="cq-published__header">
 
                 </div>
