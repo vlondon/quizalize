@@ -66,14 +66,14 @@ AppDispatcher.register(function(action) {
         case UserConstants.USER_PROFILE_UPDATED:
         case UserConstants.USER_REGISTERED:
             _user = action.payload;
-            userStore.emitChange();
+            PQUserStoreInstance.emitChange();
             break;
         //
         //
         case UserConstants.USER_IS_NOT_LOGGED:
         case UserConstants.USER_LOGOUT:
             _user = {};
-            userStore.emitChange();
+            PQUserStoreInstance.emitChange();
             break;
         //
         case UserConstants.USER_LOGIN_ERROR:
@@ -86,10 +86,8 @@ AppDispatcher.register(function(action) {
             console.log('UserConstants.USER_PUBLIC_LOADED', action);
             var user = action.payload;
             _users[user.uuid] = user;
-            userStore.emitChange();
+            PQUserStoreInstance.emitChange();
             break;
-
-
 
         default:
             // no op

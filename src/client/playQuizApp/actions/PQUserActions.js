@@ -1,5 +1,6 @@
 /* @flow */
 
+import uuid from 'node-uuid';
 import AppDispatcher  from './../dispatcher/PQDispatcher';
 import UserConstants from './../constants/UserConstants';
 import PQUserStore from './../stores/PQUserStore';

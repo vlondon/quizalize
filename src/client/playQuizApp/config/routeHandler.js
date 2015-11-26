@@ -6,9 +6,8 @@ var pagesArray          = require('./routes').pagesArray;
 var settings            = require('./settings');
 // var AnalyticsActions    = require('./../actions/AnalyticsActions');
 
-// import UserStore        from './../stores/UserStore';
-var UserStore           = require('./../stores/PQUserStore');
-
+import UserStore        from './../stores/PQUserStore';
+//var UserStore           = require('./../stores/PQUserStore');
 
 var urlParams           = require('./../../createQuizApp/utils/urlParams');
 
