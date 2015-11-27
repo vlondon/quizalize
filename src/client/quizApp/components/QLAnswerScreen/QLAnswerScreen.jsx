@@ -1,8 +1,9 @@
+/* @flow */
 var React = require('react');
 var Howl = require('howler').Howl;
 
-var QLLatex = require('quizApp/components/QLLatex');
-var PQViewVideo = require('playQuizApp/components/views/PQViewVideo');
+var QLLatex = require('./../../components/QLLatex');
+var PQViewVideo = require('./../../../playQuizApp/components/views/PQViewVideo');
 
 var toSeconds = function(ms){
     return Math.round(ms / 10) / 100 + 's';
@@ -14,7 +15,7 @@ var Star = React.createClass({
         return {
             rotation: Math.random() * 360,
             scale: Math.random() + 0.5,
-            delay: parseInt(Math.random() * 1000, 10) + 1000
+            delay: Math.random() * 1000 + 1000
         };
     },
 
@@ -42,7 +43,7 @@ var Star = React.createClass({
         return newCss;
     },
 
-    render: function() {
+    render: function(): any {
         return (
             <div style={this.cssStyle()} className='star-transform'>
                 <img style={this.cssDelay()} src='/img/ui-quiz/star.svg' width='40' height='40' className='star-animated'/>
@@ -99,21 +100,25 @@ var QLAnswerScreen = React.createClass({
         }
     },
 
-    handleVideoAnswer: function(){
+    handleVideoAnswer: function() {
         console.log('should answer video');
         this.setState({
             videoOpen: true
         });
     },
 
-    handleVideoComplete: function(){
+    handleVideoComplete: function() {
         console.log('video is finished');
         this.setState({videoOpen: false});
     },
 
-    render: function() {
+    render: function(): any {
         var stars = [];
         var correctAnswer, viewVideo, videoPlayer, explanation;
+        var hasPartialScore = 0 < this.props.answerData.partial && this.props.answerData.partial < 1;
+        var questionType = this.props.questionData.answerObject ? this.props.questionData.answerObject.type : "";
+        var answer = this.props.answerData.answer;
+        var response = this.props.answerData.response;
 
         if (this.props.answerData.correct){
             for (var i = 0; i < 30; i++){
@@ -121,14 +126,41 @@ var QLAnswerScreen = React.createClass({
             }
         }
 
+
+        
+
+        if (questionType === "sorting" || questionType === "linking") {
+            function formatAnswer (ans) {
+                return ans.split(":").map(function (group) {
+                    var meta = group.split("|");
+                    return (
+                        <div className={`answer-item ${questionType}`}>
+                            <QLLatex>{meta[0]}</QLLatex>
+                            <div className="group-item">
+                                <QLLatex>{meta[1]}</QLLatex>
+                            </div>
+                        </div>
+                    );
+                });
+            }
+            answer = formatAnswer(answer);
+            response = formatAnswer(response);
+        }
+        else {
+            answer = (<QLLatex>{answer}</QLLatex>);
+            response = (<QLLatex>{response}</QLLatex>);
+        }
+
         if (!this.props.answerData.correct && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1)){
             correctAnswer = (
                 <div className="text-2">
-                    The correct answer is
+                    <h4>
+                        {hasPartialScore ? 'To get maximum point, the answer is' : 'The correct answer is'}
+                    </h4>
                     <div className="alternatives">
                         <div className="alternative-wrapper">
                             <button type="button" className={`btn answer answer-correct`}>
-                                <QLLatex>{this.props.answerData.answer}</QLLatex>
+                                {answer}
                             </button>
                         </div>
                     </div>
@@ -177,7 +209,6 @@ var QLAnswerScreen = React.createClass({
                         {stars}
                     </div>
                     <div className="text-1">
-
                         <h4>
                             <span>Your answer </span>
                             {this.props.answerData.correct ? 'is correct!' : 'is wrong'}
@@ -185,7 +216,7 @@ var QLAnswerScreen = React.createClass({
                         <div className="alternatives">
                                 <div className="alternative-wrapper">
                                     <button type="button" className={this.props.answerData.correct ? `btn answer answer-correct` : 'btn answer answer-wrong'}>
-                                        <QLLatex>{this.props.answerData.response}</QLLatex>
+                                        {response}
                                     </button>
                                 </div>
                         </div>
