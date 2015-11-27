@@ -1,6 +1,6 @@
 /* @flow */
 var React = require('react');
-var Howl = require('howler').Howl;
+// var Howl = require('howler').Howl;
 
 var QLLatex = require('./../../components/QLLatex');
 var PQViewVideo = require('./../../../playQuizApp/components/views/PQViewVideo');
@@ -126,9 +126,6 @@ var QLAnswerScreen = React.createClass({
             }
         }
 
-
-        
-
         if (questionType === "sorting" || questionType === "linking") {
             function formatAnswer (ans) {
                 return ans.split(":").map(function (group) {
@@ -151,7 +148,7 @@ var QLAnswerScreen = React.createClass({
             response = (<QLLatex>{response}</QLLatex>);
         }
 
-        if (!this.props.answerData.correct && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1)){
+        if (!this.props.answerData.correct && this.props.currentQuiz && (this.props.currentQuiz.meta.showAnswers === undefined || this.props.currentQuiz.meta.showAnswers==1)){
             correctAnswer = (
                 <div className="text-2">
                     <h4>
