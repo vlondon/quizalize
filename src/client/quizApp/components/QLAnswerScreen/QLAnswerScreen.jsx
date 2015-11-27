@@ -1,6 +1,6 @@
 /* @flow */
 var React = require('react');
-// var Howl = require('howler').Howl;
+var Howl = require('howler').Howl;
 
 var QLLatex = require('./../../components/QLLatex');
 var PQViewVideo = require('./../../../playQuizApp/components/views/PQViewVideo');
