@@ -6,6 +6,9 @@ import AppDispatcher from './../dispatcher/CQDispatcher';
 import {AppConstants} from './../constants';
 import {AppActions} from './../actions';
 import {Application} from './classes/Application';
+import {
+    MeStore
+} from './../stores';
 
 import type {AppType, AppComplete } from './../../../types';
 
@@ -42,7 +45,14 @@ class AppStore extends Store {
     }
 
     getPublicApps() {
-        return _publicApps;
+        if (_publicApps){
+            let publicApps = _publicApps.slice();
+            let {accountType} = MeStore.state.attributes;
+            if (accountType === 10) {
+                publicApps = publicApps.filter(q=> q.meta.price === 0);
+            }
+            return publicApps;
+        }
     }
 
     getAppInfo(appId:string): ?AppComplete{

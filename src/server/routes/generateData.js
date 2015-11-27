@@ -117,7 +117,7 @@ var generateData = function(chosenWeek, callback) {
 
                                         }
                                     }
-                                } 
+                                }
                                 // else {
                                 //     var profile = user.profiles.filter(function(prof){
                                 //         return prof.appToken == '72064f1f-2cf8-4819-a3d5-1193e52d928c';
@@ -327,7 +327,10 @@ var generateData = function(chosenWeek, callback) {
                     var emailList = activatedList(activeTeachers[0], users);
                     var activeList = activatedList(repeatGroup, users);
                     var monthlyTeachers = multipleTeacherArrays(chosenWeek, activities, userGroups);
+                    console.log(monthlyTeachers);
                     var dayActives = monthlyActives(monthlyTeachers);
+                    console.log("day actives", dayActives);
+
                     var calculatedMetrics = {
                         "signups": signUpThisWeek,
                         "active": repeat,

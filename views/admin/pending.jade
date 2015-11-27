@@ -57,7 +57,14 @@ block body
                         var categoryName = categoryNameFromCategoryId($(this).text());
                         //- console.log(categoryName);
                         $(this).text(categoryName);
-                    });                    
+                    });
+                    $(".subjectId").each(function() {
+                    
+                        var subjectName =  subjectNameFromSubjectId($(this).text());
+                        
+                        //- console.log(categoryName);
+                        $(this).text(subjectName);
+                    });                           
                     
                 });
             });
@@ -98,6 +105,22 @@ block body
             return category[0].name;
             }
         };
+        var subjectNameFromSubjectId = function(subjectId){
+             console.log(subjectId);
+            var subject = subjects.filter(function(sub) {
+                return sub.uuid == subjectId;
+            });
+            console.log(subject);
+            if (subject[0] === undefined){
+                return "";
+                }
+            else if (subject[0].name === undefined) {
+                return "";
+                }    
+            else{
+            return subject[0].name;
+            }
+        };
                 
     
     h1 Pending Quizzes
@@ -109,6 +132,7 @@ block body
                     th Type
                     th Name
                     th Number of questions
+                    th Subject
                     th Category
                     th preview
                     th Editor
@@ -141,6 +165,7 @@ block body
                         td #{quiz.type}
                         td #{quiz.meta.name}
                         td #{questionLength}
+                        td.subjectId #{quiz.meta.subjectId}
                         td.categoryId #{quiz.meta.categoryId}
                         td
                             a(href="https://www.quizalize.com/app#/play/public/#{quiz.uuid}") Preview
@@ -150,7 +175,7 @@ block body
                             else            
                                 a(href="https://www.quizalize.com/quiz/app/#{quiz.uuid}") Editor    
                         td #{prettyDate(quiz.updated)} 
-                        td
+                        td(style="min-width:400px")
                             form(method="POST", action="/admin/approve/#{quiz.type}/#{quiz.uuid}")
                                 select(name="subjectId", onchange="showCategories('#{quiz.uuid}', '#subject', '#category')", id="subject#{quiz.uuid}")
                                     option(value="") Please Select

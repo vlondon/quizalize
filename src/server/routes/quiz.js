@@ -17,8 +17,17 @@ var QUIZ_CONTENT_TYPE = "quiz";
 
 var handleError = function(err, res){
     if (err){
-        logger.error(err);
-        res.status(500).send(err);
+        logger.error('handleError: Handle error failed', err);
+        if (res && res.status && typeof res.status === 'function') {
+            res.status(500).send(err);
+        } else {
+            logger.error('handleError: Res object error', res);
+            email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
+                error: "Failed to handleError, quiz.js line 22",
+                message: JSON.stringify(res),
+                parameters: ""
+            });
+        }
     }
     return err;
 };
@@ -192,6 +201,13 @@ exports.packages = function (req, res){
 exports.faq = function(req, res){
     res.render('faq');
 };
+
+exports.kahoot = function(req, res) {
+    res.render('kahoot');
+};
+exports.quizlet = function (req, res){
+    res.render('quizlet');
+};
 exports.landing = function(req, res){
     res.render('landing');
 };
@@ -353,7 +369,11 @@ exports.deleteTopic = function(req, res){
 };
 
 exports.getQuiz = function(req, res){
-    if (req && req.session && req.session.user && req.session.user.uuid){
+    var query = "id:" + req.params.id + ":profileId:";
+    if (req.session.user) {
+        query+=req.session.user.uuid;
+    }
+    if (req.session.user && req.session.user.uuid){
         var id = req.params.id;
         var profileId = req.session.user.uuid;
 
@@ -368,14 +388,11 @@ exports.getQuiz = function(req, res){
     }
     else {
         email.sendEmailTemplate("'Quizalize Team' <team@quizalize.com>", ['team@quizalize.com'], 'Failed to get quiz', 'error', {
-          error: "Failed to getQuiz, quiz.js line 352",
-          message: JSON.stringify({
-              "id": id,
-              "profileId": profileId
-          }),
+          error: "Failed to getQuiz, quiz.js line 371",
+          message: query,
           parameters: ""
         });
-        res.send({});
+        res.status(400).send("105");
     }
 };
 
@@ -619,6 +636,27 @@ exports.quizoftheday = function(req, res) {
     res.render('quizoftheday', {quiz: { title: 'Space'}});
 };
 
+exports.loginEASUser = function(req, res) {
+    console.log('loginEASUser');
+    let {profileId} = req.params;
+    zzish.user(profileId, function(err, user){
+        if (!err && typeof user === 'object') {
+            console.log('user', user);
+            if (parseInt(user.attributes.accountType, 10) === 10) {
+                var uuid = user.uuid;
+                req.session.userUUID = uuid;
+                req.session.user = user;
+                res.redirect('/quiz/welcome');
+            } else {
+                res.status(404).send();
+            }
+
+        }
+        else {
+            res.status(500).send();
+        }
+    });
+};
 
 exports.uploadMedia = function(req, res){
 

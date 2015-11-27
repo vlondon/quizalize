@@ -154,7 +154,7 @@ style.
       opacity: 0.8;
     }
     .bar-wrapper {
-      
+
       border: 1px solid rgba(255,255,255,.25);
       border-radius: 8px;
       padding: 10px;
@@ -207,67 +207,67 @@ style.
     .wrapper-complete
         .row(ng-hide="quiz.teacherMode || quiz.demoMode")
             .col-md-8.col-md-offset-2
-                a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home 
+                a.btn.btn-block.btn-info.btn-sm(ng-click="quiz.home()") Home
         .row(ng-show="quiz.teacherMode")
             .col-md-8.col-md-offset-2
                 a.btn.btn-block.btn-info.btn-sm(ng-href="/quiz/published/{{quiz.data.quizId}}") Set this Quiz for your class
                 br
                 a.btn.btn-block.btn-info.btn-sm(href="/quiz/public") Choose Another
-                
+
 
         .row.inverse-text
             .col-xs-12.text-center
-                h2.congratulations-text 
-                    |Congratulations 
+                h2.congratulations-text
+                    |Congratulations
                     br
                     p(ng-show="quiz.studentData") {{quiz.studentData.studentCode}}
-          .well.well--complete.col-md-8.col-md-offset-2
+          .well.well--complete.col-md-8.col-md-offset-2(ng-hide="quiz.noResultMode")
             div(ng-hide="quiz.hasTopics")
               .col-sm-4
                   .complete-info
                       .score-value.rag2
-                          {{quiz.totals.score}} 
+                          {{quiz.totals.score}}
                           .score-points Points
-                  
+
               .col-sm-4
                   br
                   br
                   .complete-info
                       .score-fraction
                           .fraction-top {{quiz.data.correct}}
-                          .fraction-bottom {{quiz.data.questionCount}} 
+                          .fraction-bottom {{quiz.data.questionCount}}
               .col-sm-4
                   br
                   br
                   .complete-info
                       .score-time
-                          span.glyphicon.glyphicon-time 
+                          span.glyphicon.glyphicon-time
                           {{quiz.totals.seconds}} Seconds
 
             div(ng-show="quiz.hasTopics")
               .col-sm-12
                   .complete-info.col-sm-4
                       .score-value.rag2
-                          {{quiz.totals.score}} 
+                          {{quiz.totals.score}}
                           .score-points Points
-                     
-                              
+
+
                   .complete-info.col-sm-4
                       .score-fraction
                           .fraction-top {{quiz.data.correct}}
-                          .fraction-bottom {{quiz.data.questionCount}} 
+                          .fraction-bottom {{quiz.data.questionCount}}
                   .complete-info.col-sm-4
                       .score-time
-                          span.glyphicon.glyphicon-time 
+                          span.glyphicon.glyphicon-time
                           {{quiz.totals.seconds}} Seconds
               .col-sm-12
-                 
-                 
+
+
                   .bar-wrapper
                     .bar-item-container(ng-repeat="topic in quiz.topics")
                       .bar-topic-percent {{topic.stats.percentage | number: 0}}%
                       .bar-topic-title {{topic.name}}
-                      .bar-block(ng-style="{width: topic.stats.percentage+'%'}",class="bar-block-{{topic.stats.state}}") 
+                      .bar-block(ng-style="{width: topic.stats.percentage+'%'}",class="bar-block-{{topic.stats.state}}")
                   .complte-main-text
               .col-sm-12
                   #reactContainer
@@ -278,7 +278,12 @@ style.
                             .fa.fa-lg.fa-facebook
                         a.share.share-tw(ng-href="{{quiz.twitterLink}}",target="_blank")
                             .fa.fa-lg.fa-twitter
-        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.QLQuestion")
+        .row.inverse-text(ng-show="quiz.noResultMode")
+            .col-xs-12.text-center
+                h2.congratulations-text
+                    |You have completed all the questions
+
+        .row(ng-repeat="item in quiz.data.report",class="cssFade ng-scope ng-hide",ng-show="quiz.QLQuestion && !quiz.noResultMode")
             .col-md-8.col-md-offset-2
                 .well
                     .row
@@ -287,10 +292,12 @@ style.
                               strong(id="quizQuestion{{item.questionId}}") {{item.question.text}}
                         .col-md-3.wrapword
                             h4 Your answer
-                            strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{item.response}}
+                            div(ng-repeat="value in item.response")
+                              strong(id="response{{item.questionId}}", ng-class="{'text-success': item.correct, 'text-danger': !item.correct}") {{value}}
                         .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers === undefined || quiz.currentQuiz.meta.showAnswers == 1")
                             h4 Correct answer&nbsp;
-                            strong(id="cresponse{{item.questionId}}") {{item.answer}}
+                            div(ng-repeat="value in item.answer")
+                              strong(id="cresponse{{item.questionId}}") {{value}}
                         .col-md-3.wrapword(ng-show="quiz.currentQuiz.meta.showAnswers !== undefined && quiz.currentQuiz.meta.showAnswers == 0")
                         .col-md-2
                             h4 Score: {{item.roundedScore}}

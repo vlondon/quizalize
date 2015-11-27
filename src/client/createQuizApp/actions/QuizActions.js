@@ -97,13 +97,20 @@ var QuizActions = {
 
                     }
                 })
-                .catch(function(){
-                    console.log('QuizConstants.QUIZ_LOAD_ERROR', QuizConstants.QUIZ_LOAD_ERROR);
-                    AppDispatcher.dispatch({
-                        actionType: QuizConstants.QUIZ_LOAD_ERROR,
-                        payload: quizId
-                    });
-                    reject();
+                .catch(function(status){
+                    if (status == "105"){
+                        console.log("error", status);
+                        window.swal("Oops..", "It looks like there is a problem with your session, please log out and log back in", "error");
+                    }
+                    else {
+                        console.log('QuizConstants.QUIZ_LOAD_ERROR', QuizConstants.QUIZ_LOAD_ERROR);
+                        AppDispatcher.dispatch({
+                            actionType: QuizConstants.QUIZ_LOAD_ERROR,
+                            payload: quizId
+                        });
+                        reject();
+                    }
+
                 });
         });
     },
@@ -265,10 +272,9 @@ var QuizActions = {
                     payload: savedQuiz
                 });
 
-                // TODO: Call loadQuizzes only if the quiz is new
-                this.loadQuizzes();
+
                 setTimeout(()=> {
-                    resolve(quiz);
+                    resolve(savedQuiz);
                 }, 100);
             }, (error)=> {
                 console.error(error);

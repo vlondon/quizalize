@@ -3,6 +3,9 @@ var React = require('react');
 var QLMultiple = require('quizApp/components/QLMultiple');
 var QLFreetext = require('quizApp/components/QLFreetext');
 var QLScrambled = require('quizApp/components/QLScrambled');
+var QLBoolean = require('quizApp/components/QLBoolean');
+var QLSorting = require('quizApp/components/QLSorting');
+var QLLinking = require('quizApp/components/QLLinking');
 var PQViewVideo = require('playQuizApp/components/views/PQViewVideo');
 
 var QLVideoPlayer = React.createClass({
@@ -87,24 +90,38 @@ var QLVideoPlayer = React.createClass({
         } else {
             props.startTime = this.state.startTime;
             props.questionIndex = this.state.questionIndex;
-            if (this.props.questionData.answerObject.type === "multiple"){
+            switch (this.props.questionData.answerObject.type) {
+              case "multiple":
                 return (
-                    <QLMultiple
-                        {...props}
-                    />
+                    <QLMultiple {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "scrambled"){
+                break;
+              case "scrambled":
                 return (
-                    <QLScrambled
-                        {...props}
-                    />
+                    <QLScrambled {...props} />
                 );
-            } else if (this.props.questionData.answerObject.type === "freetext"){
+                break;
+              case "freetext":
                 return (
-                    <QLFreetext
-                        {...props}
-                    />
+                    <QLFreetext {...props} />
                 );
+                break;
+              case "boolean":
+                return (
+                    <QLBoolean {...props} />
+                );
+                break;
+              case "sorting":
+                return (
+                    <QLSorting {...props} />
+                );
+                break;
+              case "linking":
+                return (
+                    <QLLinking {...props} />
+                );
+                break;
+              default:
             }
         }
     }
