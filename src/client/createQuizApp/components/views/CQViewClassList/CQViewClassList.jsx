@@ -307,6 +307,11 @@ export default class CQViewClassList extends React.Component {
                     </ul>
                     <div className="cq-viewclass__extra">
                         <p>
+                            <strong>No need to add student names </strong>
+                            <br/>
+                            We’ll do it for you! Students enter their own names as they join the game. Their names are added to this class and appear in your dashboards from then on.
+                        </p>
+                        <p>
                             <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
                                 See how to play and what you"ll need…
                             </a>

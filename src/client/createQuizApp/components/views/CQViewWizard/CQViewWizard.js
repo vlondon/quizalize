@@ -2,22 +2,24 @@ import React, { PropTypes } from "react";
 
 class CQViewWizard extends React.Component {
 
-    propTypes = {
-        selected: PropTypes.number
+    static propTypes = {
+        step: PropTypes.number,
+        fields: PropTypes.array
     };
 
-    defaultProps = {
-        selected: 1
+    static defaultProps = {
+        step: 1,
+        fields: [
+            "Which topic?",
+            "Which class?",
+            "That's it!"
+        ]
     };
 
     render () {
 
-        let fields = [
-            "Which topic?",
-            "Which class?",
-            "That's it!"
-        ];
-        let {selected} = this.props;
+        let {step, fields} = this.props;
+
 
         return (
             <div className="cq-viewwizard">
@@ -25,10 +27,10 @@ class CQViewWizard extends React.Component {
 
                 {fields.map((entry, index) => {
                     let currentIndex = index + 1;
-                    let className = `cq-viewwizard__entry${currentIndex}`;
-                    let isSelected = currentIndex <= selected ? "cq-viewwizard__selected" : "";
+                    let className = `cq-viewwizard__step${step}__entry${currentIndex}`;
+                    // let isSelected = currentIndex <= selected ? "cq-viewwizard__selected" : "";
                     return (
-                        <li key={index} className={`${className} ${isSelected}`}>
+                        <li key={index} className={`${className}`}>
                             <span className={`${className}__count`}>{currentIndex} </span>
                             {entry}
                         </li>
