@@ -35,6 +35,12 @@ html(ng-app='quizApp')
         link(rel='apple-touch-icon', sizes='72x72', href='/img/icons/touch-icon-ipad-precomposed.png')
         link(rel='apple-touch-icon', sizes='114x114', href='/img/icons/touch-icon-iphone-retina-precomposed.png')
         link(rel='apple-touch-icon', sizes='144x144', href='/img/icons/touch-icon-ipad-retina-precomposed.png')
+        script(type="text/javascript" src="http://cloudfront.loggly.com/js/loggly.tracker-2.1.min.js" async)
+        script.
+            var _LTracker = _LTracker || [];
+            _LTracker.push({'logglyKey': '6c08c80e-28b7-4bdb-aeb5-809c1a797603',
+            'sendConsoleErrors' : true,
+            'tag' : 'loggly-jslogger'});
         link(rel='icon', sizes='192x192', href='/img/icons/ic_launcher.png')
         link(rel='stylesheet', href='/outdatedbrowser/outdatedbrowser.min.css')
         link(href='/cquiz/font-awesome/css/font-awesome.min.css', rel='stylesheet')
