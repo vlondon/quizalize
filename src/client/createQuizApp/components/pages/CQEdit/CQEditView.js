@@ -19,6 +19,10 @@ import {
     AnalyticsActions
 } from './../../../actions';
 
+import {
+    CQQuestionUploader
+} from './../../../components';
+
 import { urlParams } from './../../../utils';
 import type { QuizComplete, Question } from './../../../../../types';
 
@@ -318,6 +322,10 @@ export default class CQEditView extends React.Component {
         QuizActions.newQuiz(this.state.quiz).then(callback);
     }
 
+    handleQuizImport(data: Object) {
+        console.log(data);
+    }
+
     render() : any {
         if (this.state.quiz){
 
@@ -367,6 +375,15 @@ export default class CQEditView extends React.Component {
                     </div>
 
                     <h4>You have {this.state.quiz.payload.questions.length} {pularlize(this.state.quiz.payload.questions.length, 'question', 'questions')}</h4>
+                    <button className="btn btn-default cq-questionlist__image__button">
+                        <CQQuestionUploader
+                            id="questionUploader"
+                            format="doodlemath"
+                            className="cq-edit__icon__label__input"
+                            onImageData={this.handleQuizImport}
+                        />
+                    Import file
+                    </button>
 
                     <CQQuestionList
                         quiz={this.state.quiz}
