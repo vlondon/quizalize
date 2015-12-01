@@ -57,7 +57,7 @@ var QLCountDown = React.createClass({
         }
 
         if (time > 0) {
-            if (!soundTicktock.playing) {
+            if (10 > time && !soundTicktock.playing) {
                 soundTicktock.playing = true;
                 soundTicktock.sound.play();
             }

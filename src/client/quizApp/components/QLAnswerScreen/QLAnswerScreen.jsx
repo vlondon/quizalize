@@ -5,6 +5,8 @@ var Howl = require('howler').Howl;
 var QLLatex = require('./../../components/QLLatex');
 var PQViewVideo = require('./../../../playQuizApp/components/views/PQViewVideo');
 
+const star_delay = 1000;
+
 var toSeconds = function(ms){
     return Math.round(ms / 10) / 100 + 's';
 };
@@ -15,7 +17,7 @@ var Star = React.createClass({
         return {
             rotation: Math.random() * 360,
             scale: Math.random() + 0.5,
-            delay: Math.random() * 1000 + 1000
+            delay: Math.random() * 1000 + star_delay
         };
     },
 
@@ -84,6 +86,15 @@ var QLAnswerScreen = React.createClass({
                 }
             }).play();
         }
+
+        setTimeout(() => {
+            new Howl({
+                urls: ['/sounds/stars.mp3'],
+                onend: function() {
+                    this.unload();
+                }
+            }).play();
+        }, star_delay);
     },
 
     handleClick: function(){
