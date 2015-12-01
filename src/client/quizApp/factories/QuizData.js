@@ -103,10 +103,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
     };
 
     var registerWithGroup = function(code,callback) {
+        _LTracker.push('User trying to log in with: ' +  code);
         setClassCode(code);
         zzish.registerUserWithGroup(userUuid, classCode, function(err,resp) {
             if (!err) {
+                _LTracker.push('Got success result');
                 processQuizData(resp,false);
+            }
+            else {
+                _LTracker.push('User Error: ' +  err + 'Resp: ' + resp);
             }
             callback(err, resp);
             $rootScope.$digest();
@@ -122,6 +127,9 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 callback(err,resp);
                 $rootScope.$digest();
             });
+        }
+        else {
+            _LTracker.push("Load Player Quizzes doesnt have all data" + userUuid + ":" + classCode);
         }
     };
 
@@ -877,7 +885,11 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
             if (currentQuizResult==null) {
                 initQuizResult(currentQuiz);
             }
+            _LTracker.push("currentQuizResult.currentActivityId, parameters" + currentQuizResult.currentActivityId + parameters);
             currentQuizResult.currentActivityId = zzish.startActivityWithObjects(userUuid,parameters, function(err, message){
+                if (err) {
+                    _LTracker.push("Response from starting activity" +  err + message);
+                }                
                 if (callback!=undefined){
                     callback(err, message);
                     $rootScope.$digest();
@@ -961,7 +973,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
 
             if (currentQuizResult.currentActivityId !== undefined) {
                 console.log('currentQuizResult.currentActivityId, parameters', currentQuizResult.currentActivityId, parameters);
-                zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters);
+                _LTracker.push("currentQuizResult.currentActivityId, parameters" + currentQuizResult.currentActivityId + parameters);
+                zzish.logActionWithObjects(currentQuizResult.currentActivityId, parameters, function(err, resp) {
+                    if (err) {
+                        _LTracker.push("Log Action Error " +  err + resp);
+                    }
+                });
+            }
+            else {
+
             }
 
             if(correct) {
