@@ -1,5 +1,6 @@
 /* @flow */
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var QLQuestion = require('./../../components/QLQuestion');
 var QLAnswerScreen = require('./../../components/QLAnswerScreen');

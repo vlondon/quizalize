@@ -1,5 +1,6 @@
 /* @flow */
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var randomise = require('./../../utils/randomise');
 var QLQuestion = require('./../../components/QLQuestion');
@@ -180,7 +181,7 @@ var QLScrambled = React.createClass({
                 this.unload();
             }
         }).play();
-        
+
         var answerSelected = this.state.answerSelected;
         if (answerSelected[index].index !== -1) {
             var letterSelected = this.state.letterSelected;

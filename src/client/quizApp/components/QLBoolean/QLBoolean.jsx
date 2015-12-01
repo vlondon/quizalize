@@ -1,5 +1,6 @@
 /* @flow */
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var QLQuestion = require('./../../components/QLQuestion');
 var QLAnswerScreen = require('./../../components/QLAnswerScreen');
@@ -88,7 +89,7 @@ var QLBoolean = React.createClass({
                 this.unload();
             }
         }).play();
-        
+
         this.handleCssState(2, () => {
             this.setState({answer});
         });
