@@ -45,6 +45,7 @@ type State = {
     quizImageFile?: Object;
 };
 
+let lastKeys = '';
 export default class CQEditView extends React.Component {
 
     props: Props;
@@ -74,6 +75,8 @@ export default class CQEditView extends React.Component {
         this.handleName = this.handleName.bind(this);
         this.handleIcon = this.handleIcon.bind(this);
         this.handlePrePublish = this.handlePrePublish.bind(this);
+        this.handleQuizImport = this.handleQuizImport.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     getQuiz() : QuizComplete {
@@ -110,11 +113,13 @@ export default class CQEditView extends React.Component {
     componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+        window.addEventListener('keydown', this.handleKeyDown);
     }
 
     componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     onChange(props : ?Props){
@@ -323,7 +328,22 @@ export default class CQEditView extends React.Component {
     }
 
     handleQuizImport(data: Object) {
-        console.log(data);
+        var quiz = this.state.quiz;
+        quiz.payload.questions = data;
+        this.setState({quiz}, ()=>{
+            this.save().then( ()=> {
+                router.setRoute(`/quiz/create/${this.state.quiz.uuid}/`);
+            });
+        });
+    }
+
+    handleKeyDown(ev){
+        lastKeys += String.fromCharCode(ev.which);
+
+        if (lastKeys.endsWith('ILOVEZZISH')){
+            this.setState({showAdmin: true});
+        }
+        // keyPresses.
     }
 
     render() : any {
@@ -338,6 +358,22 @@ export default class CQEditView extends React.Component {
                 }
                 return plural;
             };
+
+            let admin = '';
+            if(this.state.showAdmin) {
+                admin = (
+                    <button
+                        className="btn btn-default cq-edit__import-button">
+                        <CQQuestionUploader
+                            id="questionUploader"
+                            quizId={this.state.quiz.uuid}
+                            format="doodlemath"
+                            className="cq-edit__icon__label__input"
+                            onQuestionData={this.handleQuizImport}/>
+                    Import file
+                    </button>
+                );
+            }
 
             return (
                 <div>
@@ -374,16 +410,9 @@ export default class CQEditView extends React.Component {
 
                     </div>
 
+                    {admin}
+
                     <h4>You have {this.state.quiz.payload.questions.length} {pularlize(this.state.quiz.payload.questions.length, 'question', 'questions')}</h4>
-                    <button className="btn btn-default cq-questionlist__image__button">
-                        <CQQuestionUploader
-                            id="questionUploader"
-                            format="doodlemath"
-                            className="cq-edit__icon__label__input"
-                            onImageData={this.handleQuizImport}
-                        />
-                    Import file
-                    </button>
 
                     <CQQuestionList
                         quiz={this.state.quiz}

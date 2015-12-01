@@ -1,6 +1,11 @@
 /* @flow */
 import React from 'react';
 
+import {
+    QuizStore
+} from './../../stores';
+
+
 class CQQuestionUploader extends React.Component {
 
     constructor(props: Object){
@@ -10,15 +15,13 @@ class CQQuestionUploader extends React.Component {
         this.handleFile = this.handleFile.bind(this);
     }
 
-    // when a file is passed to the input field, retrieve the contents as a
-    // base64-encoded data URI and save it to the component's state
     handleFile(ev:Object){
         if (ev.target.files[0].size <= 1048576){
             var reader = new FileReader();
             reader.onload = (upload) =>{
                 var data = upload.target.result;
                 this.setState({ data });
-                this.props.onQuestionData(data);
+                this.props.onQuestionRawData(data);
                 this.props.onQuestionData(this.processData(data));
             };
 
@@ -31,24 +34,24 @@ class CQQuestionUploader extends React.Component {
         else {
             window.swal("Oops...", "The file you are trying to upload it too large. The maximum size for your file is 1MB", "error");
         }
-
-
     }
 
 
     processData (data: string): Question {
         if (this.props.format == "doodlemath") {
-            this.processDoodleMath(data);
+            return this.processDoodleMath(data);
         }
+
     }
 
     processDoodleMath (data: string): Question {
+        let quizId = this.props.quizId;
         let lines = data.trim().split('\n');
         let columns = lines.splice(0, 1)[0].split('\t');
-        let processedData = lines.map(function (line) {
+        let processedData = lines.map(function (line, index) {
             let q = line.split('\t');
             let question = {};
-            let newQuestion = {}; //Todo new question
+            let newQuestion = QuizStore.getQuestion(quizId, index);
             for (let i = 0; i < columns.length; i++) {
                 question[columns[i]] = q[i];
             }
@@ -56,23 +59,24 @@ class CQQuestionUploader extends React.Component {
             newQuestion.question = question.Question;
             switch (question.QuestionType) {
                 case "T/F":
-                    newQuestion.answer = "boolean://" + question.options[0].toLowerCase();
+                    newQuestion.answer = `boolean://${question.options[0].toLowerCase()}`;
                     break;
                 case "Multiple choice":
                     newQuestion.answer = question.options.splice(0, 1)[0];
                     newQuestion.alternatives = question.options;
                     break;
                 case "Text":
-                    newQuestion.answer = question.options[0];
+                    newQuestion.answer = `freetext://${question.options[0]}`;
                     break;
                 case "Sorting6":
                 case "Sorting":
-                    newQuestion.answer = question.options.join(":");
+                    newQuestion.answer = `sorting://${question.options.filter(o => o).join(":")}`;
                     break;
                 case "Linking":
-                    newQuestion.answer = question.options.join(":");
+                    newQuestion.answer = `linking://${question.options.filter(o => o).join(":")}`;
                     break;
             }
+            return newQuestion;
         });
         return processedData;
     }
@@ -96,7 +100,8 @@ CQQuestionUploader.propTypes = {
     onQuestionFile: React.PropTypes.func,
     id: React.PropTypes.string.isRequired,
     className: React.PropTypes.string,
-    format: React.PropTypes.string
+    format: React.PropTypes.string,
+    quizId: React.PropTypes.string
 };
 
 CQQuestionUploader.defaultProps = {
@@ -104,7 +109,8 @@ CQQuestionUploader.defaultProps = {
     onQuestionData: function(){},
     onQuestionFile: function(){},
     className: '',
-    format: ''
+    format: '',
+    quizId: ''
 };
 
 
