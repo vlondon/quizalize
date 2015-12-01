@@ -81,6 +81,12 @@ var QLFreetext = React.createClass({
     },
 
     handleClick: function(){
+        new Howl({
+            urls: ['/sounds/button_press.mp3'],
+            onend: function() {
+                this.unload();
+            }
+        }).play();
 
         var answer = $("#freetextInputAnswer").val();
 

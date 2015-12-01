@@ -77,6 +77,14 @@ var QLAnswerScreen = React.createClass({
                     this.unload();
                 }
             }).play();
+            setTimeout(() => {
+                new Howl({
+                    urls: ['/sounds/stars.mp3'],
+                    onend: function() {
+                        this.unload();
+                    }
+                }).play();
+            }, star_delay);
         } else {
             // Playing sound: Wrong answer
             new Howl({
@@ -87,14 +95,6 @@ var QLAnswerScreen = React.createClass({
             }).play();
         }
 
-        setTimeout(() => {
-            new Howl({
-                urls: ['/sounds/stars.mp3'],
-                onend: function() {
-                    this.unload();
-                }
-            }).play();
-        }, star_delay);
     },
 
     handleClick: function(){
