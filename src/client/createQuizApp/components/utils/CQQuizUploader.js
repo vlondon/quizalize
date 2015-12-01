@@ -1,11 +1,16 @@
 /* @flow */
 import React from 'react';
 
+import { QuizStore } from './../../stores';
+
 import { importFileParser } from './../../utils';
 
 import type { Question } from './../../../../types';
 
-class CQQuestionUploader extends React.Component {
+import { QuizActions } from './../../actions';
+
+
+class CQQuizUploader extends React.Component {
 
     constructor(props: Object){
         super(props);
@@ -18,19 +23,16 @@ class CQQuestionUploader extends React.Component {
         if (ev.target.files[0].size <= 1048576){
             var reader = new FileReader();
             reader.onload = (upload) =>{
-                let data = upload.target.result;
+                var data = upload.target.result;
                 this.setState({ data });
-                this.props.onQuestionRawData(data);
-                let processedData = importFileParser(data, this.props.format);
-                let conceptId = Object.keys(processedData)[0];
-                if (!conceptId) { this.props.onQuestionData([]); }
-                else { this.props.onQuestionData(processedData[conceptId].questions); }
+                this.props.onQuizRawData(data);
+                this.processData(data);
             };
 
             var dataFile = ev.target.files[0];
 
             this.setState({ dataFile });
-            this.props.onQuestionFile(dataFile);
+            this.props.onQuizFile(dataFile);
             reader.readAsText(dataFile);
         }
         else {
@@ -39,7 +41,18 @@ class CQQuestionUploader extends React.Component {
     }
 
 
-
+    processData (data: string) {
+        let processedData = {};
+        if (this.props.format == "doodlemath") {
+            processedData = importFileParser(data, this.props.format);
+        }
+        Object.keys(processedData).forEach( function(key) {
+            let newQuiz = QuizStore.getQuiz();
+            newQuiz.meta.name = key;
+            newQuiz.payload.questions = processedData[key].questions;
+            QuizActions.newQuiz(newQuiz);
+        });
+    }
 
     render () : any {
         return (
@@ -54,22 +67,23 @@ class CQQuestionUploader extends React.Component {
     }
 
 }
-CQQuestionUploader.propTypes = {
-    onQuestionRawData: React.PropTypes.func,
-    onQuestionData: React.PropTypes.func,
-    onQuestionFile: React.PropTypes.func,
+CQQuizUploader.propTypes = {
+    onQuizRawData: React.PropTypes.func,
+    onQuizData: React.PropTypes.func,
+    onQuizFile: React.PropTypes.func,
     id: React.PropTypes.string.isRequired,
     className: React.PropTypes.string,
-    format: React.PropTypes.string
+    format: React.PropTypes.string,
+    quizId: React.PropTypes.string
 };
 
-CQQuestionUploader.defaultProps = {
-    onQuestionRawData: function(){},
-    onQuestionData: function(){},
-    onQuestionFile: function(){},
+CQQuizUploader.defaultProps = {
+    onQuizRawData: function(){},
+    onQuizData: function(){},
+    onQuizFile: function(){},
     className: '',
     format: ''
 };
 
 
-export default CQQuestionUploader;
+export default CQQuizUploader;

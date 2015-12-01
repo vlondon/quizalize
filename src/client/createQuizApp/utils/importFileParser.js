@@ -1,15 +1,18 @@
 /* flow */
 import { QuizStore } from './../stores';
 
-var importFileParser = function(data: string, format: string, quizId: string){
+var importFileParser = function(data: string, format: string){
 
     var processDoodleMath = function(data: string): Array<Question> {
         let lines = data.trim().split('\n');
         let columns = lines.splice(0, 1)[0].split('\t');
-        let processedData = lines.map(function (line, index) {
+        let processedData = {};
+        // lines.map(function (line, index) {
+        for (let index = 0; index < lines.length; index++) {
+            let line = lines[index];
             let q = line.split('\t');
             let question = {};
-            let newQuestion = QuizStore.getQuestion(quizId, index);
+            let newQuestion = QuizStore.getQuestion("", 0);
             for (let i = 0; i < columns.length; i++) {
                 question[columns[i]] = q[i];
             }
@@ -34,8 +37,11 @@ var importFileParser = function(data: string, format: string, quizId: string){
                     newQuestion.answer = `linking://${question.options.filter(o => o).join(":")}`;
                     break;
             }
-            return newQuestion;
-        });
+            if (!processedData[question.ConceptId]) {
+                processedData[question.ConceptId] = {questions: []};
+            }
+            processedData[question.ConceptId].questions.push(newQuestion);
+        }
         return processedData;
     };
     if (format == "doodlemath") {
