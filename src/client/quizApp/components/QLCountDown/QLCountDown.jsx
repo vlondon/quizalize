@@ -5,6 +5,16 @@ var timeout;
 var updateInterval = 100;
 var startInterval = 60;
 var buffer = 2;
+
+var soundTicktock = {
+    playing: false,
+    sound: new Howl({
+        urls: ['/sounds/ticktock.mp3'],
+        loop: true,
+        volume: 0.1
+    }).fade(0, 0.2, 1000)
+};
+
 var QLCountDown = React.createClass({
 
     propTypes: {
@@ -26,6 +36,9 @@ var QLCountDown = React.createClass({
     },
     componentWillUnmount: function() {
         clearTimeout(timeout);
+        // Stop ticktock sound
+        soundTicktock.sound.stop();
+        soundTicktock.playing = false;
     },
 
 
@@ -39,15 +52,27 @@ var QLCountDown = React.createClass({
                 className: ''
             });
             setTimeout(()=> {
-
                 this.setState({className: 'animated'});
             }, 50);
         }
 
         if (time > 0) {
+            if (10 > time && !soundTicktock.playing) {
+                soundTicktock.playing = true;
+                soundTicktock.sound.play();
+            }
             timeout = setTimeout(this.handleTimeout, updateInterval);
+        } else {
+            soundTicktock.sound.stop();
+            soundTicktock.playing = false;
+            // Playing sound: Time finished
+            new Howl({
+                urls: ['/sounds/slow_time.mp3'],
+                onend: function() {
+                    this.unload();
+                }
+            }).play();
         }
-
     },
 
     render: function() {

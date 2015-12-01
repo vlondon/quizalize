@@ -427,10 +427,15 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
         //
         var score;
         questionDuration = questionDuration * 1000;
-        if (correct && currentQuiz.meta.showTimer !== undefined && currentQuiz.meta.showTimer !== 1) {
+        if (correct) {
+            if (currentQuiz.meta.showTimer === undefined || currentQuiz.meta.showTimer == 1) {
+                score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / (maxScore * partial))), maxScore * partial));
+            }
+            else {
                 score = maxScore * partial;
+            }
         } else {
-            score = Math.max(minScore, Math.min(Math.round((questionDuration + gracePeriod - duration) / (questionDuration / (maxScore * partial))), maxScore * partial));
+            score = 0;
         }
         return score;
     };
@@ -579,7 +584,7 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 return {
                     type: "freetext",
                     text: meta[1],
-                    answerArray: answerArray
+                    answerArray
                 };
             }
             if (input.indexOf("multiplem://") === 0) {
@@ -978,7 +983,8 @@ angular.module('quizApp').factory('QuizData', function($http, $log, $rootScope){
                 roundedScore: Math.round(score),
                 seconds: Math.ceil(duration/1000),
                 topicId: question.topicId,
-                duration: duration
+                duration: duration,
+                type: questionData.answerObject.type
             };
             var existingReport = currentQuizResult.report.filter(function(i) {
                 return i.id == idx;
