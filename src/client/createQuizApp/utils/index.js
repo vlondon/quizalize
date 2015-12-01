@@ -6,6 +6,7 @@ import intercom from './intercom';
 import LatexString from './LatexString';
 import priceFormat from './priceFormat';
 import urlParams from './urlParams';
+import importFileParser from './importFileParser';
 
 export {
     debounce,
@@ -14,4 +15,5 @@ export {
     LatexString,
     priceFormat,
     urlParams,
+    importFileParser
 };

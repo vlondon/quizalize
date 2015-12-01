@@ -327,7 +327,7 @@ export default class CQEditView extends React.Component {
         QuizActions.newQuiz(this.state.quiz).then(callback);
     }
 
-    handleQuizImport(data: Object) {
+    handleQuizImport(data: Array<Question>) {
         var quiz = this.state.quiz;
         quiz.payload.questions = data;
         this.setState({quiz}, ()=>{
@@ -337,7 +337,7 @@ export default class CQEditView extends React.Component {
         });
     }
 
-    handleKeyDown(ev){
+    handleKeyDown(ev: Object){
         lastKeys += String.fromCharCode(ev.which);
 
         if (lastKeys.endsWith('ILOVEZZISH')){
