@@ -1,5 +1,5 @@
-import React from 'react';
-import CQPublished from './CQPublished';
+import React from "react";
+import CQPublished from "./CQPublished";
 
 class CQPublishedAssign extends React.Component {
     render () {

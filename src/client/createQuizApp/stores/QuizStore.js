@@ -150,7 +150,7 @@ class QuizStore extends Store {
         }
     }
 
-    getPublicQuiz(quizId): QuizComplete{
+    getPublicQuiz(quizId): QuizComplete {
         var fullPublicQuiz = _fullPublicQuizzes[quizId];
         if (fullPublicQuiz === undefined){
             QuizActions.loadPublicQuiz(quizId);

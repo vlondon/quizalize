@@ -1,5 +1,10 @@
 angular.module('quizApp').controller('NavBarController', function(QuizData,$log, $timeout,$location){
     var self = this;
+    var Howl = require('howler').Howl;
+
+    if (!sessionStorage.getItem("mute")) {
+        sessionStorage.setItem("mute", "false");
+    }
 
     self.confirmed = function() {
         QuizData.confirmed($("#modalUuid").val());
@@ -16,6 +21,14 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
 
     self.hideCancel = function() {
         return sessionStorage.getItem("mode")=="demo";
+    };
+
+    self.hideMute = function() {
+        return sessionStorage.getItem("mute") === "true";
+    };
+
+    self.hideUnmute = function() {
+        return sessionStorage.getItem("mute") === "false";
     };
 
     self.loggedIn = QuizData.getUser();
@@ -54,4 +67,15 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
             processCancel();
         }
     };
+
+    self.mute = function() {
+        Howler.mute();
+        sessionStorage.setItem("mute", "true");
+    };
+
+    self.unmute = function() {
+        Howler.unmute();
+        sessionStorage.setItem("mute", "false");
+    };
+
 });

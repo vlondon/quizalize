@@ -59,9 +59,11 @@ block body
                         $(this).text(categoryName);
                     });
                     $(".subjectId").each(function() {
-                        var categoryName =  subjectNameFromSubjectId($(this).text());
+                    
+                        var subjectName =  subjectNameFromSubjectId($(this).text());
+                        
                         //- console.log(categoryName);
-                        $(this).text(categoryName);
+                        $(this).text(subjectName);
                     });                           
                     
                 });
@@ -104,11 +106,11 @@ block body
             }
         };
         var subjectNameFromSubjectId = function(subjectId){
-            //- console.log(categoryId);
+             console.log(subjectId);
             var subject = subjects.filter(function(sub) {
                 return sub.uuid == subjectId;
             });
-            //- console.log(category);
+            console.log(subject);
             if (subject[0] === undefined){
                 return "";
                 }

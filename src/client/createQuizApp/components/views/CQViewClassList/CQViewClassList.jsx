@@ -1,25 +1,26 @@
 /* @flow */
-import React, { PropTypes } from 'react';
-import router from './../../../config/router';
+import React, { PropTypes } from "react";
+import router from "./../../../config/router";
 
 import {
     GroupStore,
     MeStore
-}  from './../../../stores';
+}  from "./../../../stores";
 
 import {
     GroupActions,
-    QuizActions
-} from './../../../actions';
+    QuizActions,
+    AnalyticsActions
+} from "./../../../actions";
 
 import {
     CQLink
-} from './../../../components';
+} from "./../../../components";
 
 
-import { AnalyticsActions } from './../../../actions';
+import {urlParams} from "./../../../utils";
 
-import type { UserType, QuizSettings } from './../../../../../types';
+import type { UserType, QuizSettings } from "./../../../../../types";
 type Props = {
     quizId: string;
     settings: QuizSettings;
@@ -46,7 +47,7 @@ export default class CQViewClassList extends React.Component {
     constructor(props: Props) {
         super(props);
         var initialState = this.getState();
-        initialState.newClassName = '';
+        initialState.newClassName = "";
         initialState.canSaveNewClass = false;
         initialState.groupsUsed = [];
 
@@ -85,8 +86,8 @@ export default class CQViewClassList extends React.Component {
         var quizId = this.props.quizId;
 
         let isNew = groups.length === 0;
-        let name = MeStore.state.name !== null ? MeStore.state.name : 'Quizalize teacher';
-        let newClassName = isNew || (state && state.newClassName === '') ? `${name}'s class` : '';
+        let name = MeStore.state.name !== null ? MeStore.state.name : "Quizalize teacher";
+        let newClassName = isNew || (state && state.newClassName === "") ? `${name}'s class` : "";
 
         QuizActions.loadQuiz(quizId).then( (quiz) => {
             if (quiz.payload.questions.length === 0) {
@@ -94,6 +95,7 @@ export default class CQViewClassList extends React.Component {
                     title: "Error",
                     text: "You need at least one question in order to be able to play this quiz"
                 }, function() {
+
                     router.setRoute(`/quiz/create/${quiz.uuid}`);
                 });
             }
@@ -112,11 +114,11 @@ export default class CQViewClassList extends React.Component {
 
                     if (inputValue === false) {
                         swal({
-                                title: "Error",
-                                text: "You will need to specifiy a quiz name to continue"
-                            },function() {
-                                router.setRoute("/quiz/user");
-                            });
+                            title: "Error",
+                            text: "You will need to specifiy a quiz name to continue"
+                        },function() {
+                            router.setRoute("/quiz/user");
+                        });
                         return false;
                     }
                     else if (inputValue === "") {
@@ -161,7 +163,7 @@ export default class CQViewClassList extends React.Component {
         if (!this.state.groups) {
             return [{
                 value: null,
-                label: 'Loading',
+                label: "Loading",
                 disabled: true
             }];
         }
@@ -175,7 +177,7 @@ export default class CQViewClassList extends React.Component {
 
     handleClick(classCode: string){
         var groupsUsed = [classCode];
-        var newClassName = '';
+        var newClassName = "";
         var canSaveNewClass = false;
         this.setState({ groupsUsed, newClassName, canSaveNewClass });
     }
@@ -187,9 +189,21 @@ export default class CQViewClassList extends React.Component {
         console.log("publish assignment settings", this.props.settings.toObject());
         GroupActions.publishAssignment(this.props.quizId, this.state.groupsUsed[0], this.props.settings)
             .then((response) =>{
-                AnalyticsActions.sendEvent('class', 'assign', response.groupCode);
-                AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode});
-                router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
+                let {homework} = urlParams();
+                AnalyticsActions.sendEvent("class", "assign", response.groupCode);
+                AnalyticsActions.sendIntercomEvent("assign_class", {uuid: response.groupCode});
+                console.log("homework???", homework);
+                if (homework === "true"){
+                    swal({
+                        title: "Homework set up correctly",
+                        text: `Please give the kids the following code <br/><b>${response.groupCode}</b>`,
+                        html: true,
+                    }, ()=>{
+                        router.setRoute("/quiz/user");
+                    });
+                } else {
+                    router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
+                }
             });
     }
 
@@ -209,12 +223,12 @@ export default class CQViewClassList extends React.Component {
 
             GroupActions.publishNewAssignment(this.props.quizId, className, this.props.settings)
                 .then((response) =>{
-                    AnalyticsActions.sendIntercomEvent('new_class', {uuid: response.groupCode, name: className});
-                    AnalyticsActions.sendIntercomEvent('assign_class', {uuid: response.groupCode, name: className});
+                    AnalyticsActions.sendIntercomEvent("new_class", {uuid: response.groupCode, name: className});
+                    AnalyticsActions.sendIntercomEvent("assign_class", {uuid: response.groupCode, name: className});
                     router.setRoute(`/quiz/published/${response.content.uuid}/${response.groupCode}/info`);
                 });
             this.setState({
-                newClassName: '',
+                newClassName: "",
                 canSaveNewClass: false
             });
         }
@@ -225,13 +239,13 @@ export default class CQViewClassList extends React.Component {
     }
 
     handleViewInfo(){
-        AnalyticsActions.sendEvent('assign_class', 'action', 'watch_info');
-        AnalyticsActions.sendIntercomEvent('assign_class_action', {watch_info: true});
+        AnalyticsActions.sendEvent("assign_class", "action", "watch_info");
+        AnalyticsActions.sendIntercomEvent("assign_class_action", {watch_info: true});
     }
 
     handleClose(){
-        AnalyticsActions.sendEvent('assign_class', 'action', 'go_back_clicked');
-        AnalyticsActions.sendIntercomEvent('assign_class_action', {go_back_clicked: true});
+        AnalyticsActions.sendEvent("assign_class", "action", "go_back_clicked");
+        AnalyticsActions.sendIntercomEvent("assign_class_action", {go_back_clicked: true});
         router.goBack();
     }
 
@@ -250,7 +264,7 @@ export default class CQViewClassList extends React.Component {
     }
 
     handleShowPricing() {
-        router.setRoute('/quiz/premium');
+        router.setRoute("/quiz/premium");
     }
 
     render() : any {
@@ -281,20 +295,25 @@ export default class CQViewClassList extends React.Component {
                         })}
                         <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
                             onClick={this.handleDone}
-                            id='continue'>
+                            id="continue">
                             <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
                             Continue
                         </button>
                         <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
                             onClick={this.handleCreateClass}
-                            id='continue'>
+                            id="continue">
                             Use with another class
                         </button>
                     </ul>
                     <div className="cq-viewclass__extra">
                         <p>
+                            <strong>No need to add student names </strong>
+                            <br/>
+                            We’ll do it for you! Students enter their own names as they join the game. Their names are added to this class and appear in your dashboards from then on.
+                        </p>
+                        <p>
                             <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
-                                See how to play and what you'll need…
+                                See how to play and what you"ll need…
                             </a>
                         </p>
                     </div>
@@ -311,15 +330,15 @@ export default class CQViewClassList extends React.Component {
                     <p>Type the name of your class</p>
                     <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
-                            id='newClassBox'
+                            id="newClassBox"
                             type="text"
-                            ref='newClassBox'
+                            ref="newClassBox"
                             className=""
                             value={this.state.newClassName}
                             onChange={this.handleClassName}
                             placeholder="New class name"/>
                         <button className={this.state.canSaveNewClass ? "cq-viewclass__save--enabled" : "cq-viewclass__save--disabled"}
-                            id='createNewClass'
+                            id="createNewClass"
                             type="submit"
                             disabled={!this.state.canSaveNewClass}>
                             Continue
@@ -331,7 +350,7 @@ export default class CQViewClassList extends React.Component {
                     <div className="cq-viewclass__extra">
                         <p>
                             <a href="https://youtu.be/jmgMbEzkRUA?t=1m43s" target="_blank" onClick={this.handleViewInfo}>
-                                See how to play and what you'll need…
+                                See how to play and what you"ll need…
                             </a>
                         </p>
                     </div>
@@ -351,7 +370,7 @@ export default class CQViewClassList extends React.Component {
                     <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <button type="button" className={true ? "cq-viewclass__continue--enabled" : "cq-viewclass__continue--disabled"}
                             onClick={this.handleShowPricing}
-                            id='continue'>
+                            id="continue">
                             <i className="fa fa-chevron-right cq-viewclass__continue__chevron"/>
                             Plans and pricing
                         </button>
@@ -363,7 +382,7 @@ export default class CQViewClassList extends React.Component {
 
 
         return (
-            <div className='cq-viewclass'>
+            <div className="cq-viewclass">
                 <div className="cq-viewclass__close" onClick={this.handleClose}>
                     <div className="fa fa-times"></div>
                 </div>

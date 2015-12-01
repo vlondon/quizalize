@@ -25,16 +25,26 @@ var CQViewAppGrid = React.createClass({
     handlePublish: function(app, event){
         event.preventDefault();
         event.stopPropagation();
+        if (app.meta.quizzes.split(',').length > 1){
+            if (app.meta.iconURL && app.meta.iconURL.length > 0){
+                swal({
+                    title: 'Submitted',
+                    text: 'Your Collection has been submitted for approval. You will receive an email once it has been approved',
+                    showCancelButton: false,
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'No'
+                }, function(){
+                    AppActions.publishApp(app);
+                });
+            }
+            else {
+                swal("No icon..", "Collections must have an icon to be published on the marketplace", "error");
 
-        swal({
-            title: 'Published',
-            text: 'Your App has been submitted for approval. You will receive an email once it has been approved',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            cancelButtonText: 'No'
-        }, function(){
-            AppActions.publishApp(app);
-        });
+            }
+        }
+        else {
+            swal("Not enough quizzes..", "Collections must contain more than 1 quiz to be published on the marketplace. If you wish to publish the quiz you can click on 'Make public' on your profile", "error");
+        }
     },
 
     handleDelete: function(app, event){

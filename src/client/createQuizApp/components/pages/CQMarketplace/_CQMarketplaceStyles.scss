@@ -253,10 +253,13 @@
         &__main  {
             & {
 
-                @include button(darken($brand-color-orange, 20));
-                background: $brand-color-orange;
-                color: #FFF;
-                border-color: #FFF;
+                // @include button(darken($brand-color-orange, 20));
+                // background: $brand-color-orange;
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid #AAA;
+                color: #AAA;
+                margin-right: 5px;
             }
         }
     }
