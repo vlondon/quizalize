@@ -2,10 +2,6 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
     var self = this;
     var Howl = require('howler').Howl;
 
-    if (!sessionStorage.getItem("mute")) {
-        sessionStorage.setItem("mute", "false");
-    }
-
     self.confirmed = function() {
         QuizData.confirmed($("#modalUuid").val());
     };
@@ -24,11 +20,11 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
     };
 
     self.hideMute = function() {
-        return sessionStorage.getItem("mute") === "true";
+        return sessionStorage.getItem("mute") === "true" || self.playSoundMode === false;
     };
 
     self.hideUnmute = function() {
-        return sessionStorage.getItem("mute") === "false";
+        return sessionStorage.getItem("mute") === "false" || self.playSoundMode === false;
     };
 
     self.loggedIn = QuizData.getUser();
@@ -78,4 +74,19 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
         sessionStorage.setItem("mute", "false");
     };
 
+    self.playSoundMode = false;
+    if (QuizData.currentQuiz().meta.playSounds === "1" || sessionStorage.getItem("mode") === "preview" || sessionStorage.getItem("mode") === "teacher") {
+        self.playSoundMode = true;
+    }
+    else {
+        self.mute();
+    }
+    if (!sessionStorage.getItem("mute")) {
+        if (self.playSoundMode && sessionStorage.getItem("mute") === "true") {
+            sessionStorage.setItem("mute", "true");
+        }
+        else {
+            sessionStorage.setItem("mute", "false");
+        }
+    }
 });

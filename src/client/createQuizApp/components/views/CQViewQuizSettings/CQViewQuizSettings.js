@@ -89,6 +89,20 @@ class CQViewQuizSettings extends React.Component {
                         </h5>
                         <ul className="cq-quizsettings__list">
                             <li>
+                                <h4>
+                                    Use sounds?
+                                </h4>
+
+                                <p>If this is set to yes, the students will get sounds on their device when playing the quiz</p>
+                                <div className="cq-quizsettings__switch">
+                                    <CQViewSwitch
+                                        onChange={this.handleCheckbox.bind(this, 'playSounds')}
+                                        checked={toBoolean(this.props.settings.playSounds)}
+                                    />
+                                </div>
+
+                            </li>
+                            <li>
                                 <h4>Randomise question order?
                                 </h4>
 
