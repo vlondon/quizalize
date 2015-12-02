@@ -1,0 +1,203 @@
+@import './../../../shared/scss/mixins';
+@import './../../../shared/scss/score';
+
+@keyframes qlEnterScale {
+    from {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes qlEnterTranslateY {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes qlExitScale {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+
+// Hide old content
+.row.row-linking { display: none; }
+
+.btn-selected {
+    text-decoration: line-through;
+}
+
+.btn-selecting {
+    background: #910d18;
+    color: #fff;
+}
+
+.ql-quiz-container {
+    position: relative;
+}
+.ql-linking {
+    background: #FFF;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+
+    &.enter {
+        animation: qlEnterScale 300ms cubic-bezier(0,0,.47,1);
+        animation-delay: 50ms;
+        animation-fill-mode: both;
+    }
+
+    .question {
+        text-align: center;
+        margin: 40px auto;
+        white-space: pre-line;
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break:     break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens:    auto;
+        -ms-hyphens: auto;
+        hyphens:         auto;
+        font-size: 48px;
+    }
+
+    &.enter .question {
+        animation: qlEnterTranslateY 200ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 400ms;
+    }
+
+    .ql-question-img {
+        display: block;
+        width: 100%;
+        max-width: 400px;
+        max-height: 400px;
+        margin: auto;
+        margin-bottom: 40px;
+    }
+
+    &.enter .ql-question-img {
+        animation: qlEnterTranslateY 200ms ease-out;
+        animation-fill-mode: both;
+        animation-delay: 400ms;
+    }
+
+    .linkingGroup {
+        display: inline-block;
+        vertical-align: top;
+
+        .option {
+          margin: 0px;
+          margin-bottom: 5px;
+        }
+
+        button {
+            margin: 0px;
+        }
+
+        button.group {
+            background: transparent;
+            border: none;
+        }
+    }
+
+    .linkingGroup.links {
+        width: 120px;
+        .link {
+          height: 5px;
+          background: #404040;
+          position: relative;
+          border-radius: 2px;
+        }
+    }
+
+    .answers {
+        position: relative
+    }
+
+    .options {
+        text-align: center;
+    }
+
+    button.option {
+        color: #ffffff;
+    }
+
+    button.option.btn-unselected, button.option.btn-selected {
+        background: #2e60ff;
+        text-decoration: none;
+    }
+
+    button.option.btn-unselected:hover, button.option.btn-selecting {
+        background: #003cfa;
+    }
+
+    .user-interaction {
+        margin: 20px 0;
+    }
+
+    .solution {
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        user-select: none;
+        outline: none;
+        border-radius: 4px;
+
+        width: 40px;
+        height: 40px;
+        font-size: 36px;
+        line-height: 32px;
+
+        @include media($size-mobile) {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    .option {
+        outline: none;
+        width: 100%;
+        height: 60px;
+        font-size: 36px;
+        margin: 5px;
+        line-height: 50px;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        border-radius: 4px;
+        user-select: none;
+    }
+
+
+}

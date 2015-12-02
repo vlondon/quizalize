@@ -107,7 +107,7 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
 
     self.isFeatured = currentQuiz.meta!=null ? currentQuiz.meta.featured : false;
     // self.isFeatured = false;
-    self.noResultMode = currentQuiz.meta!=null ? currentQuiz.meta.showResult == 0 : false;
+    self.noResultMode = currentQuiz.meta!=null ? currentQuiz.meta.showResult === "0" : false;
 
     if (self.isFeatured === true) {
         ExtraData.getLeaderBoard(self.data.quizId)
@@ -134,6 +134,14 @@ angular.module('quizApp').controller('CompleteController', function(QuizData, Ex
             if (item.latexEnabled) {
                 arrayToMath.push(item.questionId);
                 needToHide = true;
+            }
+            if (item.type === "sorting" || item.type === "linking") {
+              item.response = item.response.split(/:/g).map(item=> item.replace(/\|/g, ": "));
+              item.answer = item.answer.split(/:/g).map(item=> item.replace(/\|/g, ": "));
+            }
+            else {
+              item.response = [item.response];
+              item.answer = [item.answer];
             }
         }
         if (needToHide) {

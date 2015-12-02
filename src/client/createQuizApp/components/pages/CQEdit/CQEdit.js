@@ -1,13 +1,16 @@
 /* @flow */
-import React, { PropTypes } from 'react';
-import { CQPageTemplate } from './../../../components';
+import React, { PropTypes } from "react";
+import {
+    CQPageTemplate,
+    CQViewWizard,
+} from "./../../../components";
 import {
     QuizStore,
     MeStore
-} from './../../../stores';
-import { router } from './../../../config';
-import type { QuizComplete } from './../../../../../types';
-import CQEditView from './CQEditView';
+} from "./../../../stores";
+import { router } from "./../../../config";
+import type { QuizComplete } from "./../../../../../types";
+import CQEditView from "./CQEditView";
 
 type Props = {
     routeParams: Object;
@@ -50,9 +53,9 @@ class CQEdit extends React.Component {
             window.swal({
                 title: `You're trying to load a Quiz that you don't own`,
                 text: `Please ask the author to share it with you or get it from the marketplace`,
-                type: 'warning',
+                type: "warning",
             }, function(){
-                router.setRoute('/quiz/user', true);
+                router.setRoute("/quiz/user", true);
             });
 
         } else {
@@ -75,7 +78,7 @@ class CQEdit extends React.Component {
                     showCancelButton: true,
                 }, (isConfirm)=>{
                     if (isConfirm) {
-                        router.setRoute('/quiz/premium', true);
+                        router.setRoute("/quiz/premium", true);
                     } else {
                         router.goBack();
                     }
@@ -92,8 +95,11 @@ class CQEdit extends React.Component {
         let {quiz} = this.state;
         let editView = quiz ? (<CQEditView {...this.props} />) : undefined;
         return (
-            <CQPageTemplate className="cq-container cq-edit">
-                {editView}
+            <CQPageTemplate className="cq-edit">
+                <CQViewWizard fields={["Which questions?", "Which class?", "That's it!"]}/>
+                <div className="cq-container cq-edit">
+                    {editView}
+                </div>
             </CQPageTemplate>
         );
     }

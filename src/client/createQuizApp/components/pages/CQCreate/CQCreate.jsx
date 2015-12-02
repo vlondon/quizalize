@@ -1,20 +1,20 @@
-import React from 'react';
-import { router } from './../../../config';
-import { QuizActions } from './../../../actions';
+import React from "react";
+import { router } from "./../../../config";
+import { QuizActions } from "./../../../actions";
 
 import {
     CQPageTemplate,
     CQLink,
     CQAutofill,
-} from './../../../components';
+} from "./../../../components";
 
 import {
     QuizStore,
     TopicStore,
     UserStore
-} from './../../../stores';
+} from "./../../../stores";
 
-import CQCreateMore from './CQCreateMore';
+import CQCreateMore from "./CQCreateMore";
 
 var CQCreate = React.createClass({
 
@@ -26,7 +26,7 @@ var CQCreate = React.createClass({
 
         var initialState = {
             isMoreVisible: false,
-            title: 'Create a Quiz',
+            title: "Create a Quiz",
             canSave: false,
             category: undefined,
             quiz: this._getQuiz(),
@@ -79,7 +79,7 @@ var CQCreate = React.createClass({
 
         var fillAutoFill = function(array, prefix){
             array.forEach( el => {
-                // console.log('fi<!--  -->lling', el);
+                // console.log("fi<!--  -->lling", el);
 
                 var name = prefix ? `${prefix} > ${el.name}` : el.name;
                 newState.topicsAutofill.push({
@@ -98,14 +98,14 @@ var CQCreate = React.createClass({
 
 
         if (this.props.quizId !== undefined){
-            newState.title = 'Edit a quiz';
+            newState.title = "Edit a quiz";
         }
 
         this.setState(newState);
     },
 
     componentDidMount: function() {
-        $('[data-toggle="popover"]').popover();
+        $("[data-toggle=\"popover\"]").popover();
         QuizStore.addChangeListener(this.onChange);
         TopicStore.addChangeListener(this.onChange);
     },
@@ -119,7 +119,7 @@ var CQCreate = React.createClass({
         var newQuizState = Object.assign({}, this.state.quiz);
         newQuizState.meta[property] = event.target.value;
         var csave = false;
-        if (property === 'name') {
+        if (property === "name") {
             csave = event.target.value && event.target.value.length > 0;
         }
         this.setState({quiz: newQuizState, canSave: csave});
@@ -160,7 +160,7 @@ var CQCreate = React.createClass({
         }
 
         var canSave = this.state.title.length > 0;
-        console.log('topicid', topicId, topic, quiz);
+        console.log("topicid", topicId, topic, quiz);
         this.setState({quiz, canSave});
     },
 
@@ -170,13 +170,14 @@ var CQCreate = React.createClass({
         if (UserStore.isAdmin()){
             moreSettings = (<button type="button"
                 onClick={this.handleMoreClick}
-                className={this.state.isMoreVisible ? 'btn btn-block btn-info cq-create__moresettings' : 'btn btn-block cq-create__moresettings'}>
+                className={this.state.isMoreVisible ? "btn btn-block btn-info cq-create__moresettings" : "btn btn-block cq-create__moresettings"}>
                 More Settings
             </button>);
         }
-        console.warn('getTopicTree', TopicStore.getTopicTree());
+        console.warn("getTopicTree", TopicStore.getTopicTree());
         return (
             <CQPageTemplate className="cq-container cq-create">
+
                 <div className="cq-create__body">
 
                     <h2 className="cq-create__header">
@@ -192,7 +193,7 @@ var CQCreate = React.createClass({
                             <input id="question"
                                 type="text"
                                 value={this.state.quiz.meta.name}
-                                onChange={this.handleChange.bind(this, 'name')}
+                                onChange={this.handleChange.bind(this, "name")}
                                 placeholder="e.g. Plate Boundaries"
                                 autofocus="true"
                                 tabIndex="1"

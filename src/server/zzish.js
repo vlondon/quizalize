@@ -1,6 +1,6 @@
 var zzish = require("zzishsdk");
-var config = require('./config');
-var logger = require('./logger');
+var config = require("./config");
+var logger = require("./logger");
 
 logger.info("Loading Zzish with ", config.zzishInit);
 

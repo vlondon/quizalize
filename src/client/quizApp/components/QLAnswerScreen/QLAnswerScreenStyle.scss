@@ -113,6 +113,23 @@
     }
     .alternative-wrapper {
         width: 90% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .answer-item {
+        font-weight: bold;
+        margin: 10px;
+        .group-item {
+            font-weight: normal;
+        }
+    }
+
+    .answer-item.linking {
+        .group-item {
+            display: inline-block;
+            margin-left: 10px;
+        }
     }
 
     .view-video {

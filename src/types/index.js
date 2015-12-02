@@ -1,5 +1,5 @@
 /* @flow */
-var T = require('immutable');
+var T = require("immutable");
 /// TOPIC ////
 export type Topic = {
     attributes: Object;

@@ -12,6 +12,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
     self.numQuestions = "the";
     self.randomText = ".";
     self.showSubText = false;
+    self.noResultMode = false;
 
     if (window.ga){
         window.ga('send', 'event', 'quiz', 'start', self.id);
@@ -69,7 +70,7 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                     classCode: localStorage.getItem("classCode"),
                     quizId: self.currentQuiz.uuid
                 });
-                window.Intercom('shutdown');                
+                window.Intercom('shutdown');
             }
 
 
@@ -79,7 +80,9 @@ angular.module('quizApp').controller('GameController', function(QuizData, ExtraD
                     self.randomText = " in random order.";
                     self.showSubText = true;
                 }
-
+                if (self.currentQuiz.meta.showResult === "0") {
+                    self.noResultMode = true;
+                }
                 if (self.currentQuiz.meta['numQuestions']) {
                     self.numQuestions = self.currentQuiz.questions.length;
                     try {

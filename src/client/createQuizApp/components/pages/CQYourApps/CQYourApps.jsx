@@ -4,7 +4,7 @@ import React from 'react';
 import MeStore from './../../../stores/MeStore';
 import CQPageTemplate from './../../CQPageTemplate';
 import CQYourAppsCreate from './CQYourAppsCreate';
-import UserActions from './../../../actions/UserActions';
+
 type Props = {
     routeParams: {
         appId: string;
@@ -32,7 +32,7 @@ export default class CQYourApps extends React.Component {
         return (
             <CQPageTemplate className="cq-container cq-yourapps">
                 <h2 className='cq-yourapps__header'>
-                    <i className="fa fa-archive"/> Your apps
+                    <i className="fa fa-archive"/> Your Collections
                 </h2>
                 <CQYourAppsCreate newApp={newApp} appId={appId}/>
             </CQPageTemplate>

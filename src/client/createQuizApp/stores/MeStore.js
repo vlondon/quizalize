@@ -3,8 +3,13 @@ import Store from './Store';
 import {Application} from './classes/Application';
 import {Record} from 'immutable';
 import AppDispatcher from './../dispatcher/CQDispatcher';
-import {UserConstants, QuizConstants} from './../constants';
-import {UserActions} from './../actions';
+import {
+    UserConstants,
+    QuizConstants
+} from './../constants';
+import {
+    UserActions
+} from './../actions';
 import type {UserType, Quiz} from './../../../types';
 
 
@@ -46,7 +51,10 @@ class Me extends Store {
 
     constructor(state: UserType = noUser){
         super(state);
+
         state = Object.assign({}, state);
+        state.attributes = state.attributes || {};
+        state.attributes.accountType = state.attributes.accountType !== undefined ? parseInt(state.attributes.accountType, 10) : 1;
         state.attributes = new meAttributesRecord(state.attributes);
         this.state = new meRecord(state);
         this.apps = state.apps || [];
@@ -111,28 +119,30 @@ class Me extends Store {
     addIntercom(){
 
         var currentUser = this.state;
+        if (currentUser.attributes.accountType !== -10){
 
-        if (this.isLoggedIn()){
-            window.intercomSettings = {
-                name: (currentUser.name || currentUser.email),
-                email: (currentUser.email),
-                user_id: currentUser.uuid,
-                created_at: Math.round((currentUser.created / 1000)),
-                app_id: intercomId
+            if (this.isLoggedIn()){
+                window.intercomSettings = {
+                    name: (currentUser.name || currentUser.email),
+                    email: (currentUser.email),
+                    user_id: currentUser.uuid,
+                    created_at: Math.round((currentUser.created / 1000)),
+                    app_id: intercomId
+                };
+            } else {
+                window.intercomSettings = {
+                    app_id: intercomId
+                };
+            }
+            window.intercomSettings.widget = {
+                activator: "#IntercomDefaultWidget"
             };
-        } else {
-            window.intercomSettings = {
-                app_id: intercomId
-            };
+            if (intercomAdded === false){
+                intercom('boot', window.intercomSettings);
+            }
+            intercom('update', window.intercomSettings);
+            intercomAdded = true;
         }
-        window.intercomSettings.widget = {
-            activator: "#IntercomDefaultWidget"
-        };
-        if (intercomAdded === false){
-            intercom('boot', window.intercomSettings);
-        }
-        intercom('update', window.intercomSettings);
-        intercomAdded = true;
     }
 
     getUserId() : string{

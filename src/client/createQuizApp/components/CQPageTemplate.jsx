@@ -1,7 +1,6 @@
 /* @flow */
-var React           = require('react');
-
-var CQViewHeader   = require('./views/CQViewHeader');
+var React          = require("react");
+var CQViewHeader   = require("./views/CQViewHeader");
 
 var CQPageTemplate = React.createClass({
 
