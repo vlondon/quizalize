@@ -19,6 +19,7 @@ class CQQuizzesProfile extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handlePreview = this.handlePreview.bind(this);
         this.handleAssign = this.handleAssign.bind(this);
+        this.handleAssignHomework = this.handleAssignHomework.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
     handleShare(ev : Event){
@@ -54,6 +55,15 @@ class CQQuizzesProfile extends React.Component {
             router.setRoute(`/quiz/published/${quiz.uuid}/assign`);
         }
     }
+
+    handleAssignHomework(ev : Event){
+        ev.stopPropagation();
+        var quiz = this.props.quiz;
+        if (quiz){
+            router.setRoute(`/quiz/published/${quiz.uuid}/assign?homework=true`);
+        }
+    }
+
     handleDelete(ev : Event){
         ev.stopPropagation();
         var quiz = this.props.quiz;
@@ -100,11 +110,15 @@ class CQQuizzesProfile extends React.Component {
                 </button>
 
                 <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
-                    <span className="fa fa-search"></span> Play
+                    <span className="fa fa-search"></span> Preview
                 </button>
 
                 <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
                     <span className="fa fa-users"></span> Play in class
+                </button>
+
+                <button className="cq-quizzes__button--assign" onClick={this.handleAssignHomework}>
+                    <span className="fa fa-users"></span> Set as homework
                 </button>
 
                 <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>

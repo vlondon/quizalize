@@ -270,13 +270,14 @@ export default class CQViewClassList extends React.Component {
     render() : any {
 
         var existingClasses, newClass, signUpFoPremium;
+        let {homework} = urlParams();
+        let title = homework === "true" ? "Set this as a homework for" : "Set this as a class game for";
+
         if (this._showGroupsList().length > 0 && !this.state.isNew && !this.state.isPremium) {
             // newTitle = "...or create a new class";
             existingClasses = (
                 <div>
-                    <h3>
-                        Set this as a class game (or homework) for
-                    </h3>
+                    <h3>{title}</h3>
                     <ul className="list-unstyled">
                         {this._showGroupsList().map( (classN) => {
                             return (
@@ -324,9 +325,7 @@ export default class CQViewClassList extends React.Component {
         if (this.state.isNew) {
             newClass = (
                 <div>
-                    <h3>
-                        Set this as a class game (or homework) for
-                    </h3>
+                    <h3>{title}</h3>
                     <p>Type the name of your class</p>
                     <form className="cq-viewclass__new" onSubmit={this.handleNewClass}>
                         <input
