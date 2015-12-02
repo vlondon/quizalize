@@ -244,7 +244,7 @@ var CQQuizzes = React.createClass({
                     sortBy='time'
                     sortOptions={this.state.isAdmin}
                     onAssign={this.handleAssign}
-                    onAssignHomework={this.onAssignHomework}
+                    onAssignHomework={this.handleAssignHomework}
                     onDelete={this.handleDelete}>
 
                     {/* <CQPublishQuiz className="cq-quizzes__button--publish"/>*/}
