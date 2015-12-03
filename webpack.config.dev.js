@@ -68,7 +68,7 @@ module.exports = {
             'ie': 'component-ie'
         }
     },
-    devtool: '#source-map',
+    devtool: '#cheap-eval-source-map',
     cache: true,
     watch: true
 };

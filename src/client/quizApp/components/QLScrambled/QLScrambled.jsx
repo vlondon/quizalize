@@ -1,5 +1,6 @@
 /* @flow */
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var randomise = require('./../../utils/randomise');
 var QLQuestion = require('./../../components/QLQuestion');
@@ -156,6 +157,13 @@ var QLScrambled = React.createClass({
     },
 
     handleClick: function(index: number){
+        new Howl({
+            urls: ['/sounds/button_press.mp3'],
+            onend: function() {
+                this.unload();
+            }
+        }).play();
+
         var letterSelected = this.state.letterSelected;
         if (letterSelected[index].state !== 'selected') {
             var unanswered = this.state.answerSelected.filter(function(answer) {
@@ -183,6 +191,13 @@ var QLScrambled = React.createClass({
 
 
     handleRemoveLetter: function(index: number){
+        new Howl({
+            urls: ['/sounds/button_press.mp3'],
+            onend: function() {
+                this.unload();
+            }
+        }).play();
+
         var answerSelected = this.state.answerSelected;
         if (answerSelected[index].index !== -1) {
             var letterSelected = this.state.letterSelected;

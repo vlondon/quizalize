@@ -103,7 +103,8 @@
     &__button--edit,
     &__button--publish,
     &__button--review,
-    &__button--assign {
+    &__button--assign,
+    &__dropdown--moreaction select{
         @include button($brand-color-blue);
         //background: rgba($brand-color-blue, .8);
         // background: $brand-color-blue;
@@ -115,5 +116,10 @@
 
     }
 
+    &__dropdown--moreaction {
+        label {
+            display: none;
+        }
+    }
 
 }

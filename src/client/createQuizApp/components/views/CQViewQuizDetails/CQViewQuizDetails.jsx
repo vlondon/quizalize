@@ -1,147 +1,251 @@
-var React = require('react');
-var router = require('./../../../config/router');
-var CQSpinner = require('createQuizApp/components/utils/CQSpinner');
-var QuizStore = require('createQuizApp/stores/QuizStore');
-var CQLatexString = require('createQuizApp/components/utils/CQLatexString');
-var TransactionActions = require('createQuizApp/actions/TransactionActions');
-var TopicStore          = require('createQuizApp/stores/TopicStore');
-var MeStore = require('./../../../stores/MeStore');
+/* @flow */
+import React from "react";
+import router from "./../../../config/router";
+
+import {
+    CQSpinner,
+    CQLatexString
+} from "./../../../components";
+
+import {
+    QuizStore,
+    TopicStore,
+    MeStore
+} from "./../../../stores";
+
+import {
+    TransactionActions
+} from "./../../../actions";
+
 
 var timeouts = [];
-var priceFormat = require('createQuizApp/utils/priceFormat');
-var CQViewQuizDetails = React.createClass({
+import {priceFormat} from "./../../../utils";
+import type {QuizComplete} from "./../../../../../types";
 
-    propTypes: {
+type State = {
+    quiz: ?QuizComplete;
+    removed?: Boolean;
+}
+type Props = {
+    quizId: string;
+    onClose: Function;
+};
+
+const isLoggedIn = () => {
+    if (!MeStore.isLoggedIn()){
+        swal({
+            title: "You need to be logged in",
+            text: `In order to buy this item you need to log into Quizalize`,
+            type: "info",
+            confirmButtonText: "Log in",
+            showCancelButton: true
+        }, function(isConfirm){
+            if (isConfirm){
+                router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent("/quiz/marketplace")}`);
+            }
+        });
+        return false;
+    } else {
+        return true;
+    }
+};
+
+export default class CQViewQuizDetails extends React.Component {
+
+    state: State;
+    props: Props;
+
+    static propTypes = {
         quizId: React.PropTypes.string.isRequired,
         quizCode: React.PropTypes.string,
         onClose: React.PropTypes.func.isRequired
-    },
+    };
 
-    getInitialState: function() {
-        return this.getState();
-    },
+    constructor(props: Props) {
+        super(props);
 
-    componentDidMount: function() {
+        this.getState = this.getState.bind(this);
+        this.keyUpListener = this.keyUpListener.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleBuy = this.handleBuy.bind(this);
+        this.handleSaveForLater = this.handleSaveForLater.bind(this);
+        this.handleHomework = this.handleHomework.bind(this);
+
+        this.state = this.getState();
+    }
+
+    componentDidMount() {
         QuizStore.addChangeListener(this.onChange);
-        document.addEventListener('keyup', this.keyUpListener);
-    },
+        document.addEventListener("keyup", this.keyUpListener);
+    }
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         QuizStore.removeChangeListener(this.onChange);
-        document.removeEventListener('keyup', this.keyUpListener);
+        document.removeEventListener("keyup", this.keyUpListener);
         timeouts.forEach( t => clearTimeout(t));
-        console.log('component unmounted');
-    },
+    }
 
-    keyUpListener: function(ev){
+    keyUpListener(ev: Object){
         if (ev.keyCode === 27) {
             this.handleClose();
         }
-    },
+    }
 
-    onChange: function(){
+    onChange(){
         this.setState(this.getState());
-    },
+    }
 
-    getState: function(){
-        var state = {
-            quiz: QuizStore.getPublicQuiz(this.props.quizId)
-        };
+    getState() : State {
+        let quiz = QuizStore.getPublicQuiz(this.props.quizId);
+        console.log("quiz", quiz, this.props.quizId);
+        return {quiz};
+    }
 
-        return state;
-    },
-
-    handleClose: function(){
+    handleClose(){
         if (this.state.closed !== true) {
             this.setState({closed: true});
 
             timeouts.push(setTimeout(()=>{
-                console.log('timeeeouuuutt');
+
                 this.setState({removed: true}, ()=> {
                     this.props.onClose();
                 });
             }, 350));
         }
-    },
+    }
 
-    handlePreview: function(quiz : Quiz){
-        sessionStorage.setItem('mode', 'preview');
+    handlePreview(quiz : QuizComplete){
+        sessionStorage.setItem("mode", "preview");
         window.open(`/app#/play/public/${quiz.uuid}`);
-    },
+    }
 
-    handleBuy: function(){
-        if (this.state.quiz) {
-            if (!MeStore.isLoggedIn()){
-                swal({
-                    title: 'You need to be logged in',
-                    text: `In order to buy this item you need to log into Quizalize`,
-                    type: 'info',
-                    confirmButtonText: 'Log in',
-                    showCancelButton: true
-                }, function(isConfirm){
-                    if (isConfirm){
-                        router.setRoute(`/quiz/login?redirect=${window.encodeURIComponent('/quiz/marketplace')}`);
-                    }
-                });
-            } else {
+    handleBuy(){
+
+        if (isLoggedIn()){
+            if (this.state.quiz){
                 TransactionActions.buyQuiz(this.state.quiz);
             }
         }
-    },
 
-    render: function() {
+    }
+
+    handleEdit(){
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz, false, false)
+                    .then((quiz)=>{
+                        console.log("we got quiz?", quiz);
+                        router.setRoute(`/quiz/create/${quiz.uuid}`);
+                    });
+            }
+        }
+    }
+
+    handleSaveForLater(){
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz, false, false)
+                    .then(()=>{
+                        // TODO Francesco please review the copy
+                        swal({
+                            title: "Quiz saved for later",
+                            text: `The quiz has been saved in your profile`,
+                            type: "info",
+                            confirmButtonText: "Got it",
+                            showCancelButton: false
+                        });
+                    });
+            }
+        }
+    }
+
+    handleHomework(){
+        if (isLoggedIn()){
+            if (this.state.quiz){
+                TransactionActions.buyQuiz(this.state.quiz, false, false)
+                    .then((quiz)=>{
+                        router.setRoute(`/quiz/published/${quiz.uuid}/assign?homework=true`);
+                    });
+            }
+        }
+    }
+
+    render() : any {
 
         var quizInfo;
-        var tagLine = () => {
-            // this.state.quiz.meta.price = 3;
-            if (this.state.quiz.meta.price && this.state.quiz.meta.price > 0) {
-                return (<span>Play in class for {priceFormat(this.state.quiz.meta.price, '$', 'us')}</span>);
-            }
-            else {
-                return (<span>Play in class</span>);
-            }
-        };
-
 
         if (this.state.quiz){
+            let tagLine;
+            let name = this.state.quiz.meta.name;
+            let questionLength = this.state.quiz.payload.questions.length;
+            let quiz = this.state.quiz;
+            let quizid = QuizStore.getOwnedQuizByOriginalQuizId(quiz.uuid);
+            console.log("owned quiz? , quizId", quizid);
+
+            if (quiz.meta.price && quiz.meta.price > 0) {
+                tagLine = (<span>Play in class for {priceFormat(quiz.meta.price, "$", "us")}</span>);
+            } else {
+                tagLine = (<span>Play in class</span>);
+            }
+
             quizInfo = (
                 <div className="cq-quizdetails__cardinner">
                     <div className="cq-quizdetails__info">
                         <h5>
-                            {TopicStore.getTopicName(this.state.quiz.meta.publicCategoryId || this.state.quiz.meta.categoryId)}
+                            {TopicStore.getTopicName(quiz.meta.publicCategoryId || quiz.meta.categoryId)}
                         </h5>
-                        <h1>{this.state.quiz.meta.name}</h1>
-                        <p>
-                            {this.state.quiz.meta.description}
-                        </p>
-                        <p>
+                        <h1>{name}</h1>
                         <i>
-                            {this.state.quiz.payload.questions.length} questions.
+                            {questionLength} questions.
                         </i>
-                        </p>
 
-                        <button className="cq-quizdetails__button" onClick={this.handlePreview.bind(this, this.state.quiz)}>
-                            Play
-                        </button>
-
-                        <button className="cq-quizdetails__button" onClick={this.handleBuy}>
-                            {tagLine()}
-                        </button>
                     </div>
 
-                    <div className="cq-quizdetails__questionscroller">
-                        <div className="cq-quizdetails__questions">
-                            <ul>
+                    <div className="cq-quizdetails__extra">
+                        <div className="cq-quizdetails__extra__questionholder">
 
-                                {this.state.quiz.payload.questions.map( (question, index) => {
-                                    return (
-                                        <li className="cq-quizdetails__question" key={question.uuid}>
-                                            {index + 1}. <CQLatexString>{question.question}</CQLatexString>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
+                            <div className="cq-quizdetails__questionscroller">
+                                <div className="cq-quizdetails__questions">
+                                    <ul>
+
+                                        {quiz.payload.questions.map( (question, index) => {
+                                            return (
+                                                <li className="cq-quizdetails__question" key={question.uuid}>
+                                                    {index + 1}. <CQLatexString>{question.question}</CQLatexString>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+                        <div className="cq-quizdetails__extra__buttons">
+                            <a className="cq-quizdetails__preview" onClick={this.handlePreview.bind(this, quiz)}>
+                                Preview  - try it!
+                            </a>
+
+                            <button className="cq-quizdetails__button__main cq-quizdetails__button__main--big" onClick={this.handleBuy}>
+                                {tagLine}
+                            </button>
+
+                            <button className="cq-quizdetails__button__main" onClick={this.handleHomework}>
+                                Set as homework
+                            </button>
+
+                            <button className="cq-quizdetails__button__alt" onClick={this.handleEdit}>
+                                Edit questions
+                            </button>
+
+                            <button className="cq-quizdetails__button__alt" onClick={this.handleSaveForLater}>
+                                Save for later
+                            </button>
+
+
+
+                        </div>
+
                     </div>
                 </div>
             );
@@ -155,7 +259,6 @@ var CQViewQuizDetails = React.createClass({
                 <div className={this.state.closed ? `cq-quizdetails closed` : `cq-quizdetails`}>
                     <div className="cq-quizdetails__card">
                         <div className="cq-quizdetails__close fa fa-times" onClick={this.handleClose}></div>
-
                         {quizInfo}
                     </div>
                 </div>
@@ -165,6 +268,4 @@ var CQViewQuizDetails = React.createClass({
         }
     }
 
-});
-
-module.exports = CQViewQuizDetails;
+};

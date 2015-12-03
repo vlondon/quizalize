@@ -1,6 +1,6 @@
 /* @flow */
-import React from 'react';
-import { router } from './../../../config';
+import React from "react";
+import { router } from "./../../../config";
 
 import {
     CQPageTemplate,
@@ -8,29 +8,30 @@ import {
     CQViewQuizFilter,
     CQViewQuizDetails,
     CQViewQuizPrice,
-} from './../../../components';
+    CQViewWizard,
+} from "./../../../components";
 
 
 
-import {urlParams} from './../../../utils';
+import {urlParams} from "./../../../utils";
 
 import {
     TransactionActions,
     UserActions,
     QuizActions
-} from './../../../actions';
+} from "./../../../actions";
 
 import {
     QuizStore,
     MeStore
-} from './../../../stores';
+} from "./../../../stores";
 
 
-import CQAppGrid from './CQAppGrid';
-import CQPublicHeader from './CQPublicHeader';
-import CQPublicFooter from './CQPublicFooter';
-import CQPublicNoResults from './CQPublicNoResults';
-import type {Quiz} from './../../../../../types';
+import CQAppGrid from "./CQAppGrid";
+import CQPublicHeader from "./CQPublicHeader";
+import CQPublicFooter from "./CQPublicFooter";
+import CQPublicNoResults from "./CQPublicNoResults";
+import type {Quiz} from "./../../../../../types";
 
 
 type State = {
@@ -67,9 +68,9 @@ export default class CQMarketplace extends React.Component {
             showQuizzes: true,
             quizDetails: undefined,
             noContent: false,
-            search: '',
+            search: "",
             currentCategory: {
-                value: 'all'
+                value: "all"
             }
         };
         this.onChange = this.onChange.bind(this);
@@ -115,20 +116,20 @@ export default class CQMarketplace extends React.Component {
 
     handleViewChange(options: string){
         switch (options){
-            case 'all':
+            case "all":
                 this.setState({
                     showApps: true,
                     showQuizzes: true
                 });
                 break;
 
-            case 'quizzes':
+            case "quizzes":
                 this.setState({
                     showApps: false,
                     showQuizzes: true
                 });
                 break;
-            case 'apps':
+            case "apps":
                 this.setState({
                     showApps: true,
                     showQuizzes: false
@@ -137,16 +138,21 @@ export default class CQMarketplace extends React.Component {
     }
 
     handleCategoryChange(currentCategory : Object) {
-        let search = '';
+        let search = "";
         this.setState({currentCategory, search});
     }
     handleSearchInput(search: string){
-        let currentCategory = { value: 'all' };
+        let currentCategory = { value: "all" };
         this.setState({search, currentCategory});
     }
 
     handleDetails(quiz: Quiz){
-        this.setState({quizDetails: quiz.uuid});
+        let ownedQuiz = QuizStore.getOwnedQuizByOriginalQuizId(quiz.uuid);
+        if (ownedQuiz){
+            router.setRoute(`/quiz/create/${ownedQuiz.uuid}`);
+        } else {
+            this.setState({quizDetails: quiz.uuid});
+        }
     }
 
     handleDetailsClose(){
@@ -170,7 +176,8 @@ export default class CQMarketplace extends React.Component {
                 </div>
             );
         }
-         if (this.state.showQuizzes) {
+
+        if (this.state.showQuizzes) {
 
             quizList = (
                 <div>
@@ -184,7 +191,7 @@ export default class CQMarketplace extends React.Component {
                         className="cq-public__list"
                     >
 
-                        <CQViewQuizPrice className='cq-public__button cq-public__button__main'/>
+                        <CQViewQuizPrice className="cq-public__button cq-public__button__main"/>
 
                     </CQViewQuizList>
                 </div>
@@ -202,7 +209,8 @@ export default class CQMarketplace extends React.Component {
         return (
 
             <CQPageTemplate className="cq-public">
-                {header}
+                <CQViewWizard/>
+
                 <div className="cq-container">
 
                     {quizDetails}

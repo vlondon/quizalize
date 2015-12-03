@@ -1,0 +1,83 @@
+.cq-viewwizard {
+
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        width: 33%;
+        // background: #FFF;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    @mixin entry {
+        height: 60px;
+        line-height: 40px;
+        background-size: 50% 50%;
+        &__count {
+            // height: 40px;
+            font-size: 30px;
+            // line-height: 40px;
+        }
+    }
+
+    &__step1 {
+        &__entry1,
+        &__entry2,
+        &__entry3 {
+            @include entry;
+        }
+
+        &__entry1 {
+            background: url('./../../assets/wizard1.png') center right;
+            background-color: #D8EDE1;
+            color: #FFF;
+        }
+
+        &__entry2 {
+            background: url('./../../assets/wizard2.png') center right;
+            background-color: #EFF7E4;
+            color: #5CB3C5;
+        }
+        &__entry3 {
+            background-color: #EFF7E4;
+            color: #5CB3C5;
+            &__count { opacity: 0; }
+        }
+
+    }
+
+    &__step2 {
+        &__entry1,
+        &__entry2,
+        &__entry3 {
+            @include entry;
+        }
+
+
+        &__entry1 {
+            background: url('./../../assets/wizard1.png') center right;
+            background-color: #2E6A7B;
+            color: #FFF;
+        }
+
+        &__entry2 {
+            background: url('./../../assets/wizard1.png') center right;
+            background-color: #EFF7E4;
+            color: #FFF;
+        }
+        &__entry3 {
+            background-color: #EFF7E4;
+            color: #5CB3C5;
+            &__count { opacity: 0; }
+        }
+
+    }
+
+
+}

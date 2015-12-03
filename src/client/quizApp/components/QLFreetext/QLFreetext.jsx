@@ -1,5 +1,6 @@
 /* @flow */
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var QLQuestion = require('./../../components/QLQuestion');
 var QLAnswerScreen = require('./../../components/QLAnswerScreen');
@@ -88,6 +89,12 @@ var QLFreetext = React.createClass({
     },
 
     handleClick: function(){
+        new Howl({
+            urls: ['/sounds/button_press.mp3'],
+            onend: function() {
+                this.unload();
+            }
+        }).play();
 
         var answer = $("#freetextInputAnswer").val();
 

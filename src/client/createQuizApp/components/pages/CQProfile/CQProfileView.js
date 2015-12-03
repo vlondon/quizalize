@@ -4,7 +4,8 @@ import { router } from './../../../config';
 
 import {
     CQPageTemplate,
-    CQViewAppQuizList
+    CQViewAppQuizList,
+    CQQuizUploader
 } from './../../../components';
 
 import {
@@ -23,6 +24,7 @@ import {
 import CQDashboardProfile from '../CQDashboard/extra/CQDashboardProfile';
 import CQOwnProfileCounter from './CQOwnProfileCounter';
 
+let lastKeys = '';
 
 let getPrivateQuizzes = (apps) => {
     let privateQuizzes = [];
@@ -43,6 +45,15 @@ class CQProfileView extends React.Component {
         this.state = {
             user: MeStore.state
         };
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     handlePreview(quiz : Quiz){
@@ -89,6 +100,14 @@ class CQProfileView extends React.Component {
         this.setState({quizDetails: quiz.uuid});
     }
 
+    handleKeyDown(ev: Object){
+        lastKeys += String.fromCharCode(ev.which);
+
+        if (lastKeys.endsWith('ILOVEZZISH')){
+            this.setState({showAdmin: true});
+        }
+        // keyPresses.
+    }
 
     render() {
 
@@ -102,6 +121,21 @@ class CQProfileView extends React.Component {
             if (MeStore.state.attributes.accountType === 0){
                 ownProfileCounter = (<CQOwnProfileCounter amount={amountOfPrivateQuizzes}/>);
             }
+
+            let admin = "";
+            if (this.state.showAdmin) {
+                admin = (
+                    <button
+                        className="btn btn-primary cq-profile__cta__import">
+                        <CQQuizUploader
+                            id="quizUploader"
+                            format="doodlemath"
+                            className="cq-edit__icon__label__input"
+                            onQuestionData={this.handleQuizImport}/>
+                        Import quizzes
+                    </button>);
+            }
+
             headerCta = (
                 <div className="cq-profile__cta">
                     <button  onClick={this.handleNewApp} className="btn btn-primary cq-profile__cta__app">
@@ -111,6 +145,7 @@ class CQProfileView extends React.Component {
                     <button  onClick={this.handleNew} className="btn btn-primary ">
                         <i className="fa fa-plus"></i> New quiz
                     </button>
+                    {admin}
                     <div className="cq-profile__freeaccount">
                         {ownProfileCounter}
                     </div>

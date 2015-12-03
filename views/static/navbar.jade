@@ -10,4 +10,8 @@ nav.navbar.navbar-default.navbar-fixed-top
         .navbar-collapse.collapse#navbar
             ul.nav.navbar-nav.navbar-right(ng-controller="NavBarController as actrl")
                 li
+                    btn.btn.btn-info.pull-right.fa.fa-volume-up(ng-click="actrl.mute()", style=" margin-top:9px; margin-right:9px;", ng-hide="actrl.hideMute()")
+                li
+                    btn.btn.btn-info.pull-right.fa.fa-volume-off(ng-click="actrl.unmute()", style=" margin-top:9px; margin-right:9px;", ng-hide="actrl.hideUnmute()") 
+                li
                     btn.btn.btn-info.pull-right(ng-click="actrl.cancel()", style=" margin-top:9px;", ng-hide="actrl.hideCancel()") Cancel Quiz

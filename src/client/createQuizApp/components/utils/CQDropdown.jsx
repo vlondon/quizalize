@@ -40,7 +40,11 @@ var CQDropdown = React.createClass({
                 <label htmlFor="dropdown">{getNameFormId(this.state.selected)}</label>
                 <select id="dropdown" className="react-textselect-input" onChange={this.handleChange} value={this.state.selected}>
                     {this.props.values.map(val=>{
-                        return (
+                        return val.disabled?
+                        (
+                            <option value={val.value} key={val.value} disabled>{val.name}</option>
+                        ):
+                        (
                             <option value={val.value} key={val.value}>{val.name}</option>
                         );
                     })}
