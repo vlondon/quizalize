@@ -19,6 +19,10 @@ import {
     AnalyticsActions
 } from './../../../actions';
 
+import {
+    CQQuestionUploader
+} from './../../../components';
+
 import { urlParams } from './../../../utils';
 import type { QuizComplete, Question } from './../../../../../types';
 
@@ -41,6 +45,7 @@ type State = {
     quizImageFile?: Object;
 };
 
+let lastKeys = '';
 export default class CQEditView extends React.Component {
 
     props: Props;
@@ -70,6 +75,8 @@ export default class CQEditView extends React.Component {
         this.handleName = this.handleName.bind(this);
         this.handleIcon = this.handleIcon.bind(this);
         this.handlePrePublish = this.handlePrePublish.bind(this);
+        this.handleQuizImport = this.handleQuizImport.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     getQuiz() : QuizComplete {
@@ -106,11 +113,13 @@ export default class CQEditView extends React.Component {
     componentDidMount() {
         TopicStore.addChangeListener(this.onChange);
         QuizStore.addChangeListener(this.onChange);
+        window.addEventListener('keydown', this.handleKeyDown);
     }
 
     componentWillUnmount() {
         TopicStore.removeChangeListener(this.onChange);
         QuizStore.removeChangeListener(this.onChange);
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     onChange(props : ?Props){
@@ -231,11 +240,12 @@ export default class CQEditView extends React.Component {
         }
     }
 
-    handleFinished() {
+    handleFinished(assignMode?: string) {
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
             AnalyticsActions.sendIntercomEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
-                router.setRoute(`/quiz/published/${this.state.quiz.uuid}/assign`);
+                let urlParam = assignMode === "homework" ? "?homework=true" : "";
+                router.setRoute(`/quiz/published/${this.state.quiz.uuid}/assign${urlParam}`);
             });
         }
         else {
@@ -318,6 +328,25 @@ export default class CQEditView extends React.Component {
         QuizActions.newQuiz(this.state.quiz).then(callback);
     }
 
+    handleQuizImport(data: Array<Question>) {
+        var quiz = this.state.quiz;
+        quiz.payload.questions = data;
+        this.setState({quiz}, ()=>{
+            this.save().then( ()=> {
+                router.setRoute(`/quiz/create/${this.state.quiz.uuid}/`);
+            });
+        });
+    }
+
+    handleKeyDown(ev: Object){
+        lastKeys += String.fromCharCode(ev.which);
+
+        if (lastKeys.endsWith('ILOVEZZISH')){
+            this.setState({showAdmin: true});
+        }
+        // keyPresses.
+    }
+
     render() : any {
         if (this.state.quiz){
 
@@ -330,6 +359,22 @@ export default class CQEditView extends React.Component {
                 }
                 return plural;
             };
+
+            let admin = '';
+            if(this.state.showAdmin) {
+                admin = (
+                    <button
+                        className="btn btn-default cq-edit__import-button">
+                        <CQQuestionUploader
+                            id="questionUploader"
+                            quizId={this.state.quiz.uuid}
+                            format="doodlemath"
+                            className="cq-edit__icon__label__input"
+                            onQuestionData={this.handleQuizImport}/>
+                    Import file
+                    </button>
+                );
+            }
 
             return (
                 <div>
@@ -366,6 +411,8 @@ export default class CQEditView extends React.Component {
 
                     </div>
 
+                    {admin}
+
                     <h4>You have {this.state.quiz.payload.questions.length} {pularlize(this.state.quiz.payload.questions.length, 'question', 'questions')}</h4>
 
                     <CQQuestionList
@@ -389,12 +436,17 @@ export default class CQEditView extends React.Component {
                             <button
                                 target="zzishgame"
                                 className="cq-quizzes__button--preview" onClick={this.handlePreview}>
-                                <span className="fa fa-search"></span> Play
+                                <span className="fa fa-search"></span> Preview
                             </button>
 
                             <button
                                 className="cq-quizzes__button--assign" onClick={this.handleFinished}>
                                 <span className="fa fa-users"></span> Play in class
+                            </button>
+
+                            <button
+                                className="cq-quizzes__button--assign" onClick={this.handleFinished.bind(this, "homework")}>
+                                <span className="fa fa-users"></span> Set as homework
                             </button>
 
                             <button

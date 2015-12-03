@@ -121,6 +121,12 @@ var CQQuizzes = React.createClass({
         }
     },
 
+    handleAssignHomework: function(quiz: Quiz){
+        if (quiz){
+            router.setRoute(`/quiz/published/${quiz.uuid}/assign?homework=true`);
+        }
+    },
+
     handleEdit: function(quiz: Quiz){
         if (quiz){
             router.setRoute(`/quiz/create/${quiz.uuid}`);
@@ -238,6 +244,7 @@ var CQQuizzes = React.createClass({
                     sortBy='time'
                     sortOptions={this.state.isAdmin}
                     onAssign={this.handleAssign}
+                    onAssignHomework={this.handleAssignHomework}
                     onDelete={this.handleDelete}>
 
                     {/* <CQPublishQuiz className="cq-quizzes__button--publish"/>*/}
@@ -251,11 +258,15 @@ var CQQuizzes = React.createClass({
                     </button>
 
                     <button className="cq-quizzes__button--preview" onClick={this.handlePreview}>
-                        <span className="fa fa-search"></span> Play
+                        <span className="fa fa-search"></span> Preview
                     </button>
 
                     <button className="cq-quizzes__button--assign" onClick={this.handleAssign}>
                         <span className="fa fa-users"></span> Play in class
+                    </button>
+
+                    <button className="cq-quizzes__button--assign" onClick={this.handleAssignHomework}>
+                        <span className="fa fa-users"></span> Set as homeworkB
                     </button>
 
                     <button className="cq-quizzes__button--delete" onClick={this.handleDelete}>

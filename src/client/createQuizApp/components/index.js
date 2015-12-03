@@ -54,7 +54,9 @@ import CQLinkToUser from "./utils/CQLinkToUser";
 import CQModal from "./utils/CQModal";
 import CQPagination from "./utils/CQPagination";
 import CQPublishQuiz from "./utils/CQPublishQuiz";
+import CQQuestionUploader from "./utils/CQQuestionUploader";
 import CQQuizIcon from "./utils/CQQuizIcon";
+import CQQuizUploader from "./utils/CQQuizUploader";
 import CQSpinner from "./utils/CQSpinner";
 import CQViewQuizPrice from "./utils/CQViewQuizPrice";
 
@@ -128,7 +130,9 @@ export {
     CQModal,
     CQPagination,
     CQPublishQuiz,
+    CQQuestionUploader,
     CQQuizIcon,
+    CQQuizUploader,
     CQSpinner,
     CQViewQuizPrice,
     // CQAppQuizList,

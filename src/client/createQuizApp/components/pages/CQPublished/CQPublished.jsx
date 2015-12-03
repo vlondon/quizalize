@@ -25,7 +25,7 @@ const Settings = Record({
     showAnswers: 1,
     showTimer: 1,
     showResult: 1,
-    playSounds: 1,
+    playSounds: 0,
     seed: Math.floor((Math.random() * 100) + 1)
 });
 
