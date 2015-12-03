@@ -240,11 +240,12 @@ export default class CQEditView extends React.Component {
         }
     }
 
-    handleFinished() {
+    handleFinished(assignMode?: string) {
         if (this.state.quiz.payload.questions && this.state.quiz.payload.questions.length > 0 && this.state.quiz.payload.questions[0].question.length > 0) {
             AnalyticsActions.sendIntercomEvent('finish_quiz', {uuid: this.state.quiz.uuid, name: this.state.quiz.meta.name});
             QuizActions.newQuiz(this.state.quiz).then( ()=> {
-                router.setRoute(`/quiz/published/${this.state.quiz.uuid}/assign`);
+                let urlParam = assignMode === "homework" ? "?homework=true" : "";
+                router.setRoute(`/quiz/published/${this.state.quiz.uuid}/assign${urlParam}`);
             });
         }
         else {
@@ -435,12 +436,17 @@ export default class CQEditView extends React.Component {
                             <button
                                 target="zzishgame"
                                 className="cq-quizzes__button--preview" onClick={this.handlePreview}>
-                                <span className="fa fa-search"></span> Play
+                                <span className="fa fa-search"></span> Preview
                             </button>
 
                             <button
                                 className="cq-quizzes__button--assign" onClick={this.handleFinished}>
                                 <span className="fa fa-users"></span> Play in class
+                            </button>
+
+                            <button
+                                className="cq-quizzes__button--assign" onClick={this.handleFinished.bind(this, "homework")}>
+                                <span className="fa fa-users"></span> Set as homework
                             </button>
 
                             <button
