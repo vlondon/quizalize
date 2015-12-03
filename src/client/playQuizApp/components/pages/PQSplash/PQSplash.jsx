@@ -19,7 +19,7 @@ class PQSplash extends React.Component {
             <PQPageTemplate>
                 <h1>Splash</h1>
                 <p>
-                    <PQLink href='/play/class'>Log in as a student</PQLink>
+                    <PQLink href='/play/login'>Log in as a student</PQLink>
                 </p>
             </PQPageTemplate>
         );

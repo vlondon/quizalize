@@ -4,6 +4,7 @@ var React = require('react');
 import PQSplash from './../components/pages/PQSplash';
 import PQLogin from './../components/pages/PQLogin';
 import PQQuiz from './../components/pages/PQQuiz';
+import PQList from './../components/pages/PQList';
 
 export type Page = {
     name: string;
@@ -56,7 +57,7 @@ var pagesArray: Array<Page> = [
         renderer: function(){
             // TODO: list of quizzes assigned
             React.render(
-                React.createElement(PQSplash, null),
+                React.createElement(PQList, null),
                 document.getElementById('reactApp')
             );
         }

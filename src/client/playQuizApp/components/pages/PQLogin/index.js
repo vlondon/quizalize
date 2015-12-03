@@ -1,2 +1,2 @@
-import PQlogin from './PQlogin';
-export default PQlogin;
+import PQLogin from './PQLogin';
+export default PQLogin;
