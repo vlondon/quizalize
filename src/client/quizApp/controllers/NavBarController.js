@@ -75,7 +75,7 @@ angular.module('quizApp').controller('NavBarController', function(QuizData,$log,
     };
 
     self.playSoundMode = false;
-    if (QuizData.currentQuiz().meta.playSounds === "1" || sessionStorage.getItem("mode") === "preview" || sessionStorage.getItem("mode") === "teacher") {
+    if (QuizData.currentQuiz() && QuizData.currentQuiz().meta && QuizData.currentQuiz().meta.playSounds === "1" || sessionStorage.getItem("mode") === "preview" || sessionStorage.getItem("mode") === "teacher") {
         self.playSoundMode = true;
     }
     else {
